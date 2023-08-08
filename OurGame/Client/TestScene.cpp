@@ -77,13 +77,11 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
-<<<<<<< Updated upstream
-=======
+
 		//int a = 0
 		//float f = 0
 		//double d = 0
 
->>>>>>> Stashed changes
 		// Create Camera
 		//{
 		//	GameObject* pGameObject = new GameObject(LayerType::Unknown);
