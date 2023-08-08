@@ -81,6 +81,8 @@ namespace hm
 		//float f = 0
 		//double d = 0
 		// uint e =0;
+
+		//doublechar='aa'
   
   
 		// Create Camera
