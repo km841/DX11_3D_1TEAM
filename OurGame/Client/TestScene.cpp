@@ -80,10 +80,13 @@ namespace hm
 		//int a = 0
 		//float f = 0
 		//double d = 0
-		// uint e =0;
+		//uint e =0;
 		//doublechar='aa'
 		//char ='a'
-  
+		//string = "s"
+
+
+
 		// Create Camera
 		//{
 		//	GameObject* pGameObject = new GameObject(LayerType::Unknown);
