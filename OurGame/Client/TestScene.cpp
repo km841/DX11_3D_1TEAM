@@ -77,6 +77,8 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
+		//int a = 0
+
 		// Create Camera
 		//{
 		//	GameObject* pGameObject = new GameObject(LayerType::Unknown);
