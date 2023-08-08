@@ -36,7 +36,7 @@
 #include "SimpleMath.h"
 
 // FBX SDK Library
-//#include "FBX/fbxsdk.h"
+#include "FBX/fbxsdk.h"
 // PhysX Library
 
 // FMod Library
@@ -59,9 +59,9 @@
 #pragma comment(lib, "PhysX\\debug\\PhysXCharacterKinematic_static_64.lib")
 #pragma comment(lib, "FMod\\debug\\fmodL_vc.lib")
 #pragma comment(lib, "FMod\\debug\\fmodstudioL_vc.lib")
-//#pragma comment(lib, "FBX\\debug\\libfbxsdk-md.lib")
-//#pragma comment(lib, "FBX\\debug\\libxml2-md.lib")
-//#pragma comment(lib, "FBX\\debug\\zlib-md.lib")
+#pragma comment(lib, "FBX\\debug\\libfbxsdk-md.lib")
+#pragma comment(lib, "FBX\\debug\\libxml2-md.lib")
+#pragma comment(lib, "FBX\\debug\\zlib-md.lib")
 #pragma comment(lib, "Assimp\\assimp-vc143-mt.lib")
 #else
 #pragma comment(lib, "DirectXTex\\DirectXTex.lib")
@@ -73,9 +73,9 @@
 #pragma comment(lib, "PhysX\\release\\PhysXCharacterKinematic_static_64.lib")
 #pragma comment(lib, "FMod\\release\\fmod_vc.lib")
 #pragma comment(lib, "FMod\\release\\fmodstudio_vc.lib")
-//#pragma comment(lib, "FBX\\release\\libfbxsdk-md.lib")
-//#pragma comment(lib, "FBX\\release\\libxml2-md.lib")
-//#pragma comment(lib, "FBX\\release\\zlib-md.lib")
+#pragma comment(lib, "FBX\\release\\libfbxsdk-md.lib")
+#pragma comment(lib, "FBX\\release\\libxml2-md.lib")
+#pragma comment(lib, "FBX\\release\\zlib-md.lib")
 #pragma comment(lib, "Assimp\\assimp-vc143-mt.lib")
 #endif
 

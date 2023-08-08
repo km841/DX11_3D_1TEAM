@@ -77,16 +77,6 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
-		//int a = 0
-		//float f = 0
-		//double d = 0
-		//uint e =0;
-		//doublechar='aa'
-		//char ='a'
-		//string = "s"
-
-
-
 		// Create Camera
 		//{
 		//	GameObject* pGameObject = new GameObject(LayerType::Unknown);
@@ -288,21 +278,21 @@ namespace hm
 		}
 
 		// Create DirLight
-		//{
-		//	GameObject* pGameObject = new GameObject(LayerType::Unknown);
-		//	pGameObject->SetDontDestroyObject(L"DirLight");
-		//	Transform* pTransform = pGameObject->AddComponent(new Transform);
-		//	pTransform->SetPosition(Vec3(-10.f, 10.f, 0.f));
-		//	pTransform->SetScale(Vec3(10.f, 10.f, 10.f));
-		//	Light* pLight = pGameObject->AddComponent(new Light);
-		//	pLight->SetDiffuse(Vec3(0.5f, 0.5f, 0.5f));
-		//	pLight->SetAmbient(Vec3(0.1f, 0.1f, 0.1f));
-		//	pLight->SetSpecular(Vec3(1.f, 1.f, 1.f));
-		//	pLight->SetLightRange(100.f);
-		//	pLight->SetLightDirection(Vec3(1.f, -1.f, 1.f));
-		//	pLight->SetLightType(LightType::DirectionalLight);
-		//	AddGameObject(pGameObject);
-		//}
+		{
+			GameObject* pGameObject = new GameObject(LayerType::Unknown);
+			pGameObject->SetDontDestroyObject(L"DirLight");
+			Transform* pTransform = pGameObject->AddComponent(new Transform);
+			pTransform->SetPosition(Vec3(-10.f, 10.f, 0.f));
+			pTransform->SetScale(Vec3(10.f, 10.f, 10.f));
+			Light* pLight = pGameObject->AddComponent(new Light);
+			pLight->SetDiffuse(Vec3(0.5f, 0.5f, 0.5f));
+			pLight->SetAmbient(Vec3(0.1f, 0.1f, 0.1f));
+			pLight->SetSpecular(Vec3(1.f, 1.f, 1.f));
+			pLight->SetLightRange(100.f);
+			pLight->SetLightDirection(Vec3(1.f, -1.f, 1.f));
+			pLight->SetLightType(LightType::DirectionalLight);
+			AddGameObject(pGameObject);
+		}
 
 		//// Create Light
 		//{
@@ -370,17 +360,17 @@ namespace hm
 		//}
 
 		// Desk
-		//for (int i = 0; i < 2; ++i)
-		//{
-		//	shared_ptr<MeshData> pMeshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Desk.fbx");
-		//	GameObject* pGameObject = pMeshData->Instantiate();
-		//	pGameObject->SetName(L"Desk");
-		//	pGameObject->SetFrustumCheckFlag(false);
-		//	pGameObject->GetTransform()->SetPosition(Vec3(i * 10.f, 0.f, 0.f));
-		//	pGameObject->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
-		//	pGameObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
-		//	AddGameObject(pGameObject);
-		//}
+		for (int i = 0; i < 2; ++i)
+		{
+			shared_ptr<MeshData> pMeshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Desk.fbx");
+			GameObject* pGameObject = pMeshData->Instantiate();
+			pGameObject->SetName(L"Desk");
+			pGameObject->SetFrustumCheckFlag(false);
+			pGameObject->GetTransform()->SetPosition(Vec3(i * 10.f, 0.f, 0.f));
+			pGameObject->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+			pGameObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+			AddGameObject(pGameObject);
+		}
 
 		// Map
 		//{

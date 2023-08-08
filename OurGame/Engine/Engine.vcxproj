@@ -72,12 +72,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)Library\Include\;$(SolutionDir)Resources\Shader\;$(SolutionDir)Library\Include\FBX\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Library\Lib\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Library\Lib\;$(SolutionDir)..\..\Lib\</LibraryPath>
     <OutDir>$(SolutionDir)Output\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)Library\Include\;$(SolutionDir)Resources\Shader\;$(SolutionDir)Library\Include\FBX\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Library\Lib\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Library\Lib\;$(SolutionDir)..\..\Lib\</LibraryPath>
     <OutDir>$(SolutionDir)Output\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -185,7 +185,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="FBXLoader.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="GameObject.h" />
@@ -238,7 +238,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="FBXLoader.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="GameObject.cpp" />
