@@ -77,8 +77,10 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
+
 		//int a = 0
 		//float f = 0
+		//double d = 0
 
 		// Create Camera
 		//{
