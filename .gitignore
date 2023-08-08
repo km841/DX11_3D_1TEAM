@@ -1,0 +1,6 @@
+.git/
+x64/
+.vs/
+*.ipch
+*.pdb
+*.pch
