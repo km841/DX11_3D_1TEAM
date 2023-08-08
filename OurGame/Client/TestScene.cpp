@@ -78,6 +78,7 @@ namespace hm
 		}
 
 		//int a = 0
+		//float f = 0
 
 		// Create Camera
 		//{
