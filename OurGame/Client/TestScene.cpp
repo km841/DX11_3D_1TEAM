@@ -81,8 +81,9 @@ namespace hm
 		//float f = 0
 		//double d = 0
 		// uint e =0;
+		//char ='a'
   
-  
+
 		// Create Camera
 		//{
 		//	GameObject* pGameObject = new GameObject(LayerType::Unknown);
