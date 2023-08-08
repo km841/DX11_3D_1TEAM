@@ -47,7 +47,7 @@ namespace hm
         if (meshData)
             return meshData;
 
-       // meshData = MeshData::LoadFromFBX(_path);
+        meshData = MeshData::LoadFromFBX(_path);
         meshData->SetName(key);
         Add(key, meshData);
 

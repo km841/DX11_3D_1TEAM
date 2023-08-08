@@ -57,31 +57,31 @@ namespace hm
 		}
 	}
 
-	//shared_ptr<Mesh> Mesh::CreateFromFBX(const FbxMeshInfo* _pMeshInfo, FBXLoader& loader)
-	//{
-	//	shared_ptr<Mesh> pMesh = make_shared<Mesh>();
-	//	pMesh->SetHash(CreateHash(_pMeshInfo->vertices[0]));
+	shared_ptr<Mesh> Mesh::CreateFromFBX(const FbxMeshInfo* _pMeshInfo, FBXLoader& loader)
+	{
+		shared_ptr<Mesh> pMesh = make_shared<Mesh>();
+		pMesh->SetHash(CreateHash(_pMeshInfo->vertices[0]));
 
-	//	pMesh->CreateVertexBuffer(_pMeshInfo->vertices);
+		pMesh->CreateVertexBuffer(_pMeshInfo->vertices);
 
-	//	for (const std::vector<int>& buffer : _pMeshInfo->indices)
-	//	{
-	//		if (buffer.empty())
-	//		{
-	//			std::vector<int> defaultBuffer{ 0 };
-	//			pMesh->CreateIndexBuffer(defaultBuffer);
-	//		}
-	//		else
-	//		{
-	//			pMesh->CreateIndexBuffer(buffer);
-	//		}
-	//	}
+		for (const std::vector<int>& buffer : _pMeshInfo->indices)
+		{
+			if (buffer.empty())
+			{
+				std::vector<int> defaultBuffer{ 0 };
+				pMesh->CreateIndexBuffer(defaultBuffer);
+			}
+			else
+			{
+				pMesh->CreateIndexBuffer(buffer);
+			}
+		}
 
-	//	//if (meshInfo->bHasAnimation)
-	//	//	mesh->CreateBonesAndAnimations(loader);
+		//if (meshInfo->bHasAnimation)
+		//	mesh->CreateBonesAndAnimations(loader);
 
-	//	return pMesh;
-	//}
+		return pMesh;
+	}
 
 	ComPtr<ID3D11Buffer> Mesh::CreateVertexBuffer(const std::vector<Vertex>& _buffer)
 	{
@@ -143,23 +143,23 @@ namespace hm
 	}
 	void Mesh::AddMeshContainer(const FbxMeshInfo* meshInfo, FBXLoader& loader)
 	{
-		//ComPtr<ID3D11Buffer> pVertexBuffer= CreateVertexBuffer(meshInfo->vertices);
+		ComPtr<ID3D11Buffer> pVertexBuffer= CreateVertexBuffer(meshInfo->vertices);
 
-		//std::vector<IndexBufferInfo> indexBufferVec = {};
-		//for (const std::vector<int>& buffer : meshInfo->indices)
-		//{
-		//	if (buffer.empty())
-		//	{
-		//		std::vector<int> defaultBuffer{ 0 };
-		//		indexBufferVec.push_back(CreateIndexBuffer(defaultBuffer));
-		//	}
-		//	else
-		//	{
-		//		indexBufferVec.push_back(CreateIndexBuffer(buffer));
-		//	}
-		//}
+		std::vector<IndexBufferInfo> indexBufferVec = {};
+		for (const std::vector<int>& buffer : meshInfo->indices)
+		{
+			if (buffer.empty())
+			{
+				std::vector<int> defaultBuffer{ 0 };
+				indexBufferVec.push_back(CreateIndexBuffer(defaultBuffer));
+			}
+			else
+			{
+				indexBufferVec.push_back(CreateIndexBuffer(buffer));
+			}
+		}
 
-		//MeshContainer* pMeshContainer = new MeshContainer{ pVertexBuffer , indexBufferVec };
-		//mMeshContainerVec.push_back(pMeshContainer);
+		MeshContainer* pMeshContainer = new MeshContainer{ pVertexBuffer , indexBufferVec };
+		mMeshContainerVec.push_back(pMeshContainer);
 	}
 }

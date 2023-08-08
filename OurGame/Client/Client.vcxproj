@@ -72,12 +72,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)Engine\;$(SolutionDir)Library\Include\;$(SolutionDir)Library\Include\FBX\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Output\$(Configuration)\;$(SolutionDir)Library\Lib\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Output\$(Configuration)\;$(SolutionDir)Library\Lib\;$(SolutionDir)..\..\Lib\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Output\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)Engine\;$(SolutionDir)Library\Include\;$(SolutionDir)Library\Include\FBX\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Output\$(Configuration)\;$(SolutionDir)Library\Lib\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Output\$(Configuration)\;$(SolutionDir)Library\Lib\;$(SolutionDir)..\..\Lib\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Output\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
