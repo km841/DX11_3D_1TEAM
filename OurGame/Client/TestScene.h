@@ -20,6 +20,8 @@ namespace hm
 		virtual void Enter();
 		virtual void Exit();
 
+	private:
+
 	};
 }
 

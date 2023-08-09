@@ -146,10 +146,23 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="CameraMoveScript.h" />
+    <ClInclude Include="CorridorRightMap.h" />
+    <ClInclude Include="DiningColliderCheckMap.h" />
+    <ClInclude Include="EntranceHallMap.h" />
     <ClInclude Include="Factory.h" />
+    <ClInclude Include="GrandmaBossMap.h" />
+    <ClInclude Include="HallColliderCheckMap.h" />
+    <ClInclude Include="LeftSecretFightMap.h" />
+    <ClInclude Include="LeftSecretTrialMap.h" />
+    <ClInclude Include="MainOfficeMap.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="PaperBurnScript.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Right2Map.h" />
+    <ClInclude Include="RightMap.h" />
+    <ClInclude Include="RightSecretPassageMap.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>
@@ -157,12 +170,25 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="CameraMoveScript.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="CorridorRightMap.cpp" />
+    <ClCompile Include="DiningColliderCheckMap.cpp" />
+    <ClCompile Include="EntranceHallMap.cpp" />
     <ClCompile Include="Factory.cpp" />
+    <ClCompile Include="GrandmaBossMap.cpp" />
+    <ClCompile Include="HallColliderCheckMap.cpp" />
+    <ClCompile Include="LeftSecretFightMap.cpp" />
+    <ClCompile Include="LeftSecretTrialMap.cpp" />
+    <ClCompile Include="MainOfficeMap.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="PaperBurnScript.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Right2Map.cpp" />
+    <ClCompile Include="RightMap.cpp" />
+    <ClCompile Include="RightSecretPassageMap.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>

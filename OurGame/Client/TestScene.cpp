@@ -23,6 +23,7 @@
 #include "EventManager.h"
 #include "PaperBurnScript.h"
 #include "Factory.h"
+#include "Player.h"
 
 namespace hm
 {
@@ -120,6 +121,13 @@ namespace hm
 
 			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"Test", L"..\\Resources\\Texture\\goodjob.png");
 			shared_ptr<Texture> pNoiseTex = GET_SINGLE(Resources)->Load<Texture>(L"BurnNoise", L"..\\Resources\\Texture\\BurnNoise.png");
+			// Texture2D t0
+
+			// SetTexture( 레지스터 번호, 텍스쳐 );
+			// 0 : 알베도
+			// 1 : 노멀
+			// 2 : 스페큘러
+			// 3 : 이미시브
 			pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
 			pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(1, pNoiseTex);
 
@@ -127,19 +135,19 @@ namespace hm
 		}
 
 		// Deferred Dynamic Box
-		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Dynamic;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(1.f, 2.f, 1.f);
+		//{
+		//	PhysicsInfo physicsInfo;
+		//	physicsInfo.eActorType = ActorType::Dynamic;
+		//	physicsInfo.eGeometryType = GeometryType::Box;
+		//	physicsInfo.size = Vec3(1.f, 2.f, 1.f);
 
-			GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(5.f, 10.f, 0.f), physicsInfo, L"Deferred", L"", LayerType::Player);
-			pGameObject->SetFrustumCheckFlag(true);
-			pGameObject->SetDontDestroyObject(L"Box_1");
-			pGameObject->GetTransform()->SetScale(Vec3(1.f, 2.f, 1.f));
+		//	GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(5.f, 10.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Desk.fbx", LayerType::Unknown);
+		//	pGameObject->SetFrustumCheckFlag(true);
+		//	pGameObject->SetDontDestroyObject(L"Box_1");
+		//	pGameObject->GetTransform()->SetScale(Vec3(1.f, 2.f, 1.f));
 
-			AddGameObject(pGameObject);
-		}
+		//	AddGameObject(pGameObject);
+		//}
 
 		// Deferred Static Box
 		{
@@ -168,7 +176,7 @@ namespace hm
 			GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(i * 10.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Desk.fbx", LayerType::Player);
 			pGameObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
 			pGameObject->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, -45.f, 0.f));
-			pGameObject->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, -1.f));
+			pGameObject->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 0.f));
 			
 			AddGameObject(pGameObject);
 		}
@@ -176,6 +184,7 @@ namespace hm
 		// Create Static FBX Object
 		for (int i = 0; i < 2; ++i)
 		{
+			// 항아리1
 			GameObject* pGameObject = Factory::CreateObject<GameObject>(Vec3(i * 10.f, 0.f, 0.f), L"MonsterDeferred", L"..\\Resources\\FBX\\Mage.fbx", LayerType::Unknown);
 			shared_ptr<Texture> pCrackTex = GET_SINGLE(Resources)->Load<Texture>(L"EnemyCrack", L"..\\Resources\\Texture\\cracks_generic.png");
 			pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(2, pCrackTex);

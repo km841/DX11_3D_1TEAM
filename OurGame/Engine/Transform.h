@@ -29,6 +29,7 @@ namespace hm
 
 		/* 콜라이더를 제외하고 오브젝트만 이동시키는 함수 */
 		void  SetPositionExcludingColliders(const Vec3& _position);
+		void  SetPositionExcludingColliders(Axis _eAxis, float _position);
 
 		float GetBoundingSphereRadius() { return max(max(mScale.x, mScale.y), mScale.z); }
 

@@ -53,6 +53,19 @@ namespace hm
 		Dungeon,
 		Boss,
 		Ending,
+
+		MainOfficeMap,
+		CorridorRightMap,
+		DiningColliderCheckMap,
+		EntranceHallMap,
+		GrandmaBossMap,
+		HallColliderCheckMap,
+		LeftSecretFightMap,
+		LeftSecretTrialMap,
+		Right2Map,
+		RightMap,
+		RightSecretPassageMap,
+
 		End,
 	};
 
@@ -149,5 +162,7 @@ namespace hm
 		StaticModel,
 		DynamicModel,
 	};
+
+
 }
 
