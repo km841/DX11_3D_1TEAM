@@ -42,7 +42,7 @@ namespace hm
 		RenderFinal(_pScene);
 		RenderForward(_pScene);
 
-		PostProcessing(_pScene);
+		//PostProcessing(_pScene);
 	}
 
 	void RenderManager::ClearInstancingBuffer()
