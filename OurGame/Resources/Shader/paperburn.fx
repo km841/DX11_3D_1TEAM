@@ -72,7 +72,7 @@ float4 PS_Main(VS_OUT _in) : SV_Target
     float3 finalColor = float3(0.6, 0.8, 1.0);
     float3 burningColor = lerp(initialColor, finalColor, smoothstep(0.7, 1.0, border)) * 3.0;
     
-    float3 finalColorWithBurn = lerp(materialColor, float3(0.8, 0.0, 0.8), erosion) + border * burningColor;
+    float3 finalColorWithBurn = lerp(materialColor, float3(0.0, 0.0, 0.0), erosion) + border * burningColor;
 
     float alpha = finalColorWithBurn.r + finalColorWithBurn.g + finalColorWithBurn.b > 0.0 ? 1.0 : 0.0;
 

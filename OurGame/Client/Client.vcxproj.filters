@@ -22,6 +22,9 @@
     <ClInclude Include="PaperBurnScript.h">
       <Filter>소스 파일\Script</Filter>
     </ClInclude>
+    <ClInclude Include="Factory.h">
+      <Filter>소스 파일\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -44,6 +47,9 @@
     </ClCompile>
     <ClCompile Include="PaperBurnScript.cpp">
       <Filter>소스 파일\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Factory.cpp">
+      <Filter>소스 파일\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +75,9 @@
     </Filter>
     <Filter Include="소스 파일\Script">
       <UniqueIdentifier>{56e5ad59-df91-4103-9be6-6d055176a3ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Manager">
+      <UniqueIdentifier>{6fa5440a-a434-4674-b376-790d5cbe08f1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
