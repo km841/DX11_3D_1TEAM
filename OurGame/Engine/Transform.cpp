@@ -32,8 +32,12 @@ namespace hm
 				transform.q.z * 180.f / XM_PI);
 			mPosition = transform.p;
 
+			PxQuat relativeX(mRelativeRotation.x * 180.f / XM_PI, Vec3(1.f, 0.f, 0.f));
+			PxQuat relativeY(mRelativeRotation.y * 180.f / XM_PI, Vec3(0.f, 1.f, 0.f));
+			PxQuat relativeZ(mRelativeRotation.z * 180.f / XM_PI, Vec3(0.f, 0.f, 1.f));
+
 			Matrix matScale = Matrix::CreateScale(mScale);
-			Matrix matRotation = Matrix::CreateFromQuaternion(transform.q);
+			Matrix matRotation = Matrix::CreateFromQuaternion(relativeZ * relativeY * relativeX * transform.q);
 			Matrix matTranslation = Matrix::CreateTranslation(transform.p);
 
 			mMatWorld = matScale * matRotation * matTranslation;
@@ -109,6 +113,27 @@ namespace hm
 			break;
 		case hm::AXIS_Z:
 			mRotation.z = _degree;
+			break;
+		}
+	}
+
+	void Transform::SetRotationExcludingColliders(const Vec3& _rotation)
+	{
+		mRelativeRotation = _rotation;
+	}
+
+	void Transform::SetRotationExcludingColliders(Axis _eAxis, float _degree)
+	{
+		switch (_eAxis)
+		{
+		case hm::AXIS_X:
+			mRelativeRotation.x = _degree;
+			break;
+		case hm::AXIS_Y:
+			mRelativeRotation.y = _degree;
+			break;
+		case hm::AXIS_Z:
+			mRelativeRotation.z = _degree;
 			break;
 		}
 	}

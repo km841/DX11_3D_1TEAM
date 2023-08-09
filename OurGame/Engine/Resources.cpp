@@ -39,7 +39,7 @@ namespace hm
 
         return pTexture;
     }
-    shared_ptr<MeshData> Resources::LoadFBX(const wstring& _path)
+    shared_ptr<MeshData> Resources::LoadFBX(const wstring& _path, const wstring& _shaderName)
     {
         wstring key = _path;
 
@@ -47,7 +47,7 @@ namespace hm
         if (meshData)
             return meshData;
 
-        meshData = MeshData::LoadFromFBX(_path);
+        meshData = MeshData::LoadFromFBX(_path, _shaderName);
         meshData->SetName(key);
         Add(key, meshData);
 
@@ -367,6 +367,18 @@ namespace hm
             Add<Shader>(L"Deferred", pShader);
         }
 
+        // Monster Deferred Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Deferred,
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\monster_deferred.fx", shaderInfo);
+            Add<Shader>(L"MonsterDeferred", pShader);
+        }
+
         // Compute Test Shader
         {
             ShaderInfo shaderInfo =
@@ -629,6 +641,15 @@ namespace hm
             Add<Material>(L"Deferred", pMaterial);
         }
 
+        // Monster Deferred Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"Deferred");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"MonsterDeferred", pMaterial);
+        }
+
         // Compute Test Material
         {
             shared_ptr<Material> pMaterial = make_shared<Material>();
@@ -670,6 +691,7 @@ namespace hm
 
             pMaterial->SetTexture(0, Get<Texture>(L"PositionTarget"));
             pMaterial->SetTexture(1, Get<Texture>(L"NormalTarget"));
+            pMaterial->SetTexture(2, Get<Texture>(L"EmissiveTarget"));
             pMaterial->SetShader(pShader);
             Add<Material>(L"DirLight", pMaterial);
         }
@@ -681,6 +703,7 @@ namespace hm
 
             pMaterial->SetTexture(0, Get<Texture>(L"PositionTarget"));
             pMaterial->SetTexture(1, Get<Texture>(L"NormalTarget"));
+            pMaterial->SetTexture(2, Get<Texture>(L"EmissiveTarget"));
             pMaterial->SetVec2(0, gpEngine->GetResolution());
 
             pMaterial->SetShader(pShader);

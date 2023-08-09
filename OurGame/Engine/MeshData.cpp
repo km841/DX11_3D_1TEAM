@@ -19,7 +19,7 @@ namespace hm
     {
     }
 
-    shared_ptr<MeshData> MeshData::LoadFromFBX(const wstring& _path)
+    shared_ptr<MeshData> MeshData::LoadFromFBX(const wstring& _path, const wstring& _shaderName)
     {
         FBXLoader loader;
         loader.LoadFbx(_path);
@@ -33,7 +33,7 @@ namespace hm
         for (int i = 0; i < loader.GetMeshCount(); i++)
         {
             pMesh->AddMeshContainer(&loader.GetMesh(i), loader);
-            pMaterial->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Deferred"));
+            pMaterial->SetShader(GET_SINGLE(Resources)->Get<Shader>(_shaderName));
 
             MaterialContainer* pMaterialContainer = new MaterialContainer;
             for (size_t j = 0; j < loader.GetMesh(i).materials.size(); j++)

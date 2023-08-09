@@ -42,7 +42,7 @@ namespace hm
 		MeshRenderer* pMeshRenderer = pObject->AddComponent(new MeshRenderer);
 		if (false == _fbxPath.empty())
 		{
-			shared_ptr<MeshData> pMeshData = GET_SINGLE(Resources)->LoadFBX(_fbxPath);
+			shared_ptr<MeshData> pMeshData = GET_SINGLE(Resources)->LoadFBX(_fbxPath, _materialName);
 			AssertEx(nullptr != pMeshData, L"Factory::CreateObject() - FBX 파일 주소가 잘못되었음");
 			pMeshRenderer->SetMeshData(pMeshData);
 		}

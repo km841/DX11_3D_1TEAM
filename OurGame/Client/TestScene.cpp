@@ -168,14 +168,19 @@ namespace hm
 
 			GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(i * 10.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Desk.fbx", LayerType::Player);
 			pGameObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+			pGameObject->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 0.f, 0.f));
 			AddGameObject(pGameObject);
 		}
 
 		// Create Static FBX Object
 		for (int i = 0; i < 2; ++i)
 		{
-			GameObject* pGameObject = Factory::CreateObject<GameObject>(Vec3(i * 10.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Desk.fbx", LayerType::Unknown);
-			pGameObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+			GameObject* pGameObject = Factory::CreateObject<GameObject>(Vec3(i * 10.f, 0.f, 0.f), L"MonsterDeferred", L"..\\Resources\\FBX\\Mage.fbx", LayerType::Unknown);
+			shared_ptr<Texture> pCrackTex = GET_SINGLE(Resources)->Load<Texture>(L"EnemyCrack", L"..\\Resources\\Texture\\cracks_generic.png");
+			pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(2, pCrackTex);
+
+			pGameObject->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+			
 			AddGameObject(pGameObject);
 		}
 	}

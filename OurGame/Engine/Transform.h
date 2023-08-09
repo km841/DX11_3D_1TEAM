@@ -20,6 +20,8 @@ namespace hm
 		void  SetScale(const Vec3& _scale) { mScale = _scale; }
 		void  SetRotation(const Vec3& _rotation);
 		void  SetRotation(Axis _eAxis, float _degree);
+		void  SetRotationExcludingColliders(const Vec3& _rotation);
+		void  SetRotationExcludingColliders(Axis _eAxis, float _degree);
 		void  SetPosition(const Vec3& _position);
 
 		float GetBoundingSphereRadius() { return max(max(mScale.x, mScale.y), mScale.z); }
@@ -48,6 +50,7 @@ namespace hm
 
 		Vec3    mScale;
 		Vec3    mRotation;
+		Vec3    mRelativeRotation;
 		Vec3    mPosition;
 
 		Matrix  mMatLocal;
