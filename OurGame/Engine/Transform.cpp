@@ -195,6 +195,22 @@ namespace hm
 		mRelativePosition = _position;
 	}
 
+	void Transform::SetPositionExcludingColliders(Axis _eAxis, float _position)
+	{
+		switch (_eAxis)
+		{
+		case hm::AXIS_X:
+			mRelativePosition.x = _position;
+			break;
+		case hm::AXIS_Y:
+			mRelativePosition.y = _position;
+			break;
+		case hm::AXIS_Z:
+			mRelativePosition.z = _position;
+			break;
+		}
+	}
+
 	Vec3 Transform::GetWorldPosition()
 	{
 		Vec3 position = mPosition;

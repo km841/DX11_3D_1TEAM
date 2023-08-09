@@ -2,15 +2,13 @@
 #include "GameObject.h"
 namespace hm
 {
-
-
 	class ImageFilter;
 	class GameObject;
 	class Scene
 	{
 	public:
 		friend class RenderManager;
-		Scene(SceneType eSceneType);
+		Scene(SceneType _eSceneType);
 		virtual ~Scene();
 
 	public:

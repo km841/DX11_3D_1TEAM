@@ -19,6 +19,7 @@ namespace hm
 		Scene* GetActiveScene() { return mpActiveScene; }
 		Scene* GetScene(SceneType _eSceneType);
 		void AddScene(Scene* _pScene);
+		void AddMap(Scene* _pMap);
 		void ActiveAndInitializeScene(SceneType _eSceneType);
 
 	private:

@@ -55,6 +55,12 @@ namespace hm
 		AssertEx(SceneType::End != eSceneType, L"SceneManager::AddScene() - 肋给等 SceneType");
 		mScenes[static_cast<int>(eSceneType)] = _pScene;
 	}
+	void SceneManager::AddMap(Scene* _pMap)
+	{
+		SceneType eSceneType = _pMap->GetSceneType();
+		AssertEx(SceneType::End != eSceneType, L"SceneManager::AddMap() - 肋给等 SceneType");
+		mScenes[static_cast<int>(eSceneType)] = _pMap;
+	}
 	void SceneManager::ActiveAndInitializeScene(SceneType _eSceneType)
 	{
 		mpActiveScene = GetScene(_eSceneType);

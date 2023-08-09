@@ -17,8 +17,8 @@ namespace hm
 {
 	std::vector<wstring> Scene::mDontDestroyObjectNames;
 	
-	Scene::Scene(SceneType eSceneType)
-		: meSceneType(eSceneType)
+	Scene::Scene(SceneType _eSceneType)
+		: meSceneType(_eSceneType)
 		, mpMainCamera(nullptr)
 		, mpUICamera(nullptr)
 		, mpDirLight(nullptr)

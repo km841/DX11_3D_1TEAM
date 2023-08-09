@@ -14,4 +14,3 @@ using namespace hm;
 #define IDI_SMALL				108
 #define IDC_CLIENT			109
 #define IDC_STATIC                      -1
-
