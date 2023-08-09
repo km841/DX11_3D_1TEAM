@@ -2,7 +2,7 @@
 #include "EntranceHallMap.h"
 
 EntranceHallMap::EntranceHallMap()
-	: Map(SceneType::EntranceHallMap)
+	: Map(MapType::EntranceHallMap)
 {
 }
 

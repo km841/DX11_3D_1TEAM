@@ -2,7 +2,7 @@
 #include "MainOfficeMap.h"
 
 MainOfficeMap::MainOfficeMap()
-	: Map(SceneType::MainOfficeMap)
+	: Map(MapType::MainOfficeMap)
 {
 }
 

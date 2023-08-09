@@ -2,7 +2,7 @@
 #include "RightSecretPassageMap.h"
 
 RightSecretPassageMap::RightSecretPassageMap()
-	: Map(SceneType::RightSecretPassageMap)
+	: Map(MapType::RightSecretPassageMap)
 {
 }
 

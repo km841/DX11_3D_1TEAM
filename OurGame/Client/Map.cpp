@@ -3,8 +3,8 @@
 
 namespace hm
 {
-	Map::Map(SceneType _eSceneType)
-		: Scene(_eSceneType)
+	Map::Map(MapType _eMapType)
+		: Scene(_eMapType)
 	{
 	}
 

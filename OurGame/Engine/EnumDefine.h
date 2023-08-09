@@ -69,6 +69,8 @@ namespace hm
 		End,
 	};
 
+	using MapType = SceneType;
+
 	enum
 	{
 		SCENE_TYPE_COUNT = static_cast<int>(SceneType::End),

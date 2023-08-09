@@ -2,7 +2,7 @@
 #include "Right2Map.h"
 
 Right2Map::Right2Map()
-	: Map(SceneType::Right2Map)
+	: Map(MapType::Right2Map)
 {
 }
 
