@@ -119,9 +119,16 @@ namespace hm
 				D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE,
 				mWindowInfo.width, mWindowInfo.height);
 
+			renderTargets[3].pTarget = GET_SINGLE(Resources)->CreateTexture(
+				L"EmissiveTarget",
+				DXGI_FORMAT_R8G8B8A8_UNORM,
+				D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE,
+				mWindowInfo.width, mWindowInfo.height);
+
 			memcpy(renderTargets[0].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
 			memcpy(renderTargets[1].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
 			memcpy(renderTargets[2].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
+			memcpy(renderTargets[3].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
 
 			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::G_Buffer)] = new MultiRenderTarget;
 			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::G_Buffer)]->Create(MultiRenderTargetType::G_Buffer, renderTargets, pDepthStencilTexture);

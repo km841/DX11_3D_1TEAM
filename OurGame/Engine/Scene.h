@@ -53,7 +53,7 @@ namespace hm
 		void DeleteGameObjects(LayerType _eLayerType);
 
 		/*
-		* 레이어에 속한 게임오브젝트들의 참조를 반환하는 함수
+		* 레이어에 속한 게임오브젝트들을 반환하는 함수
 		- 게임오브젝트의 값을 변경할 필요가 없는 경우
 		- 보통의 경우 이 함수를 사용하는 것을 권장
 		*/

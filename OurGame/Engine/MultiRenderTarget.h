@@ -13,7 +13,7 @@ namespace hm
 	enum
 	{
 		MULTI_RENDER_TARGET_TYPE_COUNT = MultiRenderTargetType::End,
-		G_BUGGER_GROUP_COUNT = 3,
+		G_BUGGER_GROUP_COUNT = 4,
 		SWAP_CHAIN_BUFFER_COUNT = 1,
 		LIGHTING_GROUP_COUNT = 2,
 	};
