@@ -25,6 +25,8 @@ namespace hm
 		LAYER_TYPE_COUNT = static_cast<int>(LayerType::End),
 	};
 
+	
+
 	enum class ObjectType
 	{
 		GameObject,

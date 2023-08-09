@@ -26,6 +26,8 @@ namespace hm
 
 		GameObject* Instantiate();
 
+		shared_ptr<Mesh> GetMesh() { return mpMesh; }
+		shared_ptr<Material> GetMaterial() { return mpMaterial; }
 		void SetMesh(shared_ptr<Mesh> _pMesh) { mpMesh = _pMesh; }
 		void SetMaterial(shared_ptr<Material> _pMaterial) { mpMaterial = _pMaterial; }
 

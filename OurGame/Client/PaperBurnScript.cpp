@@ -14,7 +14,7 @@ namespace hm
 	void PaperBurnScript::FixedUpdate()
 	{
 		mAccTime += DELTA_TIME;
-		GetMeshRenderer()->GetMaterial()->SetFloat(0, mAccTime * 1.5f);
+		GetMeshRenderer()->GetMaterial()->SetFloat(0, mAccTime);
 	}
 }
 

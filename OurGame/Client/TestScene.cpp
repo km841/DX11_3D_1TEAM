@@ -22,6 +22,7 @@
 #include "Collider.h"
 #include "EventManager.h"
 #include "PaperBurnScript.h"
+#include "Factory.h"
 
 namespace hm
 {
@@ -77,206 +78,6 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
-		// Create Camera
-		//{
-		//	GameObject* pGameObject = new GameObject(LayerType::Unknown);
-		//	pGameObject->AddComponent(new Transform);
-		//	pGameObject->AddComponent(new Camera);
-		//	pGameObject->GetCamera()->SetProjectionType(ProjectionType::Orthographic);
-
-		//	pGameObject->GetTransform()->SetPosition(Vec3(0.f, 0.f, 0.f));
-
-		//	AddGameObject(pGameObject);
-		//}
-
-		// Ground
-		{
-			GameObject* pGameObject = new GameObject(LayerType::Ground);
-			pGameObject->AddComponent(new PaperBurnScript);
-			pGameObject->SetFrustumCheckFlag(false);
-			Transform* pTransform = pGameObject->AddComponent(new Transform);
-			pTransform->SetPosition(Vec3(0.f, -10.f, 0.f));
-			pTransform->SetScale(Vec3(50.f, 50.f, 1.f));
-
-			MeshRenderer* pMeshRenderer = new MeshRenderer;
-
-			shared_ptr<Material> pMaterial = GET_SINGLE(Resources)->Get<Material>(L"Forward")->Clone();
-			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"Grid", L"..\\Resources\\Texture\\blender_uv_grid_2k.png");
-
-			pMaterial->SetTexture(0, pTexture);
-			pMeshRenderer->SetMaterial(pMaterial);
-			
-			pMeshRenderer->SetMesh(GET_SINGLE(Resources)->LoadCubeMesh());
-			pGameObject->AddComponent(pMeshRenderer);
-
-			RigidBody* pRigidBody = pGameObject->AddComponent(new RigidBody);
-
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Static;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(50.f, 50.f, 1.f);
-
-			pRigidBody->SetPhysical(physicsInfo);
-
-			pTransform->SetRotation(AXIS_X, 90.f);
-			Vec3 rot = pTransform->GetRotation();
-
-			pGameObject->AddComponent(new Collider);
-			AddGameObject(pGameObject);
-		}
-
-		// Forward Object
-		{
-			GameObject* pGameObject = new GameObject(LayerType::Unknown);
-			pGameObject->AddComponent(new PaperBurnScript);
-			Transform* pTransform = pGameObject->AddComponent(new Transform);
-			pTransform->SetPosition(Vec3(-5.f, 0.f, 10.f));
-			pTransform->SetRotation(Vec3(0.f, 45.f, 0.f));
-			pTransform->SetScale(Vec3(1.f, 1.f, 1.f));
-
-			MeshRenderer* pMeshRenderer = new MeshRenderer;
-
-			shared_ptr<Material> pMaterial = GET_SINGLE(Resources)->Get<Material>(L"Forward");
-			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"Test", L"..\\Resources\\Texture\\goodjob.png");
-			pMaterial->SetTexture(0, pTexture);
-
-			pMeshRenderer->SetMaterial(pMaterial);
-			pMeshRenderer->SetMesh(GET_SINGLE(Resources)->LoadCubeMesh());
-			pGameObject->AddComponent(pMeshRenderer);
-
-			AddGameObject(pGameObject);
-		}
-
-		// Particle Object
-		{
-			//GameObject* pGameObject = new GameObject(LayerType::Unknown);
-			//Transform* pTransform = pGameObject->AddComponent(new Transform);
-			//pTransform->SetPosition(Vec3(0.f, -5.f, 0.f));
-			//pTransform->SetScale(Vec3(1.f, 1.f, 1.f));
-			//pGameObject->AddComponent<ParticleSystem>();
-
-			//AddGameObject(pGameObject);
-		}
-
-		//// Compute Shader Test
-		//{
-		//	GameObject* pGameObject = new GameObject(LayerType::Monster);
-		//	Transform* pTransform = pGameObject->AddComponent(new Transform);
-		//	pTransform->SetPosition(Vec3(2.5f, 0.f, 0.f));
-		//	
-		//	pTransform->SetScale(Vec3(1.f, 1.f, 1.f));
-
-		//	MeshRenderer* pMeshRenderer = new MeshRenderer;
-
-		//	shared_ptr<Material> pComputeMaterial = GET_SINGLE(Resources)->Get<Material>(L"Compute");
-		//	shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->CreateTexture(
-		//		L"ComputeTest", DXGI_FORMAT_R8G8B8A8_UNORM,
-		//		D3D11_BIND_FLAG::D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE,
-		//		500, 500);
-
-		//	pComputeMaterial->SetTexture(0, pTexture);
-		//	pComputeMaterial->Dispatch(1, 1024, 1);
-
-		//	shared_ptr<Material> pMaterial = GET_SINGLE(Resources)->Get<Material>(L"Forward")->Clone();
-		//	pMaterial->SetTexture(0, pTexture);
-		//	pMeshRenderer->SetMaterial(pMaterial);
-		//	pMeshRenderer->SetMesh(GET_SINGLE(Resources)->LoadCubeMesh());
-		//	pGameObject->AddComponent(pMeshRenderer);
-
-		//	RigidBody* pRigidBody = pGameObject->AddComponent(new RigidBody);
-
-		//	PhysicsInfo physicsInfo;
-		//	physicsInfo.eActorType = ActorType::Dynamic;
-		//	physicsInfo.eGeometryType = GeometryType::Sphere;
-		//	//physicsInfo.eGeometryType = GeometryType::Sphere;
-
-		//	pRigidBody->SetPhysical(physicsInfo);
-		//	pGameObject->AddComponent(new Collider);
-		//	AddGameObject(pGameObject);
-		//}
-
-		//// Position Object
-		//{
-		//	GameObject* pGameObject = new GameObject(LayerType::Unknown);
-		//	pGameObject->AddComponent(new Transform);
-		//	pGameObject->GetTransform()->SetPosition(Vec3(0.f, 0.f, 10.f));
-		//	pGameObject->GetTransform()->SetScale(Vec3(7.f, 5.f, 5.f));
-
-		//	MeshRenderer* pMeshRenderer = new MeshRenderer;
-
-		//	shared_ptr<Material> pMaterial = GET_SINGLE(Resources)->Get<Material>(L"Forward")->Clone();
-		//	shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Get<Texture>(L"NormalTarget");
-
-		//	pMaterial->SetTexture(0, pTexture);
-		//	pMeshRenderer->SetMaterial(pMaterial);
-		//	pMeshRenderer->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
-		//	pGameObject->AddComponent(pMeshRenderer);
-
-		//	AddGameObject(pGameObject);
-		//}
-
-		// Deferred Object
-		{
-			GameObject* pGameObject = new GameObject(LayerType::Player);
-			pGameObject->SetFrustumCheckFlag(true);
-			pGameObject->SetDontDestroyObject(L"Box_1");
-			Transform* pTransform = pGameObject->AddComponent(new Transform);
-			pTransform->SetPosition(Vec3(5.f, 10.f, 0.f));
-			pTransform->SetScale(Vec3(1.f, 2.f, 1.f));
-
-			MeshRenderer* pMeshRenderer = new MeshRenderer;
-
-			shared_ptr<Material> pMaterial = GET_SINGLE(Resources)->Get<Material>(L"Deferred");
-			pMeshRenderer->SetMaterial(pMaterial);
-			pMeshRenderer->SetMesh(GET_SINGLE(Resources)->LoadCubeMesh());
-			pGameObject->AddComponent(pMeshRenderer);
-
-			RigidBody* pRigidBody = pGameObject->AddComponent(new RigidBody);
-
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Dynamic;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(1.f, 2.f, 1.f);
-
-			pRigidBody->SetPhysical(physicsInfo);
-			pGameObject->AddComponent(new Collider);
-			AddGameObject(pGameObject);
-		}
-
-		// Deferred Object
-		{
-			GameObject* pGameObject = new GameObject(LayerType::Player);
-			pGameObject->SetFrustumCheckFlag(true);
-			pGameObject->SetDontDestroyObject(L"Box_2");
-			Transform* pTransform = pGameObject->AddComponent(new Transform);
-			pTransform->SetPosition(Vec3(-5.f, 10.f, 0.f));
-
-			pTransform->SetScale(Vec3(2.f, 1.f, 1.f));
-
-			MeshRenderer* pMeshRenderer = new MeshRenderer;
-
-			shared_ptr<Material> pMaterial = GET_SINGLE(Resources)->Get<Material>(L"Deferred");
-
-			pMeshRenderer->SetMaterial(pMaterial);
-			pMeshRenderer->SetMesh(GET_SINGLE(Resources)->LoadCubeMesh());
-			pGameObject->AddComponent(pMeshRenderer);
-
-			RigidBody* pRigidBody = pGameObject->AddComponent(new RigidBody);
-			pRigidBody->SetVelocity(AXIS_X, 1.f);
-
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Static;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(2.f, 1.f, 1.f);
-
-			pRigidBody->SetPhysical(physicsInfo);
-
-			pTransform->SetRotation(Vec3(45.f, 45.f, 45.f));
-			//pTransform->AddRotation(AXIS_Z, 45.f);
-			pGameObject->AddComponent(new Collider);
-			AddGameObject(pGameObject);
-		}
-
 		// Create DirLight
 		{
 			GameObject* pGameObject = new GameObject(LayerType::Unknown);
@@ -294,95 +95,89 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
-		//// Create Light
-		//{
-		//	GameObject* pGameObject = new GameObject(LayerType::Unknown);
-		//	pGameObject->AddComponent(new Transform);
-		//	pGameObject->GetTransform()->SetPosition(Vec3(0.f, 500.f, 0.f));
-		//	pGameObject->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
-		//	Light* pLight = pGameObject->AddComponent(new Light);
-		//	pLight->SetDiffuse(Vec3(0.f, 1.f, 0.f));
-		//	pLight->SetAmbient(Vec3(0.1f, 0.1f, 0.1f));
-		//	pLight->SetSpecular(Vec3(1.f, 1.f, 1.f));
-		//	pLight->SetLightRange(200.f);
-		//	pLight->SetLightDirection(Vec3(1.f, -1.f, 1.f));
-		//	pLight->SetLightType(LightType::PointLight);
-		//	AddGameObject(pGameObject);
-		//}
 
-		//// Create Light
-		//{
-		//	GameObject* pGameObject = new GameObject(LayerType::Unknown);
-		//	pGameObject->AddComponent(new Transform);
-		//	pGameObject->GetTransform()->SetPosition(Vec3(0.f, 200.f, 70.f));
-		//	pGameObject->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
-		//	Light* pLight = pGameObject->AddComponent(new Light);
-		//	pLight->SetDiffuse(Vec3(0.f, 0.f, 1.f));
-		//	pLight->SetAmbient(Vec3(0.1f, 0.1f, 0.1f));
-		//	pLight->SetSpecular(Vec3(1.f, 1.f, 1.f));
-		//	pLight->SetLightRange(100.f);
-		//	pLight->SetLightDirection(Vec3(1.f, -1.f, 1.f));
-		//	pLight->SetLightType(LightType::PointLight);
-		//	AddGameObject(pGameObject);
-		//}
+		// Ground
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(50.f, 50.f, 1.f);
 
-		//// Create Light
-		//{
-		//	GameObject* pGameObject = new GameObject(LayerType::Unknown);
-		//	pGameObject->AddComponent(new Transform);
-		//	pGameObject->GetTransform()->SetPosition(Vec3(0.f, 100.f, -100.f));
-		//	pGameObject->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
-		//	pGameObject->AddComponent(new Light);
-		//	pGameObject->GetLight()->SetDiffuse(Vec3(1.f, 0.f, 0.f));
-		//	pGameObject->GetLight()->SetAmbient(Vec3(0.1f, 0.1f, 0.1f));
-		//	pGameObject->GetLight()->SetSpecular(Vec3(1.f, 1.f, 1.f));
-		//	pGameObject->GetLight()->SetLightRange(150.f);
-		//	pGameObject->GetLight()->SetLightDirection(Vec3(-1.f, 0.f, 0.f));
-		//	pGameObject->GetLight()->SetLightType(LightType::PointLight);
-		//	AddGameObject(pGameObject);
-		//}
+			GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, -10.f, 0.f), physicsInfo, L"Forward", L"", LayerType::Ground);
+			
+			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"Grid", L"..\\Resources\\Texture\\blender_uv_grid_2k.png");
+			pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
+			
+			pGameObject->GetTransform()->SetScale(Vec3(50.f, 50.f, 1.f));
+			pGameObject->GetTransform()->SetRotation(AXIS_X, 90.f);
+			AddGameObject(pGameObject);
+		}
 
-		// FBX
-		//for (int i  = 0; i < 3; ++i)
-		//{
-		//	shared_ptr<MeshData> pMeshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Mage.fbx");
-		//	GameObject* pGameObject = pMeshData->Instantiate();
-		//	pGameObject->AddComponent(new PaperBurnScript);
+		// Forward Object
+		{
+			GameObject* pGameObject = Factory::CreateObject<GameObject>(Vec3(-5.f, 0.f, 10.f), L"PaperBurn", L"", LayerType::Unknown);
+			pGameObject->AddComponent(new PaperBurnScript);
+			pGameObject->GetTransform()->SetRotation(Vec3(0.f, 45.f, 0.f));
 
-		//	shared_ptr<Texture> pNoiseTex = GET_SINGLE(Resources)->Load<Texture>(L"BurnNoise", L"..\\Resources\\Texture\\BurnNoise.png");
-		//	pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(1, pNoiseTex);
+			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"Test", L"..\\Resources\\Texture\\goodjob.png");
+			shared_ptr<Texture> pNoiseTex = GET_SINGLE(Resources)->Load<Texture>(L"BurnNoise", L"..\\Resources\\Texture\\BurnNoise.png");
+			pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
+			pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(1, pNoiseTex);
 
-		//	pGameObject->SetName(L"Mage");
-		//	pGameObject->GetTransform()->SetPosition(Vec3(i * 10.f, 0.f, 10.f));
-		//	pGameObject->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
-		//	pGameObject->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
-		//	AddGameObject(pGameObject);
-		//}
+			AddGameObject(pGameObject);
+		}
 
-		// Desk
+		// Deferred Dynamic Box
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.f, 2.f, 1.f);
+
+			GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(5.f, 10.f, 0.f), physicsInfo, L"Deferred", L"", LayerType::Player);
+			pGameObject->SetFrustumCheckFlag(true);
+			pGameObject->SetDontDestroyObject(L"Box_1");
+			pGameObject->GetTransform()->SetScale(Vec3(1.f, 2.f, 1.f));
+
+			AddGameObject(pGameObject);
+		}
+
+		// Deferred Static Box
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.f, 1.f, 1.f);
+
+			GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(-5.f, 10.f, 0.f), physicsInfo, L"Deferred", L"", LayerType::Player);
+			pGameObject->SetFrustumCheckFlag(true);
+			pGameObject->SetDontDestroyObject(L"Box_2");
+
+			pGameObject->GetTransform()->SetScale(Vec3(2.f, 1.f, 1.f));
+			pGameObject->GetTransform()->SetRotation(Vec3(45.f, 45.f, 45.f));
+
+			AddGameObject(pGameObject);
+		}
+
+		// Create Dynamic FBX Object
 		for (int i = 0; i < 2; ++i)
 		{
-			shared_ptr<MeshData> pMeshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Desk.fbx");
-			GameObject* pGameObject = pMeshData->Instantiate();
-			pGameObject->SetName(L"Desk");
-			pGameObject->SetFrustumCheckFlag(false);
-			pGameObject->GetTransform()->SetPosition(Vec3(i * 10.f, 0.f, 0.f));
-			pGameObject->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Dynamic;
+			info.size = Vec3(10.f, 3.f, 1.f);
+
+			GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(i * 10.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Desk.fbx", LayerType::Player);
 			pGameObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
 			AddGameObject(pGameObject);
 		}
 
-		// Map
-		//{
-		//	shared_ptr<MeshData> pMeshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\R_Right2.fbx");
-		//	GameObject* pGameObject = pMeshData->Instantiate();
-		//	pGameObject->SetName(L"R_Right2");
-		//	pGameObject->SetFrustumCheckFlag(false);
-		//	pGameObject->GetTransform()->SetPosition(Vec3(0.f, 0.f, 0.f));
-		//	pGameObject->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
-		//	pGameObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
-		//	AddGameObject(pGameObject);
-		//}
+		// Create Static FBX Object
+		for (int i = 0; i < 2; ++i)
+		{
+			GameObject* pGameObject = Factory::CreateObject<GameObject>(Vec3(i * 10.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Desk.fbx", LayerType::Unknown);
+			pGameObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+			AddGameObject(pGameObject);
+		}
 	}
 	void TestScene::Exit()
 	{

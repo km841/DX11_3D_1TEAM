@@ -7,6 +7,7 @@
 #include "Engine.h"
 #include "Mesh.h"
 #include "InstancingBuffer.h"
+#include "MeshData.h"
 
 namespace hm
 {
@@ -67,6 +68,11 @@ namespace hm
     void MeshRenderer::SetMaterial(shared_ptr<Material> _pMaterial)
     {
         mpMaterial = _pMaterial;
+    }
+    void MeshRenderer::SetMeshData(shared_ptr<MeshData> _pMeshData)
+    {
+        mpMesh = _pMeshData->GetMesh();
+        mpMaterial = _pMeshData->GetMaterial();
     }
     UINT64 MeshRenderer::GetInstanceID()
     {
