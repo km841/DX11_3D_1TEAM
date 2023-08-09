@@ -2,7 +2,7 @@
 #include "HallColliderCheckMap.h"
 
 HallColliderCheckMap::HallColliderCheckMap()
-	: Map(SceneType::HallColliderCheckMap)
+	: Map(MapType::HallColliderCheckMap)
 {
 }
 

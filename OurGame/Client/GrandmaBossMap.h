@@ -1,20 +1,24 @@
 #pragma once
 #include "Map.h"
-class GrandmaBossMap :
-    public Map
+namespace hm
 {
-public:
-	GrandmaBossMap();
-	virtual ~GrandmaBossMap();
+	class GrandmaBossMap :
+		public Map
+	{
+	public:
+		GrandmaBossMap();
+		virtual ~GrandmaBossMap();
 
-public:
-	virtual void Initialize();
-	virtual void Update();
-	virtual void FixedUpdate();
-	virtual void FinalUpdate();
-	virtual void Render();
+	public:
+		virtual void Initialize();
+		virtual void Update();
+		virtual void FixedUpdate();
+		virtual void FinalUpdate();
+		virtual void Render();
 
-	virtual void Enter();
-	virtual void Exit();
-};
+		virtual void Enter();
+		virtual void Exit();
+	};
+}
+
 

@@ -2,7 +2,7 @@
 #include "RightMap.h"
 
 RightMap::RightMap()
-	: Map(SceneType::RightMap)
+	: Map(MapType::RightMap)
 {
 }
 

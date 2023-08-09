@@ -2,7 +2,7 @@
 #include "LeftSecretFightMap.h"
 
 LeftSecretFightMap::LeftSecretFightMap()
-	: Map(SceneType::LeftSecretFightMap)
+	: Map(MapType::LeftSecretFightMap)
 {
 }
 

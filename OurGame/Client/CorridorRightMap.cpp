@@ -2,7 +2,7 @@
 #include "CorridorRightMap.h"
 
 CorridorRightMap::CorridorRightMap()
-	: Map(SceneType::CorridorRightMap)
+	: Map(MapType::CorridorRightMap)
 {
 }
 

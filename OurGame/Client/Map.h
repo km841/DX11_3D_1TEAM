@@ -6,7 +6,7 @@ namespace hm
 		public Scene
 	{
 	public:
-		Map(SceneType _eSceneType);
+		Map(MapType _eMapType);
 		virtual ~Map();
 
 	public:

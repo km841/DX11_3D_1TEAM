@@ -2,7 +2,7 @@
 #include "LeftSecretTrialMap.h"
 
 LeftSecretTrialMap::LeftSecretTrialMap()
-	: Map(SceneType::LeftSecretTrialMap)
+	: Map(MapType::LeftSecretTrialMap)
 {
 }
 

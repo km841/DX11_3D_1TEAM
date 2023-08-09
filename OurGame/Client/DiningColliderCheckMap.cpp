@@ -2,7 +2,7 @@
 #include "DiningColliderCheckMap.h"
 
 DiningColliderCheckMap::DiningColliderCheckMap()
-	: Map(SceneType::DiningColliderCheckMap)
+	: Map(MapType::DiningColliderCheckMap)
 {
 }
 
