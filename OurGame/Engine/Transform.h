@@ -20,9 +20,15 @@ namespace hm
 		void  SetScale(const Vec3& _scale) { mScale = _scale; }
 		void  SetRotation(const Vec3& _rotation);
 		void  SetRotation(Axis _eAxis, float _degree);
+		void  SetPosition(const Vec3& _position);
+		void  SetPosition(Axis _eAxis, float _position);
+
+		/* 콜라이더를 제외하고 오브젝트만 회전시키는 함수 */
 		void  SetRotationExcludingColliders(const Vec3& _rotation);
 		void  SetRotationExcludingColliders(Axis _eAxis, float _degree);
-		void  SetPosition(const Vec3& _position);
+
+		/* 콜라이더를 제외하고 오브젝트만 이동시키는 함수 */
+		void  SetPositionExcludingColliders(const Vec3& _position);
 
 		float GetBoundingSphereRadius() { return max(max(mScale.x, mScale.y), mScale.z); }
 
@@ -52,6 +58,7 @@ namespace hm
 		Vec3    mRotation;
 		Vec3    mRelativeRotation;
 		Vec3    mPosition;
+		Vec3    mRelativePosition;
 
 		Matrix  mMatLocal;
 		Matrix  mMatWorld;

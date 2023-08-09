@@ -95,7 +95,6 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
-
 		// Ground
 		{
 			PhysicsInfo physicsInfo;
@@ -168,7 +167,9 @@ namespace hm
 
 			GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(i * 10.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Desk.fbx", LayerType::Player);
 			pGameObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
-			pGameObject->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 0.f, 0.f));
+			pGameObject->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, -45.f, 0.f));
+			pGameObject->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, -1.f));
+			
 			AddGameObject(pGameObject);
 		}
 

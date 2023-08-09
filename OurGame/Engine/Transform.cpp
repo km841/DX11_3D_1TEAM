@@ -32,13 +32,13 @@ namespace hm
 				transform.q.z * 180.f / XM_PI);
 			mPosition = transform.p;
 
-			PxQuat relativeX(mRelativeRotation.x * 180.f / XM_PI, Vec3(1.f, 0.f, 0.f));
-			PxQuat relativeY(mRelativeRotation.y * 180.f / XM_PI, Vec3(0.f, 1.f, 0.f));
-			PxQuat relativeZ(mRelativeRotation.z * 180.f / XM_PI, Vec3(0.f, 0.f, 1.f));
+			PxQuat relativeX(mRelativeRotation.x * XM_PI / 180.f, Vec3(1.f, 0.f, 0.f));
+			PxQuat relativeY(mRelativeRotation.y * XM_PI / 180.f, Vec3(0.f, 1.f, 0.f));
+			PxQuat relativeZ(mRelativeRotation.z * XM_PI / 180.f, Vec3(0.f, 0.f, 1.f));
 
 			Matrix matScale = Matrix::CreateScale(mScale);
-			Matrix matRotation = Matrix::CreateFromQuaternion(relativeZ * relativeY * relativeX * transform.q);
-			Matrix matTranslation = Matrix::CreateTranslation(transform.p);
+			Matrix matRotation = Matrix::CreateFromQuaternion(transform.q * relativeZ * relativeY * relativeX );
+			Matrix matTranslation = Matrix::CreateTranslation(Vec3(transform.p) + mRelativePosition);
 
 			mMatWorld = matScale * matRotation * matTranslation;
 		}
@@ -153,15 +153,54 @@ namespace hm
 		}
 	}
 
+	void Transform::SetPosition(Axis _eAxis, float _position)
+	{
+		if (true == IsPhysicsObject())
+		{
+			RigidBody* pRigidBody = GetRigidBody();
+			PxTransform transform = pRigidBody->GetDynamicActor()->getGlobalPose();
+
+			switch (_eAxis)
+			{
+			case hm::AXIS_X:
+				transform.p.x = _position;
+				break;
+			case hm::AXIS_Y:
+				transform.p.y = _position;
+				break;
+			case hm::AXIS_Z:
+				transform.p.z = _position;
+				break;
+			}
+
+			pRigidBody->GetDynamicActor()->setGlobalPose(transform);
+		}
+
+		switch (_eAxis)
+		{
+		case hm::AXIS_X:
+			mPosition.x = _position;
+			break;
+		case hm::AXIS_Y:
+			mPosition.y = _position;
+			break;
+		case hm::AXIS_Z:
+			mPosition.z = _position;
+			break;
+		}
+	}
+
+	void Transform::SetPositionExcludingColliders(const Vec3& _position)
+	{
+		mRelativePosition = _position;
+	}
+
 	Vec3 Transform::GetWorldPosition()
 	{
 		Vec3 position = mPosition;
 
 		if (nullptr != mpParent)
 			position += mpParent->GetWorldPosition();
-		
-		//if (true == IsPhysicsObject())
-		//	position.z = -position.z;
 
 		return position;
 	}
