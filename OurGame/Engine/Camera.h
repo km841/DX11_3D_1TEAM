@@ -17,6 +17,8 @@ namespace hm
         Camera();
         virtual ~Camera();
 
+        virtual Component* Clone(GameObject* _pGameObject);
+
         virtual void    Update() override;
 
         /* 뷰행렬, 투영행렬을 계산한다.*/

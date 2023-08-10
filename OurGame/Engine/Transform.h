@@ -17,6 +17,8 @@ namespace hm
 		/* 월드 행렬을 업데이트한다 */
 		virtual void  FinalUpdate() override;
 
+		virtual Component* Clone(GameObject* _pGameObject) override;
+
 		void  SetScale(const Vec3& _scale) { mScale = _scale; }
 		void  SetRotation(const Vec3& _rotation);
 		void  SetRotation(Axis _eAxis, float _degree);

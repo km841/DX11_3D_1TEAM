@@ -34,6 +34,13 @@ namespace hm
 		SAFE_DELETE(mpSharedBuffer);
 	}
 
+	Component* ParticleSystem::Clone(GameObject* _pGameObject)
+	{
+		ParticleSystem* pParticleSystem = _pGameObject->AddComponent(new ParticleSystem);
+		pParticleSystem->Initialize();
+		return pParticleSystem;
+	}
+
 	void ParticleSystem::Initialize()
 	{
 		mpMesh = GET_SINGLE(Resources)->LoadPointMesh();

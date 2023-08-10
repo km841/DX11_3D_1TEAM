@@ -40,6 +40,16 @@ namespace hm
 
 		mpMesh->Render();
 	}
+	Component* Light::Clone(GameObject* _pGameObject)
+	{
+		Light* pLight = _pGameObject->AddComponent(new Light);
+		pLight->mLightInfo = mLightInfo;
+		pLight->mLightIndex = -1;
+		pLight->mpMesh = mpMesh;
+		pLight->mpMaterial = mpMaterial;
+
+		return pLight;
+	}
 	void Light::SetLightType(LightType _eLightType)
 	{
 		mLightInfo.eLightType = static_cast<int>(_eLightType);

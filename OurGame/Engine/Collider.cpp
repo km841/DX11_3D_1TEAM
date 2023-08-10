@@ -63,6 +63,18 @@ namespace hm
 		mpMesh->Render();
 	}
 
+	Component* Collider::Clone(GameObject* _pGameObject)
+	{
+		Collider* pCollider = _pGameObject->AddComponent(new Collider);
+
+		pCollider->mpMesh = mpMesh;
+		pCollider->mpMaterial = mpMaterial->Clone();
+
+		pCollider->mCollisionCount = 0;
+
+		return pCollider;
+	}
+
 	void Collider::OnCollisionEnter(Collider* _pOtherCollider)
 	{
 		mpGameObject->OnCollisionEnter(_pOtherCollider);

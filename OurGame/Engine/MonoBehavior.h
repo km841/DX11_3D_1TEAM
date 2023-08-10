@@ -10,6 +10,8 @@ namespace hm
 		MonoBehavior();
 		virtual ~MonoBehavior();
 
+		virtual Component* Clone(class GameObject* _pGameObject) = 0;
+
 	private:
 
 	};

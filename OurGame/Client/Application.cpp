@@ -17,6 +17,8 @@
 #include "RightMap.h"
 #include "RightSecretPassageMap.h"
 
+#include "PrefabManager.h"
+
 namespace hm
 {
 	void Application::Initialize(const WindowInfo& _windowInfo)
@@ -52,6 +54,7 @@ namespace hm
 
 	void Application::Destroy()
 	{
+		GET_SINGLE(PrefabManager)->ClearPrefab();
 		gpEngine->Destroy();
 	}
 }

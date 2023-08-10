@@ -51,6 +51,7 @@ namespace hm
 		virtual void FixedUpdate() { }
 		virtual void FinalUpdate() { }
 		virtual void Render() { }
+		virtual Component* Clone(GameObject* _pGameObject) = 0;
 
 		ComponentType GetComponentType() const { return meComponentType; }
 		GameObject* GetGameObject() { return mpGameObject; }
@@ -62,6 +63,7 @@ namespace hm
 		ParticleSystem* GetParticleSystem();
 		Collider* GetCollider();
 		RigidBody* GetRigidBody();
+
 
 		bool IsPhysicsObject();
 

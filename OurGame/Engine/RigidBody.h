@@ -14,6 +14,8 @@ namespace hm
 		virtual void FinalUpdate();
 		virtual void Destroy();
 
+		virtual Component* Clone(GameObject* _pGameObject);
+
 		void SetPhysical(const PhysicsInfo& _physicsInfo = PhysicsInfo());
 		bool IsAppliedPhysics();
 
@@ -26,6 +28,8 @@ namespace hm
 			assert(pActor);
 			return pActor;
 		}
+
+		void AddActorToScene();
 
 		PxRigidDynamic* GetDynamicActor() { return GetActor<PxRigidDynamic>(); }
 		PxRigidStatic* GetStaticActor() { return GetActor<PxRigidStatic>(); }
@@ -42,6 +46,7 @@ namespace hm
 		void SetVelocity(Axis _eAxis, float _velocity);
 		void AddVelocity(const Vec3& _velocity);
 		void AddVelocity(Axis _eAxis, float _velocity);
+		void AddGravity();
 
 		void SetMaxVelocity(float _maxVelocity);
 		void CheckMaxVelocity();

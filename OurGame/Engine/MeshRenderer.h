@@ -15,6 +15,8 @@ namespace hm
         MeshRenderer();
         virtual ~MeshRenderer();
 
+        virtual Component* Clone(GameObject* _pGameObject);
+
         /* 메쉬를 그려주는 함수
         * 인자로 전달되는 카메라를 통해 뷰행렬, 투영행렬을 받아온다.
         * _pCamera : 이 메쉬를 그려줄 카메라의 포인터

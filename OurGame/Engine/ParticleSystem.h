@@ -31,6 +31,8 @@ namespace hm
 		ParticleSystem();
 		~ParticleSystem();
 
+		virtual Component* Clone(GameObject* _pGameObject);
+
 		virtual void Initialize() override;
 		virtual void Update() override;
 		virtual void FinalUpdate() override;

@@ -24,6 +24,7 @@
 #include "PaperBurnScript.h"
 #include "Factory.h"
 #include "Player.h"
+#include "PrefabManager.h"
 
 namespace hm
 {
@@ -114,25 +115,25 @@ namespace hm
 		}
 
 		// Forward Object
-		{
-			GameObject* pGameObject = Factory::CreateObject<GameObject>(Vec3(-5.f, 0.f, 10.f), L"PaperBurn", L"", LayerType::Unknown);
-			pGameObject->AddComponent(new PaperBurnScript);
-			pGameObject->GetTransform()->SetRotation(Vec3(0.f, 45.f, 0.f));
+		//{
+		//	GameObject* pGameObject = Factory::CreateObject<GameObject>(Vec3(-5.f, 0.f, 10.f), L"PaperBurn", L"", LayerType::Unknown);
+		//	pGameObject->AddComponent(new PaperBurnScript);
+		//	pGameObject->GetTransform()->SetRotation(Vec3(0.f, 45.f, 0.f));
 
-			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"Test", L"..\\Resources\\Texture\\goodjob.png");
-			shared_ptr<Texture> pNoiseTex = GET_SINGLE(Resources)->Load<Texture>(L"BurnNoise", L"..\\Resources\\Texture\\BurnNoise.png");
-			// Texture2D t0
+		//	shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"Test", L"..\\Resources\\Texture\\goodjob.png");
+		//	shared_ptr<Texture> pNoiseTex = GET_SINGLE(Resources)->Load<Texture>(L"BurnNoise", L"..\\Resources\\Texture\\BurnNoise.png");
+		//	// Texture2D t0
 
-			// SetTexture( 레지스터 번호, 텍스쳐 );
-			// 0 : 알베도
-			// 1 : 노멀
-			// 2 : 스페큘러
-			// 3 : 이미시브
-			pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
-			pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(1, pNoiseTex);
+		//	// SetTexture( 레지스터 번호, 텍스쳐 );
+		//	// 0 : 알베도
+		//	// 1 : 노멀
+		//	// 2 : 스페큘러
+		//	// 3 : 이미시브
+		//	pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
+		//	pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(1, pNoiseTex);
 
-			AddGameObject(pGameObject);
-		}
+		//	AddGameObject(pGameObject);
+		//}
 
 		// Deferred Dynamic Box
 		//{
@@ -150,33 +151,32 @@ namespace hm
 		//}
 
 		// Deferred Static Box
-		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Static;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(2.f, 1.f, 1.f);
+		//{
+		//	PhysicsInfo physicsInfo;
+		//	physicsInfo.eActorType = ActorType::Static;
+		//	physicsInfo.eGeometryType = GeometryType::Box;
+		//	physicsInfo.size = Vec3(2.f, 1.f, 1.f);
 
-			GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(-5.f, 10.f, 0.f), physicsInfo, L"Deferred", L"", LayerType::Player);
-			pGameObject->SetFrustumCheckFlag(true);
-			pGameObject->SetDontDestroyObject(L"Box_2");
+		//	GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(-5.f, 10.f, 0.f), physicsInfo, L"Deferred", L"", LayerType::Player);
+		//	pGameObject->SetFrustumCheckFlag(true);
+		//	pGameObject->SetDontDestroyObject(L"Box_2");
 
-			pGameObject->GetTransform()->SetScale(Vec3(2.f, 1.f, 1.f));
-			pGameObject->GetTransform()->SetRotation(Vec3(45.f, 45.f, 45.f));
+		//	pGameObject->GetTransform()->SetScale(Vec3(2.f, 1.f, 1.f));
+		//	pGameObject->GetTransform()->SetRotation(Vec3(45.f, 45.f, 45.f));
 
-			AddGameObject(pGameObject);
-		}
+		//	AddGameObject(pGameObject);
+		//}
 
 		// Create Dynamic FBX Object
-		for (int i = 0; i < 2; ++i)
 		{
 			PhysicsInfo info = {};
 			info.eActorType = ActorType::Dynamic;
 			info.size = Vec3(10.f, 3.f, 1.f);
 
-			GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(i * 10.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Desk.fbx", LayerType::Player);
+			GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Desk.fbx", LayerType::Player);
 			pGameObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
 			pGameObject->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, -45.f, 0.f));
-			pGameObject->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 0.f));
+			pGameObject->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, -1.f));
 			
 			AddGameObject(pGameObject);
 		}
@@ -192,6 +192,33 @@ namespace hm
 			pGameObject->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
 			
 			AddGameObject(pGameObject);
+		}
+
+
+		// Create Player
+		{
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Dynamic;
+			info.size = Vec3(10.f, 3.f, 1.f);
+
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Desk.fbx");
+			pPlayer->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, -45.f, 0.f));
+			pPlayer->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, -1.f));
+
+			pPlayer->SetItem(new GameObject(LayerType::Unknown));
+			pPlayer->SetState(5);
+
+			AddGameObject(pPlayer);
+			GET_SINGLE(PrefabManager)->AddPrefab(L"Test2", pPlayer);
+		}
+
+		// Prefab Player
+		{
+			Player* pPlayer = GET_SINGLE(PrefabManager)->GetPrefab<Player>(L"Test2");
+			pPlayer->GetTransform()->SetPosition(Vec3(10.f, 0.f, 0.f));
+
+			AddGameObject(pPlayer);
 		}
 	}
 	void TestScene::Exit()

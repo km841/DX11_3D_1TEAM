@@ -28,16 +28,14 @@ namespace hm
 			false == mbIsActorInScene &&
 			nullptr != mpActor)
 			gpEngine->GetPhysics()->AddActor(mpGameObject);
-			
 	}
 
 	void RigidBody::FinalUpdate()
 	{
-		if (true == mbAppliedGravity)
-			AddVelocity(GLOBAL_GRAVITY);
+		if (false == mbAppliedGravity)
+			AddGravity();
 
-		if (true == mbAppliedPhysics && 
-			ActorType::Static == mPhysicsInfo.eActorType)
+		if (true == mbAppliedPhysics && ActorType::Static == mPhysicsInfo.eActorType)
 			return;
 		
 		else
@@ -51,6 +49,27 @@ namespace hm
 			PxRigidActor* pActor = mpActor->is<PxRigidActor>();
 			pActor->userData = nullptr;
 		}
+	}
+
+	Component* RigidBody::Clone(GameObject* _pGameObject)
+	{
+		RigidBody* pRigidBody = _pGameObject->AddComponent(new RigidBody);
+
+		if (true == mbAppliedPhysics)
+		{
+			PhysicsInfo info = {};
+			info.size = GetGeometrySize();
+			info.eActorType = mPhysicsInfo.eActorType;
+			info.eGeometryType = mPhysicsInfo.eGeometryType;
+			info.massProperties = mPhysicsInfo.massProperties;
+			
+			pRigidBody->SetPhysical(info);
+		}
+
+		pRigidBody->SetVelocity(mVelocity);
+		pRigidBody->SetMaxVelocity(mMaxVelocity);
+
+		return pRigidBody;
 	}
 
 	void RigidBody::SetPhysical(const PhysicsInfo& _physicsInfo)
@@ -69,6 +88,15 @@ namespace hm
 	bool RigidBody::IsAppliedPhysics()
 	{
 		return mbAppliedPhysics;
+	}
+
+	void RigidBody::AddActorToScene()
+	{
+		AssertEx(mbAppliedPhysics, L"RigidBody::AddActorToScene() - 물리가 들어가지 않은 오브젝트에 대한 AddActorToScene 호출");
+		AssertEx(mpActor, L"RigidBody::AddActorToScene() - mpActor가 생성되지 않음");
+
+		gpEngine->GetPhysics()->AddActor(mpGameObject);
+		mbIsActorInScene = true;
 	}
 
 	PxTransform RigidBody::GetPhysicsTransform()
@@ -194,6 +222,11 @@ namespace hm
 			}
 		}
 		CheckMaxVelocity();
+	}
+
+	void RigidBody::AddGravity()
+	{
+		mVelocity += GLOBAL_GRAVITY;
 	}
 
 	void RigidBody::SetMaxVelocity(float _maxVelocity)
@@ -378,14 +411,12 @@ namespace hm
 		case ActorType::Static:
 			break;
 		case ActorType::Dynamic:
+			ApplyGravity();
 			break;
 		case ActorType::Kinematic:
 			SetSimulationShapeFlag(false);
 			SetTriggerShapeFlag(true);
 			break;
 		}
-
-		gpEngine->GetPhysics()->AddActor(mpGameObject);
-		mbIsActorInScene = true;
 	}
 }

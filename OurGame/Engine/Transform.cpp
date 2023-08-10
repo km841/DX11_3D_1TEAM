@@ -63,6 +63,22 @@ namespace hm
 		}
 	}
 
+	Component* Transform::Clone(GameObject* _pGameObject)
+	{
+		Transform* pTransform = _pGameObject->AddComponent(new Transform);
+
+		pTransform->mMatLocal = mMatLocal;
+		pTransform->mMatWorld = mMatWorld;
+		pTransform->mPosition = mPosition;
+		pTransform->mRotation = mRotation;
+		pTransform->mScale = mScale;
+		pTransform->mRelativeRotation = mRelativeRotation;
+		pTransform->mRelativePosition = mRelativePosition;
+		pTransform->mpParent = mpParent;
+
+		return pTransform;
+	}
+
 	void Transform::SetRotation(const Vec3& _rotation)
 	{
 		if (true == IsPhysicsObject())

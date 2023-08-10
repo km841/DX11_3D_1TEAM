@@ -11,6 +11,8 @@ namespace hm
 		~CameraMoveScript() = default;
 		virtual void FixedUpdate() override;
 
+		virtual Component* Clone(class GameObject* _pGameObject);
+
 	private:
 		float mSpeed;
 	};
