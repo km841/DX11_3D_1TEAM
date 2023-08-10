@@ -41,5 +41,9 @@ namespace hm
 			GetGameObject()->GetTransform()->AddRotation(AXIS_Y, rotateY * -50.f * DELTA_TIME);
 		}
 	}
+	Component* CameraMoveScript::Clone(GameObject* _pGameObject)
+	{
+		return _pGameObject->AddComponent(new CameraMoveScript);
+	}
 }
 

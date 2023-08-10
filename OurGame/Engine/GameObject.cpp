@@ -22,6 +22,11 @@ namespace hm
 	{
 	}
 
+	GameObject::GameObject(GameObject* _pOther)
+		: Object(_pOther->meObjectType)
+	{
+	}
+
 	GameObject::~GameObject()
 	{
 		if (true == IsPhysicsObject())
@@ -40,7 +45,7 @@ namespace hm
 		mScripts.clear();
 	}
 
-	void GameObject::Initialize() const
+	void GameObject::Initialize()
 	{
 		for (Component* pComponent : mComponents)
 		{
@@ -55,7 +60,7 @@ namespace hm
 		}
 
 	}
-	void GameObject::Update() const
+	void GameObject::Update()
 	{
 		for (Component* pComponent : mComponents)
 		{
@@ -69,7 +74,7 @@ namespace hm
 				pScript->Update();
 		}
 	}
-	void GameObject::FixedUpdate() const
+	void GameObject::FixedUpdate()
 	{
 		for (Component* pComponent : mComponents)
 		{
@@ -83,7 +88,7 @@ namespace hm
 				pScript->FixedUpdate();
 		}
 	}
-	void GameObject::FinalUpdate() const
+	void GameObject::FinalUpdate()
 	{
 		for (Component* pComponent : mComponents)
 		{
@@ -97,7 +102,7 @@ namespace hm
 				pScript->FinalUpdate();
 		}
 	}
-	void GameObject::Render() const
+	void GameObject::Render()
 	{
 		for (Component* pComponent : mComponents)
 		{
@@ -111,7 +116,7 @@ namespace hm
 				pScript->Render();
 		}
 	}
-	void GameObject::Destroy() const
+	void GameObject::Destroy()
 	{
 		for (Component* pComponent : mComponents)
 		{
@@ -125,6 +130,8 @@ namespace hm
 				pScript->Destroy();
 		}
 	}
+
+
 	Component* GameObject::GetFixedComponent(ComponentType _eComponentType)
 	{
 		int index = static_cast<int>(_eComponentType);

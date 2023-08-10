@@ -3,6 +3,7 @@
 #include "Timer.h"
 #include "MeshRenderer.h"
 #include "Material.h"
+#include "GameObject.h"
 
 namespace hm
 {
@@ -15,6 +16,10 @@ namespace hm
 	{
 		mAccTime += DELTA_TIME;
 		GetMeshRenderer()->GetMaterial()->SetFloat(0, mAccTime);
+	}
+	Component* PaperBurnScript::Clone(GameObject* _pGameObject)
+	{
+		return _pGameObject->AddComponent(new PaperBurnScript);
 	}
 }
 

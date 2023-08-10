@@ -23,6 +23,14 @@ namespace hm
 	Camera::~Camera()
 	{
 	}
+	Component* Camera::Clone(GameObject* _pGameObject)
+	{
+		Camera* pCamera = _pGameObject->AddComponent(new Camera);
+		pCamera->meProjectionType = meProjectionType;
+		pCamera->mCullingMask = mCullingMask;
+
+		return pCamera;
+	}
 	void Camera::Update()
 	{
 	}

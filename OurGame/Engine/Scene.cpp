@@ -39,7 +39,7 @@ namespace hm
 	{
 		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 		{
-			for (const GameObject* pGameObject : mGameObjects[i])
+			for (GameObject* pGameObject : mGameObjects[i])
 			{
 				AssertEx(pGameObject, L"This gameobject is nullptr");
 				pGameObject->Initialize();
@@ -50,7 +50,7 @@ namespace hm
 	{
 		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 		{
-			for (const GameObject* pGameObject : mGameObjects[i])
+			for (GameObject* pGameObject : mGameObjects[i])
 			{
 				AssertEx(pGameObject, L"This gameobject is nullptr");
 				pGameObject->Update();
@@ -61,7 +61,7 @@ namespace hm
 	{
 		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 		{
-			for (const GameObject* pGameObject : mGameObjects[i])
+			for (GameObject* pGameObject : mGameObjects[i])
 			{
 				AssertEx(pGameObject, L"This gameobject is nullptr");
 				pGameObject->FixedUpdate();
@@ -72,7 +72,7 @@ namespace hm
 	{
 		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 		{
-			for (const GameObject* pGameObject : mGameObjects[i])
+			for (GameObject* pGameObject : mGameObjects[i])
 			{
 				AssertEx(pGameObject, L"This gameobject is nullptr");
 				pGameObject->FinalUpdate();
@@ -86,7 +86,7 @@ namespace hm
 
 		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 		{
-			for (const GameObject* pGameObject : mGameObjects[i])
+			for (GameObject* pGameObject : mGameObjects[i])
 			{
 				AssertEx(pGameObject, L"This gameobject is nullptr");
 				pGameObject->Render();

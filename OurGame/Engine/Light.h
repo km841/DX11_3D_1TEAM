@@ -48,6 +48,9 @@ namespace hm
 
         virtual void FinalUpdate() override;
         void Render(Camera* _pCamera);
+
+        virtual Component* Clone(GameObject* _pGameObject);
+
     public:
         const LightInfo& GetLightInfo() { return mLightInfo; }
         void SetLightDirection(const Vec3& _direction) { mLightInfo.direction = _direction; }

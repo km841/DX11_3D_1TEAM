@@ -19,6 +19,8 @@ namespace hm
         virtual void FinalUpdate() override;
         virtual void Render() override;
 
+        virtual Component* Clone(GameObject* _pGameObject);
+
         void OnCollisionEnter(Collider* _pOtherCollider);
         void OnCollisionStay(Collider* _pOtherCollider);
         void OnCollisionExit(Collider* _pOtherCollider);

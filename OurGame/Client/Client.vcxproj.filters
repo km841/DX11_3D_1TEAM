@@ -64,6 +64,9 @@
     <ClInclude Include="Map.h">
       <Filter>소스 파일\Scene\Map\Base</Filter>
     </ClInclude>
+    <ClInclude Include="PrefabManager.h">
+      <Filter>소스 파일\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -128,6 +131,9 @@
     </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>소스 파일\Scene\Map\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="PrefabManager.cpp">
+      <Filter>소스 파일\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

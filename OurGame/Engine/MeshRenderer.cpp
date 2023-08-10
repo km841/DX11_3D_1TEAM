@@ -18,6 +18,13 @@ namespace hm
     MeshRenderer::~MeshRenderer()
     {
     }
+    Component* MeshRenderer::Clone(GameObject* _pGameObject)
+    {
+        MeshRenderer* pMeshRenderer = _pGameObject->AddComponent(new MeshRenderer);
+        pMeshRenderer->mpMesh = mpMesh;
+        pMeshRenderer->mpMaterial = mpMaterial;
+        return pMeshRenderer;
+    }
     void MeshRenderer::Render(Camera* _pCamera)
     {
         AssertEx(nullptr != mpMaterial, L"MeshRenderer::Render() - Material is empty");

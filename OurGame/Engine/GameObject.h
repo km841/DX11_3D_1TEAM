@@ -1,6 +1,7 @@
 #pragma once
 #include "Object.h"
 #include "Component.h"
+#include "MonoBehavior.h"
 
 namespace hm
 {
@@ -19,15 +20,39 @@ namespace hm
 	{
 	public:
 		GameObject(LayerType _eLayerType);
-		GameObject(std::vector<GameObject*> _gameObjects, LayerType _eLayerType);
+		GameObject(GameObject* _pOther);
 		virtual ~GameObject();
 
-		virtual void Initialize() const;
-		virtual void Update() const;
-		virtual void FixedUpdate() const;
-		virtual void FinalUpdate() const;
-		virtual void Render() const;
-		virtual void Destroy() const;
+		virtual void Initialize();
+		virtual void Update();
+		virtual void FixedUpdate();
+		virtual void FinalUpdate();
+		virtual void Render();
+		virtual void Destroy();
+
+		template<typename T, typename ... Types>
+		T* Clone(Types ... _args)
+		{
+			T* pObject = new T(_args...);
+			for (int i = 0; i < FIXED_COMPONENT_COUNT; ++i)
+			{
+				if (nullptr != mComponents[i])
+					mComponents[i]->Clone(pObject);
+			}
+
+			for (int i = 0; i < mScripts.size(); ++i)
+			{
+				mScripts[i]->Clone(pObject);
+			}
+
+			pObject->meObjectType = meObjectType;
+			pObject->mbCheckFrustum = mbCheckFrustum;
+			pObject->mbEnable = mbEnable;
+			pObject->mbDontDestroy = mbDontDestroy;
+			// GameObject가 가지는 변수가 많아지면 여기 추가해줘야 함
+
+			return pObject;
+		}
 
 		/* 전달받은 ComponentType을 통해 해당 인덱스에 맞는 컴포넌트를 반환하는 함수
 		* _eComponentType : 가져올 컴포넌트의 타입
@@ -56,6 +81,7 @@ namespace hm
 
 		/* 물리적 객체인지를 검사하는 함수 */
 		bool IsPhysicsObject();
+
 
 		/*
 		* AddComponent(Component* _pComponent)
