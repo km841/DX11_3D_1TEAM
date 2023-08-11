@@ -16,8 +16,8 @@ namespace hm
 
 	void CombineFilter::Render()
 	{
-		//float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-		//CONTEXT->ClearRenderTargetView(mpTexture->GetRTV().Get(), clearColor);
+		float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		CONTEXT->ClearRenderTargetView(mpTexture->GetRTV().Get(), clearColor);
 		CONTEXT->RSSetViewports(1, &mViewport);
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::SwapChain)->OMSetRenderTarget(1);
 

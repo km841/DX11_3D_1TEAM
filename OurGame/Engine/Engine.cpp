@@ -57,6 +57,7 @@ namespace hm
 		GET_SINGLE(Input)->Initialize();
 		GET_SINGLE(SceneManager)->Initialize();
 		GET_SINGLE(Timer)->Initialize();
+		GET_SINGLE(RenderManager)->Initialize();
 	}
 
 	void Engine::ResizeWindow(int _width, int _height)
