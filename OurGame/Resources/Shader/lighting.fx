@@ -52,7 +52,7 @@ PS_OUT PS_DirLight(VS_OUT _in)
     float4 emissiveColor = g_tex_2.Sample(g_sam_0, _in.uv);
 
     output.diffuse = color.diffuse + color.ambient + emissiveColor;
-    output.specular = color.specular;
+    //output.specular = color.specular;
 
     return output;
 }

@@ -49,8 +49,8 @@ namespace hm
 		}
 		else
 		{
-			//float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-			//CONTEXT->ClearRenderTargetView(mpTexture->GetRTV().Get(), clearColor);
+			float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+			CONTEXT->ClearRenderTargetView(mpTexture->GetRTV().Get(), clearColor);
 			CONTEXT->RSSetViewports(1, &mViewport);
 			CONTEXT->OMSetRenderTargets(1, mpTexture->GetRTV().GetAddressOf(), nullptr);
 			mpMaterial->PushGraphicData();

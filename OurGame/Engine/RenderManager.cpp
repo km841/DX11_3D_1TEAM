@@ -14,6 +14,8 @@
 namespace hm
 {
 	RenderManager::RenderManager()
+		: mWidth(0)
+		, mHeight(0)
 	{
 	}
 
@@ -28,6 +30,14 @@ namespace hm
 
 	void RenderManager::Initialize()
 	{
+		mWidth = gpEngine->GetWindowInfo().width;
+		mHeight = gpEngine->GetWindowInfo().height;
+
+		mpCopyFilter = make_shared<ImageFilter>(GET_SINGLE(Resources)->Get<Material>(L"Copy"), mWidth, mHeight);
+		mpSamplingFilter = make_shared<ImageFilter>(GET_SINGLE(Resources)->Get<Material>(L"Sampling"), mWidth, mHeight);
+		mpBlurYFilter = make_shared<BlurFilter>(GET_SINGLE(Resources)->Get<Material>(L"BlurY"), mWidth / 6, mHeight / 6);
+		mpBlurXFilter = make_shared<BlurFilter>(GET_SINGLE(Resources)->Get<Material>(L"BlurX"), mWidth / 6, mHeight / 6);
+		mpCombineFilter = make_shared<CombineFilter>(GET_SINGLE(Resources)->Get<Material>(L"Combine"), mWidth, mHeight);
 	}
 
 	void RenderManager::Render(Scene* _pScene)
@@ -42,7 +52,7 @@ namespace hm
 		RenderFinal(_pScene);
 		RenderForward(_pScene);
 
-		//PostProcessing(_pScene);
+		PostProcessing();
 	}
 
 	void RenderManager::ClearInstancingBuffer()
@@ -90,7 +100,7 @@ namespace hm
 		{
 			if (pCameraObject == _pScene->mpMainCamera)
 				continue;
-			
+
 			RenderInstancing(pCameraObject->GetCamera(), pCameraObject->GetCamera()->GetForwardObjects());
 			pCameraObject->GetCamera()->RenderParticle();
 		}
@@ -127,36 +137,9 @@ namespace hm
 		GET_SINGLE(Resources)->LoadRectMesh()->Render();
 	}
 
-	void RenderManager::PostProcessing(Scene* _pScene)
+	void RenderManager::PostProcessing()
 	{
-		_pScene->mImageFilters.clear();
-		Vec2 resolution = gpEngine->GetResolution();
-		UINT width = static_cast<UINT>(resolution.x);
-		UINT height = static_cast<UINT>(resolution.y);
-
-		shared_ptr<ImageFilter> pCopyFilter = make_shared<ImageFilter>(GET_SINGLE(Resources)->Get<Material>(L"Copy")->Clone(), width, height);
-		pCopyFilter->SetSRV(0, GET_SINGLE(Resources)->Get<Texture>(L"SwapChainTarget_0"));
-		_pScene->mImageFilters.push_back(pCopyFilter);
-
-		shared_ptr<ImageFilter> pDownSamplingFilter = make_shared<ImageFilter>(GET_SINGLE(Resources)->Get<Material>(L"Sampling")->Clone(), width, height);
-		pDownSamplingFilter->SetSRV(0, GET_SINGLE(Resources)->Get<Texture>(L"SwapChainTarget_0"));
-		_pScene->mImageFilters.push_back(pDownSamplingFilter);
-
-		shared_ptr<Material> pBlurXMaterial = GET_SINGLE(Resources)->Get<Material>(L"BlurX")->Clone();
-		pBlurXMaterial->SetTexture(0, _pScene->mImageFilters.back()->GetTexture());
-		shared_ptr<BlurFilter> pBlurXFilter = make_shared<BlurFilter>(pBlurXMaterial, width / 8, height / 8);
-		_pScene->mImageFilters.push_back(pBlurXFilter);
-
-		shared_ptr<CombineFilter> pCombineFilter =
-			make_shared<CombineFilter>(GET_SINGLE(Resources)->Get<Material>(L"Combine")->Clone(), width, height);
-		pCombineFilter->SetSRV(0, pCopyFilter->GetTexture());
-		pCombineFilter->SetSRV(1, _pScene->mImageFilters.back()->GetTexture());
-		_pScene->mImageFilters.push_back(pCombineFilter);
-
-		for (size_t i = 0; i < _pScene->mImageFilters.size(); ++i)
-		{
-			_pScene->mImageFilters[i]->Render();
-		}
+		Bloom();
 	}
 
 	void RenderManager::PushLightData(Scene* _pScene)
@@ -175,6 +158,33 @@ namespace hm
 
 		CONST_BUFFER(ConstantBufferType::Light)->PushData(&lightParams, sizeof(lightParams));
 		CONST_BUFFER(ConstantBufferType::Light)->Mapping();
+	}
+
+	void RenderManager::Blur()
+	{
+		shared_ptr<Texture> pBackTexture = nullptr;
+		shared_ptr<Texture> pSwapChainTex = GET_SINGLE(Resources)->Get<Texture>(L"SwapChainTarget_0");
+
+		mpCopyFilter->SetSRV(0, pSwapChainTex);
+		mpCopyFilter->Render();
+
+		mpSamplingFilter->SetSRV(0, pSwapChainTex);
+		mpSamplingFilter->Render();
+
+		mpBlurYFilter->SetSRV(0, mpSamplingFilter->GetTexture());
+		mpBlurYFilter->Render();
+
+		mpBlurXFilter->SetSRV(0, mpBlurYFilter->GetTexture());
+		mpBlurXFilter->Render();
+	}
+
+	void RenderManager::Bloom()
+	{
+		Blur();
+
+		mpCombineFilter->SetSRV(0, mpCopyFilter->GetTexture());
+		mpCombineFilter->SetSRV(1, mpBlurXFilter->GetTexture());
+		mpCombineFilter->Render();
 	}
 
 	void RenderManager::AddParam(UINT64 _instanceID, InstancingParams& _params)

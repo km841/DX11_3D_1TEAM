@@ -450,7 +450,7 @@ namespace hm
 			ws2s(mFilePath),
 			aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
 
-		Matrix tr; // Initial transformation
+		Matrix tr; // Initial transformations
 		ParseNode(pScene->mRootNode, pScene, tr);
 
 		Vec3 vmin(1000, 1000, 1000);

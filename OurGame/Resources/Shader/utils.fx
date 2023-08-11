@@ -64,13 +64,13 @@ LightColor CalculateLightColor(int lightIndex, float3 viewNormal, float3 viewPos
 
     float3 eyeDir = normalize(viewPos);
     float3 hDotn = max(dot(normalize(-viewLightDir + -eyeDir), viewNormal), 0.f);
-    specularRatio = pow(max(hDotn, 0.f), 8.f);
+    //specularRatio = pow(max(hDotn, 0.f), 8.f);
     
-    float toonRatio = (ceil(diffuseRatio * 3) / 3.f);
+    float toonRatio = (ceil(diffuseRatio * 5) / 5.f);
 
     color.diffuse = g_light[lightIndex].color.diffuse * toonRatio * distanceRatio;
     color.ambient = g_light[lightIndex].color.ambient * toonRatio;
-    color.specular = g_light[lightIndex].color.specular * specularRatio * distanceRatio;
+    //color.specular = g_light[lightIndex].color.specular * specularRatio * distanceRatio;
 
     return color;
 }

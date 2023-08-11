@@ -27,11 +27,10 @@ VS_OUT VS_Main(VS_IN _in)
 
 float4 PS_Main(VS_OUT _in) : SV_Target
 {
-    //return float4(1.f, 1.f, 1.f, 1.f);
     float4 color = g_tex_0.Sample(g_sam_0, _in.uv);
     
     float l = (color.r + color.g + color.b) / 3;
-    if (l < 0.4)
+    if (l < 0.1)
         discard;
     
     return color;

@@ -391,7 +391,7 @@ namespace hm
             Add<Shader>(L"Compute", pShader);
         }
 
-        // Compute Blur Shader
+        // Compute Vertical Blur Shader
         {
             ShaderInfo shaderInfo =
             {
@@ -399,8 +399,20 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
-            pShader->CreateComputeShader(L"..\\Resources\\Shader\\compute_blur.fx", "CS_Main", "cs_5_0");
-            Add<Shader>(L"ComputeBlur", pShader);
+            pShader->CreateComputeShader(L"..\\Resources\\Shader\\compute_blur.fx", "CS_VerticalBlur_Main", "cs_5_0");
+            Add<Shader>(L"ComputeVerticalBlur", pShader);
+        }
+
+        // Compute Horizon Blur Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Compute,
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateComputeShader(L"..\\Resources\\Shader\\compute_blur.fx", "CS_HorizonBlur_Main", "cs_5_0");
+            Add<Shader>(L"ComputeHorizonBlur", pShader);
         }
 
         // Particle
@@ -659,13 +671,22 @@ namespace hm
             Add<Material>(L"Compute", pMaterial);
         }
 
-        // Compute Blur Material
+        // Compute Vertical Blur Material
         {
             shared_ptr<Material> pMaterial = make_shared<Material>();
-            shared_ptr<Shader> pShader = Get<Shader>(L"ComputeBlur");
+            shared_ptr<Shader> pShader = Get<Shader>(L"ComputeVerticalBlur");
 
             pMaterial->SetShader(pShader);
-            Add<Material>(L"ComputeBlur", pMaterial);
+            Add<Material>(L"ComputeVerticalBlur", pMaterial);
+        }
+
+        // Compute Horizon Blur Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"ComputeHorizonBlur");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"ComputeHorizonBlur", pMaterial);
         }
 
         // Particle
