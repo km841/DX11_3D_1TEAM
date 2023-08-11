@@ -171,6 +171,13 @@ namespace hm
 		mConstantBufferGroup[index]->Create(_eRegister, _size);
 	}
 
+	void Engine::SetSwapChainRTVClearColor(Vec4 _color)
+	{
+		AssertEx(mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::SwapChain)], L"Engine::SetSwapChainRTVClearColor() - SwapChain이 생성되지 않음");
+		mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::SwapChain)]->SetClearColor(_color);
+	}
+
+
 	void Engine::Update()
 	{
 		GET_SINGLE(Timer)->Update();

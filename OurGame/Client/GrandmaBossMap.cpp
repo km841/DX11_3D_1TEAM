@@ -76,6 +76,7 @@ namespace hm
 
 	void GrandmaBossMap::Enter()
 	{
+		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 		// Ground
 		{
 			PhysicsInfo physicsInfo;

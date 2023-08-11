@@ -54,6 +54,8 @@ namespace hm
 		void CreateMultiRenderTarget();
 		void CreateConstantBuffer(RegisterCBV _eRegister, int _size);
 
+		void SetSwapChainRTVClearColor(Vec4 _color);
+
 	private:
 		WindowInfo				mWindowInfo;
 		D3D11_VIEWPORT			mViewport;

@@ -38,5 +38,14 @@ namespace hm
 
 		CONTEXT->ClearDepthStencilView(mpDepthStencilTexture->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 	}
+	void MultiRenderTarget::SetClearColor(Vec4 _color)
+	{
+		_color /= 255.f;
+
+		for (int i = 0; i < mRenderTargetCount; ++i)
+		{
+			memcpy(mRenderTargets[i].clearColors, &_color.x, sizeof(Vec4));
+		}
+	}
 }
 

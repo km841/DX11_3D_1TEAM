@@ -55,6 +55,8 @@ namespace hm
 		*/
 		void ClearRenderTargetView();
 
+		void SetClearColor(Vec4 _color);
+
 	private:
 		MultiRenderTargetType	     meRenderTargetType;
 		std::vector<RenderTarget>	 mRenderTargets;
