@@ -147,10 +147,12 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="CameraMoveScript.h" />
     <ClInclude Include="CorridorRightMap.h" />
+    <ClInclude Include="DecoObject.h" />
     <ClInclude Include="DiningColliderCheckMap.h" />
     <ClInclude Include="EntranceHallMap.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="GrandmaBossMap.h" />
+    <ClInclude Include="Ground.h" />
     <ClInclude Include="HallColliderCheckMap.h" />
     <ClInclude Include="LeftSecretFightMap.h" />
     <ClInclude Include="LeftSecretTrialMap.h" />
@@ -166,16 +168,19 @@
     <ClInclude Include="RightSecretPassageMap.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="WallObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="CameraMoveScript.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="CorridorRightMap.cpp" />
+    <ClCompile Include="DecoObject.cpp" />
     <ClCompile Include="DiningColliderCheckMap.cpp" />
     <ClCompile Include="EntranceHallMap.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="GrandmaBossMap.cpp" />
+    <ClCompile Include="Ground.cpp" />
     <ClCompile Include="HallColliderCheckMap.cpp" />
     <ClCompile Include="LeftSecretFightMap.cpp" />
     <ClCompile Include="LeftSecretTrialMap.cpp" />
@@ -193,6 +198,7 @@
     <ClCompile Include="RightSecretPassageMap.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="WallObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico" />

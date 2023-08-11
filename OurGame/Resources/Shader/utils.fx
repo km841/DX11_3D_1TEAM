@@ -64,7 +64,7 @@ LightColor CalculateLightColor(int lightIndex, float3 viewNormal, float3 viewPos
 
     float3 eyeDir = normalize(viewPos);
     float3 hDotn = max(dot(normalize(-viewLightDir + -eyeDir), viewNormal), 0.f);
-    specularRatio = pow(max(hDotn, 0.f), 16.f);
+    specularRatio = pow(max(hDotn, 0.f), 8.f);
     
     float toonRatio = (ceil(diffuseRatio * 3) / 3.f);
 

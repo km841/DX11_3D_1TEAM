@@ -25,6 +25,8 @@ namespace hm
 		T = 'T',
 		O = 'O',
 		R = 'R',
+		L = 'L',
+		K = 'K',
 
 		ENTER = VK_RETURN,
 		SPACE = VK_SPACE,

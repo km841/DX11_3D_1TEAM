@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "PrefabManager.h"
 #include "GameObject.h"
+#include "Factory.h"
+#include "Ground.h"
 
 namespace hm
 {
@@ -10,6 +12,11 @@ namespace hm
 
 	PrefabManager::~PrefabManager()
 	{
+	}
+
+	void PrefabManager::Initialize()
+	{
+		CreateDefaultPrefab();
 	}
 
 	void PrefabManager::ClearPrefab()
@@ -24,5 +31,8 @@ namespace hm
 			}
 		}
 
+	}
+	void PrefabManager::CreateDefaultPrefab()
+	{
 	}
 }

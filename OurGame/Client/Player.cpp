@@ -3,13 +3,11 @@
 
 Player::Player()
 	: GameObject(LayerType::Player)
-	, mState(1)
 {
 }
 
 Player::~Player()
 {
-	SAFE_DELETE(mpItem);
 }
 
 void Player::Initialize()

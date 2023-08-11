@@ -1,30 +1,42 @@
 #include "pch.h"
 #include "TestScene.h"
-#include "GameObject.h"
-#include "MeshRenderer.h"
+#include "Engine.h"
+
+/* Resource */
+#include "MeshData.h"
 #include "Material.h"
 #include "Mesh.h"
-#include "Resources.h"
-#include "Transform.h"
-#include "Camera.h"
-#include "CameraMoveScript.h"
-#include "Light.h"
-#include "ParticleSystem.h"
-#include "CombineFilter.h"
-#include "Engine.h"
-#include "MeshData.h"
-#include "RigidBody.h"
+
+/* Manager */
+#include "PrefabManager.h"
+#include "EventManager.h"
+#include "Factory.h"
 #include "CollisionManager.h"
 #include "Input.h"
 #include "SceneManager.h"
-#include "SceneChangeEvent.h"
-#include "EventManager.h"
-#include "Collider.h"
-#include "EventManager.h"
-#include "PaperBurnScript.h"
-#include "Factory.h"
+#include "Resources.h"
+
+/* GameObject */
+#include "GameObject.h"
 #include "Player.h"
-#include "PrefabManager.h"
+#include "Ground.h"
+#include "DecoObject.h"
+
+/* Component */
+#include "Collider.h"
+#include "RigidBody.h"
+#include "MeshRenderer.h"
+#include "Transform.h"
+#include "Camera.h"
+#include "Light.h"
+#include "ParticleSystem.h"
+
+/* Script */
+#include "PaperBurnScript.h"
+#include "CameraMoveScript.h"
+
+/* Event */
+#include "SceneChangeEvent.h"
 
 namespace hm
 {
@@ -173,7 +185,7 @@ namespace hm
 			info.eActorType = ActorType::Dynamic;
 			info.size = Vec3(10.f, 3.f, 1.f);
 
-			GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Desk.fbx", LayerType::Player);
+			GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Hall\\Desk.fbx", LayerType::Player);
 			pGameObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
 			pGameObject->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, -45.f, 0.f));
 			pGameObject->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, -1.f));
@@ -184,8 +196,7 @@ namespace hm
 		// Create Static FBX Object
 		for (int i = 0; i < 2; ++i)
 		{
-			// Ç×¾Æ¸®1
-			GameObject* pGameObject = Factory::CreateObject<GameObject>(Vec3(i * 10.f, 0.f, 0.f), L"MonsterDeferred", L"..\\Resources\\FBX\\Mage.fbx", LayerType::Unknown);
+			GameObject* pGameObject = Factory::CreateObject<GameObject>(Vec3(i * 10.f, 0.f, 0.f), L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\Mage.fbx", LayerType::Unknown);
 			shared_ptr<Texture> pCrackTex = GET_SINGLE(Resources)->Load<Texture>(L"EnemyCrack", L"..\\Resources\\Texture\\cracks_generic.png");
 			pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(2, pCrackTex);
 
@@ -195,30 +206,27 @@ namespace hm
 		}
 
 
-		// Create Player
+		// Create Desk
 		{
 			PhysicsInfo info = {};
 			info.eActorType = ActorType::Dynamic;
 			info.size = Vec3(10.f, 3.f, 1.f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Desk.fbx");
-			pPlayer->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
-			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, -45.f, 0.f));
-			pPlayer->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, -1.f));
+			Player* pGameObject = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Hall\\Desk.fbx");
+			pGameObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+			pGameObject->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, -45.f, 0.f));
+			pGameObject->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, -1.f));
 
-			pPlayer->SetItem(new GameObject(LayerType::Unknown));
-			pPlayer->SetState(5);
-
-			AddGameObject(pPlayer);
-			GET_SINGLE(PrefabManager)->AddPrefab(L"Test2", pPlayer);
+			AddGameObject(pGameObject);
+			GET_SINGLE(PrefabManager)->AddPrefab(L"Test2", pGameObject);
 		}
 
 		// Prefab Player
 		{
-			Player* pPlayer = GET_SINGLE(PrefabManager)->GetPrefab<Player>(L"Test2");
-			pPlayer->GetTransform()->SetPosition(Vec3(10.f, 0.f, 0.f));
+			Player* pGameObject = GET_SINGLE(PrefabManager)->GetPrefab<Player>(L"Test2");
+			pGameObject->GetTransform()->SetPosition(Vec3(10.f, 0.f, 0.f));
 
-			AddGameObject(pPlayer);
+			AddGameObject(pGameObject);
 		}
 	}
 	void TestScene::Exit()
