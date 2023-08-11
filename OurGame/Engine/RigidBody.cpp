@@ -32,7 +32,7 @@ namespace hm
 
 	void RigidBody::FinalUpdate()
 	{
-		if (false == mbAppliedGravity)
+		if (true == mbAppliedGravity)
 			AddGravity();
 
 		if (true == mbAppliedPhysics && ActorType::Static == mPhysicsInfo.eActorType)
@@ -66,8 +66,11 @@ namespace hm
 			pRigidBody->SetPhysical(info);
 		}
 
-		pRigidBody->SetVelocity(mVelocity);
-		pRigidBody->SetMaxVelocity(mMaxVelocity);
+		if (ActorType::Static != mPhysicsInfo.eActorType)
+		{
+			pRigidBody->SetVelocity(mVelocity);
+			pRigidBody->SetMaxVelocity(mMaxVelocity);
+		}
 
 		return pRigidBody;
 	}

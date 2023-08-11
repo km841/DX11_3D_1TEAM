@@ -17,6 +17,9 @@ namespace hm
 		Player,
 		Monster,
 		Ground,
+		DecoObject,
+		WallObject,
+		UI,
 		End,
 	};
 

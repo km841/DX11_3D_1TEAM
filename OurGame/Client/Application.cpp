@@ -24,6 +24,7 @@ namespace hm
 	void Application::Initialize(const WindowInfo& _windowInfo)
 	{
 		gpEngine->Initialize(_windowInfo);
+		GET_SINGLE(PrefabManager)->Initialize();
 	}
 
 	void Application::Start()
@@ -43,7 +44,7 @@ namespace hm
 		GET_SINGLE(SceneManager)->AddMap(new RightSecretPassageMap);
 		GET_SINGLE(SceneManager)->AddMap(new MainOfficeMap);
 
-		GET_SINGLE(SceneManager)->ActiveAndInitializeScene(SceneType::Test);
+		GET_SINGLE(SceneManager)->ActiveAndInitializeScene(SceneType::Title);
 	}
 
 	void Application::Update()
