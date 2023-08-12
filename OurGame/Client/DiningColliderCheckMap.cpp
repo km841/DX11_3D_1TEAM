@@ -86,6 +86,10 @@ namespace hm
 		//Forward == 빛 계산이 없는 명령어
 		//Deferred == 빛 계산이 있는 명령어
 		
+		//->GetTransform()->SetPositionExcludingColliders == 콜라이더를 제외하고 오브젝트만 [이동] 시키는 함수
+		//->GetTransform()->SetRotationExcludingColliders == 콜라이더를 제외하고 오브젝트만 [회전] 시키는 함수
+		
+
 
 		// 전체맵 가이드라인 벽
 		{
@@ -95,6 +99,39 @@ namespace hm
 
 			AddGameObject(pNormalBase);
 		}
+
+		//외곽 감싸주는 라인줄 -wallPanel_Merged
+		{
+			DecoObject* pWallPanel_Merged = Factory::CreateObject<DecoObject>(Vec3(0.2f, -5.2f, 0.f), L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\wallPanel_Merged.fbx");
+
+			pWallPanel_Merged->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+
+			AddGameObject(pWallPanel_Merged);
+		}
+		
+		// 핑크색 잠금 여는 문 -POT_Door_4_Variant
+		{
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Static;
+			info.size = Vec3(4.f, 6.f, 0.4f);
+
+			WallObject* pPOT_Door = Factory::CreateObjectHasPhysical<WallObject>(Vec3(8.75f, -6.0f, -6.0f), info, L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\POT_Door_4_Variant.fbx");
+			pPOT_Door->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+			pPOT_Door->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 4.7f));
+
+			AddGameObject(pPOT_Door);
+		}
+
+		//벽난로 -fireplace
+		{
+			DecoObject* pfireplace = Factory::CreateObject<DecoObject>(Vec3(-0.4f, -5.f, -1.2f), L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\fireplace.fbx");
+
+			pfireplace->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+			
+
+			AddGameObject(pfireplace);
+		}
+
 
 
 
