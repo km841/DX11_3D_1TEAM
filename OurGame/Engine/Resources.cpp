@@ -22,19 +22,19 @@ namespace hm
     void Resources::Destroy()
     {
     }
-    shared_ptr<Texture> Resources::CreateTexture(const wstring& _name, DXGI_FORMAT _eFormat, UINT32 _eTextureType, int _width, int _height)
+    shared_ptr<Texture> Resources::CreateTexture(const wstring& _name, DXGI_FORMAT _eFormat, UINT32 _eTextureType, int _width, int _height, bool _bMultiSampling)
     {
         shared_ptr<Texture> pTexture = make_shared<Texture>();
-        pTexture->Create(_eTextureType, _eFormat, _width, _height);
+        pTexture->Create(_eTextureType, _eFormat, _width, _height, _bMultiSampling);
         Add(_name, pTexture);
         pTexture->SetName(_name);
 
         return pTexture;
     }
-    shared_ptr<Texture> Resources::CreateTextureFromResource(const wstring& _name, DXGI_FORMAT _eFormat, UINT32 _eTextureType, ComPtr<ID3D11Texture2D> _tex2D)
+    shared_ptr<Texture> Resources::CreateTextureFromResource(const wstring& _name, DXGI_FORMAT _eFormat, UINT32 _eTextureType, ComPtr<ID3D11Texture2D> _tex2D, bool _bMultiSampling)
     {
         shared_ptr<Texture> pTexture = make_shared<Texture>();
-        pTexture->CreateFromTexture(_eTextureType, _eFormat, _tex2D);
+        pTexture->CreateFromTexture(_eTextureType, _eFormat, _tex2D, _bMultiSampling);
         Add(_name, pTexture);
 
         return pTexture;
