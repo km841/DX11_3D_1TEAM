@@ -9,7 +9,7 @@
 namespace hm
 {
 	CameraMoveScript::CameraMoveScript()
-		: mSpeed(10.f)
+		: mSpeed(15.f)
 	{
 	}
 	void CameraMoveScript::FixedUpdate()
@@ -37,8 +37,8 @@ namespace hm
 			float rotateX = static_cast<float>(curPos.y - prevPos.y);
 			float rotateY = static_cast<float>(curPos.x - prevPos.x);
 
-			GetGameObject()->GetTransform()->AddRotation(AXIS_X, rotateX * 50.f * DELTA_TIME);
-			GetGameObject()->GetTransform()->AddRotation(AXIS_Y, rotateY * 50.f * DELTA_TIME);
+			GetGameObject()->GetTransform()->AddRotation(AXIS_X, rotateX * 60.f * DELTA_TIME);
+			GetGameObject()->GetTransform()->AddRotation(AXIS_Y, rotateY * 60.f * DELTA_TIME);
 		}
 	}
 	Component* CameraMoveScript::Clone(GameObject* _pGameObject)
