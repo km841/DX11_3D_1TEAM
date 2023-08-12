@@ -36,21 +36,30 @@ namespace hm
             pMaterial->SetShader(GET_SINGLE(Resources)->Get<Shader>(_shaderName));
 
             MaterialContainer* pMaterialContainer = new MaterialContainer;
-            for (size_t j = 0; j < loader.GetMesh(i).materials.size(); j++)
+
+            if (0 < loader.GetMesh(i).materials.size())
+            {
+                for (size_t j = 0; j < loader.GetMesh(i).materials.size(); j++)
+                {
+                    pMaterialContainer->materialSubsetVec.push_back(new MaterialSubset);
+                    MaterialSubset* pSubset = pMaterialContainer->materialSubsetVec.back();
+
+                    if (false == loader.GetMesh(i).materials[j].diffuseTexName.empty())
+                        pSubset->SetTexture(0, GET_SINGLE(Resources)->Get<Texture>(loader.GetMesh(i).materials[j].diffuseTexName));
+
+                    if (false == loader.GetMesh(i).materials[j].normalTexName.empty())
+                        pSubset->SetTexture(1, GET_SINGLE(Resources)->Get<Texture>(loader.GetMesh(i).materials[j].normalTexName));
+
+                    if (false == loader.GetMesh(i).materials[j].specularTexName.empty())
+                        pSubset->SetTexture(2, GET_SINGLE(Resources)->Get<Texture>(loader.GetMesh(i).materials[j].specularTexName));
+
+                    pSubset->name = loader.GetMesh(i).materials[j].name;
+                }
+            }
+
+            else
             {
                 pMaterialContainer->materialSubsetVec.push_back(new MaterialSubset);
-                MaterialSubset* pSubset = pMaterialContainer->materialSubsetVec.back();
-
-                if (false == loader.GetMesh(i).materials[j].diffuseTexName.empty())
-                    pSubset->SetTexture(0, GET_SINGLE(Resources)->Get<Texture>(loader.GetMesh(i).materials[j].diffuseTexName));
-
-                if (false == loader.GetMesh(i).materials[j].normalTexName.empty())
-                    pSubset->SetTexture(1, GET_SINGLE(Resources)->Get<Texture>(loader.GetMesh(i).materials[j].normalTexName));
-
-                if (false == loader.GetMesh(i).materials[j].specularTexName.empty())
-                    pSubset->SetTexture(2, GET_SINGLE(Resources)->Get<Texture>(loader.GetMesh(i).materials[j].specularTexName));
-
-                pSubset->name = loader.GetMesh(i).materials[j].name;
             }
 
             pMaterial->AddMaterialContainer(pMaterialContainer);

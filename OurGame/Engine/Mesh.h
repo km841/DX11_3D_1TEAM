@@ -35,8 +35,9 @@ namespace hm
         * 내부적으로 IASetVertexBuffer와 IASetIndexBuffer를 실행한다.
         * _instanceCount : 인스턴싱할 개수
         */
-        void Render(int _instanceCount = 1, int _index = 0);
-        void Render(InstancingBuffer* _pBuffer, int _index = 0);
+        void Render();
+        void RenderInstancing(int _instanceCount = 1, int _index = 0);
+        void RenderInstancing(InstancingBuffer* _pBuffer, int _index = 0);
 
         static shared_ptr<Mesh> CreateFromFBX(const FbxMeshInfo* meshInfo, FBXLoader& loader);
         static UINT32 CreateHash(const Vertex& _vtx);

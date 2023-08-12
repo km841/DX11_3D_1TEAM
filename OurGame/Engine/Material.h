@@ -38,6 +38,7 @@ namespace hm
         * 현재 가진 Texture들을 GPU에 매핑한다.
         * 멤버 변수인 Shader의 Update를 실행한다.
         */
+        void ClearGraphicData();
         void PushGraphicData(int _containerIndex = 0, int _subsetIndex = 0);
         void PushComputeData();
         void Dispatch(UINT32 _countX, UINT32 _countY, UINT32 _countZ);
