@@ -1,6 +1,7 @@
 .git/
 x64/
 .vs/
+Debug/
 *.ipch
 *.pdb
 *.pch
