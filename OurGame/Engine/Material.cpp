@@ -21,10 +21,34 @@ namespace hm
 		ClearMaterialContainers();
 	}
 
+	void Material::ClearGraphicData()
+	{
+		for (int i = 0; i < MATERIAL_VALUE_COUNT; ++i)
+		{
+			CONTEXT->PSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+				reinterpret_cast<ID3D11ShaderResourceView**>(&mppNullptr));
+
+			CONTEXT->GSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+				reinterpret_cast<ID3D11ShaderResourceView**>(&mppNullptr));
+
+			CONTEXT->CSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+				reinterpret_cast<ID3D11ShaderResourceView**>(&mppNullptr));
+
+			CONTEXT->VSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+				reinterpret_cast<ID3D11ShaderResourceView**>(&mppNullptr));
+
+			CONTEXT->DSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+				reinterpret_cast<ID3D11ShaderResourceView**>(&mppNullptr));
+
+			CONTEXT->HSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+				reinterpret_cast<ID3D11ShaderResourceView**>(&mppNullptr));
+		}
+	}
+
 	void Material::PushGraphicData(int _containerindex, int _subsetIndex)
 	{
-		CONST_BUFFER(ConstantBufferType::Material)->PushData(&mMaterialContainerVec[_containerindex]->materialSubsetVec[_subsetIndex]->materialParams, sizeof(MaterialParams));
-		ShaderType eShaderType = mpShader->GetShaderType();
+		CONST_BUFFER(ConstantBufferType::Material)->PushData(&mMaterialContainerVec[0]->materialSubsetVec[0]->materialParams, sizeof(MaterialParams));
+		mpShader->Update();
 
 		for (int i = 0; i < MATERIAL_VALUE_COUNT; ++i)
 		{
@@ -71,13 +95,13 @@ namespace hm
 			}
 
 		}
-
-		mpShader->Update();
 	}
+
 
 	void Material::PushComputeData()
 	{
 		CONST_BUFFER(ConstantBufferType::Material)->PushData(&mMaterialContainerVec[0]->materialSubsetVec[0]->materialParams, sizeof(MaterialParams));
+		mpShader->Update();
 
 		for (int i = 0; i < MATERIAL_VALUE_COUNT; ++i)
 		{
@@ -99,8 +123,6 @@ namespace hm
 					mMaterialContainerVec[0]->materialSubsetVec[0]->textures[i]->GetSRV().GetAddressOf());
 			}
 		}
-
-		mpShader->Update();
 	}
 
 	void Material::Dispatch(UINT32 _countX, UINT32 _countY, UINT32 _countZ)
