@@ -35,13 +35,13 @@ float4 PS_Main(VS_OUT _in) : SV_Target
     float4 output = (float4) 0;
     
     float4 lightPower = g_tex_1.Sample(g_sam_0, _in.uv);
-    if (lightPower.x == 0.f && lightPower.y == 0.f && lightPower.z == 0.f)
-        clip(-1);
+    //if (lightPower.x == 0.f && lightPower.y == 0.f && lightPower.z == 0.f)
+    //    clip(-1);
     
     float4 color = g_tex_0.Sample(g_sam_0, _in.uv);
     
     float4 specularColor = g_tex_2.Sample(g_sam_0, _in.uv);
-    float4 totalColor = color * lightPower /*+ specularColor*/;
+    float4 totalColor = color * (lightPower /*+ 0.2f*/) /*+ specularColor*/;
     
     return totalColor;
 }

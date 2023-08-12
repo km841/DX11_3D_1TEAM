@@ -89,7 +89,7 @@ namespace hm
 				HRESULT hr = mpSwapChain->GetSwapChain()->GetBuffer(i, IID_PPV_ARGS(&pResource));
 				AssertEx(SUCCEEDED(hr), L"GetBuffer Failed");
 
-				renderTargets[i].pTarget = GET_SINGLE(Resources)->CreateTextureFromResource(name, DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE, pResource);
+				renderTargets[i].pTarget = GET_SINGLE(Resources)->CreateTextureFromResource(name, DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE, pResource, true);
 				memcpy(renderTargets[i].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
 			}
 

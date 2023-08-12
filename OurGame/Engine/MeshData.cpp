@@ -56,7 +56,7 @@ namespace hm
             pMaterial->AddMaterialContainer(pMaterialContainer);
         }
 
-        pMaterial->SetName(loader.GetMesh(0).materials[0].name);
+        pMaterial->SetName(_path);
         GET_SINGLE(Resources)->Add<Mesh>(pMesh->GetName(), pMesh);
         GET_SINGLE(Resources)->Add<Material>(pMaterial->GetName(), pMaterial);
 
