@@ -1,7 +1,7 @@
 .git/
 x64/
 .vs/
-Debug/
+OurGame/Debug/
 *.ipch
 *.pdb
 *.pch
