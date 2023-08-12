@@ -27,7 +27,20 @@ namespace hm
 		indexBufferInfo.push_back(CreateIndexBuffer(_indexBuffer));
 		mMeshContainerVec.push_back(new MeshContainer{ pVertexBuffer, indexBufferInfo });
 	}
-	void Mesh::Render(int _instanceCount, int _index)
+	void Mesh::Render()
+	{
+		UINT stride = sizeof(Vertex);
+		UINT offset = 0;
+
+		CONTEXT->IASetVertexBuffers(0, 1, mMeshContainerVec[0]->pVertexBuffer.GetAddressOf(), &stride, &offset);
+
+		for (int i = 0; i < mMeshContainerVec[0]->indexBufferGroup.size(); ++i)
+		{
+			CONTEXT->IASetIndexBuffer(mMeshContainerVec[0]->indexBufferGroup[i].pBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+			CONTEXT->DrawIndexed(mMeshContainerVec[0]->indexBufferGroup[i].count, 0, 0);
+		}
+	}
+	void Mesh::RenderInstancing(int _instanceCount, int _index)
 	{
 		UINT stride = sizeof(Vertex);
 		UINT offset = 0;
@@ -41,7 +54,7 @@ namespace hm
 		}
 	}
 
-	void Mesh::Render(InstancingBuffer* _pBuffer, int _index)
+	void Mesh::RenderInstancing(InstancingBuffer* _pBuffer, int _index)
 	{
 		UINT strides[2] = { sizeof(Vertex), sizeof(InstancingParams)};
 		UINT offset[2] = { 0, 0 };

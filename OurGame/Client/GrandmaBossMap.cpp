@@ -76,7 +76,7 @@ namespace hm
 
 	void GrandmaBossMap::Enter()
 	{
-		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
+		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 		// Ground
 		{
 			PhysicsInfo physicsInfo;
@@ -84,20 +84,30 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(25.f, 1.f, 25.f);
 
-			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -10.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossGround.fbx");
+			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossGround.fbx");
 			pGround->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 			pGround->GetTransform()->SetPositionExcludingColliders(Vec3(-12.f, -18.5f, 0.f));
 
 			AddGameObject(pGround);
 		}
 
-		// SlimeTank
+		// Table
 		{
-			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(5.f, 0.f, 20.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossTable.fbx");
+			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(5.f, 10.f, 20.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossTable.fbx");
 			pDecoObject->GetRigidBody()->RemoveGravity();
 
 			pDecoObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
 			pDecoObject->GetTransform()->SetRotation(Vec3(-90.f, 20.f, 0.f));
+			AddGameObject(pDecoObject);
+		}
+
+		// Start
+		{
+			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, -30.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossStart_Btm.fbx");
+			pDecoObject->GetRigidBody()->RemoveGravity();
+
+			pDecoObject->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+			pDecoObject->GetTransform()->SetRotation(Vec3(-90.f, -90.f, 0.f));
 			AddGameObject(pDecoObject);
 		}
 
@@ -117,11 +127,182 @@ namespace hm
 
 				pDecoObject->GetTransform()->SetPosition(
 					Vec3(radius * cosf(radian) + radius * sinf(radian),
-						-20.f + y * 10.f,
+						-10.f + y * 10.f,
 						(radius * cosf(radian) - radius * sinf(radian)) + 10.f));
 				AddGameObject(pDecoObject);
 			}
 		}
+
+
+		// Left Rocks
+		{
+			// GrayRockType1
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"GrayRockType1");
+				pRock->GetTransform()->SetPosition(Vec3(-3.f, 1.f, -29.5f));
+				AddGameObject(pRock);
+			}
+
+			// GrayRockType2
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"GrayRockType2");
+				pRock->GetTransform()->SetPosition(Vec3(-3.f, 1.f, -31.f));
+				AddGameObject(pRock);
+			}
+
+			// GrayRockType3
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"GrayRockType3");
+				pRock->GetTransform()->SetPosition(Vec3(-3.f, 1.f, -32.5f));
+				AddGameObject(pRock);
+			}
+
+			// GrayRockType1
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"GrayRockType3");
+				pRock->GetTransform()->SetPosition(Vec3(-4.5f, 1.f, -29.5f));
+				AddGameObject(pRock);
+			}
+
+			// GrayRockType2
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"GrayRockType2");
+				pRock->GetTransform()->SetPosition(Vec3(-6.f, 1.f, -29.5f));
+				pRock->GetTransform()->SetRotation(AXIS_Y, 90.f);
+				AddGameObject(pRock);
+			}
+
+			// BlackRockType1
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"BlackRockType1");
+				pRock->GetTransform()->SetPosition(Vec3(-5.f, 1.f, -31.5f));
+				pRock->GetTransform()->SetRotation(Vec3(90.f, 0.f, 180.f));
+
+				AddGameObject(pRock);
+			}
+
+			// BlackRockType2
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"BlackRockType2");
+				pRock->GetTransform()->SetPosition(Vec3(-7.f, 1.f, -30.5f));
+				pRock->GetTransform()->SetRotation(Vec3(90.f, 0.f, 180.f));
+
+				AddGameObject(pRock);
+			}
+
+			// BlackRockType4
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"BlackRockType4");
+				pRock->GetTransform()->SetPosition(Vec3(-9.f, 1.f, -29.5f));
+				pRock->GetTransform()->SetRotation(Vec3(90.f, 0.f, 180.f));
+
+				AddGameObject(pRock);
+			}
+
+			// BlackRockType3
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"BlackRockType3");
+				pRock->GetTransform()->SetPosition(Vec3(-11.f, 1.f, -29.5f));
+				pRock->GetTransform()->SetRotation(Vec3(90.f, 0.f, 180.f));
+
+				AddGameObject(pRock);
+			}
+
+			// BlackRockType1
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"BlackRockType1");
+				pRock->GetTransform()->SetPosition(Vec3(-13.f, 1.f, -29.5f));
+				pRock->GetTransform()->SetRotation(Vec3(90.f, 0.f, 180.f));
+
+				AddGameObject(pRock);
+			}
+		}
+
+		// Right Rocks
+		{
+			// GrayRockType1
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"GrayRockType1");
+				pRock->GetTransform()->SetPosition(Vec3(3.f, 1.f, -29.5f));
+				AddGameObject(pRock);
+			}
+
+			// GrayRockType2
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"GrayRockType2");
+				pRock->GetTransform()->SetPosition(Vec3(3.f, 1.f, -31.f));
+				AddGameObject(pRock);
+			}
+
+			// GrayRockType3
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"GrayRockType3");
+				pRock->GetTransform()->SetPosition(Vec3(3.f, 1.f, -32.5f));
+				AddGameObject(pRock);
+			}
+
+			// GrayRockType1
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"GrayRockType3");
+				pRock->GetTransform()->SetPosition(Vec3(4.5f, 1.f, -29.5f));
+				AddGameObject(pRock);
+			}
+
+			// GrayRockType2
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"GrayRockType2");
+				pRock->GetTransform()->SetPosition(Vec3(6.f, 1.f, -29.5f));
+				pRock->GetTransform()->SetRotation(AXIS_Y, 90.f);
+				AddGameObject(pRock);
+			}
+
+			// BlackRockType1
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"BlackRockType1");
+				pRock->GetTransform()->SetPosition(Vec3(5.f, 1.f, -31.5f));
+				pRock->GetTransform()->SetRotation(Vec3(90.f, 0.f, 180.f));
+
+				AddGameObject(pRock);
+			}
+
+			// BlackRockType2
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"BlackRockType2");
+				pRock->GetTransform()->SetPosition(Vec3(7.f, 1.f, -30.5f));
+				pRock->GetTransform()->SetRotation(Vec3(90.f, 0.f, 180.f));
+
+				AddGameObject(pRock);
+			}
+
+			// BlackRockType4
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"BlackRockType4");
+				pRock->GetTransform()->SetPosition(Vec3(9.f, 1.f, -29.5f));
+				pRock->GetTransform()->SetRotation(Vec3(90.f, 0.f, 180.f));
+
+				AddGameObject(pRock);
+			}
+
+			// BlackRockType3
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"BlackRockType3");
+				pRock->GetTransform()->SetPosition(Vec3(11.f, 1.f, -29.5f));
+				pRock->GetTransform()->SetRotation(Vec3(90.f, 0.f, 180.f));
+
+				AddGameObject(pRock);
+			}
+
+			// BlackRockType1
+			{
+				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"BlackRockType1");
+				pRock->GetTransform()->SetPosition(Vec3(13.f, 1.f, -29.5f));
+				pRock->GetTransform()->SetRotation(Vec3(90.f, 0.f, 180.f));
+
+				AddGameObject(pRock);
+			}
+		}
+
+
 	}
 
 	void GrandmaBossMap::Exit()

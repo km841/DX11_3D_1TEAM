@@ -105,6 +105,8 @@ namespace hm
 #pragma region RasterizerState
 		{
 			D3D11_RASTERIZER_DESC rd = {};
+			rd.MultisampleEnable = true;
+			rd.AntialiasedLineEnable = true;
 
 			switch (_shaderInfo.eRasterizerType)
 			{

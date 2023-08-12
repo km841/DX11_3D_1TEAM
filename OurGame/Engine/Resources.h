@@ -26,14 +26,14 @@ namespace hm
 		* _width : 텍스쳐의 가로 크기
 		* _height : 텍스쳐의 세로 크기
 		*/
-		shared_ptr<Texture> CreateTexture(const wstring& _name, DXGI_FORMAT _eFormat, UINT32 _eTextureType, int _width, int _height);
+		shared_ptr<Texture> CreateTexture(const wstring& _name, DXGI_FORMAT _eFormat, UINT32 _eTextureType, int _width, int _height, bool _bMultiSampling = false);
 
 		/*이미 리소스가 존재하는 경우 그 리소스를 이용해 텍스쳐를 만드는 함수
 		* _name : Resources를 통해 이 리소스를 찾을 수 있는 키 값
 		* _eFormat : 텍스쳐 포맷 (DXGI_FORMAT_D24_UNORM_S8_UINT..)
 		* _eTextureFormat : 사용할 텍스쳐 타입 (RTV, SRV, UAV 등등), 이 포맷을 기준으로 View를 만든다
 		*/ 
-		shared_ptr<Texture> CreateTextureFromResource(const wstring& _name, DXGI_FORMAT _eFormat, UINT32 _eTextureType, ComPtr<ID3D11Texture2D> _tex2D);
+		shared_ptr<Texture> CreateTextureFromResource(const wstring& _name, DXGI_FORMAT _eFormat, UINT32 _eTextureType, ComPtr<ID3D11Texture2D> _tex2D, bool _bMultiSampling = false);
 
 
 		shared_ptr<MeshData> LoadFBX(const wstring& _path, const wstring& _shaderName = L"Deferred");

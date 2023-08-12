@@ -48,7 +48,7 @@ namespace hm
 			static_cast<float>(mScratchImage.GetMetadata().height), 1.f);
 	}
 
-	void Texture::Create(UINT _type, DXGI_FORMAT _eFormat, int _width, int _height)
+	void Texture::Create(UINT _type, DXGI_FORMAT _eFormat, int _width, int _height, bool _bMultiSampling)
 	{
 		D3D11_TEXTURE2D_DESC td = { 0 };
 		mTexSize = Vec3(static_cast<float>(_width), static_cast<float>(_height), 1.f);
@@ -58,7 +58,7 @@ namespace hm
 		td.Width = _width;
 		td.Height = _height;
 		td.ArraySize = 1;
-		td.SampleDesc.Count = 1;
+		td.SampleDesc.Count = true == _bMultiSampling ? 4 : 1;
 		td.SampleDesc.Quality = 0;
 		td.MipLevels = 1;
 		td.MiscFlags = 0;
@@ -72,10 +72,10 @@ namespace hm
 		HRESULT hr = DEVICE->CreateTexture2D(&td, nullptr, mpTex2D.GetAddressOf());
 		AssertEx(SUCCEEDED(hr), L"Texture::Create() - Texture2D 생성 실패");
 
-		CreateFromTexture(_type, _eFormat, mpTex2D);
+		CreateFromTexture(_type, _eFormat, mpTex2D, _bMultiSampling);
 	}
 
-	void Texture::CreateFromTexture(UINT _type, DXGI_FORMAT _eFormat, ComPtr<ID3D11Texture2D> _pTex2D)
+	void Texture::CreateFromTexture(UINT _type, DXGI_FORMAT _eFormat, ComPtr<ID3D11Texture2D> _pTex2D, bool _bMultiSampling)
 	{
 		meTextureType = _type;
 		mpTex2D = _pTex2D;
@@ -85,7 +85,11 @@ namespace hm
 
 		if (meTextureType & D3D11_BIND_RENDER_TARGET)
 		{
+			D3D11_RENDER_TARGET_VIEW_DESC rd;
+			rd.Format = DXGI_FORMAT_UNKNOWN;
+			rd.ViewDimension = true == _bMultiSampling ? D3D11_RTV_DIMENSION_TEXTURE2DMS : D3D11_RTV_DIMENSION_TEXTURE2D;
 			HRESULT hr = DEVICE->CreateRenderTargetView(mpTex2D.Get(), nullptr, mpRTV.GetAddressOf());
+
 			AssertEx(SUCCEEDED(hr), L"Texture::CreateFromTexture() - 텍스쳐 RTV 생성 실패");
 		}
 
@@ -93,7 +97,7 @@ namespace hm
 		{
 			D3D11_SHADER_RESOURCE_VIEW_DESC sd = {};
 			sd.Format = _eFormat;
-			sd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+			sd.ViewDimension = true == _bMultiSampling ? D3D11_SRV_DIMENSION_TEXTURE2DMS : D3D11_SRV_DIMENSION_TEXTURE2D;
 			sd.Texture2D.MipLevels = 1;
 
 			HRESULT hr = DEVICE->CreateShaderResourceView(mpTex2D.Get(), &sd, mpSRV.GetAddressOf());
@@ -102,7 +106,11 @@ namespace hm
 
 		if (meTextureType & D3D11_BIND_DEPTH_STENCIL)
 		{
+			D3D11_DEPTH_STENCIL_VIEW_DESC dsd = {};
+			dsd.Format = DXGI_FORMAT_UNKNOWN;
+			dsd.ViewDimension = true == _bMultiSampling ? D3D11_DSV_DIMENSION_TEXTURE2D : D3D11_DSV_DIMENSION_TEXTURE2D;
 			HRESULT hr = DEVICE->CreateDepthStencilView(mpTex2D.Get(), nullptr, mpDSV.GetAddressOf());
+
 			AssertEx(SUCCEEDED(hr), L"Texture::CreateFromTexture() - 텍스쳐 DSV 생성 실패");
 		}
 

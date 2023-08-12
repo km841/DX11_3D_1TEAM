@@ -112,7 +112,7 @@ namespace hm
 		mpMaterial->PushGraphicData();
 		mpMaterial->SetVec3(0, mStartScale);
 		CONST_BUFFER(ConstantBufferType::Material)->Mapping();
-		mpMesh->Render(mMaxParticles);
+		mpMesh->RenderInstancing(mMaxParticles);
 
 		mpParticleBuffer->ClearGraphicsData();
 	}

@@ -20,14 +20,14 @@ namespace hm
         * _width : 텍스쳐의 가로 크기
         * _height : 텍스쳐의 세로 크기
         */
-        void Create(UINT _type, DXGI_FORMAT _eFormat, int _width, int _height);
+        void Create(UINT _type, DXGI_FORMAT _eFormat, int _width, int _height, bool _bMultiSampling = false);
 
         /* 리소스가 존재하는 경우 그 리소스로 텍스쳐를 만드는 함수
         * _type : 현재 이미지가 사용될 타입 (RTV, SRV, DSV ...)
         * _eFormat : 텍스쳐가 가져야할 포맷 (ex R8G8B8 ...)
         * _pTex2D : 리소스
         */
-        void CreateFromTexture(UINT _type, DXGI_FORMAT _eFormat, ComPtr<ID3D11Texture2D> _pTex2D);
+        void CreateFromTexture(UINT _type, DXGI_FORMAT _eFormat, ComPtr<ID3D11Texture2D> _pTex2D, bool _bMultiSampling = false);
 
     public:
         Vec3 GetTexSize() { return mTexSize; }
