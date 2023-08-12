@@ -77,18 +77,72 @@ namespace hm
 
 	void DiningColliderCheckMap::Enter()
 	{
+		//배경 흰색으로 바꿔주는 코드
+		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f)); 
 		
-		//WallObject 도 있음
 
-		// NormalBase
+		//DecoObject == 맵 장식품용 오브젝트
+		//WallObject == 콜라이더 가지고있는 오브젝트
+
+		//L"Forward" == 빛의 계산을 받지않는
+		//L"Deferred" == 빛의 계산을 하는
+
+		// 전체맵의 큰 가이드라인
 		{
-			DecoObject* pNormalBase = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Diningroom.fbx");
+			DecoObject* pNormalBase = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Diningroom.fbx");
 
 			pNormalBase->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
-			//pNormalBase->GetTransform()->SetPositionExcludingColliders(Vec3(-12.f, -18.5f, 0.f));
+			pNormalBase->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+			pNormalBase->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 0.f));
 
 			AddGameObject(pNormalBase);
 		}
+
+		// 전체맵의 1층 바닥 //안보임;;;;;;;;;;;;;;;;
+		/*{
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(1.f, 1.f, 1.f);
+
+			WallObject* POT_Door_4_Variant = Factory::CreateObjectHasPhysical<WallObject>(Vec3(0.0f, 0.0f, 0.0f), info, L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Diningroom_detach2.fbx");
+
+			POT_Door_4_Variant->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+			POT_Door_4_Variant->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+			POT_Door_4_Variant->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 0.0f));
+
+			AddGameObject(POT_Door_4_Variant);
+		}*/
+
+		// 핑크색 문제풀이해결 벽
+		{
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Static;
+			info.size = Vec3(4.f, 6.f, 0.5f);
+
+			WallObject* POT_Door_4_Variant = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-8.7f, -5.6f, -5.6f), info, L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\POT_Door_4_Variant.fbx");
+
+			POT_Door_4_Variant->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+			POT_Door_4_Variant->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+			POT_Door_4_Variant->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, -4.7f));
+
+			AddGameObject(POT_Door_4_Variant);
+		}
+
+		//핑크색 문제풀이해결 벽 - 프레임
+		{
+			DecoObject* pDoorFrameBig = Factory::CreateObject<DecoObject>(Vec3(-8.7f, -5.6f, 10.2f), L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\DoorFrameBig.fbx");
+
+			pDoorFrameBig->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+			pDoorFrameBig->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+			pDoorFrameBig->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 0.f));
+
+			AddGameObject(pDoorFrameBig);
+		}
+
+
+
+
 
 		// Wall
 		/*for (int y = 0; y < 4; ++y)
@@ -115,7 +169,7 @@ namespace hm
 		// Create Desk
 		/*{
 			PhysicsInfo info = {};
-			info.eActorType = ActorType::Dynamic;
+			info.eActorType = ActorType::Static;
 			info.size = Vec3(10.f, 3.f, 1.f);
 
 			Player* pGameObject = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Hall\\Desk.fbx");
