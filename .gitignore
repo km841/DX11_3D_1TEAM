@@ -4,3 +4,6 @@ x64/
 *.ipch
 *.pdb
 *.pch
+*.exe
+*.lib
+*.idb

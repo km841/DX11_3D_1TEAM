@@ -77,18 +77,32 @@ namespace hm
 
 	void DiningColliderCheckMap::Enter()
 	{
+		//배경맵 하얀색으로 만들어주는 코드
+		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 		
-		//WallObject 도 있음
+		//DecoObject == 콜라이더 없는 오브젝트
+		//WallObject == 콜라이더 있는 오브젝트
 
-		// NormalBase
+		//Forward == 빛 계산이 없는 명령어
+		//Deferred == 빛 계산이 있는 명령어
+		
+
+		// 전체맵 가이드라인 벽
 		{
-			DecoObject* pNormalBase = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Diningroom.fbx");
+			DecoObject* pNormalBase = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Diningroom.fbx");
 
 			pNormalBase->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
-			//pNormalBase->GetTransform()->SetPositionExcludingColliders(Vec3(-12.f, -18.5f, 0.f));
 
 			AddGameObject(pNormalBase);
 		}
+
+
+
+
+
+
+
+
 
 		// Wall
 		/*for (int y = 0; y < 4; ++y)
