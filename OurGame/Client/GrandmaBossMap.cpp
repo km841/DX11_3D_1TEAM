@@ -35,6 +35,7 @@
 #include "PaperBurnScript.h"
 #include "CameraMoveScript.h"
 #include "PlayerMoveScript.h"
+#include "PlayerSlashScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -94,19 +95,31 @@ namespace hm
 			AddGameObject(pGround);
 		}
 
-		// Toy
+		// Sword_Heavy
 		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Dynamic;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+			DecoObject* pSlashTest = Factory::CreateObject<DecoObject>(Vec3(0.f, 3.f, 0.f), L"PlayerSlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbx");
+			pSlashTest->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pSlashTest->AddComponent(new PlayerSlashScript);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
-			pPlayer->AddComponent(new PlayerMoveScript);
-			pPlayer->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
-
-			AddGameObject(pPlayer);
+			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"HeavySlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbm\\sword_slash_texture_1.png");
+			pSlashTest->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
+			pSlashTest->GetRigidBody()->RemoveGravity();
+			AddGameObject(pSlashTest);
 		}
+
+		// Toy
+		//{
+		//	PhysicsInfo physicsInfo;
+		//	physicsInfo.eActorType = ActorType::Dynamic;
+		//	physicsInfo.eGeometryType = GeometryType::Box;
+		//	physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+
+		//	Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+		//	pPlayer->AddComponent(new PlayerMoveScript);
+		//	pPlayer->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+
+		//	AddGameObject(pPlayer);
+		//}
 
 		// Table
 		{

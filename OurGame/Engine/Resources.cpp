@@ -632,6 +632,22 @@ namespace hm
             Add<Shader>(L"PaperBurn_Deferred", pShader);
         }
 
+        // Forward Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::Less,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\player_slash.fx", shaderInfo);
+
+            Add<Shader>(L"PlayerSlash", pShader);
+        }
+
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -816,6 +832,15 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"PaperBurn_Deferred", pMaterial);
+        }
+
+        // PlayerSlash Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"PlayerSlash");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"PlayerSlash", pMaterial);
         }
     }
 }
