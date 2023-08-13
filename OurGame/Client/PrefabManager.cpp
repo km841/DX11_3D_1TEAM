@@ -36,7 +36,7 @@ namespace hm
 	{	
 		// 현모 - GrayRockType1
 		{
-			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrayRockType1.fbx");
+			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Prefab\\GrayRockType1.fbx");
 			pDecoObject->GetRigidBody()->RemoveGravity();
 
 			pDecoObject->GetTransform()->SetScale(Vec3(4.f, 4.f, 4.f));
@@ -47,7 +47,7 @@ namespace hm
 
 		// 현모 - GrayRockType2
 		{
-			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrayRockType2.fbx");
+			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Prefab\\GrayRockType2.fbx");
 			pDecoObject->GetRigidBody()->RemoveGravity();
 
 			pDecoObject->GetTransform()->SetScale(Vec3(4.f, 4.f, 4.f));
@@ -58,7 +58,7 @@ namespace hm
 
 		// 현모 - GrayRockType3
 		{
-			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrayRockType3.fbx");
+			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Prefab\\GrayRockType3.fbx");
 			pDecoObject->GetRigidBody()->RemoveGravity();
 
 			pDecoObject->GetTransform()->SetScale(Vec3(4.f, 4.f, 4.f));
@@ -69,7 +69,7 @@ namespace hm
 
 		// 현모 - BlackRockType1
 		{
-			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\BlackRockType1.fbx");
+			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Prefab\\BlackRockType1.fbx");
 			pDecoObject->GetRigidBody()->RemoveGravity();
 
 			pDecoObject->GetTransform()->SetScale(Vec3(4.f, 4.f, 4.f));
@@ -80,7 +80,7 @@ namespace hm
 
 		// 현모 - BlackRockType2
 		{
-			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\BlackRockType2.fbx");
+			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Prefab\\BlackRockType2.fbx");
 			pDecoObject->GetRigidBody()->RemoveGravity();
 
 			pDecoObject->GetTransform()->SetScale(Vec3(4.f, 4.f, 4.f));
@@ -91,7 +91,7 @@ namespace hm
 
 		// 현모 - BlackRockType3
 		{
-			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\BlackRockType3.fbx");
+			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Prefab\\BlackRockType3.fbx");
 			pDecoObject->GetRigidBody()->RemoveGravity();
 
 			pDecoObject->GetTransform()->SetScale(Vec3(4.f, 4.f, 4.f));
@@ -102,12 +102,24 @@ namespace hm
 
 		// 현모 - BlackRockType4
 		{
-			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\BlackRockType4.fbx");
+			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Prefab\\BlackRockType4.fbx");
 			pDecoObject->GetRigidBody()->RemoveGravity();
 
 			pDecoObject->GetTransform()->SetScale(Vec3(4.f, 4.f, 4.f));
 			pDecoObject->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 			AddPrefab<DecoObject>(L"BlackRockType4", pDecoObject);
+			SAFE_DELETE(pDecoObject);
+		}
+
+		// 현모 - Bannister
+		{
+			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Prefab\\Bannister.fbx");
+			pDecoObject->GetRigidBody()->RemoveGravity();
+
+			pDecoObject->GetTransform()->SetScale(Vec3(12.f, 12.f, 12.f));
+			pDecoObject->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+			pDecoObject->GetTransform()->SetRotation(Vec3(-90.f, -90.f, 0.f));
+			AddPrefab<DecoObject>(L"Bannister", pDecoObject);
 			SAFE_DELETE(pDecoObject);
 		}
 	}
