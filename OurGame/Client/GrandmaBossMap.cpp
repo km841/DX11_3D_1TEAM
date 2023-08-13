@@ -84,7 +84,7 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(25.f, 1.f, 25.f);
 
-			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossGround.fbx");
+			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossGround.fbx");
 			pGround->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 			pGround->GetTransform()->SetPositionExcludingColliders(Vec3(-12.f, -18.5f, 0.f));
 
@@ -93,7 +93,7 @@ namespace hm
 
 		// Table
 		{
-			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(5.f, 10.f, 20.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossTable.fbx");
+			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(5.f, 10.f, 20.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossTable.fbx");
 			pDecoObject->GetRigidBody()->RemoveGravity();
 
 			pDecoObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
@@ -103,7 +103,7 @@ namespace hm
 
 		// Start
 		{
-			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, -30.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossStart_Btm.fbx");
+			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, -30.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossStart_Btm.fbx");
 			pDecoObject->GetRigidBody()->RemoveGravity();
 
 			pDecoObject->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
@@ -116,7 +116,7 @@ namespace hm
 		{
 			for (int x = 0; x < 12; ++x)
 			{
-				DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossWall1.fbx");
+				DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossWall1.fbx");
 				pDecoObject->GetRigidBody()->RemoveGravity();
 
 				float radian = (225.f + (x * 16.f)) * XM_PI / 180.f;
@@ -302,7 +302,14 @@ namespace hm
 			}
 		}
 
+		// Bannister
+		for (int i = 0; i < 2; ++i)
+		{
+			DecoObject* pBannister = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"Bannister");
+			pBannister->GetTransform()->SetPosition(Vec3(i % 2 ? -14.8f : 14.8f, 1.9f, -21.5f));
 
+			AddGameObject(pBannister);
+		}
 	}
 
 	void GrandmaBossMap::Exit()
