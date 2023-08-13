@@ -79,6 +79,9 @@
     <ClInclude Include="PlayerMoveScript.h">
       <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerSlashScript.h">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -157,6 +160,9 @@
       <Filter>소스 파일\GameObject\Player</Filter>
     </ClCompile>
     <ClCompile Include="PlayerMoveScript.cpp">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerSlashScript.cpp">
       <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClCompile>
   </ItemGroup>
