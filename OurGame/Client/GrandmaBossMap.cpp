@@ -34,6 +34,7 @@
 /* Script */
 #include "PaperBurnScript.h"
 #include "CameraMoveScript.h"
+#include "PlayerMoveScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -76,6 +77,8 @@ namespace hm
 
 	void GrandmaBossMap::Enter()
 	{
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 		// Ground
 		{
@@ -91,6 +94,20 @@ namespace hm
 			AddGameObject(pGround);
 		}
 
+		// Toy
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+			pPlayer->AddComponent(new PlayerMoveScript);
+			pPlayer->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+
+			AddGameObject(pPlayer);
+		}
+
 		// Table
 		{
 			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(5.f, 10.f, 20.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossTable.fbx");
@@ -103,12 +120,19 @@ namespace hm
 
 		// Start
 		{
-			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, -30.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossStart_Btm.fbx");
-			pDecoObject->GetRigidBody()->RemoveGravity();
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(30.f, 0.5f, 30.f);
 
-			pDecoObject->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
-			pDecoObject->GetTransform()->SetRotation(Vec3(-90.f, -90.f, 0.f));
-			AddGameObject(pDecoObject);
+			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 0.f, -30.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossStart_Btm.fbx");
+
+			pGround->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+			pGround->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+			pGround->GetTransform()->SetRotationExcludingColliders(Vec3(-90.f, 0.f, 0.f));
+			pGround->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.5f, 0.f));
+
+			AddGameObject(pGround);
 		}
 
 		// Wall
@@ -136,6 +160,17 @@ namespace hm
 
 		// Left Rocks
 		{
+			// Left Collider
+			{
+				PhysicsInfo info;
+				info.eActorType = ActorType::Static;
+				info.eGeometryType = GeometryType::Box;
+				info.size = Vec3(13.f, 5.f, 17.f);
+
+				WallObject* pWallObject = Factory::CreateObjectHasPhysical<WallObject>(Vec3(9.f, 2.5f, -36.f), info, L"Forward", L"");
+				AddGameObject(pWallObject);
+			}
+
 			// GrayRockType1
 			{
 				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"GrayRockType1");
@@ -220,6 +255,17 @@ namespace hm
 
 		// Right Rocks
 		{
+			// Right Collider
+			{
+				PhysicsInfo info;
+				info.eActorType = ActorType::Static;
+				info.eGeometryType = GeometryType::Box;
+				info.size = Vec3(13.f, 5.f, 17.f);
+
+				WallObject* pWallObject = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-9.f, 2.5f, -36.f), info, L"Forward", L"");
+				AddGameObject(pWallObject);
+			}
+
 			// GrayRockType1
 			{
 				DecoObject* pRock = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"GrayRockType1");
@@ -305,8 +351,8 @@ namespace hm
 		// Bannister
 		for (int i = 0; i < 2; ++i)
 		{
-			DecoObject* pBannister = GET_SINGLE(PrefabManager)->GetPrefab<DecoObject>(L"Bannister");
-			pBannister->GetTransform()->SetPosition(Vec3(i % 2 ? -14.8f : 14.8f, 1.9f, -21.5f));
+			WallObject* pBannister = GET_SINGLE(PrefabManager)->GetPrefab<WallObject>(L"Bannister");
+			pBannister->GetTransform()->SetPosition(Vec3(i % 2 ? -14.8f : 14.8f, 2.3f, -21.5f));
 
 			AddGameObject(pBannister);
 		}
@@ -317,6 +363,8 @@ namespace hm
 		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Unknown);
 		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Ground);
 		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Monster);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::DecoObject);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::WallObject);
 		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Player);
 	}
 }

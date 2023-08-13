@@ -113,14 +113,16 @@ namespace hm
 
 		// Çö¸ð - Bannister
 		{
-			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Prefab\\Bannister.fbx");
-			pDecoObject->GetRigidBody()->RemoveGravity();
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Static;
+			info.size = Vec3(13.f, 1.f, 3.f);
 
-			pDecoObject->GetTransform()->SetScale(Vec3(12.f, 12.f, 12.f));
-			pDecoObject->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
-			pDecoObject->GetTransform()->SetRotation(Vec3(-90.f, -90.f, 0.f));
-			AddPrefab<DecoObject>(L"Bannister", pDecoObject);
-			SAFE_DELETE(pDecoObject);
+			WallObject* pWallObject = Factory::CreateObjectHasPhysical<WallObject>(Vec3(0.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Prefab\\Bannister.fbx");
+
+			pWallObject->GetTransform()->SetScale(Vec3(12.f, 12.f, 12.f));
+			pWallObject->GetTransform()->SetRotation(Vec3(0.f, -90.f, -90.f));
+			AddPrefab<WallObject>(L"Bannister", pWallObject);
+			SAFE_DELETE(pWallObject);
 		}
 	}
 }
