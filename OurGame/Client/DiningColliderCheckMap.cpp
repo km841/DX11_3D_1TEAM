@@ -33,7 +33,7 @@
 #include "ParticleSystem.h"
 
 /* Script */
-
+#include "PlayerMoveScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -77,6 +77,10 @@ namespace hm
 
 	void DiningColliderCheckMap::Enter()
 	{
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
+
+
 		//배경맵 하얀색으로 만들어주는 코드
 		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 		
@@ -133,8 +137,20 @@ namespace hm
 		}
 
 
+		
+		// Toy
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Forward", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+			pPlayer->AddComponent(new PlayerMoveScript);
+			pPlayer->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 
+			AddGameObject(pPlayer);
+		}
 
 
 
