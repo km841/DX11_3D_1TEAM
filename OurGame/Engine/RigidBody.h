@@ -61,6 +61,8 @@ namespace hm
 		void SetActorInSceneFlag(bool _bFlag);
 		bool IsActorInScene() { return mbIsActorInScene; }
 
+		void AddForce(const Vec3& _force);
+
 	private:
 		void CreateBoxGeometry();
 		void CreateCapsuleGeometry();

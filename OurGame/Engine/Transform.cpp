@@ -159,9 +159,9 @@ namespace hm
 		if (true == IsPhysicsObject())
 		{
 			RigidBody* pRigidBody = GetRigidBody();
-			PxTransform transform = pRigidBody->GetDynamicActor()->getGlobalPose();
+			PxTransform transform = pRigidBody->GetActor<PxRigidActor>()->getGlobalPose();
 			transform.p = _position;
-			pRigidBody->GetDynamicActor()->setGlobalPose(transform);
+			pRigidBody->GetActor<PxRigidActor>()->setGlobalPose(transform);
 		}
 		else
 		{

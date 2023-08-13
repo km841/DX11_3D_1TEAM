@@ -161,6 +161,7 @@
     <ClInclude Include="PaperBurnScript.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerMoveScript.h" />
     <ClInclude Include="PrefabManager.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Right2Map.h" />
@@ -192,6 +193,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerMoveScript.cpp" />
     <ClCompile Include="PrefabManager.cpp" />
     <ClCompile Include="Right2Map.cpp" />
     <ClCompile Include="RightMap.cpp" />

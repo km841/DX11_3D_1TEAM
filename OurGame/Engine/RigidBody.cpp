@@ -32,8 +32,10 @@ namespace hm
 
 	void RigidBody::FinalUpdate()
 	{
-		if (true == mbAppliedGravity)
+		if (true == mbAppliedGravity && false == mbAppliedPhysics)
+		{
 			AddGravity();
+		}
 
 		if (true == mbAppliedPhysics && ActorType::Static == mPhysicsInfo.eActorType)
 			return;
@@ -64,6 +66,9 @@ namespace hm
 			info.massProperties = mPhysicsInfo.massProperties;
 			
 			pRigidBody->SetPhysical(info);
+			_pGameObject->GetTransform()->SetPosition(GetTransform()->GetPosition());
+			_pGameObject->GetTransform()->SetRotation(GetTransform()->GetRotation());
+			_pGameObject->GetTransform()->SetScale(GetTransform()->GetScale());
 		}
 
 		if (ActorType::Static != mPhysicsInfo.eActorType)
@@ -110,7 +115,7 @@ namespace hm
 
 	void RigidBody::SetPhysicsTransform(PxTransform _transform)
 	{
-		_transform.p.z = -_transform.p.z;
+		//_transform.p.z = -_transform.p.z;
 		AssertEx(mbAppliedPhysics, L"RigidBody::SetPhysicsTransform() - 물리가 들어가지 않은 오브젝트에 대한 SetPhysicsTransform 호출");
 		GetActor<PxRigidActor>()->setGlobalPose(_transform);
 		
@@ -293,6 +298,19 @@ namespace hm
 	void RigidBody::SetActorInSceneFlag(bool _bFlag)
 	{
 		mbIsActorInScene = _bFlag;
+	}
+
+	void RigidBody::AddForce(const Vec3& _force)
+	{
+		AssertEx(mbAppliedPhysics, L"RigidBody::AddForce() - 물리가 들어가지 않은 오브젝트에 대한 AddForce 호출");
+		AssertEx(ActorType::Static != mPhysicsInfo.eActorType, L"RigidBody::AddForce() - Static 객체에 대해 힘 적용");
+
+		PxRigidBodyExt::addForceAtPos(
+			*GetDynamicActor(),
+			_force,
+			GetTransform()->GetPosition(),
+			PxForceMode::eIMPULSE
+		);
 	}
 
 	void RigidBody::CreateBoxGeometry()
