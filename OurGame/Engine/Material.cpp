@@ -47,7 +47,7 @@ namespace hm
 
 	void Material::PushGraphicData(int _containerindex, int _subsetIndex)
 	{
-		CONST_BUFFER(ConstantBufferType::Material)->PushData(&mMaterialContainerVec[0]->materialSubsetVec[0]->materialParams, sizeof(MaterialParams));
+		CONST_BUFFER(ConstantBufferType::Material)->PushData(&mMaterialContainerVec[_containerindex]->materialSubsetVec[_subsetIndex]->materialParams, sizeof(MaterialParams));
 		mpShader->Update();
 
 		for (int i = 0; i < MATERIAL_VALUE_COUNT; ++i)

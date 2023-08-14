@@ -119,6 +119,7 @@ namespace hm
 
 			WallObject* pWallObject = Factory::CreateObjectHasPhysical<WallObject>(Vec3(0.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Prefab\\Bannister.fbx");
 
+			pWallObject->GetMeshRenderer()->GetMaterial()->SetInt(3, 1, 14, 0);
 			pWallObject->GetTransform()->SetScale(Vec3(12.f, 12.f, 12.f));
 			pWallObject->GetTransform()->SetRotation(Vec3(0.f, -90.f, -90.f));
 			AddPrefab<WallObject>(L"Bannister", pWallObject);

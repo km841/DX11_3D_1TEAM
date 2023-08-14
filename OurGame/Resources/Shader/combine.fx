@@ -29,6 +29,6 @@ float4 PS_Main(VS_OUT _in) : SV_Target
 {
     float3 originColor = g_tex_0.Sample(g_sam_0, _in.uv).rgb;
     float3 addColor = g_tex_1.Sample(g_sam_0, _in.uv).rgb;
-    return float4(originColor + addColor * 0.7f, 1.f);
+    return float4(originColor + addColor, 1.f);
 }
 #endif

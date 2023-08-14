@@ -89,6 +89,7 @@ namespace hm
 			physicsInfo.size = Vec3(25.f, 1.f, 25.f);
 
 			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossGround.fbx");
+			//pGround->GetMeshRenderer()->GetMaterial()->SetInt(3, 1);
 			pGround->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 			pGround->GetTransform()->SetPositionExcludingColliders(Vec3(-12.f, -18.5f, 0.f));
 
@@ -99,6 +100,7 @@ namespace hm
 		{
 			DecoObject* pSlashTest = Factory::CreateObject<DecoObject>(Vec3(0.f, 3.f, 0.f), L"PlayerSlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbx");
 			pSlashTest->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pSlashTest->GetMeshRenderer()->GetMaterial()->SetInt(3, 1);
 			pSlashTest->AddComponent(new PlayerSlashScript);
 
 			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"HeavySlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbm\\sword_slash_texture_1.png");

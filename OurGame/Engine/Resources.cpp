@@ -632,7 +632,7 @@ namespace hm
             Add<Shader>(L"PaperBurn_Deferred", pShader);
         }
 
-        // Forward Shader
+        // PlayerSlash Shader
         {
             ShaderInfo shaderInfo =
             {

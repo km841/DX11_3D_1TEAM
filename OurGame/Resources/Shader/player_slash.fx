@@ -66,6 +66,8 @@ float4 PS_Main(VS_OUT _in) : SV_Target
         color.a = 0;
     // Left -> Right
     
+    color *= 3.f;
+    
     return color;
 }
 #endif

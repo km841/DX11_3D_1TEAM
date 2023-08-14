@@ -65,6 +65,7 @@ PS_OUT PS_Main(VS_OUT _in)
 {
     PS_OUT output = (PS_OUT) 0;
    
+    float bloomFlag = g_int_3;
     float4 color = float4(0.f, 0.f, 0.f, 1.f);
     
     if (g_tex_on_0)
@@ -80,10 +81,10 @@ PS_OUT PS_Main(VS_OUT _in)
         float3x3 matTBN = { _in.viewTangent, _in.viewBinormal, _in.viewNormal };
         viewNormal = normalize(mul(tangentSpaceNormal, matTBN));
     }
-
-    output.position = float4(_in.viewPos, 0.f);
+    
+    output.position = 1 == bloomFlag ? float4(0, 0, 0, 0) : float4(_in.viewPos, 0.f);
     output.normal = float4(viewNormal, 0.f);
-    output.color = color;
+    output.color = 1 == bloomFlag ? color * 1.7 : color;
    
     return output;
 }

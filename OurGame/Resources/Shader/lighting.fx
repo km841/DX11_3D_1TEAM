@@ -30,6 +30,7 @@ VS_OUT VS_DirLight(VS_IN _in)
 // g_int_0 : Light Index
 // g_tex_0 : Position RenderTarget
 // g_tex_1 : Normal   RenderTarget
+// g_tex_2 : Emissive RenderTarget
 
 struct PS_OUT
 {
@@ -42,8 +43,8 @@ PS_OUT PS_DirLight(VS_OUT _in)
     PS_OUT output = (PS_OUT) 0;
 
     float4 viewPos = g_tex_0.Sample(g_sam_0, _in.uv);
-    if (viewPos.z <= 0.f)
-        clip(-1);
+    //if (viewPos.z <= 0.f)
+    //    clip(-1);
     
     float3 viewNormal = g_tex_1.Sample(g_sam_0, _in.uv).xyz;
 
@@ -53,6 +54,10 @@ PS_OUT PS_DirLight(VS_OUT _in)
 
     output.diffuse = color.diffuse + color.ambient + emissiveColor;
     //output.specular = color.specular;
+
+    float isViewPos = viewPos.x + viewPos.y + viewPos.z;
+    if (0 == isViewPos)
+        output.diffuse = float4(1.f, 1.f, 1.f, 1.f);
 
     return output;
 }
@@ -79,8 +84,8 @@ PS_OUT PS_PointLight(VS_OUT _in)
     // _in.pos = SV_Position = Screen ÁÂÇ¥
     float2 uv = float2(_in.pos.x / g_vec2_0.x, _in.pos.y / g_vec2_0.y);
     float3 viewPos = g_tex_0.Sample(g_sam_0, uv).xyz;
-    if (viewPos.z <= 0.f)
-        discard;
+    //if (viewPos.z <= 0.f)
+    //    discard;
 
     int lightIndex = g_int_0;
     float3 viewLightPos = mul(float4(g_light[lightIndex].position.xyz, 1.f), g_matView).xyz;
@@ -98,9 +103,10 @@ PS_OUT PS_PointLight(VS_OUT _in)
     else
         output.diffuse = color.diffuse + color.ambient;
     
-    output.specular = color.specular;
+    float isViewPos = viewPos.x + viewPos.y + viewPos.z;
+    if (0 == isViewPos)
+        output.diffuse = float4(1.f, 1.f, 1.f, 1.f);
     
-
     return output;
 }
 #endif
