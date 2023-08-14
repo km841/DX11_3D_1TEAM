@@ -150,7 +150,7 @@ namespace sy
 			AddGameObject(pStairs);
 		}
 
-		//1층 계단 벽 - Cube1 //현모님이 봐주셔야 할 코드
+		//1층 계단 벽 - Cube1 
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
@@ -243,10 +243,6 @@ namespace sy
 			pfloorextension_nocollider->GetTransform()->SetScale(Vec3(20.f, 10.f, 400.f));
 			AddGameObject(pfloorextension_nocollider);
 		}
-
-
-
-
 
 
 		//외곽 감싸주는 계단 ㄱ자 라인 줄 -wallPanel_Merged
