@@ -37,7 +37,11 @@ namespace hm
 			PxQuat relativeZ(mRelativeRotation.z * XM_PI / 180.f, Vec3(0.f, 0.f, 1.f));
 
 			Matrix matScale = Matrix::CreateScale(mScale);
-			Matrix matRotation = Matrix::CreateFromQuaternion(transform.q * relativeZ * relativeY * relativeX );
+			Matrix matRotation = Matrix::CreateFromQuaternion(relativeZ) *
+				Matrix::CreateFromQuaternion(relativeX) *
+				Matrix::CreateFromQuaternion(relativeY);
+
+			matRotation *= Matrix::CreateFromQuaternion(transform.q);
 			Matrix matTranslation = Matrix::CreateTranslation(Vec3(transform.p) + mRelativePosition);
 
 			mMatWorld = matScale * matRotation * matTranslation;
