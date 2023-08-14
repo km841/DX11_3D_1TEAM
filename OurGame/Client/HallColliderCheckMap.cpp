@@ -1,44 +1,94 @@
 #include "pch.h"
 #include "HallColliderCheckMap.h"
+#include "Engine.h"
 
-HallColliderCheckMap::HallColliderCheckMap()
-	: Map(MapType::HallColliderCheckMap)
-{
-}
+/* Resource */
+#include "MeshData.h"
+#include "Material.h"
+#include "Mesh.h"
 
-HallColliderCheckMap::~HallColliderCheckMap()
-{
-}
+/* Manager */
+#include "PrefabManager.h"
+#include "EventManager.h"
+#include "Factory.h"
+#include "CollisionManager.h"
+#include "Input.h"
+#include "SceneManager.h"
+#include "Resources.h"
 
-void HallColliderCheckMap::Initialize()
-{
-	Map::Initialize();
-}
+/* GameObject */
+#include "GameObject.h"
+#include "Player.h"
+#include "Ground.h"
+#include "DecoObject.h"
+#include "WallObject.h"
 
-void HallColliderCheckMap::Update()
-{
-	Map::Update();
-}
+/* Component */
+#include "Collider.h"
+#include "RigidBody.h"
+#include "MeshRenderer.h"
+#include "Transform.h"
+#include "Camera.h"
+#include "Light.h"
+#include "ParticleSystem.h"
 
-void HallColliderCheckMap::FixedUpdate()
-{
-	Map::FixedUpdate();
-}
+/* Script */
+#include "PlayerMoveScript.h"
 
-void HallColliderCheckMap::FinalUpdate()
-{
-	Map::FinalUpdate();
-}
+/* Event */
+#include "SceneChangeEvent.h"
 
-void HallColliderCheckMap::Render()
+namespace jh
 {
-	Map::Render();
-}
+	HallColliderCheckMap::HallColliderCheckMap()
+		: Map(MapType::HallColliderCheckMap)
+	{
+	}
 
-void HallColliderCheckMap::Enter()
-{
-}
+	HallColliderCheckMap::~HallColliderCheckMap()
+	{
+	}
 
-void HallColliderCheckMap::Exit()
-{
+	void HallColliderCheckMap::Initialize()
+	{
+		Map::Initialize();
+	}
+
+	void HallColliderCheckMap::Update()
+	{
+		Map::Update();
+	}
+
+	void HallColliderCheckMap::FixedUpdate()
+	{
+		Map::FixedUpdate();
+	}
+
+	void HallColliderCheckMap::FinalUpdate()
+	{
+		Map::FinalUpdate();
+	}
+
+	void HallColliderCheckMap::Render()
+	{
+		Map::Render();
+	}
+
+	void HallColliderCheckMap::Enter()
+	{
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
+
+		//배경맵 하얀색으로 만들어주는 코드
+		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
+
+		// 1, 2층 벽
+		{
+			//WallObject* pBottomFloorWall = Factory::CreateObjectHasPhysical
+		}
+	}
+
+	void HallColliderCheckMap::Exit()
+	{
+	}
 }

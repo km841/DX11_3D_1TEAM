@@ -36,7 +36,7 @@ namespace hm
 		GET_SINGLE(SceneManager)->AddMap(new DiningColliderCheckMap);
 		GET_SINGLE(SceneManager)->AddMap(new EntranceHallMap);
 		GET_SINGLE(SceneManager)->AddMap(new GrandmaBossMap);
-		GET_SINGLE(SceneManager)->AddMap(new HallColliderCheckMap);
+		GET_SINGLE(SceneManager)->AddMap(new jh::HallColliderCheckMap);
 		GET_SINGLE(SceneManager)->AddMap(new LeftSecretFightMap);
 		GET_SINGLE(SceneManager)->AddMap(new LeftSecretTrialMap);
 		GET_SINGLE(SceneManager)->AddMap(new Right2Map);
