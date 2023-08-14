@@ -150,19 +150,19 @@ namespace sy
 			AddGameObject(pStairs);
 		}
 
-		//1층 계단 벽 - StairRailCollider
+		//1층 계단 벽 - StairRailCollider //현모님이 봐주셔야 할 코드
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(0.7f, 3.f, 16.f);
 
-			Ground* pStairRailCollider = Factory::CreateObjectHasPhysical<Ground>(Vec3(-9.8f, -4.f, 1.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\StairRailCollider.fbx");
+			Ground* pStairRailCollider = Factory::CreateObjectHasPhysical<Ground>(Vec3(-9.8f, -4.f, 1.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube1.fbx");
 
-			pStairRailCollider->GetTransform()->SetScale(Vec3(15.f, 15.f, 15.f));
+			pStairRailCollider->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
 			pStairRailCollider->GetTransform()->SetRotation(Vec3(28.f, 0.f, 0.f));
-			pStairRailCollider->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 0.0f));
-			pStairRailCollider->GetTransform()->SetRotationExcludingColliders(Vec3(-28.f, 0.f, 0.f));
+			pStairRailCollider->GetTransform()->SetPositionExcludingColliders(Vec3(12.f, 0.f, 0.0f));
+			pStairRailCollider->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, 00.f));
 			AddGameObject(pStairRailCollider);
 		}
 
@@ -238,6 +238,15 @@ namespace sy
 			pPOT_Door->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.5f, 4.7f));
 
 			AddGameObject(pPOT_Door);
+		}
+
+		// 핑크색 문 프레임 나무 - DoorFrame
+		{
+			DecoObject* pDoorFrame = Factory::CreateObject<DecoObject>(Vec3(8.75f, -6.0f, -1.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\DoorFrame.fbx");
+
+			pDoorFrame->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+
+			AddGameObject(pDoorFrame);
 		}
 
 		//벽난로 -fireplace
