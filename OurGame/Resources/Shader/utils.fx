@@ -68,8 +68,8 @@ LightColor CalculateLightColor(int lightIndex, float3 viewNormal, float3 viewPos
     
     float toonRatio = (ceil(diffuseRatio * 5) / 5.f);
 
-    color.diffuse = g_light[lightIndex].color.diffuse * toonRatio * distanceRatio;
-    color.ambient = g_light[lightIndex].color.ambient * toonRatio;
+    color.diffuse = g_light[lightIndex].color.diffuse * diffuseRatio * distanceRatio;
+    color.ambient = g_light[lightIndex].color.ambient * diffuseRatio;
     //color.specular = g_light[lightIndex].color.specular * specularRatio * distanceRatio;
 
     return color;

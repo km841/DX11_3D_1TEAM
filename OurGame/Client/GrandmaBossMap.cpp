@@ -21,6 +21,7 @@
 #include "Player.h"
 #include "Ground.h"
 #include "DecoObject.h"
+#include "Monster.h"
 
 /* Component */
 #include "Collider.h"
@@ -96,6 +97,20 @@ namespace hm
 			AddGameObject(pGround);
 		}
 
+		// Monster
+		{
+			Monster* pMonster = Factory::CreateObject<Monster>(Vec3(0.f, 3.f, -20.f), L"PaperBurn", L"..\\Resources\\FBX\\Monster\\Mage.fbx");
+			pMonster->AddComponent(new PaperBurnScript);
+
+			shared_ptr<Texture> pNoiseTex = GET_SINGLE(Resources)->Load<Texture>(L"BurnNoise", L"..\\Resources\\Texture\\BurnNoise.png");
+			pMonster->GetMeshRenderer()->GetMaterial()->SetTextureAllSubset(1, pNoiseTex);
+
+			pMonster->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+			pMonster->GetTransform()->SetRotation(AXIS_Y, 180.f);
+
+			AddGameObject(pMonster);
+		}
+
 		// Sword_Heavy
 		{
 			DecoObject* pSlashTest = Factory::CreateObject<DecoObject>(Vec3(0.f, 3.f, 0.f), L"PlayerSlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbx");
@@ -110,18 +125,18 @@ namespace hm
 		}
 
 		// Toy
-		//{
-		//	PhysicsInfo physicsInfo;
-		//	physicsInfo.eActorType = ActorType::Dynamic;
-		//	physicsInfo.eGeometryType = GeometryType::Box;
-		//	physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
-		//	Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
-		//	pPlayer->AddComponent(new PlayerMoveScript);
-		//	pPlayer->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+			pPlayer->AddComponent(new PlayerMoveScript);
+			pPlayer->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 
-		//	AddGameObject(pPlayer);
-		//}
+			AddGameObject(pPlayer);
+		}
 
 		// Table
 		{
@@ -370,6 +385,31 @@ namespace hm
 			pBannister->GetTransform()->SetPosition(Vec3(i % 2 ? -14.8f : 14.8f, 2.3f, -21.5f));
 
 			AddGameObject(pBannister);
+		}
+
+		// Shortcut Door
+		//{
+		//	DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 5.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\ShortcutDoor.fbx");
+		//	pDecoObject->GetRigidBody()->RemoveGravity();
+
+		//	pDecoObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+		//	pDecoObject->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		//	AddGameObject(pDecoObject);
+		//}
+
+		// Light
+		for (int i = 0; i < 2; ++i)
+		{
+			DecoObject* pGameObject = new DecoObject();
+			Transform* pTransform = pGameObject->AddComponent(new Transform);
+			pTransform->SetPosition(Vec3(i ? -10.f : 18.f, 10.f, -15.f));
+			pTransform->SetScale(Vec3(10.f, 10.f, 10.f));
+			Light* pLight = pGameObject->AddComponent(new Light);
+			pLight->SetDiffuse(Vec3(1.f, 1.f, 0.f));
+			pLight->SetAmbient(Vec3(0.f, 0.f, 0.f));
+			pLight->SetLightRange(12.f);
+			pLight->SetLightType(LightType::PointLight);
+			AddGameObject(pGameObject);
 		}
 	}
 

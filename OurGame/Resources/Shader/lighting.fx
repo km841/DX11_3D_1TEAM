@@ -84,8 +84,8 @@ PS_OUT PS_PointLight(VS_OUT _in)
     // _in.pos = SV_Position = Screen ÁÂÇ¥
     float2 uv = float2(_in.pos.x / g_vec2_0.x, _in.pos.y / g_vec2_0.y);
     float3 viewPos = g_tex_0.Sample(g_sam_0, uv).xyz;
-    //if (viewPos.z <= 0.f)
-    //    discard;
+    if (viewPos.z <= 0.f)
+        discard;
 
     int lightIndex = g_int_0;
     float3 viewLightPos = mul(float4(g_light[lightIndex].position.xyz, 1.f), g_matView).xyz;

@@ -84,7 +84,7 @@ PS_OUT PS_Main(VS_OUT _in)
     
     output.position = 1 == bloomFlag ? float4(0, 0, 0, 0) : float4(_in.viewPos, 0.f);
     output.normal = float4(viewNormal, 0.f);
-    output.color = 1 == bloomFlag ? color * 1.7 : color;
+    output.color = 1 == bloomFlag ? color * 2 : color;
    
     return output;
 }

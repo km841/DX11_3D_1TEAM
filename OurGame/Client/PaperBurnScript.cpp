@@ -15,7 +15,7 @@ namespace hm
 	void PaperBurnScript::FixedUpdate()
 	{
 		mAccTime += DELTA_TIME;
-		GetMeshRenderer()->GetMaterial()->SetFloat(0, mAccTime);
+		GetMeshRenderer()->GetMaterial()->SetFloatAllSubset(0, mAccTime);
 	}
 	Component* PaperBurnScript::Clone(GameObject* _pGameObject)
 	{
