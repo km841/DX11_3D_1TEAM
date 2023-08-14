@@ -47,6 +47,7 @@ namespace hm
         shared_ptr<Shader>  GetShader() { return mpShader; }
         shared_ptr<Texture> GetTexture(int _index, int _containerIndex = 0, int _subsetIndex = 0) { return mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->textures[_index]; }
         void                SetTexture(int _index, shared_ptr<Texture> _pTexture, int _containerIndex = 0, int _subsetIndex = 0);
+        void                SetTextureAllSubset(int _index, shared_ptr<Texture> _pTexture);
 
         MaterialSubset* GetMaterialSubset(int _containerIndex, int _subsetindex) { return mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetindex]; }
         MaterialContainer* GetMaterialContainer(int _containerIndex) { return mMaterialContainerVec[_containerIndex]; }
@@ -57,6 +58,8 @@ namespace hm
         void SetIntAllSubset(int _index, int _value);
 
         void SetFloat(int _index, float _value, int _containerIndex = 0, int _subsetIndex = 0);
+        void SetFloatAllSubset(int _index, float _value);
+
         void SetVec2(int _index, Vec2 _value, int _containerIndex = 0, int _subsetIndex = 0);
         void SetVec3(int _index, Vec3 _value, int _containerIndex = 0, int _subsetIndex = 0);
         void SetVec4(int _index, Vec4 _value, int _containerIndex = 0, int _subsetIndex = 0);

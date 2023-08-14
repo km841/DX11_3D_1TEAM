@@ -64,17 +64,19 @@ float4 PS_Main(VS_OUT _in) : SV_Target
     float3 fireshape = g_tex_1.Sample(g_sam_0, uv).rrr;
     float3 materialColor = g_tex_0.Sample(g_sam_0, uv).rgb;
     
-    float time = frac(g_float_0 * 0.2);
+    float time = frac(g_float_0 * -0.2);
     float erosion = smoothstep(time - 0.2, time, fireshape.r);
     float border = smoothstep(0.0, 0.7, erosion) - smoothstep(0.5, 1.0, erosion);
 
     float3 initialColor = float3(1.0, 0.5, 0.1);
-    float3 finalColor = float3(0.6, 0.8, 1.0);
+    float3 finalColor = float3(0.5, 0.0, 0.5);
     float3 burningColor = lerp(initialColor, finalColor, smoothstep(0.7, 1.0, border)) * 3.0;
     
-    float3 finalColorWithBurn = lerp(materialColor, float3(0.0, 0.0, 0.0), erosion) + border * burningColor;
+    float3 finalColorWithBurn = lerp(materialColor, float3(1.0, 0.5, 1.0), erosion) + border * burningColor * 1.5;
 
-    float alpha = finalColorWithBurn.r + finalColorWithBurn.g + finalColorWithBurn.b > 0.0 ? 1.0 : 0.0;
+    float alpha = 1;
+    if (finalColorWithBurn.r == 1 && finalColorWithBurn.g == 0.5 && finalColorWithBurn.b == 1)
+        alpha = 0;
 
     return float4(finalColorWithBurn, alpha);
 }

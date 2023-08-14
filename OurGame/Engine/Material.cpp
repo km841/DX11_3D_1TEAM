@@ -145,6 +145,17 @@ namespace hm
 		}
 	}
 
+	void Material::SetTextureAllSubset(int _index, shared_ptr<Texture> _pTexture)
+	{
+		for (int i = 0; i < mMaterialContainerVec.size(); ++i)
+		{
+			for (int j = 0; j < mMaterialContainerVec[i]->materialSubsetVec.size(); ++j)
+			{
+				mMaterialContainerVec[i]->materialSubsetVec[j]->SetTexture(_index, _pTexture);
+			}
+		}
+	}
+
 	void Material::SetInt(int _index, int _value, int _containerIndex, int _subsetIndex)
 	{
 		mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams.SetInt(_index, _value);
@@ -164,6 +175,17 @@ namespace hm
 	void Material::SetFloat(int _index, float _value, int _containerIndex, int _subsetIndex)
 	{
 		mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams.SetFloat(_index, _value);
+	}
+
+	void Material::SetFloatAllSubset(int _index, float _value)
+	{
+		for (int i = 0; i < mMaterialContainerVec.size(); ++i)
+		{
+			for (int j = 0; j < mMaterialContainerVec[i]->materialSubsetVec.size(); ++j)
+			{
+				mMaterialContainerVec[i]->materialSubsetVec[j]->materialParams.SetFloat(_index, _value);
+			}
+		}
 	}
 
 	void Material::SetVec2(int _index, Vec2 _value, int _containerIndex, int _subsetIndex)
