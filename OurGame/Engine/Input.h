@@ -19,6 +19,7 @@ namespace hm
 		C = 'C',
 		N = 'N',
 		G = 'G',
+		H = 'H',
 		X = 'X',
 		F = 'F',
 		P = 'P',
