@@ -40,6 +40,8 @@ namespace hm
 			Matrix matRotation = Matrix::CreateFromQuaternion(relativeZ) *
 				Matrix::CreateFromQuaternion(relativeX) *
 				Matrix::CreateFromQuaternion(relativeY);
+			//Z*Y*X ÇÏ´Ï±î Áü¹ú¶ô °É·Ç´Ù.
+
 
 			matRotation *= Matrix::CreateFromQuaternion(transform.q);
 			Matrix matTranslation = Matrix::CreateTranslation(Vec3(transform.p) + mRelativePosition);

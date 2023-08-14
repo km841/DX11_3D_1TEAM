@@ -162,7 +162,7 @@ namespace sy
 			pCube1->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
 			pCube1->GetTransform()->SetRotation(Vec3(28.f, 0.f, 0.f));
 			pCube1->GetTransform()->SetPositionExcludingColliders(Vec3(8.f, 0.f, 0.0f));
-			pCube1->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, 0.f));
+			pCube1->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -28.f));
 			AddGameObject(pCube1);
 		}
 
@@ -195,7 +195,7 @@ namespace sy
 			pCube2->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
 			pCube2->GetTransform()->SetRotation(Vec3(28.f, -90.f, 0.f));
 			pCube2->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 12.0f));
-			pCube2->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, 0.f));
+			pCube2->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -28.f));
 			AddGameObject(pCube2);
 		}
 
