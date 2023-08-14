@@ -39,7 +39,7 @@
 #include "SceneChangeEvent.h"
 
 
-namespace hm
+namespace sy
 {
 	DiningColliderCheckMap::DiningColliderCheckMap()
 		: Map(MapType::DiningColliderCheckMap)
@@ -101,9 +101,10 @@ namespace hm
 			DecoObject* pNormalBase = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Diningroom.fbx");
 
 			pNormalBase->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
-
+			pNormalBase->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
 			AddGameObject(pNormalBase);
 		}
+
 
 		// 1Ãþ ¹Ù´Ú - Floor
 		{
@@ -165,6 +166,57 @@ namespace hm
 			AddGameObject(pStairRailCollider);
 		}
 
+		//2Ãþ °è´Ü - Stairs
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(5.f, 0.1f, 14.2f);
+
+			Ground* pStairs_2floor = Factory::CreateObjectHasPhysical<Ground>(Vec3(2.2f, 1.6f, -22.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Stairs.fbx");
+
+			pStairs_2floor->GetTransform()->SetScale(Vec3(15.f, 15.5f, 15.f));
+			pStairs_2floor->GetTransform()->SetRotation(Vec3(28.f, -90.f, 0.f));
+			pStairs_2floor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.1f, 0.f));
+			pStairs_2floor->GetTransform()->SetRotationExcludingColliders(Vec3(-28.f, 0.f, 0.f));
+			AddGameObject(pStairs_2floor);
+		}
+
+		//2Ãþ °è´Ü º® - StairRailCollider
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(0.7f, 3.f, 16.f);
+
+			Ground* pStairRailCollider = Factory::CreateObjectHasPhysical<Ground>(Vec3(1.3f, 2.f, -20.f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\StairRailCollider.fbx");
+
+			pStairRailCollider->GetTransform()->SetScale(Vec3(15.f, 15.f, 15.f));
+			pStairRailCollider->GetTransform()->SetRotation(Vec3(28.f, -90.f, 0.f));
+			pStairRailCollider->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 0.0f));
+			pStairRailCollider->GetTransform()->SetRotationExcludingColliders(Vec3(-28.f, 0.f, 0.f));
+			AddGameObject(pStairRailCollider);
+		}
+
+
+
+		// 3Ãþ ¹Ù´Ú ÄÝ¶óÀÌ´õ
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(5.5f, 0.1f, 50.f);
+
+			Ground* pWallObject = Factory::CreateObjectHasPhysical<Ground>(Vec3(11.f, 4.9f, 0.f), info, L"Forward", L"");
+			AddGameObject(pWallObject);
+		}
+
+
+
+
+
+
+
 
 		//¿Ü°û °¨½ÎÁÖ´Â °è´Ü ¤¡ÀÚ ¶óÀÎ ÁÙ -wallPanel_Merged
 		{
@@ -198,6 +250,15 @@ namespace hm
 			AddGameObject(pfireplace);
 		}
 
+		//1Ãþ ¹Ù´Ú ±¸¸Û Å×µÎ¸® - RimStarter
+		{
+			DecoObject* pRimStarter = Factory::CreateObject<DecoObject>(Vec3(-0.3f, -8.5f, 3.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\RimStarter.fbx");
+
+			pRimStarter->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+
+
+			AddGameObject(pRimStarter);
+		}
 
 		
 
@@ -220,7 +281,7 @@ namespace hm
 			pPlayer->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 
 			PlayerMoveScript* pPlayerSc =  pPlayer->AddComponent(new PlayerMoveScript);
-
+	
 			AddGameObject(pPlayer);
 		}
 

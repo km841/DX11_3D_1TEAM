@@ -1,6 +1,6 @@
 #pragma once
 #include "Map.h"
-namespace hm
+namespace sy
 {
 	class DiningColliderCheckMap :
 		public Map
