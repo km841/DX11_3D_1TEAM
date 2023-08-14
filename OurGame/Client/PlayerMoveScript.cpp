@@ -4,14 +4,26 @@
 #include "Input.h"
 #include "Transform.h"
 #include "RigidBody.h"
+#include "MeshRenderer.h"
 
 PlayerMoveScript::PlayerMoveScript()
-	: mMoveSpeed(3.f)
+	: mMoveSpeed(2.f)
 {
 }
 
 void PlayerMoveScript::FixedUpdate()
 {
+	Transform* tr = GetTransform();
+	RigidBody* rb = GetRigidBody();
+	MeshRenderer* mr = GetMeshRenderer();
+
+	if (IS_PRESS(KeyType::H))
+	{
+		tr->SetPosition(Vec3(0.0f, 0.0f, 0.f));
+	}
+
+
+
 	if (IS_PRESS(KeyType::UP))
 	{
 		GetRigidBody()->SetVelocity(AXIS_Z, mMoveSpeed);
