@@ -150,7 +150,7 @@ namespace sy
 			AddGameObject(pStairs);
 		}
 
-		//1Ãþ °è´Ü º® - Cube1 //Çö¸ð´ÔÀÌ ºÁÁÖ¼Å¾ß ÇÒ ÄÚµå
+		//1Ãþ °è´Ü º® - Cube1 
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
@@ -159,9 +159,9 @@ namespace sy
 
 			Ground* pCube1 = Factory::CreateObjectHasPhysical<Ground>(Vec3(-9.8f, -4.f, 1.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube1.fbx");
 
-			pCube1->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+			pCube1->GetTransform()->SetScale(Vec3(30.f, 26.f, 25.f));
 			pCube1->GetTransform()->SetRotation(Vec3(28.f, 0.f, 0.f));
-			pCube1->GetTransform()->SetPositionExcludingColliders(Vec3(8.f, 0.f, 0.0f));
+			pCube1->GetTransform()->SetPositionExcludingColliders(Vec3(8.f, -0.3f, -1.0f));
 			pCube1->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -28.f));
 			AddGameObject(pCube1);
 		}
@@ -183,7 +183,7 @@ namespace sy
 			AddGameObject(pStairs_2floor);
 		}
 
-		//2Ãþ °è´Ü º® - Cube2
+		//2Ãþ °è´Ü º® ¿ÞÂÊ- Cube2
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
@@ -194,7 +194,23 @@ namespace sy
 
 			pCube2->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
 			pCube2->GetTransform()->SetRotation(Vec3(28.f, -90.f, 0.f));
-			pCube2->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 12.0f));
+			pCube2->GetTransform()->SetPositionExcludingColliders(Vec3(1.1f, -0.5f, 12.1f));
+			pCube2->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -28.f));
+			AddGameObject(pCube2);
+		}
+
+		//2Ãþ °è´Ü º® ¿À¸¥ÂÊ - Cube2
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(0.7f, 3.f, 16.f);
+
+			Ground* pCube2 = Factory::CreateObjectHasPhysical<Ground>(Vec3(1.3f, 2.f, -25.f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube2.fbx");
+
+			pCube2->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+			pCube2->GetTransform()->SetRotation(Vec3(28.f, -90.f, 0.f));
+			pCube2->GetTransform()->SetPositionExcludingColliders(Vec3(1.1f, -0.5f, 12.1f));
 			pCube2->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -28.f));
 			AddGameObject(pCube2);
 		}
@@ -220,9 +236,13 @@ namespace sy
 			AddGameObject(pWallObject);
 		}
 
+		// 3Ãþ ¹Ù´Ú - floorextension_nocollider
+		{
+			Ground* pfloorextension_nocollider = Factory::CreateObject<Ground>(Vec3(11.5f, 5.f, 169.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\floorextension_nocollider.fbx");
 
-
-
+			pfloorextension_nocollider->GetTransform()->SetScale(Vec3(20.f, 10.f, 400.f));
+			AddGameObject(pfloorextension_nocollider);
+		}
 
 
 		//¿Ü°û °¨½ÎÁÖ´Â °è´Ü ¤¡ÀÚ ¶óÀÎ ÁÙ -wallPanel_Merged
@@ -237,6 +257,7 @@ namespace sy
 		//±âµÕ ¸ðÀ½Áý - ColumnFull
 		{
 			{
+				//1Ãþ ¸Ç¾Õ ±âµÕ
 				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(0.f, 3.f, 25.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 				pColumnFull->GetTransform()->SetScale(Vec3(30.f, 40.f, 30.f));
@@ -245,9 +266,64 @@ namespace sy
 			}
 
 			{
+				//1Ãþ ¤¡ÀÚ »çÀÌ ±âµÕ
 				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(0.5f, -2.8f, -5.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 				pColumnFull->GetTransform()->SetScale(Vec3(30.f, 22.f, 30.f));
+				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+				AddGameObject(pColumnFull);
+			}
+
+			{
+				//2Ãþ ¸Ç¾Õ ±âµÕ
+				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.8f, 2.5f, -5.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+
+				pColumnFull->GetTransform()->SetScale(Vec3(15.f, 15.f, 15.f));
+				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+				AddGameObject(pColumnFull);
+			}
+
+			{
+				//2Ãþ °è´Ü ±âµÕ
+				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.1f, 2.5f, -20.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+
+				pColumnFull->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
+				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+				AddGameObject(pColumnFull);
+			}
+
+			{
+				//2-3Ãþ °è´Ü º®ÂÊ ±âµÕ
+				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.1f, 9.8f, -25.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+
+				pColumnFull->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
+				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+				AddGameObject(pColumnFull);
+			}
+
+			{
+				//3Ãþ ¤¡ÀÚ º®ÂÊ ±âµÕ
+				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(6.3f, 9.8f, -25.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+
+				pColumnFull->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
+				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+				AddGameObject(pColumnFull);
+			}
+
+			{
+				//2Ãþ ¸Ç¿À¸¥ÂÊ Å«±âµÕ
+				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(-27.6f, 6.2f, -25.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+
+				pColumnFull->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+				AddGameObject(pColumnFull);
+			}
+
+			{
+				//3Ãþ Áß°£ º®ÂÊ ±âµÕ
+				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(6.3f, 9.8f, -6.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+
+				pColumnFull->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
 				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
 				AddGameObject(pColumnFull);
 			}
