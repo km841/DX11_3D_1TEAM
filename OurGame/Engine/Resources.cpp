@@ -648,6 +648,54 @@ namespace hm
             Add<Shader>(L"PlayerSlash", pShader);
         }
 
+        // Light Blend Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Light,
+                DepthStencilType::NoDepthTestNoWrite,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\lightblend.fx", shaderInfo);
+
+            Add<Shader>(L"LightBlend", pShader);
+        }
+
+        // DownScale First Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Light,
+                DepthStencilType::NoDepthTestNoWrite,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateComputeShader(L"..\\Resources\\Shader\\compute_downscale.fx", "DownScaleFirstPass", "cs_5_0");
+
+            Add<Shader>(L"DownScaleFirst", pShader);
+        }
+
+        // DownScale Second Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Light,
+                DepthStencilType::NoDepthTestNoWrite,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateComputeShader(L"..\\Resources\\Shader\\compute_downscale.fx", "DownScaleSecondPass", "cs_5_0");
+
+            Add<Shader>(L"DownScaleSecond", pShader);
+        }
+
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -752,9 +800,7 @@ namespace hm
             shared_ptr<Material> pMaterial = make_shared<Material>();
             shared_ptr<Shader> pShader = Get<Shader>(L"Final");
 
-            pMaterial->SetTexture(0, Get<Texture>(L"DiffuseTarget"));
-            pMaterial->SetTexture(1, Get<Texture>(L"DiffuseLightTarget"));
-            pMaterial->SetTexture(2, Get<Texture>(L"SpecularLightTarget"));
+            pMaterial->SetTexture(0, Get<Texture>(L"LightBlendTarget"));
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"Final", pMaterial);
@@ -841,6 +887,37 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"PlayerSlash", pMaterial);
+        }
+
+        // LightBlend Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"LightBlend");
+
+            pMaterial->SetTexture(0, Get<Texture>(L"DiffuseTarget"));
+            pMaterial->SetTexture(1, Get<Texture>(L"DiffuseLightTarget"));
+            pMaterial->SetTexture(2, Get<Texture>(L"SpecularLightTarget"));
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"LightBlend", pMaterial);
+        }
+
+        // DownScale First Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"DownScaleFirst");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"DownScaleFirst", pMaterial);
+        }
+
+        // DownScale Second Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"DownScaleSecond");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"DownScaleSecond", pMaterial);
         }
     }
 }

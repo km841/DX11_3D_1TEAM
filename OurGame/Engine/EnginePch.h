@@ -130,6 +130,7 @@ public:						  \
 #define IS_NONE(key) GET_SINGLE(Input)->GetButtonNone(key)
 #define DELTA_TIME GET_SINGLE(Timer)->GetDeltaTime()
 #define ACTIVE_SCENE GET_SINGLE(SceneManager)->GetActiveScene()
+#define RESOLUTION gpEngine->GetResolution()
 
 /*
 * 기존 assert 함수를 확장한 함수.

@@ -91,6 +91,7 @@ namespace hm
 
 			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossGround.fbx");
 			//pGround->GetMeshRenderer()->GetMaterial()->SetInt(3, 1);
+			
 			pGround->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 			pGround->GetTransform()->SetPositionExcludingColliders(Vec3(-12.f, -18.5f, 0.f));
 
@@ -145,6 +146,16 @@ namespace hm
 
 			pDecoObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
 			pDecoObject->GetTransform()->SetRotation(Vec3(-90.f, 20.f, 0.f));
+			AddGameObject(pDecoObject);
+		}
+
+		// Main
+		{
+			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(5.f, 10.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Main_Fix.fbx");
+			pDecoObject->GetRigidBody()->RemoveGravity();
+
+			pDecoObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+			pDecoObject->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 			AddGameObject(pDecoObject);
 		}
 

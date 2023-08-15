@@ -7,6 +7,7 @@ namespace hm
 		SwapChain,
 		G_Buffer,
 		Light,
+		LightBlend,
 		End,
 	};
 
@@ -16,6 +17,7 @@ namespace hm
 		G_BUGGER_GROUP_COUNT = 4,
 		SWAP_CHAIN_BUFFER_COUNT = 1,
 		LIGHTING_GROUP_COUNT = 2,
+		LIGHTBLEND_GROUP_COUNT = 1,
 	};
 
 	struct RenderTarget
@@ -56,6 +58,7 @@ namespace hm
 		void ClearRenderTargetView();
 
 		void SetClearColor(Vec4 _color);
+		void SetClearColor(int _index, Vec4 _color);
 
 	private:
 		MultiRenderTargetType	     meRenderTargetType;

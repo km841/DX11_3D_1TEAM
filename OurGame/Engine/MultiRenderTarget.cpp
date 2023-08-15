@@ -47,5 +47,10 @@ namespace hm
 			memcpy(mRenderTargets[i].clearColors, &_color.x, sizeof(Vec4));
 		}
 	}
+	void MultiRenderTarget::SetClearColor(int _index, Vec4 _color)
+	{
+		_color /= 255.f;
+		memcpy(mRenderTargets[_index].clearColors, &_color.x, sizeof(Vec4));
+	}
 }
 
