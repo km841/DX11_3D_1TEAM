@@ -10,6 +10,8 @@
 #include "CombineFilter.h"
 #include "MeshRenderer.h"
 #include "Transform.h"
+#include "Material.h"
+
 
 namespace hm
 {
@@ -33,6 +35,8 @@ namespace hm
 		mWidth = gpEngine->GetWindowInfo().width;
 		mHeight = gpEngine->GetWindowInfo().height;
 
+		//PostProcessInit();
+
 		mpCopyFilter = make_shared<ImageFilter>(GET_SINGLE(Resources)->Get<Material>(L"Copy"), mWidth, mHeight);
 		mpSamplingFilter = make_shared<ImageFilter>(GET_SINGLE(Resources)->Get<Material>(L"Sampling"), mWidth, mHeight);
 		mpBlurYFilter = make_shared<BlurFilter>(GET_SINGLE(Resources)->Get<Material>(L"BlurY"), mWidth / 6, mHeight / 6);
@@ -49,7 +53,8 @@ namespace hm
 
 		RenderDeferred(_pScene);
 		RenderLight(_pScene);
-		RenderFinal(_pScene);
+		RenderLightBlend();
+		RenderFinal();
 		RenderForward(_pScene);
 
 		PostProcessing();
@@ -74,6 +79,7 @@ namespace hm
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::SwapChain)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::G_Buffer)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::Light)->ClearRenderTargetView();
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::LightBlend)->ClearRenderTargetView();
 	}
 
 	void RenderManager::SortGameObject(Scene* _pScene)
@@ -129,7 +135,15 @@ namespace hm
 		}
 	}
 
-	void RenderManager::RenderFinal(Scene* _pScene)
+	void RenderManager::RenderLightBlend()
+	{
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::LightBlend)->OMSetRenderTarget();
+
+		GET_SINGLE(Resources)->Get<Material>(L"LightBlend")->PushGraphicData();
+		GET_SINGLE(Resources)->LoadRectMesh()->Render();
+	}
+
+	void RenderManager::RenderFinal()
 	{
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::SwapChain)->OMSetRenderTarget(1);
 
@@ -139,6 +153,7 @@ namespace hm
 
 	void RenderManager::PostProcessing()
 	{
+		//DownScale();
 		Bloom();
 	}
 
@@ -158,6 +173,33 @@ namespace hm
 
 		CONST_BUFFER(ConstantBufferType::Light)->PushData(&lightParams, sizeof(lightParams));
 		CONST_BUFFER(ConstantBufferType::Light)->Mapping();
+	}
+
+	void RenderManager::DownScale()
+	{
+		CONTEXT->CSSetUnorderedAccessViews(0, 1, &mpDownScaleUAV, nullptr);
+		CONTEXT->CSSetUnorderedAccessViews(3, 1, &mpDownScaleSceneUAV, nullptr);
+
+		shared_ptr<Texture> pRTV = GET_SINGLE(Resources)->Get<Texture>(L"LightBlendTarget");
+
+		Vec2 resolution = RESOLUTION;
+		float totalPixels = static_cast<float>((resolution.x * resolution.y) / 16);
+
+		mpDownScaleFirstPassMaterial->SetTexture(0, pRTV);
+		mpDownScaleFirstPassMaterial->SetInt(0, static_cast<int>(resolution.x / 4));
+		mpDownScaleFirstPassMaterial->SetInt(1, static_cast<int>(resolution.y / 4));
+		mpDownScaleFirstPassMaterial->SetInt(2, static_cast<int>(totalPixels));
+		mpDownScaleFirstPassMaterial->SetInt(3, static_cast<int>(totalPixels / 1024.f));
+		mpDownScaleFirstPassMaterial->SetFloat(0, 5.f); // Adaptation
+		mpDownScaleFirstPassMaterial->SetFloat(1, 2.f); // Bloom Threshold
+
+		mpDownScaleFirstPassMaterial->Dispatch(static_cast<int>(totalPixels / 1024), 1, 1);
+
+		CONTEXT->CSSetUnorderedAccessViews(0, 1, &mpAvgLumUAV, nullptr);
+		CONTEXT->CSSetShaderResources(6, 1, &mpDownScaleSRV);
+		CONTEXT->CSSetShaderResources(7, 1, &mpPrevAdaptionSRV);
+
+		mpDownScaleSecondPassMaterial->Dispatch(1, 1, 1);
 	}
 
 	void RenderManager::Blur()
@@ -236,6 +278,84 @@ namespace hm
 				gameObjects[0]->GetMeshRenderer()->GetMaterial()->SetIntAllSubset(0, 1);
 				gameObjects[0]->GetMeshRenderer()->Render(_pCamera, pBuffer);
 			}
+		}
+	}
+	void RenderManager::PostProcessInit()
+	{
+		mpDownScaleFirstPassMaterial = GET_SINGLE(Resources)->Get<Material>(L"DownScaleFirst");
+		mpDownScaleSecondPassMaterial = GET_SINGLE(Resources)->Get<Material>(L"DownScaleSecond");
+
+		// 첫번째
+		D3D11_BUFFER_DESC tDesc = {};
+		tDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
+		tDesc.StructureByteStride = 4;				// Size of float
+		tDesc.ByteWidth = 4 * ((static_cast<UINT32>(RESOLUTION.x) * static_cast<UINT32>(RESOLUTION.y)) / (16 * 1024));
+		tDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+
+		// 버퍼 생성
+		if (FAILED(DEVICE->CreateBuffer(&tDesc, NULL, &mpDownScaleBuffer)))
+		{
+			return;
+		}
+
+		D3D11_UNORDERED_ACCESS_VIEW_DESC tUAVDesc = {};
+		tUAVDesc.Format = DXGI_FORMAT_UNKNOWN;
+		tUAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+		tUAVDesc.Buffer.NumElements = 4 * ((static_cast<UINT32>(RESOLUTION.x) * static_cast<UINT32>(RESOLUTION.y)) / (16 * 1024));
+
+		// 순서 없는 접근 뷰 생성
+		if (FAILED(DEVICE->CreateUnorderedAccessView(mpDownScaleBuffer.Get(), &tUAVDesc, &mpDownScaleUAV)))
+		{
+			return;
+		}
+
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC tSRVDesc = {};
+		tSRVDesc.Format = DXGI_FORMAT_UNKNOWN;
+		tSRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+		tSRVDesc.Buffer.NumElements = 4 * ((static_cast<UINT32>(RESOLUTION.x) * static_cast<UINT32>(RESOLUTION.y)) / (16 * 1024));
+
+		// 셰이더 리소스 뷰 생성
+		if (FAILED(DEVICE->CreateShaderResourceView(mpDownScaleBuffer.Get(), &tSRVDesc, &mpDownScaleSRV)))
+		{
+			return;
+		}
+
+		// 두번째
+		D3D11_BUFFER_DESC tDescLA = {};
+		tDescLA.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
+		tDescLA.StructureByteStride = 4;
+		tDescLA.ByteWidth = 4;
+		tDescLA.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+
+		// 버퍼 생성
+		if (FAILED(DEVICE->CreateBuffer(&tDescLA, NULL, &mpAvgLumBuffer)))
+		{
+			return;
+		}
+
+
+		D3D11_UNORDERED_ACCESS_VIEW_DESC tUAVDescLA = {};
+		tUAVDescLA.Format = DXGI_FORMAT_UNKNOWN;
+		tUAVDescLA.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+		tUAVDescLA.Buffer.NumElements = 1;
+
+		// 순서 없는 접근 뷰 생성
+		if (FAILED(DEVICE->CreateUnorderedAccessView(mpAvgLumBuffer.Get(), &tUAVDescLA, &mpAvgLumUAV)))
+		{
+			return;
+		}
+
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC tSRVDescLA = {};
+		tSRVDescLA.Format = DXGI_FORMAT_UNKNOWN;
+		tSRVDescLA.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+		tSRVDescLA.Buffer.NumElements = 1;
+
+		// 셰이더 리소스 뷰 생성
+		if (FAILED(DEVICE->CreateShaderResourceView(mpAvgLumBuffer.Get(), &tSRVDescLA, &mpAvgLumSRV)))
+		{
+			return;
 		}
 	}
 }

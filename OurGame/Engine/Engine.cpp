@@ -87,7 +87,7 @@ namespace hm
 				ComPtr<ID3D11Texture2D> pResource = {};
 
 				HRESULT hr = mpSwapChain->GetSwapChain()->GetBuffer(i, IID_PPV_ARGS(&pResource));
-				AssertEx(SUCCEEDED(hr), L"GetBuffer Failed");
+				AssertEx(SUCCEEDED(hr), L"Engine::CreateMultiRenderTarget() - GetBuffer Failed");
 
 				renderTargets[i].pTarget = GET_SINGLE(Resources)->CreateTextureFromResource(name, DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE, pResource);
 				memcpy(renderTargets[i].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
@@ -159,6 +159,23 @@ namespace hm
 			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::Light)] = new MultiRenderTarget;
 			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::Light)]->Create(MultiRenderTargetType::Light, renderTargets, pDepthStencilTexture);
 		}
+
+		// Light Blend
+		{
+			float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+			std::vector<RenderTarget> renderTargets(LIGHTBLEND_GROUP_COUNT);
+
+			renderTargets[0].pTarget = GET_SINGLE(Resources)->CreateTexture(
+				L"LightBlendTarget",
+				DXGI_FORMAT_R8G8B8A8_UNORM,
+				D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE,
+				mWindowInfo.width, mWindowInfo.height);
+
+			memcpy(renderTargets[0].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
+
+			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::LightBlend)] = new MultiRenderTarget;
+			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::LightBlend)]->Create(MultiRenderTargetType::LightBlend, renderTargets, pDepthStencilTexture);
+		}
 	}
 
 	void Engine::CreateConstantBuffer(RegisterCBV _eRegister, int _size)
@@ -173,8 +190,8 @@ namespace hm
 
 	void Engine::SetSwapChainRTVClearColor(Vec4 _color)
 	{
-		AssertEx(mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::SwapChain)], L"Engine::SetSwapChainRTVClearColor() - SwapChain이 생성되지 않음");
-		mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::SwapChain)]->SetClearColor(_color);
+		AssertEx(mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::G_Buffer)], L"Engine::SetSwapChainRTVClearColor() - SwapChain이 생성되지 않음");
+		mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::G_Buffer)]->SetClearColor(2, _color);
 	}
 
 

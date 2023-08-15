@@ -37,7 +37,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HWND hwnd = CreateWindowW(gWindowName, gWindowName, WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
-    AssertEx(hwnd, L"Create WindowHandle Failed");
+    AssertEx(hwnd, L"wWinMain() - Create WindowHandle Failed");
     gWindowInfo.hwnd = hwnd;
 
     ShowWindow(hwnd, SW_SHOW);
