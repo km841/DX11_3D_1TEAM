@@ -128,17 +128,17 @@ float4 PS_FinalPass(VS_OUTPUT_HDR _Input) : SV_TARGET
     // 먼 평면에 없는 픽셀에 대해서 거리 DOF 계산
     float2 Depth = g_tex_10.Sample(g_sam_1, _Input.UV.xy).zw;
 
-    //if (Depth.x < 1.0)
-    //{
-    //    // 다운 스케일 HDR 텍스처에 대한 블러 색상 계산
-    //    float3 ColorBlurred = DOFBlurTexture.Sample(g_sam_0, _Input.UV.xy).xyz;
+    if (Depth.x < 1.0)
+    {
+        // 다운 스케일 HDR 텍스처에 대한 블러 색상 계산
+        float3 ColorBlurred = DOFBlurTexture.Sample(g_sam_0, _Input.UV.xy).xyz;
  
-    //    // 전체 해상도 깊이 값을 성형 깊이로 변환
-    //    //Depth = ConvertZBufferToLinearDepth(Depth);
+        // 전체 해상도 깊이 값을 성형 깊이로 변환
+        //Depth = ConvertZBufferToLinearDepth(Depth);
 
-    //    // 거리 DOF 색상 계산
-    //    Color.xyz = DistanceDOF(Color.xyz, ColorBlurred, Depth.y);
-    //}
+        // 거리 DOF 색상 계산
+        Color.xyz = DistanceDOF(Color.xyz, ColorBlurred, Depth.y);
+    }
 
     Color += BloomScale * BloomTexture.Sample(g_sam_0, _Input.UV.xy); // 블룸 적용
 

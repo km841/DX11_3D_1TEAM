@@ -76,7 +76,6 @@ namespace hm
 			PostProcessing();
 
 		RenderForward(_pScene);
-
 	}
 
 	void RenderManager::ClearInstancingBuffer()
@@ -175,6 +174,7 @@ namespace hm
 		if (true == mbEnableHDR)
 			ComputeHDR();
 
+		ComputeSSAO();
 		Bloom();
 	}
 
@@ -357,6 +357,11 @@ namespace hm
 		ToneMapping();
 	}
 
+	void RenderManager::ComputeSSAO()
+	{
+
+	}
+
 	void RenderManager::AddParam(UINT64 _instanceID, InstancingParams& _params)
 	{
 		if (mBuffers.find(_instanceID) == mBuffers.end())
@@ -413,7 +418,7 @@ namespace hm
 		mDOFFarStart = 30.0f;				// 40 ~ 400
 		mDOFFarRange = 1.0f / std::fmaxf(60.0f, 0.001f);			// 80 -> 60 ~150
 
-		mMiddleGrey = 1.2f;
+		mMiddleGrey = 12.f;
 		mWhite = 5.0f;
 
 		mWidth = static_cast<UINT32>(RESOLUTION.x);
@@ -422,7 +427,7 @@ namespace hm
 		mDownScaleGroups = (UINT)((float)(mWidth * mHeight / 16) / 1024.0f);
 		mAdatation = 5.0f;
 
-		mBloomThreshold = 0.0f;
+		mBloomThreshold = 2.0f;
 		mBloomScale = 0.2f;
 
 		// LDR

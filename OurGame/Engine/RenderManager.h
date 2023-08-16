@@ -55,7 +55,7 @@ namespace hm
 		void ToneMapping();
 
 		void ComputeHDR();
-
+		void ComputeSSAO();
 
 	private:
 		void AddParam(UINT64 _instanceID, InstancingParams& _params);

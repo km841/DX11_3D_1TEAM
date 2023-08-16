@@ -98,6 +98,17 @@ namespace hm
 			AddGameObject(pGround);
 		}
 
+		// Particle Object
+		{
+			GameObject* pGameObject = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pGameObject->AddComponent(new Transform);
+			pTransform->SetPosition(Vec3(0.f, 10.f, 0.f));
+			pTransform->SetScale(Vec3(1.f, 1.f, 1.f));
+			pGameObject->AddComponent<ParticleSystem>();
+
+			AddGameObject(pGameObject);
+		}
+
 		// Monster
 		{
 			Monster* pMonster = Factory::CreateObject<Monster>(Vec3(0.f, 3.f, -20.f), L"PaperBurn", L"..\\Resources\\FBX\\Monster\\Mage.fbx");

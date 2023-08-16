@@ -1,5 +1,5 @@
-#ifndef _DOWNSCALE_FX_
-#define _DOWNSCALE_FX_
+#ifndef _COMPUTE_DOWNSCALE_FX_
+#define _COMPUTE_DOWNSCALE_FX_
 
 #include "params.fx"
 
