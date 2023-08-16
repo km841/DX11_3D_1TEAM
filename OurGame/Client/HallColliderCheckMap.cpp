@@ -84,7 +84,23 @@ namespace jh
 
 		// 1, 2Ãþ º®
 		{
-			//WallObject* pBottomFloorWall = Factory::CreateObjectHasPhysical
+			DecoObject* pFirstFloorWall = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Main.fbx");
+
+			pFirstFloorWall->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+			pFirstFloorWall->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+			AddGameObject(pFirstFloorWall);
+		}
+		// 1Ãþ ¹Ù´Ú
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(5.f, 0.1f, 5.f);
+
+			Ground* pFirstFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.14f, -1.3f, -2.87f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MainRoom Floor Lower.fbx");
+			
+			pFirstFloor->GetTransform()->SetScale(Vec3(5.1f, 5.f, 5.1f));
+			AddGameObject(pFirstFloor);
 		}
 	}
 
