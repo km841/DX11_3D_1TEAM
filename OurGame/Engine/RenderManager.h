@@ -8,6 +8,7 @@ struct BlurInfo
 
 namespace hm
 {
+	class StructuredBuffer;
 	class Texture;
 	class Material;
 	class Mesh;
@@ -38,10 +39,23 @@ namespace hm
 
 		void PostProcessing();
 
+	public:
+		void SetPostProcessing(bool _bFlag);
+		bool IsApplyPostProcessing() { return mbEnablePostProcessing; }
+
+		void SetHDR(bool _bFlag);
+		bool IsApplyHDR()			 { return mbEnableHDR; }
+
 	private:
 		void DownScale();
 		void Blur();
 		void Bloom();
+		void ComputeBloom();
+		void ComputeBlur();
+		void ToneMapping();
+
+		void ComputeHDR();
+
 
 	private:
 		void AddParam(UINT64 _instanceID, InstancingParams& _params);
@@ -50,9 +64,6 @@ namespace hm
 		void PostProcessInit();
 
 	private:
-		UINT32 mWidth;
-		UINT32 mHeight;
-
 		// Bloom
 		shared_ptr<ImageFilter> mpCopyFilter;
 		shared_ptr<ImageFilter> mpSamplingFilter;
@@ -60,35 +71,38 @@ namespace hm
 		shared_ptr<ImageFilter> mpBlurYFilter;
 		shared_ptr<ImageFilter> mpCombineFilter;
 
-		ComPtr<ID3D11Buffer>			  mpDownScaleBuffer;	    // 휘도값을 계산할 때 중간값을 저장할 버퍼
-		ComPtr<ID3D11UnorderedAccessView> mpDownScaleUAV;			// 순서 없는 접근 뷰
-		ComPtr<ID3D11ShaderResourceView>  mpDownScaleSRV;			// 셰이더 리소스 뷰
-
-		ComPtr<ID3D11Buffer>			  mpAvgLumBuffer;			// 평균 휘도 값을 저장할 버퍼
-		ComPtr<ID3D11UnorderedAccessView> mpAvgLumUAV;				// 순서 없는 접근 뷰
-		ComPtr<ID3D11ShaderResourceView>  mpAvgLumSRV;				// 셰이더 리소스 뷰
-
-		ComPtr<ID3D11Buffer> mpPrevAdaptionBuffer;			// 다음 프레임의 직전 평균 휘도값을 저장할 버퍼
-		ComPtr<ID3D11UnorderedAccessView> mpPrevAdaptionUAV;
-		ComPtr<ID3D11ShaderResourceView> mpPrevAdaptionSRV;
-
-		ComPtr<ID3D11Texture2D> mpDownScaleSceneRT;		// 다운 스케일된 HDR 텍스처
-		ComPtr<ID3D11UnorderedAccessView> mpDownScaleSceneUAV;
-		ComPtr<ID3D11ShaderResourceView> mpDownScaleSceneSRV;
-
-		ComPtr<ID3D11Texture2D> mpTempRT[2];				// 임시 텍스처 (영역)
-		ComPtr<ID3D11UnorderedAccessView> mpTempUAV[2];
-		ComPtr<ID3D11ShaderResourceView> mpTempSRV[2];
-
-		ComPtr<ID3D11Texture2D> mpBloomRT;
-		ComPtr<ID3D11UnorderedAccessView> mpBloomUAV;
-		ComPtr<ID3D11ShaderResourceView> mpBloomSRV;
+		StructuredBuffer* mpDownScaleBuffer; // 휘도값 계산 시 중간값 저장하는 버퍼
+		StructuredBuffer* mpAvgLumBuffer; //평균 휘도값 저장하는 버퍼
+		StructuredBuffer* mpPrevAdaptionBuffer; // 다음 프레임 직전 휘도값을 저장하는 버퍼
+		
+		shared_ptr<Texture> mpDownScaleSceneTexture; // 다운 스케일된 HDR 텍스쳐
+		shared_ptr<Texture> mpBloomTexture;
+		shared_ptr<Texture> mpTempFirstTexture;
+		shared_ptr<Texture> mpTempSecondTexture;
 
 		shared_ptr<Material> mpDownScaleFirstPassMaterial; // DownScale Shader + CBuffer
 		shared_ptr<Material> mpDownScaleSecondPassMaterial; // DownScale Shader + CBuffer
 		shared_ptr<Material> mpBritePassMaterial;
 		shared_ptr<Material> mpVerticalBlurMaterial;
 		shared_ptr<Material> mpHorizonBlurMaterial;
+		shared_ptr<Material> mpHDRMaterial;
+
+		float mDOFFarStart;
+		float mDOFFarRange;
+		float mBloomThreshold;
+		float mBloomScale;
+
+		UINT32 mWidth;
+		UINT32 mHeight;
+		UINT32 mDomain;
+		UINT32 mDownScaleGroups;
+		float mAdatation;
+
+		float mMiddleGrey;
+		float mWhite;
+
+		bool mbEnablePostProcessing;
+		bool mbEnableHDR;
 
 		std::map<UINT64, InstancingBuffer*> mBuffers;
 		

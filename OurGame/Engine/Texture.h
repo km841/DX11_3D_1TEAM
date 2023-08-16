@@ -29,6 +29,9 @@ namespace hm
         */
         void CreateFromTexture(UINT _type, DXGI_FORMAT _eFormat, ComPtr<ID3D11Texture2D> _pTex2D, bool _bMultiSampling = false);
 
+        void PushUAV(RegisterUAV _eUAV);
+        void PushSRV(RegisterSRV _eSRV);
+
     public:
         Vec3 GetTexSize() { return mTexSize; }
 

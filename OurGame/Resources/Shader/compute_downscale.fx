@@ -3,18 +3,6 @@
 
 #include "params.fx"
 
-
-cbuffer DownScaleConstants : register(b11)
-{
-    uint2 Res; 
-    uint Domain; 
-    uint GroupSize;
-    float Adaptation; 
-    float fBloomThreshold; 
-    float2 Empty;
-}
-
-
 Texture2D HDRTex : register(t5);
 StructuredBuffer<float> AverageValuesID : register(t6);
 StructuredBuffer<float> PrevAvgLum : register(t7); 
@@ -26,6 +14,12 @@ RWTexture2D<float4> HDRDownScale : register(u3);
 groupshared float SharedPositions[1024]; 
 
 static const float4 LUM_FACTOR = float4(0.299, 0.587, 0.114, 0);
+
+static uint2 Res = uint2(g_int_0, g_int_1);
+static uint Domain = g_int_2;
+static uint GroupSize = g_int_3;
+static float Adaptation = g_float_0;
+static float fBloomThreshold = g_float_1;
 
 float DownScale4x4(uint2 _CurPixel, uint _groupThreadID)
 {
@@ -43,7 +37,7 @@ float DownScale4x4(uint2 _CurPixel, uint _groupThreadID)
 			[unroll]
             for (int j = 0; j < 4; j++)
             {
-                downScaled += HDRTex.Load(iFullResPos, int2(j, i));
+                downScaled += g_tex_5.Load(iFullResPos, int2(j, i));
             }
         }
 
@@ -67,7 +61,6 @@ float DownScale4x4(uint2 _CurPixel, uint _groupThreadID)
 
 float DownScale1024to4(uint _dispatchThreadID, uint _groupThreadID, float _avgLum)
 {
-
     [unroll]
     for (uint groupSize = 4, step1 = 1, step2 = 2, step3 = 3; groupSize < 1024; groupSize *= 4, step1 *= 4, step2 *= 4, step3 *= 4)
     {

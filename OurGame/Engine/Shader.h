@@ -116,7 +116,9 @@ namespace hm
         ComPtr<ID3D11ComputeShader>     mpComputeShader;
 
         ComPtr<ID3D11InputLayout>       mpInputLayout;
-        ComPtr<ID3D11SamplerState>      mpSamplerState;
+
+        ComPtr<ID3D11SamplerState>      mpLinearSamplerState;
+        ComPtr<ID3D11SamplerState>      mpPointSamplerState;
 
         ComPtr<ID3D11DepthStencilState> mpDepthStencilState;
         ComPtr<ID3D11RasterizerState>   mpRasterizerState;

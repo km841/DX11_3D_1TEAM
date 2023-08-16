@@ -50,7 +50,7 @@ namespace hm
 		CONST_BUFFER(ConstantBufferType::Material)->PushData(&mMaterialContainerVec[_containerindex]->materialSubsetVec[_subsetIndex]->materialParams, sizeof(MaterialParams));
 		mpShader->Update();
 
-		for (int i = 0; i < MATERIAL_VALUE_COUNT; ++i)
+		for (int i = 0; i < TEXTURE_VALUE_COUNT; ++i)
 		{
 			if (nullptr == mMaterialContainerVec[_containerindex]->materialSubsetVec[_subsetIndex]->textures[i])
 			{
@@ -97,32 +97,39 @@ namespace hm
 		}
 	}
 
+	void Material::PushGraphicDataExceptForTextures(int _containerIndex, int _subsetIndex)
+	{
+		CONST_BUFFER(ConstantBufferType::Material)->PushData(&mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams, sizeof(MaterialParams));
+		mpShader->Update();
+	}
+
 
 	void Material::PushComputeData()
 	{
 		CONST_BUFFER(ConstantBufferType::Material)->PushData(&mMaterialContainerVec[0]->materialSubsetVec[0]->materialParams, sizeof(MaterialParams));
+		CONST_BUFFER(ConstantBufferType::Material)->Mapping();
 		mpShader->Update();
 
-		for (int i = 0; i < MATERIAL_VALUE_COUNT; ++i)
-		{
-			if (nullptr == mMaterialContainerVec[0]->materialSubsetVec[0]->textures[i])
-			{
-				//CONTEXT->CSSetUnorderedAccessViews(static_cast<int>(RegisterUAV::u0) + i, 1,
-				//	reinterpret_cast<ID3D11UnorderedAccessView**>(&mppNullptr), 0);
+		//for (int i = 0; i < MATERIAL_VALUE_COUNT; ++i)
+		//{
+		//	if (nullptr == mMaterialContainerVec[0]->materialSubsetVec[0]->textures[i])
+		//	{
+		//		//CONTEXT->CSSetUnorderedAccessViews(static_cast<int>(RegisterUAV::u0) + i, 1,
+		//		//	reinterpret_cast<ID3D11UnorderedAccessView**>(&mppNullptr), 0);
 
-				//CONTEXT->CSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
-				//	reinterpret_cast<ID3D11ShaderResourceView**>(&mppNullptr));
-			}
+		//		//CONTEXT->CSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+		//		//	reinterpret_cast<ID3D11ShaderResourceView**>(&mppNullptr));
+		//	}
 
-			else
-			{
-				CONTEXT->CSSetUnorderedAccessViews(static_cast<int>(RegisterUAV::u0) + i, 1,
-					mMaterialContainerVec[0]->materialSubsetVec[0]->textures[i]->GetUAV().GetAddressOf(), 0);
+		//	else
+		//	{
+		//		CONTEXT->CSSetUnorderedAccessViews(static_cast<int>(RegisterUAV::u0) + i, 1,
+		//			mMaterialContainerVec[0]->materialSubsetVec[0]->textures[i]->GetUAV().GetAddressOf(), 0);
 
-				CONTEXT->CSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
-					mMaterialContainerVec[0]->materialSubsetVec[0]->textures[i]->GetSRV().GetAddressOf());
-			}
-		}
+		//		CONTEXT->CSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+		//			mMaterialContainerVec[0]->materialSubsetVec[0]->textures[i]->GetSRV().GetAddressOf());
+		//	}
+		//}
 	}
 
 	void Material::Dispatch(UINT32 _countX, UINT32 _countY, UINT32 _countZ)

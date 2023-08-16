@@ -182,15 +182,20 @@ namespace hm
 	{
 		if (ShaderType::Compute == mShaderInfo.eShaderType)
 		{
-			CONTEXT->CSSetSamplers(0, 1, mpSamplerState.GetAddressOf());
+			CONTEXT->CSSetSamplers(0, 1, mpLinearSamplerState.GetAddressOf());
+			CONTEXT->CSSetSamplers(1, 1, mpPointSamplerState.GetAddressOf());
 			CONTEXT->CSSetShader(mpComputeShader.Get(), nullptr, 0);
 		}
 
 		else
 		{
-			CONTEXT->VSSetSamplers(0, 1, mpSamplerState.GetAddressOf());
-			CONTEXT->PSSetSamplers(0, 1, mpSamplerState.GetAddressOf());
-			CONTEXT->GSSetSamplers(0, 1, mpSamplerState.GetAddressOf());
+			CONTEXT->VSSetSamplers(0, 1, mpLinearSamplerState.GetAddressOf());
+			CONTEXT->PSSetSamplers(0, 1, mpLinearSamplerState.GetAddressOf());
+			CONTEXT->GSSetSamplers(0, 1, mpLinearSamplerState.GetAddressOf());
+
+			CONTEXT->VSSetSamplers(1, 1, mpPointSamplerState.GetAddressOf());
+			CONTEXT->PSSetSamplers(1, 1, mpPointSamplerState.GetAddressOf());
+			CONTEXT->GSSetSamplers(1, 1, mpPointSamplerState.GetAddressOf());
 
 			CONTEXT->VSSetShader(mpVertexShader.Get(), nullptr, 0);
 			CONTEXT->PSSetShader(mpPixelShader.Get(), nullptr, 0);
@@ -216,19 +221,19 @@ namespace hm
 	{
 		CreateShader(_path, _name, _version, mpVSBlob);
 		HRESULT hr = DEVICE->CreateVertexShader(mpVSBlob->GetBufferPointer(), mpVSBlob->GetBufferSize(), nullptr, &mpVertexShader);
-		AssertEx(SUCCEEDED(hr), L"CreateVertexShader Failed");
+		AssertEx(SUCCEEDED(hr), L"Shader::CreateVertexShader() - CreateVertexShader Failed");
 	}
 	void Shader::CreatePixelShader(const wstring& _path, const string& _name, const string& _version)
 	{
 		CreateShader(_path, _name, _version, mpPSBlob);
 		HRESULT hr = DEVICE->CreatePixelShader(mpPSBlob->GetBufferPointer(), mpPSBlob->GetBufferSize(), nullptr, &mpPixelShader);
-		AssertEx(SUCCEEDED(hr), L"CreatePixelShader Failed");
+		AssertEx(SUCCEEDED(hr), L"Shader::CreatePixelShader() - CreatePixelShader Failed");
 	}
 	void Shader::CreateGeometryShader(const wstring& _path, const string& _name, const string& _version)
 	{
 		CreateShader(_path, _name, _version, mpGSBlob);
 		HRESULT hr = DEVICE->CreateGeometryShader(mpGSBlob->GetBufferPointer(), mpGSBlob->GetBufferSize(), nullptr, &mpGeometryShader);
-		AssertEx(SUCCEEDED(hr), L"CreateGeometryShader Failed");
+		AssertEx(SUCCEEDED(hr), L"Shader::CreateGeometryShader() - CreateGeometryShader Failed");
 	}
 	void Shader::CreateShader(const wstring& _path, const string& _name, const string& _version, ComPtr<ID3DBlob>& _pBlob)
 	{
@@ -249,7 +254,7 @@ namespace hm
 				errorString = (const char*)mpErrBlob->GetBufferPointer();
 				mpErrBlob->Release();
 			}
-			AssertEx(NULL, L"Shader Compiler Error");
+			AssertEx(NULL, L"Shader::CreateShader() - Shader Compiler Error");
 		}
 	}
 	void Shader::CreateSampler()
@@ -261,7 +266,11 @@ namespace hm
 		//samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_LINEAR_MAG_MIP_POINT;
 		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 
-		HRESULT hr = DEVICE->CreateSamplerState(&samplerDesc, mpSamplerState.GetAddressOf());
-		AssertEx(SUCCEEDED(hr), L"CreateSampler Failed");
+		HRESULT hr = DEVICE->CreateSamplerState(&samplerDesc, mpLinearSamplerState.GetAddressOf());
+		AssertEx(SUCCEEDED(hr), L"Shader::CreateSampler() - Create Linear Sampler Failed");
+
+		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_POINT;
+		hr = DEVICE->CreateSamplerState(&samplerDesc, mpPointSamplerState.GetAddressOf());
+		AssertEx(SUCCEEDED(hr), L"Shader::CreateSampler() - Create Point Sampler Failed");
 	}
 }

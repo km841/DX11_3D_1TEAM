@@ -80,10 +80,12 @@ namespace hm
         D3D11_BUFFER_DESC desc = {};
         desc.ByteWidth = mElementSize * mElementCount;
         desc.StructureByteStride = mElementSize;
-        desc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
+        desc.Usage = D3D11_USAGE_DEFAULT;
         desc.CPUAccessFlags = 0;
-        desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_FLAG::D3D11_BIND_UNORDERED_ACCESS;
-        desc.MiscFlags = D3D11_RESOURCE_MISC_FLAG::D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+        desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
+        desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+
+
 
         HRESULT hr = S_OK;
         if (nullptr != _pInitialData)

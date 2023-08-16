@@ -9,7 +9,7 @@ namespace hm
 
     struct MaterialSubset
     {
-        std::array<shared_ptr<Texture>, MATERIAL_VALUE_COUNT> textures;
+        std::array<shared_ptr<Texture>, TEXTURE_VALUE_COUNT> textures;
         MaterialParams materialParams;
         wstring name;
 
@@ -40,6 +40,7 @@ namespace hm
         */
         void ClearGraphicData();
         void PushGraphicData(int _containerIndex = 0, int _subsetIndex = 0);
+        void PushGraphicDataExceptForTextures(int _containerIndex = 0, int _subsetIndex = 0);
         void PushComputeData();
         void Dispatch(UINT32 _countX, UINT32 _countY, UINT32 _countZ);
 

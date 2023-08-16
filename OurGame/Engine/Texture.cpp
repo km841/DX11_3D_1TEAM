@@ -96,7 +96,7 @@ namespace hm
 		if (meTextureType & D3D11_BIND_SHADER_RESOURCE)
 		{
 			D3D11_SHADER_RESOURCE_VIEW_DESC sd = {};
-			sd.Format = _eFormat;
+			sd.Format = _eFormat == DXGI_FORMAT_R32G32B32A32_TYPELESS ? DXGI_FORMAT_R32G32B32A32_FLOAT : _eFormat;
 			sd.ViewDimension = true == _bMultiSampling ? D3D11_SRV_DIMENSION_TEXTURE2DMS : D3D11_SRV_DIMENSION_TEXTURE2D;
 			sd.Texture2D.MipLevels = 1;
 
@@ -117,11 +117,26 @@ namespace hm
 		if (meTextureType & D3D11_BIND_UNORDERED_ACCESS)
 		{
 			D3D11_UNORDERED_ACCESS_VIEW_DESC ud = {};
-			ud.Format = _eFormat;
+			ud.Format = _eFormat == DXGI_FORMAT_R32G32B32A32_TYPELESS ? DXGI_FORMAT_R32G32B32A32_FLOAT : _eFormat;
 			ud.ViewDimension = D3D11_UAV_DIMENSION::D3D11_UAV_DIMENSION_TEXTURE2D;
-			HRESULT hr = DEVICE->CreateUnorderedAccessView(mpTex2D.Get(), nullptr, mpUAV.GetAddressOf());
+			HRESULT hr = DEVICE->CreateUnorderedAccessView(mpTex2D.Get(), &ud, mpUAV.GetAddressOf());
 			AssertEx(SUCCEEDED(hr), L"Texture::CreateFromTexture() - 텍스쳐 UAV 생성 실패");
 		}
+	}
+	void Texture::PushUAV(RegisterUAV _eUAV)
+	{
+		AssertEx(mpUAV, L"Texture::PushUAV - 생성되지 않은 UAV를 Push하려는 시도");
+		CONTEXT->CSSetUnorderedAccessViews(static_cast<UINT32>(_eUAV), 1, mpUAV.GetAddressOf(), nullptr);
+	}
+	void Texture::PushSRV(RegisterSRV _eSRV)
+	{
+		AssertEx(mpSRV, L"Texture::PushSRV - 생성되지 않은 SRV를 Push하려는 시도");
+		CONTEXT->CSSetShaderResources(static_cast<UINT32>(_eSRV), 1, mpSRV.GetAddressOf());
+		CONTEXT->VSSetShaderResources(static_cast<UINT32>(_eSRV), 1, mpSRV.GetAddressOf());
+		CONTEXT->PSSetShaderResources(static_cast<UINT32>(_eSRV), 1, mpSRV.GetAddressOf());
+		CONTEXT->DSSetShaderResources(static_cast<UINT32>(_eSRV), 1, mpSRV.GetAddressOf());
+		CONTEXT->HSSetShaderResources(static_cast<UINT32>(_eSRV), 1, mpSRV.GetAddressOf());
+		CONTEXT->GSSetShaderResources(static_cast<UINT32>(_eSRV), 1, mpSRV.GetAddressOf());
 	}
 }
 
