@@ -35,6 +35,7 @@ struct TransformParams
 enum
 {
 	MATERIAL_VALUE_COUNT = 4,
+	TEXTURE_VALUE_COUNT = 16,
 };
 
 struct MaterialParams
@@ -46,7 +47,7 @@ struct MaterialParams
 
 	std::array<int, MATERIAL_VALUE_COUNT> intParams;
 	std::array<float, MATERIAL_VALUE_COUNT> floatParams;
-	std::array<int, MATERIAL_VALUE_COUNT> texOnParams;
+	std::array<int, TEXTURE_VALUE_COUNT> texOnParams;
 	std::array<Vec2, MATERIAL_VALUE_COUNT> vec2Params;
 	std::array<Vec3, MATERIAL_VALUE_COUNT> vec3Params;
 	std::array<Vec4, MATERIAL_VALUE_COUNT> vec4Params;

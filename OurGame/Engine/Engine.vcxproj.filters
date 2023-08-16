@@ -414,5 +414,8 @@
     <FxCompile Include="..\Resources\Shader\compute_downscale.fx">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\Resources\Shader\hdr.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

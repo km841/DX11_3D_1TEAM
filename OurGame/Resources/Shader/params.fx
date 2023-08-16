@@ -6,8 +6,15 @@ Texture2D g_tex_1 : register(t1);
 Texture2D g_tex_2 : register(t2);
 Texture2D g_tex_3 : register(t3);
 Texture2D g_tex_4 : register(t4);
+Texture2D g_tex_5 : register(t5);
+Texture2D g_tex_6 : register(t6);
+Texture2D g_tex_7 : register(t7);
+Texture2D g_tex_8 : register(t8);
+Texture2D g_tex_9 : register(t9);
+Texture2D g_tex_10 : register(t10);
 
 SamplerState g_sam_0 : register(s0);
+SamplerState g_sam_1 : register(s1);
 
 cbuffer TRANSFORM_PARAMS : register(b0)
 {
@@ -35,6 +42,18 @@ cbuffer MATERIAL_PARAMS : register(b1)
     int g_tex_on_1;
     int g_tex_on_2;
     int g_tex_on_3;
+    int g_tex_on_4;
+    int g_tex_on_5;
+    int g_tex_on_6;
+    int g_tex_on_7;
+    int g_tex_on_8;
+    int g_tex_on_9;
+    int g_tex_on_10;
+    int g_tex_on_11;
+    int g_tex_on_12;
+    int g_tex_on_13;
+    int g_tex_on_14;
+    int g_tex_on_15;
     
     float2 g_vec2_0;
     float2 g_vec2_1;

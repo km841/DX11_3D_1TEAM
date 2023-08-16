@@ -696,6 +696,45 @@ namespace hm
             Add<Shader>(L"DownScaleSecond", pShader);
         }
 
+        // Bloom Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Light,
+                DepthStencilType::NoDepthTestNoWrite,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateComputeShader(L"..\\Resources\\Shader\\compute_downscale.fx", "BrightPass", "cs_5_0");
+
+            Add<Shader>(L"ComputeBloom", pShader);
+        }
+
+        // HDR Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Light,
+                DepthStencilType::NoDepthTestNoWrite,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            ShaderArg arg =
+            {
+                "VS_FullScreenQuad",
+                "",
+                "PS_FinalPass"
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\hdr.fx", shaderInfo, arg);
+
+            Add<Shader>(L"HDR", pShader);
+        }
+
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -918,6 +957,24 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"DownScaleSecond", pMaterial);
+        }
+
+        // Compute Bloom Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"ComputeBloom");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"ComputeBloom", pMaterial);
+        }
+
+        // HDR Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"HDR");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"HDR", pMaterial);
         }
     }
 }

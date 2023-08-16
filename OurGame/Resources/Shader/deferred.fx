@@ -21,6 +21,7 @@ struct VS_OUT
     float4 pos : SV_Position;
     float2 uv : TEXCOORD;
     float3 viewPos : POSITION;
+    float4 projPos : POSITION1;
     float3 viewNormal : NORMAL;
     float3 viewTangent : TANGENT;
     float3 viewBinormal : BINORMAL;
@@ -37,6 +38,7 @@ VS_OUT VS_Main(VS_IN _in)
         output.pos = mul(float4(_in.pos, 1.f), _in.matWVP);
         output.uv = _in.uv;
         output.viewPos = mul(float4(_in.pos, 1.f), _in.matWV).xyz;
+        output.projPos = mul(float4(_in.pos, 1.f), _in.matWVP);
         output.viewNormal = normalize(mul(float4(_in.normal, 0.f), _in.matWV)).xyz;
         output.viewTangent = normalize(mul(float4(_in.tangent, 0.f), _in.matWV)).xyz;
         output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal));
@@ -46,6 +48,7 @@ VS_OUT VS_Main(VS_IN _in)
         output.pos = mul(float4(_in.pos, 1.f), g_matWVP);
         output.uv = _in.uv;
         output.viewPos = mul(float4(_in.pos, 1.f), g_matWV).xyz;
+        output.projPos = mul(float4(_in.pos, 1.f), g_matWVP);
         output.viewNormal = normalize(mul(float4(_in.normal, 0.f), g_matWV)).xyz;
         output.viewTangent = normalize(mul(float4(_in.tangent, 0.f), g_matWV)).xyz;
         output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal));
@@ -59,6 +62,8 @@ struct PS_OUT
     float4 position : SV_Target0;
     float4 normal : SV_Target1;
     float4 color : SV_Target2;
+    float4 emissive : SV_Target3;
+    float4 depth : SV_Target4;
 };
 
 PS_OUT PS_Main(VS_OUT _in)
@@ -85,6 +90,9 @@ PS_OUT PS_Main(VS_OUT _in)
     output.position = 1 == bloomFlag ? float4(0, 0, 0, 0) : float4(_in.viewPos, 0.f);
     output.normal = float4(viewNormal, 0.f);
     output.color = 1 == bloomFlag ? color * 2 : color;
+    output.depth.xyz = (float3) (_in.projPos.z / _in.projPos.w);
+    output.depth.w = _in.projPos.w;
+    output.depth.yzw = _in.viewPos;
    
     return output;
 }

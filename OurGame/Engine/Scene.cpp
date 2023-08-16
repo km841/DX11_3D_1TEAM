@@ -12,6 +12,7 @@
 #include "RigidBody.h"
 #include "RenderManager.h"
 #include "Collider.h"
+#include "Input.h"
 
 namespace hm
 {
@@ -56,6 +57,19 @@ namespace hm
 				pGameObject->Update();
 			}
 		}
+
+		if (IS_DOWN(KeyType::NUM_0))
+		{
+			bool bIsApplyPostProcessing = GET_SINGLE(RenderManager)->IsApplyPostProcessing();
+			GET_SINGLE(RenderManager)->SetPostProcessing(true == bIsApplyPostProcessing ? false : true);
+		}
+
+		if (IS_DOWN(KeyType::NUM_1))
+		{
+			bool bIsApplyHDR = GET_SINGLE(RenderManager)->IsApplyHDR();
+			GET_SINGLE(RenderManager)->SetHDR(true == bIsApplyHDR ? false : true);
+		}
+
 	}
 	void Scene::FixedUpdate()
 	{

@@ -11,6 +11,7 @@
 #include "MeshRenderer.h"
 #include "Transform.h"
 #include "Material.h"
+#include "StructuredBuffer.h"
 
 
 namespace hm
@@ -18,7 +19,24 @@ namespace hm
 	RenderManager::RenderManager()
 		: mWidth(0)
 		, mHeight(0)
+		, mbEnablePostProcessing(false)
+		, mbEnableHDR(false)
+		, mpDownScaleBuffer(nullptr)
+		, mpAvgLumBuffer(nullptr)
+		, mpPrevAdaptionBuffer(nullptr)
 	{
+		mDOFFarStart = 0.f;
+		mDOFFarRange = 0.f;
+		mBloomThreshold = 0.f;
+		mBloomScale = 0.f;
+
+		mWidth = 0;
+		mHeight = 0;
+		mDomain = 0;
+		mDownScaleGroups = 0;
+		mAdatation = 0.f;
+		mMiddleGrey = 0.f;
+		mWhite = 0.f;
 	}
 
 	RenderManager::~RenderManager()
@@ -28,6 +46,10 @@ namespace hm
 			InstancingBuffer* buffer = pair.second;
 			SAFE_DELETE(buffer);
 		}
+
+		SAFE_DELETE(mpDownScaleBuffer);
+		SAFE_DELETE(mpAvgLumBuffer);
+		SAFE_DELETE(mpPrevAdaptionBuffer);
 	}
 
 	void RenderManager::Initialize()
@@ -35,13 +57,7 @@ namespace hm
 		mWidth = gpEngine->GetWindowInfo().width;
 		mHeight = gpEngine->GetWindowInfo().height;
 
-		//PostProcessInit();
-
-		mpCopyFilter = make_shared<ImageFilter>(GET_SINGLE(Resources)->Get<Material>(L"Copy"), mWidth, mHeight);
-		mpSamplingFilter = make_shared<ImageFilter>(GET_SINGLE(Resources)->Get<Material>(L"Sampling"), mWidth, mHeight);
-		mpBlurYFilter = make_shared<BlurFilter>(GET_SINGLE(Resources)->Get<Material>(L"BlurY"), mWidth / 6, mHeight / 6);
-		mpBlurXFilter = make_shared<BlurFilter>(GET_SINGLE(Resources)->Get<Material>(L"BlurX"), mWidth / 6, mHeight / 6);
-		mpCombineFilter = make_shared<CombineFilter>(GET_SINGLE(Resources)->Get<Material>(L"Combine"), mWidth, mHeight);
+		PostProcessInit();
 	}
 
 	void RenderManager::Render(Scene* _pScene)
@@ -55,9 +71,12 @@ namespace hm
 		RenderLight(_pScene);
 		RenderLightBlend();
 		RenderFinal();
+
+		if (true == mbEnablePostProcessing)
+			PostProcessing();
+
 		RenderForward(_pScene);
 
-		PostProcessing();
 	}
 
 	void RenderManager::ClearInstancingBuffer()
@@ -153,8 +172,20 @@ namespace hm
 
 	void RenderManager::PostProcessing()
 	{
-		//DownScale();
+		if (true == mbEnableHDR)
+			ComputeHDR();
+
 		Bloom();
+	}
+
+	void RenderManager::SetPostProcessing(bool _bFlag)
+	{
+		mbEnablePostProcessing = _bFlag;
+	}
+
+	void RenderManager::SetHDR(bool _bFlag)
+	{
+		mbEnableHDR = _bFlag;
 	}
 
 	void RenderManager::PushLightData(Scene* _pScene)
@@ -177,29 +208,44 @@ namespace hm
 
 	void RenderManager::DownScale()
 	{
-		CONTEXT->CSSetUnorderedAccessViews(0, 1, &mpDownScaleUAV, nullptr);
-		CONTEXT->CSSetUnorderedAccessViews(3, 1, &mpDownScaleSceneUAV, nullptr);
+		mpDownScaleBuffer->PushComputeUAVData(RegisterUAV::u0);
+		mpDownScaleSceneTexture->PushUAV(RegisterUAV::u3);
 
-		shared_ptr<Texture> pRTV = GET_SINGLE(Resources)->Get<Texture>(L"LightBlendTarget");
+		GET_SINGLE(Resources)->Get<Texture>(L"LightBlendTarget")->PushSRV(RegisterSRV::t5);
 
-		Vec2 resolution = RESOLUTION;
-		float totalPixels = static_cast<float>((resolution.x * resolution.y) / 16);
+		mpDownScaleFirstPassMaterial->SetInt(0, mWidth / 4);
+		mpDownScaleFirstPassMaterial->SetInt(1, mHeight / 4);
+		mpDownScaleFirstPassMaterial->SetInt(2, mDomain);
+		mpDownScaleFirstPassMaterial->SetInt(3, mDownScaleGroups);
+		mpDownScaleFirstPassMaterial->SetFloat(0, mAdatation); // Adaptation
+		mpDownScaleFirstPassMaterial->SetFloat(1, mBloomThreshold); // Bloom Threshold
 
-		mpDownScaleFirstPassMaterial->SetTexture(0, pRTV);
-		mpDownScaleFirstPassMaterial->SetInt(0, static_cast<int>(resolution.x / 4));
-		mpDownScaleFirstPassMaterial->SetInt(1, static_cast<int>(resolution.y / 4));
-		mpDownScaleFirstPassMaterial->SetInt(2, static_cast<int>(totalPixels));
-		mpDownScaleFirstPassMaterial->SetInt(3, static_cast<int>(totalPixels / 1024.f));
-		mpDownScaleFirstPassMaterial->SetFloat(0, 5.f); // Adaptation
-		mpDownScaleFirstPassMaterial->SetFloat(1, 2.f); // Bloom Threshold
+		mpDownScaleFirstPassMaterial->Dispatch(mDownScaleGroups, 1, 1);
 
-		mpDownScaleFirstPassMaterial->Dispatch(static_cast<int>(totalPixels / 1024), 1, 1);
+		ID3D11UnorderedAccessView* pResetUAV = nullptr;
+		CONTEXT->CSSetUnorderedAccessViews(0, 1, &pResetUAV, nullptr);
+		CONTEXT->CSSetUnorderedAccessViews(3, 1, &pResetUAV, nullptr);
 
-		CONTEXT->CSSetUnorderedAccessViews(0, 1, &mpAvgLumUAV, nullptr);
-		CONTEXT->CSSetShaderResources(6, 1, &mpDownScaleSRV);
-		CONTEXT->CSSetShaderResources(7, 1, &mpPrevAdaptionSRV);
+		mpAvgLumBuffer->PushComputeUAVData(RegisterUAV::u0);
+		mpDownScaleBuffer->PushGraphicsData(RegisterSRV::t6);
+		mpPrevAdaptionBuffer->PushGraphicsData(RegisterSRV::t7);
+
+		GET_SINGLE(Resources)->Get<Texture>(L"LightBlendTarget")->PushSRV(RegisterSRV::t0);
+		mpDownScaleSecondPassMaterial->SetInt(0, mWidth / 4);
+		mpDownScaleSecondPassMaterial->SetInt(1, mHeight / 4);
+		mpDownScaleSecondPassMaterial->SetInt(2, mDomain);
+		mpDownScaleSecondPassMaterial->SetInt(3, mDownScaleGroups);
+		mpDownScaleSecondPassMaterial->SetFloat(0, mAdatation); // Adaptation
+		mpDownScaleSecondPassMaterial->SetFloat(1, mBloomThreshold); // Bloom Threshold
 
 		mpDownScaleSecondPassMaterial->Dispatch(1, 1, 1);
+
+		pResetUAV = nullptr;
+		CONTEXT->CSSetUnorderedAccessViews(0, 1, &pResetUAV, nullptr);
+
+		ID3D11ShaderResourceView* pNullSRV = nullptr;
+		CONTEXT->CSSetShaderResources(6, 1, &pNullSRV);
+		CONTEXT->CSSetShaderResources(7, 1, &pNullSRV);
 	}
 
 	void RenderManager::Blur()
@@ -227,6 +273,88 @@ namespace hm
 		mpCombineFilter->SetSRV(0, mpCopyFilter->GetTexture());
 		mpCombineFilter->SetSRV(1, mpBlurXFilter->GetTexture());
 		mpCombineFilter->Render();
+	}
+
+	void RenderManager::ComputeBloom()
+	{
+		mpDownScaleSceneTexture->PushSRV(RegisterSRV::t5);
+		mpAvgLumBuffer->PushGraphicsData(RegisterSRV::t6);
+		mpTempFirstTexture->PushUAV(RegisterUAV::u0);
+
+		Vec2 resolution = RESOLUTION;
+		float totalPixels = static_cast<float>((resolution.x * resolution.y) / 16);
+
+		mpBritePassMaterial->Dispatch(static_cast<UINT32>(totalPixels / 1024), 1, 1);
+
+		// 리셋
+		ID3D11ShaderResourceView* pNullSRV = nullptr;
+		ID3D11UnorderedAccessView* pNullUAV = nullptr;
+		CONTEXT->CSSetShaderResources(5, 1, &pNullSRV);
+		CONTEXT->CSSetShaderResources(6, 1, &pNullSRV);
+		CONTEXT->CSSetUnorderedAccessViews(0, 1, &pNullUAV, NULL);
+	}
+
+	void RenderManager::ComputeBlur()
+	{
+		ID3D11ShaderResourceView* pNullSRV = nullptr;
+		ID3D11UnorderedAccessView* pNullUAV = nullptr;
+
+		mpTempSecondTexture->PushUAV(RegisterUAV::u0);
+		mpTempFirstTexture->PushSRV(RegisterSRV::t0); // BritePass Texture
+
+		mpVerticalBlurMaterial->Dispatch(static_cast<UINT32>(mDomain / 1024), 1, 1);
+
+		CONTEXT->CSSetShaderResources(0, 1, &pNullSRV);
+		CONTEXT->CSSetUnorderedAccessViews(0, 1, &pNullUAV, NULL);
+
+
+		mpBloomTexture->PushUAV(RegisterUAV::u1);
+		mpTempSecondTexture->PushSRV(RegisterSRV::t1);
+
+		mpVerticalBlurMaterial->Dispatch(static_cast<UINT32>(mDomain / 1024), 1, 1);
+
+		CONTEXT->CSSetShaderResources(1, 1, &pNullSRV);
+		CONTEXT->CSSetUnorderedAccessViews(1, 1, &pNullUAV, NULL);
+	}
+
+	void RenderManager::ToneMapping()
+	{
+		// DOF 추가
+		shared_ptr<Texture> pDepthTarget = GET_SINGLE(Resources)->Get<Texture>(L"DepthTarget");
+		shared_ptr<Texture> pLightBlendTarget = GET_SINGLE(Resources)->Get<Texture>(L"LightBlendTarget");
+
+		GET_SINGLE(Resources)->Get<Texture>(L"LightBlendTarget")->PushSRV(RegisterSRV::t5);
+		mpAvgLumBuffer->PushGraphicsData(RegisterSRV::t6);
+		mpBloomTexture->PushSRV(RegisterSRV::t8);
+		mpDownScaleSceneTexture->PushSRV(RegisterSRV::t9);
+		GET_SINGLE(Resources)->Get<Texture>(L"DepthTarget")->PushSRV(RegisterSRV::t10);
+
+		mpHDRMaterial->SetFloat(0, mMiddleGrey);
+		mpHDRMaterial->SetFloat(1, mWhite * mMiddleGrey * (mWhite * mMiddleGrey));
+		mpHDRMaterial->SetFloat(2, mBloomScale);
+		mpHDRMaterial->SetVec2(0, Vec2(mDOFFarStart, 0.f));
+		mpHDRMaterial->SetVec2(1, Vec2(mDOFFarStart, mDOFFarRange));
+
+		mpHDRMaterial->PushGraphicDataExceptForTextures();
+		CONTEXT->IASetInputLayout(NULL);
+		UINT32 offSet = 0;
+		CONTEXT->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+		CONTEXT->IASetVertexBuffers(0, 0, nullptr, 0, &offSet);
+		CONTEXT->IASetIndexBuffer(NULL, DXGI_FORMAT_UNKNOWN, 0);
+		CONTEXT->Draw(4, 0);
+
+		ID3D11ShaderResourceView* pNullSRV = nullptr;
+		CONTEXT->PSSetShaderResources(6, 1, &pNullSRV);
+		CONTEXT->PSSetShaderResources(8, 1, &pNullSRV);
+		CONTEXT->PSSetShaderResources(9, 1, &pNullSRV);
+	}
+
+	void RenderManager::ComputeHDR()
+	{
+		DownScale();
+		ComputeBloom();
+		ComputeBlur();
+		ToneMapping();
 	}
 
 	void RenderManager::AddParam(UINT64 _instanceID, InstancingParams& _params)
@@ -282,81 +410,68 @@ namespace hm
 	}
 	void RenderManager::PostProcessInit()
 	{
+		mDOFFarStart = 30.0f;				// 40 ~ 400
+		mDOFFarRange = 1.0f / std::fmaxf(60.0f, 0.001f);			// 80 -> 60 ~150
+
+		mMiddleGrey = 1.2f;
+		mWhite = 5.0f;
+
+		mWidth = static_cast<UINT32>(RESOLUTION.x);
+		mHeight = static_cast<UINT32>(RESOLUTION.y);
+		mDomain = (UINT)((float)(mWidth * mHeight / 16));
+		mDownScaleGroups = (UINT)((float)(mWidth * mHeight / 16) / 1024.0f);
+		mAdatation = 5.0f;
+
+		mBloomThreshold = 0.0f;
+		mBloomScale = 0.2f;
+
+		// LDR
+		mpCopyFilter = make_shared<ImageFilter>(GET_SINGLE(Resources)->Get<Material>(L"Copy"), mWidth, mHeight);
+		mpSamplingFilter = make_shared<ImageFilter>(GET_SINGLE(Resources)->Get<Material>(L"Sampling"), mWidth, mHeight);
+		mpBlurYFilter = make_shared<BlurFilter>(GET_SINGLE(Resources)->Get<Material>(L"BlurY"), mWidth / 6, mHeight / 6);
+		mpBlurXFilter = make_shared<BlurFilter>(GET_SINGLE(Resources)->Get<Material>(L"BlurX"), mWidth / 6, mHeight / 6);
+		mpCombineFilter = make_shared<CombineFilter>(GET_SINGLE(Resources)->Get<Material>(L"Combine"), mWidth, mHeight);
+
+		// HDR
 		mpDownScaleFirstPassMaterial = GET_SINGLE(Resources)->Get<Material>(L"DownScaleFirst");
 		mpDownScaleSecondPassMaterial = GET_SINGLE(Resources)->Get<Material>(L"DownScaleSecond");
+		mpVerticalBlurMaterial = GET_SINGLE(Resources)->Get<Material>(L"ComputeVerticalBlur");
+		mpHorizonBlurMaterial = GET_SINGLE(Resources)->Get<Material>(L"ComputeHorizonBlur");
+		mpBritePassMaterial = GET_SINGLE(Resources)->Get<Material>(L"ComputeBloom");
+		mpHDRMaterial = GET_SINGLE(Resources)->Get<Material>(L"HDR");
 
-		// 첫번째
-		D3D11_BUFFER_DESC tDesc = {};
-		tDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
-		tDesc.StructureByteStride = 4;				// Size of float
-		tDesc.ByteWidth = 4 * ((static_cast<UINT32>(RESOLUTION.x) * static_cast<UINT32>(RESOLUTION.y)) / (16 * 1024));
-		tDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+		mpDownScaleBuffer = new StructuredBuffer;
+		mpDownScaleBuffer->Create(4, ((static_cast<int>(RESOLUTION.x) * static_cast<int>(RESOLUTION.y)) / (16 * 1024)));
 
-		// 버퍼 생성
-		if (FAILED(DEVICE->CreateBuffer(&tDesc, NULL, &mpDownScaleBuffer)))
-		{
-			return;
-		}
+		mpAvgLumBuffer = new StructuredBuffer;
+		mpAvgLumBuffer->Create(4, 1);
 
-		D3D11_UNORDERED_ACCESS_VIEW_DESC tUAVDesc = {};
-		tUAVDesc.Format = DXGI_FORMAT_UNKNOWN;
-		tUAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
-		tUAVDesc.Buffer.NumElements = 4 * ((static_cast<UINT32>(RESOLUTION.x) * static_cast<UINT32>(RESOLUTION.y)) / (16 * 1024));
+		mpPrevAdaptionBuffer = new StructuredBuffer;
+		mpPrevAdaptionBuffer->Create(4, 1);
 
-		// 순서 없는 접근 뷰 생성
-		if (FAILED(DEVICE->CreateUnorderedAccessView(mpDownScaleBuffer.Get(), &tUAVDesc, &mpDownScaleUAV)))
-		{
-			return;
-		}
+		mpDownScaleSceneTexture =
+			GET_SINGLE(Resources)->CreateTexture(
+				L"DownScaleSceneTexture", DXGI_FORMAT_R32G32B32A32_TYPELESS,
+				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS,
+				mWidth / 4, mHeight / 4);
 
+		mpTempFirstTexture = 
+			GET_SINGLE(Resources)->CreateTexture(
+				L"PostProcessTempFirst", DXGI_FORMAT_R32G32B32A32_TYPELESS,
+				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS,
+				mWidth / 4, mHeight / 4);
 
-		D3D11_SHADER_RESOURCE_VIEW_DESC tSRVDesc = {};
-		tSRVDesc.Format = DXGI_FORMAT_UNKNOWN;
-		tSRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
-		tSRVDesc.Buffer.NumElements = 4 * ((static_cast<UINT32>(RESOLUTION.x) * static_cast<UINT32>(RESOLUTION.y)) / (16 * 1024));
+		mpTempSecondTexture =
+			GET_SINGLE(Resources)->CreateTexture(
+				L"PostProcessTempSecond", DXGI_FORMAT_R32G32B32A32_TYPELESS,
+				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS,
+				mWidth / 4, mHeight / 4);
 
-		// 셰이더 리소스 뷰 생성
-		if (FAILED(DEVICE->CreateShaderResourceView(mpDownScaleBuffer.Get(), &tSRVDesc, &mpDownScaleSRV)))
-		{
-			return;
-		}
-
-		// 두번째
-		D3D11_BUFFER_DESC tDescLA = {};
-		tDescLA.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
-		tDescLA.StructureByteStride = 4;
-		tDescLA.ByteWidth = 4;
-		tDescLA.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
-
-		// 버퍼 생성
-		if (FAILED(DEVICE->CreateBuffer(&tDescLA, NULL, &mpAvgLumBuffer)))
-		{
-			return;
-		}
-
-
-		D3D11_UNORDERED_ACCESS_VIEW_DESC tUAVDescLA = {};
-		tUAVDescLA.Format = DXGI_FORMAT_UNKNOWN;
-		tUAVDescLA.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
-		tUAVDescLA.Buffer.NumElements = 1;
-
-		// 순서 없는 접근 뷰 생성
-		if (FAILED(DEVICE->CreateUnorderedAccessView(mpAvgLumBuffer.Get(), &tUAVDescLA, &mpAvgLumUAV)))
-		{
-			return;
-		}
-
-
-		D3D11_SHADER_RESOURCE_VIEW_DESC tSRVDescLA = {};
-		tSRVDescLA.Format = DXGI_FORMAT_UNKNOWN;
-		tSRVDescLA.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
-		tSRVDescLA.Buffer.NumElements = 1;
-
-		// 셰이더 리소스 뷰 생성
-		if (FAILED(DEVICE->CreateShaderResourceView(mpAvgLumBuffer.Get(), &tSRVDescLA, &mpAvgLumSRV)))
-		{
-			return;
-		}
+		mpBloomTexture =
+			GET_SINGLE(Resources)->CreateTexture(
+				L"PostProcessBloom", DXGI_FORMAT_R32G32B32A32_TYPELESS,
+				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS,
+				mWidth / 4, mHeight / 4);
 	}
 }
 
