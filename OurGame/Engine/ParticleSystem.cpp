@@ -37,7 +37,6 @@ namespace hm
 	Component* ParticleSystem::Clone(GameObject* _pGameObject)
 	{
 		ParticleSystem* pParticleSystem = _pGameObject->AddComponent(new ParticleSystem);
-		pParticleSystem->Initialize();
 		return pParticleSystem;
 	}
 
@@ -109,8 +108,10 @@ namespace hm
 		GetGameObject()->GetTransform()->PushData(_pCamera);
 		mpParticleBuffer->PushGraphicsData(RegisterSRV::t9);
 
-		mpMaterial->PushGraphicData();
 		mpMaterial->SetVec3(0, mStartScale);
+		mpMaterial->PushGraphicDataExceptForTextures();
+
+		GET_SINGLE(Resources)->Get<Texture>(L"Bubble")->PushSRV(RegisterSRV::t0);
 		CONST_BUFFER(ConstantBufferType::Material)->Mapping();
 		mpMesh->RenderInstancing(mMaxParticles);
 

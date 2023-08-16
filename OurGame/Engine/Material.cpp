@@ -110,7 +110,7 @@ namespace hm
 		CONST_BUFFER(ConstantBufferType::Material)->Mapping();
 		mpShader->Update();
 
-		//for (int i = 0; i < MATERIAL_VALUE_COUNT; ++i)
+		//for (int i = 0; i < TEXTURE_VALUE_COUNT; ++i)
 		//{
 		//	if (nullptr == mMaterialContainerVec[0]->materialSubsetVec[0]->textures[i])
 		//	{

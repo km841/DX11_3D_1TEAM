@@ -48,7 +48,7 @@ namespace hm
 		};
 
 		HRESULT hr = DEVICE->CreateInputLayout(inputLayoutDesc, ARRAYSIZE(inputLayoutDesc), mpVSBlob->GetBufferPointer(), mpVSBlob->GetBufferSize(), &mpInputLayout);
-		AssertEx(SUCCEEDED(hr), L"CreateInputLayout Failed");
+		AssertEx(SUCCEEDED(hr), L"Shader::CreateGraphicsShader() - CreateInputLayout Failed");
 #pragma region DepthStencilState
 		{
 			D3D11_DEPTH_STENCIL_DESC dsd = {};
