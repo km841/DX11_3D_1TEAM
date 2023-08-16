@@ -82,7 +82,7 @@ namespace sy
 
 
 		//배경맵 하얀색으로 만들어주는 코드
-		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
+		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 		
 
 		//DecoObject == 콜라이더 없는 오브젝트
@@ -397,7 +397,7 @@ namespace sy
 			physicsInfo.eGeometryType = GeometryType::Sphere;
 			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Forward", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
 			pPlayer->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 
 			PlayerMoveScript* pPlayerSc =  pPlayer->AddComponent(new PlayerMoveScript);
