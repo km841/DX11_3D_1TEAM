@@ -155,6 +155,9 @@ namespace hm
 			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(5.f, 10.f, 20.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossTable.fbx");
 			pDecoObject->GetRigidBody()->RemoveGravity();
 
+			//pDecoObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
+			//pDecoObject->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(255, 0, 0));
+
 			pDecoObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
 			pDecoObject->GetTransform()->SetRotation(Vec3(-90.f, 20.f, 0.f));
 			AddGameObject(pDecoObject);

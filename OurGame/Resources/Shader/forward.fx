@@ -57,6 +57,6 @@ VS_OUT VS_Main(VS_IN _in)
 float4 PS_Main(VS_OUT _in) : SV_Target
 {
     //return float4(1.f, 1.f, 1.f, 1.f);
-    return g_tex_0.Sample(g_sam_0, _in.uv);
+    return g_tex_on_0 == 1 ? g_tex_0.Sample(g_sam_0, _in.uv) : float4(g_vec3_0, 1.f);
 }
 #endif

@@ -1301,6 +1301,16 @@ inline Vector3 Vector3::TransformNormal(const Vector3& v, const Matrix& m) noexc
     return result;
 }
 
+inline Vector3 Vector3::Color(float r, float g, float b)
+{
+    return Vector3(r / 255.f, g / 255.f, b / 255.f);
+}
+
+inline Vector3 DirectX::SimpleMath::Vector3::Color(int r, int g, int b)
+{
+    return Vector3(r / 255.f, g / 255.f, b / 255.f);
+}
+
 _Use_decl_annotations_
 inline void Vector3::TransformNormal(const Vector3* varray, size_t count, const Matrix& m, Vector3* resultArray) noexcept
 {
@@ -1308,6 +1318,8 @@ inline void Vector3::TransformNormal(const Vector3* varray, size_t count, const 
     const XMMATRIX M = XMLoadFloat4x4(&m);
     XMVector3TransformNormalStream(resultArray, sizeof(XMFLOAT3), varray, sizeof(XMFLOAT3), count, M);
 }
+
+
 
 
 /****************************************************************************
