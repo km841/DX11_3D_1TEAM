@@ -57,7 +57,7 @@ namespace yj
 	void MainOfficeMap::Update()
 	{
 		Map::Update();
-		if (mTarget != nullptr)
+		/*if (mTarget != nullptr)
 		{
 			if (IS_UP(KeyType::LEFT))
 			{
@@ -143,7 +143,7 @@ namespace yj
 
 
 			}
-		}
+		}*/
 	}
 
 	void MainOfficeMap::FixedUpdate()
