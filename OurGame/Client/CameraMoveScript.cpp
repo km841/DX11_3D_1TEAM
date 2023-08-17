@@ -28,6 +28,12 @@ namespace hm
 		if (IS_PRESS(KeyType::D))
 			pos += GetGameObject()->GetTransform()->GetRight() * mSpeed * DELTA_TIME;
 
+		if (IS_PRESS(KeyType::Q))
+			pos += GetGameObject()->GetTransform()->GetUp() * mSpeed * DELTA_TIME;
+
+		if (IS_PRESS(KeyType::E))
+			pos -= GetGameObject()->GetTransform()->GetUp() * mSpeed * DELTA_TIME;
+
 		GetGameObject()->GetTransform()->SetPosition(pos);
 
 		if (IS_PRESS(KeyType::LBUTTON))
