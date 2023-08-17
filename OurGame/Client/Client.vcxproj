@@ -161,6 +161,7 @@
     <ClInclude Include="Monster.h" />
     <ClInclude Include="PaperBurnScript.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PlacementScript.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerMoveScript.h" />
     <ClInclude Include="PlayerSlashScript.h" />
@@ -195,6 +196,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="PlacementScript.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerMoveScript.cpp" />
     <ClCompile Include="PlayerSlashScript.cpp" />

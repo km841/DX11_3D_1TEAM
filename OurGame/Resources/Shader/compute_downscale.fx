@@ -178,8 +178,6 @@ void DownScaleSecondPass(uint3 _groupID : SV_GroupID,
 
         fFinalstepAvgLum /= 64.0f;
 
-
-
         float fAdaptedAverageLum = lerp(PrevAvgLum[0], fFinalstepAvgLum, Adaptation);
 
         AverageLum[0] = max(fAdaptedAverageLum, 0.0001);   

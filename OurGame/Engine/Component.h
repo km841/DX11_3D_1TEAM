@@ -23,12 +23,12 @@ namespace hm
 		RigidBody,
 		Movement,
 		Camera,
-		Physical,
 		Collider,
 		Ai,
 		ParticleSystem,
 		SoundListener,
 		SoundSource,
+		UI,
 		// ...
 		MonoBehavior,
 		End,

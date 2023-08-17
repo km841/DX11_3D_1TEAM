@@ -126,6 +126,7 @@ public:						  \
 #define DEVICE gpEngine->GetGraphicsCore()->GetDevice()
 #define CONST_BUFFER(type) gpEngine->GetConstantBuffer(type)
 #define PHYSICS gpEngine->GetPhysics()->GetPhysics()
+#define FONT gpEngine->GetFont()
 #define GLOBAL_GRAVITY gpEngine->GetPhysics()->GetGravity()
 #define SAFE_DELETE(p) { if(p) { delete (p); (p)=NULL; } }
 #define IS_PRESS(key) GET_SINGLE(Input)->GetButtonPress(key)

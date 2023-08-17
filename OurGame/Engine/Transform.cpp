@@ -96,7 +96,7 @@ namespace hm
 			PxQuat rotateY(_rotation.y * XM_PI / 180.f, Vec3(0.f, 1.f, 0.f));
 			PxQuat rotateZ(_rotation.z * XM_PI / 180.f, Vec3(0.f, 0.f, 1.f));
 
-			pRigidBody->SetPhysicsTransform(PxTransform(transform.p, rotateZ * rotateY * rotateX));
+			pRigidBody->SetPhysicsTransform(PxTransform(transform.p, rotateZ * rotateX * rotateY));
 		}
 
 		mRotation = _rotation; 
@@ -281,7 +281,6 @@ namespace hm
 			PxQuat rotQ(_degree * XM_PI / 180.f, rotVec);
 			pRigidBody->SetPhysicsTransform(PxTransform(transform.p, q * rotQ));
 		}
-
 
 		switch (_eAxis)
 		{

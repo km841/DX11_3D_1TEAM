@@ -46,10 +46,6 @@ namespace hm
 			InstancingBuffer* buffer = pair.second;
 			SAFE_DELETE(buffer);
 		}
-
-		SAFE_DELETE(mpDownScaleBuffer);
-		SAFE_DELETE(mpAvgLumBuffer);
-		SAFE_DELETE(mpPrevAdaptionBuffer);
 	}
 
 	void RenderManager::Initialize()
@@ -76,6 +72,8 @@ namespace hm
 			PostProcessing();
 
 		RenderForward(_pScene);
+
+		
 	}
 
 	void RenderManager::ClearInstancingBuffer()
@@ -419,7 +417,7 @@ namespace hm
 		mDOFFarRange = 1.0f / std::fmaxf(60.0f, 0.001f);			// 80 -> 60 ~150
 
 		mMiddleGrey = 12.f;
-		mWhite = 5.0f;
+		mWhite = 10.0f;
 
 		mWidth = static_cast<UINT32>(RESOLUTION.x);
 		mHeight = static_cast<UINT32>(RESOLUTION.y);
@@ -445,13 +443,13 @@ namespace hm
 		mpBritePassMaterial = GET_SINGLE(Resources)->Get<Material>(L"ComputeBloom");
 		mpHDRMaterial = GET_SINGLE(Resources)->Get<Material>(L"HDR");
 
-		mpDownScaleBuffer = new StructuredBuffer;
+		mpDownScaleBuffer = make_shared<StructuredBuffer>();
 		mpDownScaleBuffer->Create(4, ((static_cast<int>(RESOLUTION.x) * static_cast<int>(RESOLUTION.y)) / (16 * 1024)));
 
-		mpAvgLumBuffer = new StructuredBuffer;
+		mpAvgLumBuffer = make_shared<StructuredBuffer>();
 		mpAvgLumBuffer->Create(4, 1);
 
-		mpPrevAdaptionBuffer = new StructuredBuffer;
+		mpPrevAdaptionBuffer = make_shared<StructuredBuffer>();
 		mpPrevAdaptionBuffer->Create(4, 1);
 
 		mpDownScaleSceneTexture =
