@@ -116,6 +116,8 @@ namespace sy
 			Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Floor.fbx");
 
 			pFloor->GetTransform()->SetScale(Vec3(37.f, 37.f, 37.f));
+			pFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
+			pFloor->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(161, 221, 161));
 
 			AddGameObject(pFloor);
 		}
@@ -131,6 +133,8 @@ namespace sy
 
 			pfloorextension_nocollider->GetTransform()->SetScale(Vec3(110.f, 10.f, 145.f));
 			pfloorextension_nocollider->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 62.5f));
+			pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
+			pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(161, 221, 161));
 			AddGameObject(pfloorextension_nocollider);
 		}
 
@@ -241,6 +245,8 @@ namespace sy
 			Ground* pfloorextension_nocollider = Factory::CreateObject<Ground>(Vec3(11.5f, 5.f, 169.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\floorextension_nocollider.fbx");
 
 			pfloorextension_nocollider->GetTransform()->SetScale(Vec3(20.f, 10.f, 400.f));
+			pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
+			pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(161, 221, 161));
 			AddGameObject(pfloorextension_nocollider);
 		}
 
