@@ -213,9 +213,10 @@ namespace hm
 			vertex.normal.z = _pMesh->mNormals[i].z;
 			vertex.normal.Normalize();
 
-			if (_pMesh->mTextureCoords[0]) {
-				vertex.uv.x = (float)_pMesh->mTextureCoords[0][i].x;
-				vertex.uv.y = (float)_pMesh->mTextureCoords[0][i].y;
+			if (_pMesh->mTextureCoords[0]) 
+			{
+				vertex.uv.x = _pMesh->mTextureCoords[0][i].x;
+				vertex.uv.y = _pMesh->mTextureCoords[0][i].y;
 			}
 
 			meshInfo.vertices.push_back(vertex);
@@ -449,6 +450,8 @@ namespace hm
 		const aiScene* pScene = importer.ReadFile(
 			ws2s(mFilePath),
 			aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+
+		AssertEx(pScene, L"FBXLoader::LoadStaticMesh() - Scene이 생성되지 않음, FBX 파일 경로 문제일 가능성 높음");
 
 		Matrix tr; // Initial transformations
 		ParseNode(pScene->mRootNode, pScene, tr);

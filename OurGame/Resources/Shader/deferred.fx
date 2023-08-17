@@ -71,7 +71,7 @@ PS_OUT PS_Main(VS_OUT _in)
     PS_OUT output = (PS_OUT) 0;
    
     float bloomFlag = g_int_3;
-    float4 color = float4(0.f, 0.f, 0.f, 1.f);
+    float4 color = float4(g_vec3_0, 1.f);
     
     if (g_tex_on_0)
         color = g_tex_0.Sample(g_sam_0, _in.uv);

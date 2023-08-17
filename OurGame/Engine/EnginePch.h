@@ -131,6 +131,7 @@ public:						  \
 #define DELTA_TIME GET_SINGLE(Timer)->GetDeltaTime()
 #define ACTIVE_SCENE GET_SINGLE(SceneManager)->GetActiveScene()
 #define RESOLUTION gpEngine->GetResolution()
+#define CONV_COLOR(color) color / 255.f
 
 /*
 * 기존 assert 함수를 확장한 함수.
