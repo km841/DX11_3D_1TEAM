@@ -154,6 +154,7 @@
     <ClInclude Include="UI.h">
       <Filter>Object\GameObject\UI</Filter>
     </ClInclude>
+    <ClInclude Include="FontManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EnginePch.cpp">
@@ -303,6 +304,7 @@
     <ClCompile Include="UI.cpp">
       <Filter>Object\GameObject\UI</Filter>
     </ClCompile>
+    <ClCompile Include="FontManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

@@ -8,6 +8,7 @@
 #include "Light.h"
 #include "EventManager.h"
 #include "RenderManager.h"
+#include "FontManager.h"
 
 namespace hm
 {
@@ -48,11 +49,14 @@ namespace hm
 		mpSwapChain->Initialize();
 		mpPhysics->Initialize();
 
+		mpGraphicsCore->Create2DRenderTarget();
+
 		CreateMultiRenderTarget();
 		CreateConstantBuffer(RegisterCBV::b0, sizeof(TransformParams));
 		CreateConstantBuffer(RegisterCBV::b1, sizeof(MaterialParams));
 		CreateConstantBuffer(RegisterCBV::b2, sizeof(LightParams));
 
+		GET_SINGLE(FontManager)->Initialize();
 		GET_SINGLE(Resources)->Initialize();
 		GET_SINGLE(Input)->Initialize();
 		GET_SINGLE(SceneManager)->Initialize();

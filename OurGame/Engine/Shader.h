@@ -38,6 +38,13 @@ namespace hm
         OneToOneBlend,
         End,
     };
+    
+    enum class SamplerType
+    {
+        Wrap,
+        Clamp,
+        End,
+    };
 
     struct ShaderArg
     {
@@ -98,6 +105,8 @@ namespace hm
         void CreatePixelShader(const wstring& _path, const string& _name, const string& _version);
         void CreateGeometryShader(const wstring& _path, const string& _name, const string& _version);
 
+        void SetSamplerType(SamplerType _eSamplerType);
+
     public:
         ShaderType GetShaderType() const { return mShaderInfo.eShaderType; }
 
@@ -110,6 +119,8 @@ namespace hm
     private:
         ShaderInfo                      mShaderInfo;
 
+        SamplerType                     meSamplerType;
+
         ComPtr<ID3D11VertexShader>      mpVertexShader;
         ComPtr<ID3D11GeometryShader>    mpGeometryShader;
         ComPtr<ID3D11PixelShader>       mpPixelShader;
@@ -117,8 +128,10 @@ namespace hm
 
         ComPtr<ID3D11InputLayout>       mpInputLayout;
 
-        ComPtr<ID3D11SamplerState>      mpLinearSamplerState;
-        ComPtr<ID3D11SamplerState>      mpPointSamplerState;
+        ComPtr<ID3D11SamplerState>      mpLinearWrapSamplerState;
+        ComPtr<ID3D11SamplerState>      mpPointWrapSamplerState;
+        ComPtr<ID3D11SamplerState>      mpPointClampSamplerState;
+        ComPtr<ID3D11SamplerState>      mpLinearClampSamplerState;
 
         ComPtr<ID3D11DepthStencilState> mpDepthStencilState;
         ComPtr<ID3D11RasterizerState>   mpRasterizerState;

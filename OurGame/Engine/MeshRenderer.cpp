@@ -45,6 +45,7 @@ namespace hm
 				CONST_BUFFER(ConstantBufferType::Material)->Mapping();
 
 				mpMesh->RenderInstancing(1, i);
+				mpMaterial->ClearGraphicData();
 			}
 		}
 	}
@@ -69,6 +70,7 @@ namespace hm
 				CONST_BUFFER(ConstantBufferType::Material)->Mapping();
 
 				mpMesh->RenderInstancing(_pBuffer, i);
+				mpMaterial->ClearGraphicData();
 			}
 		}
 	}

@@ -33,6 +33,8 @@
 #include <DirectXColors.h>
 #include <DirectXTex/DirectXTex.h>
 #include <DirectXTex/DirectXTex.inl>
+#include <dwrite.h>
+#include <d2d1.h>
 #include "SimpleMath.h"
 
 // FBX SDK Library
@@ -83,6 +85,8 @@
 #pragma comment(lib, "dxgi")
 #pragma comment(lib, "dxguid")
 #pragma comment(lib, "d3dcompiler")
+#pragma comment(lib, "d2d1")
+#pragma comment(lib, "dwrite")
 #pragma comment(lib, "FW1FontWrapper\\FW1FontWrapper.lib")
 
 namespace fs = std::filesystem;
@@ -131,7 +135,7 @@ public:						  \
 #define DELTA_TIME GET_SINGLE(Timer)->GetDeltaTime()
 #define ACTIVE_SCENE GET_SINGLE(SceneManager)->GetActiveScene()
 #define RESOLUTION gpEngine->GetResolution()
-#define CONV_COLOR(color) color / 255.f
+#define RENDERTARGET_2D gpEngine->GetGraphicsCore()->GetRenderTarget2D()
 
 /*
 * 기존 assert 함수를 확장한 함수.
