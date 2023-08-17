@@ -58,6 +58,146 @@ namespace sy
 	void DiningColliderCheckMap::Update()
 	{
 		Map::Update();
+
+		if (mTarget != nullptr)
+		{
+			if (IS_UP(KeyType::LEFT))
+			{
+				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+				Vec3 fixed_pos = Vec3(target_pos.x -= 0.1f, target_pos.y, target_pos.z);
+				mTarget->GetTransform()->SetPosition(fixed_pos);
+			}
+			if (IS_UP(KeyType::RIGHT))
+			{
+				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+				Vec3 fixed_pos = Vec3(target_pos.x += 0.1f, target_pos.y, target_pos.z);
+				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+			}
+			if (IS_UP(KeyType::UP))
+			{
+				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y, target_pos.z += 0.1f);
+				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+			}
+			if (IS_UP(KeyType::DOWN))
+			{
+				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y, target_pos.z -= 0.1f);
+				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+			}
+			if (IS_UP(KeyType::Z))
+			{
+				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y += 0.1f, target_pos.z);
+				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+			}
+			if (IS_UP(KeyType::X))
+			{
+				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y -= 0.1f, target_pos.z);
+				mTarget->GetTransform()->SetPosition(fixed_pos);
+
+			}
+			if (IS_UP(KeyType::R)) //회전
+			{
+				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
+				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 10.0f, target_rot.z);
+				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+			}
+			if (IS_UP(KeyType::T)) //회전
+			{
+				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
+				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 10.0f, target_rot.z);
+				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+			}
+
+			if (IS_UP(KeyType::Y)) //회전
+			{
+				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
+				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 1.0f, target_rot.z);
+				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+			}
+			if (IS_UP(KeyType::U)) //회전
+			{
+				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
+				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 1.0f, target_rot.z);
+				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+			}
+
+			if (IS_UP(KeyType::O)) //스케일 - 전체적 키우기
+			{
+				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+				Vec3 fixed_scale = Vec3(target_scale.x += 0.5f, target_scale.y += 0.5f, target_scale.z += 0.5f);
+				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+			}
+			if (IS_UP(KeyType::P)) //스케일 - 전체적 줄이기
+			{
+				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+				Vec3 fixed_scale = Vec3(target_scale.x -= 0.5f, target_scale.y -= 0.5f, target_scale.z -= 0.5f);
+				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+			}
+
+			if (IS_UP(KeyType::K)) //스케일 - y축제외 키우기
+			{
+				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+				Vec3 fixed_scale = Vec3(target_scale.x += 0.5f, target_scale.y, target_scale.z += 0.5f);
+				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+			}
+			if (IS_UP(KeyType::L)) //스케일 - y축 제외 줄이기
+			{
+				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+				Vec3 fixed_scale = Vec3(target_scale.x -= 0.5f, target_scale.y, target_scale.z -= 0.5f);
+				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+			}
+			if (IS_UP(KeyType::N)) //스케일 -y축만 키우기
+			{
+				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+				Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y += 0.5, target_scale.z);
+				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+			}
+			if (IS_UP(KeyType::M)) //스케일 -y축만 줄이기
+			{
+				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+				Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y -= 0.5, target_scale.z);
+				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+			}
+
+			if (IS_UP(KeyType::H)) //스케일 - x축만 키우기
+			{
+				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+				Vec3 fixed_scale = Vec3(target_scale.x +=0.5, target_scale.y, target_scale.z);
+				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+			}
+			if (IS_UP(KeyType::J)) //스케일 -x축만 줄이기
+			{
+				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+				Vec3 fixed_scale = Vec3(target_scale.x -=0.5, target_scale.y, target_scale.z);
+				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+			}
+
+			if (IS_UP(KeyType::F)) //스케일 -z축만 키우기
+			{
+				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+				Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y, target_scale.z += 0.5);
+				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+			}
+			if (IS_UP(KeyType::G)) //스케일 -z축만 줄이기
+			{
+				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+				Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y, target_scale.z -= 0.5);
+				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+			}
+
+			if (IS_UP(KeyType::ENTER))
+			{
+				Vec3 a = mTarget->GetTransform()->GetPosition();
+				Vec3 b = mTarget->GetTransform()->GetRotation();
+				Vec3 c = mTarget->GetTransform()->GetScale();
+				int d = 0;
+
+
+			}
+		}
 	}
 
 	void DiningColliderCheckMap::FixedUpdate()
@@ -83,17 +223,20 @@ namespace sy
 
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
-		
+
+
+#pragma region "어드민"
+#pragma endregion
 
 		//DecoObject == 콜라이더 없는 오브젝트
 		//WallObject == 콜라이더 있는 오브젝트
 
 		//Forward == 빛 계산이 없는 명령어
 		//Deferred == 빛 계산이 있는 명령어
-		
+
 		//->GetTransform()->SetPositionExcludingColliders == 콜라이더를 제외하고 오브젝트만 [이동] 시키는 함수
 		//->GetTransform()->SetRotationExcludingColliders == 콜라이더를 제외하고 오브젝트만 [회전] 시키는 함수
-		
+
 
 
 		// 전체맵 가이드라인 벽
@@ -105,163 +248,56 @@ namespace sy
 			AddGameObject(pNormalBase);
 		}
 
-
-		// 1층 바닥 - Floor
+#pragma region "1층"
+		//1층
 		{
-			PhysicsInfo info;
-			info.eActorType = ActorType::Static;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(30.f, 0.1f, 37.f);
+			// 1층 바닥 - Floor
+			{
+				PhysicsInfo info;
+				info.eActorType = ActorType::Static;
+				info.eGeometryType = GeometryType::Box;
+				info.size = Vec3(30.f, 0.1f, 37.f);
 
-			Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Floor.fbx");
+				Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Floor.fbx");
 
-			pFloor->GetTransform()->SetScale(Vec3(37.f, 37.f, 37.f));
-			pFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
-			pFloor->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(161, 221, 161));
+				pFloor->GetTransform()->SetScale(Vec3(37.f, 37.f, 37.f));
+				pFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
+				pFloor->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(051, 101, 051));
 
-			AddGameObject(pFloor);
-		}
+				AddGameObject(pFloor);
+			}
+			//1층 계단 - Stairs
+			{
+				PhysicsInfo info;
+				info.eActorType = ActorType::Static;
+				info.eGeometryType = GeometryType::Box;
+				info.size = Vec3(5.f, 0.1f, 14.f);
 
-		// 2층 바닥 - floorextension_nocollider
-		{
-			PhysicsInfo info;
-			info.eActorType = ActorType::Static;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(27.2f, 0.1f, 19.f);
+				Ground* pStairs = Factory::CreateObjectHasPhysical<Ground>(Vec3(-12.f, -5.2f, 0.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Stairs.fbx");
 
-			Ground* pfloorextension_nocollider = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -1.87f, -15.4f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\floorextension_nocollider.fbx");
+				pStairs->GetTransform()->SetScale(Vec3(15.f, 15.f, 15.f));
+				pStairs->GetTransform()->SetRotation(Vec3(28.f, 0.f, 0.f));
+				pStairs->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 1.f));
+				pStairs->GetTransform()->SetRotationExcludingColliders(Vec3(-28.f, 0.f, 0.f));
+				AddGameObject(pStairs);
+			}
 
-			pfloorextension_nocollider->GetTransform()->SetScale(Vec3(110.f, 10.f, 145.f));
-			pfloorextension_nocollider->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 62.5f));
-			pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
-			pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(161, 221, 161));
-			AddGameObject(pfloorextension_nocollider);
-		}
+			//1층 계단 벽 - Cube1 
+			{
+				PhysicsInfo info;
+				info.eActorType = ActorType::Static;
+				info.eGeometryType = GeometryType::Box;
+				info.size = Vec3(0.7f, 3.f, 16.f);
 
-		//1층 계단 - Stairs
-		{
-			PhysicsInfo info;
-			info.eActorType = ActorType::Static;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(5.f, 0.1f, 14.f);
+				Ground* pCube1 = Factory::CreateObjectHasPhysical<Ground>(Vec3(-9.8f, -4.f, 1.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube1.fbx");
 
-			Ground* pStairs = Factory::CreateObjectHasPhysical<Ground>(Vec3(-12.f, -5.2f, 0.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Stairs.fbx");
+				pCube1->GetTransform()->SetScale(Vec3(30.f, 26.f, 25.f));
+				pCube1->GetTransform()->SetRotation(Vec3(28.f, 0.f, 0.f));
+				pCube1->GetTransform()->SetPositionExcludingColliders(Vec3(8.f, -0.3f, -1.0f));
+				pCube1->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -28.f));
+				AddGameObject(pCube1);
+			}
 
-			pStairs->GetTransform()->SetScale(Vec3(15.f, 15.f, 15.f));
-			pStairs->GetTransform()->SetRotation(Vec3(28.f, 0.f, 0.f));
-			pStairs->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 1.f));
-			pStairs->GetTransform()->SetRotationExcludingColliders(Vec3(-28.f, 0.f, 0.f));
-			AddGameObject(pStairs);
-		}
-
-		//1층 계단 벽 - Cube1 
-		{
-			PhysicsInfo info;
-			info.eActorType = ActorType::Static;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(0.7f, 3.f, 16.f);
-
-			Ground* pCube1 = Factory::CreateObjectHasPhysical<Ground>(Vec3(-9.8f, -4.f, 1.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube1.fbx");
-
-			pCube1->GetTransform()->SetScale(Vec3(30.f, 26.f, 25.f));
-			pCube1->GetTransform()->SetRotation(Vec3(28.f, 0.f, 0.f));
-			pCube1->GetTransform()->SetPositionExcludingColliders(Vec3(8.f, -0.3f, -1.0f));
-			pCube1->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -28.f));
-			AddGameObject(pCube1);
-		}
-
-
-		//2층 계단 - Stairs
-		{
-			PhysicsInfo info;
-			info.eActorType = ActorType::Static;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(5.f, 0.1f, 14.2f);
-
-			Ground* pStairs_2floor = Factory::CreateObjectHasPhysical<Ground>(Vec3(2.2f, 1.6f, -22.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Stairs.fbx");
-
-			pStairs_2floor->GetTransform()->SetScale(Vec3(15.f, 15.5f, 15.f));
-			pStairs_2floor->GetTransform()->SetRotation(Vec3(28.f, -90.f, 0.f));
-			pStairs_2floor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.1f, 0.f));
-			pStairs_2floor->GetTransform()->SetRotationExcludingColliders(Vec3(-28.f, 0.f, 0.f));
-			AddGameObject(pStairs_2floor);
-		}
-
-		//2층 계단 벽 왼쪽- Cube2
-		{
-			PhysicsInfo info;
-			info.eActorType = ActorType::Static;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(0.7f, 3.f, 16.f);
-
-			Ground* pCube2 = Factory::CreateObjectHasPhysical<Ground>(Vec3(1.3f, 2.f, -20.f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube2.fbx");
-
-			pCube2->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
-			pCube2->GetTransform()->SetRotation(Vec3(28.f, -90.f, 0.f));
-			pCube2->GetTransform()->SetPositionExcludingColliders(Vec3(1.1f, -0.5f, 12.1f));
-			pCube2->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -28.f));
-			AddGameObject(pCube2);
-		}
-
-		//2층 계단 벽 오른쪽 - Cube2
-		{
-			PhysicsInfo info;
-			info.eActorType = ActorType::Static;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(0.7f, 3.f, 16.f);
-
-			Ground* pCube2 = Factory::CreateObjectHasPhysical<Ground>(Vec3(1.3f, 2.f, -25.f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube2.fbx");
-
-			pCube2->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
-			pCube2->GetTransform()->SetRotation(Vec3(28.f, -90.f, 0.f));
-			pCube2->GetTransform()->SetPositionExcludingColliders(Vec3(1.1f, -0.5f, 12.1f));
-			pCube2->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -28.f));
-			AddGameObject(pCube2);
-		}
-
-		// 2층 계단 아랫벽 - Cube3
-		{
-			DecoObject* pCube3 = Factory::CreateObject<DecoObject>(Vec3(3.f, 0.5f, -20.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube3.fbx");
-
-			pCube3->GetTransform()->SetScale(Vec3(13.f, 13.f, 13.f));
-			pCube3->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
-			AddGameObject(pCube3);
-		}
-
-
-		// 3층 바닥 콜라이더
-		{
-			PhysicsInfo info;
-			info.eActorType = ActorType::Static;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(5.5f, 0.1f, 50.f);
-
-			Ground* pWallObject = Factory::CreateObjectHasPhysical<Ground>(Vec3(11.f, 4.9f, 0.f), info, L"Forward", L"");
-			AddGameObject(pWallObject);
-		}
-
-		// 3층 바닥 - floorextension_nocollider
-		{
-			Ground* pfloorextension_nocollider = Factory::CreateObject<Ground>(Vec3(11.5f, 5.f, 169.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\floorextension_nocollider.fbx");
-
-			pfloorextension_nocollider->GetTransform()->SetScale(Vec3(20.f, 10.f, 400.f));
-			pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
-			pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(161, 221, 161));
-			AddGameObject(pfloorextension_nocollider);
-		}
-
-
-		//외곽 감싸주는 계단 ㄱ자 라인 줄 -wallPanel_Merged
-		{
-			DecoObject* pWallPanel_Merged = Factory::CreateObject<DecoObject>(Vec3(0.2f, -5.35f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\wallPanel_Merged.fbx");
-
-			pWallPanel_Merged->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
-
-			AddGameObject(pWallPanel_Merged);
-		}
-
-		//기둥 모음집 - ColumnFull
-		{
 			{
 				//1층 맨앞 기둥
 				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(0.f, 3.f, 25.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
@@ -280,13 +316,157 @@ namespace sy
 				AddGameObject(pColumnFull);
 			}
 
+
+
+			//외곽 감싸주는 계단 ㄱ자 라인 줄 -wallPanel_Merged
+			{
+				DecoObject* pWallPanel_Merged = Factory::CreateObject<DecoObject>(Vec3(0.2f, -5.35f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\wallPanel_Merged.fbx");
+
+				pWallPanel_Merged->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+
+				AddGameObject(pWallPanel_Merged);
+			}
+
+
+			// 핑크색 잠금 여는 문 -POT_Door_4_Variant
+			{
+				PhysicsInfo info = {};
+				info.eActorType = ActorType::Static;
+				info.size = Vec3(3.8f, 5.f, 0.4f);
+
+				WallObject* pPOT_Door = Factory::CreateObjectHasPhysical<WallObject>(Vec3(8.75f, -5.5f, -5.8f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\POT_Door_4_Variant.fbx");
+				pPOT_Door->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+				pPOT_Door->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.5f, 4.7f));
+
+				AddGameObject(pPOT_Door);
+			}
+
+			// 핑크색 문 프레임 나무 - DoorFrame
+			{
+				DecoObject* pDoorFrame = Factory::CreateObject<DecoObject>(Vec3(8.75f, -6.0f, -1.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\DoorFrame.fbx");
+
+				pDoorFrame->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+
+				AddGameObject(pDoorFrame);
+			}
+
+			//벽난로 -fireplace
+			{
+				DecoObject* pfireplace = Factory::CreateObject<DecoObject>(Vec3(-0.4f, -5.f, -1.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\fireplace.fbx");
+
+				pfireplace->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+
+
+				AddGameObject(pfireplace);
+			}
+
+			//1층 바닥 구멍 테두리 - RimStarter
+			{
+				DecoObject* pRimStarter = Factory::CreateObject<DecoObject>(Vec3(-0.3f, -8.5f, 3.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\RimStarter.fbx");
+
+				pRimStarter->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+
+
+				AddGameObject(pRimStarter);
+			}
+		}
+#pragma endregion
+
+#pragma region "2층"
+
+		//2층
+		{
+			// 2층 바닥 - floorextension_nocollider
+			{
+				PhysicsInfo info;
+				info.eActorType = ActorType::Static;
+				info.eGeometryType = GeometryType::Box;
+				info.size = Vec3(27.2f, 0.1f, 19.f);
+
+				Ground* pfloorextension_nocollider = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -1.87f, -15.4f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\floorextension_nocollider.fbx");
+
+				pfloorextension_nocollider->GetTransform()->SetScale(Vec3(110.f, 10.f, 145.f));
+				pfloorextension_nocollider->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 62.5f));
+				pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
+				pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(051, 101, 051));
+				AddGameObject(pfloorextension_nocollider);
+			}
+
+			//2층 계단 - Stairs
+			{
+				PhysicsInfo info;
+				info.eActorType = ActorType::Static;
+				info.eGeometryType = GeometryType::Box;
+				info.size = Vec3(5.f, 0.1f, 14.2f);
+
+				Ground* pStairs_2floor = Factory::CreateObjectHasPhysical<Ground>(Vec3(2.2f, 1.6f, -22.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Stairs.fbx");
+
+				pStairs_2floor->GetTransform()->SetScale(Vec3(15.f, 15.5f, 15.f));
+				pStairs_2floor->GetTransform()->SetRotation(Vec3(28.f, -90.f, 0.f));
+				pStairs_2floor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.1f, 0.f));
+				pStairs_2floor->GetTransform()->SetRotationExcludingColliders(Vec3(-28.f, 0.f, 0.f));
+				AddGameObject(pStairs_2floor);
+			}
+
+			//2층 계단 벽 왼쪽- Cube2
+			{
+				PhysicsInfo info;
+				info.eActorType = ActorType::Static;
+				info.eGeometryType = GeometryType::Box;
+				info.size = Vec3(0.7f, 3.f, 16.f);
+
+				Ground* pCube2 = Factory::CreateObjectHasPhysical<Ground>(Vec3(1.3f, 2.f, -20.f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube2.fbx");
+
+				pCube2->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+				pCube2->GetTransform()->SetRotation(Vec3(28.f, -90.f, 0.f));
+				pCube2->GetTransform()->SetPositionExcludingColliders(Vec3(1.1f, -0.5f, 12.1f));
+				pCube2->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -28.f));
+				AddGameObject(pCube2);
+			}
+
+			//2층 계단 벽 오른쪽 - Cube2
+			{
+				PhysicsInfo info;
+				info.eActorType = ActorType::Static;
+				info.eGeometryType = GeometryType::Box;
+				info.size = Vec3(0.7f, 3.f, 16.f);
+
+				Ground* pCube2 = Factory::CreateObjectHasPhysical<Ground>(Vec3(1.3f, 2.f, -25.f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube2.fbx");
+
+				pCube2->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+				pCube2->GetTransform()->SetRotation(Vec3(28.f, -90.f, 0.f));
+				pCube2->GetTransform()->SetPositionExcludingColliders(Vec3(1.1f, -0.5f, 12.1f));
+				pCube2->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -28.f));
+				AddGameObject(pCube2);
+			}
+
+			// 2층 계단 아랫벽 - Cube3
+			{
+				DecoObject* pCube3 = Factory::CreateObject<DecoObject>(Vec3(3.f, 0.5f, -20.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube3.fbx");
+
+				pCube3->GetTransform()->SetScale(Vec3(13.f, 13.f, 13.f));
+				pCube3->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+				AddGameObject(pCube3);
+			}
 			{
 				//2층 맨앞 기둥
-				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.8f, 2.5f, -5.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(0.2f, 2.7f, -6.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
-				pColumnFull->GetTransform()->SetScale(Vec3(15.f, 15.f, 15.f));
+				pColumnFull->GetTransform()->SetScale(Vec3(19.f, 16.f, 19.f));
 				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
 				AddGameObject(pColumnFull);
+
+
+			}
+
+			{
+				//2층 중간 기둥
+				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(0.2f, 2.7f, -13.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+
+				pColumnFull->GetTransform()->SetScale(Vec3(19.f, 16.f, 19.f));
+				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+				AddGameObject(pColumnFull);
+
 			}
 
 			{
@@ -299,17 +479,29 @@ namespace sy
 			}
 
 			{
-				//2-3층 계단 벽쪽 기둥
-				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.1f, 9.8f, -25.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+				//2층 계단 앞 기둥
+				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(-11.8f, -0.7f, -20.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
-				pColumnFull->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
+				pColumnFull->GetTransform()->SetScale(Vec3(15.f, 4.0f, 15.f));
 				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
 				AddGameObject(pColumnFull);
+
+
 			}
 
 			{
-				//3층 ㄱ자 벽쪽 기둥
-				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(6.3f, 9.8f, -25.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+				//2층 계단 앞 벽쪽 기둥
+				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(-11.8f, -0.7f, -24.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+
+				pColumnFull->GetTransform()->SetScale(Vec3(15.f, 4.0f, 15.f));
+				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+				AddGameObject(pColumnFull);
+
+			}
+
+			{
+				//2-3층 계단 벽쪽 기둥
+				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.1f, 9.8f, -25.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 				pColumnFull->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
 				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
@@ -324,19 +516,107 @@ namespace sy
 				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
 				AddGameObject(pColumnFull);
 			}
+		}
+#pragma endregion
 
-			{
-				//3층 중간 벽쪽 기둥
-				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(6.3f, 9.8f, -6.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+#pragma region "3층"
+		// 3층 바닥 콜라이더
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(5.5f, 0.1f, 50.f);
 
-				pColumnFull->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
-				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
-				AddGameObject(pColumnFull);
-			}
+			Ground* pWallObject = Factory::CreateObjectHasPhysical<Ground>(Vec3(11.f, 4.9f, 0.f), info, L"Forward", L"");
+			AddGameObject(pWallObject);
+		}
+
+		// 3층 바닥 - floorextension_nocollider
+		{
+			Ground* pfloorextension_nocollider = Factory::CreateObject<Ground>(Vec3(11.5f, 5.f, 169.8f), L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\floorextension_nocollider.fbx");
+
+			pfloorextension_nocollider->GetTransform()->SetScale(Vec3(20.f, 10.f, 400.f));
+			pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
+			pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(051, 101, 051));
+			AddGameObject(pfloorextension_nocollider);
 		}
 
 
 
+
+		{
+			//3층 ㄱ자 벽쪽 기둥
+			DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(6.3f, 9.8f, -25.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+
+			pColumnFull->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
+			pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+			AddGameObject(pColumnFull);
+		}
+
+
+		{
+			//3층 중간 벽쪽 기둥
+			DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(6.3f, 9.8f, -6.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+
+			pColumnFull->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
+			pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+			AddGameObject(pColumnFull);
+		}
+
+
+		{
+			//3층 난간 맨왼쪽 기둥
+			DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.4f, 6.2f, 23.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+
+			pColumnFull->GetTransform()->SetScale(Vec3(16.5f, 4.5f, 16.5f));
+			pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+			AddGameObject(pColumnFull);
+
+		}
+
+		{
+			//3층 난간 맨왼쪽 두번째 기둥
+			DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.3f, 6.2f, 13.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+
+			pColumnFull->GetTransform()->SetScale(Vec3(16.5f, 4.5f, 16.5f));
+			pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+			AddGameObject(pColumnFull);
+			
+
+		}
+
+		{
+			//3층 난간 긴 막대기 아래 가로줄 - WallRim
+			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(9.1f, 5.1f, 4.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
+
+			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 49.5f));
+			pWallRim->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+			AddGameObject(pWallRim);
+			
+		}
+
+		{
+			//3층 난간 긴 막대기 위 가로줄 
+			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(9.1f, 6.5f, 4.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
+
+			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 49.5f));
+			pWallRim->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+			AddGameObject(pWallRim);
+			
+		}
+
+		{
+			//3층 난간 짧은 막대기 아래 가로줄 - WallRim
+			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(9.1f, 5.1f, 21.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
+
+			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 6.5f));
+			pWallRim->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+			AddGameObject(pWallRim);
+
+		}
+	
+
+#pragma endregion
 
 
 
@@ -344,47 +624,7 @@ namespace sy
 
 
 		
-		// 핑크색 잠금 여는 문 -POT_Door_4_Variant
-		{
-			PhysicsInfo info = {};
-			info.eActorType = ActorType::Static;
-			info.size = Vec3(3.8f, 5.f, 0.4f);
-
-			WallObject* pPOT_Door = Factory::CreateObjectHasPhysical<WallObject>(Vec3(8.75f, -5.5f, -5.8f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\POT_Door_4_Variant.fbx");
-			pPOT_Door->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
-			pPOT_Door->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.5f, 4.7f));
-
-			AddGameObject(pPOT_Door);
-		}
-
-		// 핑크색 문 프레임 나무 - DoorFrame
-		{
-			DecoObject* pDoorFrame = Factory::CreateObject<DecoObject>(Vec3(8.75f, -6.0f, -1.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\DoorFrame.fbx");
-
-			pDoorFrame->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
-
-			AddGameObject(pDoorFrame);
-		}
-
-		//벽난로 -fireplace
-		{
-			DecoObject* pfireplace = Factory::CreateObject<DecoObject>(Vec3(-0.4f, -5.f, -1.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\fireplace.fbx");
-
-			pfireplace->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
-			
-
-			AddGameObject(pfireplace);
-		}
-
-		//1층 바닥 구멍 테두리 - RimStarter
-		{
-			DecoObject* pRimStarter = Factory::CreateObject<DecoObject>(Vec3(-0.3f, -8.5f, 3.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\RimStarter.fbx");
-
-			pRimStarter->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
-
-
-			AddGameObject(pRimStarter);
-		}
+		
 
 		
 
@@ -397,7 +637,7 @@ namespace sy
 
 
 		// Toy 까마귀 일단 배치
-		{
+		/*{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Dynamic;
 			physicsInfo.eGeometryType = GeometryType::Sphere;
@@ -409,7 +649,7 @@ namespace sy
 			PlayerMoveScript* pPlayerSc =  pPlayer->AddComponent(new PlayerMoveScript);
 	
 			AddGameObject(pPlayer);
-		}
+		}*/
 
 
 
