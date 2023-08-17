@@ -18,7 +18,9 @@ namespace hm
 
 		virtual void Enter();
 		virtual void Exit();
-	
+
+	protected:
+		GameObject* mTarget = nullptr;
 	};
 }
 
