@@ -5,6 +5,7 @@
 #include "ConstantBuffer.h"
 #include "MultiRenderTarget.h"
 #include "Physics.h"
+#include "Font.h"
 
 namespace hm
 {
@@ -48,6 +49,7 @@ namespace hm
 		ConstantBuffer* GetConstantBuffer(ConstantBufferType _eContantBufferType) { return mConstantBufferGroup[static_cast<int>(_eContantBufferType)]; }
 		MultiRenderTarget* GetMultiRenderTarget(MultiRenderTargetType _eMultiRenderTargetType) { return mMultiRenderTargets[static_cast<int>(_eMultiRenderTargetType)]; }
 		Physics* GetPhysics() { return mpPhysics; }
+		Font* GetFont() { return mpFont; }
 
 		// 윈도우 사이즈 변경하는 함수
 		void ResizeWindow(int _width, int _height);
@@ -64,6 +66,7 @@ namespace hm
 		GraphicsCore* mpGraphicsCore;
 		SwapChain*    mpSwapChain;
 		Physics* mpPhysics;
+		Font* mpFont;
 
 		std::array<ConstantBuffer*, CONSTANT_BUFFER_TYPE_COUNT> mConstantBufferGroup;
 		std::array<MultiRenderTarget*, MULTI_RENDER_TARGET_TYPE_COUNT> mMultiRenderTargets;

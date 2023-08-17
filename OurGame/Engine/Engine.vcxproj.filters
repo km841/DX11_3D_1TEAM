@@ -154,7 +154,24 @@
     <ClInclude Include="UI.h">
       <Filter>Object\GameObject\UI</Filter>
     </ClInclude>
-    <ClInclude Include="FontManager.h" />
+    <ClInclude Include="FontManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="UIText.h">
+      <Filter>Object\GameObject\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Engine\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="FW1CompileSettings.h">
+      <Filter>Engine\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="FW1FontWrapper.h">
+      <Filter>Engine\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="FW1Precompiled.h">
+      <Filter>Engine\Font</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EnginePch.cpp">
@@ -304,7 +321,15 @@
     <ClCompile Include="UI.cpp">
       <Filter>Object\GameObject\UI</Filter>
     </ClCompile>
-    <ClCompile Include="FontManager.cpp" />
+    <ClCompile Include="FontManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="UIText.cpp">
+      <Filter>Object\GameObject\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Engine\Font</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -345,6 +370,9 @@
     </Filter>
     <Filter Include="Object\GameObject\UI">
       <UniqueIdentifier>{78c95059-1605-4428-81a6-2202934ad3b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Font">
+      <UniqueIdentifier>{694c219a-20ab-4a29-b4b0-277a2f872231}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

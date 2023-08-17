@@ -71,9 +71,9 @@ namespace hm
 		shared_ptr<ImageFilter> mpBlurYFilter;
 		shared_ptr<ImageFilter> mpCombineFilter;
 
-		StructuredBuffer* mpDownScaleBuffer; // 휘도값 계산 시 중간값 저장하는 버퍼
-		StructuredBuffer* mpAvgLumBuffer; //평균 휘도값 저장하는 버퍼
-		StructuredBuffer* mpPrevAdaptionBuffer; // 다음 프레임 직전 휘도값을 저장하는 버퍼
+		shared_ptr<StructuredBuffer> mpDownScaleBuffer;    // 휘도값 계산 시 중간값 저장하는 버퍼
+		shared_ptr<StructuredBuffer> mpAvgLumBuffer;       //평균 휘도값 저장하는 버퍼
+		shared_ptr<StructuredBuffer> mpPrevAdaptionBuffer; // 다음 프레임 직전 휘도값을 저장하는 버퍼
 		
 		shared_ptr<Texture> mpDownScaleSceneTexture; // 다운 스케일된 HDR 텍스쳐
 		shared_ptr<Texture> mpBloomTexture;

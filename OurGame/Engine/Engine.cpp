@@ -17,6 +17,7 @@ namespace hm
 		SAFE_DELETE(mpGraphicsCore);
 		SAFE_DELETE(mpSwapChain);
 		SAFE_DELETE(mpPhysics);
+		SAFE_DELETE(mpFont);
 
 		for (int i = 0; i < CONSTANT_BUFFER_TYPE_COUNT; ++i)
 		{
@@ -44,10 +45,12 @@ namespace hm
 		mpGraphicsCore = new GraphicsCore;
 		mpSwapChain = new SwapChain;
 		mpPhysics = new Physics;
+		mpFont = new Font;
 
 		mpGraphicsCore->Initialize();
 		mpSwapChain->Initialize();
 		mpPhysics->Initialize();
+		mpFont->Initialize(mWindowInfo, mpGraphicsCore->GetDevice(), mpGraphicsCore->GetContext());
 
 		mpGraphicsCore->Create2DRenderTarget();
 

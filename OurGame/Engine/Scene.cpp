@@ -106,6 +106,8 @@ namespace hm
 				pGameObject->Render();
 			}
 		}
+
+		FONT->Render();
 	}
 	void Scene::Destroy()
 	{

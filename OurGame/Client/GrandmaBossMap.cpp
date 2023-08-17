@@ -37,6 +37,7 @@
 #include "CameraMoveScript.h"
 #include "PlayerMoveScript.h"
 #include "PlayerSlashScript.h"
+#include "PlacementScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -156,6 +157,8 @@ namespace hm
 		{
 			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(5.f, 10.f, 20.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossTable.fbx");
 			pDecoObject->GetRigidBody()->RemoveGravity();
+
+			pDecoObject->AddComponent(new PlacementScript);
 
 			//pDecoObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
 			//pDecoObject->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(255, 0, 0));
