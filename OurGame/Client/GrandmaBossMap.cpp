@@ -130,6 +130,8 @@ namespace hm
 			pSlashTest->GetMeshRenderer()->GetMaterial()->SetInt(3, 1);
 			pSlashTest->AddComponent(new PlayerSlashScript);
 
+			pSlashTest->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::Clamp);
+
 			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"HeavySlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbm\\sword_slash_texture_1.png");
 			pSlashTest->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
 			pSlashTest->GetRigidBody()->RemoveGravity();

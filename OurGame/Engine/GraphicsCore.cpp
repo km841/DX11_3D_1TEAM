@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "GraphicsCore.h"
+#include "Engine.h"
 
 namespace hm
 {
@@ -8,6 +9,37 @@ namespace hm
 		CreateDeviceAndContext();
 		CreateDxgiFactory();
 
+
+	}
+	void GraphicsCore::Create2DRenderTarget()
+	{
+		D2D1_FACTORY_OPTIONS option = {};
+		option.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
+
+		
+		HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, option,
+			mpFactory2D.GetAddressOf());
+
+		AssertEx(SUCCEEDED(hr), L"GraphicsCore::Create2DRenderTarget() - 2D 蒲配府 积己 角菩");
+
+		IDXGISurface* pBackSurface = nullptr;
+		gpEngine->GetSwapChain()->GetSwapChain()->GetBuffer(0, IID_PPV_ARGS(&pBackSurface));
+
+		D2D1_RENDER_TARGET_PROPERTIES propertyOption = D2D1::RenderTargetProperties(
+			D2D1_RENDER_TARGET_TYPE_HARDWARE,
+			D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED));
+
+
+		hr = mpFactory2D->CreateDxgiSurfaceRenderTarget(pBackSurface, propertyOption,
+			mpRenderTarget2D.GetAddressOf());
+
+		AssertEx(SUCCEEDED(hr), L"GraphicsCore::Create2DRenderTarget() - 2D 坊歹鸥百 积己 角菩");
+
+		if (nullptr != pBackSurface)
+		{
+			pBackSurface->Release();
+			pBackSurface = nullptr;
+		}
 	}
 	void GraphicsCore::CreateDeviceAndContext()
 	{

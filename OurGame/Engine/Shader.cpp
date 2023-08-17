@@ -6,6 +6,7 @@ namespace hm
 {
 	Shader::Shader()
 		: Object(ObjectType::Shader)
+		, meSamplerType(SamplerType::Wrap)
 	{
 	}
 	Shader::~Shader()
@@ -182,20 +183,41 @@ namespace hm
 	{
 		if (ShaderType::Compute == mShaderInfo.eShaderType)
 		{
-			CONTEXT->CSSetSamplers(0, 1, mpLinearSamplerState.GetAddressOf());
-			CONTEXT->CSSetSamplers(1, 1, mpPointSamplerState.GetAddressOf());
+			switch (meSamplerType)
+			{
+			case hm::SamplerType::Wrap:
+				CONTEXT->CSSetSamplers(0, 1, mpLinearWrapSamplerState.GetAddressOf());
+				CONTEXT->CSSetSamplers(1, 1, mpPointWrapSamplerState.GetAddressOf());
+				break;
+			case hm::SamplerType::Clamp:
+				CONTEXT->CSSetSamplers(0, 1, mpLinearClampSamplerState.GetAddressOf());
+				CONTEXT->CSSetSamplers(1, 1, mpPointClampSamplerState.GetAddressOf());
+				break;
+			}
 			CONTEXT->CSSetShader(mpComputeShader.Get(), nullptr, 0);
 		}
 
 		else
 		{
-			CONTEXT->VSSetSamplers(0, 1, mpLinearSamplerState.GetAddressOf());
-			CONTEXT->PSSetSamplers(0, 1, mpLinearSamplerState.GetAddressOf());
-			CONTEXT->GSSetSamplers(0, 1, mpLinearSamplerState.GetAddressOf());
-
-			CONTEXT->VSSetSamplers(1, 1, mpPointSamplerState.GetAddressOf());
-			CONTEXT->PSSetSamplers(1, 1, mpPointSamplerState.GetAddressOf());
-			CONTEXT->GSSetSamplers(1, 1, mpPointSamplerState.GetAddressOf());
+			switch (meSamplerType)
+			{
+			case hm::SamplerType::Wrap:
+				CONTEXT->VSSetSamplers(0, 1, mpLinearWrapSamplerState.GetAddressOf());
+				CONTEXT->PSSetSamplers(0, 1, mpLinearWrapSamplerState.GetAddressOf());
+				CONTEXT->GSSetSamplers(0, 1, mpLinearWrapSamplerState.GetAddressOf());
+				CONTEXT->VSSetSamplers(1, 1, mpPointWrapSamplerState.GetAddressOf());
+				CONTEXT->PSSetSamplers(1, 1, mpPointWrapSamplerState.GetAddressOf());
+				CONTEXT->GSSetSamplers(1, 1, mpPointWrapSamplerState.GetAddressOf());
+				break;
+			case hm::SamplerType::Clamp:
+				CONTEXT->VSSetSamplers(0, 1, mpLinearClampSamplerState.GetAddressOf());
+				CONTEXT->PSSetSamplers(0, 1, mpLinearClampSamplerState.GetAddressOf());
+				CONTEXT->GSSetSamplers(0, 1, mpLinearClampSamplerState.GetAddressOf());
+				CONTEXT->VSSetSamplers(1, 1, mpPointClampSamplerState.GetAddressOf());
+				CONTEXT->PSSetSamplers(1, 1, mpPointClampSamplerState.GetAddressOf());
+				CONTEXT->GSSetSamplers(1, 1, mpPointClampSamplerState.GetAddressOf());
+				break;
+			}
 
 			CONTEXT->VSSetShader(mpVertexShader.Get(), nullptr, 0);
 			CONTEXT->PSSetShader(mpPixelShader.Get(), nullptr, 0);
@@ -235,6 +257,10 @@ namespace hm
 		HRESULT hr = DEVICE->CreateGeometryShader(mpGSBlob->GetBufferPointer(), mpGSBlob->GetBufferSize(), nullptr, &mpGeometryShader);
 		AssertEx(SUCCEEDED(hr), L"Shader::CreateGeometryShader() - CreateGeometryShader Failed");
 	}
+	void Shader::SetSamplerType(SamplerType _eSamplerType)
+	{
+		meSamplerType = _eSamplerType;
+	}
 	void Shader::CreateShader(const wstring& _path, const string& _name, const string& _version, ComPtr<ID3DBlob>& _pBlob)
 	{
 		int compileFlag = 0;
@@ -266,11 +292,21 @@ namespace hm
 		//samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_LINEAR_MAG_MIP_POINT;
 		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 
-		HRESULT hr = DEVICE->CreateSamplerState(&samplerDesc, mpLinearSamplerState.GetAddressOf());
+		HRESULT hr = DEVICE->CreateSamplerState(&samplerDesc, mpLinearWrapSamplerState.GetAddressOf());
 		AssertEx(SUCCEEDED(hr), L"Shader::CreateSampler() - Create Linear Sampler Failed");
 
 		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_POINT;
-		hr = DEVICE->CreateSamplerState(&samplerDesc, mpPointSamplerState.GetAddressOf());
+		hr = DEVICE->CreateSamplerState(&samplerDesc, mpPointWrapSamplerState.GetAddressOf());
 		AssertEx(SUCCEEDED(hr), L"Shader::CreateSampler() - Create Point Sampler Failed");
+
+		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
+		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
+		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
+
+		hr = DEVICE->CreateSamplerState(&samplerDesc, mpPointClampSamplerState.GetAddressOf());
+		AssertEx(SUCCEEDED(hr), L"Shader::CreateSampler() - Create Point Sampler Failed");
+
+		hr = DEVICE->CreateSamplerState(&samplerDesc, mpLinearClampSamplerState.GetAddressOf());
+		AssertEx(SUCCEEDED(hr), L"Shader::CreateSampler() - Create Linear Sampler Failed");
 	}
 }

@@ -188,6 +188,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClInclude Include="FBXLoader.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="FontManager.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GraphicsCore.h" />
@@ -242,6 +243,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClCompile Include="FBXLoader.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphicsCore.cpp" />

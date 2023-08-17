@@ -213,10 +213,9 @@ namespace hm
 			vertex.normal.z = _pMesh->mNormals[i].z;
 			vertex.normal.Normalize();
 
-			if (_pMesh->mTextureCoords[0]) 
-			{
-				vertex.uv.x = _pMesh->mTextureCoords[0][i].x;
-				vertex.uv.y = _pMesh->mTextureCoords[0][i].y;
+			if (_pMesh->mTextureCoords[0]) {
+				vertex.uv.x = (float)_pMesh->mTextureCoords[0][i].x;
+				vertex.uv.y = (float)_pMesh->mTextureCoords[0][i].y;
 			}
 
 			meshInfo.vertices.push_back(vertex);

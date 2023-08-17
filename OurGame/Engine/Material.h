@@ -43,6 +43,7 @@ namespace hm
         void PushGraphicDataExceptForTextures(int _containerIndex = 0, int _subsetIndex = 0);
         void PushComputeData();
         void Dispatch(UINT32 _countX, UINT32 _countY, UINT32 _countZ);
+        void SetSamplerType(SamplerType _eSamplerType) { mpShader->SetSamplerType(_eSamplerType); }
 
         void                SetShader(shared_ptr<Shader> _pShader) { mpShader = _pShader; }
         shared_ptr<Shader>  GetShader() { return mpShader; }
