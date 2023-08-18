@@ -81,7 +81,7 @@ namespace hm
 		// - LeftSecretFightMap
 		// - LeftSecretTrialMap
 		// - RightSecretPassageMap
-		if (IS_DOWN(KeyType::B))
+		if (IS_DOWN(KeyType::L))
 		{
 			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::DiningColliderCheckMap);
 		}
