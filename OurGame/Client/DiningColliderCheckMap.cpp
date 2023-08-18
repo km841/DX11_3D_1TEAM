@@ -242,10 +242,12 @@ namespace sy
 
 		// 전체맵 가이드라인 벽
 		{
-			DecoObject* pNormalBase = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Diningroom.fbx");
+			DecoObject* pNormalBase = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Diningroom.fbx",true);
 
 			pNormalBase->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 			pNormalBase->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+			pNormalBase->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr,2,0); //3번째인자 == 텍스처 첫번째 png 인지 두번째 png인지 구별하게 해주는거
+			pNormalBase->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(115, 118, 128),2,0); //3번째인자 == 텍스처 첫번째 png 인지 두번째 png인지 구별하게 해주는거
 			AddGameObject(pNormalBase);
 		}
 
@@ -263,7 +265,7 @@ namespace sy
 
 				pFloor->GetTransform()->SetScale(Vec3(37.f, 37.f, 37.f));
 				pFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
-				pFloor->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(051, 101, 051));
+				pFloor->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(164, 164, 145));
 
 				AddGameObject(pFloor);
 			}
@@ -281,6 +283,16 @@ namespace sy
 				pStairs->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 1.f));
 				pStairs->GetTransform()->SetRotationExcludingColliders(Vec3(-28.f, 0.f, 0.f));
 				AddGameObject(pStairs);
+			}
+
+			{
+				//1-2층 계단 앞 기둥
+				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(-16.7f, -0.7f, -6.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+
+				pColumnFull->GetTransform()->SetScale(Vec3(15.f, 4.0f, 15.f));
+				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+			
+				AddGameObject(pColumnFull);
 			}
 
 			//1층 계단 벽 - Cube1 
@@ -389,7 +401,7 @@ namespace sy
 				pfloorextension_nocollider->GetTransform()->SetScale(Vec3(110.f, 10.f, 145.f));
 				pfloorextension_nocollider->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 62.5f));
 				pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
-				pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(051, 101, 051));
+				pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(164, 164, 145));
 				AddGameObject(pfloorextension_nocollider);
 			}
 
@@ -409,6 +421,28 @@ namespace sy
 
 				
 				AddGameObject(pStairs_2floor);
+			}
+
+			{
+				//2층 계단 아래 가로줄 - WallRim
+				DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(5.6f, -1.8f, -20.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
+
+				pWallRim->GetTransform()->SetScale(Vec3(29.5f, 51.f, 21.5f));
+				pWallRim->GetTransform()->SetRotation(Vec3(0.f, 90.0f, 0.f));
+			
+				AddGameObject(pWallRim);
+
+			}
+
+			{
+				//2층 계단-벽 사이 가로줄 - WallRim
+				DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(-3.4f, -1.8f, -25.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
+
+				pWallRim->GetTransform()->SetScale(Vec3(29.5f, 51.f, 21.5f));
+				pWallRim->GetTransform()->SetRotation(Vec3(0.f, 90.0f, 0.f));
+				
+				AddGameObject(pWallRim);
+
 			}
 
 			//2층 계단 벽 왼쪽- Cube2
@@ -443,6 +477,28 @@ namespace sy
 				AddGameObject(pCube2);
 			}
 
+			{
+				//2층 난간 아래 가로줄 - WallRim
+				DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(3.8f, -1.9f, -6.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
+
+				pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 27.5f));
+				pWallRim->GetTransform()->SetRotation(Vec3(0.f, 90.0f, 0.f));
+				
+				AddGameObject(pWallRim);
+
+			}
+			{
+				//2층 난간 위 가로줄 - WallRim
+				DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(3.8f, -0.4f, -6.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
+
+				pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 27.5f));
+				pWallRim->GetTransform()->SetRotation(Vec3(0.f, 90.0f, 0.f));
+				
+				AddGameObject(pWallRim);
+
+			}
+
+
 			// 2층 계단 아랫벽 - Cube3
 			{
 				DecoObject* pCube3 = Factory::CreateObject<DecoObject>(Vec3(3.f, 0.5f, -20.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube3.fbx");
@@ -451,6 +507,7 @@ namespace sy
 				pCube3->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
 				AddGameObject(pCube3);
 			}
+
 			{
 				//2층 맨앞 기둥
 				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(0.2f, 2.7f, -6.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
@@ -488,8 +545,6 @@ namespace sy
 				pColumnFull->GetTransform()->SetScale(Vec3(15.f, 4.0f, 15.f));
 				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
 				AddGameObject(pColumnFull);
-
-
 			}
 
 			{
@@ -519,6 +574,21 @@ namespace sy
 				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
 				AddGameObject(pColumnFull);
 			}
+
+			{
+				//2층 난간 막대기 - BannisterStick
+				for (float i = 0; i < 12; i++)
+				{
+					DecoObject* pBannisterStick = Factory::CreateObject<DecoObject>(Vec3(7.5f - (i * 1.5f), -1.f, -6.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
+
+					pBannisterStick->GetTransform()->SetScale(Vec3(2.f, 1.3f, 2.f));
+					pBannisterStick->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+
+					AddGameObject(pBannisterStick);
+
+				}
+			}
+
 		}
 #pragma endregion
 
@@ -540,9 +610,79 @@ namespace sy
 
 			pfloorextension_nocollider->GetTransform()->SetScale(Vec3(20.f, 10.f, 400.f));
 			pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
-			pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(051, 101, 051));
+			pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(164, 164, 145));
 			AddGameObject(pfloorextension_nocollider);
 		}
+
+		{
+			//3층 벽쪽 커튼 1 - CurtainHorizontal
+			DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(1.8f, 12.5f, 18.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CurtainHorizontal.fbx");
+
+			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+			pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+			
+			AddGameObject(pCurtainHorizontal);
+		}
+
+		{
+			//3층 벽쪽 커튼 2 - CurtainHorizontal
+			DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(1.8f, 12.5f, 9.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CurtainHorizontal.fbx");
+
+			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+			pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+			
+			AddGameObject(pCurtainHorizontal);
+		}
+
+		{
+			//3층 벽쪽 커튼 3 - CurtainHorizontal
+			DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(1.8f, 12.5f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CurtainHorizontal.fbx");
+
+			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+			pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+
+			AddGameObject(pCurtainHorizontal);
+		}
+
+
+		{
+			//3층 벽쪽 커튼 4 - CurtainHorizontal
+			DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(1.8f, 12.5f, -11.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CurtainHorizontal.fbx");
+
+			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+			pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+			
+			AddGameObject(pCurtainHorizontal);
+		}
+
+		{
+			//3층 벽쪽 커튼 5 - CurtainHorizontal
+			DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(1.8f, 12.5f, -20.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CurtainHorizontal.fbx");
+
+			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+			pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+
+			AddGameObject(pCurtainHorizontal);
+		}
+
+		{
+			//3층 벽쪽 커튼 6 - CurtainHorizontal
+			DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(2.1f, 12.5f, -12.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CurtainHorizontal.fbx");
+
+			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+			pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+			AddGameObject(pCurtainHorizontal);
+		}
+
+		{
+			//3층 벽쪽 커튼 7 - CurtainHorizontal
+			DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(-7.1f, 12.5f, -12.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CurtainHorizontal.fbx");
+
+			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+			pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+			AddGameObject(pCurtainHorizontal);
+		}
+
 
 
 
@@ -624,9 +764,29 @@ namespace sy
 			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 72.f));
 			pWallRim->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
 			
-		
 			AddGameObject(pWallRim);
+		}
 
+		{
+			//3층 난간 긴 막대기 반대편 천장 가로줄 - WallRim
+			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(14.3f, 14.2f, 12.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
+
+			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 20.f, 73.f));
+			pWallRim->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+		
+
+			AddGameObject(pWallRim);
+		}
+
+		{
+			//3층 난간 긴 천장 세로줄 - WallRim
+			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(-5.7f, 14.2f, -25.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
+
+			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 20.f, 40.f));
+			pWallRim->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+			
+
+			AddGameObject(pWallRim);
 		}
 
 		{
@@ -670,6 +830,65 @@ namespace sy
 			AddGameObject(pWallRim);
 
 		}
+
+		{
+			//난간 막대기 - BannisterStick
+			DecoObject* pBannisterStick = Factory::CreateObject<DecoObject>(Vec3(9.f, 5.8f, 21.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
+
+			pBannisterStick->GetTransform()->SetScale(Vec3(2.f, 1.3f, 2.f));
+			pBannisterStick->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+			AddGameObject(pBannisterStick);
+		}
+
+		{
+			//난간 막대기 - BannisterStick
+			DecoObject* pBannisterStick = Factory::CreateObject<DecoObject>(Vec3(9.f, 5.8f, 20.01f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
+
+			pBannisterStick->GetTransform()->SetScale(Vec3(2.f, 1.3f, 2.f));
+			pBannisterStick->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+			AddGameObject(pBannisterStick);
+		}
+
+		{
+			//난간 막대기 - BannisterStick
+			for (float i = 0; i < 9; i++)
+			{
+				DecoObject* pBannisterStick = Factory::CreateObject<DecoObject>(Vec3(9.f, 5.8f, 11.7f-(i*2)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
+				
+				pBannisterStick->GetTransform()->SetScale(Vec3(2.f, 1.3f, 2.f));
+				pBannisterStick->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+				AddGameObject(pBannisterStick);
+
+			}
+		}
+
+		{
+			//난간 막대기 - BannisterStick
+			for (float i = 0; i < 3; i++)
+			{
+				DecoObject* pBannisterStick = Factory::CreateObject<DecoObject>(Vec3(9.f, 5.8f, -7.7f - (i * 2)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
+
+				pBannisterStick->GetTransform()->SetScale(Vec3(2.f, 1.3f, 2.f));
+				pBannisterStick->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+				AddGameObject(pBannisterStick);
+
+			}
+		}
+
+		{
+			//난간 막대기 - BannisterStick
+			for (float i = 0; i < 3; i++)
+			{
+				DecoObject* pBannisterStick = Factory::CreateObject<DecoObject>(Vec3(9.f, 5.8f, -14.7f - (i * 2)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
+
+				pBannisterStick->GetTransform()->SetScale(Vec3(2.f, 1.3f, 2.f));
+				pBannisterStick->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+				AddGameObject(pBannisterStick);
+
+			}
+		}
+
+
 		
 
 
