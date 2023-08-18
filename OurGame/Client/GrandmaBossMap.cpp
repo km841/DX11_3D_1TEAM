@@ -189,7 +189,7 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(30.f, 0.5f, 30.f);
 
-			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 0.f, -30.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossStart_Btm.fbx");
+			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 0.f, -30.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossStart_Btm.fbx", true);
 
 
 			pGround->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
@@ -201,26 +201,26 @@ namespace hm
 		}
 
 		// Wall
-		for (int y = 0; y < 4; ++y)
-		{
-			for (int x = 0; x < 12; ++x)
-			{
-				DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossWall1.fbx");
-				pDecoObject->GetRigidBody()->RemoveGravity();
+		//for (int y = 0; y < 4; ++y)
+		//{
+		//	for (int x = 0; x < 12; ++x)
+		//	{
+		//		DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossWall1.fbx");
+		//		pDecoObject->GetRigidBody()->RemoveGravity();
 
-				float radian = (225.f + (x * 16.f)) * XM_PI / 180.f;
-				float radius = 13.f;
+		//		float radian = (225.f + (x * 16.f)) * XM_PI / 180.f;
+		//		float radius = 13.f;
 
-				pDecoObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
-				pDecoObject->GetTransform()->SetRotation(Vec3(0.f, 50.f + x * 16.f, 0.f));
+		//		pDecoObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+		//		pDecoObject->GetTransform()->SetRotation(Vec3(0.f, 50.f + x * 16.f, 0.f));
 
-				pDecoObject->GetTransform()->SetPosition(
-					Vec3(radius * cosf(radian) + radius * sinf(radian),
-						-10.f + y * 10.f,
-						(radius * cosf(radian) - radius * sinf(radian)) + 10.f));
-				AddGameObject(pDecoObject);
-			}
-		}
+		//		pDecoObject->GetTransform()->SetPosition(
+		//			Vec3(radius * cosf(radian) + radius * sinf(radian),
+		//				-10.f + y * 10.f,
+		//				(radius * cosf(radian) - radius * sinf(radian)) + 10.f));
+		//		AddGameObject(pDecoObject);
+		//	}
+		//}
 
 
 		// Left Rocks

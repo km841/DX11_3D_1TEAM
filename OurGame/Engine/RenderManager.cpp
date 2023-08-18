@@ -21,6 +21,7 @@ namespace hm
 		, mHeight(0)
 		, mbEnablePostProcessing(false)
 		, mbEnableHDR(false)
+		, mbEnableRim(false)
 		, mpDownScaleBuffer(nullptr)
 		, mpAvgLumBuffer(nullptr)
 		, mpPrevAdaptionBuffer(nullptr)
@@ -65,6 +66,10 @@ namespace hm
 
 		RenderDeferred(_pScene);
 		RenderLight(_pScene);
+
+		if (true == mbEnableRim)
+			RenderRimLighting();
+
 		RenderLightBlend();
 		RenderFinal();
 
@@ -95,6 +100,7 @@ namespace hm
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::SwapChain)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::G_Buffer)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::Light)->ClearRenderTargetView();
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::RimLighting)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::LightBlend)->ClearRenderTargetView();
 	}
 
@@ -151,6 +157,17 @@ namespace hm
 		}
 	}
 
+	void RenderManager::RenderRimLighting()
+	{
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::RimLighting)->OMSetRenderTarget();
+
+		GET_SINGLE(Resources)->Get<Material>(L"RimLighting")->PushGraphicData();
+		GET_SINGLE(Resources)->Get<Material>(L"RimLighting")->SetFloat(0, 1.f);
+		GET_SINGLE(Resources)->Get<Material>(L"RimLighting")->SetFloat(1, 6.f);
+
+		GET_SINGLE(Resources)->LoadRectMesh()->Render();
+	}
+
 	void RenderManager::RenderLightBlend()
 	{
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::LightBlend)->OMSetRenderTarget();
@@ -184,6 +201,11 @@ namespace hm
 	void RenderManager::SetHDR(bool _bFlag)
 	{
 		mbEnableHDR = _bFlag;
+	}
+
+	void RenderManager::SetRimLighting(bool _bFlag)
+	{
+		mbEnableRim = _bFlag;
 	}
 
 	void RenderManager::PushLightData(Scene* _pScene)

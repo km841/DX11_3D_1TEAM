@@ -33,6 +33,7 @@ namespace hm
 		void RenderForward(Scene* _pScene);
 		void RenderDeferred(Scene* _pScene);
 		void RenderLight(Scene* _pScene);
+		void RenderRimLighting();
 		void RenderLightBlend();
 		void RenderFinal();
 		void PushLightData(Scene* _pScene);
@@ -45,6 +46,9 @@ namespace hm
 
 		void SetHDR(bool _bFlag);
 		bool IsApplyHDR()			 { return mbEnableHDR; }
+
+		void SetRimLighting(bool _bFlag);
+		bool IsApplyRimLighting() { return mbEnableRim; }
 
 	private:
 		void DownScale();
@@ -103,6 +107,7 @@ namespace hm
 
 		bool mbEnablePostProcessing;
 		bool mbEnableHDR;
+		bool mbEnableRim;
 
 		std::map<UINT64, InstancingBuffer*> mBuffers;
 		
