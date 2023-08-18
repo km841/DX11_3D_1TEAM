@@ -31,6 +31,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include "ParticleSystem.h"
+#include "UIText.h"
 
 /* Script */
 #include "PaperBurnScript.h"
@@ -150,6 +151,19 @@ namespace hm
 			pPlayer->AddComponent(new PlayerMoveScript);
 			pPlayer->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 
+			UIText* pUIText = pPlayer->AddComponent(new UIText);
+			pUIText->SetText(TEXT("텍스트 컴포넌트 출력 테스트"));
+			pUIText->Shadow(true);
+			pUIText->SetShadowColor(0.0f, 0.0f, 0.0f, 1.0f);
+			pUIText->SetShadowOffset(Vec3(2.f, -2.f, 0.f));
+			pUIText->SetShadowOpacity(1.f);
+			pUIText->SetFont("FreshGothic");
+			pUIText->SetColor(1.f, 1.f, 1.f, 1.f);
+			pUIText->SetOpacity(0.5f);
+			pUIText->AlphaBlend(false);
+			pUIText->SetRenderArea(0.f, 750.f, 300.f, 850.f);
+			pUIText->GetTransform()->SetPosition(Vec3(0.f, 900.f, -20.f));
+
 			AddGameObject(pPlayer);
 		}
 
@@ -176,6 +190,7 @@ namespace hm
 			physicsInfo.size = Vec3(30.f, 0.5f, 30.f);
 
 			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 0.f, -30.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossStart_Btm.fbx");
+
 
 			pGround->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
 			pGround->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
