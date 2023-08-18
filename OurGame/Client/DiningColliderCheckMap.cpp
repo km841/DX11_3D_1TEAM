@@ -34,6 +34,7 @@
 
 /* Script */
 #include "PlayerMoveScript.h"
+#include "PlacementScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -59,145 +60,145 @@ namespace sy
 	{
 		Map::Update();
 
-		if (mTarget != nullptr)
-		{
-			if (IS_UP(KeyType::LEFT))
-			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-				Vec3 fixed_pos = Vec3(target_pos.x -= 0.1f, target_pos.y, target_pos.z);
-				mTarget->GetTransform()->SetPosition(fixed_pos);
-			}
-			if (IS_UP(KeyType::RIGHT))
-			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-				Vec3 fixed_pos = Vec3(target_pos.x += 0.1f, target_pos.y, target_pos.z);
-				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
-			}
-			if (IS_UP(KeyType::UP))
-			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y, target_pos.z += 0.1f);
-				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
-			}
-			if (IS_UP(KeyType::DOWN))
-			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y, target_pos.z -= 0.1f);
-				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
-			}
-			if (IS_UP(KeyType::Z))
-			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y += 0.1f, target_pos.z);
-				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
-			}
-			if (IS_UP(KeyType::X))
-			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y -= 0.1f, target_pos.z);
-				mTarget->GetTransform()->SetPosition(fixed_pos);
+		//if (mTarget != nullptr)
+		//{
+		//	if (IS_UP(KeyType::LEFT))
+		//	{
+		//		Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+		//		Vec3 fixed_pos = Vec3(target_pos.x -= 0.1f, target_pos.y, target_pos.z);
+		//		mTarget->GetTransform()->SetPosition(fixed_pos);
+		//	}
+		//	if (IS_UP(KeyType::RIGHT))
+		//	{
+		//		Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+		//		Vec3 fixed_pos = Vec3(target_pos.x += 0.1f, target_pos.y, target_pos.z);
+		//		mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+		//	}
+		//	if (IS_UP(KeyType::UP))
+		//	{
+		//		Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+		//		Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y, target_pos.z += 0.1f);
+		//		mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+		//	}
+		//	if (IS_UP(KeyType::DOWN))
+		//	{
+		//		Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+		//		Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y, target_pos.z -= 0.1f);
+		//		mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+		//	}
+		//	if (IS_UP(KeyType::Z))
+		//	{
+		//		Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+		//		Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y += 0.1f, target_pos.z);
+		//		mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+		//	}
+		//	if (IS_UP(KeyType::X))
+		//	{
+		//		Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+		//		Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y -= 0.1f, target_pos.z);
+		//		mTarget->GetTransform()->SetPosition(fixed_pos);
 
-			}
-			if (IS_UP(KeyType::R)) //회전
-			{
-				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
-				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 10.0f, target_rot.z);
-				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
-			}
-			if (IS_UP(KeyType::T)) //회전
-			{
-				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
-				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 10.0f, target_rot.z);
-				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
-			}
+		//	}
+		//	if (IS_UP(KeyType::R)) //회전
+		//	{
+		//		Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
+		//		Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 10.0f, target_rot.z);
+		//		mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+		//	}
+		//	if (IS_UP(KeyType::T)) //회전
+		//	{
+		//		Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
+		//		Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 10.0f, target_rot.z);
+		//		mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+		//	}
 
-			if (IS_UP(KeyType::Y)) //회전
-			{
-				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
-				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 1.0f, target_rot.z);
-				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
-			}
-			if (IS_UP(KeyType::U)) //회전
-			{
-				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
-				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 1.0f, target_rot.z);
-				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
-			}
+		//	if (IS_UP(KeyType::Y)) //회전
+		//	{
+		//		Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
+		//		Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 1.0f, target_rot.z);
+		//		mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+		//	}
+		//	if (IS_UP(KeyType::U)) //회전
+		//	{
+		//		Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
+		//		Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 1.0f, target_rot.z);
+		//		mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+		//	}
 
-			if (IS_UP(KeyType::O)) //스케일 - 전체적 키우기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x += 0.5f, target_scale.y += 0.5f, target_scale.z += 0.5f);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-			if (IS_UP(KeyType::P)) //스케일 - 전체적 줄이기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x -= 0.5f, target_scale.y -= 0.5f, target_scale.z -= 0.5f);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
+		//	if (IS_UP(KeyType::O)) //스케일 - 전체적 키우기
+		//	{
+		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+		//		Vec3 fixed_scale = Vec3(target_scale.x += 0.5f, target_scale.y += 0.5f, target_scale.z += 0.5f);
+		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+		//	}
+		//	if (IS_UP(KeyType::P)) //스케일 - 전체적 줄이기
+		//	{
+		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+		//		Vec3 fixed_scale = Vec3(target_scale.x -= 0.5f, target_scale.y -= 0.5f, target_scale.z -= 0.5f);
+		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+		//	}
 
-			if (IS_UP(KeyType::K)) //스케일 - y축제외 키우기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x += 0.5f, target_scale.y, target_scale.z += 0.5f);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-			if (IS_UP(KeyType::L)) //스케일 - y축 제외 줄이기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x -= 0.5f, target_scale.y, target_scale.z -= 0.5f);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-			if (IS_UP(KeyType::N)) //스케일 -y축만 키우기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y += 0.5, target_scale.z);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-			if (IS_UP(KeyType::M)) //스케일 -y축만 줄이기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y -= 0.5, target_scale.z);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
+		//	if (IS_UP(KeyType::K)) //스케일 - y축제외 키우기
+		//	{
+		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+		//		Vec3 fixed_scale = Vec3(target_scale.x += 0.5f, target_scale.y, target_scale.z += 0.5f);
+		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+		//	}
+		//	if (IS_UP(KeyType::L)) //스케일 - y축 제외 줄이기
+		//	{
+		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+		//		Vec3 fixed_scale = Vec3(target_scale.x -= 0.5f, target_scale.y, target_scale.z -= 0.5f);
+		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+		//	}
+		//	if (IS_UP(KeyType::N)) //스케일 -y축만 키우기
+		//	{
+		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+		//		Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y += 0.5, target_scale.z);
+		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+		//	}
+		//	if (IS_UP(KeyType::M)) //스케일 -y축만 줄이기
+		//	{
+		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+		//		Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y -= 0.5, target_scale.z);
+		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+		//	}
 
-			if (IS_UP(KeyType::H)) //스케일 - x축만 키우기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x +=0.5, target_scale.y, target_scale.z);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-			if (IS_UP(KeyType::J)) //스케일 -x축만 줄이기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x -=0.5, target_scale.y, target_scale.z);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
+		//	if (IS_UP(KeyType::H)) //스케일 - x축만 키우기
+		//	{
+		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+		//		Vec3 fixed_scale = Vec3(target_scale.x +=0.5, target_scale.y, target_scale.z);
+		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+		//	}
+		//	if (IS_UP(KeyType::J)) //스케일 -x축만 줄이기
+		//	{
+		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+		//		Vec3 fixed_scale = Vec3(target_scale.x -=0.5, target_scale.y, target_scale.z);
+		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+		//	}
 
-			if (IS_UP(KeyType::F)) //스케일 -z축만 키우기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y, target_scale.z += 0.5);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-			if (IS_UP(KeyType::G)) //스케일 -z축만 줄이기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y, target_scale.z -= 0.5);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
+		//	if (IS_UP(KeyType::F)) //스케일 -z축만 키우기
+		//	{
+		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+		//		Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y, target_scale.z += 0.5);
+		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+		//	}
+		//	if (IS_UP(KeyType::G)) //스케일 -z축만 줄이기
+		//	{
+		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+		//		Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y, target_scale.z -= 0.5);
+		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+		//	}
 
-			if (IS_UP(KeyType::ENTER))
-			{
-				Vec3 a = mTarget->GetTransform()->GetPosition();
-				Vec3 b = mTarget->GetTransform()->GetRotation();
-				Vec3 c = mTarget->GetTransform()->GetScale();
-				int d = 0;
+		//	if (IS_UP(KeyType::ENTER))
+		//	{
+		//		Vec3 a = mTarget->GetTransform()->GetPosition();
+		//		Vec3 b = mTarget->GetTransform()->GetRotation();
+		//		Vec3 c = mTarget->GetTransform()->GetScale();
+		//		int d = 0;
 
 
-			}
-		}
+		//	}
+		//}
 	}
 
 	void DiningColliderCheckMap::FixedUpdate()
@@ -405,6 +406,8 @@ namespace sy
 				pStairs_2floor->GetTransform()->SetRotation(Vec3(28.f, -90.f, 0.f));
 				pStairs_2floor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.1f, 0.f));
 				pStairs_2floor->GetTransform()->SetRotationExcludingColliders(Vec3(-28.f, 0.f, 0.f));
+
+				
 				AddGameObject(pStairs_2floor);
 			}
 
@@ -574,15 +577,24 @@ namespace sy
 
 		}
 
+		
 		{
 			//3층 난간 맨왼쪽 두번째 기둥
+			DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.3f, 6.2f, 18.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
+
+			pColumnFull->GetTransform()->SetScale(Vec3(16.5f, 4.5f, 16.5f));
+			pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+
+			AddGameObject(pColumnFull);
+		}
+
+		{
+			//3층 난간 맨왼쪽 세번째 기둥
 			DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.3f, 6.2f, 13.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 			pColumnFull->GetTransform()->SetScale(Vec3(16.5f, 4.5f, 16.5f));
 			pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
 			AddGameObject(pColumnFull);
-			
-
 		}
 
 		{
@@ -606,6 +618,18 @@ namespace sy
 		}
 
 		{
+			//3층 난간 긴 막대기 반대편 가로줄 - WallRim
+			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(14.1f, 5.1f, 10.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
+
+			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 72.f));
+			pWallRim->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+			
+		
+			AddGameObject(pWallRim);
+
+		}
+
+		{
 			//3층 난간 짧은 막대기 아래 가로줄 - WallRim
 			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(9.1f, 5.1f, 21.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
 
@@ -614,7 +638,40 @@ namespace sy
 			AddGameObject(pWallRim);
 
 		}
-	
+
+		{
+			//3층 난간 짧은 막대기 위 가로줄 - WallRim
+			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(9.1f, 6.5f, 21.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
+
+			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 6.5f));
+			pWallRim->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+
+			AddGameObject(pWallRim);
+
+		}
+
+		{
+			//3층 난간 짧은 막대기 세로 /  아래 가로줄 - WallRim
+			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(10.8f, 5.1f, 23.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
+
+			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 6.5f));
+			pWallRim->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+			AddGameObject(pWallRim);
+
+		}
+
+		{
+			//3층 난간 짧은 막대기 세로 / 위 가로줄 - WallRim
+			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(10.8f, 6.5f, 23.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
+
+			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 6.5f));
+			pWallRim->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
+
+			AddGameObject(pWallRim);
+
+		}
+		
+
 
 #pragma endregion
 
