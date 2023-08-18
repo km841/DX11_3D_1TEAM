@@ -5,6 +5,7 @@
 namespace hm
 {
 	FontManager::FontManager()
+		: mpWriteFactory(nullptr)
 	{
 
 	}

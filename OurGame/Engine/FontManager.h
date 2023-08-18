@@ -1,13 +1,6 @@
 #pragma once
 namespace hm
 {
-	enum class TextRenderType
-	{
-		TEXT_UI,
-		TEXT_2D,
-		TEXT_3D,
-	};
-
 	class FontManager
 	{
 		DECLARE_SINGLE(FontManager);
