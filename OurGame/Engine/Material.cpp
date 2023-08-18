@@ -205,9 +205,26 @@ namespace hm
 		mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams.SetVec3(_index, _value);
 	}
 
+	void Material::SetVec3AllSubset(int _index, Vec3 _value)
+	{
+		for (int i = 0; i < mMaterialContainerVec.size(); ++i)
+		{
+			for (int j = 0; j < mMaterialContainerVec[i]->materialSubsetVec.size(); ++j)
+			{
+				mMaterialContainerVec[i]->materialSubsetVec[j]->materialParams.SetVec3(_index, _value);
+			}
+		}
+	}
+
 	void Material::SetVec4(int _index, Vec4 _value, int _containerIndex, int _subsetIndex)
 	{
 		mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams.SetVec4(_index, _value);
+	}
+
+	void Material::SetColorAllSubset(Vec3 _color)
+	{
+		SetTextureAllSubset(0, nullptr);
+		SetVec3AllSubset(0, _color);
 	}
 
 	shared_ptr<Material> Material::Clone()

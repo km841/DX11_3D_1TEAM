@@ -20,7 +20,7 @@ namespace hm
 		virtual ~MeshData();
 
 	public:
-		static shared_ptr<MeshData> LoadFromFBX(const wstring& _path, const wstring& _shaderName);
+		static shared_ptr<MeshData> LoadFromFBX(const wstring& _path, const wstring& _shaderName, bool _bInvNormal = false);
 		virtual void Load(const wstring& _path) override;
 		virtual void Save(const wstring& _path) override;
 
@@ -35,6 +35,7 @@ namespace hm
 		shared_ptr<Mesh> mpMesh;
 		shared_ptr<Material> mpMaterial;
 		std::vector<MeshRenderInfo> mMeshRenders;
+
 	};
 }
 

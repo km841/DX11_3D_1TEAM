@@ -19,9 +19,10 @@ namespace hm
     {
     }
 
-    shared_ptr<MeshData> MeshData::LoadFromFBX(const wstring& _path, const wstring& _shaderName)
+    shared_ptr<MeshData> MeshData::LoadFromFBX(const wstring& _path, const wstring& _shaderName, bool _bInvNormal)
     {
         FBXLoader loader;
+        loader.SetNormalDirection(_bInvNormal);
         loader.LoadFbx(_path);
 
         shared_ptr<MeshData> pMeshData = make_shared<MeshData>();
