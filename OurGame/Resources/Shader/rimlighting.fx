@@ -1,5 +1,5 @@
-#ifndef _LIGHTBLEND_FX_
-#define _LIGHTBLEND_FX_
+#ifndef _RIM_LIGHTING_FX_
+#define _RIM_LIGHTING_FX_
 
 #include "params.fx"
 
@@ -21,6 +21,7 @@ struct VS_OUT
     float4 pos : SV_Position;
     float2 uv : TEXCOORD;
     float3 viewPos : POSITION;
+    float4 projPos : POSITION1;
     float3 viewNormal : NORMAL;
     float3 viewTangent : TANGENT;
     float3 viewBinormal : BINORMAL;
@@ -37,23 +38,30 @@ VS_OUT VS_Main(VS_IN _in)
 
 struct PS_OUT
 {
-    float4 lightblend : SV_Target0;
+    float4 lim : SV_Target0;
 };
 
 PS_OUT PS_Main(VS_OUT _in)
 {
     PS_OUT output = (PS_OUT) 0;
     
-    float4 lightPower = g_tex_1.Sample(g_sam_0, _in.uv);
-    //if (lightPower.x == 0.f && lightPower.y == 0.f && lightPower.z == 0.f)
-    //    clip(-1);
+    float3 rimColor = float3(1.f, 1.f, 1.f);
+    float rimStrength = g_float_0;
+    float rimPower = g_float_1;
     
-    float4 color = g_tex_0.Sample(g_sam_0, _in.uv);
+    float4 viewPos = g_tex_0.Sample(g_sam_0, _in.uv);
+    float4 viewNormal = g_tex_1.Sample(g_sam_0, _in.uv);
     
-    float4 rimColor = g_tex_2.Sample(g_sam_0, _in.uv);
-    float4 totalColor = color * (lightPower + 0.2f) + rimColor;
-    output.lightblend = totalColor;
+    float isViewNormal = viewNormal.x + viewNormal.y + viewNormal.z;
+    if (0.0f == isViewNormal)
+        discard;
     
+    float4 viewDir = -normalize(viewPos);
+    float rim = 1.f - dot(viewDir, viewNormal);
+    rim = smoothstep(0.f, 1.f, rim);
+    rim = pow(rim, rimPower);
+    output.lim = float4(rimColor * rim * rimStrength, 1.f);
+   
     return output;
 }
 #endif
