@@ -39,7 +39,7 @@ namespace hm
 
         return pTexture;
     }
-    shared_ptr<MeshData> Resources::LoadFBX(const wstring& _path, const wstring& _shaderName)
+    shared_ptr<MeshData> Resources::LoadFBX(const wstring& _path, const wstring& _shaderName, bool _bInvNormal)
     {
         wstring key = _path;
 
@@ -47,7 +47,7 @@ namespace hm
         if (meshData)
             return meshData;
 
-        meshData = MeshData::LoadFromFBX(_path, _shaderName);
+        meshData = MeshData::LoadFromFBX(_path, _shaderName, _bInvNormal);
         meshData->SetName(key);
         Add(key, meshData);
 

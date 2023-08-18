@@ -90,6 +90,7 @@ namespace hm
 		const std::vector<FbxMeshInfo>& GetMeshes() { return mMeshes; }
 		std::vector<shared_ptr<FbxBoneInfo>>& GetBones() { return mBones; }
 		std::vector<shared_ptr<FbxAnimClipInfo>>& GetAnimClip() { return mAnimClips; }
+		void SetNormalDirection(bool _bInvNormal) { mbInvNormal = _bInvNormal; }
 
 	private:
 		void Import(const wstring& _path);
@@ -113,6 +114,8 @@ namespace hm
 		void LoadStaticMesh();
 		void LoadDynamicMesh();
 
+		
+
 	private:
 		FbxManager* mpManager = nullptr;
 		FbxScene* mpScene = nullptr;
@@ -126,5 +129,6 @@ namespace hm
 		FbxArray<FbxString*> mAnimNames;
 
 		bool mbHasAnimation;
+		bool mbInvNormal;
 	};
 }

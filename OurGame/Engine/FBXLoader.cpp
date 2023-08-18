@@ -7,6 +7,7 @@ namespace hm
 {
 	FBXLoader::FBXLoader()
 		: mbHasAnimation(false)
+		, mbInvNormal(false)
 	{
 	}
 	FBXLoader::~FBXLoader()
@@ -208,9 +209,9 @@ namespace hm
 			vertex.pos.y = _pMesh->mVertices[i].y;
 			vertex.pos.z = _pMesh->mVertices[i].z;
 
-			vertex.normal.x = _pMesh->mNormals[i].x;
-			vertex.normal.y = _pMesh->mNormals[i].y;
-			vertex.normal.z = _pMesh->mNormals[i].z;
+			vertex.normal.x = true == mbInvNormal ? -_pMesh->mNormals[i].x : _pMesh->mNormals[i].x;
+			vertex.normal.y = true == mbInvNormal ? -_pMesh->mNormals[i].y : _pMesh->mNormals[i].y;
+			vertex.normal.z = true == mbInvNormal ? -_pMesh->mNormals[i].z : _pMesh->mNormals[i].z;
 			vertex.normal.Normalize();
 
 			if (_pMesh->mTextureCoords[0]) {

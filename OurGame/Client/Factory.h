@@ -16,6 +16,7 @@ namespace hm
 			const Vec3& _pos,
 			const wstring& _materialName = L"Deferred",
 			const wstring& _fbxPath = L"",
+			bool _bInvNormal = false,
 			Types ... _args);
 
 		template<typename T, typename ... Types>
@@ -24,6 +25,7 @@ namespace hm
 			PhysicsInfo _physicsInfo = PhysicsInfo(),
 			const wstring& _materialName = L"Deferred",
 			const wstring& _fbxPath = L"",
+			bool _bInvNormal = false,
 			Types ... _args);
 
 	private:
@@ -32,7 +34,7 @@ namespace hm
 
 
 	template<typename T, typename ...Types>
-	inline T* Factory::CreateObject(const Vec3& _pos, const wstring& _materialName, const wstring& _fbxPath, Types ..._args)
+	inline T* Factory::CreateObject(const Vec3& _pos, const wstring& _materialName, const wstring& _fbxPath, bool _bInvNormal, Types ..._args)
 	{
 		T* pObject = new T(_args...);
 		Transform* pTransform = pObject->AddComponent(new Transform);
@@ -42,7 +44,7 @@ namespace hm
 		MeshRenderer* pMeshRenderer = pObject->AddComponent(new MeshRenderer);
 		if (false == _fbxPath.empty())
 		{
-			shared_ptr<MeshData> pMeshData = GET_SINGLE(Resources)->LoadFBX(_fbxPath, _materialName);
+			shared_ptr<MeshData> pMeshData = GET_SINGLE(Resources)->LoadFBX(_fbxPath, _materialName, _bInvNormal);
 			AssertEx(nullptr != pMeshData, L"Factory::CreateObject() - FBX 파일 주소가 잘못되었음");
 			pMeshRenderer->SetMeshData(pMeshData);
 		}
@@ -59,9 +61,9 @@ namespace hm
 	}
 
 	template<typename T, typename ...Types>
-	inline T* Factory::CreateObjectHasPhysical(const Vec3& _pos, PhysicsInfo _physicsInfo, const wstring& _materialName, const wstring& _fbxPath, Types ..._args)
+	inline T* Factory::CreateObjectHasPhysical(const Vec3& _pos, PhysicsInfo _physicsInfo, const wstring& _materialName, const wstring& _fbxPath, bool _bInvNormal, Types ..._args)
 	{
-		T* pObject = CreateObject<T>(_pos, _materialName, _fbxPath, _args...);
+		T* pObject = CreateObject<T>(_pos, _materialName, _fbxPath, _bInvNormal, _args...);
 
 		RigidBody* pRigidBody = pObject->GetRigidBody();
 		pRigidBody->SetPhysical(_physicsInfo);
