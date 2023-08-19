@@ -324,7 +324,7 @@ namespace hm
 		mpTempSecondTexture->PushUAV(RegisterUAV::u0);
 		mpTempFirstTexture->PushSRV(RegisterSRV::t0); // BritePass Texture
 
-		mpVerticalBlurMaterial->SetVec2(0, Vec2(mWidth / 4, mHeight / 4));
+		mpVerticalBlurMaterial->SetVec2(0, Vec2(mWidth / 4.f, mHeight / 4.f));
 		mpVerticalBlurMaterial->Dispatch(static_cast<UINT32>(mDomain / 1024), 1, 1);
 
 		CONTEXT->CSSetShaderResources(0, 1, &pNullSRV);
@@ -335,7 +335,7 @@ namespace hm
 		mpTempSecondTexture->PushSRV(RegisterSRV::t1);
 		mpDownScaleSceneTexture->PushUAV(RegisterUAV::u0);
 
-		mpHorizonBlurMaterial->SetVec2(0, Vec2(mWidth / 4, mHeight / 4));
+		mpHorizonBlurMaterial->SetVec2(0, Vec2(mWidth / 4.f, mHeight / 4.f));
 		mpHorizonBlurMaterial->Dispatch(static_cast<UINT32>(mDomain / 1024), 1, 1);
 
 		CONTEXT->CSSetShaderResources(1, 1, &pNullSRV);

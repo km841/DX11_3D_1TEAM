@@ -80,4 +80,34 @@ float Rand(float2 co)
     return 0.5 + (frac(sin(dot(co.xy, float2(12.9898, 78.233))) * 43758.5453)) * 0.5;
 }
 
+struct SkinningInfo
+{
+    float3 pos;
+    float3 normal;
+    float3 tangent;
+};
+
+void Skinning(inout float3 pos, inout float3 normal, inout float3 tangent,
+    inout float4 weight, inout float4 indices)
+{
+    SkinningInfo info = (SkinningInfo) 0.f;
+
+    for (int i = 0; i < 4; ++i)
+    {
+        if (weight[i] == 0.f)
+            continue;
+
+        int boneIdx = indices[i];
+        matrix matBone = g_mat_bone[boneIdx];
+
+        info.pos += (mul(float4(pos, 1.f), matBone) * weight[i]).xyz;
+        info.normal += (mul(float4(normal, 0.f), matBone) * weight[i]).xyz;
+        info.tangent += (mul(float4(tangent, 0.f), matBone) * weight[i]).xyz;
+    }
+
+    pos = info.pos;
+    tangent = normalize(info.tangent);
+    normal = normalize(info.normal);
+}
+
 #endif

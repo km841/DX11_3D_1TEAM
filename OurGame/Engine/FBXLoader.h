@@ -63,7 +63,7 @@ namespace hm
 	{
 		wstring boneName;
 		int parentIndex;
-		FbxMatrix matOffset;
+		FbxAMatrix matOffset;
 	};
 
 	struct FbxAnimClipInfo
@@ -100,6 +100,18 @@ namespace hm
 		void LoadMesh(int _index, aiMesh* _pMesh, const aiScene* _pScene);
 		void LoadMaterial(FbxSurfaceMaterial* _pSurfaceMaterial);
 		void LoadMaterial(aiMesh* _pMesh, const aiScene* _pScene);
+
+		// Animation ฐüทร
+		void LoadBones(FbxNode* _pNode) { LoadBones(_pNode, 0, -1); }
+		void LoadBones(FbxNode* _pNode, int _index, int _parentIdx);
+		void LoadAnimationInfo();
+		void LoadAnimationData(FbxMesh* _pMesh, FbxMeshInfo* _pMeshInfo);
+		int FindBoneIndex(string _name);
+		FbxAMatrix GetTransform(FbxNode* _pNode);
+		void LoadBoneWeight(FbxCluster* _pCluster, int _boneIdx, FbxMeshInfo* _pMeshInfo);
+		void LoadOffsetMatrix(FbxCluster* _pCluster, const FbxAMatrix& _nodeTransformMat, int _boneIdx, FbxMeshInfo* _pMeshInfo);
+		void FillBoneWeight(FbxMesh* _pMesh, FbxMeshInfo* _pMeshInfo);
+		void LoadKeyFrame(int _animIndex, FbxNode* _pNode, FbxCluster* _pCluster, const FbxAMatrix& _nodeTransformMat, int _boneIdx, FbxMeshInfo* _pContainer);
 
 		void GetNormal(FbxMesh* _pMesh, FbxMeshInfo* _pContainer, int _index, int _vertexCount);
 		void GetTangent(FbxMesh* _pMesh, FbxMeshInfo* _pContainer, int _index, int _vertexCount);

@@ -13,13 +13,15 @@ struct Vertex
 		: pos(_pos), uv(_uv), normal(_normal), tangent(_tangent)
 	{}
 	Vertex(Vec3 _pos)
-		: pos(_pos), uv(Vec2::Zero), normal(Vec3::Zero), tangent(Vec3::Zero)
+		: pos(_pos)
 	{}
 
 	Vec3 pos = Vec3::Zero;
 	Vec2 uv = Vec2::Zero;
 	Vec3 normal = Vec3::Zero;
 	Vec3 tangent = Vec3::Zero;
+	Vec4 weights = Vec4::Zero;
+	Vec4 indices = Vec4::Zero;
 };
 
 struct TransformParams
@@ -36,6 +38,13 @@ enum
 {
 	MATERIAL_VALUE_COUNT = 4,
 	TEXTURE_VALUE_COUNT = 16,
+};
+
+struct AnimFrameParams
+{
+	Vec4 scale;
+	Vec4 rotation; // ÄõÅÍ´Ï¾ð
+	Vec4 translation;
 };
 
 struct MaterialParams

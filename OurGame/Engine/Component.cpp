@@ -8,6 +8,7 @@
 #include "ParticleSystem.h"
 #include "Collider.h"
 #include "RigidBody.h"
+#include "Animator.h"
 #include "GameObject.h"
 
 namespace hm
@@ -49,6 +50,10 @@ namespace hm
 	RigidBody* Component::GetRigidBody()
 	{
 		return mpGameObject->GetRigidBody();
+	}
+	Animator* Component::GetAnimator()
+	{
+		return mpGameObject->GetAnimator();
 	}
 	bool Component::IsPhysicsObject()
 	{

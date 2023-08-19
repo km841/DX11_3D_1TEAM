@@ -8,6 +8,7 @@
 #include "ParticleSystem.h"
 #include "Collider.h"
 #include "RigidBody.h"
+#include "Animator.h"
 #include "Engine.h"
 
 namespace hm
@@ -165,6 +166,10 @@ namespace hm
 	RigidBody* GameObject::GetRigidBody()
 	{
 		return static_cast<RigidBody*>(GetFixedComponent(ComponentType::RigidBody));
+	}
+	Animator* GameObject::GetAnimator()
+	{
+		return static_cast<Animator*>(GetFixedComponent(ComponentType::Animator));
 	}
 	void GameObject::SetDontDestroyObject(const wstring& _name)
 	{

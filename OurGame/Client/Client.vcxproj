@@ -170,6 +170,7 @@
     <ClInclude Include="Right2Map.h" />
     <ClInclude Include="RightMap.h" />
     <ClInclude Include="RightSecretPassageMap.h" />
+    <ClInclude Include="TestAnimationScript.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="WallObject.h" />
@@ -204,6 +205,7 @@
     <ClCompile Include="Right2Map.cpp" />
     <ClCompile Include="RightMap.cpp" />
     <ClCompile Include="RightSecretPassageMap.cpp" />
+    <ClCompile Include="TestAnimationScript.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="WallObject.cpp" />
