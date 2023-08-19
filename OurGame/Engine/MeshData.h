@@ -31,9 +31,12 @@ namespace hm
 		void SetMesh(shared_ptr<Mesh> _pMesh) { mpMesh = _pMesh; }
 		void SetMaterial(shared_ptr<Material> _pMaterial) { mpMaterial = _pMaterial; }
 
+		bool HasAnimation() { return mbHasAnimation; }
+
 	private:
 		shared_ptr<Mesh> mpMesh;
 		shared_ptr<Material> mpMaterial;
+		bool mbHasAnimation;
 		std::vector<MeshRenderInfo> mMeshRenders;
 
 	};

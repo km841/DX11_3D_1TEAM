@@ -8,6 +8,7 @@
 #include "Mesh.h"
 #include "InstancingBuffer.h"
 #include "MeshData.h"
+#include "Animator.h"
 
 namespace hm
 {
@@ -39,8 +40,14 @@ namespace hm
 		{
 			MaterialContainer* pContainer = mpMaterial->GetMaterialContainer(i);
 
+			if (nullptr != GetAnimator())
+				GetAnimator()->PushData(i);
+
 			for (UINT32 j = 0; j < pContainer->materialSubsetVec.size(); ++j)
 			{
+				if (nullptr != GetAnimator())
+					mpMaterial->SetInt(1, 1, i, j);
+
 				mpMaterial->PushGraphicData(i, j);
 				CONST_BUFFER(ConstantBufferType::Material)->Mapping();
 
@@ -64,8 +71,14 @@ namespace hm
 		{
 			MaterialContainer* pContainer = mpMaterial->GetMaterialContainer(i);
 
+			if (nullptr != GetAnimator())
+				GetAnimator()->PushData(i);
+		
 			for (UINT32 j = 0; j < pContainer->materialSubsetVec.size(); ++j)
 			{
+				if (nullptr != GetAnimator())
+					mpMaterial->SetInt(1, 1, i, j);
+				
 				mpMaterial->PushGraphicData(i, j);
 				CONST_BUFFER(ConstantBufferType::Material)->Mapping();
 
@@ -82,6 +95,16 @@ namespace hm
 	{
 		mpMesh = _pMeshData->GetMesh();
 		mpMaterial = _pMeshData->GetMaterial();
+
+		if (true == _pMeshData->HasAnimation())
+		{
+			if (nullptr == GetAnimator())
+				mpGameObject->AddComponent(new Animator);
+
+			GetAnimator()->SetAnimContainer(mpMesh->GetAnimationContainers());
+			GetAnimator()->SetBones(mpMesh->GetBones());
+			GetAnimator()->SetAnimClip(mpMesh->GetAnimClip());
+		}
 	}
 	UINT64 MeshRenderer::GetInstanceID()
 	{

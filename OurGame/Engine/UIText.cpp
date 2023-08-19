@@ -312,12 +312,12 @@ namespace hm
 			mRenderArea.bottom - mRenderArea.top);
 
 		// 텍스트 길이에 대한 설정 (0번째부터 해당 텍스트 전체 길이까지)
-		DWRITE_TEXT_RANGE	tRange;
-		tRange.startPosition = 0;
-		tRange.length = mText.size();
+		DWRITE_TEXT_RANGE	range;
+		range.startPosition = 0;
+		range.length = static_cast<UINT32>(mText.size());
 
 		// 레이아웃에 텍스트길이 및 텍스트 사이즈 지정
-		mpTextLayout->SetFontSize(mSize, tRange);
+		mpTextLayout->SetFontSize(mSize, range);
 	}
 }
 

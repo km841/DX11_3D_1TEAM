@@ -17,6 +17,11 @@ namespace hm
 
 		if (nullptr != mpManager)
 			mpManager->Destroy();
+
+		for (int i = 0; i < mAnimNames.Size(); ++i)
+		{
+			SAFE_DELETE(mAnimNames[i]);
+		}
 	}
 	void FBXLoader::LoadFbx(const wstring& _path)
 	{
@@ -29,10 +34,10 @@ namespace hm
 		}
 		else
 		{
-			LoadDynamicMesh();
-
-			//LoadBones(mScene->GetRootNode());
+			//LoadBones(mpScene->GetRootNode());
 			//LoadAnimationInfo();
+
+			LoadDynamicMesh();
 		}
 	}
 	void FBXLoader::Import(const wstring& _path)
@@ -148,7 +153,7 @@ namespace hm
 			meshInfo.indices[subsetIdx].push_back(arrIdx[1]);
 		}
 
-		//LoadAnimationData(_pMesh, &meshInfo);
+		LoadAnimationData(_pMesh, &meshInfo);
 	}
 	void FBXLoader::ParseNode(aiNode* _pNode, const aiScene* _pScene, Matrix _tr)
 	{
@@ -312,6 +317,205 @@ namespace hm
 				materialInfo.diffuseTexName = fileName;
 				meshInfo.materials.push_back(materialInfo);
 			}
+		}
+	}
+	void FBXLoader::LoadBones(FbxNode* _pNode, int _index, int _parentIdx)
+	{
+		FbxNodeAttribute* pAttribute = _pNode->GetNodeAttribute();
+
+		if (nullptr != pAttribute && pAttribute->GetAttributeType() == FbxNodeAttribute::eSkeleton)
+		{
+			shared_ptr<FbxBoneInfo> pBone = make_shared<FbxBoneInfo>();
+			pBone->boneName = s2ws(_pNode->GetName());
+			pBone->parentIndex = _parentIdx;
+			mBones.push_back(pBone);
+		}
+
+		const int childCount = _pNode->GetChildCount();
+		for (int i = 0; i < childCount; ++i)
+			LoadBones(_pNode->GetChild(i), static_cast<int>(mBones.size()), _index);
+	}
+	void FBXLoader::LoadAnimationInfo()
+	{
+		mpScene->FillAnimStackNameArray(mAnimNames);
+
+		const int animCount = mAnimNames.GetCount();
+		for (int i = 0; i < animCount; ++i)
+		{
+			FbxAnimStack* pAnimStack = mpScene->FindMember<FbxAnimStack>(mAnimNames[i]->Buffer());
+			if (nullptr == pAnimStack)
+				continue;
+
+			shared_ptr<FbxAnimClipInfo> pAnimClip = make_shared<FbxAnimClipInfo>();
+			pAnimClip->name = s2ws(pAnimStack->GetName());
+			pAnimClip->keyFrames.resize(mBones.size()); // 키 프레임은 본의 갯수임
+
+			FbxTakeInfo* pTakeInfo = mpScene->GetTakeInfo(pAnimStack->GetName());
+			pAnimClip->startTime = pTakeInfo->mLocalTimeSpan.GetStart();
+			pAnimClip->endTime = pTakeInfo->mLocalTimeSpan.GetStop();
+			pAnimClip->mode = mpScene->GetGlobalSettings().GetTimeMode();
+
+			mAnimClips.push_back(pAnimClip);
+		}
+	}
+	void FBXLoader::LoadAnimationData(FbxMesh* _pMesh, FbxMeshInfo* _pMeshInfo)
+	{
+		const int skinCount = _pMesh->GetDeformerCount(FbxDeformer::eSkin);
+		if (0 >= skinCount || mAnimClips.empty())
+			return;
+
+		_pMeshInfo->bHasAnimation = true;
+
+		for (int i = 0; i < skinCount; ++i)
+		{
+			FbxSkin* pSkin = static_cast<FbxSkin*>(_pMesh->GetDeformer(i, FbxDeformer::eSkin));
+
+			if (nullptr != pSkin)
+			{
+				FbxSkin::EType eType = pSkin->GetSkinningType();
+
+				if (FbxSkin::eRigid == eType || FbxSkin::eLinear == eType)
+				{
+					const int clusterCount = pSkin->GetClusterCount();
+
+					for (int j = 0; j < clusterCount; ++j)
+					{
+						FbxCluster* pCluster = pSkin->GetCluster(j);
+
+						if (nullptr == pCluster->GetLink())
+							continue;
+
+						int boneIdx = FindBoneIndex(pCluster->GetLink()->GetName());
+						AssertEx(boneIdx >= 0, L"FBXLoader::LoadAnimationData() - 본 개수가 0개 이상인 경우");
+
+						FbxAMatrix nodeTransformMat = GetTransform(_pMesh->GetNode());
+						LoadBoneWeight(pCluster, boneIdx, _pMeshInfo);
+						LoadOffsetMatrix(pCluster, nodeTransformMat, boneIdx, _pMeshInfo);
+
+						const int animCount = mAnimNames.Size();
+						for (int k = 0; k < animCount; ++k)
+							LoadKeyFrame(k, _pMesh->GetNode(), pCluster, nodeTransformMat, boneIdx, _pMeshInfo);
+					}
+				}
+			}
+		}
+
+		FillBoneWeight(_pMesh, _pMeshInfo);
+	}
+	int FBXLoader::FindBoneIndex(string _name)
+	{
+		wstring boneName = s2ws(_name);
+
+		for (UINT32 i = 0; i < mBones.size(); ++i)
+			if (mBones[i]->boneName == boneName)
+				return i;
+
+		return -1;
+	}
+	FbxAMatrix FBXLoader::GetTransform(FbxNode* _pNode)
+	{
+		const FbxVector4 translation = _pNode->GetGeometricTranslation(FbxNode::eSourcePivot);
+		const FbxVector4 rotation = _pNode->GetGeometricRotation(FbxNode::eSourcePivot);
+		const FbxVector4 scaling = _pNode->GetGeometricScaling(FbxNode::eSourcePivot);
+		return FbxAMatrix(translation, rotation, scaling);
+	}
+	void FBXLoader::LoadBoneWeight(FbxCluster* _pCluster, int _boneIdx, FbxMeshInfo* _pMeshInfo)
+	{
+		const int indicesCount = _pCluster->GetControlPointIndicesCount();
+		for (int i = 0; i < indicesCount; i++)
+		{
+			double weight = _pCluster->GetControlPointWeights()[i];
+			int vtxIdx = _pCluster->GetControlPointIndices()[i];
+			_pMeshInfo->boneWeights[vtxIdx].AddWeights(_boneIdx, weight);
+		}
+	}
+	void FBXLoader::LoadOffsetMatrix(FbxCluster* _pCluster, const FbxAMatrix& _nodeTransformMat, int _boneIdx, FbxMeshInfo* _pMeshInfo)
+	{
+		FbxAMatrix matClusterTrans;
+		FbxAMatrix matClusterLinkTrans;
+		// The transformation of the mesh at binding time 
+		_pCluster->GetTransformMatrix(matClusterTrans);
+		// The transformation of the cluster(joint) at binding time from joint space to world space 
+		_pCluster->GetTransformLinkMatrix(matClusterLinkTrans);
+
+		FbxVector4 V0 = { 1, 0, 0, 0 };
+		FbxVector4 V1 = { 0, 0, 1, 0 };
+		FbxVector4 V2 = { 0, 1, 0, 0 };
+		FbxVector4 V3 = { 0, 0, 0, 1 };
+
+		FbxAMatrix matReflect;
+		matReflect[0] = V0;
+		matReflect[1] = V1;
+		matReflect[2] = V2;
+		matReflect[3] = V3;
+
+		FbxAMatrix matOffset;
+		matOffset = matClusterLinkTrans.Inverse() * matClusterTrans;
+		matOffset = matReflect * matOffset * matReflect;
+
+		mBones[_boneIdx]->matOffset = matOffset.Transpose();
+	}
+	void FBXLoader::FillBoneWeight(FbxMesh* _pMesh, FbxMeshInfo* _pMeshInfo)
+	{
+		const int size = static_cast<int>(_pMeshInfo->boneWeights.size());
+		for (int v = 0; v < size; v++)
+		{
+			BoneWeight& boneWeight = _pMeshInfo->boneWeights[v];
+			boneWeight.Normalize();
+
+			float animBoneIndex[4] = {};
+			float animBoneWeight[4] = {};
+
+			const int weightCount = static_cast<int>(boneWeight.boneWeights.size());
+			for (int w = 0; w < weightCount; w++)
+			{
+				animBoneIndex[w] = static_cast<float>(boneWeight.boneWeights[w].first);
+				animBoneWeight[w] = static_cast<float>(boneWeight.boneWeights[w].second);
+			}
+
+			memcpy(&_pMeshInfo->vertices[v].indices, animBoneIndex, sizeof(Vec4));
+			memcpy(&_pMeshInfo->vertices[v].weights, animBoneWeight, sizeof(Vec4));
+		}
+	}
+	void FBXLoader::LoadKeyFrame(int _animIndex, FbxNode* _pNode, FbxCluster* _pCluster, const FbxAMatrix& _nodeTransformMat, int _boneIdx, FbxMeshInfo* _pContainer)
+	{
+		if (mAnimClips.empty())
+			return;
+
+		FbxVector4	v1 = { 1, 0, 0, 0 };
+		FbxVector4	v2 = { 0, 0, 1, 0 };
+		FbxVector4	v3 = { 0, 1, 0, 0 };
+		FbxVector4	v4 = { 0, 0, 0, 1 };
+		FbxAMatrix	matReflect;
+		matReflect.mData[0] = v1;
+		matReflect.mData[1] = v2;
+		matReflect.mData[2] = v3;
+		matReflect.mData[3] = v4;
+
+		FbxTime::EMode timeMode = mpScene->GetGlobalSettings().GetTimeMode();
+
+		// 애니메이션 골라줌
+		FbxAnimStack* animStack = mpScene->FindMember<FbxAnimStack>(mAnimNames[_animIndex]->Buffer());
+		mpScene->SetCurrentAnimationStack(OUT animStack);
+
+		FbxLongLong startFrame = mAnimClips[_animIndex]->startTime.GetFrameCount(timeMode);
+		FbxLongLong endFrame = mAnimClips[_animIndex]->endTime.GetFrameCount(timeMode);
+
+		for (FbxLongLong frame = startFrame; frame < endFrame; frame++)
+		{
+			FbxKeyFrameInfo keyFrameInfo = {};
+			FbxTime fbxTime = 0;
+
+			fbxTime.SetFrame(frame, timeMode);
+
+			FbxAMatrix matFromNode = _pNode->EvaluateGlobalTransform(fbxTime);
+			FbxAMatrix matTransform = matFromNode.Inverse() * _pCluster->GetLink()->EvaluateGlobalTransform(fbxTime);
+			matTransform = matReflect * matTransform * matReflect;
+
+			keyFrameInfo.time = fbxTime.GetSecondDouble();
+			keyFrameInfo.matTransform = matTransform;
+
+			mAnimClips[_animIndex]->keyFrames[_boneIdx].push_back(keyFrameInfo);
 		}
 	}
 	void FBXLoader::GetUV(FbxMesh* _pMesh, FbxMeshInfo* _pContainer, int _index, int _vertexCount)

@@ -172,6 +172,9 @@
     <ClInclude Include="FW1Precompiled.h">
       <Filter>Engine\Font</Filter>
     </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>Object\GameObject\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EnginePch.cpp">
@@ -330,6 +333,9 @@
     <ClCompile Include="Font.cpp">
       <Filter>Engine\Font</Filter>
     </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>Object\GameObject\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -373,6 +379,12 @@
     </Filter>
     <Filter Include="Engine\Font">
       <UniqueIdentifier>{694c219a-20ab-4a29-b4b0-277a2f872231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\GameObject\Component\AI">
+      <UniqueIdentifier>{b046d043-3edb-4bfa-a744-7b88aa823813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\GameObject\Component\AI\BehaviorTree">
+      <UniqueIdentifier>{b3d921e2-fa5b-429d-9792-2ffb0ae0b3ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -448,6 +460,12 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resources\Shader\rimlighting.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\animation.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\math.fx">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

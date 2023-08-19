@@ -88,6 +88,9 @@
     <ClInclude Include="PlacementScript.h">
       <Filter>소스 파일\Script</Filter>
     </ClInclude>
+    <ClInclude Include="TestAnimationScript.h">
+      <Filter>소스 파일\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -175,6 +178,9 @@
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
     <ClCompile Include="PlacementScript.cpp">
+      <Filter>소스 파일\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="TestAnimationScript.cpp">
       <Filter>소스 파일\Script</Filter>
     </ClCompile>
   </ItemGroup>

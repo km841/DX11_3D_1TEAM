@@ -109,7 +109,6 @@ float3 DistanceDOF(float3 _ColorFocus, float3 _ColorBlurred, float _Depth)
 // 픽셀 셰이더 엔트리 포인트 표현
 float4 PS_FinalPass(VS_OUTPUT_HDR _Input) : SV_TARGET
 {
-    
     float MiddleGrey = g_float_0; // 중간 회색값
     float LumWhiteSqr = g_float_1; // 흰색 값
     float BloomScale = g_float_2; // 블룸 크기

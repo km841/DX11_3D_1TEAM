@@ -13,6 +13,8 @@ Texture2D g_tex_8 : register(t8);
 Texture2D g_tex_9 : register(t9);
 Texture2D g_tex_10 : register(t10);
 
+StructuredBuffer<Matrix> g_mat_bone : register(t16);
+
 SamplerState g_sam_0 : register(s0);
 SamplerState g_sam_1 : register(s1);
 

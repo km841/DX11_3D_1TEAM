@@ -12,6 +12,7 @@ namespace hm
 {
     MeshData::MeshData()
        : Object(ObjectType::MeshData)
+        , mbHasAnimation(false)
     {
     }
 
@@ -33,6 +34,9 @@ namespace hm
 
         for (int i = 0; i < loader.GetMeshCount(); i++)
         {
+            if (true == loader.GetMesh(i).bHasAnimation)
+                pMeshData->mbHasAnimation = true;
+
             pMesh->AddMeshContainer(&loader.GetMesh(i), loader);
             pMaterial->SetShader(GET_SINGLE(Resources)->Get<Shader>(_shaderName));
 

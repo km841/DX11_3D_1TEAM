@@ -12,6 +12,7 @@ namespace hm
 	class ParticleSystem;
 	class Collider;
 	class RigidBody;
+	class Animator;
 
 	enum class ComponentType
 	{
@@ -63,6 +64,7 @@ namespace hm
 		ParticleSystem* GetParticleSystem();
 		Collider* GetCollider();
 		RigidBody* GetRigidBody();
+		Animator* GetAnimator();
 
 
 		bool IsPhysicsObject();
