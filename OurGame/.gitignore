@@ -2,6 +2,7 @@
 x64/
 .vs/
 OurGame/Output/Debug/
+OurGame\Output\Debug\
 *.ipch
 *.pdb
 *.pch

@@ -382,8 +382,117 @@ namespace sy
 
 				AddGameObject(pRimStarter);
 			}
+
+			//1층 벽에 붙은 벽돌모양 테두리 오른쪽 벽1 - WallPanel
+			{
+				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(13.5f, -7.2f, -5.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
+
+				pWallPanel->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pWallPanel->GetTransform()->SetRotation(Vec3(0.0f, 90.f, 0.f));
+			
+				AddGameObject(pWallPanel);
+			}
+
+			//1층 벽에 붙은 벽돌모양 테두리 오른쪽 벽2 - WallPanel
+			{
+				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(4.0f, -7.2f, -5.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
+
+				pWallPanel->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pWallPanel->GetTransform()->SetRotation(Vec3(0.0f, 90.f, 0.f));
+			
+
+				AddGameObject(pWallPanel);
+			}
+
+			//1층 벽에 붙은 벽돌모양 테두리 오른쪽 벽3 - WallPanel
+			{
+				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(-6.8f, -7.2f, -5.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
+
+				pWallPanel->GetTransform()->SetScale(Vec3(5.f, 5.f, 6.f));
+				pWallPanel->GetTransform()->SetRotation(Vec3(0.0f, 90.f, 0.f));
+				
+
+				AddGameObject(pWallPanel);
+			}
+
+			//1층 벽에 붙은 벽돌모양 테두리 왼쪽벽1 - WallPanel
+			{
+				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(14.01f, -7.2f, -2.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
+
+				pWallPanel->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pWallPanel->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
+			
+
+				AddGameObject(pWallPanel);
+			}
+
+			//1층 벽에 붙은 벽돌모양 테두리 왼쪽벽2 - WallPanel
+			{
+				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(14.01f, -7.2f, 2.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
+
+				pWallPanel->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pWallPanel->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
+				
+
+				AddGameObject(pWallPanel);
+			}
+
+			//1층 벽에 붙은 벽돌모양 테두리 왼쪽벽3 - WallPanel
+			{
+				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(14.01f, -7.2f, 7.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
+
+				pWallPanel->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pWallPanel->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
+
+				AddGameObject(pWallPanel);
+			}
+			//1층 벽에 붙은 벽돌모양 테두리 왼쪽벽4 - WallPanel
+			{
+				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(14.01f, -7.2f, 12.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
+
+				pWallPanel->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pWallPanel->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
+
+
+				AddGameObject(pWallPanel);
+			}
+
+			//1층 벽에 붙은 벽돌모양 테두리 왼쪽벽4 - WallPanel
+			{
+				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(14.01f, -7.2f, 16.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
+
+				pWallPanel->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pWallPanel->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
+
+
+				AddGameObject(pWallPanel);
+			}
+
+			//1층 벽에 붙은 벽돌모양 테두리 왼쪽벽5 - WallPanel
+			{
+				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(14.01f, -7.2f, 21.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
+
+				pWallPanel->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pWallPanel->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
+				
+
+				AddGameObject(pWallPanel);
+			}
+
+			// 1층 천장 샹들리에 - ChandelierWithChain
+			{
+				DecoObject* pChandelierWithChain = Factory::CreateObject<DecoObject>(Vec3(0.0f, 20.0f, 16.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ChandelierWithChain.fbx");
+
+				pChandelierWithChain->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+				pChandelierWithChain->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
+
+				AddGameObject(pChandelierWithChain);
+			}
 		}
 #pragma endregion
+
+
+
 
 #pragma region "2층"
 
@@ -589,8 +698,22 @@ namespace sy
 				}
 			}
 
+			{
+				//벽에 붙은 그림 - AssortedPaintings
+				DecoObject* pAssortedPaintings = Factory::CreateObject<DecoObject>(Vec3(-4.3f, 6.4f, -12.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\AssortedPaintings.fbx");
+
+				pAssortedPaintings->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+				pAssortedPaintings->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+				
+				AddGameObject(pAssortedPaintings);
+			}
+
+
 		}
 #pragma endregion
+
+
+
 
 #pragma region "3층"
 		// 3층 바닥 콜라이더
