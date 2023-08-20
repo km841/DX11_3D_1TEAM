@@ -32,10 +32,11 @@ namespace hm
         shared_ptr<Material> pMaterial = make_shared<Material>();
         pMaterial->ClearMaterialContainers();
 
+        bool bHasAnimation = false;
         for (int i = 0; i < loader.GetMeshCount(); i++)
         {
             if (true == loader.GetMesh(i).bHasAnimation)
-                pMeshData->mbHasAnimation = true;
+                bHasAnimation = true;
 
             pMesh->AddMeshContainer(&loader.GetMesh(i), loader);
             pMaterial->SetShader(GET_SINGLE(Resources)->Get<Shader>(_shaderName));
@@ -73,6 +74,12 @@ namespace hm
         pMaterial->SetName(_path);
         GET_SINGLE(Resources)->Add<Mesh>(pMesh->GetName(), pMesh);
         GET_SINGLE(Resources)->Add<Material>(pMaterial->GetName(), pMaterial);
+
+        if (true == bHasAnimation)
+        {
+            pMesh->CreateBonesAndAnimations(loader);
+            pMeshData->mbHasAnimation = true;
+        }
 
         pMeshData->SetMesh(pMesh);
         pMeshData->SetMaterial(pMaterial);

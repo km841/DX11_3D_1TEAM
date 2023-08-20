@@ -188,7 +188,7 @@ namespace hm
 
 		material.diffuse = GetMaterialData(_pSurfaceMaterial, FbxSurfaceMaterial::sDiffuse, FbxSurfaceMaterial::sDiffuseFactor);
 		material.ambient = GetMaterialData(_pSurfaceMaterial, FbxSurfaceMaterial::sAmbient, FbxSurfaceMaterial::sAmbientFactor);
-		material.diffuse = GetMaterialData(_pSurfaceMaterial, FbxSurfaceMaterial::sSpecular, FbxSurfaceMaterial::sSpecularFactor);
+		material.specular = GetMaterialData(_pSurfaceMaterial, FbxSurfaceMaterial::sSpecular, FbxSurfaceMaterial::sSpecularFactor);
 
 		material.diffuseTexName = GetTextureRelativeName(_pSurfaceMaterial, FbxSurfaceMaterial::sDiffuse);
 		material.normalTexName = GetTextureRelativeName(_pSurfaceMaterial, FbxSurfaceMaterial::sNormalMap);
@@ -321,18 +321,18 @@ namespace hm
 	}
 	void FBXLoader::LoadBones(FbxNode* _pNode, int _index, int _parentIdx)
 	{
-		FbxNodeAttribute* pAttribute = _pNode->GetNodeAttribute();
+		FbxNodeAttribute* attribute = _pNode->GetNodeAttribute();
 
-		if (nullptr != pAttribute && pAttribute->GetAttributeType() == FbxNodeAttribute::eSkeleton)
+		if (attribute && attribute->GetAttributeType() == FbxNodeAttribute::eSkeleton)
 		{
-			shared_ptr<FbxBoneInfo> pBone = make_shared<FbxBoneInfo>();
-			pBone->boneName = s2ws(_pNode->GetName());
-			pBone->parentIndex = _parentIdx;
-			mBones.push_back(pBone);
+			shared_ptr<FbxBoneInfo> bone = make_shared<FbxBoneInfo>();
+			bone->boneName = s2ws(_pNode->GetName());
+			bone->parentIndex = _parentIdx;
+			mBones.push_back(bone);
 		}
 
 		const int childCount = _pNode->GetChildCount();
-		for (int i = 0; i < childCount; ++i)
+		for (int i = 0; i < childCount; i++)
 			LoadBones(_pNode->GetChild(i), static_cast<int>(mBones.size()), _index);
 	}
 	void FBXLoader::LoadAnimationInfo()
@@ -579,7 +579,7 @@ namespace hm
 					wstring filename = fs::path(relativePath).filename();
 					wstring fullPath = mResourceDirectory + L"\\" + filename;
 					if (filename.empty() == false)
-						GET_SINGLE(Resources)->Load<Texture>(filename, fullPath);
+						GET_SINGLE(Resources)->Load<Texture>(relativePath, fullPath);
 				}
 
 				// Normal Texture
@@ -588,7 +588,7 @@ namespace hm
 					wstring filename = fs::path(relativePath).filename();
 					wstring fullPath = mResourceDirectory + L"\\" + filename;
 					if (filename.empty() == false)
-						GET_SINGLE(Resources)->Load<Texture>(filename, fullPath);
+						GET_SINGLE(Resources)->Load<Texture>(relativePath, fullPath);
 				}
 
 				// Specular Texture
@@ -597,7 +597,7 @@ namespace hm
 					wstring filename = fs::path(relativePath).filename();
 					wstring fullPath = mResourceDirectory + L"\\" + filename;
 					if (filename.empty() == false)
-						GET_SINGLE(Resources)->Load<Texture>(filename, fullPath);
+						GET_SINGLE(Resources)->Load<Texture>(relativePath, fullPath);
 				}
 			}
 		}

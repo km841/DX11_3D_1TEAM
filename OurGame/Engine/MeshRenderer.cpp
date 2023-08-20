@@ -41,7 +41,7 @@ namespace hm
 			MaterialContainer* pContainer = mpMaterial->GetMaterialContainer(i);
 
 			if (nullptr != GetAnimator())
-				GetAnimator()->PushData(i);
+				GetAnimator()->PushData();
 
 			for (UINT32 j = 0; j < pContainer->materialSubsetVec.size(); ++j)
 			{
@@ -72,7 +72,7 @@ namespace hm
 			MaterialContainer* pContainer = mpMaterial->GetMaterialContainer(i);
 
 			if (nullptr != GetAnimator())
-				GetAnimator()->PushData(i);
+				GetAnimator()->PushData();
 		
 			for (UINT32 j = 0; j < pContainer->materialSubsetVec.size(); ++j)
 			{
@@ -101,7 +101,6 @@ namespace hm
 			if (nullptr == GetAnimator())
 				mpGameObject->AddComponent(new Animator);
 
-			GetAnimator()->SetAnimContainer(mpMesh->GetAnimationContainers());
 			GetAnimator()->SetBones(mpMesh->GetBones());
 			GetAnimator()->SetAnimClip(mpMesh->GetAnimClip());
 		}

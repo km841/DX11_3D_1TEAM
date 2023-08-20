@@ -19,11 +19,7 @@ namespace hm
 
     struct FrameInfo
     {
-        float	updateTime = 0.f;
-        int		clipIndex = 0;
-        int		frame = 0;
-        int		nextFrame = 0;
-        float	frameRatio = 0;
+
     };
 
     struct KeyFrameInfo
@@ -49,24 +45,6 @@ namespace hm
         double			duration;
         std::vector<std::vector<KeyFrameInfo>>	keyFrames;
     };
-
-    struct AnimationContainer
-    {
-        std::vector<AnimClipInfo> animClips;
-        std::vector<BoneInfo> bones;
-
-        shared_ptr<StructuredBuffer>              pOffsetBuffer;
-        std::vector<shared_ptr<StructuredBuffer>> frameBuffer;
-    };
-
-    struct FrameContainer
-    {
-        FrameInfo frameInfo;
-        shared_ptr<StructuredBuffer>	pBoneFinalMatrix;  // 특정 프레임의 최종 행렬
-        bool							bBoneFinalUpdated = false;
-    };
-
-
 
     struct FbxMeshInfo;
     class FBXLoader;
@@ -97,6 +75,7 @@ namespace hm
         UINT32 GetHash() { return mHash; }
 
         void AddMeshContainer(const FbxMeshInfo* _pMeshInfo, FBXLoader& _loader);
+        void CreateBonesAndAnimations(FBXLoader& _loader);
         UINT32 GetMeshContainerCount() { return static_cast<UINT32>(mMeshContainerVec.size()); }
 
     public:
@@ -106,23 +85,28 @@ namespace hm
         IndexBufferInfo CreateIndexBuffer(const std::vector<int>& _buffer);
 
     public:
-        const std::vector<BoneInfo>&     GetBones(int _containerIndex = 0) { return mAnimContainerVec[_containerIndex]->bones; }
-        UINT32						     GetBoneCount(int _containerIndex = 0) { return static_cast<UINT32>(mAnimContainerVec[_containerIndex]->bones.size()); }
-        const std::vector<AnimClipInfo>& GetAnimClip(int _containerIndex = 0) { return mAnimContainerVec[_containerIndex]->animClips; }
+        const std::vector<BoneInfo>*     GetBones() { return &mBones; }
+        UINT32						     GetBoneCount() { return static_cast<UINT32>(mBones.size()); }
+        const std::vector<AnimClipInfo>* GetAnimClip() { return &mAnimClips; }
 
-        bool							 IsAnimMesh(int _containerIndex = 0) { return !mAnimContainerVec[_containerIndex]->animClips.empty(); }
-        shared_ptr<StructuredBuffer>	 GetBoneFrameDataBuffer(int index = 0, int _containerIndex = 0) { return mAnimContainerVec[_containerIndex]->frameBuffer[index]; } // 전체 본 프레임 정보
-        shared_ptr<StructuredBuffer>	 GetBoneOffsetBuffer(int _containerIndex = 0) { return  mAnimContainerVec[_containerIndex]->pOffsetBuffer; }
-
-        const std::vector<AnimationContainer*>& GetAnimationContainers() { return mAnimContainerVec; }
+        bool							 IsAnimMesh() { return !mAnimClips.empty(); }
+        shared_ptr<StructuredBuffer>	 GetBoneFrameDataBuffer(int index = 0) { return frameBuffer[index]; } // 전체 본 프레임 정보
+        shared_ptr<StructuredBuffer>	 GetBoneOffsetBuffer() { return  pOffsetBuffer; }
 
     private:
-        void AddAnimContainer(FBXLoader& _loader);
+        
         Matrix GetMatrix(const FbxAMatrix& _matrix); // FbxAMatrix -> XMMATRIX
 
     private:
         std::vector<MeshContainer*>      mMeshContainerVec;
-        std::vector<AnimationContainer*> mAnimContainerVec;
+
+        std::vector<AnimClipInfo> mAnimClips;
+        std::vector<BoneInfo> mBones;
+
+        shared_ptr<StructuredBuffer>              pOffsetBuffer;
+        std::vector<shared_ptr<StructuredBuffer>> frameBuffer;
+
+
         UINT32 mHash;
 	};
 }
