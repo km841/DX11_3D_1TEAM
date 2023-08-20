@@ -123,7 +123,6 @@ namespace jh
 			pFirstFloorLeftStairs->GetTransform()->SetScale(Vec3(2.6f, 2.4f, 2.65f));
 			pFirstFloorLeftStairs->GetTransform()->SetRotationExcludingColliders(Vec3(24.2f, 0.f, 0.f));
 			pFirstFloorLeftStairs->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.045f, -0.1f));
-			
 			AddGameObject(pFirstFloorLeftStairs);
 		}
 		// 1Ãþ °è´Ü(¿À¸¥ÂÊ)
@@ -139,24 +138,7 @@ namespace jh
 			pFirstFloorRightStairs->GetTransform()->SetScale(Vec3(2.7f, 2.4f, 2.65f));
 			pFirstFloorRightStairs->GetTransform()->SetRotationExcludingColliders(Vec3(24.2f, 0.f, 0.f));
 			pFirstFloorRightStairs->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.045f, -0.1f));
-			
 			AddGameObject(pFirstFloorRightStairs);
-		}
-		// 1Ãþ ±âµÕ(¿ÞÂÊ °è´Ü)
-		{
-			DecoObject* pFirstFloorColumn = Factory::CreateObject<DecoObject>(Vec3(-0.7f, -0.5f, -1.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\column2Base (1).fbx");
-
-			pFirstFloorColumn->GetTransform()->SetScale(Vec3(1.7f, 1.5f, 1.7f));
-
-			AddGameObject(pFirstFloorColumn);
-		}
-		// 1Ãþ ±âµÕ(¿À¸¥ÂÊ °è´Ü)
-		{
-			DecoObject* pFirstFloorColumn = Factory::CreateObject<DecoObject>(Vec3(1.45f, -0.5f, -1.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\column2Base (1).fbx");
-
-			pFirstFloorColumn->GetTransform()->SetScale(Vec3(1.7f, 1.5f, 1.7f));
-
-			AddGameObject(pFirstFloorColumn);
 		}
 #pragma endregion
 #pragma region 2Ãþ
@@ -174,16 +156,16 @@ namespace jh
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
 			info.eGeometryType = GeometryType::Box;
-			//info.size = Vec3(7.8f, 0.1f, 8.4f);
+			info.size = Vec3(7.8f, 0.1f, 8.4f);
 
-			Ground* pSecondFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.34f, -0.23f, 3.1f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MainRoom Floor.fbx", true);
+			Ground* pSecondFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.34f, -0.23f, 3.1f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MainRoom Floor.fbx");
 
 			pSecondFloor->GetTransform()->SetRotation(Vec3(0.f, 0.f, 180.f));
 			pSecondFloor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, -0.98f));
 			pSecondFloor->GetTransform()->SetScale(Vec3(10.3f, 5.f, 10.3f));
 
-			pSecondFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr, 1, 0);
-			pSecondFloor->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(154.f, 140.f, 105.f), 1, 0);
+			pSecondFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
+			pSecondFloor->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(154.f, 140.f, 105.f));
 
 			AddGameObject(pSecondFloor);
 		}
@@ -194,126 +176,14 @@ namespace jh
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(1.f, 0.1f, 2.5f);
 
-			Ground* pSecondFloorLeftStairs = Factory::CreateObjectHasPhysical<Ground>(Vec3(-1.f, 0.33f, 6.1f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\stairs (1).fbx");
+			Ground* pSecondFloorLeftStairs = Factory::CreateObjectHasPhysical<Ground>(Vec3(-1.f, 0.35f, 6.1f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\stairs (1).fbx");
 
-			pSecondFloorLeftStairs->GetTransform()->SetRotation(Vec3(-26.5f, 0.f, 0.f));
-			pSecondFloorLeftStairs->GetTransform()->SetScale(Vec3(2.7f, 2.6f, 2.55f));
-			pSecondFloorLeftStairs->GetTransform()->SetRotationExcludingColliders(Vec3(27.f, 0.f, 0.f));
+			pSecondFloorLeftStairs->AddComponent<PlacementScript>();
+			pSecondFloorLeftStairs->GetTransform()->SetRotation(Vec3(-24.2f, 0.f, 0.f));
+			pSecondFloorLeftStairs->GetTransform()->SetScale(Vec3(2.7f, 2.4f, 2.55f));
+			pSecondFloorLeftStairs->GetTransform()->SetRotationExcludingColliders(Vec3(24.2f, 0.f, 0.f));
 			pSecondFloorLeftStairs->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.045f, -0.1f));
-			
 			AddGameObject(pSecondFloorLeftStairs);
-		}
-		// 2Ãþ °è´Ü(¿ÞÂÊ)
-		{
-			PhysicsInfo info;
-			info.eActorType = ActorType::Static;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(1.f, 0.1f, 2.5f);
-
-			Ground* pSecondFloorRightStairs = Factory::CreateObjectHasPhysical<Ground>(Vec3(1.75f, 0.33f, 6.1f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\stairs (1).fbx");
-
-			pSecondFloorRightStairs->GetTransform()->SetRotation(Vec3(-26.5f, 0.f, 0.f));
-			pSecondFloorRightStairs->GetTransform()->SetScale(Vec3(2.7f, 2.6f, 2.55f));
-			pSecondFloorRightStairs->GetTransform()->SetRotationExcludingColliders(Vec3(27.f, 0.f, 0.f));
-			pSecondFloorRightStairs->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.045f, -0.1f));
-			
-			AddGameObject(pSecondFloorRightStairs);
-		}
-		// 2Ãþ Áß¾Ó ³­°£ »óºÎ(°¡¿îµ¥)
-		{
-			DecoObject* pSecondFloorBannisterTop = Factory::CreateObject<DecoObject>(Vec3(0.4f, 0.17f, -1.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\bannisterTop.fbx");
-
-			pSecondFloorBannisterTop->GetTransform()->SetScale(Vec3(2.3f, 2.5f, 2.5f));
-
-			AddGameObject(pSecondFloorBannisterTop);
-		}
-		// 2Ãþ Áß¾Ó ³­°£ ±âµÕ(°¡¿îµ¥)
-		for (int i = 0; i < 7; i++)
-		{
-			DecoObject* pSecondFloorColumnStick = Factory::CreateObject<DecoObject>(Vec3(-0.45f + (i * 0.28f), 0.01f, -1.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterStick.fbx");
-
-			//pSecondFloorLeftColumnStick->AddComponent<PlacementScript>();
-			pSecondFloorColumnStick->GetTransform()->SetScale(Vec3(0.3f, 0.3f, 0.3f));
-
-			AddGameObject(pSecondFloorColumnStick);
-		}
-		// 2Ãþ Áß¾Ó ³­°£ ÇÏºÎ(°¡¿îµ¥)
-		{
-			DecoObject* pSecondFloorBannisterBase = Factory::CreateObject<DecoObject>(Vec3(0.4f, -0.14f, -1.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterBase.fbx");
-
-			pSecondFloorBannisterBase->GetTransform()->SetScale(Vec3(2.3f, 1.6f, 1.2f));
-
-			AddGameObject(pSecondFloorBannisterBase);
-		}
-		// 2Ãþ Áß¾Ó ³­°£ »óºÎ(¿ÞÂÊ)
-		{
-			DecoObject* pSecondFloorLeftBannisterTop = Factory::CreateObject<DecoObject>(Vec3(-0.76f, 0.17f, 0.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\bannisterTop.fbx");
-
-			pSecondFloorLeftBannisterTop->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
-			pSecondFloorLeftBannisterTop->GetTransform()->SetScale(Vec3(2.3f, 2.5f, 2.5f));
-
-			AddGameObject(pSecondFloorLeftBannisterTop);
-		}
-		// 2Ãþ Áß¾Ó ³­°£ ±âµÕ(¿ÞÂÊ)
-		for (int i = 0; i < 7; i++)
-		{
-			DecoObject* pSecondFloorLeftColumnStick = Factory::CreateObject<DecoObject>(Vec3(-0.75f, 0.01f, -0.8f + (i * 0.34f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterStick.fbx");
-
-			pSecondFloorLeftColumnStick->GetTransform()->SetScale(Vec3(0.3f, 0.3f, 0.3f));
-
-			AddGameObject(pSecondFloorLeftColumnStick);
-		}
-		// 2Ãþ Áß¾Ó ³­°£ ÇÏºÎ(¿ÞÂÊ)
-		{
-			DecoObject* pSecondFloorLeftBannisterBase = Factory::CreateObject<DecoObject>(Vec3(-0.75f, -0.14f, 0.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterBase.fbx");
-
-			pSecondFloorLeftBannisterBase->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
-			pSecondFloorLeftBannisterBase->GetTransform()->SetScale(Vec3(2.3f, 1.6f, 1.2f));
-
-			AddGameObject(pSecondFloorLeftBannisterBase);
-		}
-		// 2Ãþ Áß¾Ó ³­°£ ³¡ ±âµÕ(¿ÞÂÊ)
-		{
-			DecoObject* pSecondFloorLeftColumnStump = Factory::CreateObject<DecoObject>(Vec3(-0.75f, 0.11f, 1.25f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\ColumnStump (7).fbx");
-
-			pSecondFloorLeftColumnStump->GetTransform()->SetScale(Vec3(0.6f, 0.6f, 0.6f));
-
-			AddGameObject(pSecondFloorLeftColumnStump);
-		}
-		// 2Ãþ Áß¾Ó ³­°£ »óºÎ(¿À¸¥ÂÊ)
-		{
-			DecoObject* pSecondFloorRightBannisterTop = Factory::CreateObject<DecoObject>(Vec3(1.5f, 0.17f, 0.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\bannisterTop.fbx");
-
-			pSecondFloorRightBannisterTop->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
-			pSecondFloorRightBannisterTop->GetTransform()->SetScale(Vec3(2.3f, 2.5f, 2.5f));
-
-			AddGameObject(pSecondFloorRightBannisterTop);
-		}
-		// 2Ãþ Áß¾Ó ³­°£ ±âµÕ(¿À¸¥ÂÊ)
-		for (int i = 0; i < 7; i++)
-		{
-			DecoObject* pSecondFloorRightColumnStick = Factory::CreateObject<DecoObject>(Vec3(1.5f, 0.01f, -0.8f + (i * 0.34f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterStick.fbx");
-
-			pSecondFloorRightColumnStick->GetTransform()->SetScale(Vec3(0.3f, 0.3f, 0.3f));
-
-			AddGameObject(pSecondFloorRightColumnStick);
-		}
-		// 2Ãþ Áß¾Ó ³­°£ ÇÏºÎ(¿À¸¥ÂÊ)
-		{
-			DecoObject* pSecondFloorRightBannisterBase = Factory::CreateObject<DecoObject>(Vec3(1.5f, -0.14f, 0.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterBase.fbx");
-
-			pSecondFloorRightBannisterBase->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
-			pSecondFloorRightBannisterBase->GetTransform()->SetScale(Vec3(2.3f, 1.6f, 1.2f));
-
-			AddGameObject(pSecondFloorRightBannisterBase);
-		}
-		// 2Ãþ Áß¾Ó ³­°£ ³¡ ±âµÕ(¿À¸¥ÂÊ)
-		{
-			DecoObject* pSecondFloorRightColumnStump = Factory::CreateObject<DecoObject>(Vec3(1.5f, 0.11f, 1.25f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\ColumnStump (7).fbx");
-
-			pSecondFloorRightColumnStump->GetTransform()->SetScale(Vec3(0.6f, 0.6f, 0.6f));
-
-			AddGameObject(pSecondFloorRightColumnStump);
 		}
 #pragma endregion
 #pragma region 3Ãþ
