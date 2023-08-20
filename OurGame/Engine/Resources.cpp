@@ -39,7 +39,7 @@ namespace hm
 
         return pTexture;
     }
-    shared_ptr<MeshData> Resources::LoadFBX(const wstring& _path, const wstring& _shaderName)
+    shared_ptr<MeshData> Resources::LoadFBX(const wstring& _path, const wstring& _shaderName, bool _bInvNormal)
     {
         wstring key = _path;
 
@@ -47,7 +47,7 @@ namespace hm
         if (meshData)
             return meshData;
 
-        meshData = MeshData::LoadFromFBX(_path, _shaderName);
+        meshData = MeshData::LoadFromFBX(_path, _shaderName, _bInvNormal);
         meshData->SetName(key);
         Add(key, meshData);
 
@@ -735,6 +735,29 @@ namespace hm
             Add<Shader>(L"HDR", pShader);
         }
 
+        // Rim Lighting Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Light,
+                DepthStencilType::NoDepthTestNoWrite,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\rimlighting.fx", shaderInfo);
+
+            Add<Shader>(L"RimLighting", pShader);
+        }
+
+        // Compute Animation
+        {
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateComputeShader(L"..\\Resources\\Shader\\animation.fx", "CS_Main", "cs_5_0");
+            Add<Shader>(L"ComputeAnimation", pShader);
+        }
+
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -935,7 +958,7 @@ namespace hm
 
             pMaterial->SetTexture(0, Get<Texture>(L"DiffuseTarget"));
             pMaterial->SetTexture(1, Get<Texture>(L"DiffuseLightTarget"));
-            pMaterial->SetTexture(2, Get<Texture>(L"SpecularLightTarget"));
+            pMaterial->SetTexture(2, Get<Texture>(L"RimLightingTarget"));
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"LightBlend", pMaterial);
@@ -975,6 +998,27 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"HDR", pMaterial);
+        }
+
+        // Rim Lighting Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"RimLighting");
+
+            pMaterial->SetTexture(0, Get<Texture>(L"PositionTarget"));
+            pMaterial->SetTexture(1, Get<Texture>(L"NormalTarget"));
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"RimLighting", pMaterial);
+        }
+
+        // Compute Bloom Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"ComputeAnimation");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"ComputeAnimation", pMaterial);
         }
     }
 }

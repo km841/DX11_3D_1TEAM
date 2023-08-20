@@ -7,6 +7,7 @@ namespace hm
 		SwapChain,
 		G_Buffer,
 		Light,
+		RimLighting,
 		LightBlend,
 		End,
 	};
@@ -17,6 +18,7 @@ namespace hm
 		G_BUGGER_GROUP_COUNT = 5,
 		SWAP_CHAIN_BUFFER_COUNT = 1,
 		LIGHTING_GROUP_COUNT = 2,
+		RIM_LIGHTING_GROUP_COUNT = 1,
 		LIGHTBLEND_GROUP_COUNT = 1,
 	};
 

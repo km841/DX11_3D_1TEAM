@@ -50,8 +50,8 @@ PS_OUT PS_Main(VS_OUT _in)
     
     float4 color = g_tex_0.Sample(g_sam_0, _in.uv);
     
-    float4 specularColor = g_tex_2.Sample(g_sam_0, _in.uv);
-    float4 totalColor = color * (lightPower + 0.2f) /*+ specularColor*/;
+    float4 rimColor = g_tex_2.Sample(g_sam_0, _in.uv);
+    float4 totalColor = color * (lightPower + 0.2f) + rimColor;
     output.lightblend = totalColor;
     
     return output;

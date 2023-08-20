@@ -21,6 +21,7 @@ namespace hm
 		, mHeight(0)
 		, mbEnablePostProcessing(false)
 		, mbEnableHDR(false)
+		, mbEnableRim(false)
 		, mpDownScaleBuffer(nullptr)
 		, mpAvgLumBuffer(nullptr)
 		, mpPrevAdaptionBuffer(nullptr)
@@ -65,6 +66,10 @@ namespace hm
 
 		RenderDeferred(_pScene);
 		RenderLight(_pScene);
+
+		if (true == mbEnableRim)
+			RenderRimLighting();
+
 		RenderLightBlend();
 		RenderFinal();
 
@@ -95,6 +100,7 @@ namespace hm
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::SwapChain)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::G_Buffer)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::Light)->ClearRenderTargetView();
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::RimLighting)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::LightBlend)->ClearRenderTargetView();
 	}
 
@@ -151,6 +157,17 @@ namespace hm
 		}
 	}
 
+	void RenderManager::RenderRimLighting()
+	{
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::RimLighting)->OMSetRenderTarget();
+
+		GET_SINGLE(Resources)->Get<Material>(L"RimLighting")->PushGraphicData();
+		GET_SINGLE(Resources)->Get<Material>(L"RimLighting")->SetFloat(0, 1.f);
+		GET_SINGLE(Resources)->Get<Material>(L"RimLighting")->SetFloat(1, 6.f);
+
+		GET_SINGLE(Resources)->LoadRectMesh()->Render();
+	}
+
 	void RenderManager::RenderLightBlend()
 	{
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::LightBlend)->OMSetRenderTarget();
@@ -173,7 +190,7 @@ namespace hm
 			ComputeHDR();
 
 		ComputeSSAO();
-		Bloom();
+		//Bloom();
 	}
 
 	void RenderManager::SetPostProcessing(bool _bFlag)
@@ -184,6 +201,11 @@ namespace hm
 	void RenderManager::SetHDR(bool _bFlag)
 	{
 		mbEnableHDR = _bFlag;
+	}
+
+	void RenderManager::SetRimLighting(bool _bFlag)
+	{
+		mbEnableRim = _bFlag;
 	}
 
 	void RenderManager::PushLightData(Scene* _pScene)
@@ -279,10 +301,12 @@ namespace hm
 		mpAvgLumBuffer->PushGraphicsData(RegisterSRV::t6);
 		mpTempFirstTexture->PushUAV(RegisterUAV::u0);
 
-		Vec2 resolution = RESOLUTION;
-		float totalPixels = static_cast<float>((resolution.x * resolution.y) / 16);
+		mpBritePassMaterial->Dispatch(static_cast<UINT32>(mDomain / 1024), 1, 1);
 
-		mpBritePassMaterial->Dispatch(static_cast<UINT32>(totalPixels / 1024), 1, 1);
+		mpBritePassMaterial->SetInt(0, mWidth / 4);
+		mpBritePassMaterial->SetInt(1, mHeight / 4);
+		mpBritePassMaterial->SetFloat(1, mBloomThreshold);
+
 
 		// ¸®¼Â
 		ID3D11ShaderResourceView* pNullSRV = nullptr;
@@ -300,6 +324,7 @@ namespace hm
 		mpTempSecondTexture->PushUAV(RegisterUAV::u0);
 		mpTempFirstTexture->PushSRV(RegisterSRV::t0); // BritePass Texture
 
+		mpVerticalBlurMaterial->SetVec2(0, Vec2(mWidth / 4.f, mHeight / 4.f));
 		mpVerticalBlurMaterial->Dispatch(static_cast<UINT32>(mDomain / 1024), 1, 1);
 
 		CONTEXT->CSSetShaderResources(0, 1, &pNullSRV);
@@ -308,11 +333,14 @@ namespace hm
 
 		mpBloomTexture->PushUAV(RegisterUAV::u1);
 		mpTempSecondTexture->PushSRV(RegisterSRV::t1);
+		mpDownScaleSceneTexture->PushUAV(RegisterUAV::u0);
 
-		mpVerticalBlurMaterial->Dispatch(static_cast<UINT32>(mDomain / 1024), 1, 1);
+		mpHorizonBlurMaterial->SetVec2(0, Vec2(mWidth / 4.f, mHeight / 4.f));
+		mpHorizonBlurMaterial->Dispatch(static_cast<UINT32>(mDomain / 1024), 1, 1);
 
 		CONTEXT->CSSetShaderResources(1, 1, &pNullSRV);
 		CONTEXT->CSSetUnorderedAccessViews(1, 1, &pNullUAV, NULL);
+		CONTEXT->CSSetUnorderedAccessViews(0, 1, &pNullUAV, NULL);
 	}
 
 	void RenderManager::ToneMapping()
@@ -416,7 +444,7 @@ namespace hm
 		mDOFFarStart = 30.0f;				// 40 ~ 400
 		mDOFFarRange = 1.0f / std::fmaxf(60.0f, 0.001f);			// 80 -> 60 ~150
 
-		mMiddleGrey = 12.f;
+		mMiddleGrey = 3.0f;
 		mWhite = 10.0f;
 
 		mWidth = static_cast<UINT32>(RESOLUTION.x);
@@ -425,8 +453,8 @@ namespace hm
 		mDownScaleGroups = (UINT)((float)(mWidth * mHeight / 16) / 1024.0f);
 		mAdatation = 5.0f;
 
-		mBloomThreshold = 2.0f;
-		mBloomScale = 0.2f;
+		mBloomThreshold = 0.4f;
+		mBloomScale = 2.0f;
 
 		// LDR
 		mpCopyFilter = make_shared<ImageFilter>(GET_SINGLE(Resources)->Get<Material>(L"Copy"), mWidth, mHeight);

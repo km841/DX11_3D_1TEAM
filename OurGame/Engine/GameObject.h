@@ -14,6 +14,7 @@ namespace hm
 	class ParticleSystem;
 	class Collider;
 	class RigidBody;
+	class Animator;
 
 	class GameObject :
 		public Object
@@ -65,6 +66,7 @@ namespace hm
 		ParticleSystem* GetParticleSystem();
 		Collider* GetCollider();
 		RigidBody* GetRigidBody();
+		Animator* GetAnimator();
 
 		LayerType GetLayerType() { return meLayerType; }
 

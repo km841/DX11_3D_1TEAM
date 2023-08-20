@@ -31,6 +31,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include "ParticleSystem.h"
+#include "UIText.h"
 
 /* Script */
 #include "PaperBurnScript.h"
@@ -38,6 +39,7 @@
 #include "PlayerMoveScript.h"
 #include "PlayerSlashScript.h"
 #include "PlacementScript.h"
+#include "TestAnimationScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -112,14 +114,15 @@ namespace hm
 
 		// Monster
 		{
-			Monster* pMonster = Factory::CreateObject<Monster>(Vec3(0.f, 3.f, -20.f), L"PaperBurn", L"..\\Resources\\FBX\\Monster\\Mage.fbx");
-			pMonster->AddComponent(new PaperBurnScript);
+			Monster* pMonster = Factory::CreateObject<Monster>(Vec3(0.f, 3.f, -20.f), L"Deferred", L"..\\Resources\\FBX\\Monster\\Monster.fbx");
+			pMonster->AddComponent(new TestAnimationScript);
+			//pMonster->AddComponent(new PaperBurnScript);
 
-			shared_ptr<Texture> pNoiseTex = GET_SINGLE(Resources)->Load<Texture>(L"BurnNoise", L"..\\Resources\\Texture\\BurnNoise.png");
-			pMonster->GetMeshRenderer()->GetMaterial()->SetTextureAllSubset(1, pNoiseTex);
+			//shared_ptr<Texture> pNoiseTex = GET_SINGLE(Resources)->Load<Texture>(L"BurnNoise", L"..\\Resources\\Texture\\BurnNoise.png");
+			//pMonster->GetMeshRenderer()->GetMaterial()->SetTextureAllSubset(1, pNoiseTex);
 
-			pMonster->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
-			pMonster->GetTransform()->SetRotation(AXIS_Y, 180.f);
+			pMonster->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+			//pMonster->GetTransform()->SetRotation(AXIS_Y, 180.f);
 
 			AddGameObject(pMonster);
 		}
@@ -140,18 +143,31 @@ namespace hm
 		}
 
 		// Toy
-		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Dynamic;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+		//{
+		//	PhysicsInfo physicsInfo;
+		//	physicsInfo.eActorType = ActorType::Dynamic;
+		//	physicsInfo.eGeometryType = GeometryType::Box;
+		//	physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
-			pPlayer->AddComponent(new PlayerMoveScript);
-			pPlayer->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+		//	Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Monster\\Mage.fbx");
+		//	pPlayer->AddComponent(new TestAnimationScript);
+		//	pPlayer->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 
-			AddGameObject(pPlayer);
-		}
+		//	//UIText* pUIText = pPlayer->AddComponent(new UIText);
+		//	//pUIText->SetText(TEXT("텍스트 컴포넌트 출력 테스트"));
+		//	//pUIText->Shadow(true);
+		//	//pUIText->SetShadowColor(0.0f, 0.0f, 0.0f, 1.0f);
+		//	//pUIText->SetShadowOffset(Vec3(2.f, -2.f, 0.f));
+		//	//pUIText->SetShadowOpacity(1.f);
+		//	//pUIText->SetFont("FreshGothic");
+		//	//pUIText->SetColor(1.f, 1.f, 1.f, 1.f);
+		//	//pUIText->SetOpacity(0.5f);
+		//	//pUIText->AlphaBlend(false);
+		//	//pUIText->SetRenderArea(0.f, 750.f, 300.f, 850.f);
+		//	//pUIText->GetTransform()->SetPosition(Vec3(0.f, 900.f, -20.f));
+
+		//	AddGameObject(pPlayer);
+		//}
 
 		// Table
 		{
@@ -175,7 +191,8 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(30.f, 0.5f, 30.f);
 
-			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 0.f, -30.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossStart_Btm.fbx");
+			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 0.f, -30.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossStart_Btm.fbx", true);
+
 
 			pGround->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
 			pGround->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));

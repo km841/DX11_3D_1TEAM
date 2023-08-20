@@ -3,6 +3,7 @@
 
 namespace hm
 {
+    class StructuredBuffer;
     struct IndexBufferInfo
     {
         ComPtr<ID3D11Buffer>		pBuffer;
@@ -13,6 +14,36 @@ namespace hm
     {
         ComPtr<ID3D11Buffer>         pVertexBuffer;
         std::vector<IndexBufferInfo> indexBufferGroup;
+        bool bHasAnimation = false;
+    };
+
+    struct FrameInfo
+    {
+
+    };
+
+    struct KeyFrameInfo
+    {
+        double	time;
+        int	    frame;
+        Vec3	scale;
+        Vec4	rotation;
+        Vec3	translate;
+    };
+
+    struct BoneInfo
+    {
+        wstring	boneName;
+        int		parentIdx;
+        Matrix	matOffset;
+    };
+
+    struct AnimClipInfo
+    {
+        wstring			animName;
+        int			    frameCount;
+        double			duration;
+        std::vector<std::vector<KeyFrameInfo>>	keyFrames;
     };
 
     struct FbxMeshInfo;
@@ -39,12 +70,12 @@ namespace hm
         void RenderInstancing(int _instanceCount = 1, int _index = 0);
         void RenderInstancing(InstancingBuffer* _pBuffer, int _index = 0);
 
-        static shared_ptr<Mesh> CreateFromFBX(const FbxMeshInfo* meshInfo, FBXLoader& loader);
         static UINT32 CreateHash(const Vertex& _vtx);
         void SetHash(UINT32 _hash) { mHash = _hash; }
         UINT32 GetHash() { return mHash; }
 
-        void AddMeshContainer(const struct FbxMeshInfo* meshInfo, FBXLoader& loader);
+        void AddMeshContainer(const FbxMeshInfo* _pMeshInfo, FBXLoader& _loader);
+        void CreateBonesAndAnimations(FBXLoader& _loader);
         UINT32 GetMeshContainerCount() { return static_cast<UINT32>(mMeshContainerVec.size()); }
 
     public:
@@ -53,10 +84,29 @@ namespace hm
         // 인덱스 정보를 통해 인덱스 버퍼를 생성하는 함수
         IndexBufferInfo CreateIndexBuffer(const std::vector<int>& _buffer);
 
-    private:
+    public:
+        const std::vector<BoneInfo>*     GetBones() { return &mBones; }
+        UINT32						     GetBoneCount() { return static_cast<UINT32>(mBones.size()); }
+        const std::vector<AnimClipInfo>* GetAnimClip() { return &mAnimClips; }
+
+        bool							 IsAnimMesh() { return !mAnimClips.empty(); }
+        shared_ptr<StructuredBuffer>	 GetBoneFrameDataBuffer(int index = 0) { return frameBuffer[index]; } // 전체 본 프레임 정보
+        shared_ptr<StructuredBuffer>	 GetBoneOffsetBuffer() { return  pOffsetBuffer; }
 
     private:
-        std::vector<MeshContainer*> mMeshContainerVec;
+        
+        Matrix GetMatrix(const FbxAMatrix& _matrix); // FbxAMatrix -> XMMATRIX
+
+    private:
+        std::vector<MeshContainer*>      mMeshContainerVec;
+
+        std::vector<AnimClipInfo> mAnimClips;
+        std::vector<BoneInfo> mBones;
+
+        shared_ptr<StructuredBuffer>              pOffsetBuffer;
+        std::vector<shared_ptr<StructuredBuffer>> frameBuffer;
+
+
         UINT32 mHash;
 	};
 }

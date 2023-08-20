@@ -12,6 +12,7 @@ namespace hm
 {
     MeshData::MeshData()
        : Object(ObjectType::MeshData)
+        , mbHasAnimation(false)
     {
     }
 
@@ -19,9 +20,10 @@ namespace hm
     {
     }
 
-    shared_ptr<MeshData> MeshData::LoadFromFBX(const wstring& _path, const wstring& _shaderName)
+    shared_ptr<MeshData> MeshData::LoadFromFBX(const wstring& _path, const wstring& _shaderName, bool _bInvNormal)
     {
         FBXLoader loader;
+        loader.SetNormalDirection(_bInvNormal);
         loader.LoadFbx(_path);
 
         shared_ptr<MeshData> pMeshData = make_shared<MeshData>();
@@ -30,8 +32,12 @@ namespace hm
         shared_ptr<Material> pMaterial = make_shared<Material>();
         pMaterial->ClearMaterialContainers();
 
+        bool bHasAnimation = false;
         for (int i = 0; i < loader.GetMeshCount(); i++)
         {
+            if (true == loader.GetMesh(i).bHasAnimation)
+                bHasAnimation = true;
+
             pMesh->AddMeshContainer(&loader.GetMesh(i), loader);
             pMaterial->SetShader(GET_SINGLE(Resources)->Get<Shader>(_shaderName));
 
@@ -68,6 +74,12 @@ namespace hm
         pMaterial->SetName(_path);
         GET_SINGLE(Resources)->Add<Mesh>(pMesh->GetName(), pMesh);
         GET_SINGLE(Resources)->Add<Material>(pMaterial->GetName(), pMaterial);
+
+        if (true == bHasAnimation)
+        {
+            pMesh->CreateBonesAndAnimations(loader);
+            pMeshData->mbHasAnimation = true;
+        }
 
         pMeshData->SetMesh(pMesh);
         pMeshData->SetMaterial(pMaterial);

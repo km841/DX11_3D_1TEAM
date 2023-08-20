@@ -4,6 +4,7 @@
 #include "FBXLoader.h"
 #include "InstancingBuffer.h"
 #include "Resources.h"
+#include "StructuredBuffer.h"
 
 namespace hm
 {
@@ -70,32 +71,6 @@ namespace hm
 		}
 	}
 
-	shared_ptr<Mesh> Mesh::CreateFromFBX(const FbxMeshInfo* _pMeshInfo, FBXLoader& loader)
-	{
-		shared_ptr<Mesh> pMesh = make_shared<Mesh>();
-		pMesh->SetHash(CreateHash(_pMeshInfo->vertices[0]));
-
-		pMesh->CreateVertexBuffer(_pMeshInfo->vertices);
-
-		for (const std::vector<int>& buffer : _pMeshInfo->indices)
-		{
-			if (buffer.empty())
-			{
-				std::vector<int> defaultBuffer{ 0 };
-				pMesh->CreateIndexBuffer(defaultBuffer);
-			}
-			else
-			{
-				pMesh->CreateIndexBuffer(buffer);
-			}
-		}
-
-		//if (meshInfo->bHasAnimation)
-		//	mesh->CreateBonesAndAnimations(loader);
-
-		return pMesh;
-	}
-
 	ComPtr<ID3D11Buffer> Mesh::CreateVertexBuffer(const std::vector<Vertex>& _buffer)
 	{
 		UINT count = static_cast<UINT>(_buffer.size());
@@ -141,6 +116,130 @@ namespace hm
 
 		return indexBufferInfo;
 	}
+	void Mesh::CreateBonesAndAnimations(FBXLoader& _loader)
+	{
+		// Animation Clip 데이터 로드
+
+#pragma region AnimClip
+		UINT32 frameCount = 0;
+		std::vector<shared_ptr<FbxAnimClipInfo>>& animClips = _loader.GetAnimClip();
+		for (shared_ptr<FbxAnimClipInfo>& ac : animClips)
+		{
+			AnimClipInfo info = {};
+
+			info.animName = ac->name;
+			info.duration = ac->endTime.GetSecondDouble() - ac->startTime.GetSecondDouble();
+
+			int startFrame = static_cast<int>(ac->startTime.GetFrameCount(ac->mode));
+			int endFrame = static_cast<int>(ac->endTime.GetFrameCount(ac->mode));
+			info.frameCount = endFrame - startFrame;
+
+			info.keyFrames.resize(ac->keyFrames.size());
+
+			const int boneCount = static_cast<int>(ac->keyFrames.size());
+			for (int b = 0; b < boneCount; b++)
+			{
+				auto& vec = ac->keyFrames[b];
+
+				const int size = static_cast<int>(vec.size());
+				frameCount = max(frameCount, static_cast<UINT32>(size));
+				info.keyFrames[b].resize(size);
+
+				for (int f = 0; f < size; f++)
+				{
+					FbxKeyFrameInfo& kf = vec[f];
+					// FBX에서 파싱한 정보들로 채워준다
+					KeyFrameInfo& kfInfo = info.keyFrames[b][f];
+					kfInfo.time = kf.time;
+					kfInfo.frame = static_cast<int>(size);
+					kfInfo.scale.x = static_cast<float>(kf.matTransform.GetS().mData[0]);
+					kfInfo.scale.y = static_cast<float>(kf.matTransform.GetS().mData[1]);
+					kfInfo.scale.z = static_cast<float>(kf.matTransform.GetS().mData[2]);
+					kfInfo.rotation.x = static_cast<float>(kf.matTransform.GetQ().mData[0]);
+					kfInfo.rotation.y = static_cast<float>(kf.matTransform.GetQ().mData[1]);
+					kfInfo.rotation.z = static_cast<float>(kf.matTransform.GetQ().mData[2]);
+					kfInfo.rotation.w = static_cast<float>(kf.matTransform.GetQ().mData[3]);
+					kfInfo.translate.x = static_cast<float>(kf.matTransform.GetT().mData[0]);
+					kfInfo.translate.y = static_cast<float>(kf.matTransform.GetT().mData[1]);
+					kfInfo.translate.z = static_cast<float>(kf.matTransform.GetT().mData[2]);
+				}
+			}
+
+			mAnimClips.push_back(info);
+		}
+#pragma endregion
+
+#pragma region Bones
+		std::vector<shared_ptr<FbxBoneInfo>>& bones = _loader.GetBones();
+		for (shared_ptr<FbxBoneInfo>& bone : bones)
+		{
+			BoneInfo boneInfo = {};
+			boneInfo.parentIdx = bone->parentIndex;
+			boneInfo.matOffset = GetMatrix(bone->matOffset);
+			boneInfo.boneName = bone->boneName;
+			mBones.push_back(boneInfo);
+		}
+#pragma endregion
+
+#pragma region SkinData
+		if (IsAnimMesh())
+		{
+			// BoneOffet 행렬
+			const int boneCount = static_cast<int>(mBones.size());
+			std::vector<Matrix> offsetVec(boneCount);
+			for (size_t b = 0; b < boneCount; b++)
+				offsetVec[b] = mBones[b].matOffset;
+
+			// OffsetMatrix StructuredBuffer 세팅
+			pOffsetBuffer = make_shared<StructuredBuffer>();
+			pOffsetBuffer->Create(sizeof(Matrix), static_cast<UINT32>(offsetVec.size()), offsetVec.data());
+
+			const int animCount = static_cast<int>(animClips.size());
+			for (int i = 0; i < animCount; i++)
+			{
+				AnimClipInfo& animClip = mAnimClips[i];
+
+				// 애니메이션 프레임 정보
+				std::vector<AnimFrameParams> frameParams;
+				frameParams.resize(bones.size() * animClip.frameCount * 10);
+
+				for (int b = 0; b < boneCount; b++)
+				{
+					const int keyFrameCount = static_cast<int>(animClip.keyFrames[b].size());
+					for (int f = 0; f < keyFrameCount; f++)
+					{
+						int idx = static_cast<int>(boneCount * f + b);
+
+						frameParams[idx] = AnimFrameParams
+						{
+							Vec4(animClip.keyFrames[b][f].scale),
+							animClip.keyFrames[b][f].rotation, // Quaternion
+							Vec4(animClip.keyFrames[b][f].translate)
+						};
+					}
+				}
+
+				// StructuredBuffer 세팅
+				frameBuffer.push_back(make_shared<StructuredBuffer>());
+				frameBuffer.back()->Create(sizeof(AnimFrameParams), static_cast<UINT32>(frameParams.size()), frameParams.data());
+			}
+		}
+
+	}
+	Matrix Mesh::GetMatrix(const FbxAMatrix& _matrix)
+	{
+		Matrix mat;
+
+		for (int y = 0; y < 4; ++y)
+		{
+			for (int x = 0; x < 4; ++x)
+			{
+				mat.m[y][x] = static_cast<float>(_matrix.Get(y, x));
+			}
+		}
+
+		return mat;
+	}
 	UINT32 Mesh::CreateHash(const Vertex& _vtx)
 	{
 		size_t hash = 0;
@@ -154,12 +253,12 @@ namespace hm
 		hash_combine(hash, std::hash<float>{}(_vtx.uv.y));
 		return static_cast<UINT32>(hash);
 	}
-	void Mesh::AddMeshContainer(const FbxMeshInfo* meshInfo, FBXLoader& loader)
+	void Mesh::AddMeshContainer(const FbxMeshInfo* _pMeshInfo, FBXLoader& _loader)
 	{
-		ComPtr<ID3D11Buffer> pVertexBuffer= CreateVertexBuffer(meshInfo->vertices);
+		ComPtr<ID3D11Buffer> pVertexBuffer= CreateVertexBuffer(_pMeshInfo->vertices);
 
 		std::vector<IndexBufferInfo> indexBufferVec = {};
-		for (const std::vector<int>& buffer : meshInfo->indices)
+		for (const std::vector<int>& buffer : _pMeshInfo->indices)
 		{
 			if (buffer.empty())
 			{
@@ -173,6 +272,7 @@ namespace hm
 		}
 
 		MeshContainer* pMeshContainer = new MeshContainer{ pVertexBuffer , indexBufferVec };
+		pMeshContainer->bHasAnimation = _pMeshInfo->bHasAnimation;
 		mMeshContainerVec.push_back(pMeshContainer);
 	}
 }
