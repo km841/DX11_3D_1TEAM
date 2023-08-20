@@ -114,15 +114,15 @@ namespace hm
 
 		// Monster
 		{
-			Monster* pMonster = Factory::CreateObject<Monster>(Vec3(0.f, 3.f, -20.f), L"Deferred", L"..\\Resources\\FBX\\Monster\\Mage.fbx");
+			Monster* pMonster = Factory::CreateObject<Monster>(Vec3(0.f, 3.f, -20.f), L"Deferred", L"..\\Resources\\FBX\\Monster\\Monster.fbx");
 			pMonster->AddComponent(new TestAnimationScript);
 			//pMonster->AddComponent(new PaperBurnScript);
 
 			//shared_ptr<Texture> pNoiseTex = GET_SINGLE(Resources)->Load<Texture>(L"BurnNoise", L"..\\Resources\\Texture\\BurnNoise.png");
 			//pMonster->GetMeshRenderer()->GetMaterial()->SetTextureAllSubset(1, pNoiseTex);
 
-			pMonster->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
-			pMonster->GetTransform()->SetRotation(AXIS_Y, 180.f);
+			pMonster->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+			//pMonster->GetTransform()->SetRotation(AXIS_Y, 180.f);
 
 			AddGameObject(pMonster);
 		}

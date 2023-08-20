@@ -11,14 +11,11 @@ namespace hm
 		: Component(ComponentType::Animator)
 	{
 		mpComputeMaterial = GET_SINGLE(Resources)->Get<Material>(L"ComputeAnimation");
+		pBoneFinalMatrix = make_shared<StructuredBuffer>();
+
 	}
 	Animator::~Animator()
 	{
-		for (int i = 0; i < mFrameContainer.size(); ++i)
-		{
-			SAFE_DELETE(mFrameContainer[i]);
-		}
-		mFrameContainer.clear();
 	}
 	// 이후에 작업 예정
 	Component* Animator::Clone(GameObject* _pGameObject)
@@ -28,79 +25,54 @@ namespace hm
 	}
 	void Animator::FinalUpdate()
 	{
-		int count = static_cast<int>(mAnimContainer.size());
+		updateTime += DELTA_TIME;
 
-		for (int i = 0; i < count; ++i)
-		{
-			FrameInfo& fi = mFrameContainer[i]->frameInfo;
-			fi.updateTime += DELTA_TIME;
+		const AnimClipInfo& animClip = animClips->at(clipIndex);
+		if (updateTime >= animClip.duration)
+			updateTime = 0.f;
 
-			const AnimClipInfo& animClip = mAnimContainer[i]->animClips.at(fi.clipIndex);
-			if (fi.updateTime >= animClip.duration)
-				fi.updateTime = 0.f;
-
-			const int ratio = static_cast<int>(animClip.frameCount / animClip.duration);
-			fi.frame = static_cast<int>(fi.updateTime * ratio);
-			fi.frame = min(fi.frame, animClip.frameCount - 1);
-			fi.nextFrame = min(fi.frame + 1, animClip.frameCount - 1);
-			fi.frameRatio = static_cast<float>(fi.frame - fi.frame);
-		}
+		const int ratio = static_cast<int>(animClip.frameCount / animClip.duration);
+		frame = static_cast<int>(updateTime * ratio);
+		frame = min(frame, animClip.frameCount - 1);
+		nextFrame = min(frame + 1, animClip.frameCount - 1);
+		frameRatio = static_cast<float>(frame - frame);
 	}
-	void Animator::Play(int _idx, int _containerIndex)
+	void Animator::Play(int _idx)
 	{
-		AssertEx(_idx < mAnimContainer[_containerIndex]->animClips.size(), L"Animator::Play() - 해당 인덱스에 해당하는 애니메이션 클립 없음");
-		mFrameContainer[_containerIndex]->frameInfo.clipIndex = _idx;
-		mFrameContainer[_containerIndex]->frameInfo.updateTime = 0.f;
+		AssertEx(_idx < animClips->size(), L"Animator::Play() - 해당 인덱스에 해당하는 애니메이션 클립 없음");
+		clipIndex = _idx;
+		updateTime = 0.f;
 	}
-	void Animator::SetBones(const std::vector<BoneInfo>& _bones, int _containerIndex)
+	void Animator::SetBones(const std::vector<BoneInfo>* _bones)
 	{
-		mAnimContainer[_containerIndex]->bones = _bones;
+		bones = _bones;
 	}
-	void Animator::SetAnimClip(const std::vector<AnimClipInfo>& _animClips, int _containerIndex)
+	void Animator::SetAnimClip(const std::vector<AnimClipInfo>* _animClips)
 	{
-		mAnimContainer[_containerIndex]->animClips = _animClips;
+		animClips = _animClips;
 	}
-	void Animator::PushData(int _containerIndex)
+	void Animator::PushData()
 	{
-		AssertEx(false == mAnimContainer.empty(), L"Animator::PushData() - 애니메이션 컨테이너가 비어 있음, 애니메이션이 제대로 로드되지 않음");
-		AssertEx(false == mFrameContainer.empty(), L"Animator::PushData() - 프레임 컨테이너가 비어 있음. SetAnimContainer() 먼저 호출해야 함.");
-
-		AnimationContainer* pAc = mAnimContainer[_containerIndex];
-		FrameContainer* pFc = mFrameContainer[_containerIndex];
-
-		UINT32 boneCount = static_cast<UINT32>(pAc->bones.size());
-		if (pFc->pBoneFinalMatrix->GetElementCount() < static_cast<int>(boneCount))
-			pFc->pBoneFinalMatrix->Create(sizeof(Matrix), boneCount);
+		int boneCount = static_cast<int>(bones->size());
+		if (pBoneFinalMatrix->GetElementCount() < boneCount)
+			pBoneFinalMatrix->Create(sizeof(Matrix), boneCount);
 
 		// Compute Shader
-		shared_ptr<Mesh> pMesh = GetMeshRenderer()->GetMesh();
-		pMesh->GetBoneFrameDataBuffer(pFc->frameInfo.clipIndex, _containerIndex)->PushGraphicsData(RegisterSRV::t8);
-		pMesh->GetBoneOffsetBuffer(_containerIndex)->PushGraphicsData(RegisterSRV::t9);
+		shared_ptr<Mesh> mesh = GetGameObject()->GetMeshRenderer()->GetMesh();
+		mesh->GetBoneFrameDataBuffer(clipIndex)->PushGraphicsData(RegisterSRV::t8);
+		mesh->GetBoneOffsetBuffer()->PushGraphicsData(RegisterSRV::t9);
 
-		pFc->pBoneFinalMatrix->PushComputeUAVData(RegisterUAV::u0);
+		pBoneFinalMatrix->PushComputeUAVData(RegisterUAV::u0);
 
 		mpComputeMaterial->SetInt(0, boneCount);
-		mpComputeMaterial->SetInt(1, pFc->frameInfo.frame);
-		mpComputeMaterial->SetInt(2, pFc->frameInfo.nextFrame);
-		mpComputeMaterial->SetFloat(0, pFc->frameInfo.frameRatio);
+		mpComputeMaterial->SetInt(1, frame);
+		mpComputeMaterial->SetInt(2, nextFrame);
+		mpComputeMaterial->SetFloat(0, frameRatio);
 
 		UINT32 groupCount = (boneCount / 256) + 1;
 		mpComputeMaterial->Dispatch(groupCount, 1, 1);
 
 		// Graphics Shader
-		pFc->pBoneFinalMatrix->PushGraphicsData(static_cast<RegisterSRV>(16));
-	}
-	void Animator::SetAnimContainer(const std::vector<AnimationContainer*>& _animContainer)
-	{
-		mAnimContainer = _animContainer;
-		int containerSize = static_cast<int>(_animContainer.size());
-
-		for (int i = 0; i < containerSize; ++i)
-		{
-			FrameContainer* pFrameContainer = new FrameContainer;
-			pFrameContainer->pBoneFinalMatrix = make_shared<StructuredBuffer>();
-
-			mFrameContainer.push_back(pFrameContainer);
-		}
+		pBoneFinalMatrix->PushGraphicsData(static_cast<RegisterSRV>(16));
 	}
 }
