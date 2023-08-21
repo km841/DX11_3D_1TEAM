@@ -80,37 +80,124 @@ namespace jh
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 
-		//���� �Ͼ������ ������ִ� �ڵ�
+		//배경맵 하얀색으로 만들어주는 코드
 		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
-#pragma region 1��
-		// 1, 2�� ��
+#pragma region 1층
+		// 1층 벽
 		{
-			DecoObject* pFirstFloorWall = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Main.fbx");
+			// 1, 2층 벽
+			{
+				DecoObject* pFirstFloorWall = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Main.fbx");
 
-			pFirstFloorWall->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
-			pFirstFloorWall->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+				pFirstFloorWall->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+				pFirstFloorWall->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
 
-			AddGameObject(pFirstFloorWall);
+				AddGameObject(pFirstFloorWall);
+			}
+			// 1층 벽2
+			{
+				DecoObject* pFirstFloorWall2 = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Main-detach (1).fbx");
+
+				pFirstFloorWall2->AddComponent<PlacementScript>();
+				//pFirstFloorWall2->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+				pFirstFloorWall2->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+
+				AddGameObject(pFirstFloorWall2);
+			}
+			// 기둥
+			{
+				DecoObject* pFirstFloorWallColumn = Factory::CreateObject<DecoObject>(Vec3(-1.6f, 0.02f, -4.91f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\column2Base (3).fbx");
+
+				pFirstFloorWallColumn->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+				pFirstFloorWallColumn->GetTransform()->SetScale(Vec3(2.8f, 2.85f, 2.8f));
+
+				AddGameObject(pFirstFloorWallColumn);
+			}
+			// 기둥2
+			{
+				DecoObject* pFirstFloorWallColumn2 = Factory::CreateObject<DecoObject>(Vec3(-1.6f, 0.02f, -3.01f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\column2Base (3).fbx");
+
+				pFirstFloorWallColumn2->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+				pFirstFloorWallColumn2->GetTransform()->SetScale(Vec3(2.8f, 2.85f, 2.8f));
+
+				AddGameObject(pFirstFloorWallColumn2);
+			}
+			// 기둥3
+			{
+				DecoObject* pFirstFloorWallColumn3 = Factory::CreateObject<DecoObject>(Vec3(-2.05f, 0.02f, -3.01f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\column2Base (3).fbx");
+
+				pFirstFloorWallColumn3->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+				pFirstFloorWallColumn3->GetTransform()->SetScale(Vec3(2.8f, 2.85f, 2.8f));
+
+				AddGameObject(pFirstFloorWallColumn3);
+			}
+			// 기둥4
+			{
+				DecoObject* pFirstFloorWallColumn4 = Factory::CreateObject<DecoObject>(Vec3(-2.05f, 0.02f, -1.16f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\column2Base (3).fbx");
+
+				pFirstFloorWallColumn4->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+				pFirstFloorWallColumn4->GetTransform()->SetScale(Vec3(2.8f, 2.85f, 2.8f));
+
+				AddGameObject(pFirstFloorWallColumn4);
+			}
+			// 기둥5
+			{
+				DecoObject* pFirstFloorWallColumn5 = Factory::CreateObject<DecoObject>(Vec3(-1.65f, 0.02f, -1.17f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\column2Base (3).fbx");
+
+				pFirstFloorWallColumn5->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+				pFirstFloorWallColumn5->GetTransform()->SetScale(Vec3(2.8f, 2.85f, 2.8f));
+
+				AddGameObject(pFirstFloorWallColumn5);
+			}
 		}
-		// 1�� �ٴ�
+		// 1층 바닥
 		{
-			PhysicsInfo info;
-			info.eActorType = ActorType::Static;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(5.f, 0.1f, 5.f);
+			// 1층 바닥
+			{
+				PhysicsInfo info;
+				info.eActorType = ActorType::Static;
+				info.eGeometryType = GeometryType::Box;
+				info.size = Vec3(5.f, 0.1f, 5.f);
 
-			Ground* pFirstFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.14f, -1.3f, -2.82f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MainRoom Floor Lower.fbx");
-			
-			pFirstFloor->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
-			pFirstFloor->GetTransform()->SetScale(Vec3(5.1f, 5.f, 5.1f));
+				Ground* pFirstFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.14f, -1.3f, -2.82f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MainRoom Floor Lower.fbx");
 
-			pFirstFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
-			pFirstFloor->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(154.f, 140.f, 105.f));
+				pFirstFloor->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+				pFirstFloor->GetTransform()->SetScale(Vec3(5.1f, 5.f, 5.1f));
 
-			AddGameObject(pFirstFloor);
+				pFirstFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
+				pFirstFloor->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(154.f, 140.f, 105.f));
+
+				AddGameObject(pFirstFloor);
+			}
+			// 바닥틀
+			{
+				DecoObject* pFirstFloorPanel = Factory::CreateObject<DecoObject>(Vec3(-0.77f, -1.3f, -4.95f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\WallPanel (2).fbx");
+
+				pFirstFloorPanel->GetTransform()->SetScale(Vec3(1.6f, 1.6f, 1.9f));
+
+				AddGameObject(pFirstFloorPanel);
+			}
+			// 바닥틀2
+			{
+				DecoObject* pFirstFloorPanel = Factory::CreateObject<DecoObject>(Vec3(1.55f, -1.29f, -2.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\wallPanel (3)-Merged.fbx");
+
+				pFirstFloorPanel->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+				pFirstFloorPanel->GetTransform()->SetScale(Vec3(3.9f, 3.5f, 4.2f));
+
+				AddGameObject(pFirstFloorPanel);
+			}
+			// 계단틀
+			{
+				DecoObject* pFirstFloorRightStairsPanel = Factory::CreateObject<DecoObject>(Vec3(2.345f, -0.775f, -0.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\wallPanel (3).fbx");
+
+				pFirstFloorRightStairsPanel->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+				pFirstFloorRightStairsPanel->GetTransform()->SetScale(Vec3(2.3f, 2.07f, 2.35f));
+
+				AddGameObject(pFirstFloorRightStairsPanel);
+			}
 		}
-		// 1�� ���(����)
+		// 1층 계단(왼쪽)
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
@@ -123,9 +210,10 @@ namespace jh
 			pFirstFloorLeftStairs->GetTransform()->SetScale(Vec3(2.6f, 2.4f, 2.65f));
 			pFirstFloorLeftStairs->GetTransform()->SetRotationExcludingColliders(Vec3(24.2f, 0.f, 0.f));
 			pFirstFloorLeftStairs->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.045f, -0.1f));
+
 			AddGameObject(pFirstFloorLeftStairs);
 		}
-		// 1�� ���(������)
+		// 1층 계단(오른쪽)
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
@@ -138,11 +226,12 @@ namespace jh
 			pFirstFloorRightStairs->GetTransform()->SetScale(Vec3(2.7f, 2.4f, 2.65f));
 			pFirstFloorRightStairs->GetTransform()->SetRotationExcludingColliders(Vec3(24.2f, 0.f, 0.f));
 			pFirstFloorRightStairs->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.045f, -0.1f));
+
 			AddGameObject(pFirstFloorRightStairs);
 		}
 #pragma endregion
-#pragma region 2��
-		// 2�� ��2
+#pragma region 2층
+		// 2층 벽2
 		{
 			DecoObject* pSecondFloorWall = Factory::CreateObject<DecoObject>(Vec3(-2.15f, 0.215f, -1.66f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Main (1).fbx");
 
@@ -151,7 +240,7 @@ namespace jh
 
 			AddGameObject(pSecondFloorWall);
 		}
-		// 2�� �ٴ�
+		// 2층 바닥
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
@@ -169,7 +258,7 @@ namespace jh
 
 			AddGameObject(pSecondFloor);
 		}
-		// 2�� ���(����)
+		// 2층 계단(왼쪽)
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
@@ -185,9 +274,122 @@ namespace jh
 			pSecondFloorLeftStairs->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.045f, -0.1f));
 			AddGameObject(pSecondFloorLeftStairs);
 		}
+
+		// 2층 계단(왼쪽)
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(1.f, 0.1f, 2.5f);
+
+			Ground* pSecondFloorRightStairs = Factory::CreateObjectHasPhysical<Ground>(Vec3(1.75f, 0.33f, 6.1f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\stairs (1).fbx");
+
+			pSecondFloorRightStairs->GetTransform()->SetRotation(Vec3(-26.5f, 0.f, 0.f));
+			pSecondFloorRightStairs->GetTransform()->SetScale(Vec3(2.7f, 2.6f, 2.55f));
+			pSecondFloorRightStairs->GetTransform()->SetRotationExcludingColliders(Vec3(27.f, 0.f, 0.f));
+			pSecondFloorRightStairs->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.045f, -0.1f));
+			
+			AddGameObject(pSecondFloorRightStairs);
+		}
+		// 2층 중앙 난간 상부(가운데)
+		{
+			DecoObject* pSecondFloorBannisterTop = Factory::CreateObject<DecoObject>(Vec3(0.4f, 0.17f, -1.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\bannisterTop.fbx");
+
+			pSecondFloorBannisterTop->GetTransform()->SetScale(Vec3(2.3f, 2.5f, 2.5f));
+
+			AddGameObject(pSecondFloorBannisterTop);
+		}
+		// 2층 중앙 난간 기둥(가운데)
+		for (int i = 0; i < 7; i++)
+		{
+			DecoObject* pSecondFloorColumnStick = Factory::CreateObject<DecoObject>(Vec3(-0.45f + (i * 0.28f), 0.01f, -1.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterStick.fbx");
+
+			pSecondFloorColumnStick->GetTransform()->SetScale(Vec3(0.3f, 0.3f, 0.3f));
+
+			AddGameObject(pSecondFloorColumnStick);
+		}
+		// 2층 중앙 난간 하부(가운데)
+		{
+			DecoObject* pSecondFloorBannisterBase = Factory::CreateObject<DecoObject>(Vec3(0.4f, -0.14f, -1.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterBase.fbx");
+
+			pSecondFloorBannisterBase->GetTransform()->SetScale(Vec3(2.3f, 1.6f, 1.2f));
+
+			AddGameObject(pSecondFloorBannisterBase);
+		}
+		// 2층 중앙 난간 상부(왼쪽)
+		{
+			DecoObject* pSecondFloorLeftBannisterTop = Factory::CreateObject<DecoObject>(Vec3(-0.76f, 0.17f, 0.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\bannisterTop.fbx");
+
+			pSecondFloorLeftBannisterTop->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+			pSecondFloorLeftBannisterTop->GetTransform()->SetScale(Vec3(2.3f, 2.5f, 2.5f));
+
+			AddGameObject(pSecondFloorLeftBannisterTop);
+		}
+		// 2층 중앙 난간 기둥(왼쪽)
+		for (int i = 0; i < 7; i++)
+		{
+			DecoObject* pSecondFloorLeftColumnStick = Factory::CreateObject<DecoObject>(Vec3(-0.75f, 0.01f, -0.8f + (i * 0.34f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterStick.fbx");
+
+			pSecondFloorLeftColumnStick->GetTransform()->SetScale(Vec3(0.3f, 0.3f, 0.3f));
+
+			AddGameObject(pSecondFloorLeftColumnStick);
+		}
+		// 2층 중앙 난간 하부(왼쪽)
+		{
+			DecoObject* pSecondFloorLeftBannisterBase = Factory::CreateObject<DecoObject>(Vec3(-0.75f, -0.14f, 0.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterBase.fbx");
+
+			pSecondFloorLeftBannisterBase->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+			pSecondFloorLeftBannisterBase->GetTransform()->SetScale(Vec3(2.3f, 1.6f, 1.2f));
+
+			AddGameObject(pSecondFloorLeftBannisterBase);
+		}
+		// 2층 중앙 난간 끝 기둥(왼쪽)
+		{
+			DecoObject* pSecondFloorLeftColumnStump = Factory::CreateObject<DecoObject>(Vec3(-0.75f, 0.11f, 1.25f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\ColumnStump (7).fbx");
+
+			pSecondFloorLeftColumnStump->GetTransform()->SetScale(Vec3(0.6f, 0.6f, 0.6f));
+
+			AddGameObject(pSecondFloorLeftColumnStump);
+		}
+		// 2층 중앙 난간 상부(오른쪽)
+		{
+			DecoObject* pSecondFloorRightBannisterTop = Factory::CreateObject<DecoObject>(Vec3(1.5f, 0.17f, 0.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\bannisterTop.fbx");
+
+			pSecondFloorRightBannisterTop->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+			pSecondFloorRightBannisterTop->GetTransform()->SetScale(Vec3(2.3f, 2.5f, 2.5f));
+
+			AddGameObject(pSecondFloorRightBannisterTop);
+		}
+		// 2층 중앙 난간 기둥(오른쪽)
+		for (int i = 0; i < 7; i++)
+		{
+			DecoObject* pSecondFloorRightColumnStick = Factory::CreateObject<DecoObject>(Vec3(1.5f, 0.01f, -0.8f + (i * 0.34f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterStick.fbx");
+
+			pSecondFloorRightColumnStick->GetTransform()->SetScale(Vec3(0.3f, 0.3f, 0.3f));
+
+			AddGameObject(pSecondFloorRightColumnStick);
+		}
+		// 2층 중앙 난간 하부(오른쪽)
+		{
+			DecoObject* pSecondFloorRightBannisterBase = Factory::CreateObject<DecoObject>(Vec3(1.5f, -0.14f, 0.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterBase.fbx");
+
+			pSecondFloorRightBannisterBase->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+			pSecondFloorRightBannisterBase->GetTransform()->SetScale(Vec3(2.3f, 1.6f, 1.2f));
+
+			AddGameObject(pSecondFloorRightBannisterBase);
+		}
+		// 2층 중앙 난간 끝 기둥(오른쪽)
+		{
+			DecoObject* pSecondFloorRightColumnStump = Factory::CreateObject<DecoObject>(Vec3(1.5f, 0.11f, 1.25f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\ColumnStump (7).fbx");
+
+			pSecondFloorRightColumnStump->GetTransform()->SetScale(Vec3(0.6f, 0.6f, 0.6f));
+
+			AddGameObject(pSecondFloorRightColumnStump);
+		}
+
 #pragma endregion
-#pragma region 3��
-		// 3�� ��
+#pragma region 3층
+		// 3층 벽
 		{
 			DecoObject* pThirdFloorWall = Factory::CreateObject<DecoObject>(Vec3(0.4f, 1.7f, 7.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\TopFloor.fbx");
 
@@ -196,7 +398,7 @@ namespace jh
 
 			AddGameObject(pThirdFloorWall);
 		}
-		// 3�� ��2
+		// 3층 벽2
 		{
 			DecoObject* pThirdFloorWall2 = Factory::CreateObject<DecoObject>(Vec3(0.2f, 2.15f, 7.11f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\TopFloor-detach.fbx");
 
@@ -205,7 +407,7 @@ namespace jh
 
 			AddGameObject(pThirdFloorWall2);
 		}
-		// 3�� �ٴ�
+		// 3층 바닥
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;

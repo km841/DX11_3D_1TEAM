@@ -758,6 +758,43 @@ namespace hm
             Add<Shader>(L"ComputeAnimation", pShader);
         }
 
+        // Compute Light
+        {
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateComputeShader(L"..\\Resources\\Shader\\compute_light.fx", "CS_Main", "cs_5_0");
+            Add<Shader>(L"ComputeLight", pShader);
+        }
+
+        // Forward No Culling Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::Less,
+                RasterizerType::CullNone,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\forward.fx", shaderInfo);
+
+            Add<Shader>(L"Forward_CullNone", pShader);
+        }
+
+        // Deferred No Culling Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Deferred,
+                DepthStencilType::Less,
+                RasterizerType::CullNone,
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", shaderInfo);
+            Add<Shader>(L"Deferred_CullNone", pShader);
+        }
+
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -1012,13 +1049,40 @@ namespace hm
             Add<Material>(L"RimLighting", pMaterial);
         }
 
-        // Compute Bloom Material
+        // Compute Animation Material
         {
             shared_ptr<Material> pMaterial = make_shared<Material>();
             shared_ptr<Shader> pShader = Get<Shader>(L"ComputeAnimation");
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"ComputeAnimation", pMaterial);
+        }
+
+        // Compute Light Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"ComputeLight");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"ComputeLight", pMaterial);
+        }
+
+        // Forward No Culling Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"Forward_CullNone");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"Forward_CullNone", pMaterial);
+        }
+
+        // Deferred No Culling Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"Deferred_CullNone");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"Deferred_CullNone", pMaterial);
         }
     }
 }

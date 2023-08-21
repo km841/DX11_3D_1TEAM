@@ -121,7 +121,7 @@ namespace hm
 			//shared_ptr<Texture> pNoiseTex = GET_SINGLE(Resources)->Load<Texture>(L"BurnNoise", L"..\\Resources\\Texture\\BurnNoise.png");
 			//pMonster->GetMeshRenderer()->GetMaterial()->SetTextureAllSubset(1, pNoiseTex);
 
-			pMonster->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+			pMonster->GetTransform()->SetScale(Vec3(0.2f, 0.2f, 0.2f));
 			//pMonster->GetTransform()->SetRotation(AXIS_Y, 180.f);
 
 			AddGameObject(pMonster);

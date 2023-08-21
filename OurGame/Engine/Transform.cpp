@@ -25,11 +25,32 @@ namespace hm
 		if (true == IsPhysicsObject())
 		{
 			PxTransform transform = GetRigidBody()->GetPhysicsTransform();
+			XMFLOAT4 quaternion = XMFLOAT4(transform.q.x, transform.q.y, transform.q.z, transform.q.w);
+			XMMATRIX rotationMatrix = XMMatrixRotationQuaternion(XMLoadFloat4(&quaternion));
+			XMFLOAT4X4 rotation;
+			XMStoreFloat4x4(&rotation, rotationMatrix);
+
+			float pitch = asinf(-rotation._23);
+			float yaw, roll;
+
+			if (fabsf(rotation._23) < 0.9999f) {
+				yaw = atan2f(rotation._13, rotation._33);
+				roll = atan2f(rotation._21, rotation._22);
+			}
+			else {
+				yaw = atan2f(-rotation._12, rotation._11);
+				roll = 0.0f;
+			}
+
+			pitch = XMConvertToDegrees(-pitch);
+			yaw = XMConvertToDegrees(-yaw);
+			roll = XMConvertToDegrees(-roll);
 
 			mRotation = Vec3(
-				transform.q.x * 180.f / XM_PI, 
-				transform.q.y * 180.f / XM_PI, 
-				transform.q.z * 180.f / XM_PI);
+				pitch < 0.f ? pitch + 360.f : pitch,
+				yaw < 0.f ? yaw + 360.f : yaw,
+				roll < 0.f ? roll + 360.f : roll);
+
 			mPosition = transform.p;
 
 			PxQuat relativeX(mRelativeRotation.x * XM_PI / 180.f, Vec3(1.f, 0.f, 0.f));
@@ -42,7 +63,7 @@ namespace hm
 				Matrix::CreateFromQuaternion(relativeY);
 			//Z*Y*X ÇÏ´Ï±î Áü¹ú¶ô °É·Ç´Ù.
 
-
+			//std::swap(transform.q.x, transform.q.z);
 			matRotation *= Matrix::CreateFromQuaternion(transform.q);
 			Matrix matTranslation = Matrix::CreateTranslation(Vec3(transform.p) + mRelativePosition);
 
@@ -96,7 +117,8 @@ namespace hm
 			PxQuat rotateY(_rotation.y * XM_PI / 180.f, Vec3(0.f, 1.f, 0.f));
 			PxQuat rotateZ(_rotation.z * XM_PI / 180.f, Vec3(0.f, 0.f, 1.f));
 
-			pRigidBody->SetPhysicsTransform(PxTransform(transform.p, rotateZ * rotateY * rotateX));
+			transform.q = rotateZ * rotateX * rotateY;
+			pRigidBody->SetPhysicsTransform(transform);
 		}
 
 		mRotation = _rotation; 

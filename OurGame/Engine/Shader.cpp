@@ -263,6 +263,23 @@ namespace hm
 	{
 		meSamplerType = _eSamplerType;
 	}
+	void Shader::SetBackfaceCulling(bool _bBackfaceCulling)
+	{
+		if (nullptr != mpRasterizerState)
+		{
+			mpRasterizerState->Release();
+		}
+
+		D3D11_RASTERIZER_DESC rd = {};
+		rd.MultisampleEnable = true;
+		rd.AntialiasedLineEnable = true;
+		rd.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
+		rd.CullMode = true == _bBackfaceCulling ? D3D11_CULL_MODE::D3D11_CULL_BACK : D3D11_CULL_MODE::D3D11_CULL_NONE;
+
+		HRESULT hr = DEVICE->CreateRasterizerState(&rd, mpRasterizerState.GetAddressOf());
+		AssertEx(SUCCEEDED(hr), L"Shader::SetBackfaceCulling() - CreateRasterizerState Failed");
+	}
+
 	void Shader::CreateShader(const wstring& _path, const string& _name, const string& _version, ComPtr<ID3DBlob>& _pBlob)
 	{
 		int compileFlag = 0;
