@@ -758,6 +758,13 @@ namespace hm
             Add<Shader>(L"ComputeAnimation", pShader);
         }
 
+        // Compute Light
+        {
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateComputeShader(L"..\\Resources\\Shader\\compute_light.fx", "CS_Main", "cs_5_0");
+            Add<Shader>(L"ComputeLight", pShader);
+        }
+
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -1012,13 +1019,22 @@ namespace hm
             Add<Material>(L"RimLighting", pMaterial);
         }
 
-        // Compute Bloom Material
+        // Compute Animation Material
         {
             shared_ptr<Material> pMaterial = make_shared<Material>();
             shared_ptr<Shader> pShader = Get<Shader>(L"ComputeAnimation");
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"ComputeAnimation", pMaterial);
+        }
+
+        // Compute Light Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"ComputeLight");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"ComputeLight", pMaterial);
         }
     }
 }

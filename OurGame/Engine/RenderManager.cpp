@@ -66,7 +66,7 @@ namespace hm
 
 		RenderDeferred(_pScene);
 		RenderLight(_pScene);
-
+		//ComputeLight();
 		if (true == mbEnableRim)
 			RenderRimLighting();
 
@@ -330,7 +330,6 @@ namespace hm
 		CONTEXT->CSSetShaderResources(0, 1, &pNullSRV);
 		CONTEXT->CSSetUnorderedAccessViews(0, 1, &pNullUAV, NULL);
 
-
 		mpBloomTexture->PushUAV(RegisterUAV::u1);
 		mpTempSecondTexture->PushSRV(RegisterSRV::t1);
 		mpDownScaleSceneTexture->PushUAV(RegisterUAV::u0);
@@ -373,6 +372,14 @@ namespace hm
 		CONTEXT->PSSetShaderResources(6, 1, &pNullSRV);
 		CONTEXT->PSSetShaderResources(8, 1, &pNullSRV);
 		CONTEXT->PSSetShaderResources(9, 1, &pNullSRV);
+	}
+
+	void RenderManager::ComputeLight()
+	{
+		// 결과물을 받을 텍스쳐는 따로 제작
+
+		GET_SINGLE(Resources)->Get<Texture>(L"DiffuseLightTarget")->PushUAV(RegisterUAV::u0);
+		GET_SINGLE(Resources)->Get<Material>(L"ComputeLight")->Dispatch(1, 900, 1);
 	}
 
 	void RenderManager::ComputeHDR()

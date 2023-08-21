@@ -58,6 +58,7 @@ namespace hm
 		void ComputeBlur();
 		void ToneMapping();
 
+		void ComputeLight();
 		void ComputeHDR();
 		void ComputeSSAO();
 
