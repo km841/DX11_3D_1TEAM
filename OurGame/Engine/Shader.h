@@ -106,6 +106,7 @@ namespace hm
         void CreateGeometryShader(const wstring& _path, const string& _name, const string& _version);
 
         void SetSamplerType(SamplerType _eSamplerType);
+        void SetBackfaceCulling(bool _bBackfaceCulling);
 
     public:
         ShaderType GetShaderType() const { return mShaderInfo.eShaderType; }
