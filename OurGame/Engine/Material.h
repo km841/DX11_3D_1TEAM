@@ -51,6 +51,8 @@ namespace hm
         void                SetTexture(int _index, shared_ptr<Texture> _pTexture, int _containerIndex = 0, int _subsetIndex = 0);
         void                SetTextureAllSubset(int _index, shared_ptr<Texture> _pTexture);
 
+        void SetBackfaceCulling(bool _bBackfaceCulling) { mpShader->SetBackfaceCulling(_bBackfaceCulling); }
+
         MaterialSubset* GetMaterialSubset(int _containerIndex, int _subsetindex) { return mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetindex]; }
         MaterialContainer* GetMaterialContainer(int _containerIndex) { return mMaterialContainerVec[_containerIndex]; }
 
