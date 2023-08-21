@@ -57,7 +57,7 @@ namespace yj
 	void MainOfficeMap::Update()
 	{
 		Map::Update();
-		/*if (mTarget != nullptr)
+		if (mTarget != nullptr)
 		{
 			if (IS_UP(KeyType::LEFT))
 			{
@@ -140,10 +140,9 @@ namespace yj
 				Vec3 b = mTarget->GetTransform()->GetRotation();
 				Vec3 c = mTarget->GetTransform()->GetScale();
 				int d = 0;
-
-
+				
 			}
-		}*/
+		}
 	}
 
 	void MainOfficeMap::FixedUpdate()
@@ -163,7 +162,7 @@ namespace yj
 
 	void MainOfficeMap::Enter()
 	{
-		gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
+		//gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
 		{
 			DecoObject* pBus = Factory::CreateObject<DecoObject>(Vec3(-17.0f, -8.0f, 33.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\CUTSCENE_Bus.fbx");
 			pBus->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
@@ -280,6 +279,7 @@ namespace yj
 		}
 #pragma endregion
 
+
 #pragma region "사무실 의자 리스트"
 
 		std::vector<GameObject*> chairList;
@@ -329,6 +329,11 @@ namespace yj
 		chairList[8]->GetTransform()->SetScale(Vec3(2.0f, 2.0f, 2.0f));
 
 #pragma endregion
+
+
+#pragma region "laterWallList"
+
+
 		std::vector<GameObject*>laterWallList;
 
 		for (int i = 0; i < 2; i++)
@@ -344,6 +349,8 @@ namespace yj
 
 		laterWallList[1]->GetTransform()->SetPosition(Vec3(21.0f, -4.4f, -6.8f));
 		laterWallList[1]->GetTransform()->SetRotation(Vec3(0.0f, -86.0f, 0.0f));
+#pragma endregion
+
 
 #pragma region "WallSlots"
 
@@ -370,6 +377,7 @@ namespace yj
 
 
 #pragma endregion
+
 
 #pragma region "WallColumns"
 
@@ -401,6 +409,8 @@ namespace yj
 
 #pragma endregion
 
+
+#pragma region "mPostSlotsList"
 		std::vector<GameObject*>mPostSlotsList;
 
 		for (int i = 0; i < 2; i++)
@@ -419,7 +429,10 @@ namespace yj
 		mPostSlotsList[1]->GetTransform()->SetPosition(Vec3(20.8f, -4.0f, 6.3f));
 		mPostSlotsList[1]->GetTransform()->SetRotation(Vec3(0.0f, -90.0f, 0.0f));
 		mPostSlotsList[1]->GetTransform()->SetScale(Vec3(10.0f, 10.0f, 10.0f));
+#pragma endregion
 
+
+#pragma region "pPostCageDial"
 		std::vector<GameObject*>mPostCageDialList;
 
 		for (int i = 0; i < 2; i++)
@@ -438,7 +451,10 @@ namespace yj
 		mPostCageDialList[1]->GetTransform()->SetPosition(Vec3(20.4f, -4.0f, 6.78f));
 		mPostCageDialList[1]->GetTransform()->SetRotation(Vec3(0.0f, -3.0f, 0.0f));
 		mPostCageDialList[1]->GetTransform()->SetScale(Vec3(7.0f, 8.5f, 8.5f));
+#pragma endregion
 
+
+#pragma region "pMainDesk"
 		{
 			Ground* pMainDesk = Factory::CreateObject<Ground>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\MainDesk.fbx");
 			pMainDesk->GetTransform()->SetScale(Vec3(9.0f, 9.0f, 9.0f));
@@ -448,10 +464,11 @@ namespace yj
 			pMainDesk->GetTransform()->SetPosition(Vec3(13.5f, -7.7f, -9.4f));
 			pMainDesk->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
 			pMainDesk->GetTransform()->SetScale(Vec3(14.5f, 14.5f, 14.5f));
-
-
 		}
+#pragma endregion
 
+
+#pragma region "pTowerDetail"
 		{
 			Ground* pTowerDetail = Factory::CreateObject<Ground>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\TowerDetail.fbx");
 			pTowerDetail->GetTransform()->SetScale(Vec3(9.0f, 9.0f, 9.0f));
@@ -462,12 +479,100 @@ namespace yj
 			pTowerDetail->GetTransform()->SetRotation(Vec3(0.0f, -45.0f, 0.0f));
 			pTowerDetail->GetTransform()->SetScale(Vec3(11.5f, 11.5f, 11.5f));
 		}
+#pragma endregion
 
+
+#pragma region "pHodElevator"
+
+
+		{
+			Ground* pHodElevator = Factory::CreateObject<Ground>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Hod_Elevator.fbx");
+			pHodElevator->GetTransform()->SetScale(Vec3(9.0f, 9.0f, 9.0f));
+			pHodElevator->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+			AddGameObject(pHodElevator);
+
+			pHodElevator->GetTransform()->SetPosition(Vec3(-10.9f, -3.7f, -18.6));
+			pHodElevator->GetTransform()->SetRotation(Vec3(0.0f, 88.0f, 0.0f));
+			pHodElevator->GetTransform()->SetScale(Vec3(11.5f, 11.5f, 11.5f));
+		}
+#pragma endregion
+
+
+#pragma region "pElevatorFrame"
+		{
+			Ground* pElevatorFrame = Factory::CreateObject<Ground>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\ElevatorFrame.fbx");
+			pElevatorFrame->GetTransform()->SetScale(Vec3(9.0f, 9.0f, 9.0f));
+			pElevatorFrame->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+			AddGameObject(pElevatorFrame);
+
+			pElevatorFrame->GetTransform()->SetPosition(Vec3(-11.5f, 3.9f, -18.0));
+			pElevatorFrame->GetTransform()->SetRotation(Vec3(0.0f, 135.0f, 0.0f));
+			pElevatorFrame->GetTransform()->SetScale(Vec3(26.0f, 26.0f, 26.0f));
+		}
+#pragma endregion
+
+
+#pragma region "mPlantBase"
+
+
+		std::vector<GameObject*> mPlantBaseList;
+		for (int i = 0; i < 3; i++)
+		{
+			Ground* pPlantBase = Factory::CreateObject<Ground>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\PlantBase.fbx");
+			pPlantBase->GetTransform()->SetScale(Vec3(9.0f, 9.0f, 9.0f));
+			pPlantBase->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+			AddGameObject(pPlantBase);
+
+			pPlantBase->GetTransform()->SetPosition(Vec3(-2.8f, -7.8f, -5.0f));
+			pPlantBase->GetTransform()->SetRotation(Vec3(0.0f, 33.0f, 0.0f));
+			pPlantBase->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
+			mPlantBaseList.push_back(pPlantBase);
+		}
+		mPlantBaseList[0]->GetTransform()->SetPosition(Vec3(-3.0f, -7.8f, 4.7f));
+		mPlantBaseList[0]->GetTransform()->SetRotation(Vec3(0.0f, 33.0f, 0.0f));
+		mPlantBaseList[0]->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
+
+		mPlantBaseList[1]->GetTransform()->SetPosition(Vec3(-21.6f, -7.8f, -7.5f));
+		mPlantBaseList[1]->GetTransform()->SetRotation(Vec3(0.0f, -49.0f, 0.0f));
+		mPlantBaseList[1]->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
+
+		mPlantBaseList[2]->GetTransform()->SetPosition(Vec3(-1.0f, -11.4f, 19.2f));
+		mPlantBaseList[2]->GetTransform()->SetRotation(Vec3(0.0f, -178.0f, 0.0f));
+		mPlantBaseList[2]->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
+#pragma endregion
+
+
+		std::vector<GameObject*> mTypeMachineList;
+		for (int i = 0; i < 4; i++)
+		{
+			Ground* pTypeMachineMerged = Factory::CreateObject<Ground>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\TypeMachineMerged.fbx");
+			pTypeMachineMerged->GetTransform()->SetScale(Vec3(9.0f, 9.0f, 9.0f));
+			pTypeMachineMerged->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+			AddGameObject(pTypeMachineMerged);
+			mTypeMachineList.push_back(pTypeMachineMerged);
+		}
+		mTypeMachineList[0]->GetTransform()->SetPosition(Vec3(11.5f, -6.8f, 9.3f));
+		mTypeMachineList[0]->GetTransform()->SetRotation(Vec3(0.0f, 187.0f, 0.0f));
+		mTypeMachineList[0]->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+
+		mTypeMachineList[1]->GetTransform()->SetPosition(Vec3(12.6f, -6.8f, 4.8f));
+		mTypeMachineList[1]->GetTransform()->SetRotation(Vec3(0.0f, 37.0f, 0.0f));
+		mTypeMachineList[1]->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+
+		mTypeMachineList[2]->GetTransform()->SetPosition(Vec3(14.1f, -6.8f, 0.5f));
+		mTypeMachineList[2]->GetTransform()->SetRotation(Vec3(0.0f, 37.0f, 0.0f));
+		mTypeMachineList[2]->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+
+		mTypeMachineList[3]->GetTransform()->SetPosition(Vec3(14.1f, -6.8f, 0.5f));
+		mTypeMachineList[3]->GetTransform()->SetRotation(Vec3(0.0f, 37.0f, 0.0f));
+		mTypeMachineList[3]->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+
+
+		mTarget = mTypeMachineList[3];
+		
 
 	}
-
-
-
+	
 	void MainOfficeMap::Exit()
 	{
 
