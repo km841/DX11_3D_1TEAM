@@ -488,6 +488,148 @@ namespace sy
 
 				AddGameObject(pChandelierWithChain);
 			}
+
+			//1Ãþ Å×ÀÌºí 1 -CofeeTableWithCloth
+			{
+				PhysicsInfo Info;
+				Info.eActorType = ActorType::Static;
+				Info.eGeometryType = GeometryType::Box;
+				Info.size = Vec3(4.5f, 2.f, 6.5f);
+
+				WallObject* pCofeeTableWithCloth = Factory::CreateObjectHasPhysical<WallObject>(Vec3(5.67f, -7.4f, 16.1f), Info, L"Deferred",  L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CofeeTableWithCloth.fbx");
+
+				pCofeeTableWithCloth->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
+				pCofeeTableWithCloth->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
+				
+				AddGameObject(pCofeeTableWithCloth);
+			}
+
+			//1Ãþ Å×ÀÌºí 2 -CofeeTableWithCloth
+			{
+				PhysicsInfo Info;
+				Info.eActorType = ActorType::Static;
+				Info.eGeometryType = GeometryType::Box;
+				Info.size = Vec3(4.5f, 2.f, 6.5f);
+
+				WallObject* pCofeeTableWithCloth = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-6.3f, -7.4f, 16.1f), Info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CofeeTableWithCloth.fbx");
+
+				pCofeeTableWithCloth->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
+				pCofeeTableWithCloth->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
+				
+				AddGameObject(pCofeeTableWithCloth);
+			}
+
+			//1Ãþ ·¯±× - Rug_Mark
+			{
+				DecoObject* pRug_Mark = Factory::CreateObject<DecoObject>(Vec3(-0.2f, -8.5f, 16.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Rug_Mark.fbx");
+
+				pRug_Mark->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
+				pRug_Mark->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+				AddGameObject(pRug_Mark);
+			}
+
+			//1Ãþ Ã¼¾î 1 - Chair
+			{
+				PhysicsInfo Info;
+				Info.eActorType = ActorType::Static;
+				Info.eGeometryType = GeometryType::Box;
+				Info.size = Vec3(2.f, 1.f, 2.f);
+
+				WallObject* pChair = Factory::CreateObjectHasPhysical<WallObject>(Vec3(11.0f, -7.6f, 17.0f), Info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Chair.fbx");
+
+				pChair->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pChair->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
+				pChair->GetTransform()->SetRotationExcludingColliders(Vec3(0.0f, 20.f, 0.f));
+				pChair->GetTransform()->SetPositionExcludingColliders(Vec3(0.0f, 1.6f, 0.f));
+				
+				AddGameObject(pChair);
+			}
+
+			//1Ãþ Ã¼¾î 2 - Chair
+			{
+				PhysicsInfo Info;
+				Info.eActorType = ActorType::Static;
+				Info.eGeometryType = GeometryType::Box;
+				Info.size = Vec3(2.f, 1.f, 2.f);
+
+				WallObject* pChair = Factory::CreateObjectHasPhysical<WallObject>(Vec3(3.0f, -7.6f, 22.0f), Info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Chair.fbx");
+
+				pChair->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pChair->GetTransform()->SetRotation(Vec3(0.0f, -120.f, 0.f));
+				pChair->GetTransform()->SetRotationExcludingColliders(Vec3(0.0f, 20.f, 0.f));
+				pChair->GetTransform()->SetPositionExcludingColliders(Vec3(0.0f, 1.6f, 0.f));
+				
+				AddGameObject(pChair);
+			}
+
+			//1Ãþ Ã¼¾î 3 - Chair
+			{
+				PhysicsInfo Info;
+				Info.eActorType = ActorType::Static;
+				Info.eGeometryType = GeometryType::Box;
+				Info.size = Vec3(2.f, 1.f, 2.f);
+
+				WallObject* pChair = Factory::CreateObjectHasPhysical<WallObject>(Vec3(3.0f, -7.6f, 10.5f), Info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Chair.fbx");
+
+				pChair->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pChair->GetTransform()->SetRotation(Vec3(0.0f, 120.f, 0.f));
+				pChair->GetTransform()->SetRotationExcludingColliders(Vec3(0.0f, 20.f, 0.f));
+				pChair->GetTransform()->SetPositionExcludingColliders(Vec3(0.0f, 1.6f, 0.f));
+				AddGameObject(pChair);
+			}
+
+			//1Ãþ Ã¼¾î 4 - Chair
+			{
+				PhysicsInfo Info;
+				Info.eActorType = ActorType::Static;
+				Info.eGeometryType = GeometryType::Box;
+				Info.size = Vec3(2.f, 1.f, 2.f);
+
+				WallObject* pChair = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-3.8f, -7.6f, 22.0f), Info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Chair.fbx");
+
+				pChair->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pChair->GetTransform()->SetRotation(Vec3(0.0f, -60.f, 0.f));
+				pChair->GetTransform()->SetRotationExcludingColliders(Vec3(0.0f, 20.f, 0.f));
+				pChair->GetTransform()->SetPositionExcludingColliders(Vec3(0.0f, 1.6f, 0.f));
+				
+				AddGameObject(pChair);
+			}
+
+			//1Ãþ Ã¼¾î 5 - Chair
+			{
+				PhysicsInfo Info;
+				Info.eActorType = ActorType::Static;
+				Info.eGeometryType = GeometryType::Box;
+				Info.size = Vec3(2.f, 1.f, 2.f);
+
+				WallObject* pChair = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-10.f, -7.6f, 22.0f), Info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Chair.fbx");
+
+				pChair->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pChair->GetTransform()->SetRotation(Vec3(0.0f, -150.f, 0.f));
+				pChair->GetTransform()->SetRotationExcludingColliders(Vec3(0.0f, 20.f, 0.f));
+				pChair->GetTransform()->SetPositionExcludingColliders(Vec3(0.0f, 1.6f, 0.f));
+			
+				AddGameObject(pChair);
+			}
+
+			//1Ãþ Ã¼¾î 6 - Chair
+			{
+				PhysicsInfo Info;
+				Info.eActorType = ActorType::Static;
+				Info.eGeometryType = GeometryType::Box;
+				Info.size = Vec3(2.f, 1.f, 2.f);
+
+				WallObject* pChair = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-3.8f, -7.6f, 11.0f), Info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Chair.fbx");
+
+				pChair->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pChair->GetTransform()->SetRotation(Vec3(0.0f, 60.f, 0.f));
+				pChair->GetTransform()->SetRotationExcludingColliders(Vec3(0.0f, 20.f, 0.f));
+				pChair->GetTransform()->SetPositionExcludingColliders(Vec3(0.0f, 1.6f, 0.f));
+				
+				AddGameObject(pChair);
+			}
+
+			
 		}
 #pragma endregion
 
@@ -708,6 +850,47 @@ namespace sy
 				AddGameObject(pAssortedPaintings);
 			}
 
+			//2Ãþ Å×ÀÌºí 1 -CofeeTableWithCloth
+			{
+				PhysicsInfo Info;
+				Info.eActorType = ActorType::Static;
+				Info.eGeometryType = GeometryType::Box;
+				Info.size = Vec3(4.5f, 2.f, 6.5f);
+
+				WallObject* pCofeeTableWithCloth = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-0.1f, -0.7f, -9.6f), Info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CofeeTableWithCloth.fbx");
+
+				pCofeeTableWithCloth->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
+				pCofeeTableWithCloth->GetTransform()->SetRotation(Vec3(0.0f, -90.f, 0.f));
+				
+				AddGameObject(pCofeeTableWithCloth);
+			}
+
+			//2Ãþ ·¯±× - Rug_Mark
+			{
+				DecoObject* pRug_Mark = Factory::CreateObject<DecoObject>(Vec3(-9.2f, -1.8f, -13.7f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Rug_Mark.fbx");
+
+				pRug_Mark->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
+				pRug_Mark->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+				
+				AddGameObject(pRug_Mark);
+			}
+
+			//2Ãþ ¿ÕÀÇÀÚ - fancyChairSit
+			{
+				PhysicsInfo Info;
+				Info.eActorType = ActorType::Static;
+				Info.eGeometryType = GeometryType::Box;
+				Info.size = Vec3(2.f, 1.f, 2.f);
+
+				WallObject* pfancyChairSit = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-0.1f, -1.1f, -14.0f), Info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\fancyChairSit.fbx");
+
+				pfancyChairSit->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+				pfancyChairSit->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
+				pfancyChairSit->GetTransform()->SetRotationExcludingColliders(Vec3(0.0f, 0.f, 0.f));
+				pfancyChairSit->GetTransform()->SetPositionExcludingColliders(Vec3(.0f, 3.6f, 11.f));
+				
+				AddGameObject(pfancyChairSit);
+			}
 
 		}
 #pragma endregion
