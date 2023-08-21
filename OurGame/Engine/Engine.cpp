@@ -157,7 +157,7 @@ namespace hm
 			renderTargets[0].pTarget = GET_SINGLE(Resources)->CreateTexture(
 				L"DiffuseLightTarget",
 				DXGI_FORMAT_R8G8B8A8_UNORM,
-				D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE,
+				D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_FLAG::D3D11_BIND_UNORDERED_ACCESS,
 				mWindowInfo.width, mWindowInfo.height);
 
 			renderTargets[1].pTarget = GET_SINGLE(Resources)->CreateTexture(

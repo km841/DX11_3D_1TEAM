@@ -53,7 +53,6 @@ float DownScale4x4(uint2 _CurPixel, uint _groupThreadID)
 
     }
 
-
     GroupMemoryBarrierWithGroupSync();
 
     return avgLum;
@@ -113,7 +112,6 @@ void DownScaleFirstPass(uint3 _dispatchThreadId : SV_DispatchThreadID,
     avgLum = DownScale1024to4(_dispatchThreadId.x, _groupThreadId.x, avgLum);
 
     DownScale4to1(_dispatchThreadId.x, _groupThreadId.x, _groupId.x, avgLum);
-
 }
 
 
