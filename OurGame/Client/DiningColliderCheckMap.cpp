@@ -666,7 +666,7 @@ namespace sy
 				Ground* pStairs_2floor = Factory::CreateObjectHasPhysical<Ground>(Vec3(2.2f, 1.6f, -22.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Stairs.fbx");
 
 				pStairs_2floor->GetTransform()->SetScale(Vec3(15.f, 15.5f, 15.f));
-				pStairs_2floor->GetTransform()->SetRotation(Vec3(28.f, -90.f, 0.f));
+				pStairs_2floor->GetTransform()->SetRotation(Vec3(0.f, -90.f, 28.f));
 				pStairs_2floor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.1f, 0.f));
 				pStairs_2floor->GetTransform()->SetRotationExcludingColliders(Vec3(-28.f, 0.f, 0.f));
 
@@ -706,7 +706,7 @@ namespace sy
 				Ground* pCube2 = Factory::CreateObjectHasPhysical<Ground>(Vec3(1.3f, 2.f, -20.f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube2.fbx");
 
 				pCube2->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
-				pCube2->GetTransform()->SetRotation(Vec3(28.f, -90.f, 0.f));
+				pCube2->GetTransform()->SetRotation(Vec3(0.f, -90.f, 28.f));
 				pCube2->GetTransform()->SetPositionExcludingColliders(Vec3(1.1f, -0.5f, 12.1f));
 				pCube2->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -28.f));
 				AddGameObject(pCube2);
@@ -722,7 +722,7 @@ namespace sy
 				Ground* pCube2 = Factory::CreateObjectHasPhysical<Ground>(Vec3(1.3f, 2.f, -25.f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube2.fbx");
 
 				pCube2->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
-				pCube2->GetTransform()->SetRotation(Vec3(28.f, -90.f, 0.f));
+				pCube2->GetTransform()->SetRotation(Vec3(0.f, -90.f, 28.f));
 				pCube2->GetTransform()->SetPositionExcludingColliders(Vec3(1.1f, -0.5f, 12.1f));
 				pCube2->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -28.f));
 				AddGameObject(pCube2);
