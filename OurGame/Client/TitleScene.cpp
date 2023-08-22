@@ -83,7 +83,7 @@ namespace hm
 		// - RightSecretPassageMap
 		if (IS_DOWN(KeyType::L))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::DiningColliderCheckMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::LeftSecretTrialMap);
 		}
 
 		// ¿µÁø
