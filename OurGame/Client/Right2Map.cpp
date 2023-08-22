@@ -102,7 +102,7 @@ namespace hm
 		{
 			DecoObject* pSideWall = Factory::CreateObject<DecoObject>(Vec3(1.7f, 7.3f, -0.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Right2_Side.fbx");
 			pSideWall->GetTransform()->SetScale(Vec3(46.7f, 50.f, 46.5f));
-			
+
 
 			AddGameObject(pSideWall);
 		}
@@ -156,18 +156,17 @@ namespace hm
 		{
 			for (int i = 0; i < 4; ++i)
 			{
-				DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-7.9f + i * 8.f, 2.8f, 16.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
-				pTwoTierShelf->GetTransform()->SetScale(Vec3(8.f, 8.f, 8.f));
+				DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-9.9f + i * 8.5f, 2.8f, 16.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+				pTwoTierShelf->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
 
 				AddGameObject(pTwoTierShelf);
 			}
 
 			// 혼자 가로로 삐져나온 선반 (식탁보로 덮혀질 예정)
 			{
-				DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-3.9f, 2.8f, 11.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
-				pTwoTierShelf->GetTransform()->SetScale(Vec3(8.f, 8.f, 8.f));
+				DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-5.6f, 2.8f, 10.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+				pTwoTierShelf->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
 				pTwoTierShelf->GetTransform()->SetRotation(AXIS_Y, 90.f);
-
 				AddGameObject(pTwoTierShelf);
 			}
 		}
@@ -175,17 +174,17 @@ namespace hm
 		// 벽쪽 3단 선반
 		for (int i = 0; i < 2; ++i)
 		{
-			DecoObject* pThreeTierShelf = Factory::CreateObject<DecoObject>(Vec3(21.6f, 4.4f, 13.6f + i * -12.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ThreeTierShelf.fbx");
-			pThreeTierShelf->GetTransform()->SetScale(Vec3(9.f, 8.8f, 10.f));
+			DecoObject* pThreeTierShelf = Factory::CreateObject<DecoObject>(Vec3(21.6f, 4.4f, 13.1f + i * -12.95f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ThreeTierShelf.fbx");
+			pThreeTierShelf->GetTransform()->SetScale(Vec3(9.5f, 9.3f, 10.5f));
 
 			AddGameObject(pThreeTierShelf);
 		}
 
 		// 3단 선반 이어주는 한칸 짜리 선반
 		{
-			DecoObject* pThreeTierCornerFoot = Factory::CreateObject<DecoObject>(Vec3(21.6f, 4.4f, 7.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ThreeTierSquareCornerFoot.fbx");
-			
-			pThreeTierCornerFoot->GetTransform()->SetScale(Vec3(9.f, 8.8f, 9.f));
+			DecoObject* pThreeTierCornerFoot = Factory::CreateObject<DecoObject>(Vec3(21.6f, 4.4f, 6.55f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ThreeTierSquareCornerFoot.fbx");
+
+			pThreeTierCornerFoot->GetTransform()->SetScale(Vec3(9.5f, 9.3f, 9.5f));
 
 			AddGameObject(pThreeTierCornerFoot);
 		}
@@ -194,8 +193,8 @@ namespace hm
 		{
 			for (int i = 0; i < 2; ++i)
 			{
-				DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(7.9f + i * 8.f, 2.8f, -1.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
-				pTwoTierShelf->GetTransform()->SetScale(Vec3(8.f, 8.f, 8.f));
+				DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(7.6f + i * 8.f, 2.8f, -2.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+				pTwoTierShelf->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
 
 				AddGameObject(pTwoTierShelf);
 			}
@@ -203,22 +202,187 @@ namespace hm
 
 		// 꼭대기 나무판자
 		{
-			DecoObject* pTopShelf = Factory::CreateObject<DecoObject>(Vec3(16.9f, 5.8f, -1.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TopShelf.fbx");
-			pTopShelf->GetTransform()->SetScale(Vec3(8.f, 8.f, 8.f));
+			DecoObject* pTopShelf = Factory::CreateObject<DecoObject>(Vec3(17.f, 6.1f, -2.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TopShelf.fbx");
+			pTopShelf->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
 			pTopShelf->GetTransform()->SetRotation(AXIS_Z, -1.f);
-			pTopShelf->AddComponent(new PlacementScript);
+			
 			AddGameObject(pTopShelf);
 		}
-	}
 
-		void Right2Map::Exit()
+		// 바닥 러그
 		{
-			GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Unknown);
-			GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Ground);
-			GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Monster);
-			GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::DecoObject);
-			GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::WallObject);
-			GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Player);
+			DecoObject* pBottomRug = Factory::CreateObject<DecoObject>(Vec3(-5.8f, 0.f, -2.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Rug_Mark.fbx");
+			pBottomRug->GetTransform()->SetScale(Vec3(15.f, 8.f, 18.f));
+			
+			AddGameObject(pBottomRug);
 		}
 
+		// 의자
+		{
+			DecoObject* pChair = Factory::CreateObject<DecoObject>(Vec3(16.2f, 3.5f, 7.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Chair.fbx");
+
+			
+			pChair->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
+			pChair->GetTransform()->SetRotation(Vec3(0.f, 18.f, 0.f));
+			AddGameObject(pChair);
+		}
+
+		// 우측 벽에 붙은 선반들
+		{
+			// 2단 선반
+			for (int i = 0; i < 2; ++i)
+			{
+				DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(i == 0 ? 13.9f : -8.2f, 2.8f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+				pTwoTierShelf->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
+				AddGameObject(pTwoTierShelf);
+			}
+
+			// 2단 선반과 이어지는 한 칸짜리 선반
+			{
+				DecoObject* pTwoTierCornerFoot = Factory::CreateObject<DecoObject>(Vec3(20.1f, 2.7f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierSquareCornerFoot.fbx");
+				pTwoTierCornerFoot->GetTransform()->SetScale(Vec3(6.5f, 6.3f, 6.0f));
+				pTwoTierCornerFoot->GetTransform()->SetRotation(AXIS_Y, 180.f);
+				
+
+				AddGameObject(pTwoTierCornerFoot);
+			}
+
+			// 화롯불
+			{
+				DecoObject* pFirelamp = Factory::CreateObject<DecoObject>(Vec3(-5.8f, 7.4f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+				pFirelamp->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				//pTwoTierFootAbs->GetTransform()->SetRotation(AXIS_Y, 180.f);
+				//pFirelamp->AddComponent(new PlacementScript);
+				AddGameObject(pFirelamp);
+			}
+
+			// 화롯불
+			{
+				DecoObject* pFirelamp = Factory::CreateObject<DecoObject>(Vec3(11.1f, 7.4f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+				pFirelamp->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				//pTwoTierFootAbs->GetTransform()->SetRotation(AXIS_Y, 180.f);
+				
+				AddGameObject(pFirelamp);
+			}
+		}
+
+		// 가운데 있는 2단 선반
+		{
+			DecoObject* pTwoTierFootAbs = Factory::CreateObject<DecoObject>(Vec3(-5.9f, 2.8f, -2.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierSquareFootAbsolute.fbx");
+			
+			
+			pTwoTierFootAbs->GetTransform()->SetScale(Vec3(6.5f, 6.3f, 6.2f));
+			//pTwoTierFootAbs->GetTransform()->SetRotation(AXIS_Y, 180.f);
+
+			AddGameObject(pTwoTierFootAbs);
+
+			// 화롯불
+			{
+				DecoObject* pFirelamp = Factory::CreateObject<DecoObject>(Vec3(-5.9f, 7.4f, -2.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+
+				pFirelamp->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				//pTwoTierFootAbs->GetTransform()->SetRotation(AXIS_Y, 180.f);
+				AddGameObject(pFirelamp);
+			}
+		}
+
+		// 기둥들
+		{
+			// 우측 벽 기둥 1
+			{
+				DecoObject* pColumn = Factory::CreateObject<DecoObject>(Vec3(-21.f, 7.9f, -17.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ColumnFull.fbx");
+				pColumn->GetTransform()->SetScale(Vec3(10.f, 16.f, 10.f));
+				//pColumn->AddComponent(new PlacementScript);
+
+				AddGameObject(pColumn);
+			}
+
+			// 우측 벽 기둥 2
+			{
+				DecoObject* pColumn = Factory::CreateObject<DecoObject>(Vec3(-3.1f, 7.9f, -17.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ColumnFull.fbx");
+				pColumn->GetTransform()->SetScale(Vec3(10.f, 16.f, 10.f));
+				//pColumn->AddComponent(new PlacementScript);
+
+				AddGameObject(pColumn);
+			}
+
+			// 벽난로 벽
+			{
+				DecoObject* pFireplaceWall = Factory::CreateObject<DecoObject>(Vec3(2.9f, 7.9f, -18.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\fireplaceWall.fbx");
+				pFireplaceWall->GetTransform()->SetScale(Vec3(10.f, 16.f, 15.6f));
+				pFireplaceWall->GetTransform()->SetRotation(AXIS_Y, -90.f);
+
+				AddGameObject(pFireplaceWall);
+			}
+
+			// 우측 벽 기둥 3
+			{
+				DecoObject* pColumn = Factory::CreateObject<DecoObject>(Vec3(8.9f, 7.9f, -17.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ColumnFull.fbx");
+				pColumn->GetTransform()->SetScale(Vec3(10.f, 16.f, 10.f));
+				//pColumn->AddComponent(new PlacementScript);
+
+				AddGameObject(pColumn);
+			}
+
+			// 우측 벽 기둥 4
+			{
+				DecoObject* pColumn = Factory::CreateObject<DecoObject>(Vec3(24.5f, 7.9f, -17.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ColumnFull.fbx");
+				pColumn->GetTransform()->SetScale(Vec3(10.f, 16.f, 10.f));
+				//pColumn->AddComponent(new PlacementScript);
+
+				AddGameObject(pColumn);
+			}
+
+			// 좌측 벽 기둥
+			{
+				DecoObject* pColumn = Factory::CreateObject<DecoObject>(Vec3(24.5f, 7.9f, 18.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ColumnFull.fbx");
+				pColumn->GetTransform()->SetScale(Vec3(10.f, 16.f, 10.f));
+
+				AddGameObject(pColumn);
+			}
+		}
+
+		// 상부 마감 Rim
+		{
+			// 정면 긴 Rim
+			{
+				DecoObject* pRim = Factory::CreateObject<DecoObject>(Vec3(24.8f, 15.5f, -0.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\WallRim.fbx");
+				pRim->GetTransform()->SetScale(Vec3(32.f, 32.f, 35.f));
+				//pRim->AddComponent(new PlacementScript);
+				AddGameObject(pRim);
+			}
+
+			// 우측 바깥쪽 Rim
+			{
+				DecoObject* pRim = Factory::CreateObject<DecoObject>(Vec3(16.7f, 15.5f, -18.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\WallRim.fbx");
+				pRim->GetTransform()->SetScale(Vec3(32.f, 32.f, 14.f));
+				pRim->GetTransform()->SetRotation(AXIS_Y, 90.f);
+				//pRim->AddComponent(new PlacementScript);
+				AddGameObject(pRim);
+			}
+
+			// 우측 안쪽 Rim
+			{
+				DecoObject* pRim = Factory::CreateObject<DecoObject>(Vec3(-12.f, 15.5f, -18.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\WallRim.fbx");
+				pRim->GetTransform()->SetScale(Vec3(32.f, 32.f, 16.6f));
+				pRim->GetTransform()->SetRotation(AXIS_Y, 90.f);
+				pRim->AddComponent(new PlacementScript);
+				AddGameObject(pRim);
+			}
+		}
 	}
+
+	void Right2Map::Exit()
+	{
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Unknown);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Ground);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Monster);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::DecoObject);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::WallObject);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Player);
+	}
+
+}
