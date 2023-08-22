@@ -114,7 +114,7 @@ namespace hm
 
 		// Monster
 		{
-			Monster* pMonster = Factory::CreateObject<Monster>(Vec3(0.f, 3.f, -20.f), L"Deferred", L"..\\Resources\\FBX\\Monster\\Monster.fbx");
+			Monster* pMonster = Factory::CreateObject<Monster>(Vec3(0.f, 3.f, -20.f), L"Deferred", L"..\\Resources\\FBX\\Monster\\Mage.fbx");
 			pMonster->AddComponent(new TestAnimationScript);
 			//pMonster->AddComponent(new PaperBurnScript);
 
