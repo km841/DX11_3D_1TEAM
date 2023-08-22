@@ -452,16 +452,16 @@ namespace hm
 		mDOFFarRange = 1.0f / std::fmaxf(60.0f, 0.001f);			// 80 -> 60 ~150
 
 		mMiddleGrey = 3.0f;
-		mWhite = 10.0f;
+		mWhite = 5.0f;
 
 		mWidth = static_cast<UINT32>(RESOLUTION.x);
 		mHeight = static_cast<UINT32>(RESOLUTION.y);
 		mDomain = (UINT)((float)(mWidth * mHeight / 16));
 		mDownScaleGroups = (UINT)((float)(mWidth * mHeight / 16) / 1024.0f);
-		mAdatation = 5.0f;
+		mAdatation = 0.1f;
 
-		mBloomThreshold = 0.4f;
-		mBloomScale = 2.0f;
+		mBloomThreshold = 2.0f;
+		mBloomScale = 0.0f;
 
 		// LDR
 		mpCopyFilter = make_shared<ImageFilter>(GET_SINGLE(Resources)->Get<Material>(L"Copy"), mWidth, mHeight);
