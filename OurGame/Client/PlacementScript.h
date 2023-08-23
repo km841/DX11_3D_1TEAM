@@ -28,6 +28,7 @@ private:
 private:
     static bool mbExists;
     TransformType meTransformType;
+    float mUnit;
     
 };
 

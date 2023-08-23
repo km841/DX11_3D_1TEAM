@@ -448,7 +448,7 @@ namespace hm
 	}
 	void RenderManager::PostProcessInit()
 	{
-		mDOFFarStart = 30.0f;				// 40 ~ 400
+		mDOFFarStart = 40.0f;				// 40 ~ 400
 		mDOFFarRange = 1.0f / std::fmaxf(60.0f, 0.001f);			// 80 -> 60 ~150
 
 		mMiddleGrey = 3.0f;
@@ -458,10 +458,10 @@ namespace hm
 		mHeight = static_cast<UINT32>(RESOLUTION.y);
 		mDomain = (UINT)((float)(mWidth * mHeight / 16));
 		mDownScaleGroups = (UINT)((float)(mWidth * mHeight / 16) / 1024.0f);
-		mAdatation = 0.1f;
+		mAdatation = 0.5f;
 
 		mBloomThreshold = 2.0f;
-		mBloomScale = 0.0f;
+		mBloomScale = 1.0f;
 
 		// LDR
 		mpCopyFilter = make_shared<ImageFilter>(GET_SINGLE(Resources)->Get<Material>(L"Copy"), mWidth, mHeight);
