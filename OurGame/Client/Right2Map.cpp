@@ -40,6 +40,7 @@
 #include "PlayerSlashScript.h"
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
+#include "RotateKeyScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -137,18 +138,18 @@ namespace hm
 
 
 		// Point Light
-		{
-			DecoObject* pGameObject = new DecoObject();
-			Transform* pTransform = pGameObject->AddComponent(new Transform);
-			pTransform->SetPosition(Vec3(0.f, 5.f, 0.f));
-			pTransform->SetScale(Vec3(10.f, 10.f, 10.f));
-			Light* pLight = pGameObject->AddComponent(new Light);
-			pLight->SetDiffuse(Vec3(1.f, 1.f, 1.f));
-			pLight->SetAmbient(Vec3(0.f, 0.f, 0.f));
-			pLight->SetLightRange(80.f);
-			pLight->SetLightType(LightType::PointLight);
-			AddGameObject(pGameObject);
-		}
+		//{
+		//	DecoObject* pGameObject = new DecoObject();
+		//	Transform* pTransform = pGameObject->AddComponent(new Transform);
+		//	pTransform->SetPosition(Vec3(0.f, 5.f, 0.f));
+		//	pTransform->SetScale(Vec3(10.f, 10.f, 10.f));
+		//	Light* pLight = pGameObject->AddComponent(new Light);
+		//	pLight->SetDiffuse(Vec3(1.f, 1.f, 1.f));
+		//	pLight->SetAmbient(Vec3(0.f, 0.f, 0.f));
+		//	pLight->SetLightRange(80.f);
+		//	pLight->SetLightType(LightType::PointLight);
+		//	AddGameObject(pGameObject);
+		//}
 
 
 
@@ -369,9 +370,28 @@ namespace hm
 				DecoObject* pRim = Factory::CreateObject<DecoObject>(Vec3(-12.f, 15.5f, -18.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\WallRim.fbx");
 				pRim->GetTransform()->SetScale(Vec3(32.f, 32.f, 16.6f));
 				pRim->GetTransform()->SetRotation(AXIS_Y, 90.f);
-				pRim->AddComponent(new PlacementScript);
+				//pRim->AddComponent(new PlacementScript);
 				AddGameObject(pRim);
 			}
+		}
+
+		// 키 베이스
+		{
+			DecoObject* pKeyShrine = Factory::CreateObject<DecoObject>(Vec3(16.1f, 0.3f, -9.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\keyShrineBase.fbx");
+			pKeyShrine->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+			//pKeyShrine->AddComponent(new PlacementScript);
+			AddGameObject(pKeyShrine);
+		}
+
+		// 키
+		{
+			DecoObject* pKey = Factory::CreateObject<DecoObject>(Vec3(16.1f, 2.2f, -9.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\grandmaKey.fbx");
+			pKey->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pKey->AddComponent(new PlacementScript);
+			pKey->AddComponent(new RotateKeyScript);
+
+			pKey->GetMeshRenderer()->GetMaterial()->SetInt(3, 1);
+			AddGameObject(pKey);
 		}
 	}
 

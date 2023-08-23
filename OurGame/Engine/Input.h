@@ -28,6 +28,9 @@ namespace hm
 
 		LBUTTON = MK_LBUTTON,
 		RBUTTON = MK_RBUTTON,
+
+		SQUARE_BKT_L = VK_OEM_4,
+		SQUARE_BKT_R = VK_OEM_6,
 	};
 
 	enum class KeyState
