@@ -60,6 +60,8 @@ namespace hm
         MaterialSubset* GetMaterialSubset(int _containerIndex, int _subsetindex) { return mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetindex]; }
         MaterialContainer* GetMaterialContainer(int _containerIndex) { return mMaterialContainerVec[_containerIndex]; }
 
+        void SetUVTiling(const Vec2& _tilingValue, int _containerIndex = 0, int _subsetIndex = 0) { mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams.SetVec2(3, _tilingValue); }
+
         //void SetUAV(int _index, shared_ptr<Texture> pTexture);
 
         void SetInt(int _index, int _value, int _containerIndex = 0, int _subsetIndex = 0);

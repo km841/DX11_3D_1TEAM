@@ -175,3 +175,10 @@ struct alignas(16) InstancingParams
 	Matrix matWV;
 	Matrix matWVP;
 };
+
+struct FbxFileInfo
+{
+	wstring fbxPath = L"";
+	Vec2 uvTiling = Vec2(1.f, 1.f);
+	bool bInvNormal = false;
+};

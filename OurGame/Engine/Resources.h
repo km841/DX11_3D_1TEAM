@@ -37,6 +37,8 @@ namespace hm
 
 
 		shared_ptr<MeshData> LoadFBX(const wstring& _path, const wstring& _shaderName = L"Deferred", bool _bInvNormal = false);
+		shared_ptr<MeshData> LoadFBX(const FbxFileInfo& _fbxFileInfo, const wstring& _shaderName = L"Deferred");
+
 
 		/* 리소스를 로드하는 함수
 		* _key : 불러올 리소스의 키

@@ -207,8 +207,8 @@ namespace hm
 		GET_SINGLE(Resources)->Get<Material>(L"BlurY")->PushGraphicData();
 		GET_SINGLE(Resources)->LoadRectMesh()->Render();
 
-		viewport.Width = mWidth;
-		viewport.Height = mHeight;
+		viewport.Width = static_cast<float>(mWidth);
+		viewport.Height = static_cast<float>(mHeight);
 		CONTEXT->RSSetViewports(1, &viewport);
 
 		GET_SINGLE(Resources)->Get<Material>(L"LightBlend")->SetTexture(3, mpBlurYTexture);

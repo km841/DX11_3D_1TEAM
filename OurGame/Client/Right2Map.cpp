@@ -96,6 +96,7 @@ namespace hm
 
 			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Right2_Ground.fbx");
 			pGround->GetTransform()->SetScale(Vec3(50.f, 1.f, 50.f));
+			
 
 			AddGameObject(pGround);
 		}
@@ -180,7 +181,7 @@ namespace hm
 				//pTableCloth->AddComponent(new PlacementScript);
 				//pKey->AddComponent(new RotateKeyScript);
 				pTableCloth->GetMeshRenderer()->GetMaterial()->SetBloom(true);
-				pTableCloth->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.f, 0.f, 1.f));
+				pTableCloth->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 0.f, 1.f));
 				AddGameObject(pTableCloth);
 			}
 		}
