@@ -82,14 +82,19 @@ PS_OUT PS_Main(VS_OUT _in)
     float4 bloomColor = g_bloomColor;
     float4 color = float4(g_vec3_0, 1.f);
     
+    float2 uv = _in.uv;
+    float2 tilingValue = g_vec2_3;
+    if (tilingValue.x != 0.f || tilingValue.y != 0.f)
+        uv = uv * tilingValue;
+    
     if (g_tex_on_0)
-        color = g_tex_0.Sample(g_sam_0, _in.uv);
+        color = g_tex_0.Sample(g_sam_0, uv);
     
     float3 viewNormal = _in.viewNormal;
     if (g_tex_on_1 == 1)
     {
         // [0,255] 범위에서 [0,1]로 변환
-        float3 tangentSpaceNormal = g_tex_1.Sample(g_sam_0, _in.uv).xyz;
+        float3 tangentSpaceNormal = g_tex_1.Sample(g_sam_0, uv).xyz;
         // [0,1] 범위에서 [-1,1]로 변환
         tangentSpaceNormal = (tangentSpaceNormal - 0.5f) * 2.f;
         float3x3 matTBN = { _in.viewTangent, _in.viewBinormal, _in.viewNormal };
