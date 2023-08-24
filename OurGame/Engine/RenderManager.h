@@ -35,6 +35,7 @@ namespace hm
 		void RenderLight(Scene* _pScene);
 		void RenderRimLighting();
 		void RenderLightBlend();
+		void RenderBloom();
 		void RenderFinal();
 		void PushLightData(Scene* _pScene);
 
@@ -91,6 +92,10 @@ namespace hm
 		shared_ptr<Material> mpVerticalBlurMaterial;
 		shared_ptr<Material> mpHorizonBlurMaterial;
 		shared_ptr<Material> mpHDRMaterial;
+
+		shared_ptr<Material> mpDownScaleMaterial;
+		shared_ptr<Texture> mpBlurXTexture;
+		shared_ptr<Texture> mpBlurYTexture;
 
 		float mDOFFarStart;
 		float mDOFFarRange;
