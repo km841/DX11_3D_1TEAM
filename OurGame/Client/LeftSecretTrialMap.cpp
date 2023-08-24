@@ -366,7 +366,65 @@ void LeftSecretTrialMap::Enter()
 	}
 #pragma endregion
 
-#pragma region "벽패널"
+#pragma region "액자 모음"
+	{
+		//벽액자 1 - painting4Frame01
+		{
+			DecoObject* pPainting4Frame01 = Factory::CreateObject<DecoObject>(Vec3(5.3f, 2.4f, 12.6f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\painting4Frame01.fbx");
+			pPainting4Frame01->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
+			pPainting4Frame01->GetTransform()->SetRotation(Vec3(0.f, 00.f, 0.f));
+			
+			AddGameObject(pPainting4Frame01);
+		}
+
+		//벽액자 2 - painting4Frame02
+		{
+			DecoObject* pPainting4Frame02 = Factory::CreateObject<DecoObject>(Vec3(5.4f, 2.2f, 6.9f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\painting4Frame02.fbx");
+			pPainting4Frame02->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+			pPainting4Frame02->GetTransform()->SetRotation(Vec3(0.f, 00.f, 0.f));
+		
+			AddGameObject(pPainting4Frame02);
+		}
+
+		//벽액자 3 - painting4Frame03
+		{
+			DecoObject* pPainting4Frame03 = Factory::CreateObject<DecoObject>(Vec3(5.4f, 1.3f, 16.0f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\painting4Frame03.fbx");
+			pPainting4Frame03->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+			pPainting4Frame03->GetTransform()->SetRotation(Vec3(0.f, 00.f, 0.f));
+		
+			AddGameObject(pPainting4Frame03);
+		}
+
+		//벽액자 4 - painting4Frame04
+		{
+			DecoObject* pPainting4Frame04 = Factory::CreateObject<DecoObject>(Vec3(-4.2f, 1.8f, -6.3f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\painting4Frame04.fbx");
+			pPainting4Frame04->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+			pPainting4Frame04->GetTransform()->SetRotation(Vec3(0.f, 00.f, 0.f));
+			
+			AddGameObject(pPainting4Frame04);
+		}
+
+		//벽액자 5 - painting4Frame05
+		{
+			DecoObject* pPainting4Frame05 = Factory::CreateObject<DecoObject>(Vec3(5.3f, 2.2f, 14.2f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\painting4Frame05.fbx");
+			pPainting4Frame05->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+			pPainting4Frame05->GetTransform()->SetRotation(Vec3(0.f, 00.f, 0.f));
+		
+			AddGameObject(pPainting4Frame05);
+		}
+
+		//벽액자 6 - painting4Frame06
+		{
+			DecoObject* pPainting4Frame06 = Factory::CreateObject<DecoObject>(Vec3(4.7f, -0.4f, 4.8f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\painting4Frame06.fbx");
+			pPainting4Frame06->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+			pPainting4Frame06->GetTransform()->SetRotation(Vec3(0.f, 00.f, -20.f));
+			
+			AddGameObject(pPainting4Frame06);
+		}
+	}
+#pragma endregion
+
+#pragma region "벽패널 문양울타리"
 	{
 		//벽패널
 		{
@@ -414,6 +472,128 @@ void LeftSecretTrialMap::Enter()
 	}
 #pragma endregion
 
+#pragma region "나무 선반들 모음"
+	//나무선반 - TwoTierShelf
+	{
+		//나무선반 오른쪽부터 1
+		DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-6.8f, -2.8f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+		pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+		pTwoTierShelf->GetTransform()->SetScale(Vec3(3.2f, 3.5f, 3.2f));
+		
+		AddGameObject(pTwoTierShelf);
+	}
+
+	{
+		//나무선반 오른쪽부터 2
+		DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-6.2f, -2.8f, -14.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+		pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		pTwoTierShelf->GetTransform()->SetScale(Vec3(3.2f, 3.5f, 3.2f));
+		
+		AddGameObject(pTwoTierShelf);
+	}
+
+	{
+		//나무선반 오른쪽부터 3
+		DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-3.2f, -2.8f, -14.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+		pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		pTwoTierShelf->GetTransform()->SetScale(Vec3(3.2f, 3.5f, 3.2f));
+		
+		AddGameObject(pTwoTierShelf);
+	}
+
+	{
+		//나무선반 오른쪽부터 4
+		DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-3.2f, -2.8f, -12.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+		pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+		pTwoTierShelf->GetTransform()->SetScale(Vec3(3.2f, 3.5f, 3.2f));
+		
+		AddGameObject(pTwoTierShelf);
+	}
+
+	{
+		//나무선반 오른쪽부터 5
+		DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-6.8f, -2.8f, -12.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+		pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+		pTwoTierShelf->GetTransform()->SetScale(Vec3(3.2f, 3.5f, 3.2f));
+		
+		AddGameObject(pTwoTierShelf);
+	}
+
+	{
+		//나무선반 오른쪽부터 6
+		DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-6.8f, -2.8f, -9.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+		pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+		pTwoTierShelf->GetTransform()->SetScale(Vec3(3.2f, 3.5f, 3.2f));
+		
+		AddGameObject(pTwoTierShelf);
+	}
+
+	{
+		//나무선반 오른쪽부터 7
+		DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-4.6f, -2.8f, -9.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+		pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		pTwoTierShelf->GetTransform()->SetScale(Vec3(3.2f, 3.5f, 3.2f));
+		
+		AddGameObject(pTwoTierShelf);
+	}
+
+	{
+		//나무선반 오른쪽부터 8
+		DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-1.3f, -2.8f, -9.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+		pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		pTwoTierShelf->GetTransform()->SetScale(Vec3(3.5f, 3.5f, 3.2f));
+		
+		AddGameObject(pTwoTierShelf);
+	}
+
+	{
+		//나무선반 오른쪽부터 9
+		DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-3.2f, -2.8f, -7.7f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+		pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+		pTwoTierShelf->GetTransform()->SetScale(Vec3(3.2f, 3.5f, 3.2f));
+		
+		AddGameObject(pTwoTierShelf);
+	}
+
+	{
+		//나무선반 오른쪽부터 10
+		DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-3.2f, -2.8f, -4.55f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+		pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+		pTwoTierShelf->GetTransform()->SetScale(Vec3(3.2f, 3.5f, 3.2f));
+		
+		AddGameObject(pTwoTierShelf);
+	}
+
+	{
+		//나무선반 오른쪽부터 11
+		DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-5.6f, -2.8f, -6.85f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+		pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		pTwoTierShelf->GetTransform()->SetScale(Vec3(3.7f, 3.5f, 3.2f));
+		
+		AddGameObject(pTwoTierShelf);
+	}
+
+	{
+		//나무선반 오른쪽부터 12
+		DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-1.1f, -2.8f, -3.60f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+		pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		pTwoTierShelf->GetTransform()->SetScale(Vec3(3.1f, 3.5f, 3.2f));
+		
+		AddGameObject(pTwoTierShelf);
+	}
+
+	{
+		//나무선반 오른쪽부터 13
+		DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-5.6f, -2.8f, -3.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
+		pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		pTwoTierShelf->GetTransform()->SetScale(Vec3(3.7f, 3.5f, 3.2f));
+		
+		AddGameObject(pTwoTierShelf);
+	}
+#pragma endregion
+
+	
+
 	// 커튼 - CurtainHorizontal
 	{
 		DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(0.3f, 3.5f, 3.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\CurtainHorizontal.fbx");
@@ -446,6 +626,7 @@ void LeftSecretTrialMap::Enter()
 		
 		AddGameObject(pCurtainVertical);
 	}
+
 
 }
 
