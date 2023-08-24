@@ -795,6 +795,22 @@ namespace hm
             Add<Shader>(L"Deferred_CullNone", pShader);
         }
 
+        // DownScale Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Light,
+                DepthStencilType::NoDepthTestNoWrite,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateComputeShader(L"..\\Resources\\Shader\\downscale.fx", "CS_Main", "cs_5_0");
+
+            Add<Shader>(L"DownScale", pShader);
+        }
+
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -875,7 +891,6 @@ namespace hm
 
             pMaterial->SetTexture(0, Get<Texture>(L"PositionTarget"));
             pMaterial->SetTexture(1, Get<Texture>(L"NormalTarget"));
-            pMaterial->SetTexture(2, Get<Texture>(L"EmissiveTarget"));
             pMaterial->SetShader(pShader);
             Add<Material>(L"DirLight", pMaterial);
         }
@@ -887,7 +902,6 @@ namespace hm
 
             pMaterial->SetTexture(0, Get<Texture>(L"PositionTarget"));
             pMaterial->SetTexture(1, Get<Texture>(L"NormalTarget"));
-            pMaterial->SetTexture(2, Get<Texture>(L"EmissiveTarget"));
             pMaterial->SetVec2(0, gpEngine->GetResolution());
 
             pMaterial->SetShader(pShader);
@@ -1083,6 +1097,16 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"Deferred_CullNone", pMaterial);
+        }
+
+        // DownScale Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"DownScale");
+            pMaterial->SetTexture(0, Get<Texture>(L"BloomTarget"));
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"DownScale", pMaterial);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace hm
 
 		virtual void Render();
 
+		void SetTexture(shared_ptr<Texture> _pTexture) { mpTexture = _pTexture; }
 		shared_ptr<Texture> GetTexture() { return mpTexture; }
 		void SetSRV(int _index, shared_ptr<Texture> _pTexture);
 
