@@ -34,43 +34,55 @@ cbuffer MATERIAL_PARAMS : register(b1)
     int g_int_1;
     int g_int_2;
     int g_int_3;
+    //16
     
     float g_float_0;
     float g_float_1;
     float g_float_2;
     float g_float_3;
+    //16 + 16 = 32
     
     int g_tex_on_0;
     int g_tex_on_1;
     int g_tex_on_2;
     int g_tex_on_3;
+    // 16 + 176 = 192
+    
     int g_tex_on_4;
     int g_tex_on_5;
     int g_tex_on_6;
     int g_tex_on_7;
+    // 16 + 192 = 208
+    
     int g_tex_on_8;
     int g_tex_on_9;
     int g_tex_on_10;
     int g_tex_on_11;
+    // 16 + 208 = 224
+    
     int g_tex_on_12;
     int g_tex_on_13;
     int g_tex_on_14;
     int g_tex_on_15;
+    // 16 + 224 = 240
     
     float2 g_vec2_0;
     float2 g_vec2_1;
     float2 g_vec2_2;
     float2 g_vec2_3;
+    //4 * 8 = 32 + 32 = 64
     
     float3 g_vec3_0;
     float3 g_vec3_1;
     float3 g_vec3_2;
     float3 g_vec3_3;
+    //4 * 12 = 48 + 64 = 112
     
     float4 g_vec4_0;
     float4 g_vec4_1;
     float4 g_vec4_2;
     float4 g_vec4_3;
+    //4 * 16 = 64 + 112 = 176
 }
 
 struct LightColor
@@ -96,6 +108,15 @@ cbuffer LIGHT_PARAMS : register(b2)
     int g_lightCount;
     float3 g_lightPadding;
     LightInfo g_light[50];
+}
+
+cbuffer BLOOM_PARAMS : register(b3)
+{
+   int g_bloomEnable;
+   float g_bloomPower;
+   float g_padding1;
+   float g_padding2;
+   float4 g_bloomColor;
 }
 
 #endif

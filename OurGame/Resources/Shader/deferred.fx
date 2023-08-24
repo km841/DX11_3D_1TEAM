@@ -79,8 +79,7 @@ PS_OUT PS_Main(VS_OUT _in)
 {
     PS_OUT output = (PS_OUT) 0;
    
-    float bloomFlag = g_int_3;
-    float bloomPower = g_float_3;
+    float4 bloomColor = g_bloomColor;
     float4 color = float4(g_vec3_0, 1.f);
     
     if (g_tex_on_0)
@@ -97,15 +96,15 @@ PS_OUT PS_Main(VS_OUT _in)
         viewNormal = normalize(mul(tangentSpaceNormal, matTBN));
     }
     
-    if (0.f == bloomPower)
-        bloomPower = 1.25f;
+    float bloomPower = g_bloomPower == 0.f ? 1.25f : g_bloomPower;
     
-    float4 bloomColor = color * bloomPower;
+    float isBloomColor = g_bloomColor.r + g_bloomColor.g + g_bloomColor.b;
+    float4 totalBloomColor = 0.f < isBloomColor ? bloomColor : color;
     
     output.position = float4(_in.viewPos, 0.f);
     output.normal = float4(viewNormal, 0.f);
-    output.color = 1 == bloomFlag ? bloomColor : color;
-    output.bloom = 1 == bloomFlag ? bloomColor : float4(0.f, 0.f, 0.f, 0.f);
+    output.color = 1 == g_bloomEnable ? totalBloomColor * bloomPower : color;
+    output.bloom = 1 == g_bloomEnable ? totalBloomColor * bloomPower : float4(0.f, 0.f, 0.f, 0.f);
     output.depth.xyz = (float3) (_in.projPos.z / _in.projPos.w);
     output.depth.w = _in.projPos.w;
     output.depth.yzw = _in.viewPos;

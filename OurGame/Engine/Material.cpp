@@ -48,6 +48,7 @@ namespace hm
 	void Material::PushGraphicData(int _containerindex, int _subsetIndex)
 	{
 		CONST_BUFFER(ConstantBufferType::Material)->PushData(&mMaterialContainerVec[_containerindex]->materialSubsetVec[_subsetIndex]->materialParams, sizeof(MaterialParams));
+		CONST_BUFFER(ConstantBufferType::Bloom)->PushData(&mMaterialContainerVec[_containerindex]->materialSubsetVec[_subsetIndex]->bloomParams, sizeof(BloomParams));
 		mpShader->Update();
 
 		for (int i = 0; i < TEXTURE_VALUE_COUNT; ++i)
@@ -100,6 +101,7 @@ namespace hm
 	void Material::PushGraphicDataExceptForTextures(int _containerIndex, int _subsetIndex)
 	{
 		CONST_BUFFER(ConstantBufferType::Material)->PushData(&mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams, sizeof(MaterialParams));
+		CONST_BUFFER(ConstantBufferType::Bloom)->PushData(&mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->bloomParams, sizeof(BloomParams));
 		mpShader->Update();
 	}
 
@@ -107,7 +109,10 @@ namespace hm
 	void Material::PushComputeData()
 	{
 		CONST_BUFFER(ConstantBufferType::Material)->PushData(&mMaterialContainerVec[0]->materialSubsetVec[0]->materialParams, sizeof(MaterialParams));
+		CONST_BUFFER(ConstantBufferType::Bloom)->PushData(&mMaterialContainerVec[0]->materialSubsetVec[0]->bloomParams, sizeof(BloomParams));
+		
 		CONST_BUFFER(ConstantBufferType::Material)->Mapping();
+		CONST_BUFFER(ConstantBufferType::Bloom)->Mapping();
 		mpShader->Update();
 
 		//for (int i = 0; i < TEXTURE_VALUE_COUNT; ++i)

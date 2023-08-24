@@ -50,6 +50,7 @@ namespace hm
 
 				mpMaterial->PushGraphicData(i, j);
 				CONST_BUFFER(ConstantBufferType::Material)->Mapping();
+				CONST_BUFFER(ConstantBufferType::Bloom)->Mapping();
 
 				mpMesh->RenderInstancing(1, i);
 				mpMaterial->ClearGraphicData();
@@ -81,6 +82,7 @@ namespace hm
 				
 				mpMaterial->PushGraphicData(i, j);
 				CONST_BUFFER(ConstantBufferType::Material)->Mapping();
+				CONST_BUFFER(ConstantBufferType::Bloom)->Mapping();
 
 				mpMesh->RenderInstancing(_pBuffer, i);
 				mpMaterial->ClearGraphicData();

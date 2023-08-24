@@ -136,6 +136,7 @@ namespace hm
 		Transform,
 		Material,
 		Light,
+		Bloom,
 		End,
 	};
 
