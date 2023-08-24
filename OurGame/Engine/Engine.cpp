@@ -128,7 +128,7 @@ namespace hm
 				mWindowInfo.width, mWindowInfo.height);
 
 			renderTargets[3].pTarget = GET_SINGLE(Resources)->CreateTexture(
-				L"EmissiveTarget",
+				L"BloomTarget",
 				DXGI_FORMAT_R8G8B8A8_UNORM,
 				D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE,
 				mWindowInfo.width, mWindowInfo.height);

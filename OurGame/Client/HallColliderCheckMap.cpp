@@ -80,13 +80,13 @@ namespace jh
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 
-		//¹è°æ¸Ê ÇÏ¾á»öÀ¸·Î ¸¸µé¾îÁÖ´Â ÄÚµå
+		//ë°°ê²½ë§µ í•˜ì–€ìƒ‰ìœ¼ë¡œ ë§Œë“¤ì–´ì£¼ëŠ” ì½”ë“œ
 		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
-#pragma region 1Ãş
-		// 1Ãş º®
+#pragma region 1ì¸µ
+		// 1ì¸µ ë²½
 		{
-			// 1, 2Ãş º®
+			// 1, 2ì¸µ ë²½
 			{
 				DecoObject* pFirstFloorWall = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Main.fbx");
 
@@ -95,7 +95,7 @@ namespace jh
 
 				AddGameObject(pFirstFloorWall);
 			}
-			// 1Ãş º®2
+			// 1ì¸µ ë²½2
 			{
 				DecoObject* pFirstFloorWall2 = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Main-detach (1).fbx");
 
@@ -105,7 +105,7 @@ namespace jh
 
 				AddGameObject(pFirstFloorWall2);
 			}
-			// ±âµÕ
+			// ê¸°ë‘¥
 			{
 				DecoObject* pFirstFloorWallColumn = Factory::CreateObject<DecoObject>(Vec3(-1.6f, 0.02f, -4.91f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\column2Base (3).fbx");
 
@@ -114,7 +114,7 @@ namespace jh
 
 				AddGameObject(pFirstFloorWallColumn);
 			}
-			// ±âµÕ2
+			// ê¸°ë‘¥2
 			{
 				DecoObject* pFirstFloorWallColumn2 = Factory::CreateObject<DecoObject>(Vec3(-1.6f, 0.02f, -3.01f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\column2Base (3).fbx");
 
@@ -123,7 +123,7 @@ namespace jh
 
 				AddGameObject(pFirstFloorWallColumn2);
 			}
-			// ±âµÕ3
+			// ê¸°ë‘¥3
 			{
 				DecoObject* pFirstFloorWallColumn3 = Factory::CreateObject<DecoObject>(Vec3(-2.05f, 0.02f, -3.01f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\column2Base (3).fbx");
 
@@ -132,7 +132,7 @@ namespace jh
 
 				AddGameObject(pFirstFloorWallColumn3);
 			}
-			// ±âµÕ4
+			// ê¸°ë‘¥4
 			{
 				DecoObject* pFirstFloorWallColumn4 = Factory::CreateObject<DecoObject>(Vec3(-2.05f, 0.02f, -1.16f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\column2Base (3).fbx");
 
@@ -141,7 +141,7 @@ namespace jh
 
 				AddGameObject(pFirstFloorWallColumn4);
 			}
-			// ±âµÕ5
+			// ê¸°ë‘¥5
 			{
 				DecoObject* pFirstFloorWallColumn5 = Factory::CreateObject<DecoObject>(Vec3(-1.65f, 0.02f, -1.17f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\column2Base (3).fbx");
 
@@ -151,9 +151,9 @@ namespace jh
 				AddGameObject(pFirstFloorWallColumn5);
 			}
 		}
-		// 1Ãş ¹Ù´Ú
+		// 1ì¸µ ë°”ë‹¥
 		{
-			// 1Ãş ¹Ù´Ú
+			// 1ì¸µ ë°”ë‹¥
 			{
 				PhysicsInfo info;
 				info.eActorType = ActorType::Static;
@@ -170,7 +170,7 @@ namespace jh
 
 				AddGameObject(pFirstFloor);
 			}
-			// ¹Ù´ÚÆ²
+			// ë°”ë‹¥í‹€
 			{
 				DecoObject* pFirstFloorPanel = Factory::CreateObject<DecoObject>(Vec3(-0.77f, -1.3f, -4.95f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\WallPanel (2).fbx");
 
@@ -178,7 +178,7 @@ namespace jh
 
 				AddGameObject(pFirstFloorPanel);
 			}
-			// ¹Ù´ÚÆ²2
+			// ë°”ë‹¥í‹€2
 			{
 				DecoObject* pFirstFloorPanel = Factory::CreateObject<DecoObject>(Vec3(1.55f, -1.29f, -2.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\wallPanel (3)-Merged.fbx");
 
@@ -187,7 +187,7 @@ namespace jh
 
 				AddGameObject(pFirstFloorPanel);
 			}
-			// °è´ÜÆ²
+			// ê³„ë‹¨í‹€
 			{
 				DecoObject* pFirstFloorRightStairsPanel = Factory::CreateObject<DecoObject>(Vec3(2.345f, -0.775f, -0.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\wallPanel (3).fbx");
 
@@ -197,7 +197,7 @@ namespace jh
 				AddGameObject(pFirstFloorRightStairsPanel);
 			}
 		}
-		// 1Ãş °è´Ü(¿ŞÂÊ)
+		// 1ì¸µ ê³„ë‹¨(ì™¼ìª½)
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
@@ -213,7 +213,7 @@ namespace jh
 
 			AddGameObject(pFirstFloorLeftStairs);
 		}
-		// 1Ãş °è´Ü(¿À¸¥ÂÊ)
+		// 1ì¸µ ê³„ë‹¨(ì˜¤ë¥¸ìª½)
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
@@ -229,25 +229,9 @@ namespace jh
 
 			AddGameObject(pFirstFloorRightStairs);
 		}
-		// 1Ãş ±âµÕ(¿ŞÂÊ °è´Ü)
-		{
-			DecoObject* pFirstFloorColumn = Factory::CreateObject<DecoObject>(Vec3(-0.7f, -0.5f, -1.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\column2Base (1).fbx");
-
-			pFirstFloorColumn->GetTransform()->SetScale(Vec3(1.7f, 1.5f, 1.7f));
-
-			AddGameObject(pFirstFloorColumn);
-		}
-		// 1Ãş ±âµÕ(¿À¸¥ÂÊ °è´Ü)
-		{
-			DecoObject* pFirstFloorColumn = Factory::CreateObject<DecoObject>(Vec3(1.45f, -0.5f, -1.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\column2Base (1).fbx");
-
-			pFirstFloorColumn->GetTransform()->SetScale(Vec3(1.7f, 1.5f, 1.7f));
-
-			AddGameObject(pFirstFloorColumn);
-		}
 #pragma endregion
-#pragma region 2Ãş
-		// 2Ãş º®2
+#pragma region 2ì¸µ
+		// 2ì¸µ ë²½2
 		{
 			DecoObject* pSecondFloorWall = Factory::CreateObject<DecoObject>(Vec3(-2.15f, 0.215f, -1.66f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Main (1).fbx");
 
@@ -256,41 +240,42 @@ namespace jh
 
 			AddGameObject(pSecondFloorWall);
 		}
-		// 2Ãş ¹Ù´Ú
+		// 2ì¸µ ë°”ë‹¥
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
 			info.eGeometryType = GeometryType::Box;
-			//info.size = Vec3(7.8f, 0.1f, 8.4f);
+			info.size = Vec3(7.8f, 0.1f, 8.4f);
 
-			Ground* pSecondFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.34f, -0.23f, 3.1f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MainRoom Floor.fbx", true);
+			Ground* pSecondFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.34f, -0.23f, 3.1f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MainRoom Floor.fbx");
 
 			pSecondFloor->GetTransform()->SetRotation(Vec3(0.f, 0.f, 180.f));
 			pSecondFloor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, -0.98f));
 			pSecondFloor->GetTransform()->SetScale(Vec3(10.3f, 5.f, 10.3f));
 
-			pSecondFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr, 1, 0);
-			pSecondFloor->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(154.f, 140.f, 105.f), 1, 0);
+			pSecondFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
+			pSecondFloor->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(154.f, 140.f, 105.f));
 
 			AddGameObject(pSecondFloor);
 		}
-		// 2Ãş °è´Ü(¿ŞÂÊ)
+		// 2ì¸µ ê³„ë‹¨(ì™¼ìª½)
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(1.f, 0.1f, 2.5f);
 
-			Ground* pSecondFloorLeftStairs = Factory::CreateObjectHasPhysical<Ground>(Vec3(-1.f, 0.33f, 6.1f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\stairs (1).fbx");
+			Ground* pSecondFloorLeftStairs = Factory::CreateObjectHasPhysical<Ground>(Vec3(-1.f, 0.35f, 6.1f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\stairs (1).fbx");
 
-			pSecondFloorLeftStairs->GetTransform()->SetRotation(Vec3(-26.5f, 0.f, 0.f));
-			pSecondFloorLeftStairs->GetTransform()->SetScale(Vec3(2.7f, 2.6f, 2.55f));
-			pSecondFloorLeftStairs->GetTransform()->SetRotationExcludingColliders(Vec3(27.f, 0.f, 0.f));
+			pSecondFloorLeftStairs->AddComponent<PlacementScript>();
+			pSecondFloorLeftStairs->GetTransform()->SetRotation(Vec3(-24.2f, 0.f, 0.f));
+			pSecondFloorLeftStairs->GetTransform()->SetScale(Vec3(2.7f, 2.4f, 2.55f));
+			pSecondFloorLeftStairs->GetTransform()->SetRotationExcludingColliders(Vec3(24.2f, 0.f, 0.f));
 			pSecondFloorLeftStairs->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.045f, -0.1f));
-			
 			AddGameObject(pSecondFloorLeftStairs);
 		}
-		// 2Ãş °è´Ü(¿ŞÂÊ)
+
+		// 2ì¸µ ê³„ë‹¨(ì™¼ìª½)
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
@@ -306,7 +291,7 @@ namespace jh
 			
 			AddGameObject(pSecondFloorRightStairs);
 		}
-		// 2Ãş Áß¾Ó ³­°£ »óºÎ(°¡¿îµ¥)
+		// 2ì¸µ ì¤‘ì•™ ë‚œê°„ ìƒë¶€(ê°€ìš´ë°)
 		{
 			DecoObject* pSecondFloorBannisterTop = Factory::CreateObject<DecoObject>(Vec3(0.4f, 0.17f, -1.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\bannisterTop.fbx");
 
@@ -314,7 +299,7 @@ namespace jh
 
 			AddGameObject(pSecondFloorBannisterTop);
 		}
-		// 2Ãş Áß¾Ó ³­°£ ±âµÕ(°¡¿îµ¥)
+		// 2ì¸µ ì¤‘ì•™ ë‚œê°„ ê¸°ë‘¥(ê°€ìš´ë°)
 		for (int i = 0; i < 7; i++)
 		{
 			DecoObject* pSecondFloorColumnStick = Factory::CreateObject<DecoObject>(Vec3(-0.45f + (i * 0.28f), 0.01f, -1.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterStick.fbx");
@@ -323,7 +308,7 @@ namespace jh
 
 			AddGameObject(pSecondFloorColumnStick);
 		}
-		// 2Ãş Áß¾Ó ³­°£ ÇÏºÎ(°¡¿îµ¥)
+		// 2ì¸µ ì¤‘ì•™ ë‚œê°„ í•˜ë¶€(ê°€ìš´ë°)
 		{
 			DecoObject* pSecondFloorBannisterBase = Factory::CreateObject<DecoObject>(Vec3(0.4f, -0.14f, -1.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterBase.fbx");
 
@@ -331,7 +316,7 @@ namespace jh
 
 			AddGameObject(pSecondFloorBannisterBase);
 		}
-		// 2Ãş Áß¾Ó ³­°£ »óºÎ(¿ŞÂÊ)
+		// 2ì¸µ ì¤‘ì•™ ë‚œê°„ ìƒë¶€(ì™¼ìª½)
 		{
 			DecoObject* pSecondFloorLeftBannisterTop = Factory::CreateObject<DecoObject>(Vec3(-0.76f, 0.17f, 0.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\bannisterTop.fbx");
 
@@ -340,7 +325,7 @@ namespace jh
 
 			AddGameObject(pSecondFloorLeftBannisterTop);
 		}
-		// 2Ãş Áß¾Ó ³­°£ ±âµÕ(¿ŞÂÊ)
+		// 2ì¸µ ì¤‘ì•™ ë‚œê°„ ê¸°ë‘¥(ì™¼ìª½)
 		for (int i = 0; i < 7; i++)
 		{
 			DecoObject* pSecondFloorLeftColumnStick = Factory::CreateObject<DecoObject>(Vec3(-0.75f, 0.01f, -0.8f + (i * 0.34f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterStick.fbx");
@@ -349,7 +334,7 @@ namespace jh
 
 			AddGameObject(pSecondFloorLeftColumnStick);
 		}
-		// 2Ãş Áß¾Ó ³­°£ ÇÏºÎ(¿ŞÂÊ)
+		// 2ì¸µ ì¤‘ì•™ ë‚œê°„ í•˜ë¶€(ì™¼ìª½)
 		{
 			DecoObject* pSecondFloorLeftBannisterBase = Factory::CreateObject<DecoObject>(Vec3(-0.75f, -0.14f, 0.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterBase.fbx");
 
@@ -358,7 +343,7 @@ namespace jh
 
 			AddGameObject(pSecondFloorLeftBannisterBase);
 		}
-		// 2Ãş Áß¾Ó ³­°£ ³¡ ±âµÕ(¿ŞÂÊ)
+		// 2ì¸µ ì¤‘ì•™ ë‚œê°„ ë ê¸°ë‘¥(ì™¼ìª½)
 		{
 			DecoObject* pSecondFloorLeftColumnStump = Factory::CreateObject<DecoObject>(Vec3(-0.75f, 0.11f, 1.25f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\ColumnStump (7).fbx");
 
@@ -366,7 +351,7 @@ namespace jh
 
 			AddGameObject(pSecondFloorLeftColumnStump);
 		}
-		// 2Ãş Áß¾Ó ³­°£ »óºÎ(¿À¸¥ÂÊ)
+		// 2ì¸µ ì¤‘ì•™ ë‚œê°„ ìƒë¶€(ì˜¤ë¥¸ìª½)
 		{
 			DecoObject* pSecondFloorRightBannisterTop = Factory::CreateObject<DecoObject>(Vec3(1.5f, 0.17f, 0.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\bannisterTop.fbx");
 
@@ -375,7 +360,7 @@ namespace jh
 
 			AddGameObject(pSecondFloorRightBannisterTop);
 		}
-		// 2Ãş Áß¾Ó ³­°£ ±âµÕ(¿À¸¥ÂÊ)
+		// 2ì¸µ ì¤‘ì•™ ë‚œê°„ ê¸°ë‘¥(ì˜¤ë¥¸ìª½)
 		for (int i = 0; i < 7; i++)
 		{
 			DecoObject* pSecondFloorRightColumnStick = Factory::CreateObject<DecoObject>(Vec3(1.5f, 0.01f, -0.8f + (i * 0.34f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterStick.fbx");
@@ -384,7 +369,7 @@ namespace jh
 
 			AddGameObject(pSecondFloorRightColumnStick);
 		}
-		// 2Ãş Áß¾Ó ³­°£ ÇÏºÎ(¿À¸¥ÂÊ)
+		// 2ì¸µ ì¤‘ì•™ ë‚œê°„ í•˜ë¶€(ì˜¤ë¥¸ìª½)
 		{
 			DecoObject* pSecondFloorRightBannisterBase = Factory::CreateObject<DecoObject>(Vec3(1.5f, -0.14f, 0.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\BannisterBase.fbx");
 
@@ -393,7 +378,7 @@ namespace jh
 
 			AddGameObject(pSecondFloorRightBannisterBase);
 		}
-		// 2Ãş Áß¾Ó ³­°£ ³¡ ±âµÕ(¿À¸¥ÂÊ)
+		// 2ì¸µ ì¤‘ì•™ ë‚œê°„ ë ê¸°ë‘¥(ì˜¤ë¥¸ìª½)
 		{
 			DecoObject* pSecondFloorRightColumnStump = Factory::CreateObject<DecoObject>(Vec3(1.5f, 0.11f, 1.25f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\ColumnStump (7).fbx");
 
@@ -401,9 +386,10 @@ namespace jh
 
 			AddGameObject(pSecondFloorRightColumnStump);
 		}
+
 #pragma endregion
-#pragma region 3Ãş
-		// 3Ãş º®
+#pragma region 3ì¸µ
+		// 3ì¸µ ë²½
 		{
 			DecoObject* pThirdFloorWall = Factory::CreateObject<DecoObject>(Vec3(0.4f, 1.7f, 7.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\TopFloor.fbx");
 
@@ -412,7 +398,7 @@ namespace jh
 
 			AddGameObject(pThirdFloorWall);
 		}
-		// 3Ãş º®2
+		// 3ì¸µ ë²½2
 		{
 			DecoObject* pThirdFloorWall2 = Factory::CreateObject<DecoObject>(Vec3(0.2f, 2.15f, 7.11f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\TopFloor-detach.fbx");
 
@@ -421,7 +407,7 @@ namespace jh
 
 			AddGameObject(pThirdFloorWall2);
 		}
-		// 3Ãş ¹Ù´Ú
+		// 3ì¸µ ë°”ë‹¥
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;

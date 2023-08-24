@@ -71,7 +71,7 @@ struct PS_OUT
     float4 position : SV_Target0;
     float4 normal : SV_Target1;
     float4 color : SV_Target2;
-    float4 emissive : SV_Target3;
+    float4 bloom : SV_Target3;
     float4 depth : SV_Target4;
 };
 
@@ -80,6 +80,7 @@ PS_OUT PS_Main(VS_OUT _in)
     PS_OUT output = (PS_OUT) 0;
    
     float bloomFlag = g_int_3;
+    float bloomPower = g_float_3;
     float4 color = float4(g_vec3_0, 1.f);
     
     if (g_tex_on_0)
@@ -96,9 +97,15 @@ PS_OUT PS_Main(VS_OUT _in)
         viewNormal = normalize(mul(tangentSpaceNormal, matTBN));
     }
     
-    output.position = 1 == bloomFlag ? float4(0, 0, 0, 0) : float4(_in.viewPos, 0.f);
+    if (0.f == bloomPower)
+        bloomPower = 1.25f;
+    
+    float4 bloomColor = color * bloomPower;
+    
+    output.position = float4(_in.viewPos, 0.f);
     output.normal = float4(viewNormal, 0.f);
-    output.color = 1 == bloomFlag ? color * 2 : color;
+    output.color = 1 == bloomFlag ? bloomColor : color;
+    output.bloom = 1 == bloomFlag ? bloomColor : float4(0.f, 0.f, 0.f, 0.f);
     output.depth.xyz = (float3) (_in.projPos.z / _in.projPos.w);
     output.depth.w = _in.projPos.w;
     output.depth.yzw = _in.viewPos;

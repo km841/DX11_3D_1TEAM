@@ -65,6 +65,7 @@ namespace hm
 		SortGameObject(_pScene);
 
 		RenderDeferred(_pScene);
+		RenderBloom();
 		RenderLight(_pScene);
 		//ComputeLight();
 		if (true == mbEnableRim)
@@ -102,6 +103,10 @@ namespace hm
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::Light)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::RimLighting)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::LightBlend)->ClearRenderTargetView();
+
+		float clearColor[4] = { 0.f, 0.f, 0.f, 0.f };
+		CONTEXT->ClearRenderTargetView(mpBlurXTexture->GetRTV().Get(), clearColor);
+		CONTEXT->ClearRenderTargetView(mpBlurYTexture->GetRTV().Get(), clearColor);
 	}
 
 	void RenderManager::SortGameObject(Scene* _pScene)
@@ -174,6 +179,39 @@ namespace hm
 
 		GET_SINGLE(Resources)->Get<Material>(L"LightBlend")->PushGraphicData();
 		GET_SINGLE(Resources)->LoadRectMesh()->Render();
+	}
+
+	void RenderManager::RenderBloom()
+	{
+		shared_ptr<Texture> pBloomTarget = GET_SINGLE(Resources)->Get<Texture>(L"BloomTarget");
+		Vec3 texSize = mpBlurXTexture->GetTexSize();
+
+		D3D11_VIEWPORT viewport;
+		ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+		viewport.TopLeftX = 0;
+		viewport.TopLeftY = 0;
+		viewport.Width = texSize.x;
+		viewport.Height = texSize.y;
+		viewport.MinDepth = 0.0f;
+		viewport.MaxDepth = 1.0f;
+		CONTEXT->RSSetViewports(1, &viewport);
+		CONTEXT->OMSetRenderTargets(1, mpBlurXTexture->GetRTV().GetAddressOf(), nullptr);
+
+		GET_SINGLE(Resources)->Get<Material>(L"BlurX")->SetTexture(0, pBloomTarget);
+		GET_SINGLE(Resources)->Get<Material>(L"BlurX")->PushGraphicData();
+		GET_SINGLE(Resources)->LoadRectMesh()->Render();
+
+		CONTEXT->OMSetRenderTargets(1, mpBlurYTexture->GetRTV().GetAddressOf(), nullptr);
+
+		GET_SINGLE(Resources)->Get<Material>(L"BlurY")->SetTexture(0, mpBlurXTexture);
+		GET_SINGLE(Resources)->Get<Material>(L"BlurY")->PushGraphicData();
+		GET_SINGLE(Resources)->LoadRectMesh()->Render();
+
+		viewport.Width = mWidth;
+		viewport.Height = mHeight;
+		CONTEXT->RSSetViewports(1, &viewport);
+
+		GET_SINGLE(Resources)->Get<Material>(L"LightBlend")->SetTexture(3, mpBlurYTexture);
 	}
 
 	void RenderManager::RenderFinal()
@@ -448,20 +486,20 @@ namespace hm
 	}
 	void RenderManager::PostProcessInit()
 	{
-		mDOFFarStart = 30.0f;				// 40 ~ 400
+		mDOFFarStart = 40.0f;				// 40 ~ 400
 		mDOFFarRange = 1.0f / std::fmaxf(60.0f, 0.001f);			// 80 -> 60 ~150
 
 		mMiddleGrey = 3.0f;
-		mWhite = 5.0f;
+		mWhite = 10.0f;
 
 		mWidth = static_cast<UINT32>(RESOLUTION.x);
 		mHeight = static_cast<UINT32>(RESOLUTION.y);
 		mDomain = (UINT)((float)(mWidth * mHeight / 16));
 		mDownScaleGroups = (UINT)((float)(mWidth * mHeight / 16) / 1024.0f);
-		mAdatation = 0.1f;
+		mAdatation = 1.0f;
 
 		mBloomThreshold = 2.0f;
-		mBloomScale = 0.0f;
+		mBloomScale = 0.4f;
 
 		// LDR
 		mpCopyFilter = make_shared<ImageFilter>(GET_SINGLE(Resources)->Get<Material>(L"Copy"), mWidth, mHeight);
@@ -509,6 +547,18 @@ namespace hm
 			GET_SINGLE(Resources)->CreateTexture(
 				L"PostProcessBloom", DXGI_FORMAT_R32G32B32A32_TYPELESS,
 				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS,
+				mWidth / 4, mHeight / 4);
+
+		mpBlurXTexture = 
+			GET_SINGLE(Resources)->CreateTexture(
+				L"BlurXTempTex", DXGI_FORMAT_R8G8B8A8_UNORM,
+				D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE,
+				mWidth / 4, mHeight / 4);
+
+		mpBlurYTexture =
+			GET_SINGLE(Resources)->CreateTexture(
+				L"BlurYTempTex", DXGI_FORMAT_R8G8B8A8_UNORM,
+				D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE,
 				mWidth / 4, mHeight / 4);
 	}
 }
