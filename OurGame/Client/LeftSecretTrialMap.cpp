@@ -127,6 +127,9 @@ void LeftSecretTrialMap::Enter()
 		
 		AddGameObject(pRoughLowerFloor);
 	}
+
+
+	
 #pragma region "기둥"
 	{
 		//기둥 모음집 - ColumnFull
@@ -591,8 +594,39 @@ void LeftSecretTrialMap::Enter()
 		AddGameObject(pTwoTierShelf);
 	}
 #pragma endregion
+#pragma region "나무선반안에있는 담는 박스 모음"
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-6.9f, -2.4f, -0.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(35.f, 35.f, 35.f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.f,0.f,0.f));
+		
+		AddGameObject(pEmptyBox);
+	}
 
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-7.2f ,-2.3f ,0.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(30.f, 35.f, 35.f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.f, 0.f, 10.f));
+		
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-6.9f, -2.4f, 1.7f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(35.f, 35.f, 35.f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 	
+		AddGameObject(pEmptyBox);
+	}
+#pragma endregion
+	
+
+
+
+
 
 	// 커튼 - CurtainHorizontal
 	{
