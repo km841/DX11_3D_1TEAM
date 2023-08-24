@@ -171,6 +171,18 @@ namespace hm
 				pTwoTierShelf->GetTransform()->SetRotation(AXIS_Y, 90.f);
 				AddGameObject(pTwoTierShelf);
 			}
+
+			// 식탁보
+			{
+				DecoObject* pTableCloth = Factory::CreateObject<DecoObject>(Vec3(21.7f, 8.6f, 6.5f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\tableCloth.fbx");
+				pTableCloth->GetTransform()->SetScale(Vec3(15.4f, 10.f, 23.3f));
+				pTableCloth->GetTransform()->SetRotation(Vec3(-180.f, 0.f, 180.f));
+				//pTableCloth->AddComponent(new PlacementScript);
+				//pKey->AddComponent(new RotateKeyScript);
+				pTableCloth->GetMeshRenderer()->GetMaterial()->SetBloom(true);
+				pTableCloth->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.f, 0.f, 1.f));
+				AddGameObject(pTableCloth);
+			}
 		}
 
 		// 벽쪽 3단 선반
@@ -200,6 +212,16 @@ namespace hm
 
 				AddGameObject(pTwoTierShelf);
 			}
+		}
+
+		// 식탁보
+		{
+			DecoObject* pTableCloth = Factory::CreateObject<DecoObject>(Vec3(-5.6f, 5.3f, 11.9f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\tableCloth.fbx");
+			pTableCloth->GetTransform()->SetScale(Vec3(13.4f, 10.f, 12.4f));
+			pTableCloth->GetTransform()->SetRotation(Vec3(-180.f, 0.f, 180.f));
+			pTableCloth->AddComponent(new PlacementScript);
+			//pKey->AddComponent(new RotateKeyScript);
+			AddGameObject(pTableCloth);
 		}
 
 		// 꼭대기 나무판자
@@ -389,12 +411,14 @@ namespace hm
 		{
 			DecoObject* pKey = Factory::CreateObject<DecoObject>(Vec3(16.1f, 2.2f, -9.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\grandmaKey.fbx");
 			pKey->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
-			pKey->AddComponent(new PlacementScript);
+			//pKey->AddComponent(new PlacementScript);
 			//pKey->AddComponent(new RotateKeyScript);
 
-			pKey->GetMeshRenderer()->GetMaterial()->SetInt(3, 1);
+			pKey->GetMeshRenderer()->GetMaterial()->SetBloom(true);
 			AddGameObject(pKey);
 		}
+
+
 
 		// Bloom Texture
 		//{

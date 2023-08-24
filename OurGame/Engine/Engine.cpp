@@ -58,6 +58,7 @@ namespace hm
 		CreateConstantBuffer(RegisterCBV::b0, sizeof(TransformParams));
 		CreateConstantBuffer(RegisterCBV::b1, sizeof(MaterialParams));
 		CreateConstantBuffer(RegisterCBV::b2, sizeof(LightParams));
+		CreateConstantBuffer(RegisterCBV::b3, sizeof(BloomParams));
 
 		GET_SINGLE(FontManager)->Initialize();
 		GET_SINGLE(Resources)->Initialize();

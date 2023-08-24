@@ -11,6 +11,7 @@ namespace hm
     {
         std::array<shared_ptr<Texture>, TEXTURE_VALUE_COUNT> textures;
         MaterialParams materialParams;
+        BloomParams bloomParams;
         wstring name;
 
         void SetTexture(int _index, shared_ptr<Texture> _pTexture) 
@@ -52,8 +53,9 @@ namespace hm
         void                SetTextureAllSubset(int _index, shared_ptr<Texture> _pTexture);
 
         void SetBackfaceCulling(bool _bBackfaceCulling) { mpShader->SetBackfaceCulling(_bBackfaceCulling); }
-        void SetBloom(bool _bFlag, int _containerIndex = 0, int _subsetIndex = 0) { mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams.SetInt(3, static_cast<int>(_bFlag)); }
-        void SetBloomPower(float _ratio, int _containerIndex = 0, int _subsetIndex = 0) { mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams.SetFloat(3, _ratio); }
+        void SetBloom(bool _bFlag, int _containerIndex = 0, int _subsetIndex = 0) { mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->bloomParams.bloomEnable = static_cast<int>(_bFlag); }
+        void SetBloomPower(float _ratio, int _containerIndex = 0, int _subsetIndex = 0) { mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->bloomParams.bloomPower = _ratio; }
+        void SetBloomColor(Vec4 _color, int _containerIndex = 0, int _subsetIndex = 0) { mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->bloomParams.bloomColor = _color; }
 
         MaterialSubset* GetMaterialSubset(int _containerIndex, int _subsetindex) { return mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetindex]; }
         MaterialContainer* GetMaterialContainer(int _containerIndex) { return mMaterialContainerVec[_containerIndex]; }
