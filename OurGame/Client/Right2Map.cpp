@@ -22,6 +22,7 @@
 #include "Ground.h"
 #include "DecoObject.h"
 #include "Monster.h"
+#include "UI.h"
 
 /* Component */
 #include "Collider.h"
@@ -206,7 +207,7 @@ namespace hm
 			DecoObject* pTopShelf = Factory::CreateObject<DecoObject>(Vec3(17.f, 6.1f, -2.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TopShelf.fbx");
 			pTopShelf->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
 			pTopShelf->GetTransform()->SetRotation(AXIS_Z, -1.f);
-			
+
 			AddGameObject(pTopShelf);
 		}
 
@@ -214,7 +215,7 @@ namespace hm
 		{
 			DecoObject* pBottomRug = Factory::CreateObject<DecoObject>(Vec3(-5.8f, 0.f, -2.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Rug_Mark.fbx");
 			pBottomRug->GetTransform()->SetScale(Vec3(15.f, 8.f, 18.f));
-			
+
 			AddGameObject(pBottomRug);
 		}
 
@@ -222,7 +223,7 @@ namespace hm
 		{
 			DecoObject* pChair = Factory::CreateObject<DecoObject>(Vec3(16.2f, 3.5f, 7.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Chair.fbx");
 
-			
+
 			pChair->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 			pChair->GetTransform()->SetRotation(Vec3(0.f, 18.f, 0.f));
 			AddGameObject(pChair);
@@ -243,7 +244,7 @@ namespace hm
 				DecoObject* pTwoTierCornerFoot = Factory::CreateObject<DecoObject>(Vec3(20.1f, 2.7f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierSquareCornerFoot.fbx");
 				pTwoTierCornerFoot->GetTransform()->SetScale(Vec3(6.5f, 6.3f, 6.0f));
 				pTwoTierCornerFoot->GetTransform()->SetRotation(AXIS_Y, 180.f);
-				
+
 
 				AddGameObject(pTwoTierCornerFoot);
 			}
@@ -264,7 +265,7 @@ namespace hm
 
 				pFirelamp->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 				//pTwoTierFootAbs->GetTransform()->SetRotation(AXIS_Y, 180.f);
-				
+
 				AddGameObject(pFirelamp);
 			}
 		}
@@ -272,8 +273,8 @@ namespace hm
 		// 가운데 있는 2단 선반
 		{
 			DecoObject* pTwoTierFootAbs = Factory::CreateObject<DecoObject>(Vec3(-5.9f, 2.8f, -2.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierSquareFootAbsolute.fbx");
-			
-			
+
+
 			pTwoTierFootAbs->GetTransform()->SetScale(Vec3(6.5f, 6.3f, 6.2f));
 			//pTwoTierFootAbs->GetTransform()->SetRotation(AXIS_Y, 180.f);
 
@@ -283,7 +284,8 @@ namespace hm
 			{
 				DecoObject* pFirelamp = Factory::CreateObject<DecoObject>(Vec3(-5.9f, 7.4f, -2.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
 
-
+				pFirelamp->GetMeshRenderer()->GetMaterial()->SetBloom(true);
+				pFirelamp->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f);
 				pFirelamp->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 				//pTwoTierFootAbs->GetTransform()->SetRotation(AXIS_Y, 180.f);
 				AddGameObject(pFirelamp);
@@ -388,11 +390,22 @@ namespace hm
 			DecoObject* pKey = Factory::CreateObject<DecoObject>(Vec3(16.1f, 2.2f, -9.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\grandmaKey.fbx");
 			pKey->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 			pKey->AddComponent(new PlacementScript);
-			pKey->AddComponent(new RotateKeyScript);
+			//pKey->AddComponent(new RotateKeyScript);
 
 			pKey->GetMeshRenderer()->GetMaterial()->SetInt(3, 1);
 			AddGameObject(pKey);
 		}
+
+		// Bloom Texture
+		//{
+		//	UI* pUI = Factory::CreateObject<UI>(Vec3(-500.f, 200.f, 0.f), L"Forward", L"");
+		//	pUI->GetRigidBody()->RemoveGravity();
+		//	pUI->GetTransform()->SetScale(Vec3(300.f, 300.f, 1.f));
+		//	shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Get<Texture>(L"BlurTempTex");
+
+		//	pUI->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
+		//	AddGameObject(pUI);
+		//}
 	}
 
 	void Right2Map::Exit()

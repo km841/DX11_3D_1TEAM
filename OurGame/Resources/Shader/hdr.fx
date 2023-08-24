@@ -10,6 +10,12 @@ Texture2D<float4> BloomTexture : register(t8); // 블룸 적용한 텍스처 저장용, 얘�
 Texture2D<float4> DOFBlurTexture : register(t9); // DOF (Depth Of Filed)용 텍스처
 Texture2D<float4> DepthTexture : register(t10); // 깊이 텍스처
 
+static float MiddleGrey = g_float_0; // 중간 회색값
+static float LumWhiteSqr = g_float_1; // 흰색 값
+static float BloomScale = g_float_2; // 블룸 크기
+static float2 ProjValue = g_vec2_0; // 투영 값
+static float2 DOFFarValue = g_vec2_0; // DOF
+
 // 화면 전체크기
 static const float2 vNullPos[4] =
 {
@@ -53,13 +59,6 @@ static const float3 LUM_FACTOR = float3(0.299, 0.587, 0.114);
 // HDR값에 대한 톤 매핑 함수 
 float3 ToneMapping(float3 _HDRColor)
 {
-
-    float MiddleGrey = g_float_0; // 중간 회색값
-    float LumWhiteSqr = g_float_1; // 흰색 값
-    float BloomScale = g_float_2; // 블룸 크기
-    float2 ProjValue = g_vec2_0; // 투영 값
-    float2 DOFFarValue = g_vec2_0; // DOF
-    
     // 현재 픽셀에 대한 휘도 스케일 계산
     // LScale : 스케일 조정된 휘도 값
     float LScale = dot(_HDRColor, LUM_FACTOR);
@@ -76,13 +75,6 @@ float3 ToneMapping(float3 _HDRColor)
 // DOF - Z버퍼 깊이 값을 성형 깊으로 변환하는 함수
 float ConvertZBufferToLinearDepth(float _Depth)
 {
-    
-    float MiddleGrey = g_float_0; // 중간 회색값
-    float LumWhiteSqr = g_float_1; // 흰색 값
-    float BloomScale = g_float_2; // 블룸 크기
-    float2 ProjValue = g_vec2_0; // 투영 값
-    float2 DOFFarValue = g_vec2_0; // DOF
-    
     float LinearDepth = ProjValue.x / (_Depth + ProjValue.y);
     return LinearDepth;
 }
@@ -90,13 +82,6 @@ float ConvertZBufferToLinearDepth(float _Depth)
 // DOF - HDR 색상 값에 거리 DOF를 적용하는 함수
 float3 DistanceDOF(float3 _ColorFocus, float3 _ColorBlurred, float _Depth)
 {
-    
-    float MiddleGrey = g_float_0; // 중간 회색값
-    float LumWhiteSqr = g_float_1; // 흰색 값
-    float BloomScale = g_float_2; // 블룸 크기
-    float2 ProjValue = g_vec2_0; // 투영 값
-    float2 DOFFarValue = g_vec2_0; // DOF
-    
     // 깊이 기반 블러 값 계산
     float BlurFactor = saturate((_Depth - DOFFarValue.x) * DOFFarValue.y);
 
@@ -109,12 +94,6 @@ float3 DistanceDOF(float3 _ColorFocus, float3 _ColorBlurred, float _Depth)
 // 픽셀 셰이더 엔트리 포인트 표현
 float4 PS_FinalPass(VS_OUTPUT_HDR _Input) : SV_TARGET
 {
-    float MiddleGrey = g_float_0; // 중간 회색값
-    float LumWhiteSqr = g_float_1; // 흰색 값
-    float BloomScale = g_float_2; // 블룸 크기
-    float2 ProjValue = g_vec2_0; // 투영 값
-    float2 DOFFarValue = g_vec2_0; // DOF
-    
     // 색상 샘플 계산
     // Color은 LDR로 변환하기 위한 HDR 색상 휘도 스케일 -> 나중엔 LDR로 변환됨
     float4 Color = g_tex_5.Sample(g_sam_1, _Input.UV.xy);

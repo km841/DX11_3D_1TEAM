@@ -44,14 +44,21 @@ PS_OUT PS_Main(VS_OUT _in)
 {
     PS_OUT output = (PS_OUT) 0;
     
-    float4 lightPower = g_tex_1.Sample(g_sam_0, _in.uv);
+    float4 lightPower = g_tex_1.Sample(g_sam_0, _in.uv) + 0.2f;
     //if (lightPower.x == 0.f && lightPower.y == 0.f && lightPower.z == 0.f)
     //    clip(-1);
     
     float4 color = g_tex_0.Sample(g_sam_0, _in.uv);
-    
     float4 rimColor = g_tex_2.Sample(g_sam_0, _in.uv);
-    float4 totalColor = color * (lightPower + 0.2f) + rimColor;
+    float4 bloomColor = g_tex_3.Sample(g_sam_0, _in.uv);
+    
+    float isBloomColor = bloomColor.r + bloomColor.g + bloomColor.b;
+    float isColor = color.r + bloomColor.g + bloomColor.b;
+    
+    //if (0.f < isBloomColor && 0.f < isColor)
+    //    lightPower = float4(1.f, 1.f, 1.f, 1.f);
+        
+    float4 totalColor = (color * lightPower) + bloomColor + rimColor;    
     output.lightblend = totalColor;
     
     return output;

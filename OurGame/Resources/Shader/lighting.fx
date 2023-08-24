@@ -49,10 +49,8 @@ PS_OUT PS_DirLight(VS_OUT _in)
     float3 viewNormal = g_tex_1.Sample(g_sam_0, _in.uv).xyz;
 
     LightColor color = CalculateLightColor(g_int_0, viewNormal, viewPos.xyz);
-    
-    float4 emissiveColor = g_tex_2.Sample(g_sam_0, _in.uv);
 
-    output.diffuse = color.diffuse + color.ambient + emissiveColor;
+    output.diffuse = color.diffuse + color.ambient;
     //output.specular = color.specular;
 
     float isViewPos = viewPos.x + viewPos.y + viewPos.z;
@@ -95,18 +93,8 @@ PS_OUT PS_PointLight(VS_OUT _in)
 
     float3 viewNormal = g_tex_1.Sample(g_sam_0, uv).xyz;
     LightColor color = CalculateLightColor(g_int_0, viewNormal, viewPos);
-    float4 emissiveColor = g_tex_2.Sample(g_sam_0, _in.uv);
-    
-    float isEmissive = emissiveColor.x + emissiveColor.y + emissiveColor.z;
-    if (0.f < isEmissive)
-        output.diffuse = float4(1.f, 0.f, 0.f, 1.f);
-    else
-        output.diffuse = color.diffuse + color.ambient;
-    
-    float isViewPos = viewPos.x + viewPos.y + viewPos.z;
-    if (0 == isViewPos)
-        output.diffuse = float4(1.f, 1.f, 1.f, 1.f);
-    
+   
+    output.diffuse = color.diffuse + color.ambient;
     return output;
 }
 #endif

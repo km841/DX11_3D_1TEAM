@@ -471,5 +471,8 @@
     <FxCompile Include="..\Resources\Shader\compute_light.fx">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\Resources\Shader\downscale.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
