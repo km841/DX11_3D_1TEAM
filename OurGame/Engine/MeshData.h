@@ -13,7 +13,8 @@ namespace hm
 	};
 
 	class MeshData :
-		public Object
+		  public Object
+		, public std::enable_shared_from_this<MeshData>
 	{
 	public:
 		MeshData();
@@ -23,8 +24,6 @@ namespace hm
 		static shared_ptr<MeshData> LoadFromFBX(const wstring& _path, const wstring& _shaderName, bool _bInvNormal = false);
 		virtual void Load(const wstring& _path) override;
 		virtual void Save(const wstring& _path) override;
-
-		GameObject* Instantiate();
 
 		shared_ptr<Mesh> GetMesh() { return mpMesh; }
 		shared_ptr<Material> GetMaterial() { return mpMaterial; }

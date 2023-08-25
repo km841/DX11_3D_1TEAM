@@ -129,6 +129,7 @@ public:						  \
 #define FONT gpEngine->GetFont()
 #define GLOBAL_GRAVITY gpEngine->GetPhysics()->GetGravity()
 #define SAFE_DELETE(p) { if(p) { delete (p); (p)=NULL; } }
+#define SAFE_DELETE_ARRAY(p) {if(p)	{ delete[] p; (p)=NULL; }}
 #define IS_PRESS(key) GET_SINGLE(Input)->GetButtonPress(key)
 #define IS_DOWN(key) GET_SINGLE(Input)->GetButtonDown(key)
 #define IS_UP(key) GET_SINGLE(Input)->GetButtonUp(key)

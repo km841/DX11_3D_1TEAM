@@ -15,25 +15,28 @@ namespace hm
 	}
 	Mesh::~Mesh()
 	{
-		for (int i = 0; i < mMeshContainerVec.size(); ++i)
-		{
-			SAFE_DELETE(mMeshContainerVec[i]);
-		}
-		mMeshContainerVec.clear();
+		ClearMeshContainers();
 	}
 	void Mesh::Initialize(const std::vector<Vertex>& _vertexBuffer, const std::vector<int>& _indexBuffer)
 	{
-		ComPtr<ID3D11Buffer> pVertexBuffer = CreateVertexBuffer(_vertexBuffer);
-		std::vector<IndexBufferInfo> indexBufferInfo = {};
-		indexBufferInfo.push_back(CreateIndexBuffer(_indexBuffer));
-		mMeshContainerVec.push_back(new MeshContainer{ pVertexBuffer, indexBufferInfo });
+		VertexBufferInfo vertexBufferInfo = CreateVertexBuffer(_vertexBuffer);
+
+		std::vector<IndexBufferInfo> indexBufferInfoVec = {};
+		IndexBufferInfo indexBufferInfo = CreateIndexBuffer(_indexBuffer);
+		indexBufferInfoVec.push_back(indexBufferInfo);
+
+		MeshContainer* pMeshContainer = new MeshContainer;
+		pMeshContainer->vertexBufferInfo = vertexBufferInfo;
+		pMeshContainer->indexBufferGroup = indexBufferInfoVec;
+
+		mMeshContainerVec.push_back(pMeshContainer);
 	}
 	void Mesh::Render()
 	{
 		UINT stride = sizeof(Vertex);
 		UINT offset = 0;
 
-		CONTEXT->IASetVertexBuffers(0, 1, mMeshContainerVec[0]->pVertexBuffer.GetAddressOf(), &stride, &offset);
+		CONTEXT->IASetVertexBuffers(0, 1, mMeshContainerVec[0]->vertexBufferInfo.pBuffer.GetAddressOf(), &stride, &offset);
 
 		for (int i = 0; i < mMeshContainerVec[0]->indexBufferGroup.size(); ++i)
 		{
@@ -46,7 +49,7 @@ namespace hm
 		UINT stride = sizeof(Vertex);
 		UINT offset = 0;
 
-		CONTEXT->IASetVertexBuffers(0, 1, mMeshContainerVec[_index]->pVertexBuffer.GetAddressOf(), &stride, &offset);
+		CONTEXT->IASetVertexBuffers(0, 1, mMeshContainerVec[_index]->vertexBufferInfo.pBuffer.GetAddressOf(), &stride, &offset);
 
 		for (int i = 0; i < mMeshContainerVec[_index]->indexBufferGroup.size(); ++i)
 		{
@@ -60,7 +63,7 @@ namespace hm
 		UINT strides[2] = { sizeof(Vertex), sizeof(InstancingParams)};
 		UINT offset[2] = { 0, 0 };
 
-		ID3D11Buffer* buffers[] = { mMeshContainerVec[_index]->pVertexBuffer.Get(), _pBuffer->GetInstancingBuffer().Get()};
+		ID3D11Buffer* buffers[] = { mMeshContainerVec[_index]->vertexBufferInfo.pBuffer.Get(), _pBuffer->GetInstancingBuffer().Get()};
 
 		CONTEXT->IASetVertexBuffers(0, 2, buffers, strides, offset);
 
@@ -71,7 +74,7 @@ namespace hm
 		}
 	}
 
-	ComPtr<ID3D11Buffer> Mesh::CreateVertexBuffer(const std::vector<Vertex>& _buffer)
+	VertexBufferInfo Mesh::CreateVertexBuffer(const std::vector<Vertex>& _buffer)
 	{
 		UINT count = static_cast<UINT>(_buffer.size());
 		D3D11_BUFFER_DESC desc = {};
@@ -88,12 +91,46 @@ namespace hm
 		HRESULT hr = DEVICE->CreateBuffer(&desc, &subData, &pVertexBuffer);
 		AssertEx(SUCCEEDED(hr), L"Mesh::CreateVertexBuffer() - 버퍼 생성 실패!");
 
-		return pVertexBuffer;
+		VertexBufferInfo vtxInfo = {};
+		vtxInfo.pBuffer = pVertexBuffer;
+		vtxInfo.count = count;
+		vtxInfo.pData = new char[_buffer.size() * sizeof(Vertex)];
+		memcpy(vtxInfo.pData, _buffer.data(), _buffer.size() * sizeof(Vertex));
+
+		return vtxInfo;
+	}
+
+	VertexBufferInfo Mesh::CreateVertexBuffer(void* _pVtxData, UINT32 _size)
+	{
+		UINT count = _size;
+		D3D11_BUFFER_DESC desc = {};
+		desc.ByteWidth = sizeof(Vertex) * count;
+		desc.Usage = D3D11_USAGE_DEFAULT;
+		desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
+		desc.CPUAccessFlags = 0;
+
+		//Vertex* pVtx = (Vertex*)_pVtxData;
+
+		D3D11_SUBRESOURCE_DATA subData = {};
+		subData.pSysMem = _pVtxData;
+
+		ComPtr<ID3D11Buffer> pVertexBuffer;
+
+		HRESULT hr = DEVICE->CreateBuffer(&desc, &subData, &pVertexBuffer);
+		AssertEx(SUCCEEDED(hr), L"Mesh::CreateVertexBuffer() - 버퍼 생성 실패!");
+
+		VertexBufferInfo vtxInfo = {};
+		vtxInfo.pBuffer = pVertexBuffer;
+		vtxInfo.count = count;
+		vtxInfo.pData = new char[count * sizeof(Vertex)];
+		memcpy(vtxInfo.pData, _pVtxData, count * sizeof(Vertex));
+
+		return vtxInfo;
 	}
 
 	IndexBufferInfo Mesh::CreateIndexBuffer(const std::vector<int>& _buffer)
 	{
-		int indexCount = static_cast<int>(_buffer.size());
+		UINT32 indexCount = static_cast<UINT32>(_buffer.size());
 		D3D11_BUFFER_DESC desc = {};
 		desc.ByteWidth = sizeof(int) * indexCount;
 		desc.Usage = D3D11_USAGE_DEFAULT;
@@ -113,6 +150,37 @@ namespace hm
 			pIndexBuffer,
 			indexCount,
 		};
+
+		indexBufferInfo.pData = new char[sizeof(int) * _buffer.size()];
+		memcpy(indexBufferInfo.pData, _buffer.data(), sizeof(int) * _buffer.size());
+
+		return indexBufferInfo;
+	}
+	IndexBufferInfo Mesh::CreateIndexBuffer(void* _pIdxData, UINT32 _size)
+	{
+		UINT32 indexCount = _size;
+		D3D11_BUFFER_DESC desc = {};
+		desc.ByteWidth = sizeof(int) * indexCount;
+		desc.Usage = D3D11_USAGE_DEFAULT;
+		desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_INDEX_BUFFER;
+		desc.CPUAccessFlags = 0;
+
+		D3D11_SUBRESOURCE_DATA subData = {};
+		subData.pSysMem = _pIdxData;
+
+		ComPtr<ID3D11Buffer> pIndexBuffer;
+
+		HRESULT hr = DEVICE->CreateBuffer(&desc, &subData, &pIndexBuffer);
+		AssertEx(SUCCEEDED(hr), L"Mesh::CreateIndexBuffer() - 버퍼 생성 실패!");
+
+		IndexBufferInfo indexBufferInfo =
+		{
+			pIndexBuffer,
+			indexCount,
+		};
+
+		indexBufferInfo.pData = new char[sizeof(int) * _size];
+		memcpy(indexBufferInfo.pData, _pIdxData, sizeof(int) * _size);
 
 		return indexBufferInfo;
 	}
@@ -226,6 +294,11 @@ namespace hm
 		}
 
 	}
+	MeshContainer* Mesh::GetMeshContainer(int _containerIndex)
+	{
+		AssertEx(_containerIndex < mMeshContainerVec.size(), L"Mesh::GetMeshContainer() - 인덱스가 메쉬 컨테이너의 개수를 초과");
+		return mMeshContainerVec[_containerIndex];
+	}
 	Matrix Mesh::GetMatrix(const FbxAMatrix& _matrix)
 	{
 		Matrix mat;
@@ -255,24 +328,49 @@ namespace hm
 	}
 	void Mesh::AddMeshContainer(const FbxMeshInfo* _pMeshInfo, FBXLoader& _loader)
 	{
-		ComPtr<ID3D11Buffer> pVertexBuffer= CreateVertexBuffer(_pMeshInfo->vertices);
+		VertexBufferInfo bufferInfo = CreateVertexBuffer(_pMeshInfo->vertices);
 
 		std::vector<IndexBufferInfo> indexBufferVec = {};
 		for (const std::vector<int>& buffer : _pMeshInfo->indices)
 		{
+			IndexBufferInfo indexBufferInfo = {};
+
 			if (buffer.empty())
 			{
 				std::vector<int> defaultBuffer{ 0 };
-				indexBufferVec.push_back(CreateIndexBuffer(defaultBuffer));
+				indexBufferInfo = CreateIndexBuffer(defaultBuffer);
 			}
 			else
 			{
-				indexBufferVec.push_back(CreateIndexBuffer(buffer));
+				indexBufferInfo = CreateIndexBuffer(buffer);
 			}
+
+			indexBufferVec.push_back(indexBufferInfo);
 		}
 
-		MeshContainer* pMeshContainer = new MeshContainer{ pVertexBuffer , indexBufferVec };
+		MeshContainer* pMeshContainer = new MeshContainer;
+		pMeshContainer->vertexBufferInfo = bufferInfo;
+		pMeshContainer->indexBufferGroup = indexBufferVec;
 		pMeshContainer->bHasAnimation = _pMeshInfo->bHasAnimation;
 		mMeshContainerVec.push_back(pMeshContainer);
+	}
+	void Mesh::AddMeshContainer(MeshContainer* _pMeshContainer)
+	{
+		mMeshContainerVec.push_back(_pMeshContainer);
+	}
+	void Mesh::ClearMeshContainers()
+	{
+		for (int i = 0; i < mMeshContainerVec.size(); ++i)
+		{
+			SAFE_DELETE_ARRAY(mMeshContainerVec[i]->vertexBufferInfo.pData);
+			
+			for (int j = 0; j < mMeshContainerVec[i]->indexBufferGroup.size(); ++j)
+			{
+				SAFE_DELETE_ARRAY(mMeshContainerVec[i]->indexBufferGroup[j].pData);
+			}
+
+			SAFE_DELETE(mMeshContainerVec[i]);
+		}
+		mMeshContainerVec.clear();
 	}
 }

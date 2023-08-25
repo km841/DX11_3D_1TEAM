@@ -34,6 +34,10 @@ namespace hm
         Material();
         virtual ~Material();
 
+    public:
+        virtual void Save(FILE* _pFile);
+        virtual void Load(FILE* _pFile);
+
         /* 그래픽 작업에 필요한 여러 작업을 처리한다.
         * Material에 저장된 데이터들을 Material용도의 ConstantBuffer에 밀어넣는다.
         * 현재 가진 Texture들을 GPU에 매핑한다.
@@ -86,6 +90,7 @@ namespace hm
         UINT32 GetMaterialContainerSubsetCount(int _containerIndex) { return static_cast<UINT32>(mMaterialContainerVec[_containerIndex]->materialSubsetVec.size()); }
         void ClearMaterialContainers();
 
+        void SaveTexture(FILE* _pFile, shared_ptr<Texture> _pTexture);
     private:
         std::vector<MaterialContainer*> mMaterialContainerVec;
 

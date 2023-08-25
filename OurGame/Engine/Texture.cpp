@@ -16,6 +16,7 @@ namespace hm
 
 	void Texture::Load(const wstring& _path)
 	{
+		mPath = _path;
 		wstring ext = fs::path(_path).extension();
 
 		HRESULT hr = 0;

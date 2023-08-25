@@ -10,6 +10,7 @@
 #include "RigidBody.h"
 #include "Animator.h"
 #include "Engine.h"
+#include "Resources.h"
 
 namespace hm
 {
@@ -183,6 +184,15 @@ namespace hm
 			return false;
 
 		return pRigidBody->IsAppliedPhysics();
+	}
+
+	void GameObject::SetShader(const wstring& _shaderName)
+	{
+		shared_ptr<Shader> pShader = GET_SINGLE(Resources)->Get<Shader>(_shaderName);
+		AssertEx(nullptr != GetMeshRenderer(), L"GameObject::SetShader() - 그려지지 않는 물체에 대한 셰이더 세팅");
+		AssertEx(nullptr != GetMeshRenderer()->GetMaterial(), L"GameObject::SetShader() - 재질이 존재하지 않는 물체에 대한 셰이더 세팅");
+		
+		GetMeshRenderer()->GetMaterial()->SetShader(pShader);
 	}
 }
 

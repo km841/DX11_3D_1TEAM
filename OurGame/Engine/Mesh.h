@@ -7,12 +7,20 @@ namespace hm
     struct IndexBufferInfo
     {
         ComPtr<ID3D11Buffer>		pBuffer;
-        int						    count;
+        UINT32						    count;
+        void*                   pData;
+    };
+
+    struct VertexBufferInfo
+    {
+        ComPtr<ID3D11Buffer>        pBuffer;
+        UINT32                         count;
+        void*                     pData;
     };
 
     struct MeshContainer
     {
-        ComPtr<ID3D11Buffer>         pVertexBuffer;
+        VertexBufferInfo             vertexBufferInfo;
         std::vector<IndexBufferInfo> indexBufferGroup;
         bool bHasAnimation = false;
     };
@@ -75,14 +83,19 @@ namespace hm
         UINT32 GetHash() { return mHash; }
 
         void AddMeshContainer(const FbxMeshInfo* _pMeshInfo, FBXLoader& _loader);
+        void AddMeshContainer(MeshContainer* _pMeshContainer);
+        void ClearMeshContainers();
         void CreateBonesAndAnimations(FBXLoader& _loader);
         UINT32 GetMeshContainerCount() { return static_cast<UINT32>(mMeshContainerVec.size()); }
+        MeshContainer* GetMeshContainer(int _containerIndex);
 
     public:
         // 정점 정보를 통해 정점 버퍼를 생성하는 함수
-        ComPtr<ID3D11Buffer> CreateVertexBuffer(const std::vector<Vertex>& _buffer);
+        VertexBufferInfo CreateVertexBuffer(const std::vector<Vertex>& _buffer);
+        VertexBufferInfo CreateVertexBuffer(void* _pVtxData, UINT32 _size);
         // 인덱스 정보를 통해 인덱스 버퍼를 생성하는 함수
         IndexBufferInfo CreateIndexBuffer(const std::vector<int>& _buffer);
+        IndexBufferInfo CreateIndexBuffer(void* _pIdxData, UINT32 _size);
 
     public:
         const std::vector<BoneInfo>*     GetBones() { return &mBones; }
@@ -105,7 +118,6 @@ namespace hm
 
         shared_ptr<StructuredBuffer>              pOffsetBuffer;
         std::vector<shared_ptr<StructuredBuffer>> frameBuffer;
-
 
         UINT32 mHash;
 	};

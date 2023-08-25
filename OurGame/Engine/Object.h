@@ -19,10 +19,12 @@ namespace hm
 		ObjectType GetType() { return meObjectType; }
 		UINT32 GetID() { return mID; }
 
-	protected:
+	public:
 		friend class Resources;
 		virtual void Load(const wstring& _path) { }
 		virtual void Save(const wstring& _path) { }
+		virtual void Save(FILE* _pFile) { }
+		virtual void Load(FILE* _pFile) { }
 
 	protected:
 		wstring mName;
