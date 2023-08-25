@@ -42,16 +42,58 @@ namespace hm
     shared_ptr<MeshData> Resources::LoadFBX(const wstring& _path, const wstring& _shaderName, bool _bInvNormal)
     {
         wstring key = _path;
+        wstring ext = fs::path(_path).extension();
+        shared_ptr<MeshData> pMeshData = nullptr;
 
-        shared_ptr<MeshData> meshData = Get<MeshData>(key);
-        if (meshData)
-            return meshData;
+        if (ext == L".fbx")
+        {
+            fs::path parentPath = fs::path(_path).parent_path();
+            wstring fileName = fs::path(_path).filename();
+            size_t idx = fileName.rfind(L'.');
+            fileName = fileName.substr(0, idx);
+            fileName += L".msh";
+            wstring fullPath = parentPath.wstring() + L"\\" + fileName;
+            key = fullPath;
 
-        meshData = MeshData::LoadFromFBX(_path, _shaderName, _bInvNormal);
-        meshData->SetName(key);
-        Add(key, meshData);
+            pMeshData = Get<MeshData>(key);
+            if (nullptr != pMeshData)
+                return pMeshData;
 
-        return meshData;
+            else
+            {
+                if (true == fs::exists(key))
+                {
+                    pMeshData = make_shared<MeshData>();
+                    pMeshData->Load(key);
+                }
+                else
+                {
+                    pMeshData = MeshData::LoadFromFBX(_path, _shaderName, _bInvNormal);
+                    pMeshData->SetName(key);
+                }
+            }
+        }
+
+        else if (ext == L".msh")
+        {
+            pMeshData = Get<MeshData>(key);
+            if (nullptr != pMeshData)
+                return pMeshData;
+
+            else
+            {
+                pMeshData = make_shared<MeshData>();
+                pMeshData->Load(_path);
+            }
+        }
+
+        else
+        {
+            AssertEx(false, L"Resources::LoadFBX() - 잘못된 확장자");
+        }
+        
+        Add(key, pMeshData);
+        return pMeshData;
     }
     shared_ptr<Mesh> Resources::LoadRectMesh()
     {
@@ -351,7 +393,7 @@ namespace hm
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\forward.fx", shaderInfo);
-
+            pShader->SetName(L"Forward");
             Add<Shader>(L"Forward", pShader);
         }
 
@@ -363,6 +405,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"Deferred");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", shaderInfo);
             Add<Shader>(L"Deferred", pShader);
         }
@@ -375,6 +418,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"MonsterDeferred");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\monster_deferred.fx", shaderInfo);
             Add<Shader>(L"MonsterDeferred", pShader);
         }
@@ -387,6 +431,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"Compute");
             pShader->CreateComputeShader(L"..\\Resources\\Shader\\compute.fx", "CS_Main", "cs_5_0");
             Add<Shader>(L"Compute", pShader);
         }
@@ -399,6 +444,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"ComputeVerticalBlur");
             pShader->CreateComputeShader(L"..\\Resources\\Shader\\compute_blur.fx", "CS_VerticalBlur_Main", "cs_5_0");
             Add<Shader>(L"ComputeVerticalBlur", pShader);
         }
@@ -411,6 +457,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"ComputeHorizonBlur");
             pShader->CreateComputeShader(L"..\\Resources\\Shader\\compute_blur.fx", "CS_HorizonBlur_Main", "cs_5_0");
             Add<Shader>(L"ComputeHorizonBlur", pShader);
         }
@@ -434,6 +481,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"Particle");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\particle.fx", shaderInfo, shaderArg);
             Add<Shader>(L"Particle", pShader);
         }
@@ -441,6 +489,7 @@ namespace hm
         // Compute Particle
         {
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"ComputeParticle");
             pShader->CreateComputeShader(L"..\\Resources\\Shader\\particle.fx", "CS_Main", "cs_5_0");
             Add<Shader>(L"ComputeParticle", pShader);
         }
@@ -463,6 +512,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"DirLight");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\lighting.fx", shaderInfo, shaderArg);
 
             Add<Shader>(L"DirLight", pShader);
@@ -486,6 +536,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"PointLight");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\lighting.fx", shaderInfo, shaderArg);
 
             Add<Shader>(L"PointLight", pShader);
@@ -502,6 +553,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"Final");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\final.fx", shaderInfo);
 
             Add<Shader>(L"Final", pShader);
@@ -518,6 +570,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"Combine");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\combine.fx", shaderInfo);
 
             Add<Shader>(L"Combine", pShader);
@@ -534,6 +587,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"Sampling");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\sampling.fx", shaderInfo);
 
             Add<Shader>(L"Sampling", pShader);
@@ -550,6 +604,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"BlurX");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\blur_x.fx", shaderInfo);
 
             Add<Shader>(L"BlurX", pShader);
@@ -566,6 +621,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"BlurY");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\blur_y.fx", shaderInfo);
 
             Add<Shader>(L"BlurY", pShader);
@@ -582,6 +638,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"Copy");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\copy.fx", shaderInfo);
 
             Add<Shader>(L"Copy", pShader);
@@ -599,6 +656,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"Collider");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\collider.fx", shaderInfo);
 
             Add<Shader>(L"Collider", pShader);
@@ -615,6 +673,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"PaperBurn");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\paperburn.fx", shaderInfo);
 
             Add<Shader>(L"PaperBurn", pShader);
@@ -628,6 +687,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"PaperBurn_Deferred");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\paperburn_deferred.fx", shaderInfo);
             Add<Shader>(L"PaperBurn_Deferred", pShader);
         }
@@ -643,6 +703,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"PlayerSlash");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\player_slash.fx", shaderInfo);
 
             Add<Shader>(L"PlayerSlash", pShader);
@@ -659,6 +720,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"LightBlend");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\lightblend.fx", shaderInfo);
 
             Add<Shader>(L"LightBlend", pShader);
@@ -675,6 +737,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"DownScaleFirst");
             pShader->CreateComputeShader(L"..\\Resources\\Shader\\compute_downscale.fx", "DownScaleFirstPass", "cs_5_0");
 
             Add<Shader>(L"DownScaleFirst", pShader);
@@ -691,6 +754,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"DownScaleSecond");
             pShader->CreateComputeShader(L"..\\Resources\\Shader\\compute_downscale.fx", "DownScaleSecondPass", "cs_5_0");
 
             Add<Shader>(L"DownScaleSecond", pShader);
@@ -707,6 +771,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"ComputeBloom");
             pShader->CreateComputeShader(L"..\\Resources\\Shader\\compute_downscale.fx", "BrightPass", "cs_5_0");
 
             Add<Shader>(L"ComputeBloom", pShader);
@@ -730,6 +795,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"HDR");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\hdr.fx", shaderInfo, arg);
 
             Add<Shader>(L"HDR", pShader);
@@ -746,6 +812,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"RimLighting");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\rimlighting.fx", shaderInfo);
 
             Add<Shader>(L"RimLighting", pShader);
@@ -754,6 +821,7 @@ namespace hm
         // Compute Animation
         {
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"ComputeAnimation");
             pShader->CreateComputeShader(L"..\\Resources\\Shader\\animation.fx", "CS_Main", "cs_5_0");
             Add<Shader>(L"ComputeAnimation", pShader);
         }
@@ -761,6 +829,7 @@ namespace hm
         // Compute Light
         {
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"ComputeLight");
             pShader->CreateComputeShader(L"..\\Resources\\Shader\\compute_light.fx", "CS_Main", "cs_5_0");
             Add<Shader>(L"ComputeLight", pShader);
         }
@@ -776,6 +845,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"Forward_CullNone");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\forward.fx", shaderInfo);
 
             Add<Shader>(L"Forward_CullNone", pShader);
@@ -791,6 +861,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"Deferred_CullNone");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", shaderInfo);
             Add<Shader>(L"Deferred_CullNone", pShader);
         }
@@ -806,6 +877,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"DownScale");
             pShader->CreateComputeShader(L"..\\Resources\\Shader\\downscale.fx", "CS_Main", "cs_5_0");
 
             Add<Shader>(L"DownScale", pShader);

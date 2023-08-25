@@ -34,6 +34,7 @@ namespace hm
 
     public:
         Vec3 GetTexSize() { return mTexSize; }
+        wstring GetPath() { return mPath; }
 
     public:
         ComPtr<ID3D11Texture2D>           GetTex2D() const { return mpTex2D; }
@@ -45,6 +46,7 @@ namespace hm
     private:
         UINT                                meTextureType;
         Vec3                                mTexSize;
+        wstring                             mPath;
 
         ScratchImage                        mScratchImage;
         ComPtr<ID3D11Texture2D>             mpTex2D;

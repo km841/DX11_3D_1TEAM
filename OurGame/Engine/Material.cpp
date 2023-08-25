@@ -2,6 +2,7 @@
 #include "Material.h"
 #include "Engine.h"
 #include "Texture.h"
+#include "Resources.h"
 
 namespace hm
 {
@@ -19,6 +20,109 @@ namespace hm
 	Material::~Material()
 	{
 		ClearMaterialContainers();
+	}
+
+	void Material::Save(FILE* _pFile)
+	{
+		AssertEx(nullptr != _pFile, L"Material::Save() - 파일포인터가 nullptr이다");
+
+		wstring shaderName = mpShader->GetName();
+		UINT32 shaderNameCount = static_cast<UINT32>(shaderName.size());
+
+		fwrite(&shaderNameCount, sizeof(UINT32), 1, _pFile);
+		fwrite(shaderName.c_str(), sizeof(wchar_t), shaderName.size(), _pFile);
+
+		UINT32 mtrlContainerCount = static_cast<UINT32>(mMaterialContainerVec.size());
+		fwrite(&mtrlContainerCount, sizeof(UINT32), 1, _pFile);
+
+		for (UINT32 i = 0; i < mtrlContainerCount; ++i)
+		{
+			MaterialContainer* pMaterialContainer = mMaterialContainerVec[i];
+			
+			UINT32 subsetCount = static_cast<UINT32>(pMaterialContainer->materialSubsetVec.size());
+			fwrite(&subsetCount, sizeof(UINT32), 1, _pFile);
+
+			for (UINT32 j = 0; j < subsetCount; ++j)
+			{
+				MaterialSubset* pMaterialSubset = pMaterialContainer->materialSubsetVec[j];
+				fwrite(&pMaterialSubset->materialParams, sizeof(MaterialParams), 1, _pFile);
+
+				UINT32 textureCount = static_cast<UINT32>(pMaterialSubset->textures.size());
+				UINT32 existsTextureCount = 0;
+
+				for (UINT t = 0; t < textureCount; ++t)
+					existsTextureCount += nullptr != pMaterialSubset->textures[t] ? 1 : 0;
+
+				fwrite(&existsTextureCount, sizeof(UINT32), 1, _pFile);
+
+				for (UINT32 k = 0; k < textureCount; ++k)
+				{
+					if (nullptr != pMaterialSubset->textures[k])
+					{
+						fwrite(&k, sizeof(UINT32), 1, _pFile);
+						SaveTexture(_pFile, pMaterialSubset->textures[k]);
+					}
+				}
+			}
+		}
+	}
+
+	void Material::Load(FILE* _pFile)
+	{
+		AssertEx(nullptr != _pFile, L"Material::Load() - 파일포인터가 nullptr이다");
+
+		UINT32 shaderNameCount = 0;
+		wstring shaderName;
+
+		fread(&shaderNameCount, sizeof(UINT32), 1, _pFile);
+		shaderName.resize(shaderNameCount);
+
+		fread(shaderName.data(), sizeof(wchar_t), shaderNameCount, _pFile);
+		SetShader(GET_SINGLE(Resources)->Get<Shader>(shaderName));
+		
+		UINT32 mtrlContainerCount = 0;
+		fread(&mtrlContainerCount, sizeof(UINT32), 1, _pFile);
+
+		for (UINT32 i = 0; i < mtrlContainerCount; ++i)
+		{
+			MaterialContainer* pMaterialContainer = new MaterialContainer;
+			mMaterialContainerVec.push_back(pMaterialContainer);
+
+			UINT32 subsetCount = 0;
+			fread(&subsetCount, sizeof(UINT32), 1, _pFile);
+
+			for (UINT32 j = 0; j < subsetCount; ++j)
+			{
+				MaterialSubset* pSubset = new MaterialSubset;
+				pMaterialContainer->AddSubset(pSubset);
+
+				fread(&pSubset->materialParams, sizeof(MaterialParams), 1, _pFile);
+
+				UINT32 existsTextureCount = 0;
+				fread(&existsTextureCount, sizeof(UINT32), 1, _pFile);
+
+				for (UINT32 k = 0; k < existsTextureCount; ++k)
+				{
+					UINT32 registerIdx = 0;
+					fread(&registerIdx, sizeof(UINT32), 1, _pFile);
+
+					wstring textureKey;
+					UINT32 textureKeyCount = 0;
+					fread(&textureKeyCount, sizeof(UINT32), 1, _pFile);
+					textureKey.resize(textureKeyCount);
+					fread(textureKey.data(), sizeof(wchar_t), textureKeyCount, _pFile);
+
+					wstring fullPath;
+					UINT32 fullPathCount = 0;
+					fread(&fullPathCount, sizeof(UINT32), 1, _pFile);
+					fullPath.resize(fullPathCount);
+					fread(fullPath.data(), sizeof(wchar_t), fullPathCount, _pFile);
+
+					shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(textureKey, fullPath);
+					pSubset->textures[registerIdx] = pTexture;
+				}
+			}
+		}
 	}
 
 	void Material::ClearGraphicData()
@@ -280,6 +384,20 @@ namespace hm
 			SAFE_DELETE(mMaterialContainerVec[i]);
 		}
 		mMaterialContainerVec.clear();
+	}
+	void Material::SaveTexture(FILE* _pFile, shared_ptr<Texture> _pTexture)
+	{
+		AssertEx(nullptr != _pFile, L"Material::SaveTexture() - 파일 포인터가 nullptr이다");
+
+		wstring name = _pTexture->GetName();
+		UINT32 nameCount = static_cast<UINT32>(name.size());
+		fwrite(&nameCount, sizeof(UINT32), 1, _pFile);
+		fwrite(name.data(), sizeof(wchar_t), name.size(), _pFile);
+
+		wstring path = _pTexture->GetPath();
+		UINT32 pathCount = static_cast<UINT32>(path.size());
+		fwrite(&pathCount, sizeof(UINT32), 1, _pFile);
+		fwrite(path.data(), sizeof(wchar_t), path.size(), _pFile);
 	}
 }
 

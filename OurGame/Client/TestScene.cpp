@@ -110,21 +110,18 @@ namespace hm
 		}
 
 		// Ground
-		//{
-		//	PhysicsInfo physicsInfo;
-		//	physicsInfo.eActorType = ActorType::Static;
-		//	physicsInfo.eGeometryType = GeometryType::Box;
-		//	physicsInfo.size = Vec3(50.f, 50.f, 1.f);
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(50.f, 50.f, 1.f);
 
-		//	GameObject* pGameObject = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, -10.f, 0.f), physicsInfo, L"Forward", L"", LayerType::Ground);
-		//	
-		//	shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"Grid", L"..\\Resources\\Texture\\blender_uv_grid_2k.png");
-		//	pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
-		//	
-		//	pGameObject->GetTransform()->SetScale(Vec3(50.f, 50.f, 1.f));
-		//	pGameObject->GetTransform()->SetRotation(AXIS_X, 90.f);
-		//	AddGameObject(pGameObject);
-		//}
+			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -10.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Hall\\Desk.fbx");
+			pGround->SetFrustumCheckFlag(false);
+			pGround->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+			//pGround->GetTransform()->SetRotation(AXIS_X, 90.f);
+			AddGameObject(pGround);
+		}
 
 		// Forward Object
 		//{

@@ -84,6 +84,7 @@ namespace hm
 		/* 물리적 객체인지를 검사하는 함수 */
 		bool IsPhysicsObject();
 
+		void SetShader(const wstring& _shaderName);
 
 		/*
 		* AddComponent(Component* _pComponent)
