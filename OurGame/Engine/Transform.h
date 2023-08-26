@@ -33,6 +33,8 @@ namespace hm
 		void  SetPositionExcludingColliders(const Vec3& _position);
 		void  SetPositionExcludingColliders(Axis _eAxis, float _position);
 
+		void SetWorldMatrix(const Matrix& _matrix);
+
 		float GetBoundingSphereRadius() { return max(max(mScale.x, mScale.y), mScale.z); }
 
 		Vec3 GetWorldPosition();

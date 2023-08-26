@@ -91,8 +91,9 @@ namespace hm
 		{
 			DecoObject* pBanker = Factory::CreateObject<DecoObject>(Vec3(0.f, 10.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Banker.fbx");
 			pBanker->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
-			pBanker->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			pBanker->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
 			pBanker->AddComponent(new TestAnimationScript);
+			pBanker->AddComponent(new PlacementScript);
 
 			AddGameObject(pBanker);
 		}
@@ -229,7 +230,7 @@ namespace hm
 			DecoObject* pTableCloth = Factory::CreateObject<DecoObject>(Vec3(-5.6f, 5.3f, 11.9f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\tableCloth.fbx");
 			pTableCloth->GetTransform()->SetScale(Vec3(13.4f, 10.f, 12.4f));
 			pTableCloth->GetTransform()->SetRotation(Vec3(-180.f, 0.f, 180.f));
-			pTableCloth->AddComponent(new PlacementScript);
+			
 			//pKey->AddComponent(new RotateKeyScript);
 			AddGameObject(pTableCloth);
 		}

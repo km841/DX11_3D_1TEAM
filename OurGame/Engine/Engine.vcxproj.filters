@@ -199,6 +199,27 @@
     <ClInclude Include="imgui_impl_win32.h">
       <Filter>Utils\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="ImCurveEdit.h">
+      <Filter>Utils\ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGradient.h">
+      <Filter>Utils\ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo.h">
+      <Filter>Utils\ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImSequencer.h">
+      <Filter>Utils\ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImZoomSlider.h">
+      <Filter>Utils\ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphEditor.h">
+      <Filter>Utils\ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>Utils\ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EnginePch.cpp">
@@ -381,6 +402,21 @@
     <ClCompile Include="imgui_impl_win32.cpp">
       <Filter>Utils\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="ImCurveEdit.cpp">
+      <Filter>Utils\ImGui\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGradient.cpp">
+      <Filter>Utils\ImGui\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo.cpp">
+      <Filter>Utils\ImGui\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImSequencer.cpp">
+      <Filter>Utils\ImGui\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphEditor.cpp">
+      <Filter>Utils\ImGui\ImGuizmo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -433,6 +469,9 @@
     </Filter>
     <Filter Include="Utils\ImGui">
       <UniqueIdentifier>{0a31edfe-ea76-450d-be0a-32317a30da47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\ImGui\ImGuizmo">
+      <UniqueIdentifier>{42cf2c1c-5dfb-433a-81f6-8dbbc494918e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
