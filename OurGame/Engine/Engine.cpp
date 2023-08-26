@@ -9,11 +9,13 @@
 #include "EventManager.h"
 #include "RenderManager.h"
 #include "FontManager.h"
+#include "Tool.h"
 
 namespace hm
 {
 	Engine::~Engine()
 	{
+		SAFE_DELETE(mpTool);
 		SAFE_DELETE(mpGraphicsCore);
 		SAFE_DELETE(mpSwapChain);
 		SAFE_DELETE(mpPhysics);
@@ -46,11 +48,13 @@ namespace hm
 		mpSwapChain = new SwapChain;
 		mpPhysics = new Physics;
 		mpFont = new Font;
+		mpTool = new Tool;
 
 		mpGraphicsCore->Initialize();
 		mpSwapChain->Initialize();
 		mpPhysics->Initialize();
 		mpFont->Initialize(mWindowInfo, mpGraphicsCore->GetDevice(), mpGraphicsCore->GetContext());
+		mpTool->Initialize(mWindowInfo.hwnd, DEVICE.Get(), CONTEXT.Get());
 
 		mpGraphicsCore->Create2DRenderTarget();
 
@@ -237,12 +241,15 @@ namespace hm
 		GET_SINGLE(SceneManager)->FixedUpdate();
 		GET_SINGLE(SceneManager)->FinalUpdate();
 		mpPhysics->Update();
+
+		mpTool->Update();
 	}
 	void Engine::Render()
 	{
 		RenderBegin();
 		// Scene Rendering
 		GET_SINGLE(SceneManager)->Render();
+		mpTool->Render();
 		RenderEnd();
 
 	}

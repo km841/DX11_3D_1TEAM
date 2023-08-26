@@ -89,6 +89,9 @@ namespace hm
         UINT32 GetMeshContainerCount() { return static_cast<UINT32>(mMeshContainerVec.size()); }
         MeshContainer* GetMeshContainer(int _containerIndex);
 
+        void SaveBoneAndAnimations(FILE* _pFile);
+        void LoadBoneAndAnimations(FILE* _pFile);
+
     public:
         // 정점 정보를 통해 정점 버퍼를 생성하는 함수
         VertexBufferInfo CreateVertexBuffer(const std::vector<Vertex>& _buffer);

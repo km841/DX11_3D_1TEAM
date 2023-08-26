@@ -21,6 +21,11 @@
 #include <filesystem>
 #include <algorithm>
 
+#include "imgui_internal.h"
+#include "imgui.h"
+#include "imgui_impl_dx11.h"
+#include "imgui_impl_win32.h"
+
 // DirectX11 Library
 #include "d3d11.h"
 
@@ -35,6 +40,9 @@
 #include <DirectXTex/DirectXTex.inl>
 #include <dwrite.h>
 #include <d2d1.h>
+
+
+
 #include "SimpleMath.h"
 
 // FBX SDK Library
@@ -127,6 +135,7 @@ public:						  \
 #define CONST_BUFFER(type) gpEngine->GetConstantBuffer(type)
 #define PHYSICS gpEngine->GetPhysics()->GetPhysics()
 #define FONT gpEngine->GetFont()
+#define TOOL gpEngine->GetTool()
 #define GLOBAL_GRAVITY gpEngine->GetPhysics()->GetGravity()
 #define SAFE_DELETE(p) { if(p) { delete (p); (p)=NULL; } }
 #define SAFE_DELETE_ARRAY(p) {if(p)	{ delete[] p; (p)=NULL; }}
@@ -139,6 +148,7 @@ public:						  \
 #define RESOLUTION gpEngine->GetResolution()
 #define RENDERTARGET_2D gpEngine->GetGraphicsCore()->GetRenderTarget2D()
 
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 /*
 * 기존 assert 함수를 확장한 함수.
 * 메시지 박스를 통해 어떤 이유로 에러가 발생했는지 확인할 수 있다.
@@ -156,6 +166,20 @@ template <typename T>
 inline void hash_combine(std::size_t& seed, const T& value) 
 {
 	seed ^= std::hash<T>{}(value)+0x9e3779b9 + (seed << 6) + (seed >> 2);
+}
+
+static wstring ChangeFileExt(const wstring& _srcPath, const wstring& _dstExt)
+{
+	AssertEx(fs::is_regular_file(_srcPath), L"ChangeFileExt() - 파일이 아닌 폴더가 입력으로 들어옴");
+
+	fs::path parentPath = fs::path(_srcPath).parent_path();
+	wstring fileName = fs::path(_srcPath).filename();
+
+	size_t idx = fileName.rfind(L'.');
+	fileName = fileName.substr(0, idx);
+	fileName += L"." + _dstExt;
+
+	return parentPath.wstring() + L"\\" + fileName;
 }
 
 namespace hm { 

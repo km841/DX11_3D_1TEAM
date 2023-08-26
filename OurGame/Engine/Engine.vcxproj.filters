@@ -175,6 +175,30 @@
     <ClInclude Include="Animator.h">
       <Filter>Object\GameObject\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Tool.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>Utils\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>Utils\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>Utils\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>Utils\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>Utils\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_dx11.h">
+      <Filter>Utils\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_win32.h">
+      <Filter>Utils\ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EnginePch.cpp">
@@ -336,6 +360,27 @@
     <ClCompile Include="Animator.cpp">
       <Filter>Object\GameObject\Component</Filter>
     </ClCompile>
+    <ClCompile Include="Tool.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>Utils\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>Utils\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>Utils\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>Utils\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_dx11.cpp">
+      <Filter>Utils\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_win32.cpp">
+      <Filter>Utils\ImGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -385,6 +430,9 @@
     </Filter>
     <Filter Include="Object\GameObject\Component\AI\BehaviorTree">
       <UniqueIdentifier>{b3d921e2-fa5b-429d-9792-2ffb0ae0b3ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\ImGui">
+      <UniqueIdentifier>{0a31edfe-ea76-450d-be0a-32317a30da47}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

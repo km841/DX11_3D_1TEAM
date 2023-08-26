@@ -109,19 +109,14 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
-		// Ground
-		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Static;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(50.f, 50.f, 1.f);
-
-			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -10.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Hall\\Desk.fbx");
-			pGround->SetFrustumCheckFlag(false);
-			pGround->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
-			//pGround->GetTransform()->SetRotation(AXIS_X, 90.f);
-			AddGameObject(pGround);
-		}
+		//// Ground
+		//{
+		//	Ground* pGround = Factory::CreateObject<Ground>(Vec3(0.f, -10.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Player\\Crow.fbx");
+		//	pGround->SetFrustumCheckFlag(false);
+		//	pGround->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+		//	//pGround->GetTransform()->SetRotation(AXIS_X, 90.f);
+		//	AddGameObject(pGround);
+		//}
 
 		// Forward Object
 		//{

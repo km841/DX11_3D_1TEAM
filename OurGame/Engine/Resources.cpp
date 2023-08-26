@@ -47,13 +47,7 @@ namespace hm
 
         if (ext == L".fbx")
         {
-            fs::path parentPath = fs::path(_path).parent_path();
-            wstring fileName = fs::path(_path).filename();
-            size_t idx = fileName.rfind(L'.');
-            fileName = fileName.substr(0, idx);
-            fileName += L".msh";
-            wstring fullPath = parentPath.wstring() + L"\\" + fileName;
-            key = fullPath;
+            key = ChangeFileExt(_path, L"msh");
 
             pMeshData = Get<MeshData>(key);
             if (nullptr != pMeshData)

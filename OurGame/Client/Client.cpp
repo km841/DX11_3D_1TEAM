@@ -1,12 +1,14 @@
 ﻿#include "pch.h"
 #include "Application.h"
 #include "Timer.h"
+#include "Tool.h"
 
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
 HINSTANCE hInst;                               
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
+LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
 
 const wchar_t* gWindowName = L"Death's Door";
 
@@ -73,6 +75,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    if (TOOL->DispatchWndMessage(hWnd, message, wParam, lParam))
+        return true;
+
     switch (message)
     {
 

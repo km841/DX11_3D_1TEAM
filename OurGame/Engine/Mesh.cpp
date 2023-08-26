@@ -250,7 +250,7 @@ namespace hm
 #pragma endregion
 
 #pragma region SkinData
-		if (IsAnimMesh())
+		if (true == IsAnimMesh())
 		{
 			// BoneOffet 행렬
 			const int boneCount = static_cast<int>(mBones.size());
@@ -269,14 +269,15 @@ namespace hm
 
 				// 애니메이션 프레임 정보
 				std::vector<AnimFrameParams> frameParams;
-				frameParams.resize(bones.size() * animClip.frameCount * 10);
-
 				for (int b = 0; b < boneCount; b++)
 				{
 					const int keyFrameCount = static_cast<int>(animClip.keyFrames[b].size());
+
 					for (int f = 0; f < keyFrameCount; f++)
 					{
 						int idx = static_cast<int>(boneCount * f + b);
+						if (idx >= frameParams.size())
+							frameParams.resize(idx + 1);
 
 						frameParams[idx] = AnimFrameParams
 						{
@@ -299,6 +300,167 @@ namespace hm
 		AssertEx(_containerIndex < mMeshContainerVec.size(), L"Mesh::GetMeshContainer() - 인덱스가 메쉬 컨테이너의 개수를 초과");
 		return mMeshContainerVec[_containerIndex];
 	}
+	void Mesh::SaveBoneAndAnimations(FILE* _pFile)
+	{
+		AssertEx(nullptr != _pFile, L"Mesh::AnimationSave() - 파일포인터가 nullptr이다");
+
+		// Save Anim Clips
+		UINT32 animClipCount = static_cast<UINT32>(mAnimClips.size());
+		fwrite(&animClipCount, sizeof(UINT32), 1, _pFile);
+
+		for (UINT32 i = 0; i < animClipCount; ++i)
+		{
+			UINT32 animNameCount = static_cast<UINT32>(mAnimClips[i].animName.size());
+			fwrite(&animNameCount, sizeof(UINT32), 1, _pFile);
+			fwrite(mAnimClips[i].animName.c_str(), sizeof(wchar_t), animNameCount, _pFile);
+			fwrite(&mAnimClips[i].frameCount, sizeof(int), 1, _pFile);
+			fwrite(&mAnimClips[i].duration, sizeof(double), 1, _pFile);
+
+			UINT32 keyFrameRow = static_cast<UINT32>(mAnimClips[i].keyFrames.size());
+			fwrite(&keyFrameRow, sizeof(UINT32), 1, _pFile);
+
+			for (UINT32 y = 0; y < keyFrameRow; ++y)
+			{
+				UINT32 keyFrameCol = static_cast<UINT32>(mAnimClips[i].keyFrames[y].size());
+				fwrite(&keyFrameCol, sizeof(UINT32), 1, _pFile);
+
+				for (UINT32 x = 0; x < keyFrameCol; ++x)
+				{
+					KeyFrameInfo& info = mAnimClips[i].keyFrames[y][x];
+
+					fwrite(&info.time, sizeof(double), 1, _pFile);
+					fwrite(&info.frame, sizeof(int), 1, _pFile);
+					fwrite(&info.scale, sizeof(Vec3), 1, _pFile);
+					fwrite(&info.rotation, sizeof(Vec4), 1, _pFile);
+					fwrite(&info.translate, sizeof(Vec3), 1, _pFile);
+				}
+			}
+		}
+
+		// Save Bones
+		UINT32 boneCount = static_cast<UINT32>(mBones.size());
+		fwrite(&boneCount, sizeof(UINT32), 1, _pFile);
+
+		for (UINT32 i = 0; i < boneCount; ++i)
+		{
+			UINT32 boneNameCount = static_cast<UINT32>(mBones[i].boneName.size());
+			fwrite(&boneNameCount, sizeof(UINT32), 1, _pFile);
+			fwrite(mBones[i].boneName.c_str(), sizeof(wchar_t), boneNameCount, _pFile);
+
+			fwrite(&mBones[i].parentIdx, sizeof(int), 1, _pFile);
+			fwrite(&mBones[i].matOffset.m, sizeof(Matrix), 1, _pFile);
+		}
+	}
+
+	void Mesh::LoadBoneAndAnimations(FILE* _pFile)
+	{
+		AssertEx(nullptr != _pFile, L"Mesh::LoadBoneAndAnimations() - 파일포인터가 nullptr이다");
+		mAnimClips.clear();
+		mBones.clear();
+
+		// Load Anim Clips
+		UINT32 animClipCount = 0;
+		fread(&animClipCount, sizeof(UINT32), 1, _pFile);
+
+		for (UINT32 i = 0; i < animClipCount; ++i)
+		{
+			mAnimClips.push_back(AnimClipInfo());
+			AnimClipInfo& animClipInfo = mAnimClips.back();
+
+			UINT32 animNameCount = 0;
+			fread(&animNameCount, sizeof(UINT32), 1, _pFile);
+			animClipInfo.animName.resize(animNameCount);
+			fread(animClipInfo.animName.data(), sizeof(wchar_t), animNameCount, _pFile);
+			fread(&animClipInfo.frameCount, sizeof(int), 1, _pFile);
+			fread(&animClipInfo.duration, sizeof(double), 1, _pFile);
+
+			UINT32 keyFrameRow = 0;
+			fread(&keyFrameRow, sizeof(UINT32), 1, _pFile);
+			animClipInfo.keyFrames.resize(keyFrameRow);
+
+			for (UINT32 y = 0; y < keyFrameRow; ++y)
+			{
+				UINT32 keyFrameCol = 0;
+				fread(&keyFrameCol, sizeof(UINT32), 1, _pFile);
+				animClipInfo.keyFrames[y].resize(keyFrameCol);
+
+				for (UINT32 x = 0; x < keyFrameCol; ++x)
+				{
+					fread(&animClipInfo.keyFrames[y][x].time, sizeof(double), 1, _pFile);
+					fread(&animClipInfo.keyFrames[y][x].frame, sizeof(int), 1, _pFile);
+					fread(&animClipInfo.keyFrames[y][x].scale, sizeof(Vec3), 1, _pFile);
+					fread(&animClipInfo.keyFrames[y][x].rotation, sizeof(Vec4), 1, _pFile);
+					fread(&animClipInfo.keyFrames[y][x].translate, sizeof(Vec3), 1, _pFile);
+				}
+			}
+		}
+
+		// Load Bones
+		{
+			UINT32 boneCount = 0;
+			fread(&boneCount, sizeof(UINT32), 1, _pFile);
+
+			for (UINT32 i = 0; i < boneCount; ++i)
+			{
+				mBones.push_back(BoneInfo());
+				BoneInfo& boneInfo = mBones.back();
+
+				UINT32 boneNameCount = 0;
+				fread(&boneNameCount, sizeof(UINT32), 1, _pFile);
+				boneInfo.boneName.resize(boneNameCount);
+				fread(boneInfo.boneName.data(), sizeof(wchar_t), boneNameCount, _pFile);
+
+				fread(&boneInfo.parentIdx, sizeof(int), 1, _pFile);
+				fread(&boneInfo.matOffset.m, sizeof(Matrix), 1, _pFile);
+			}
+		}
+
+
+		// Create Skin Data
+		// BoneOffet 행렬
+		const int boneCount = static_cast<int>(mBones.size());
+		std::vector<Matrix> offsetVec(boneCount);
+		for (size_t b = 0; b < boneCount; b++)
+			offsetVec[b] = mBones[b].matOffset;
+
+		// OffsetMatrix StructuredBuffer 세팅
+		pOffsetBuffer = make_shared<StructuredBuffer>();
+		pOffsetBuffer->Create(sizeof(Matrix), static_cast<UINT32>(offsetVec.size()), offsetVec.data());
+
+		const int animCount = static_cast<int>(mAnimClips.size());
+		for (int i = 0; i < animCount; i++)
+		{
+			AnimClipInfo& animClip = mAnimClips[i];
+
+			// 애니메이션 프레임 정보
+			std::vector<AnimFrameParams> frameParams;
+
+			for (int b = 0; b < boneCount; b++)
+			{
+				const int keyFrameCount = static_cast<int>(animClip.keyFrames[b].size());
+
+				for (int f = 0; f < keyFrameCount; f++)
+				{
+					int idx = static_cast<int>(boneCount * f + b);
+					if (idx >= frameParams.size())
+						frameParams.resize(idx + 1);
+
+					frameParams[idx] = AnimFrameParams
+					{
+						Vec4(animClip.keyFrames[b][f].scale),
+						animClip.keyFrames[b][f].rotation, // Quaternion
+						Vec4(animClip.keyFrames[b][f].translate)
+					};
+				}
+			}
+
+			// StructuredBuffer 세팅
+			frameBuffer.push_back(make_shared<StructuredBuffer>());
+			frameBuffer.back()->Create(sizeof(AnimFrameParams), static_cast<UINT32>(frameParams.size()), frameParams.data());
+		}
+
+	}
+
 	Matrix Mesh::GetMatrix(const FbxAMatrix& _matrix)
 	{
 		Matrix mat;

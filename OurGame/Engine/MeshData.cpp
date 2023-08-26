@@ -84,13 +84,7 @@ namespace hm
         pMeshData->SetMesh(pMesh);
         pMeshData->SetMaterial(pMaterial);
 
-        fs::path parentPath = fs::path(_path).parent_path();
-        wstring fileName = fs::path(_path).filename();
-        size_t idx = fileName.rfind(L'.');
-        fileName = fileName.substr(0, idx);
-        fileName += L".msh";
-
-        wstring fullPath = parentPath.wstring() + L"\\" + fileName;
+        wstring fullPath = ChangeFileExt(_path, L"msh");
         pMeshData->Save(fullPath);
 
         return pMeshData;
@@ -161,6 +155,12 @@ namespace hm
 
             mpMaterial->Load(pFile);
         }
+
+        fread(&mbHasAnimation, sizeof(bool), 1, pFile);
+        if (true == mbHasAnimation)
+        {
+            mpMesh->LoadBoneAndAnimations(pFile);
+        }
         
         fclose(pFile);
     }
@@ -201,6 +201,10 @@ namespace hm
 
         if (true == bIsMaterial)
             mpMaterial->Save(pFile);
+
+        fwrite(&mbHasAnimation, sizeof(bool), 1, pFile);
+        if (true == mbHasAnimation)
+            mpMesh->SaveBoneAndAnimations(pFile);
         
 
         fclose(pFile);
