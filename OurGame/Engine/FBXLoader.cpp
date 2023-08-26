@@ -34,8 +34,8 @@ namespace hm
 		}
 		else
 		{
-			//LoadBones(mpScene->GetRootNode());
-			//LoadAnimationInfo();
+			LoadBones(mpScene->GetRootNode());
+			LoadAnimationInfo();
 
 			LoadDynamicMesh();
 		}

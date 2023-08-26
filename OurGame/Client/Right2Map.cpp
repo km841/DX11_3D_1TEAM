@@ -87,6 +87,16 @@ namespace hm
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 
+		// Banker
+		{
+			DecoObject* pBanker = Factory::CreateObject<DecoObject>(Vec3(0.f, 10.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Banker.fbx");
+			pBanker->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+			pBanker->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			pBanker->AddComponent(new TestAnimationScript);
+
+			AddGameObject(pBanker);
+		}
+
 		// Ground
 		{
 			PhysicsInfo physicsInfo;

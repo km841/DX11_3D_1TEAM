@@ -198,6 +198,13 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GraphicsCore.h" />
     <ClInclude Include="ImageFilter.h" />
+    <ClInclude Include="imgui.h" />
+    <ClInclude Include="imgui_impl_dx11.h" />
+    <ClInclude Include="imgui_impl_win32.h" />
+    <ClInclude Include="imgui_internal.h" />
+    <ClInclude Include="imstb_rectpack.h" />
+    <ClInclude Include="imstb_textedit.h" />
+    <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InstancingBuffer.h" />
     <ClInclude Include="Light.h" />
@@ -226,6 +233,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TimerObject.h" />
+    <ClInclude Include="Tool.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="UI.h" />
@@ -256,6 +264,12 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphicsCore.cpp" />
     <ClCompile Include="ImageFilter.cpp" />
+    <ClCompile Include="imgui.cpp" />
+    <ClCompile Include="imgui_draw.cpp" />
+    <ClCompile Include="imgui_impl_dx11.cpp" />
+    <ClCompile Include="imgui_impl_win32.cpp" />
+    <ClCompile Include="imgui_tables.cpp" />
+    <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InstancingBuffer.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -289,6 +303,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TimerObject.cpp" />
+    <ClCompile Include="Tool.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="UIText.cpp" />
