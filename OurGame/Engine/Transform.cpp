@@ -255,6 +255,50 @@ namespace hm
 		}
 	}
 
+	void Transform::SetWorldMatrix(const Matrix& _matrix)
+	{
+		XMVECTOR scale, rotationQuat, translation;
+		XMMatrixDecompose(&scale, &rotationQuat, &translation, _matrix);
+
+		XMFLOAT4 quatData;
+		XMStoreFloat4(&quatData, rotationQuat);
+
+		XMFLOAT4 quaternion = XMFLOAT4(quatData.x, quatData.y, quatData.z, quatData.w);
+		XMMATRIX rotationMatrix = XMMatrixRotationQuaternion(XMLoadFloat4(&quaternion));
+		XMFLOAT4X4 rotation;
+		XMStoreFloat4x4(&rotation, rotationMatrix);
+
+		float pitch = asinf(-rotation._23);
+		float yaw, roll;
+
+		if (fabsf(rotation._23) < 0.9999f) {
+			yaw = atan2f(rotation._13, rotation._33);
+			roll = atan2f(rotation._21, rotation._22);
+		}
+		else {
+			yaw = atan2f(-rotation._12, rotation._11);
+			roll = 0.0f;
+		}
+
+		pitch = XMConvertToDegrees(-pitch);
+		yaw = XMConvertToDegrees(-yaw);
+		roll = XMConvertToDegrees(-roll);
+
+		mRotation = Vec3(
+			pitch < 0.f ? pitch + 360.f : pitch,
+			yaw < 0.f ? yaw + 360.f : yaw,
+			roll < 0.f ? roll + 360.f : roll);
+
+		//mRotation.x = Truncated(mRotation.x);
+		//mRotation.y = Truncated(mRotation.y);
+		//mRotation.z = Truncated(mRotation.z);
+		
+		mScale = Vec3(XMVectorGetX(scale), XMVectorGetY(scale), XMVectorGetZ(scale));
+		mPosition = Vec3(XMVectorGetX(translation), XMVectorGetY(translation), XMVectorGetZ(translation));
+
+		mMatWorld = _matrix;
+	}
+
 	Vec3 Transform::GetWorldPosition()
 	{
 		Vec3 position = mPosition;

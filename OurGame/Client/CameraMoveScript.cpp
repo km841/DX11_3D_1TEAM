@@ -36,7 +36,7 @@ namespace hm
 
 		GetGameObject()->GetTransform()->SetPosition(pos);
 
-		if (IS_PRESS(KeyType::LBUTTON))
+		if (IS_PRESS(KeyType::RBUTTON))
 		{
 			POINT prevPos = GET_SINGLE(Input)->GetPrevMousePos();
 			POINT curPos = GET_SINGLE(Input)->GetMousePos();
