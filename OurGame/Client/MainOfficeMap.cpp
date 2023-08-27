@@ -57,89 +57,91 @@ namespace yj
 	void MainOfficeMap::Update()
 	{
 		Map::Update();
-		if (mTarget != nullptr)
+		if (Target != nullptr)
 		{
 			if (IS_UP(KeyType::LEFT))
 			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+				Vec3 target_pos = Vec3(Target->GetTransform()->GetPosition());
 				Vec3 fixed_pos = Vec3(target_pos.x -= 0.1f, target_pos.y, target_pos.z);
-				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+				Target->GetTransform()->GetTransform()->SetPosition(fixed_pos);
 			}
 			if (IS_UP(KeyType::UP))
 			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+				Vec3 target_pos = Vec3(Target->GetTransform()->GetPosition());
 				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y, target_pos.z += 0.1f);
-				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+				Target->GetTransform()->GetTransform()->SetPosition(fixed_pos);
 			}
 			if (IS_UP(KeyType::DOWN))
 			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+				Vec3 target_pos = Vec3(Target->GetTransform()->GetPosition());
 				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y, target_pos.z -= 0.1f);
-				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+				Target->GetTransform()->GetTransform()->SetPosition(fixed_pos);
 			}
 			if (IS_UP(KeyType::RIGHT))
 			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+				Vec3 target_pos = Vec3(Target->GetTransform()->GetPosition());
 				Vec3 fixed_pos = Vec3(target_pos.x += 0.1f, target_pos.y, target_pos.z);
-				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+				Target->GetTransform()->GetTransform()->SetPosition(fixed_pos);
 			}
 			if (IS_UP(KeyType::Z))
 			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+				Vec3 target_pos = Vec3(Target->GetTransform()->GetPosition());
 				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y += 0.1f, target_pos.z);
-				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+				Target->GetTransform()->GetTransform()->SetPosition(fixed_pos);
 			}
 			if (IS_UP(KeyType::X))
 			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
+				Vec3 target_pos = Vec3(Target->GetTransform()->GetPosition());
 				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y -= 0.1f, target_pos.z);
-				mTarget->GetTransform()->SetPosition(fixed_pos);
+				Target->GetTransform()->SetPosition(fixed_pos);
 
 			}
 			if (IS_UP(KeyType::E))
 			{
-				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
+				Vec3 target_rot = Vec3(Target->GetTransform()->GetRotation());
 				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 10.0f, target_rot.z);
-				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+				Target->GetTransform()->GetTransform()->SetRotation(fixed_rot);
 			}
 			if (IS_UP(KeyType::Q))
 			{
-				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
+				Vec3 target_rot = Vec3(Target->GetTransform()->GetRotation());
 				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 10.0f, target_rot.z);
-				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+				Target->GetTransform()->GetTransform()->SetRotation(fixed_rot);
 			}
 
 			if (IS_UP(KeyType::R))
 			{
-				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
+				Vec3 target_rot = Vec3(Target->GetTransform()->GetRotation());
 				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 1.0f, target_rot.z);
-				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+				Target->GetTransform()->GetTransform()->SetRotation(fixed_rot);
 			}
 			if (IS_UP(KeyType::T))
 			{
-				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
+				Vec3 target_rot = Vec3(Target->GetTransform()->GetRotation());
 				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 1.0f, target_rot.z);
-				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+				Target->GetTransform()->GetTransform()->SetRotation(fixed_rot);
 			}
 
 			if (IS_UP(KeyType::O))
 			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+				Vec3 target_scale = Vec3(Target->GetTransform()->GetScale());
 				Vec3 fixed_scale = Vec3(target_scale.x += 0.5f, target_scale.y += 0.5f, target_scale.z += 0.5f);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+				Target->GetTransform()->GetTransform()->SetScale(fixed_scale);
 			}
 			if (IS_UP(KeyType::P))
 			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
+				Vec3 target_scale = Vec3(Target->GetTransform()->GetScale());
 				Vec3 fixed_scale = Vec3(target_scale.x -= 0.5f, target_scale.y -= 0.5f, target_scale.z -= 0.5f);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
+				Target->GetTransform()->GetTransform()->SetScale(fixed_scale);
 			}
 			if (IS_UP(KeyType::ENTER))
 			{
-				Vec3 a = mTarget->GetTransform()->GetPosition();
-				Vec3 b = mTarget->GetTransform()->GetRotation();
-				Vec3 c = mTarget->GetTransform()->GetScale();
-				int d = 0;
+				Vec3 a = Target->GetTransform()->GetPosition();
+				Vec3 b = Target->GetTransform()->GetRotation();
+				Vec3 c = Target->GetTransform()->GetScale();
+					int d = 0;
+			
+
 				
 			}
 		}
@@ -474,9 +476,8 @@ namespace yj
 			pTowerDetail->GetTransform()->SetScale(Vec3(9.0f, 9.0f, 9.0f));
 			pTowerDetail->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
 			AddGameObject(pTowerDetail);
-
 			pTowerDetail->GetTransform()->SetPosition(Vec3(15.8f, -2.9f, -11.6));
-			pTowerDetail->GetTransform()->SetRotation(Vec3(0.0f, -45.0f, 0.0f));
+			pTowerDetail->GetTransform()->SetRotation(Vec3(0.0f, -225.0f, 0.0f));
 			pTowerDetail->GetTransform()->SetScale(Vec3(11.5f, 11.5f, 11.5f));
 		}
 #pragma endregion
@@ -566,13 +567,134 @@ namespace yj
 		mTypeMachineList[3]->GetTransform()->SetPosition(Vec3(14.1f, -6.8f, 0.5f));
 		mTypeMachineList[3]->GetTransform()->SetRotation(Vec3(0.0f, 37.0f, 0.0f));
 		mTypeMachineList[3]->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+	
+		std::vector<GameObject*> mSphereLightList;
+		for (int i = 0; i < 2; i++)
+		{
+			DecoObject* pSphereLightBase = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\SphereLightBase.fbx");
+			
+			AddGameObject(pSphereLightBase);
+			mSphereLightList.push_back(pSphereLightBase);
+		}
+
+		mSphereLightList[0]->GetTransform()->SetPosition(Vec3(6.6f, -1.6f, -15.4f));
+		mSphereLightList[0]->GetTransform()->SetRotation(Vec3(0.0f, -20.0f, 0.0f));
+		mSphereLightList[0]->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
 
 
-		mTarget = mTypeMachineList[3];
+		mSphereLightList[1]->GetTransform()->SetPosition(Vec3(21.0f, -1.6f, -1.5f));
+		mSphereLightList[1]->GetTransform()->SetRotation(Vec3(0.0f, -20.0f, 0.0f));
+		mSphereLightList[1]->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
+
+
+		{
+			DecoObject* pPostBoard = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\PostBoard.fbx");
+			AddGameObject(pPostBoard);
+			pPostBoard->GetTransform()->SetPosition(Vec3(20.2f, -3.8f, -6.8f));
+			pPostBoard->GetTransform()->SetRotation(Vec3(0.0f, -3.0f, 0.0f));
+			pPostBoard->GetTransform()->SetScale(Vec3(5.5f, 5.5f, 5.5f));
+
+		}
+
+		{
+			DecoObject* pHoD_LampPost = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\HoD_LampPost.fbx");
+			AddGameObject(pHoD_LampPost);
+			pHoD_LampPost->GetTransform()->SetPosition(Vec3(-3.1f, -8.5f, 14.8f));
+			pHoD_LampPost->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+			pHoD_LampPost->GetTransform()->SetScale(Vec3(8.0f, 8.0f, 8.0f));
+		}
+
+
+		std::vector<GameObject*> mSideRallingBusStopStairList;
+		for(int i = 0; i< 2; i++)
+		{
+			DecoObject* pSideRallingBusStopStair = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\SideRallingBusStopStair.fbx");
+			AddGameObject(pSideRallingBusStopStair);
 		
+			mSideRallingBusStopStairList.push_back(pSideRallingBusStopStair);
+		}
+		
+		mSideRallingBusStopStairList[0]->GetTransform()->SetPosition(Vec3(-17.4f, -9.5f, 11.5f));
+		mSideRallingBusStopStairList[0]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+		mSideRallingBusStopStairList[0]->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
 
+		mSideRallingBusStopStairList[1]->GetTransform()->SetPosition(Vec3(-12.3f, -9.5f, 10.0f));
+		mSideRallingBusStopStairList[1]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+		mSideRallingBusStopStairList[1]->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
+
+
+		{
+			DecoObject* pRoundElevator = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\RoundElevator.fbx");
+			AddGameObject(pRoundElevator);
+			pRoundElevator->GetTransform()->SetPosition(Vec3(-20.9f, 3.8f, -17.2f));
+			pRoundElevator->GetTransform()->SetRotation(Vec3::Zero);
+			pRoundElevator->GetTransform()->SetScale(Vec3(32.5f, 32.5f, 32.5f));
+			Target = pRoundElevator;
+		}
+
+		{
+			DecoObject* pRailing11 = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Railing11.fbx");
+			AddGameObject(pRailing11);
+			pRailing11->GetTransform()->SetPosition(Vec3(14.3f, -3.3f, 14.7f));
+			pRailing11->GetTransform()->SetRotation(Vec3::Zero);
+			pRailing11->GetTransform()->SetScale(Vec3(12.5f, 12.5f, 12.5f));
+		}
+
+		{
+			DecoObject* pRailing10 = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Railing10.fbx");
+			AddGameObject(pRailing10);
+			pRailing10->GetTransform()->SetPosition(Vec3(15.9f, -3.3f, 16.6f));
+			pRailing10->GetTransform()->SetRotation(Vec3::Zero);
+			pRailing10->GetTransform()->SetScale(Vec3(17.5f, 17.5f, 17.5f));
+		}
+		{
+			DecoObject* pGraveyardPlane = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\GraveyardPlane.fbx");
+			AddGameObject(pGraveyardPlane);
+			pGraveyardPlane->GetTransform()->SetPosition(Vec3(22.6f, -5.6f, -2.9f));
+			pGraveyardPlane->GetTransform()->SetRotation(Vec3(0.0f,-10.0f, 0.0f));
+			pGraveyardPlane->GetTransform()->SetScale(Vec3(12.0f, 12.0f, 12.0f));
+
+
+		}
+
+		{
+			DecoObject* pUpperStairContainer = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\UpperStairContainer.fbx");
+			AddGameObject(pUpperStairContainer);
+			pUpperStairContainer->GetTransform()->SetPosition(Vec3(62.5f, -5.6f, 23.0f));
+			pUpperStairContainer->GetTransform()->SetRotation(Vec3(0.0f, 102.0f, 0.0f));
+			pUpperStairContainer->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
+		}	
+		//요것만 자꾸 에러가 남...
+		{
+			//DecoObject* pShortcutDoor = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\ShortcutDoor.fbx");
+			//AddGameObject(pShortcutDoor);
+			//pShortcutDoor->GetTransform()->SetPosition(Vec3(22.6f, -5.6f, -2.9f));
+			//pShortcutDoor->GetTransform()->SetRotation(Vec3(0.0f, -10.0f, 0.0f));
+			//pShortcutDoor->GetTransform()->SetScale(Vec3(12.0f, 12.0f, 12.0f));
+			////Target = pShortcutDoor;
+		}
+
+
+		{
+			DecoObject* pIslandRight = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\IslandRight.fbx");
+			AddGameObject(pIslandRight);
+			pIslandRight->GetTransform()->SetPosition(Vec3(-19.2f, -12.1f, -31.6f));
+			pIslandRight->GetTransform()->SetRotation(Vec3(0.0f, -140.0f, 0.0f));
+			pIslandRight->GetTransform()->SetScale(Vec3(41.0f, 41.0f, 41.0f));
+		}
+
+		//5개 정도?
+		{
+			/*DecoObject* pShortcutDoorStatic = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\ShortcutDoorStatic.fbx");
+			AddGameObject(pShortcutDoorStatic);
+			pShortcutDoorStatic->GetTransform()->SetPosition(Vec3(62.5f, -5.6f, 23.0f));
+			pShortcutDoorStatic->GetTransform()->SetRotation(Vec3(0.0f, 102.0f, 0.0f));
+			pShortcutDoorStatic->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));*/
+		}
 	}
 	
+	
+
 	void MainOfficeMap::Exit()
 	{
 
