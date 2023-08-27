@@ -100,7 +100,9 @@ void LeftSecretTrialMap::Enter()
 	//->GetTransform()->SetRotationExcludingColliders == 콜라이더를 제외하고 오브젝트만 [회전] 시키는 함수
 	
 	//Deferred_CullNone == 머테리얼 카메라 시점 짤림 없애는 버전 _원본 그대로
-		
+	
+	//Object->AddComponent(new PlacementScript); == 키보드로 움직이는 오브젝트 이동 스크립트
+	//SetGizmoTarget(Object); == 유니티 방식으로 마우스로 움직이는 오브젝트 이동 함수
 
 
 
@@ -109,7 +111,7 @@ void LeftSecretTrialMap::Enter()
 	{
 		DecoObject* pCube = Factory::CreateObject<DecoObject>(Vec3(0.0f, 0.0f, 0.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\Cube.fbx");
 		pCube->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
-
+		
 		AddGameObject(pCube);
 	}
 
@@ -117,6 +119,7 @@ void LeftSecretTrialMap::Enter()
 	{
 		DecoObject* pRoughUpperFloor = Factory::CreateObject<DecoObject>(Vec3(-1.95f, -3.6f, -0.9f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\RoughUpperFloor.fbx");
 		pRoughUpperFloor->GetTransform()->SetScale(Vec3(52.f, 52.f, 52.f));
+		pRoughUpperFloor->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.01f, 0.01f));
 		AddGameObject(pRoughUpperFloor);
 	}
 
@@ -124,7 +127,7 @@ void LeftSecretTrialMap::Enter()
 	{
 		DecoObject* pRoughLowerFloor = Factory::CreateObject<DecoObject>(Vec3(-4.35f, -4.f, 3.4f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\RoughLowerFloor.fbx");
 		pRoughLowerFloor->GetTransform()->SetScale(Vec3(43.f, 43.f, 43.2f));
-		
+		pRoughLowerFloor->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.02f, 0.02f));
 		AddGameObject(pRoughLowerFloor);
 	}
 
@@ -594,6 +597,7 @@ void LeftSecretTrialMap::Enter()
 		AddGameObject(pTwoTierShelf);
 	}
 #pragma endregion
+
 #pragma region "나무선반안에있는 담는 박스 모음"
 	{
 		//박스- EmptyBox
@@ -621,10 +625,130 @@ void LeftSecretTrialMap::Enter()
 	
 		AddGameObject(pEmptyBox);
 	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-6.9f, -2.4f, 3.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(35.f, 35.f, 35.f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-7.2f, -2.4f, 4.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(35.f, 35.f, 35.f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-6.9f, -2.4f, 5.7f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(35.f, 35.f, 35.f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-6.9f, -2.4f, 7.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(35.f, 35.f, 35.f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-6.9f, -2.4f, 8.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(35.f, 35.f, 35.f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-6.9f, -2.4f, 8.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(35.f, 35.f, 34.f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-6.9f, -1.0f, 8.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(35.f, 35.f, 34.f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-6.9f, -1.0f, 7.75f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(35.f, 35.f, 34.f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+	
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-3.4f ,-2.4f, 11.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(35.f, 35.f, 34.f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-3.4f, -2.4f, 8.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(35.f, 35.f, 34.f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(12.2f, -2.4f, -14.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(35.f, 35.f, 34.f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+		
+		AddGameObject(pEmptyBox);
+	}
 #pragma endregion
 	
+	//박스안 접시 1 - SilverwareShelfFiller_Plates
+	{
+		DecoObject* pSilverwareShelfFiller_Plates = Factory::CreateObject<DecoObject>(Vec3(-6.4f, -0.8f, 6.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\SilverwareShelfFiller_Plates.fbx");
+		pSilverwareShelfFiller_Plates->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+		
+		AddGameObject(pSilverwareShelfFiller_Plates);
+	}
 
+	//박스안 접시 2- SilverwareShelfFiller_Plates
+	{
+		DecoObject* pSilverwareShelfFiller_Plates = Factory::CreateObject<DecoObject>(Vec3(-7.6f, -2.2f, 2.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\SilverwareShelfFiller_Plates.fbx");
+		pSilverwareShelfFiller_Plates->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
 
+		AddGameObject(pSilverwareShelfFiller_Plates);
+	}
+	
+	//박스안 찻잔 - SilverwareShelfFiller_Goblets
+	{
+		DecoObject* pSilverwareShelfFiller_Goblets = Factory::CreateObject<DecoObject>(Vec3(-7.f, -0.8f, 6.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\SilverwareShelfFiller_Goblets.fbx");
+		pSilverwareShelfFiller_Goblets->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+		
+		AddGameObject(pSilverwareShelfFiller_Goblets);
+	}
 
 
 
@@ -660,7 +784,177 @@ void LeftSecretTrialMap::Enter()
 		
 		AddGameObject(pCurtainVertical);
 	}
+#pragma region "화톳불 세트 1"
+	{
+		//화톳불 3개 오브젝트 세트
+		float x = -6.9f;
+		float y = -1.4f;
+		float z = 10.9f;
+		{
+			//바텀 - FireLamp_Bottom
+			DecoObject* pFireLamp_Bottom = Factory::CreateObject<DecoObject>(Vec3(x, y, z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Bottom.fbx");
+			pFireLamp_Bottom->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+		
+			AddGameObject(pFireLamp_Bottom);
+		}
+		{
+			//나무장작 - FireLamp_Wood
+			DecoObject* pFireLamp_Wood = Factory::CreateObject<DecoObject>(Vec3(x, (y + 0.2f), (z + 0.25f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Wood.fbx");
+			pFireLamp_Wood->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+			
+			AddGameObject(pFireLamp_Wood);
+		}
+		{
+			//상단부 - FireLamp_Top
+			DecoObject* pFireLamp_Top = Factory::CreateObject<DecoObject>(Vec3(x, (y + 0.6f), (z - 0.05f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Top.fbx");
+			pFireLamp_Top->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+		
+			AddGameObject(pFireLamp_Top);
+		}
+	}
+#pragma endregion
 
+
+#pragma region "화톳불 세트 2"
+	{
+		//화톳불 3개 오브젝트 세트
+		float x = -6.9f;
+		float y = -1.4f;
+		float z = 18.1f;
+		{
+			//바텀 - FireLamp_Bottom
+			DecoObject* pFireLamp_Bottom = Factory::CreateObject<DecoObject>(Vec3(x, y, z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Bottom.fbx");
+			pFireLamp_Bottom->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+			
+			AddGameObject(pFireLamp_Bottom);
+		}
+		{
+			//나무장작 - FireLamp_Wood
+			DecoObject* pFireLamp_Wood = Factory::CreateObject<DecoObject>(Vec3(x, (y + 0.2f), (z + 0.25f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Wood.fbx");
+			pFireLamp_Wood->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+
+			AddGameObject(pFireLamp_Wood);
+		}
+		{
+			//상단부 - FireLamp_Top
+			DecoObject* pFireLamp_Top = Factory::CreateObject<DecoObject>(Vec3(x, (y + 0.6f), (z - 0.05f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Top.fbx");
+			pFireLamp_Top->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+			
+			AddGameObject(pFireLamp_Top);
+		}
+	}
+#pragma endregion
+
+
+#pragma region "화톳불 세트 3"
+	{
+		//화톳불 3개 오브젝트 세트
+		float x = 2.5f;
+		float y = -1.4f;
+		float z = 18.1f;
+		{
+			//바텀 - FireLamp_Bottom
+			DecoObject* pFireLamp_Bottom = Factory::CreateObject<DecoObject>(Vec3(x, y, z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Bottom.fbx");
+			pFireLamp_Bottom->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+
+			AddGameObject(pFireLamp_Bottom);
+		}
+		{
+			//나무장작 - FireLamp_Wood
+			DecoObject* pFireLamp_Wood = Factory::CreateObject<DecoObject>(Vec3(x, (y + 0.2f), (z + 0.25f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Wood.fbx");
+			pFireLamp_Wood->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+
+			AddGameObject(pFireLamp_Wood);
+		}
+		{
+			//상단부 - FireLamp_Top
+			DecoObject* pFireLamp_Top = Factory::CreateObject<DecoObject>(Vec3(x, (y + 0.6f), (z - 0.05f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Top.fbx");
+			pFireLamp_Top->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+
+			AddGameObject(pFireLamp_Top);
+		}
+	}
+#pragma endregion
+
+
+#pragma region "화톳불 세트 4"
+	{
+		//화톳불 3개 오브젝트 세트
+		float x = 2.5f;
+		float y = -1.4f;
+		float z = 3.4f;
+		{
+			//바텀 - FireLamp_Bottom
+			DecoObject* pFireLamp_Bottom = Factory::CreateObject<DecoObject>(Vec3(x, y, z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Bottom.fbx");
+			pFireLamp_Bottom->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+			
+			AddGameObject(pFireLamp_Bottom);
+		}
+		{
+			//나무장작 - FireLamp_Wood
+			DecoObject* pFireLamp_Wood = Factory::CreateObject<DecoObject>(Vec3(x, (y + 0.2f), (z + 0.25f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Wood.fbx");
+			pFireLamp_Wood->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+
+			AddGameObject(pFireLamp_Wood);
+		}
+		{
+			//상단부 - FireLamp_Top
+			DecoObject* pFireLamp_Top = Factory::CreateObject<DecoObject>(Vec3(x, (y + 0.6f), (z - 0.05f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Top.fbx");
+			pFireLamp_Top->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+
+			AddGameObject(pFireLamp_Top);
+		}
+	}
+#pragma endregion
+
+
+#pragma region "화톳불 세트 5"
+	{
+		//화톳불 3개 오브젝트 세트
+		float x = -6.8f;
+		float y = -1.4f;
+		float z = 3.4f;
+		{
+			//바텀 - FireLamp_Bottom
+			DecoObject* pFireLamp_Bottom = Factory::CreateObject<DecoObject>(Vec3(x, y, z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Bottom.fbx");
+			pFireLamp_Bottom->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+			
+			AddGameObject(pFireLamp_Bottom);
+		}
+		{
+			//나무장작 - FireLamp_Wood
+			DecoObject* pFireLamp_Wood = Factory::CreateObject<DecoObject>(Vec3(x, (y + 0.2f), (z + 0.25f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Wood.fbx");
+			pFireLamp_Wood->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+
+			AddGameObject(pFireLamp_Wood);
+		}
+		{
+			//상단부 - FireLamp_Top
+			DecoObject* pFireLamp_Top = Factory::CreateObject<DecoObject>(Vec3(x, (y + 0.6f), (z - 0.05f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Top.fbx");
+			pFireLamp_Top->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+
+			AddGameObject(pFireLamp_Top);
+		}
+	}
+#pragma endregion
+
+	//샹드리에 - ChandelierWithChain
+	{
+		DecoObject* pChandelierWithChain = Factory::CreateObject<DecoObject>(Vec3(-4.1f, 9.0f, 0.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\ChandelierWithChain.fbx");
+		pChandelierWithChain->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+		pChandelierWithChain->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+	
+		AddGameObject(pChandelierWithChain);
+	}
+
+	//사다리 - Ladder
+	{
+		DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(-7.4f, -2.8f, 7.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\Ladder.fbx");
+		pLadder->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+		pLadder->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+	
+		AddGameObject(pLadder);
+	}
 
 }
 
