@@ -34,6 +34,28 @@ namespace hm
 	}
 	void Map::Enter()
 	{
+	//배경맵 하얀색으로 만들어주는 코드
+	//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
+
+#pragma region "어드민"
+#pragma endregion
+
+	//DecoObject == 콜라이더 없는 오브젝트
+	//WallObject == 콜라이더 있는 오브젝트
+
+	//Forward == 빛 계산이 없는 명령어
+	//Deferred == 빛 계산이 있는 명령어
+
+	//->GetTransform()->SetPositionExcludingColliders == 콜라이더를 제외하고 오브젝트만 [이동] 시키는 함수
+	//->GetTransform()->SetRotationExcludingColliders == 콜라이더를 제외하고 오브젝트만 [회전] 시키는 함수
+
+	//Deferred_CullNone == 머테리얼 카메라 시점 짤림 없애는 버전 _원본 그대로
+
+	//Object->AddComponent(new PlacementScript); == 키보드로 움직이는 오브젝트 이동 스크립트
+	//SetGizmoTarget(Object); == 유니티 방식으로 마우스로 움직이는 오브젝트 이동 함수
+
+
+
 	}
 	void Map::Exit()
 	{
