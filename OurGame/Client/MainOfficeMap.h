@@ -17,6 +17,7 @@ namespace yj {
 
 		virtual void Enter();
 		virtual void Exit();
+		GameObject* Target;
 	};
 }
 
