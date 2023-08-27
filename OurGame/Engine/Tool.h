@@ -15,19 +15,23 @@ namespace hm
 	public:
 		LRESULT DispatchWndMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 		void SetGameObject(GameObject* _pGameObject);
+		const Vec3& GetSnaps() { return mSnaps; }
 
 	private:
 		void InitGui();
-		void UpdateGui();
+		void UpdateGizmo();
 		void EditTransform();
-		
 
 	private:
 		HWND mHwnd;
 		ComPtr<ID3D11Device> mpDevice;
 		ComPtr<ID3D11DeviceContext> mpContext;
-
 		GameObject* mpGameObject;
+
+		Vec3 mSnaps;
+
+		ImGuizmo::OPERATION meCurrentOperation;
+		ImGuizmo::MODE meCurrentMode;
 	};
 }
 

@@ -34,6 +34,13 @@ namespace hm
 		void  SetPositionExcludingColliders(Axis _eAxis, float _position);
 
 		void SetWorldMatrix(const Matrix& _matrix);
+		void SetUpdateByMat(bool _bFlag) { mbUpdateByMat = _bFlag; }
+
+		void DecomposeWorld();
+		float NormalizeAngle(float _angle);
+		Vec3 NormalizeAngles(Vec3 _angles);
+		Vec3 QuaternionToEuler(float _x, float _y, float _z, float _w);
+		PxQuat EulerToQuaternion(Vec3 _euler);
 
 		float GetBoundingSphereRadius() { return max(max(mScale.x, mScale.y), mScale.z); }
 
@@ -67,6 +74,8 @@ namespace hm
 
 		Matrix  mMatLocal;
 		Matrix  mMatWorld;
+		
+		bool mbUpdateByMat;
 
 	};
 

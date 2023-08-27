@@ -8,7 +8,7 @@
 bool PlacementScript::mbExists = false;
 PlacementScript::PlacementScript()
 	: meTransformType(TransformType::Rotation)
-	, mUnit(1.f)
+	, mSnaps(0.1f, 0.1f, 0.1f)
 {
 	AssertEx(false == mbExists, L"PlacementScript::PlacementScript() - 이미 PlacementScript를 적용받은 객체가 존재");
 	mbExists = true;
@@ -21,6 +21,8 @@ Component* PlacementScript::Clone(GameObject* _pGameObject)
 
 void PlacementScript::FixedUpdate()
 {
+	mSnaps = TOOL->GetSnaps();
+
 	if (IS_DOWN(KeyType::N_1))
 		meTransformType = TransformType::Scale;
 	
@@ -29,12 +31,6 @@ void PlacementScript::FixedUpdate()
 	
 	if (IS_DOWN(KeyType::N_3))
 		meTransformType = TransformType::Position;
-
-	if (IS_DOWN(KeyType::SQUARE_BKT_L))
-		mUnit *= 0.1f;
-
-	if (IS_DOWN(KeyType::SQUARE_BKT_R))
-		mUnit *= 10.f;
 	
 	switch (meTransformType)
 	{
@@ -56,7 +52,7 @@ void PlacementScript::EditPosition()
 {
 	Vec3 target_pos = GetTransform()->GetPosition();
 
-	float offset = 0.1f * mUnit;
+	float offset = mSnaps.x;
 	if (IS_PRESS(KeyType::LCTRL))
 		offset *= 10.f;
 
@@ -79,7 +75,7 @@ void PlacementScript::EditPosition()
 void PlacementScript::EditScale()
 {
 	Vec3 target_scale = GetTransform()->GetScale();
-	float offset = 0.1f * mUnit;
+	float offset = mSnaps.x;
 	if (IS_PRESS(KeyType::LCTRL))
 		offset *= 10.f;
 
@@ -103,7 +99,7 @@ void PlacementScript::EditRotation()
 {
 	Vec3 target_rotation = GetTransform()->GetRotation();
 
-	float offset = 1.f * mUnit;
+	float offset = mSnaps.x;
 	if (IS_PRESS(KeyType::LCTRL))
 		offset *= 10.f;
 	
@@ -168,7 +164,7 @@ void PlacementScript::ShowTransform()
 	strTransform += L"y = " + std::to_wstring(transform.y) + L"\n";
 	strTransform += L"z = " + std::to_wstring(transform.z) + L"\n";
 
-	wstring strUnit = L"UNIT : " + std::to_wstring(mUnit);
+	wstring strUnit = L"SNAP : " + std::to_wstring(mSnaps.x);
 
 	UINT32 color = 0xff0000ff;
 	switch (meTransformType)
@@ -190,7 +186,7 @@ void PlacementScript::ShowTransform()
 	*/
 	FONT->DrawString(transformName, 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, color, FONT_ALIGN::LEFT);
 	FONT->DrawString(strTransform, 20.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
-	FONT->DrawString(strUnit, 15.f, Vec3(50.f, 750.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, color, FONT_ALIGN::LEFT);
+	FONT->DrawString(strUnit, 15.f, Vec3(50.f, 765.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, color, FONT_ALIGN::LEFT);
 }
 
 
