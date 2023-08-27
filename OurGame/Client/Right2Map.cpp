@@ -91,10 +91,11 @@ namespace hm
 		{
 			DecoObject* pBanker = Factory::CreateObject<DecoObject>(Vec3(0.f, 10.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Banker.fbx");
 			pBanker->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
-			pBanker->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+			pBanker->GetTransform()->SetRotation(Vec3(0.89f, 124.7f, 225.2f));
 			pBanker->AddComponent(new TestAnimationScript);
-			pBanker->AddComponent(new PlacementScript);
+			//pBanker->AddComponent(new PlacementScript);
 
+			SetGizmoTarget(pBanker);
 			AddGameObject(pBanker);
 		}
 
@@ -107,7 +108,7 @@ namespace hm
 
 			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Right2_Ground.fbx");
 			pGround->GetTransform()->SetScale(Vec3(50.f, 1.f, 50.f));
-		
+
 			AddGameObject(pGround);
 		}
 

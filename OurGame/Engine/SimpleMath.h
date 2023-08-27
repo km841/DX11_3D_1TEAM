@@ -228,6 +228,11 @@ namespace DirectX
             Vector3() noexcept : XMFLOAT3(0.f, 0.f, 0.f) {}
             constexpr explicit Vector3(float ix) noexcept : XMFLOAT3(ix, ix, ix) {}
             constexpr Vector3(float ix, float iy, float iz) noexcept : XMFLOAT3(ix, iy, iz) {}
+            constexpr Vector3(float ix, float iy, double iz) noexcept : XMFLOAT3(ix, iy, static_cast<float>(iz)) {}
+            constexpr Vector3(float ix, double iy, float iz) noexcept : XMFLOAT3(ix, static_cast<float>(iy), iz) {}
+            constexpr Vector3(double ix, float iy, float iz) noexcept : XMFLOAT3(static_cast<float>(ix), iy, iz) {}
+            constexpr Vector3(double ix, double iy, double iz) noexcept : XMFLOAT3(static_cast<float>(ix), static_cast<float>(iy), static_cast<float>(iz)) {}
+            constexpr Vector3(int ix, int iy, int iz) noexcept : XMFLOAT3(static_cast<float>(ix), static_cast<float>(iy), static_cast<float>(iz)) {}
             explicit Vector3(_In_reads_(3) const float *pArray) noexcept : XMFLOAT3(pArray) {}
             Vector3(FXMVECTOR V) noexcept { XMStoreFloat3(this, V); }
             Vector3(const XMFLOAT3& V) noexcept { this->x = V.x; this->y = V.y; this->z = V.z; }
@@ -402,6 +407,8 @@ namespace DirectX
 
             // Vector operations
             bool InBounds(const Vector4& Bounds) const noexcept;
+
+            XMVECTOR Convert() const noexcept;
 
             float Length() const noexcept;
             float LengthSquared() const noexcept;

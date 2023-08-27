@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Map.h"
+#include "PlacementScript.h"
 
 namespace hm
 {
@@ -36,6 +37,11 @@ namespace hm
 	}
 	void Map::Exit()
 	{
+	}
+	void Map::SetGizmoTarget(GameObject* _pTarget)
+	{
+		TOOL->SetGameObject(_pTarget);
+		_pTarget->AddComponent(new PlacementScript);
 	}
 }
 

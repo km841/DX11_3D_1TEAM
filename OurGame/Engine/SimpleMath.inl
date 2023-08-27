@@ -1505,6 +1505,11 @@ inline bool Vector4::InBounds(const Vector4& Bounds) const noexcept
     return XMVector4InBounds(v1, v2);
 }
 
+inline XMVECTOR DirectX::SimpleMath::Vector4::Convert() const noexcept
+{
+    return XMLoadFloat4((XMFLOAT4*)this);
+}
+
 inline float Vector4::Length() const noexcept
 {
     using namespace DirectX;

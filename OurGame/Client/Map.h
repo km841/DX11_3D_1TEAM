@@ -19,6 +19,9 @@ namespace hm
 		virtual void Enter();
 		virtual void Exit();
 
+	public:
+		void SetGizmoTarget(GameObject* _pTarget);
+
 	protected:
 		GameObject* mTarget = nullptr;
 	};

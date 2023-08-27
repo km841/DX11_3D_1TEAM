@@ -6,12 +6,16 @@
 #include "Camera.h"
 #include "Resources.h"
 #include "GameObject.h"
+#include "Input.h"
 
 namespace hm
 {
 	Tool::Tool()
 		: mHwnd(0)
 		, mpGameObject(nullptr)
+		, meCurrentOperation(ImGuizmo::ROTATE)
+		, meCurrentMode(ImGuizmo::WORLD)
+		, mSnaps{0.1f, 0.1f, 0.1f}
 	{
 	}
 
@@ -36,7 +40,7 @@ namespace hm
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-		UpdateGui();
+		UpdateGizmo();
 
 	}
 	void Tool::Render()
@@ -65,11 +69,12 @@ namespace hm
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 	}
 
-	void Tool::UpdateGui()
+	void Tool::UpdateGizmo()
 	{
 		Vec2 Resolution = gpEngine->GetResolution();
 		ImGui::SetNextWindowPos(ImVec2(0, 0));
 		ImGui::SetNextWindowSize(ImVec2(Resolution.x, Resolution.y));
+
 		if (ImGui::Begin("Gizmo", nullptr,
 			ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar))
@@ -80,75 +85,55 @@ namespace hm
 				ImGui::Image(pSwapChainTarget->GetSRV().Get(), panelSize);
 
 			if (nullptr != mpGameObject)
+			{
 				EditTransform();
+			}
 		}
 		ImGui::End();
 	}
 
 	void Tool::EditTransform()
 	{
-		bool useWindow = true;
-		int gizmoCount = 1;
-		float camDistance = 8.f;
-		static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::ROTATE);
-		static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
-		static bool useSnap = false;
-		static float snap[3] = { 0.1f, 0.1f, 0.1f };
-		static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
-		static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
-		static bool boundSizing = false;
-		static bool boundSizingSnap = false;
+		if (IS_DOWN(KeyType::N_3))
+			meCurrentOperation = ImGuizmo::TRANSLATE;
+		if (IS_DOWN(KeyType::N_2))
+			meCurrentOperation = ImGuizmo::ROTATE;
+		if (IS_DOWN(KeyType::N_1))
+			meCurrentOperation = ImGuizmo::SCALE;
+		if (IS_DOWN(KeyType::SQUARE_BKT_L))
+			mSnaps *= 0.1f;
+		if (IS_DOWN(KeyType::SQUARE_BKT_R))
+			mSnaps *= 10.f;
 
-		if (ImGui::IsKeyPressed(ImGuiKey_3))
-			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-		if (ImGui::IsKeyPressed(ImGuiKey_2))
-			mCurrentGizmoOperation = ImGuizmo::ROTATE;
-		if (ImGui::IsKeyPressed(ImGuiKey_1))
-			mCurrentGizmoOperation = ImGuizmo::SCALE;
+		mSnaps.x = std::clamp(mSnaps.x, 0.01f, 10.f );
+		mSnaps.y = std::clamp(mSnaps.y, 0.01f, 10.f );
+		mSnaps.z = std::clamp(mSnaps.z, 0.01f, 10.f );
 		
 		Scene* pActiveScene = GET_SINGLE(SceneManager)->GetActiveScene();
-
 		Matrix viewMat = pActiveScene->GetMainCamera()->GetViewMatrix();
 		Matrix projMat = pActiveScene->GetMainCamera()->GetProjectionMatrix();
 		Matrix worldMat = mpGameObject->GetTransform()->GetWorldMatrix();
+		Matrix identityMat = Matrix::Identity;
 
-		ImGuiIO& io = ImGui::GetIO();
-		float viewManipulateRight = io.DisplaySize.x;
-		float viewManipulateTop = 0;
-		static ImGuiWindowFlags gizmoWindowFlags = 0;
-		if (useWindow)
-		{
-			ImGui::PushStyleColor(ImGuiCol_WindowBg, (ImVec4)ImColor(0.35f, 0.3f, 0.3f));
-			ImGui::Begin("Gizmo", 0, gizmoWindowFlags);
-			ImGuizmo::SetDrawlist();
-			float windowWidth = (float)ImGui::GetWindowWidth();
-			float windowHeight = (float)ImGui::GetWindowHeight();
-			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
-			viewManipulateRight = ImGui::GetWindowPos().x + windowWidth;
-			viewManipulateTop = ImGui::GetWindowPos().y;
-			ImGuiWindow* window = ImGui::GetCurrentWindow();
-			gizmoWindowFlags = ImGui::IsWindowHovered() && ImGui::IsMouseHoveringRect(window->InnerRect.Min, window->InnerRect.Max) ? ImGuiWindowFlags_NoMove : 0;
-		}
-		else
-		{
-			ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-		}
-
-		ImGuizmo::Manipulate(&viewMat._11, &projMat._11, mCurrentGizmoOperation, mCurrentGizmoMode, &worldMat._11, NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
+		ImGui::Begin("Gizmo");
+		ImGuizmo::SetDrawlist();
+		float windowWidth = static_cast<float>(ImGui::GetWindowWidth());
+		float windowHeight = static_cast<float>(ImGui::GetWindowHeight());
+		ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+		
+		ImGuizmo::Manipulate(&viewMat._11, &projMat._11, meCurrentOperation, meCurrentMode, &worldMat._11, &identityMat._11, &mSnaps.x);
 		mpGameObject->GetTransform()->SetWorldMatrix(worldMat);
 
-		ImGuizmo::ViewManipulate(&viewMat._11, camDistance, ImVec2(viewManipulateRight - 128, viewManipulateTop), ImVec2(128, 128), 0x10101010);
-
-		if (useWindow)
-		{
-			ImGui::End();
-			ImGui::PopStyleColor(1);
-		}
+		ImGui::End();
 	}
 
 	void Tool::SetGameObject(GameObject* _pGameObject)
 	{
-		AssertEx(nullptr != _pGameObject, L"Tool::SetGameObject() - GameObject is nullptr!");
+		if (nullptr != mpGameObject)
+			mpGameObject->GetTransform()->SetUpdateByMat(false);
+
+		AssertEx(nullptr != _pGameObject, L"Tool::SetGameObject() - 게임오브젝트가 nullptr이다.");
+		AssertEx(nullptr != _pGameObject->GetTransform(), L"Tool::SetGameObject() - 게임오브젝트가 트랜스폼 컴포넌트를 소유하지 않음");
 		mpGameObject = _pGameObject;
 	}
 

@@ -28,7 +28,7 @@ private:
 private:
     static bool mbExists;
     TransformType meTransformType;
-    float mUnit;
+    Vec3 mSnaps;
     
 };
 
