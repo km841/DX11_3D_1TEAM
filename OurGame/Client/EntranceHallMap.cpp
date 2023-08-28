@@ -241,6 +241,9 @@ void EntranceHallMap::Enter()
 
 	//Deferred_CullNone == 머테리얼 카메라 시점 짤림 없애는 버전 _원본 그대로
 
+	//shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"ObjectTexture", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\EntranceHall.fbm\\grandmaWallPaperTexture.png");
+	//Object->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
+
 	//Object->AddComponent(new PlacementScript); == 키보드로 움직이는 오브젝트 이동 스크립트
 	//SetGizmoTarget(Object); == 유니티 방식으로 마우스로 움직이는 오브젝트 이동 함수
 
@@ -249,19 +252,45 @@ void EntranceHallMap::Enter()
 	{
 		DecoObject* pEntranceHall = Factory::CreateObject<DecoObject>(Vec3(0.0f, 0.0f, 0.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\EntranceHall.fbx");
 		pEntranceHall->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
-	
+
+		shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"EntranceHallTexture", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\EntranceHall.fbm\\grandmaWallPaperTexture.png");
+		pEntranceHall->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture); // 텍스쳐 강제로 적용시키는법
+
+		pEntranceHall->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.03f, 0.03f));
+
 		AddGameObject(pEntranceHall);
 	}
 
 	//바닥 - EntranceHallFloor
 	{
-		DecoObject* pEntranceHallFloor = Factory::CreateObject<DecoObject>(Vec3(0.0f, -9.8f, 4.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\EntranceHallFloor.fbx");
-		pEntranceHallFloor->GetTransform()->SetScale(Vec3(58.f, 1.f, 58.f));
+		DecoObject* pEntranceHallFloor = Factory::CreateObject<DecoObject>(Vec3(0.1f, -9.7f, 4.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\EntranceHallFloor.fbx");
+		pEntranceHallFloor->GetTransform()->SetScale(Vec3(58.5f, 1.f, 58.5f));
 
+		
+
+		pEntranceHallFloor->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.05f, 0.05f));
 		
 		AddGameObject(pEntranceHallFloor);
 	}
 
+#pragma region "기둥"
+	{
+		//첫번째 기둥 - ColumnFull
+		DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(11.7f, 0.85f, 24.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\ColumnFull.fbx");
+		pColumnFull->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+		pColumnFull->GetTransform()->SetScale(Vec3(30.f, 21.f, 30.f));
+	
+		AddGameObject(pColumnFull);
+	}
+	{
+		//두번째 기둥 - ColumnFull
+		DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(11.7f, 0.85f, -14.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\ColumnFull.fbx");
+		pColumnFull->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+		pColumnFull->GetTransform()->SetScale(Vec3(30.f, 21.f, 30.f));
+		SetGizmoTarget(pColumnFull);
+		AddGameObject(pColumnFull);
+	}
+#pragma endregion
 
 
 
