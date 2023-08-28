@@ -295,6 +295,7 @@ void EntranceHallMap::Enter()
 
 
 
+
 }
 
 void EntranceHallMap::Exit()
