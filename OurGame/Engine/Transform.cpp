@@ -221,6 +221,25 @@ namespace hm
 		}
 	}
 
+	void Transform::SetScaleFromTool(const Vec3& _scale)
+	{
+		mMatWorld._11 = _scale.x;
+		mMatWorld._22 = _scale.y;
+		mMatWorld._33 = _scale.z;
+
+		DecomposeWorld();
+
+		mScale = _scale;
+	}
+
+	void Transform::SetRotationFromTool(const Vec3& _rotation)
+	{
+	}
+
+	void Transform::SetPositionFromTool(const Vec3& _position)
+	{
+	}
+
 	void Transform::SetPositionExcludingColliders(const Vec3& _position)
 	{
 		mRelativePosition = _position;
