@@ -177,6 +177,9 @@ namespace hm
 	{
 		float offset = mSnaps.x;
 
+		if (IS_PRESS(KeyType::ALT))
+			offset *= 10.f;
+
 		if (IS_DOWN(KeyType::UP))
 			_mat._33 += offset;
 		if (IS_DOWN(KeyType::DOWN))
@@ -198,6 +201,9 @@ namespace hm
 	void Tool::EditTranslationFromKeyboard(Matrix& _mat)
 	{
 		float offset = mSnaps.x;
+
+		if (IS_PRESS(KeyType::ALT))
+			offset *= 10.f;
 
 		if (IS_DOWN(KeyType::UP))
 			_mat._43 += offset;

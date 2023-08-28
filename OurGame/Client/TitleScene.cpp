@@ -63,7 +63,7 @@ namespace hm
 		// - GrandmaBossMap
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Right2Map);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::HallColliderCheckMap);
 		}
 
 		// ÁöÇü
@@ -175,6 +175,7 @@ namespace hm
 			pUI->GetTransform()->SetScale(Vec3(1600.f, 900.f, 1.f));
 			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"TitleLogo", L"..\\Resources\\Texture\\Title_Temp.png");
 			pUI->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
+			pUI->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadCubeMesh());
 
 			AddGameObject(pUI);
 		}

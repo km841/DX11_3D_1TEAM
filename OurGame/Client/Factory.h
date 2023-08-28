@@ -54,7 +54,7 @@ namespace hm
 			AssertEx(nullptr != pMaterial, L"Factory::CreateObject() - Material이 존재하지 않음");
 
 			pMeshRenderer->SetMaterial(pMaterial->Clone());
-			pMeshRenderer->SetMesh(GET_SINGLE(Resources)->LoadCubeMesh());
+			pMeshRenderer->SetMesh(GET_SINGLE(Resources)->LoadPointMesh());
 		}
 
 		return pObject;
