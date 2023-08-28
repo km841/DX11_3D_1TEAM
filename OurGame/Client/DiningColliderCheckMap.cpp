@@ -1219,7 +1219,7 @@ namespace sy
 
 
 		// Toy 까마귀 일단 배치
-		/*{
+		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Dynamic;
 			physicsInfo.eGeometryType = GeometryType::Sphere;
@@ -1231,7 +1231,7 @@ namespace sy
 			PlayerMoveScript* pPlayerSc =  pPlayer->AddComponent(new PlayerMoveScript);
 	
 			AddGameObject(pPlayer);
-		}*/
+		}
 
 
 
