@@ -249,7 +249,7 @@ void EntranceHallMap::Enter()
 	{
 		DecoObject* pEntranceHall = Factory::CreateObject<DecoObject>(Vec3(0.0f, 0.0f, 0.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\EntranceHall.fbx");
 		pEntranceHall->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
-		pEntranceHall->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr, 1, 0);
+	
 		AddGameObject(pEntranceHall);
 	}
 
