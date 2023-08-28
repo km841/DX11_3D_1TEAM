@@ -120,6 +120,8 @@ void LeftSecretTrialMap::Enter()
 		DecoObject* pRoughUpperFloor = Factory::CreateObject<DecoObject>(Vec3(-1.95f, -3.6f, -0.9f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\RoughUpperFloor.fbx");
 		pRoughUpperFloor->GetTransform()->SetScale(Vec3(52.f, 52.f, 52.f));
 		pRoughUpperFloor->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.01f, 0.01f),2);
+	
+
 		AddGameObject(pRoughUpperFloor);
 	}
 
