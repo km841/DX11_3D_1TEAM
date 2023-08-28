@@ -15,7 +15,7 @@ namespace hm
 		, mpGameObject(nullptr)
 		, meCurrentOperation(ImGuizmo::ROTATE)
 		, meCurrentMode(ImGuizmo::WORLD)
-		, mSnaps{ 0.01f, 0.01f, 0.01f }
+		, mSnaps{ 0.1f, 0.1f, 0.1f }
 	{
 	}
 
