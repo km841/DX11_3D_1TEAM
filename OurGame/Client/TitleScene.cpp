@@ -74,6 +74,10 @@ namespace hm
 		{
 			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::HallColliderCheckMap);
 		}
+		if (IS_DOWN(KeyType::I))
+		{
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::CorridorRightMap);
+		}
 
 		// »ó¿¬
 		// - DiningColliderCheckMap
