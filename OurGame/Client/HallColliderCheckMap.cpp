@@ -293,6 +293,42 @@ namespace jh
 
 				AddGameObject(pFirstFloorDoor);
 			}
+			// 커튼(수평)
+			{
+				DecoObject* pFirstFloorCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(-1.44f, 1.075f, -3.955f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CurtainHorizontal.fbx");
+
+				pFirstFloorCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+				pFirstFloorCurtainHorizontal->GetTransform()->SetScale(Vec3(1.8f, 1.8f, 1.f));
+
+				AddGameObject(pFirstFloorCurtainHorizontal);
+			}
+			// 커튼(수직)
+			{
+				DecoObject* pFirstFloorCurtainVertical = Factory::CreateObject<DecoObject>(Vec3(-1.55f, 0.235f, -3.955f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CurtainVertical1.fbx");
+
+				pFirstFloorCurtainVertical->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+				pFirstFloorCurtainVertical->GetTransform()->SetScale(Vec3(1.8f, 1.8f, 1.f));
+
+				AddGameObject(pFirstFloorCurtainVertical);
+			}
+			// 커튼(수평)2
+			{
+				DecoObject* pFirstFloorCurtainHorizontal2 = Factory::CreateObject<DecoObject>(Vec3(-1.9f, 1.075f, -2.055f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CurtainHorizontal.fbx");
+
+				pFirstFloorCurtainHorizontal2->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+				pFirstFloorCurtainHorizontal2->GetTransform()->SetScale(Vec3(1.8f, 1.8f, 1.f));
+
+				AddGameObject(pFirstFloorCurtainHorizontal2);
+			}
+			// 커튼(수직)2
+			{
+				DecoObject* pFirstFloorCurtainVertical2 = Factory::CreateObject<DecoObject>(Vec3(-2.01f, 0.255f, -2.055f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CurtainVertical1.fbx");
+
+				pFirstFloorCurtainVertical2->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+				pFirstFloorCurtainVertical2->GetTransform()->SetScale(Vec3(1.368f, 1.168f, 0.76f));
+
+				AddGameObject(pFirstFloorCurtainVertical2);
+			}
 		}
 		// 1층 바닥
 		{
@@ -548,6 +584,25 @@ namespace jh
 
 				AddGameObject(pSecondFloorWall4);
 			}
+			// 커튼(수평)
+			{
+				DecoObject* pSecondFloorCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(-2.71f, 1.035f, 2.175f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CurtainHorizontal.fbx");
+
+				pSecondFloorCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+				pSecondFloorCurtainHorizontal->GetTransform()->SetScale(Vec3(1.73f, 1.98f, 1.f));
+
+				AddGameObject(pSecondFloorCurtainHorizontal);
+			}
+			// 커튼(수평)2
+			{
+				DecoObject* pSecondFloorCurtainHorizontal2 = Factory::CreateObject<DecoObject>(Vec3(-2.71f, 1.035f, 3.985f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CurtainHorizontal.fbx");
+
+				pSecondFloorCurtainHorizontal2->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+				pSecondFloorCurtainHorizontal2->GetTransform()->SetScale(Vec3(1.73f, 1.98f, 1.f));
+
+				SetGizmoTarget(pSecondFloorCurtainHorizontal2);
+				AddGameObject(pSecondFloorCurtainHorizontal2);
+			}
 		}
 		// 2층 바닥
 		{
@@ -556,7 +611,7 @@ namespace jh
 				PhysicsInfo info;
 				info.eActorType = ActorType::Static;
 				info.eGeometryType = GeometryType::Box;
-				//info.size = Vec3(7.8f, 0.1f, 8.4f);
+				info.size = Vec3(7.8f, 0.1f, 8.4f);
 
 				Ground* pSecondFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.34f, -0.23f, 3.1f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MainRoom Floor.fbx", true);
 
@@ -856,8 +911,7 @@ namespace jh
 			// 가운데 문 열쇠구멍
 			{
 				DecoObject* pThirdFloorDoorLock = Factory::CreateObject<DecoObject>(Vec3(0.375f, 1.35f, 9.295f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MansionLockDoor (1).fbx");
-
-				pThirdFloorDoorLock->AddComponent<PlacementScript>();
+				
 				pThirdFloorDoorLock->GetTransform()->SetScale(Vec3(0.25f, 0.25f, 0.35f));
 
 				AddGameObject(pThirdFloorDoorLock);
@@ -1081,7 +1135,7 @@ namespace jh
 
 			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 1.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
 			pPlayer->AddComponent(new PlayerMoveScript);
-			pPlayer->GetTransform()->SetScale(Vec3(0.2f, 0.2f, 0.2f));
+			pPlayer->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 
 			AddGameObject(pPlayer);
 		}*/
