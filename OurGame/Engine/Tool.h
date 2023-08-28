@@ -22,6 +22,11 @@ namespace hm
 		void UpdateGizmo();
 		void EditTransform();
 
+		void EditScaleFromKeyboard(Matrix& _mat);
+		void EditTranslationFromKeyboard(Matrix& _mat);
+
+		void ShowTransform();
+
 	private:
 		HWND mHwnd;
 		ComPtr<ID3D11Device> mpDevice;
@@ -32,6 +37,9 @@ namespace hm
 
 		ImGuizmo::OPERATION meCurrentOperation;
 		ImGuizmo::MODE meCurrentMode;
+
+		std::list<Matrix> mUndoStack;
+		std::list<Matrix> mRedoStack;
 	};
 }
 

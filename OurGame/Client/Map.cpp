@@ -63,7 +63,6 @@ namespace hm
 	void Map::SetGizmoTarget(GameObject* _pTarget)
 	{
 		TOOL->SetGameObject(_pTarget);
-		_pTarget->AddComponent(new PlacementScript);
 	}
 }
 
