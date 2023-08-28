@@ -140,9 +140,8 @@ namespace yj
 				Vec3 b = Target->GetTransform()->GetRotation();
 				Vec3 c = Target->GetTransform()->GetScale();
 					int d = 0;
-			
-
 				
+					
 			}
 		}
 	}
@@ -173,16 +172,17 @@ namespace yj
 		}
 
 		{
-			Ground* pFrontGround = Factory::CreateObject<Ground>(Vec3(0.0f, -10.0f, 0.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\uv1.fbx");
-			pFrontGround->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+			Ground* pFrontGround = Factory::CreateObject<Ground>(Vec3(0.4f, -5.5f, -0.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\uv1.fbx");
+			pFrontGround->GetTransform()->SetScale(Vec3(49.0f, 49.0f, 49.0f));
 
 			AddGameObject(pFrontGround);
+
 		}
 
 		{
 			Ground* pREFLECTIONS = Factory::CreateObject<Ground>(Vec3(5.5f, -9.0f, -1.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Floor_REFLECTIONS.fbx");
 			pREFLECTIONS->GetTransform()->SetScale(Vec3(40, 40, 40));
-
+			pREFLECTIONS->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.03f,0.03f));
 			AddGameObject(pREFLECTIONS);
 		}
 
@@ -194,22 +194,11 @@ namespace yj
 		}
 
 		{
-			/*Ground* pUv3 = Factory::CreateObject<Ground>(Vec3(-39.5f, 5.5f, -8.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\uv3.fbx");
-			pUv3->GetTransform()->SetScale(Vec3(130.0f, 130.0f, 130.0f));
-			AddGameObject(pUv3);*/
-		}
-
-		{
 			Ground* pStair_Single5 = Factory::CreateObject<Ground>(Vec3(29.5f, 3.5f, 8.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\HoD_Stairs_Single.fbx");
 			pStair_Single5->GetTransform()->SetScale(Vec3(10.0f, 10.0f, 10.0f));
 			AddGameObject(pStair_Single5);
 		}
-		{
-			Ground* pStairIsland = Factory::CreateObject<Ground>(Vec3(54.0f, -4.0f, 22.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\StairsIslandContainer.fbx");
-			pStairIsland->GetTransform()->SetRotation(Vec3(0.0f, 70.0f, 0.0f));
-			pStairIsland->GetTransform()->SetScale(Vec3(50.0f, 50.0f, 50.0f));
-			AddGameObject(pStairIsland);
-		}
+
 		{
 			Ground* pGrandmaDoorFence = Factory::CreateObject<Ground>(Vec3(61.0f, 12.5f, 23.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\GrandmaDoorsFence.fbx");
 			pGrandmaDoorFence->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
@@ -218,16 +207,12 @@ namespace yj
 		}
 
 		{
-			Ground* pFloatingDoors = Factory::CreateObject<Ground>(Vec3(83.0f, -5.0f, -24.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\FloatingDoors.fbx");
-			pFloatingDoors->GetTransform()->SetScale(Vec3(150.0f, 150.0f, 150.0f));
-			pFloatingDoors->GetTransform()->SetRotation(Vec3(0.0f, 140.0f, 0.0f));
-			AddGameObject(pFloatingDoors);
-		}
-
-		{
 			Ground* pBusStop = Factory::CreateObject<Ground>(Vec3(-8.0f, -16.5f, 24.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\stairsIsland.fbx");
 			pBusStop->GetTransform()->SetScale(Vec3(25.0f, 25.0f, 25.0f));
 			pBusStop->GetTransform()->SetRotation(Vec3(0.0f, -160.0f, 0.0f));
+			pBusStop->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.04f,0.04f));
+
+
 			AddGameObject(pBusStop);
 		}
 
@@ -629,7 +614,6 @@ namespace yj
 			pRoundElevator->GetTransform()->SetPosition(Vec3(-20.9f, 3.8f, -17.2f));
 			pRoundElevator->GetTransform()->SetRotation(Vec3::Zero);
 			pRoundElevator->GetTransform()->SetScale(Vec3(32.5f, 32.5f, 32.5f));
-			Target = pRoundElevator;
 		}
 
 		{
@@ -660,9 +644,11 @@ namespace yj
 		{
 			DecoObject* pUpperStairContainer = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\UpperStairContainer.fbx");
 			AddGameObject(pUpperStairContainer);
-			pUpperStairContainer->GetTransform()->SetPosition(Vec3(62.5f, -5.6f, 23.0f));
+			pUpperStairContainer->GetTransform()->SetPosition(Vec3(62.8f, 5.2f, 22.6f));
 			pUpperStairContainer->GetTransform()->SetRotation(Vec3(0.0f, 102.0f, 0.0f));
-			pUpperStairContainer->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
+			pUpperStairContainer->GetTransform()->SetScale(Vec3(61.0f, 61.0f, 61.0f));
+			Target = pUpperStairContainer;
+
 		}	
 		//요것만 자꾸 에러가 남...
 		{
@@ -691,6 +677,20 @@ namespace yj
 			pShortcutDoorStatic->GetTransform()->SetRotation(Vec3(0.0f, 102.0f, 0.0f));
 			pShortcutDoorStatic->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));*/
 		}
+
+		{
+			/*PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Sphere;
+			physicsInfo.size = Vec3(2.f, 2.f, 2.f);*/
+
+			/*Player* pPlayer = Factory::CreateObject<Player>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+			pPlayer->GetTransform()->SetScale(Vec3(3.0f, 3.0f, 3.0f));
+
+			AddGameObject(pPlayer);
+			Target = pPlayer;*/
+		}
+
 	}
 	
 	
