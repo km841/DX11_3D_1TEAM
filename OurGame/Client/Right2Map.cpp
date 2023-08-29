@@ -112,29 +112,16 @@ namespace hm
 		// Toy
 		{
 			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eActorType = ActorType::Static;
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 5.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
-			//pPlayer->AddComponent(new TestAnimationScript);
-			pPlayer->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
 
-			//UIText* pUIText = pPlayer->AddComponent(new UIText);
-			//pUIText->SetText(TEXT("텍스트 컴포넌트 출력 테스트"));
-			//pUIText->Shadow(true);
-			//pUIText->SetShadowColor(0.0f, 0.0f, 0.0f, 1.0f);
-			//pUIText->SetShadowOffset(Vec3(2.f, -2.f, 0.f));
-			//pUIText->SetShadowOpacity(1.f);
-			//pUIText->SetFont("FreshGothic");
-			//pUIText->SetColor(1.f, 1.f, 1.f, 1.f);
-			//pUIText->SetOpacity(0.5f);
-			//pUIText->AlphaBlend(false);
-			//pUIText->SetRenderArea(0.f, 750.f, 300.f, 850.f);
-			//pUIText->GetTransform()->SetPosition(Vec3(0.f, 900.f, -20.f));
+			SetGizmoTarget(pPlayer);
 
 			AddGameObject(pPlayer);
-
 		}
 
 		// 좌측 벽쪽 2단 선반
@@ -196,7 +183,6 @@ namespace hm
 					DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(-9.3f, 7.3f, 16.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\POT_HEAL_Generic.fbx");
 					pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 					pPotHeal->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
-					SetGizmoTarget(pPotHeal);
 					AddGameObject(pPotHeal);
 				}
 			}
