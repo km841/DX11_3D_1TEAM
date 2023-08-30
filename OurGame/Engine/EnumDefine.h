@@ -16,6 +16,7 @@ namespace hm
 		Unknown,
 		Player,
 		Monster,
+		Npc,
 		Ground,
 		DecoObject,
 		WallObject,
