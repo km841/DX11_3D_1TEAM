@@ -500,7 +500,7 @@ void EntranceHallMap::Enter()
 		DecoObject* pPOT_Key = Factory::CreateObject<DecoObject>(Vec3(-7.1f, -7.7f, -12.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\POT_Key.fbx");
 		pPOT_Key->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 		pPOT_Key->GetTransform()->SetScale(Vec3(4.f, 4.f, 4.f));
-		SetGizmoTarget(pPOT_Key);
+		
 		AddGameObject(pPOT_Key);
 	}
 }
