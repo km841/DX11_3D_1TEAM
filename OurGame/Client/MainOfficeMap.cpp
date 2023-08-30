@@ -140,7 +140,6 @@ namespace yj
 				Vec3 b = Target->GetTransform()->GetRotation();
 				Vec3 c = Target->GetTransform()->GetScale();
 					int d = 0;
-				
 					
 			}
 		}
@@ -163,7 +162,7 @@ namespace yj
 
 	void MainOfficeMap::Enter()
 	{
-		//gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
+		gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
 		{
 			DecoObject* pBus = Factory::CreateObject<DecoObject>(Vec3(-17.0f, -8.0f, 33.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\CUTSCENE_Bus.fbx");
 			pBus->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
@@ -198,7 +197,7 @@ namespace yj
 			pStair_Single5->GetTransform()->SetScale(Vec3(10.0f, 10.0f, 10.0f));
 			AddGameObject(pStair_Single5);
 		}
-
+		
 		{
 			Ground* pGrandmaDoorFence = Factory::CreateObject<Ground>(Vec3(61.0f, 12.5f, 23.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\GrandmaDoorsFence.fbx");
 			pGrandmaDoorFence->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
@@ -644,9 +643,11 @@ namespace yj
 		{
 			DecoObject* pUpperStairContainer = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\UpperStairContainer.fbx");
 			AddGameObject(pUpperStairContainer);
-			pUpperStairContainer->GetTransform()->SetPosition(Vec3(62.8f, 5.2f, 22.6f));
-			pUpperStairContainer->GetTransform()->SetRotation(Vec3(0.0f, 102.0f, 0.0f));
+			pUpperStairContainer->GetTransform()->SetPosition(Vec3(60.9f, 2.7f, 22.4f));
+			pUpperStairContainer->GetTransform()->SetRotation(Vec3(0.0f, -8.0f, 0.0f));
 			pUpperStairContainer->GetTransform()->SetScale(Vec3(61.0f, 61.0f, 61.0f));
+			pUpperStairContainer->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(12.0f,12.0f));
+			pUpperStairContainer->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(12.0f,12.0f),1 );
 			Target = pUpperStairContainer;
 
 		}	
