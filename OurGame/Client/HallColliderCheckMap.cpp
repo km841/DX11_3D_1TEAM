@@ -22,6 +22,7 @@
 #include "Ground.h"
 #include "DecoObject.h"
 #include "WallObject.h"
+#include "Npc.h"
 
 /* Component */
 #include "Collider.h"
@@ -1695,6 +1696,17 @@ namespace jh
 
 			//SetGizmoTarget(pChandelier);
 			AddGameObject(pChandelier);
+		}
+
+
+		// PotHead
+		{
+			PhysicsInfo info = {};
+
+			Npc* pPotHead = Factory::CreateObjectHasPhysical<Npc>(Vec3(2.9f, 14.5f, 43.2f), info, L"Deferred", L"..\\Resources\\FBX\\Npc\\Npc_PotHead.fbx");
+			pPotHead->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+			pPotHead->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			AddGameObject(pPotHead);
 		}
 	}
 

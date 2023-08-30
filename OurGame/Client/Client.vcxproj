@@ -159,6 +159,7 @@
     <ClInclude Include="MainOfficeMap.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="Npc.h" />
     <ClInclude Include="PaperBurnScript.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PlacementScript.h" />
@@ -193,6 +194,7 @@
     <ClCompile Include="MainOfficeMap.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="Npc.cpp" />
     <ClCompile Include="PaperBurnScript.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

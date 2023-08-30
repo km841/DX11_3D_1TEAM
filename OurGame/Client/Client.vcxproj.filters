@@ -94,6 +94,9 @@
     <ClInclude Include="RotateKeyScript.h">
       <Filter>소스 파일\Script</Filter>
     </ClInclude>
+    <ClInclude Include="Npc.h">
+      <Filter>소스 파일\GameObject\Npc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -189,6 +192,9 @@
     <ClCompile Include="RotateKeyScript.cpp">
       <Filter>소스 파일\Script</Filter>
     </ClCompile>
+    <ClCompile Include="Npc.cpp">
+      <Filter>소스 파일\GameObject\Npc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -231,6 +237,9 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Monster">
       <UniqueIdentifier>{d067465a-5c12-4439-8c1f-afb37bdf64d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Npc">
+      <UniqueIdentifier>{8325972f-9790-451c-b075-2346a254e786}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
