@@ -130,7 +130,7 @@ namespace jh
 
 			// 숨은통로
 			{
-				DecoObject* pSecretPassage = Factory::CreateObject<DecoObject>(Vec3(-13.f, 5.94f, -37.85f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Main-detach (1).fbx");
+				DecoObject* pSecretPassage = Factory::CreateObject<DecoObject>(Vec3(-13.f, 5.94f, -37.85f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Main-detach (1).fbx");
 
 				pSecretPassage->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
 				pSecretPassage->GetTransform()->SetScale(Vec3(22.75f, 22.75f, 22.75f));
@@ -249,6 +249,66 @@ namespace jh
 				AddGameObject(pFirstFloorWallPanel);
 			}
 
+			// 액자 1
+			{
+				DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-12.6f, 8.f, -57.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame4.fbx");
+				pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 6.3f, 6.3f));
+				pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+				AddGameObject(pPaintingFrame);
+			}
+
+			// 액자 2
+			{
+				DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-12.6f, 2.2f, -56.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame2.fbx");
+				pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 4.f, 4.f));
+				pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+				AddGameObject(pPaintingFrame);
+			}
+
+			// 액자 3
+			{
+				DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-12.6f, 9.f, -49.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame3.fbx");
+				pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 6.3f, 6.3f));
+				pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+				AddGameObject(pPaintingFrame);
+			}
+
+			// 액자 4
+			{
+				DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-16.7f, 9.f, -34.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame0.fbx");
+				pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 6.3f, 6.3f));
+				pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+
+				AddGameObject(pPaintingFrame);
+			}
+
+			// 액자 5
+			{
+				DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-13.f, 8.6f, -24.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame2.fbx");
+				pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 4.f, 4.f));
+				pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+
+				AddGameObject(pPaintingFrame);
+			}
+
+			// 액자 6
+			{
+				DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-12.6f, 12.f, -17.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame3.fbx");
+				pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 6.3f, 6.3f));
+				pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+
+				AddGameObject(pPaintingFrame);
+			}
+
+			// 액자 7
+			{
+				DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-12.9f, 9.4f, -13.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame4.fbx");
+				pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 6.3f, 6.3f));
+				pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+
+				AddGameObject(pPaintingFrame);
+			}
+
 			//			// 철창
 			//			{
 			//				DecoObject* pSpikeDoor = Factory::CreateObject<DecoObject>(Vec3(-2.07f, -1.17f, -2.09f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\SpikeDoor.fbx");
@@ -264,6 +324,32 @@ namespace jh
 				DecoObject* pBottomRug = Factory::CreateObject<DecoObject>(Vec3(2.6f, -5.3f, -42.7f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Rug_Mark.fbx");
 				pBottomRug->GetTransform()->SetScale(Vec3(15.f, 8.f, 16.2f));
 				AddGameObject(pBottomRug);
+
+				// 그 위에 항아리
+				{
+					DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(1.6f, -3.5f, -42.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+					pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+					pPotHeal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+					AddGameObject(pPotHeal);
+				}
+
+				// 그 위에 항아리
+				{
+					DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(3.8f, -3.5f, -42.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+					pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+					pPotHeal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+					AddGameObject(pPotHeal);
+				}
+
+				// 그 위에 항아리
+				{
+					DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(2.8f, -3.5f, -44.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+					pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+					pPotHeal->GetTransform()->SetRotation(Vec3(0.f, 170.5f, 0.f));
+					AddGameObject(pPotHeal);
+				}
 			}
 
 		}
@@ -322,7 +408,7 @@ namespace jh
 
 				pFirstFloorLeftColumn->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 				pFirstFloorLeftColumn->GetTransform()->SetScale(Vec3(23.85f, 14.3f, 23.85f));
-				//SetGizmoTarget(pFirstFloorLeftColumn);
+
 				AddGameObject(pFirstFloorLeftColumn);
 			}
 			// 1층 기둥(오른쪽 계단)
@@ -358,7 +444,7 @@ namespace jh
 				}
 				{
 					//상단부 - FireLamp_Top
-					DecoObject* pFireLamp_Top = Factory::CreateObject<DecoObject>(Vec3(x, (y + 2.f), z ), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\FireLamp_Top.fbx");
+					DecoObject* pFireLamp_Top = Factory::CreateObject<DecoObject>(Vec3(x, (y + 2.f), z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\FireLamp_Top.fbx");
 					pFireLamp_Top->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 
 					AddGameObject(pFireLamp_Top);
@@ -391,6 +477,30 @@ namespace jh
 
 					AddGameObject(pFireLamp_Top);
 				}
+			}
+
+			// 문틀
+			{
+				DecoObject* pFloorDoorFrame = Factory::CreateObject<DecoObject>(Vec3(2.9f, -1.1f, -29.74f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\doorSideFrame.fbx");
+
+				pFloorDoorFrame->GetTransform()->SetScale(Vec3(8.48f, 8.74f, 13.f));
+				
+				AddGameObject(pFloorDoorFrame);
+			}
+			// 문
+			{
+				DecoObject* pFloorDoor = Factory::CreateObject<DecoObject>(Vec3(2.9f, -1.1f, -29.74f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MansionLockDoor.fbx");
+
+				pFloorDoor->GetTransform()->SetScale(Vec3(9.f, 8.5f, 8.5f));
+				
+				AddGameObject(pFloorDoor);
+			}
+			// 열쇠구멍
+			{
+				DecoObject* pFloorDoorLock = Factory::CreateObject<DecoObject>(Vec3(2.9f, -1.1f, -29.94f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MansionLockDoor (1).fbx");
+
+				pFloorDoorLock->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+				AddGameObject(pFloorDoorLock);
 			}
 #pragma endregion
 		}
@@ -483,68 +593,208 @@ namespace jh
 
 				AddGameObject(pSecondFloorWallColumn9);
 			}
-			//			// 천장틀
-			//			{
-			//				DecoObject* pSecondFloorWallRim = Factory::CreateObject<DecoObject>(Vec3(-2.2f, 1.37f, 1.29f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\WallRim.fbx");
-			//
-			//				pSecondFloorWallRim->GetTransform()->SetScale(Vec3(1.f, 1.4f, 1.4f));
-			//
-			//				AddGameObject(pSecondFloorWallRim);
-			//			}
-			//			// 천장틀2
-			//			{
-			//				DecoObject* pSecondFloorWallRim2 = Factory::CreateObject<DecoObject>(Vec3(-2.8f, 1.37f, 3.07f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\WallRim.fbx");
-			//
-			//				pSecondFloorWallRim2->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
-			//				pSecondFloorWallRim2->GetTransform()->SetScale(Vec3(3.5f, 1.4f, 1.4f));
-			//
-			//				AddGameObject(pSecondFloorWallRim2);
-			//			}
-			//			// 벽 패널(바닥틀처럼 보임)
-			//			{
-			//				DecoObject* pSecondFloorWallPanel = Factory::CreateObject<DecoObject>(Vec3(-2.75f, -0.31f, 1.98f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\wallPanel.fbx");
-			//
-			//				pSecondFloorWallPanel->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
-			//				pSecondFloorWallPanel->GetTransform()->SetScale(Vec3(1.4f, 1.4f, 2.f));
-			//
-			//				AddGameObject(pSecondFloorWallPanel);
-			//			}
-			//			// 벽 패널2(바닥틀처럼 보임)
-			//			{
-			//				DecoObject* pSecondFloorWallPanel2 = Factory::CreateObject<DecoObject>(Vec3(-2.75f, -0.31f, 4.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\wallPanel.fbx");
-			//
-			//				pSecondFloorWallPanel2->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
-			//				pSecondFloorWallPanel2->GetTransform()->SetScale(Vec3(1.5f, 1.4f, 2.f));
-			//
-			//				AddGameObject(pSecondFloorWallPanel2);
-			//			}
-			//			// 왼쪽 문틀
-			//			{
-			//				DecoObject* pSecondFloorDoorFrame = Factory::CreateObject<DecoObject>(Vec3(-2.74f, 0.29f, 3.025f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\doorSideFrame.fbx");
-			//
-			//				pSecondFloorDoorFrame->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
-			//				pSecondFloorDoorFrame->GetTransform()->SetScale(Vec3(1.f, 1.15f, 1.3f));
-			//
-			//				AddGameObject(pSecondFloorDoorFrame);
-			//			}
-			//			// 왼쪽 문
-			//			{
-			//				DecoObject* pSecondFloorDoor = Factory::CreateObject<DecoObject>(Vec3(-2.75f, 0.3f, 3.025f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MansionLockDoor.fbx");
-			//
-			//				pSecondFloorDoor->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
-			//				pSecondFloorDoor->GetTransform()->SetScale(Vec3(0.95f, 1.05f, 1.f));
-			//
-			//				AddGameObject(pSecondFloorDoor);
-			//			}
-			//			// 왼쪽 문 열쇠구멍
-			//			{
-			//				DecoObject* pSecondFloorDoorLock = Factory::CreateObject<DecoObject>(Vec3(-2.73f, 0.3f, 3.025f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MansionLockDoor (1).fbx");
-			//
-			//				pSecondFloorDoorLock->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
-			//				pSecondFloorDoorLock->GetTransform()->SetScale(Vec3(0.25f, 0.25f, 0.35f));
-			//
-			//				AddGameObject(pSecondFloorDoorLock);
-			//			}
+
+			// 커피 테이블
+			{
+				DecoObject* pCoffeeTable = Factory::CreateObject<DecoObject>(Vec3(3.4f, 5.8f, -11.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CoffeeTable.fbx");
+
+				pCoffeeTable->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+				pCoffeeTable->GetTransform()->SetScale(Vec3(9.f, 9.f, 9.f));
+
+				AddGameObject(pCoffeeTable);
+			}
+
+			// 식탁보
+			{
+				DecoObject* pTableCloth = Factory::CreateObject<DecoObject>(Vec3(3.5f, 6.8f, -11.9f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\tableCloth.fbx", true);
+
+				pTableCloth->GetTransform()->SetScale(Vec3(9.f, 9.f, 9.2f));
+
+				AddGameObject(pTableCloth);
+			}
+
+			// 의자
+			{
+				DecoObject* pChair = Factory::CreateObject<DecoObject>(Vec3(-0.1f, 6.8f, -16.82f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Chair.fbx");
+
+				pChair->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pChair->GetTransform()->SetRotation(Vec3(0.f, 149.f, 0.f));
+				AddGameObject(pChair);
+			}
+
+			// 의자
+			{
+				DecoObject* pChair = Factory::CreateObject<DecoObject>(Vec3(2.6f, 6.8f, -5.52f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Chair.fbx");
+
+				pChair->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+				pChair->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+				AddGameObject(pChair);
+			}
+
+			//  우측 바닥 러그
+			{
+				DecoObject* pBottomRug = Factory::CreateObject<DecoObject>(Vec3(15.51f, 4.7f, 5.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Rug_Mark.fbx");
+				pBottomRug->GetTransform()->SetScale(Vec3(12.f, 8.f, 13.2f));
+				pBottomRug->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+				AddGameObject(pBottomRug);
+
+				// 그 위에 항아리
+				{
+					DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(15.51f, 6.3f, 5.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+					pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+					pPotHeal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+					AddGameObject(pPotHeal);
+				}
+			}
+
+			//  좌측 바닥 러그
+			{
+				DecoObject* pBottomRug = Factory::CreateObject<DecoObject>(Vec3(-9.2f, 4.7f, 5.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Rug_Mark.fbx");
+				pBottomRug->GetTransform()->SetScale(Vec3(12.f, 8.f, 13.2f));
+				pBottomRug->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+				AddGameObject(pBottomRug);
+
+				// 그 위에 항아리
+				{
+					DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(-9.2f, 6.3f, 5.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+					pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+					pPotHeal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+					AddGameObject(pPotHeal);
+				}
+			}
+
+			//  정면 바닥 러그
+			{
+				DecoObject* pBottomRug = Factory::CreateObject<DecoObject>(Vec3(2.92f, 4.7f, 17.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Rug_Mark.fbx");
+				pBottomRug->GetTransform()->SetScale(Vec3(12.f, 8.f, 13.2f));
+				pBottomRug->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+				AddGameObject(pBottomRug);
+			}
+
+			//  좌측 2단 책상
+			{
+				DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-19.f, 6.7f, 17.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\TwoTierShelf.fbx");
+				pTwoTierShelf->GetTransform()->SetScale(Vec3(8.f, 8.f, 8.f));
+				pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+
+				AddGameObject(pTwoTierShelf);
+			}
+
+			// 좌측 의자
+			{
+				DecoObject* pChair = Factory::CreateObject<DecoObject>(Vec3(-12.6f, 7.3f, 17.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Chair.fbx");
+
+				pChair->GetTransform()->SetScale(Vec3(6.f, 6.f, 6.f));
+				pChair->GetTransform()->SetRotation(Vec3(0.f, 288.47f, 0.f));
+				AddGameObject(pChair);
+			}
+
+
+			// 우측 캐비넷
+			{
+				DecoObject* pCabinet = Factory::CreateObject<DecoObject>(Vec3(25.3f, 11.f, 17.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CabinetStructure.fbx");
+
+				pCabinet->GetTransform()->SetScale(Vec3(12.f, 12.f, 12.f));
+				pCabinet->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+				AddGameObject(pCabinet);
+			}
+
+			// 우측 의자
+			{
+				DecoObject* pChair = Factory::CreateObject<DecoObject>(Vec3(19.3f, 7.3f, 17.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Chair.fbx");
+
+				pChair->GetTransform()->SetScale(Vec3(6.f, 6.f, 6.f));
+				pChair->GetTransform()->SetRotation(Vec3(0.f, 288.47f, 0.f));
+				AddGameObject(pChair);
+			}
+
+			// 우측 의자
+			{
+				DecoObject* pChair = Factory::CreateObject<DecoObject>(Vec3(27.1f, 7.3f, -8.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Chair.fbx");
+
+				pChair->GetTransform()->SetScale(Vec3(6.f, 6.f, 6.f));
+				pChair->GetTransform()->SetRotation(Vec3(0.f, 53.9f, 0.f));
+
+				AddGameObject(pChair);
+			}
+
+			// 의자 옆 항아리1
+			{
+				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(27.7f, 6.3f, -4.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				pPotHeal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+				AddGameObject(pPotHeal);
+			}
+
+			// 의자 옆 항아리2
+			{
+				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(27.7f, 6.3f, -0.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				pPotHeal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+				AddGameObject(pPotHeal);
+			}
+
+			// 의자 옆 항아리3
+			{
+				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(23.4f, 6.3f, -8.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				pPotHeal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+				AddGameObject(pPotHeal);
+			}
+
+			// 의자 옆 항아리4
+			{
+				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(20.3f, 6.3f, -8.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				pPotHeal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+				AddGameObject(pPotHeal);
+			}
+
+			//  중앙 2단 책상
+			for (int i = 0; i < 2; ++i)
+			{
+				DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-0.6f + i * 7.2f, 6.7f, 38.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\TwoTierShelf.fbx");
+				pTwoTierShelf->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
+				pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+
+				AddGameObject(pTwoTierShelf);
+			}
+
+
+			// 왼쪽 문틀
+			{
+				DecoObject* pSecondFloorDoorFrame = Factory::CreateObject<DecoObject>(Vec3(-22.6f, 8.6f, 4.765f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\doorSideFrame.fbx");
+
+				pSecondFloorDoorFrame->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+				pSecondFloorDoorFrame->GetTransform()->SetScale(Vec3(9.3f, 8.74f, 13.f));
+
+				AddGameObject(pSecondFloorDoorFrame);
+			}
+			// 왼쪽 문
+			{
+				DecoObject* pSecondFloorDoor = Factory::CreateObject<DecoObject>(Vec3(-22.8f, 8.4f, 4.72f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MansionLockDoor.fbx");
+
+				pSecondFloorDoor->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+				pSecondFloorDoor->GetTransform()->SetScale(Vec3(9.f, 8.5f, 8.5f));
+				
+				AddGameObject(pSecondFloorDoor);
+			}
+			// 왼쪽 문 열쇠구멍
+			{
+				DecoObject* pSecondFloorDoorLock = Factory::CreateObject<DecoObject>(Vec3(-22.5f, 8.4f, 4.72f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MansionLockDoor (1).fbx");
+
+				pSecondFloorDoorLock->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+				pSecondFloorDoorLock->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+	
+				AddGameObject(pSecondFloorDoorLock);
+			}
 			//			// 벽 패널3
 			//			{
 			//				DecoObject* pSecondFloorWallPanel3 = Factory::CreateObject<DecoObject>(Vec3(-2.15f, 0.06f, 4.89f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\wallPanel.fbx");
@@ -579,6 +829,9 @@ namespace jh
 			//
 			//				AddGameObject(pSecondFloorWall4);
 			//			}
+			// 
+			// 
+
 			// 커튼(수평)
 			{
 				DecoObject* pSecondFloorCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(-11.9f, 15.1f, -53.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CurtainHorizontal.fbx");
@@ -1116,41 +1369,41 @@ namespace jh
 
 		// 커튼(수직)
 		{
-			DecoObject* pThirdFloorCurtainVertical = Factory::CreateObject<DecoObject>(Vec3(-13.2f, 24.5f, 56.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CurtainVertical1.fbx");
+			DecoObject* pThirdFloorCurtainVertical = Factory::CreateObject<DecoObject>(Vec3(-13.2f, 26.f, 56.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CurtainVertical1.fbx");
 
-			pThirdFloorCurtainVertical->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
+			pThirdFloorCurtainVertical->GetTransform()->SetScale(Vec3(14.f, 14.f, 14.f));
 			AddGameObject(pThirdFloorCurtainVertical);
 		}
 
 		// 커튼(수직)
 		{
-			DecoObject* pThirdFloorCurtainVertical = Factory::CreateObject<DecoObject>(Vec3(20.f, 24.5f, 56.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CurtainVertical1.fbx");
+			DecoObject* pThirdFloorCurtainVertical = Factory::CreateObject<DecoObject>(Vec3(20.f, 26.f, 56.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CurtainVertical1.fbx");
 
-			pThirdFloorCurtainVertical->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
+			pThirdFloorCurtainVertical->GetTransform()->SetScale(Vec3(14.f, 14.f, 14.f));
 			AddGameObject(pThirdFloorCurtainVertical);
 		}
 
 		// 커튼(수직)
 		{
-			DecoObject* pThirdFloorCurtainVertical = Factory::CreateObject<DecoObject>(Vec3(-21.5f, 24.5f, 30.7f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CurtainVertical1.fbx");
+			DecoObject* pThirdFloorCurtainVertical = Factory::CreateObject<DecoObject>(Vec3(-21.5f, 26.f, 30.7f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CurtainVertical1.fbx");
 
-			pThirdFloorCurtainVertical->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
+			pThirdFloorCurtainVertical->GetTransform()->SetScale(Vec3(14.f, 14.f, 14.f));
 			pThirdFloorCurtainVertical->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
 			AddGameObject(pThirdFloorCurtainVertical);
 		}
 
 		// 커튼(수직)
 		{
-			DecoObject* pThirdFloorCurtainVertical = Factory::CreateObject<DecoObject>(Vec3(-21.5f, 24.5f, 47.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CurtainVertical1.fbx");
+			DecoObject* pThirdFloorCurtainVertical = Factory::CreateObject<DecoObject>(Vec3(-21.5f, 26.f, 47.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CurtainVertical1.fbx");
 
-			pThirdFloorCurtainVertical->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
+			pThirdFloorCurtainVertical->GetTransform()->SetScale(Vec3(14.f, 14.f, 14.f));
 			pThirdFloorCurtainVertical->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
 
 			AddGameObject(pThirdFloorCurtainVertical);
 		}
 
 		// 벽 패널
-		for (int i = 0; i < 5 ;++i)
+		for (int i = 0; i < 5; ++i)
 		{
 			DecoObject* pThirdFloorWallPanel = Factory::CreateObject<DecoObject>(Vec3(-22.85f, 15.8f, 24.9f + i * 7.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\wallPanel.fbx");
 
@@ -1182,7 +1435,251 @@ namespace jh
 			AddGameObject(pThirdFloorWallPanel);
 		}
 
-		//		}
+		// 액자 1
+		{
+			DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-22.9f, 28.7f, 24.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame4.fbx");
+			pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 6.3f, 6.3f));
+			pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+
+			AddGameObject(pPaintingFrame);
+		}
+
+		// 액자 2
+		{
+			DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-22.9f, 22.7f, 27.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame2.fbx");
+			pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 4.f, 4.f));
+			pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+
+			AddGameObject(pPaintingFrame);
+		}
+
+		// 액자 3
+		{
+			DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-22.9f, 24.3f, 33.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame3.fbx");
+			pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 6.3f, 6.3f));
+			pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+
+			AddGameObject(pPaintingFrame);
+		}
+
+		// 액자 4
+		{
+			DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-22.9f, 28.4f, 38.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame0.fbx");
+			pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 6.3f, 6.3f));
+			pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+
+			AddGameObject(pPaintingFrame);
+		}
+
+		// 액자 5
+		{
+			DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-22.9f, 28.7f, 43.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame2.fbx");
+			pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 4.f, 4.f));
+			pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+
+			AddGameObject(pPaintingFrame);
+		}
+
+		// 액자 6
+		{
+			DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-22.9f, 23.6f, 53.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame4.fbx");
+			pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 6.3f, 6.3f));
+			pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+
+			AddGameObject(pPaintingFrame);
+		}
+
+		// 액자 7
+		{
+			DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-8.6f, 29.4f, 58.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame4.fbx");
+			pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 6.3f, 6.3f));
+			pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+			AddGameObject(pPaintingFrame);
+		}
+
+		// 액자 8
+		{
+			DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-6.f, 23.4f, 58.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame2.fbx");
+			pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 4.f, 4.f));
+			pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+			AddGameObject(pPaintingFrame);
+		}
+
+		// 액자 9
+		{
+			DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-1.9f, 27.3f, 58.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame3.fbx");
+			pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 6.3f, 6.3f));
+			pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+			AddGameObject(pPaintingFrame);
+		}
+
+		// 액자 10
+		{
+			DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(3.3f, 26.3f, 58.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame0.fbx");
+			pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 6.3f, 6.3f));
+			pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+			AddGameObject(pPaintingFrame);
+		}
+
+		// 액자 11
+		{
+			DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(9.5f, 26.9f, 58.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame2.fbx");
+			pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 4.f, 4.f));
+			pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+			AddGameObject(pPaintingFrame);
+		}
+
+		// 액자 12
+		{
+			DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(14.8f, 24.f, 58.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame4.fbx");
+			pPaintingFrame->GetTransform()->SetScale(Vec3(6.3f, 6.3f, 6.3f));
+			pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+			AddGameObject(pPaintingFrame);
+		}
+
+		// 좌측 항아리들
+		{
+			{
+				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(-12.2f, 15.2f, 55.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				pPotHeal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+				AddGameObject(pPotHeal);
+			}
+
+			{
+				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(-10.f, 15.2f, 55.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				pPotHeal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+				AddGameObject(pPotHeal);
+			}
+
+			{
+				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(-11.1f, 15.2f, 53.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				pPotHeal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+				AddGameObject(pPotHeal);
+			}
+		}
+
+		// 우측 항아리들
+		{
+			{
+				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(18.2f, 15.2f, 55.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				pPotHeal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+				AddGameObject(pPotHeal);
+			}
+
+			{
+				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(16.f, 15.2f, 55.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				pPotHeal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+				AddGameObject(pPotHeal);
+			}
+
+			{
+				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(17.1f, 15.2f, 53.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				pPotHeal->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+				AddGameObject(pPotHeal);
+			}
+		}
+
+		// 좌측 의자
+		{
+			DecoObject* pChair = Factory::CreateObject<DecoObject>(Vec3(-18.f, 17.f, 28.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\Chair.fbx");
+
+			pChair->GetTransform()->SetScale(Vec3(6.f, 6.f, 6.f));
+			pChair->GetTransform()->SetRotation(Vec3(0.f, 288.47f, 0.f));
+			AddGameObject(pChair);
+		}
+
+		// 2단 책상
+		{
+			DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-20.9f, 16.5f, 27.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\TwoTierShelf.fbx");
+			pTwoTierShelf->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
+			pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+			AddGameObject(pTwoTierShelf);
+		}
+
+		// 2단 책상
+		{
+			DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-20.9f, 16.5f, 34.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\TwoTierShelf.fbx");
+			pTwoTierShelf->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
+			pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+
+			AddGameObject(pTwoTierShelf);
+		}
+
+		// 캐비넷
+		{
+			DecoObject* pCabinet = Factory::CreateObject<DecoObject>(Vec3(-19.8f, 20.2f, 41.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\CabinetStructure.fbx");
+
+			pCabinet->GetTransform()->SetScale(Vec3(12.f, 12.f, 12.f));
+			pCabinet->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+
+			AddGameObject(pCabinet);
+		}
+
+		// 2단 책상
+		{
+			DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-20.9f, 16.5f, 49.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\TwoTierShelf.fbx");
+			pTwoTierShelf->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
+			pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+			AddGameObject(pTwoTierShelf);
+		}
+
+		// 2단 책상
+		{
+			DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-18.8f, 16.5f, 54.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\TwoTierShelf.fbx");
+			pTwoTierShelf->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
+			pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+			AddGameObject(pTwoTierShelf);
+		}
+
+		// 2단 책상 (우측)
+		{
+			DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(24.9f, 16.5f, 54.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\TwoTierShelf.fbx");
+			pTwoTierShelf->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
+			pTwoTierShelf->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+
+			AddGameObject(pTwoTierShelf);
+		}
+
+		// 문틀
+		{
+			DecoObject* pFloorDoorFrame = Factory::CreateObject<DecoObject>(Vec3(3.f, 18.1f, 57.75f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\doorSideFrame.fbx");
+
+			pFloorDoorFrame->GetTransform()->SetScale(Vec3(8.48f, 8.74f, 13.f));
+			AddGameObject(pFloorDoorFrame);
+		}
+		// 문
+		{
+			DecoObject* pFloorDoor = Factory::CreateObject<DecoObject>(Vec3(3.f, 18.1f, 57.75f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MansionLockDoor.fbx");
+
+			pFloorDoor->GetTransform()->SetScale(Vec3(9.f, 8.5f, 8.5f));
+
+			AddGameObject(pFloorDoor);
+		}
+		// 열쇠구멍
+		{
+			DecoObject* pFloorDoorLock = Factory::CreateObject<DecoObject>(Vec3(3.f, 18.1f, 57.55f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MansionLockDoor (1).fbx");
+
+			pFloorDoorLock->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			AddGameObject(pFloorDoorLock);
+		}
+
 #pragma endregion
 
 		// 1F 샹들리에
