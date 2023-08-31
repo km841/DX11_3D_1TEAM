@@ -167,7 +167,7 @@ namespace yj
 
 			{
 
-				Player* pPlayer = Factory::CreateObject<Player>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+				Player* pPlayer = Factory::CreateObject<Player>(Vec3(0.f, 1.5f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
 				pPlayer->GetTransform()->SetScale(Vec3(2.0f, 2.0f, 2.0f));
 
 				AddGameObject(pPlayer);
@@ -182,17 +182,26 @@ namespace yj
 		}
 
 		{
+
+			Ground* pGround = Factory::CreateObject<Ground>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\RightChairRoomFloor.fbx");
+			pGround->GetTransform()->SetPosition(Vec3(0.0f, 0.4f, 0.0f));
+			pGround->GetTransform()->SetScale(Vec3(40.0f, 40.0f, 40.0f));
+
+			AddGameObject(pGround);
+		}
+
+		{
 			DecoObject* pWallFrame = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\Right.fbx");
-			pWallFrame->GetTransform()->SetPosition(Vec3(0.0f, 3.0f, 0.0f));
-			pWallFrame->GetTransform()->SetScale(Vec3(20, 20, 20));
+			pWallFrame->GetTransform()->SetPosition(Vec3(0.0f, 6.0f, 0.0f));
+			pWallFrame->GetTransform()->SetScale(Vec3(40.0f, 40.0f, 40.0f));
 
 			AddGameObject(pWallFrame);
-		}		
+		}
 		{
 			DecoObject* pColumnFull = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\ColumnFull.fbx");
-			pColumnFull->GetTransform()->SetPosition(Vec3(-8.4f, 3.1f, -18.0f));
+			pColumnFull->GetTransform()->SetPosition(Vec3(-16.8f, 6.2f, -36.0f));
 			pColumnFull->GetTransform()->SetRotation(Vec3(0.0f, -180.0f, 0.0f));
-			pColumnFull->GetTransform()->SetScale(Vec3(18.5f, 18.5f, 18.5f));
+			pColumnFull->GetTransform()->SetScale(Vec3(37.0f, 37.0f, 37.0f));
 
 			AddGameObject(pColumnFull);
 		}
@@ -201,17 +210,17 @@ namespace yj
 		for (int i = 0; i < 2; i++)
 		{
 			DecoObject* pColumnFullVer2 = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\ColumnFullVer2.fbx");
-			
+
 			AddGameObject(pColumnFullVer2);
 			mColumnFullver2List.push_back(pColumnFullVer2);
-		}	
+		}
 
-		mColumnFullver2List[0]->GetTransform()->SetPosition(Vec3(7.3f, 3.6f, -12.0f));
+		mColumnFullver2List[0]->GetTransform()->SetPosition(Vec3(14.6f, 7.2f, -24.0f));
 		mColumnFullver2List[0]->GetTransform()->SetRotation(Vec3(0.0f, -180.0f, 0.0f));
-		mColumnFullver2List[0]->GetTransform()->SetScale(Vec3(7.0f, 7.0f, 7.0f));
-		mColumnFullver2List[1]->GetTransform()->SetPosition(Vec3(7.4f, 3.5f, 0.1f));
+		mColumnFullver2List[0]->GetTransform()->SetScale(Vec3(14.0f, 14.0f, 14.0f));
+		mColumnFullver2List[1]->GetTransform()->SetPosition(Vec3(14.8f, 7.0f, 0.2f));
 		mColumnFullver2List[1]->GetTransform()->SetRotation(Vec3(0.0f, -180.0f, 0.0f));
-		mColumnFullver2List[1]->GetTransform()->SetScale(Vec3(7.0f, 7.0f, 7.0f));
+		mColumnFullver2List[1]->GetTransform()->SetScale(Vec3(14.0f, 14.0f, 14.0f));
 
 
 		{
@@ -219,9 +228,9 @@ namespace yj
 
 			AddGameObject(pDoorFrameBig);
 
-			pDoorFrameBig->GetTransform()->SetPosition(Vec3(7.4f, 2.1f, -9.6f));
+			pDoorFrameBig->GetTransform()->SetPosition(Vec3(14.8f, 4.2f, -19.2f));
 			pDoorFrameBig->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
-			pDoorFrameBig->GetTransform()->SetScale(Vec3(14.5f, 14.5f, 14.5f));
+			pDoorFrameBig->GetTransform()->SetScale(Vec3(29.0f, 29.0f, 29.0f));
 		}
 
 		{
@@ -229,9 +238,9 @@ namespace yj
 
 			AddGameObject(pCeilingBeamLow);
 
-			pCeilingBeamLow->GetTransform()->SetPosition(Vec3(-0.6, 5.9f, -9.2f));
+			pCeilingBeamLow->GetTransform()->SetPosition(Vec3(-1.2f, 11.8f, -18.4f));
 			pCeilingBeamLow->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
-			pCeilingBeamLow->GetTransform()->SetScale(Vec3(16.0f, 16.0f, 16.0f));
+			pCeilingBeamLow->GetTransform()->SetScale(Vec3(32.0f, 32.0f, 32.0f));
 		}
 
 
@@ -244,17 +253,17 @@ namespace yj
 			mCurtainHorizontalList.push_back(pCurtainHorizontal);
 		}
 
-		mCurtainHorizontalList[0]-> GetTransform()->SetPosition(Vec3(6.7, 4.7f, 2.8f));
-		mCurtainHorizontalList[0]-> GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-		mCurtainHorizontalList[0]-> GetTransform()->SetScale(Vec3(12.0f, 12.0f, 12.0f));
+		mCurtainHorizontalList[0]->GetTransform()->SetPosition(Vec3(13.4f, 9.4f, 5.6f));
+		mCurtainHorizontalList[0]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+		mCurtainHorizontalList[0]->GetTransform()->SetScale(Vec3(24.0f, 24.0f, 24.0f));
 
-		mCurtainHorizontalList[1]->GetTransform()->SetPosition(Vec3(6.6f, 4.7f, -3.3f));
+		mCurtainHorizontalList[1]->GetTransform()->SetPosition(Vec3(13.2f, 9.4f, -6.6f));
 		mCurtainHorizontalList[1]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-		mCurtainHorizontalList[1]->GetTransform()->SetScale(Vec3(12.0f, 12.0f, 12.0f));
+		mCurtainHorizontalList[1]->GetTransform()->SetScale(Vec3(24.0f, 24.0f, 24.0f));
 
-		mCurtainHorizontalList[2]->GetTransform()->SetPosition(Vec3(6.9f, 4.4f, -8.8f));
-		mCurtainHorizontalList[2]->GetTransform()->SetRotation(Vec3(0.0f, 88.0f, 0.0f));
-		mCurtainHorizontalList[2]->GetTransform()->SetScale(Vec3(12.0f, 12.0f, 12.0f));
+		mCurtainHorizontalList[2]->GetTransform()->SetPosition(Vec3(13.8f, 8.8f, -17.6f));
+		mCurtainHorizontalList[2]->GetTransform()->SetRotation(Vec3(0.0f, 88.f, 0.0f));
+		mCurtainHorizontalList[2]->GetTransform()->SetScale(Vec3(24.0f, 24.0f, 24.0f));
 
 
 		{
@@ -262,9 +271,9 @@ namespace yj
 
 			AddGameObject(pFireplace);
 
-			pFireplace->GetTransform()->SetPosition(Vec3(-0.6f, 2.9f, 1.93715096e-07f));
+			pFireplace->GetTransform()->SetPosition(Vec3(-1.2f, 5.8f, 3.87430192e-07f));
 			pFireplace->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-			pFireplace->GetTransform()->SetScale(Vec3(19.0f, 19.0f, 19.0f));
+			pFireplace->GetTransform()->SetScale(Vec3(38.0f, 38.0f, 38.0f));
 		}
 
 		std::vector<GameObject*> mTwoTierShelf_BottomList;
@@ -274,15 +283,15 @@ namespace yj
 
 			AddGameObject(pTwoTierShelf_Bottom);
 			mTwoTierShelf_BottomList.push_back(pTwoTierShelf_Bottom);
-		
+
 		}
-		mTwoTierShelf_BottomList[0]->GetTransform()->SetPosition(Vec3(6.8f, 1.1f, -7.6f));
+		mTwoTierShelf_BottomList[0]->GetTransform()->SetPosition(Vec3(13.6f, 2.2f, -15.2f));
 		mTwoTierShelf_BottomList[0]->GetTransform()->SetRotation(Vec3(0.0f, -90.0f, 0.0f));
-		mTwoTierShelf_BottomList[0]->GetTransform()->SetScale(Vec3(3.0f, 3.0f, 3.0f));
-		
-		mTwoTierShelf_BottomList[1]->GetTransform()->SetPosition(Vec3(4.7f, 1.1f, -8.5f));
+		mTwoTierShelf_BottomList[0]->GetTransform()->SetScale(Vec3(6.0f, 6.0f, 6.0f));
+
+		mTwoTierShelf_BottomList[1]->GetTransform()->SetPosition(Vec3(9.4f, 2.2f, -17.0f));
 		mTwoTierShelf_BottomList[1]->GetTransform()->SetRotation(Vec3(0.0f, -180.0f, 0.0f));
-		mTwoTierShelf_BottomList[1]->GetTransform()->SetScale(Vec3(3.0f, 3.0f, 3.0f));
+		mTwoTierShelf_BottomList[1]->GetTransform()->SetScale(Vec3(6.0f, 6.0f, 6.0f));
 
 
 #pragma region "2Ãþ ¼±¹Ý ´Ù¸®"
@@ -297,37 +306,37 @@ namespace yj
 			mTwoTierShelf_LegList.push_back(pTwoTierShelf_Leg);
 		}
 
-		mTwoTierShelf_LegList[0]->GetTransform()->SetPosition(Vec3(7.2f, 0.7f, -6.2f));
+		mTwoTierShelf_LegList[0]->GetTransform()->SetPosition(Vec3(14.4f, 1.4f, -12.4f));
 		mTwoTierShelf_LegList[0]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_LegList[0]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+		mTwoTierShelf_LegList[0]->GetTransform()->SetScale(Vec3(0.59f, 0.99f, 0.59f));
 
-		mTwoTierShelf_LegList[1]->GetTransform()->SetPosition(Vec3(6.4f, 0.7f, -6.2f));
+		mTwoTierShelf_LegList[1]->GetTransform()->SetPosition(Vec3(12.8f, 1.4f, -12.4f));
 		mTwoTierShelf_LegList[1]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_LegList[1]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+		mTwoTierShelf_LegList[1]->GetTransform()->SetScale(Vec3(0.59f, 0.99f, 0.59f));
 
-		mTwoTierShelf_LegList[2]->GetTransform()->SetPosition(Vec3(6.4f, 0.7f, -9.0f));
+		mTwoTierShelf_LegList[2]->GetTransform()->SetPosition(Vec3(12.8f, 1.4f, -18.0f));
 		mTwoTierShelf_LegList[2]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_LegList[2]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+		mTwoTierShelf_LegList[2]->GetTransform()->SetScale(Vec3(0.59f, 0.99f, 0.59f));
 
-		mTwoTierShelf_LegList[3]->GetTransform()->SetPosition(Vec3(7.2f, 0.7f, -9.0f));
+		mTwoTierShelf_LegList[3]->GetTransform()->SetPosition(Vec3(14.4f, 1.4f, -18.0f));
 		mTwoTierShelf_LegList[3]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_LegList[3]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+		mTwoTierShelf_LegList[3]->GetTransform()->SetScale(Vec3(0.59f, 0.99f, 0.59f));
 
-		mTwoTierShelf_LegList[4]->GetTransform()->SetPosition(Vec3(3.3f, 0.7f, -8.1f));
+		mTwoTierShelf_LegList[4]->GetTransform()->SetPosition(Vec3(6.6f, 1.4f, -16.2f));
 		mTwoTierShelf_LegList[4]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_LegList[4]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+		mTwoTierShelf_LegList[4]->GetTransform()->SetScale(Vec3(0.59f, 0.99f, 0.59f));
 
-		mTwoTierShelf_LegList[5]->GetTransform()->SetPosition(Vec3(3.3f, 0.7f, -8.9f));
+		mTwoTierShelf_LegList[5]->GetTransform()->SetPosition(Vec3(6.6f, 1.4f, -17.8f));
 		mTwoTierShelf_LegList[5]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_LegList[5]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+		mTwoTierShelf_LegList[5]->GetTransform()->SetScale(Vec3(0.59f, 0.99f, 0.59f));
 
-		mTwoTierShelf_LegList[6]->GetTransform()->SetPosition(Vec3(6.2f, 0.7f, -8.9f));
+		mTwoTierShelf_LegList[6]->GetTransform()->SetPosition(Vec3(12.4f, 1.4f, -17.8f));
 		mTwoTierShelf_LegList[6]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_LegList[6]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+		mTwoTierShelf_LegList[6]->GetTransform()->SetScale(Vec3(0.59f, 0.99f, 0.59f));
 
-		mTwoTierShelf_LegList[7]->GetTransform()->SetPosition(Vec3(6.2f, 0.7f, -8.1f));
+		mTwoTierShelf_LegList[7]->GetTransform()->SetPosition(Vec3(12.4f, 1.4f, -16.2f));
 		mTwoTierShelf_LegList[7]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_LegList[7]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+		mTwoTierShelf_LegList[7]->GetTransform()->SetScale(Vec3(0.59f, 0.99f, 0.59f));
 #pragma endregion
 
 
@@ -341,37 +350,38 @@ namespace yj
 		}
 
 
-		mTwoTierShelf_Middle_LegList[0]->GetTransform()->SetPosition(Vec3(6.4f, 1.6f, -6.2f));
+		mTwoTierShelf_Middle_LegList[0]->GetTransform()->SetPosition(Vec3(12.8f, 3.2f, -12.4f));
 		mTwoTierShelf_Middle_LegList[0]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[0]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
+		mTwoTierShelf_Middle_LegList[0]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
 
-		mTwoTierShelf_Middle_LegList[1]->GetTransform()->SetPosition(Vec3(7.2f, 1.6f, -6.2f));
+		mTwoTierShelf_Middle_LegList[1]->GetTransform()->SetPosition(Vec3(14.4f, 3.2f, -12.4f));
 		mTwoTierShelf_Middle_LegList[1]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[1]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
+		mTwoTierShelf_Middle_LegList[1]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
 
-		mTwoTierShelf_Middle_LegList[2]->GetTransform()->SetPosition(Vec3(7.2f, 1.6f, -9.0f));
+		mTwoTierShelf_Middle_LegList[2]->GetTransform()->SetPosition(Vec3(14.4f, 3.2f, -18.0f));
 		mTwoTierShelf_Middle_LegList[2]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[2]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
-		
-		mTwoTierShelf_Middle_LegList[3]->GetTransform()->SetPosition(Vec3(6.3f, 1.6f, -9.0f));
+		mTwoTierShelf_Middle_LegList[2]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
+
+		mTwoTierShelf_Middle_LegList[3]->GetTransform()->SetPosition(Vec3(12.6f, 3.2f, -18.0f));
 		mTwoTierShelf_Middle_LegList[3]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[3]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
+		mTwoTierShelf_Middle_LegList[3]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
 
-		mTwoTierShelf_Middle_LegList[4]->GetTransform()->SetPosition(Vec3(6.0f, 1.6f, -8.9f));
+		mTwoTierShelf_Middle_LegList[4]->GetTransform()->SetPosition(Vec3(12.0f, 3.2f, -17.8f));
 		mTwoTierShelf_Middle_LegList[4]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[4]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
+		mTwoTierShelf_Middle_LegList[4]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
 
-		mTwoTierShelf_Middle_LegList[5]->GetTransform()->SetPosition(Vec3(6.0f, 1.6f, -8.1f));
+		mTwoTierShelf_Middle_LegList[5]->GetTransform()->SetPosition(Vec3(12.0f, 3.2f, -16.2f));
 		mTwoTierShelf_Middle_LegList[5]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[5]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
+		mTwoTierShelf_Middle_LegList[5]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
 
-		mTwoTierShelf_Middle_LegList[6]->GetTransform()->SetPosition(Vec3(3.3f, 1.6f, -8.1f));
+		mTwoTierShelf_Middle_LegList[6]->GetTransform()->SetPosition(Vec3(6.6f, 3.2f, -16.2f));
 		mTwoTierShelf_Middle_LegList[6]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[6]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
+		mTwoTierShelf_Middle_LegList[6]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
 
-		mTwoTierShelf_Middle_LegList[7]->GetTransform()->SetPosition(Vec3(3.3f, 1.6f, -8.9f));
+		mTwoTierShelf_Middle_LegList[7]->GetTransform()->SetPosition(Vec3(6.6f, 3.2f, -17.8f));
 		mTwoTierShelf_Middle_LegList[7]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[7]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
+		mTwoTierShelf_Middle_LegList[7]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
+
 
 
 
