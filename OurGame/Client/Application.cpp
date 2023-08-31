@@ -32,7 +32,7 @@ namespace hm
 		GET_SINGLE(SceneManager)->AddScene(new TitleScene);
 		GET_SINGLE(SceneManager)->AddScene(new TestScene);
 
-		GET_SINGLE(SceneManager)->AddMap(new CorridorRightMap);
+		GET_SINGLE(SceneManager)->AddMap(new jh::CorridorRightMap);
 		GET_SINGLE(SceneManager)->AddMap(new sy::DiningColliderCheckMap);
 		GET_SINGLE(SceneManager)->AddMap(new EntranceHallMap);
 		GET_SINGLE(SceneManager)->AddMap(new GrandmaBossMap);
