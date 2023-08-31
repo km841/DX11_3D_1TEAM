@@ -139,7 +139,7 @@ namespace yj
 				Vec3 b = Target->GetTransform()->GetRotation();
 				Vec3 c = Target->GetTransform()->GetScale();
 				int d = 0;
-			
+				
 			}
 		}
 	}
@@ -162,31 +162,39 @@ namespace yj
 	void RightMap::Enter()
 	{
 			gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
+
+
+			{
+
+				Player* pPlayer = Factory::CreateObject<Player>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+				pPlayer->GetTransform()->SetScale(Vec3(2.0f, 2.0f, 2.0f));
+
+				AddGameObject(pPlayer);
+			}
 		{
 
 			Ground* pGround = Factory::CreateObject<Ground>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\RightChairRoomFloor.fbx");
 			pGround->GetTransform()->SetPosition(Vec3(0.0f,0.2f,0.0f));
-			pGround->GetTransform()->SetScale(Vec3(30,30,30));
+			pGround->GetTransform()->SetScale(Vec3(20,20,20));
 
 			AddGameObject(pGround);
 		}
 
 		{
 			DecoObject* pWallFrame = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\Right.fbx");
-			pWallFrame->GetTransform()->SetPosition(Vec3(0.0f, 4.3f, 0.0f));
-			pWallFrame->GetTransform()->SetScale(Vec3(30, 30, 30));
+			pWallFrame->GetTransform()->SetPosition(Vec3(0.0f, 3.0f, 0.0f));
+			pWallFrame->GetTransform()->SetScale(Vec3(20, 20, 20));
 
 			AddGameObject(pWallFrame);
 		}		
 		{
 			DecoObject* pColumnFull = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\ColumnFull.fbx");
-			pColumnFull->GetTransform()->SetPosition(Vec3(-12.8f, 4.4f, -27.6f));
-			pColumnFull->GetTransform()->SetRotation(Vec3(0.0f,-180.0f,0.0f));
-			pColumnFull->GetTransform()->SetScale(Vec3(28.5f, 28.5f, 28.5f));
+			pColumnFull->GetTransform()->SetPosition(Vec3(-8.4f, 3.1f, -18.0f));
+			pColumnFull->GetTransform()->SetRotation(Vec3(0.0f, -180.0f, 0.0f));
+			pColumnFull->GetTransform()->SetScale(Vec3(18.5f, 18.5f, 18.5f));
 
 			AddGameObject(pColumnFull);
 		}
-
 
 		std::vector<GameObject*> mColumnFullver2List;
 		for (int i = 0; i < 2; i++)
@@ -197,13 +205,12 @@ namespace yj
 			mColumnFullver2List.push_back(pColumnFullVer2);
 		}	
 
-		mColumnFullver2List[0]->GetTransform()->SetPosition(Vec3(11.0f, 4.4f, -17.9f));
+		mColumnFullver2List[0]->GetTransform()->SetPosition(Vec3(7.3f, 3.6f, -12.0f));
 		mColumnFullver2List[0]->GetTransform()->SetRotation(Vec3(0.0f, -180.0f, 0.0f));
-		mColumnFullver2List[0]->GetTransform()->SetScale(Vec3(10.0f, 10.0f, 10.0f));
-		
-		mColumnFullver2List[1]->GetTransform()->SetPosition(Vec3(11.0f, 4.4f, 0.3f));
+		mColumnFullver2List[0]->GetTransform()->SetScale(Vec3(7.0f, 7.0f, 7.0f));
+		mColumnFullver2List[1]->GetTransform()->SetPosition(Vec3(7.4f, 3.5f, 0.1f));
 		mColumnFullver2List[1]->GetTransform()->SetRotation(Vec3(0.0f, -180.0f, 0.0f));
-		mColumnFullver2List[1]->GetTransform()->SetScale(Vec3(10.0f, 10.0f, 10.0f));
+		mColumnFullver2List[1]->GetTransform()->SetScale(Vec3(7.0f, 7.0f, 7.0f));
 
 
 		{
@@ -211,11 +218,9 @@ namespace yj
 
 			AddGameObject(pDoorFrameBig);
 
-			pDoorFrameBig->GetTransform()->SetPosition(Vec3(11.1f, 3.0f, -14.1f));
+			pDoorFrameBig->GetTransform()->SetPosition(Vec3(7.4f, 2.1f, -9.6f));
 			pDoorFrameBig->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
-			pDoorFrameBig->GetTransform()->SetScale(Vec3(21.0f, 21.0f, 21.0f));
-			Target = pDoorFrameBig;
-
+			pDoorFrameBig->GetTransform()->SetScale(Vec3(14.5f, 14.5f, 14.5f));
 		}
 
 		{
@@ -223,11 +228,11 @@ namespace yj
 
 			AddGameObject(pCeilingBeamLow);
 
-			pCeilingBeamLow->GetTransform()->SetPosition(Vec3(-0.8, 7.7f, -13.5f));
+			pCeilingBeamLow->GetTransform()->SetPosition(Vec3(-0.6, 5.9f, -9.2f));
 			pCeilingBeamLow->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
-			pCeilingBeamLow->GetTransform()->SetScale(Vec3(24.0f, 24.0f, 24.0f));
-			Target = pCeilingBeamLow;
+			pCeilingBeamLow->GetTransform()->SetScale(Vec3(16.0f, 16.0f, 16.0f));
 		}
+
 
 		std::vector<GameObject*> mCurtainHorizontalList;
 		for (int i = 0; i < 4; i++)
@@ -238,19 +243,30 @@ namespace yj
 			mCurtainHorizontalList.push_back(pCurtainHorizontal);
 		}
 
-		mCurtainHorizontalList[0]-> GetTransform()->SetPosition(Vec3(9.9, 6.7f, 3.9f));
-		mCurtainHorizontalList[0]-> GetTransform()->SetRotation(Vec3(0.0f, -3.0f, 0.0f));
-		mCurtainHorizontalList[0]-> GetTransform()->SetScale(Vec3(17.0f, 17.0f, 17.0f));
+		mCurtainHorizontalList[0]-> GetTransform()->SetPosition(Vec3(6.7, 4.7f, 2.8f));
+		mCurtainHorizontalList[0]-> GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+		mCurtainHorizontalList[0]-> GetTransform()->SetScale(Vec3(12.0f, 12.0f, 12.0f));
 
-		mCurtainHorizontalList[1]->GetTransform()->SetPosition(Vec3(10.4f, 6.7f, -5.1f));
-		mCurtainHorizontalList[1]->GetTransform()->SetRotation(Vec3(0.0f, 2.0f, 0.0f));
-		mCurtainHorizontalList[1]->GetTransform()->SetScale(Vec3(17.0f, 17.0f, 17.0f));
+		mCurtainHorizontalList[1]->GetTransform()->SetPosition(Vec3(6.6f, 4.7f, -3.3f));
+		mCurtainHorizontalList[1]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+		mCurtainHorizontalList[1]->GetTransform()->SetScale(Vec3(12.0f, 12.0f, 12.0f));
 
-		mCurtainHorizontalList[2]->GetTransform()->SetPosition(Vec3(10.4f, 6.7f, -13.2f));
-		mCurtainHorizontalList[2]->GetTransform()->SetRotation(Vec3(0.0f, 94.0f, 0.0f));
-		mCurtainHorizontalList[2]->GetTransform()->SetScale(Vec3(17.0f, 17.0f, 17.0f));
+		mCurtainHorizontalList[2]->GetTransform()->SetPosition(Vec3(6.9f, 4.4f, -8.8f));
+		mCurtainHorizontalList[2]->GetTransform()->SetRotation(Vec3(0.0f, 88.0f, 0.0f));
+		mCurtainHorizontalList[2]->GetTransform()->SetScale(Vec3(12.0f, 12.0f, 12.0f));
 
-		Target = mCurtainHorizontalList[2];
+
+		{
+			DecoObject* pFireplace = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\Fireplace.fbx");
+
+			AddGameObject(pFireplace);
+
+			pFireplace->GetTransform()->SetPosition(Vec3(-0.6f, 2.9f, 1.93715096e-07f));
+			pFireplace->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+			pFireplace->GetTransform()->SetScale(Vec3(19.0f, 19.0f, 19.0f));
+			Target = pFireplace;
+		}
+
 	}
 
 	void RightMap::Exit()
