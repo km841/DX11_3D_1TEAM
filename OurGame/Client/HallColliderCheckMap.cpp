@@ -495,7 +495,7 @@ namespace jh
 					AddGameObject(pFireLamp_Top);
 				}
 			}
-
+#pragma endregion
 			// 문틀
 			{
 				DecoObject* pFloorDoorFrame = Factory::CreateObject<DecoObject>(Vec3(2.9f, -1.1f, -29.74f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\doorSideFrame.fbx");
@@ -519,7 +519,7 @@ namespace jh
 				pFloorDoorLock->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
 				AddGameObject(pFloorDoorLock);
 			}
-#pragma endregion
+
 		}
 #pragma endregion
 		//#pragma region 2층
