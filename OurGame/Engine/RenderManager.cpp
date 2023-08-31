@@ -499,7 +499,7 @@ namespace hm
 		mAdatation = 1.0f;
 
 		mBloomThreshold = 2.0f;
-		mBloomScale = 0.6f;
+		mBloomScale = 1.0f;
 
 		// LDR
 		mpCopyFilter = make_shared<ImageFilter>(GET_SINGLE(Resources)->Get<Material>(L"Copy"), mWidth, mHeight);

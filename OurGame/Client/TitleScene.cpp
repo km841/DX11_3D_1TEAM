@@ -63,7 +63,7 @@ namespace hm
 		// - GrandmaBossMap
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::LeftSecretTrialMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::HallColliderCheckMap);
 		}
 
 		// ÁöÇü
