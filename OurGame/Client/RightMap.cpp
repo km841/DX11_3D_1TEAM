@@ -283,6 +283,11 @@ namespace yj
 		mTwoTierShelf_BottomList[1]->GetTransform()->SetPosition(Vec3(4.7f, 1.1f, -8.5f));
 		mTwoTierShelf_BottomList[1]->GetTransform()->SetRotation(Vec3(0.0f, -180.0f, 0.0f));
 		mTwoTierShelf_BottomList[1]->GetTransform()->SetScale(Vec3(3.0f, 3.0f, 3.0f));
+
+
+#pragma region "2Ãþ ¼±¹Ý ´Ù¸®"
+
+
 		std::vector<GameObject*> mTwoTierShelf_LegList;
 		for (int i = 0; i < 8; i++)
 		{
@@ -323,6 +328,55 @@ namespace yj
 		mTwoTierShelf_LegList[7]->GetTransform()->SetPosition(Vec3(6.2f, 0.7f, -8.1f));
 		mTwoTierShelf_LegList[7]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
 		mTwoTierShelf_LegList[7]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+#pragma endregion
+
+
+		std::vector<GameObject*> mTwoTierShelf_Middle_LegList;
+		for (int i = 0; i < 8; i++)
+		{
+			DecoObject* pTwoTierShelf_Middle_Leg = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\TwoTierShelf_Middle_Leg.fbx");
+
+			AddGameObject(pTwoTierShelf_Middle_Leg);
+			mTwoTierShelf_Middle_LegList.push_back(pTwoTierShelf_Middle_Leg);
+		}
+
+
+		mTwoTierShelf_Middle_LegList[0]->GetTransform()->SetPosition(Vec3(6.4f, 1.6f, -6.2f));
+		mTwoTierShelf_Middle_LegList[0]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_Middle_LegList[0]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
+
+		mTwoTierShelf_Middle_LegList[1]->GetTransform()->SetPosition(Vec3(7.2f, 1.6f, -6.2f));
+		mTwoTierShelf_Middle_LegList[1]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_Middle_LegList[1]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
+
+		mTwoTierShelf_Middle_LegList[2]->GetTransform()->SetPosition(Vec3(7.2f, 1.6f, -9.0f));
+		mTwoTierShelf_Middle_LegList[2]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_Middle_LegList[2]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
+		
+		mTwoTierShelf_Middle_LegList[3]->GetTransform()->SetPosition(Vec3(6.3f, 1.6f, -9.0f));
+		mTwoTierShelf_Middle_LegList[3]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_Middle_LegList[3]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
+
+		mTwoTierShelf_Middle_LegList[4]->GetTransform()->SetPosition(Vec3(6.0f, 1.6f, -8.9f));
+		mTwoTierShelf_Middle_LegList[4]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_Middle_LegList[4]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
+
+		mTwoTierShelf_Middle_LegList[5]->GetTransform()->SetPosition(Vec3(6.0f, 1.6f, -8.1f));
+		mTwoTierShelf_Middle_LegList[5]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_Middle_LegList[5]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
+
+		mTwoTierShelf_Middle_LegList[6]->GetTransform()->SetPosition(Vec3(3.3f, 1.6f, -8.1f));
+		mTwoTierShelf_Middle_LegList[6]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_Middle_LegList[6]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
+
+		mTwoTierShelf_Middle_LegList[7]->GetTransform()->SetPosition(Vec3(3.3f, 1.6f, -8.9f));
+		mTwoTierShelf_Middle_LegList[7]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_Middle_LegList[7]->GetTransform()->SetScale(Vec3(0.55f, 0.75f, 0.55f));
+
+
+
+
+
 
 		{
 		/*	DecoObject* pFireHolder = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\Holder.fbx");
