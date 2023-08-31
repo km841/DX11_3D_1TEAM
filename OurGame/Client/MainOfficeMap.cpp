@@ -691,7 +691,6 @@ namespace yj
 			AddGameObject(pPlayer);
 			Target = pPlayer;*/
 		}
-
 	}
 	
 	

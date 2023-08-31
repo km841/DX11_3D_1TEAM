@@ -140,6 +140,7 @@ namespace yj
 				Vec3 c = Target->GetTransform()->GetScale();
 				int d = 0;
 				
+
 			}
 		}
 	}
@@ -264,9 +265,75 @@ namespace yj
 			pFireplace->GetTransform()->SetPosition(Vec3(-0.6f, 2.9f, 1.93715096e-07f));
 			pFireplace->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
 			pFireplace->GetTransform()->SetScale(Vec3(19.0f, 19.0f, 19.0f));
-			Target = pFireplace;
 		}
 
+		std::vector<GameObject*> mTwoTierShelf_BottomList;
+		for (int i = 0; i < 2; i++)
+		{
+			DecoObject* pTwoTierShelf_Bottom = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\TwoTierShelf_Bottom.fbx");
+
+			AddGameObject(pTwoTierShelf_Bottom);
+			mTwoTierShelf_BottomList.push_back(pTwoTierShelf_Bottom);
+		
+		}
+		mTwoTierShelf_BottomList[0]->GetTransform()->SetPosition(Vec3(6.8f, 1.1f, -7.6f));
+		mTwoTierShelf_BottomList[0]->GetTransform()->SetRotation(Vec3(0.0f, -90.0f, 0.0f));
+		mTwoTierShelf_BottomList[0]->GetTransform()->SetScale(Vec3(3.0f, 3.0f, 3.0f));
+		
+		mTwoTierShelf_BottomList[1]->GetTransform()->SetPosition(Vec3(4.7f, 1.1f, -8.5f));
+		mTwoTierShelf_BottomList[1]->GetTransform()->SetRotation(Vec3(0.0f, -180.0f, 0.0f));
+		mTwoTierShelf_BottomList[1]->GetTransform()->SetScale(Vec3(3.0f, 3.0f, 3.0f));
+		std::vector<GameObject*> mTwoTierShelf_LegList;
+		for (int i = 0; i < 8; i++)
+		{
+			DecoObject* pTwoTierShelf_Leg = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\TwoTierShelf_Leg.fbx");
+
+			AddGameObject(pTwoTierShelf_Leg);
+			mTwoTierShelf_LegList.push_back(pTwoTierShelf_Leg);
+		}
+
+		mTwoTierShelf_LegList[0]->GetTransform()->SetPosition(Vec3(7.2f, 0.7f, -6.2f));
+		mTwoTierShelf_LegList[0]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_LegList[0]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+
+		mTwoTierShelf_LegList[1]->GetTransform()->SetPosition(Vec3(6.4f, 0.7f, -6.2f));
+		mTwoTierShelf_LegList[1]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_LegList[1]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+
+		mTwoTierShelf_LegList[2]->GetTransform()->SetPosition(Vec3(6.4f, 0.7f, -9.0f));
+		mTwoTierShelf_LegList[2]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_LegList[2]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+
+		mTwoTierShelf_LegList[3]->GetTransform()->SetPosition(Vec3(7.2f, 0.7f, -9.0f));
+		mTwoTierShelf_LegList[3]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_LegList[3]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+
+		mTwoTierShelf_LegList[4]->GetTransform()->SetPosition(Vec3(3.3f, 0.7f, -8.1f));
+		mTwoTierShelf_LegList[4]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_LegList[4]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+
+		mTwoTierShelf_LegList[5]->GetTransform()->SetPosition(Vec3(3.3f, 0.7f, -8.9f));
+		mTwoTierShelf_LegList[5]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_LegList[5]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+
+		mTwoTierShelf_LegList[6]->GetTransform()->SetPosition(Vec3(6.2f, 0.7f, -8.9f));
+		mTwoTierShelf_LegList[6]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_LegList[6]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+
+		mTwoTierShelf_LegList[7]->GetTransform()->SetPosition(Vec3(6.2f, 0.7f, -8.1f));
+		mTwoTierShelf_LegList[7]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
+		mTwoTierShelf_LegList[7]->GetTransform()->SetScale(Vec3(0.295f, 0.495f, 0.295f));
+
+		{
+		/*	DecoObject* pFireHolder = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\Holder.fbx");
+
+			AddGameObject(pFireHolder);
+
+			pFireHolder->GetTransform()->SetPosition(Vec3(-0.6f, 2.9f, 1.93715096e-07f));
+			pFireHolder->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+			pFireHolder->GetTransform()->SetScale(Vec3(19.0f, 19.0f, 19.0f));
+			Target = pFireHolder;*/
+		}
 	}
 
 	void RightMap::Exit()
