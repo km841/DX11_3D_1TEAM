@@ -66,7 +66,7 @@ void GS_Main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triangleStream)
 	
     float3 vWorldPos = input[0].pos.xyz + particleBuffer[input[0].id].position.xyz;
     float3 vViewPos = mul(float4(vWorldPos, 1.0f), g_matView).xyz;
-    float3 vScale = g_vec3_0;
+    float3 vScale = g_vec4_0.xyz;
     
     float3 vNewPos[4] =
     {
@@ -134,7 +134,7 @@ RWStructuredBuffer<ParticleShared> g_shared : register(u1);
 [numthreads(1024, 1, 1)]
 void CS_Main(uint3 threadIndex : SV_DispatchThreadID)
 {
-    float3 worldPos = g_vec3_0;
+    float3 worldPos = g_vec4_0.xyz;
     
     uint maxCount = g_int_0;
 

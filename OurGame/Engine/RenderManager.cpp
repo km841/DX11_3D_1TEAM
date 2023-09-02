@@ -64,7 +64,7 @@ namespace hm
 		PushLightData(_pScene);
 		SortGameObject(_pScene);
 
-		//RenderShadow(_pScene);
+		RenderShadow(_pScene);
 		RenderDeferred(_pScene);
 		RenderBloom();
 		RenderLight(_pScene);
@@ -119,6 +119,9 @@ namespace hm
 			if (pCameraObject == _pScene->mpMainCamera)
 				continue;
 
+			if (pCameraObject == _pScene->mpShadowCamera)
+				continue;
+
 			pCameraObject->GetCamera()->SortGameObject();
 		}
 	}
@@ -134,6 +137,9 @@ namespace hm
 			if (pCameraObject == _pScene->mpMainCamera)
 				continue;
 
+			if (pCameraObject == _pScene->mpShadowCamera)
+				continue;
+
 			RenderInstancing(pCameraObject->GetCamera(), pCameraObject->GetCamera()->GetForwardObjects());
 			pCameraObject->GetCamera()->RenderParticle();
 		}
@@ -147,6 +153,9 @@ namespace hm
 		for (GameObject* pCameraObject : _pScene->mCameraObjects)
 		{
 			if (pCameraObject == _pScene->mpMainCamera)
+				continue;
+
+			if (pCameraObject == _pScene->mpShadowCamera)
 				continue;
 
 			RenderInstancing(pCameraObject->GetCamera(), pCameraObject->GetCamera()->GetDeferredObjects());

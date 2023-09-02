@@ -22,6 +22,7 @@ namespace hm
 		: meSceneType(_eSceneType)
 		, mpMainCamera(nullptr)
 		, mpUICamera(nullptr)
+		, mpShadowCamera(nullptr)
 		, mpDirLight(nullptr)
 	{
 	}
@@ -153,6 +154,8 @@ namespace hm
 		{
 			if (mCameraObjects.empty())
 				mpMainCamera = _pGameObject;
+			if (_pGameObject->GetName() == L"ShadowCamera")
+				mpShadowCamera = _pGameObject;
 			mCameraObjects.push_back(_pGameObject);
 		}
 
@@ -174,6 +177,8 @@ namespace hm
 			{
 				if (mCameraObjects.empty())
 					mpMainCamera = pGameObject;
+				if (pGameObject->GetName() == L"ShadowCamera")
+					mpShadowCamera = pGameObject;
 				mCameraObjects.push_back(pGameObject);
 			}
 

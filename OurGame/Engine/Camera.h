@@ -38,6 +38,7 @@ namespace hm
         void SetHeight(float _height) { mHeight = _height; }
         void SetScale(float _scale) { mScale = _scale; }
         void SetFar(float _far) { mFar = _far; }
+        void SetFov(float _fov) { mFov = _fov; }
 
     public:
         void SortGameObject();

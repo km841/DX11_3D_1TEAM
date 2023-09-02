@@ -80,7 +80,7 @@ PS_OUT PS_Main(VS_OUT _in)
     PS_OUT output = (PS_OUT) 0;
    
     float4 bloomColor = g_bloomColor;
-    float4 color = float4(g_vec3_0, 1.f);
+    float4 color = float4(g_vec4_0.xyz, 1.f);
     
     float2 uv = _in.uv;
     float2 tilingValue = g_vec2_3;

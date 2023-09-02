@@ -882,8 +882,8 @@ namespace hm
             ShaderInfo shaderInfo =
             {
                 ShaderType::Shadow,
-                DepthStencilType::Less,
-                RasterizerType::CullBack,
+                DepthStencilType::LessEqual,
+                RasterizerType::CullNone,
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();

@@ -86,6 +86,7 @@ namespace hm
 
 		GameObject* mpMainCamera;
 		GameObject* mpUICamera;
+		GameObject* mpShadowCamera;
 		GameObject* mpDirLight;
 		std::vector<GameObject*> mCameraObjects;
 		std::vector<GameObject*> mLightObjects;

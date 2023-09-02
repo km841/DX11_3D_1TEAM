@@ -155,19 +155,37 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
+		// Create Shadow Camera
+		GameObject* pShadowCamera = nullptr;
+		{
+			pShadowCamera = new GameObject(LayerType::Unknown);
+			pShadowCamera->SetDontDestroyObject(L"ShadowCamera");
+			Transform* pTransform = pShadowCamera->AddComponent(new Transform);
+
+			Camera* pCamera = pShadowCamera->AddComponent(new Camera);
+
+			pCamera->SetCullingMask(LayerType::UI, true);
+
+			pTransform->SetPosition(Vec3(0.f, 30.f, 0.f));
+			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+			AddGameObject(pShadowCamera);
+		}
+		
 		// Create DirLight
 		{
 			GameObject* pGameObject = new GameObject(LayerType::Unknown);
 			pGameObject->SetDontDestroyObject(L"DirLight");
 			Transform* pTransform = pGameObject->AddComponent(new Transform);
-			pTransform->SetPosition(Vec3(0.f, 1.f, 0.f));
+			pTransform->SetPosition(Vec3(0.f, 10.f, 0.f));
 			Light* pLight = pGameObject->AddComponent(new Light);
 			pLight->SetDiffuse(Vec3(1.f, 1.f, 1.f));
 			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
 			pLight->SetLightDirection(Vec3(0.f, -1.f, 0.f));
+			pLight->SetDirectionalCamera(pShadowCamera);
 			pLight->SetLightType(LightType::DirectionalLight);
 			AddGameObject(pGameObject);
 		}
+
 
 		// Title
 		{

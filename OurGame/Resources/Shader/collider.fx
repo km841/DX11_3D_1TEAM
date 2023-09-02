@@ -27,7 +27,7 @@ VS_OUT VS_Main(VS_IN _in)
 
 float4 PS_Main(VS_OUT _in) : SV_Target
 {
-    float3 color = g_vec3_0;
+    float3 color = g_vec4_0.xyz;
     //if (color.x ==0.f && color.y == 0.f&& color.z == 0.f)
     //    color = float3(0.f, 0.f, 1.f);
     return float4(color, 1.f);

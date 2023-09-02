@@ -71,6 +71,7 @@ namespace hm
         void SetLightAngle(float _angle) { mLightInfo.angle = _angle; }
         void SetLightIndex(int _index) { mLightIndex = _index; }
 
+        void SetDirectionalCamera(GameObject* _pDirCamera);
         LightType GetLightType() { return static_cast<LightType>(mLightInfo.eLightType); }
 
     private:
