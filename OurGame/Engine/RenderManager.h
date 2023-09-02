@@ -33,6 +33,7 @@ namespace hm
 		void RenderForward(Scene* _pScene);
 		void RenderDeferred(Scene* _pScene);
 		void RenderLight(Scene* _pScene);
+		void RenderShadow(Scene* _pScene);
 		void RenderRimLighting();
 		void RenderLightBlend();
 		void RenderBloom();

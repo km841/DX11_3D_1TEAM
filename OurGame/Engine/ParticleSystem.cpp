@@ -89,8 +89,8 @@ namespace hm
 
 		Vec3 vPosition = GetGameObject()->GetTransform()->GetPosition();
 		mMaxParticles = mpParticleBuffer->GetElementCount();
-		mpComputeMaterial->SetVec3(0, GetGameObject()->GetTransform()->GetPosition());
-		mpComputeMaterial->SetVec3(1, mStartDir);
+		mpComputeMaterial->SetVec4(0, Vec4(vPosition.x, vPosition.y, vPosition.z, 1.f));
+		mpComputeMaterial->SetVec4(1, Vec4::Zero);
 		mpComputeMaterial->SetInt(0, mMaxParticles);
 		mpComputeMaterial->SetFloat(0, mEndTime);
 		mpComputeMaterial->SetFloat(1, mGravity);
@@ -108,7 +108,7 @@ namespace hm
 		GetGameObject()->GetTransform()->PushData(_pCamera);
 		mpParticleBuffer->PushGraphicsData(RegisterSRV::t9);
 
-		mpMaterial->SetVec3(0, mStartScale);
+		mpMaterial->SetVec4(0, Vec4(mStartScale.x, mStartScale.y, mStartScale.z, 0.f));
 		mpMaterial->PushGraphicDataExceptForTextures();
 
 		GET_SINGLE(Resources)->Get<Texture>(L"Bubble")->PushSRV(RegisterSRV::t0);

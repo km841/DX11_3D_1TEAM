@@ -153,6 +153,10 @@ namespace hm
 	{
 		CONST_BUFFER(ConstantBufferType::Material)->PushData(&mMaterialContainerVec[_containerindex]->materialSubsetVec[_subsetIndex]->materialParams, sizeof(MaterialParams));
 		CONST_BUFFER(ConstantBufferType::Bloom)->PushData(&mMaterialContainerVec[_containerindex]->materialSubsetVec[_subsetIndex]->bloomParams, sizeof(BloomParams));
+		
+		CONST_BUFFER(ConstantBufferType::Material)->Mapping();
+		CONST_BUFFER(ConstantBufferType::Bloom)->Mapping();
+		
 		mpShader->Update();
 
 		for (int i = 0; i < TEXTURE_VALUE_COUNT; ++i)
@@ -218,27 +222,6 @@ namespace hm
 		CONST_BUFFER(ConstantBufferType::Material)->Mapping();
 		CONST_BUFFER(ConstantBufferType::Bloom)->Mapping();
 		mpShader->Update();
-
-		//for (int i = 0; i < TEXTURE_VALUE_COUNT; ++i)
-		//{
-		//	if (nullptr == mMaterialContainerVec[0]->materialSubsetVec[0]->textures[i])
-		//	{
-		//		//CONTEXT->CSSetUnorderedAccessViews(static_cast<int>(RegisterUAV::u0) + i, 1,
-		//		//	reinterpret_cast<ID3D11UnorderedAccessView**>(&mppNullptr), 0);
-
-		//		//CONTEXT->CSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
-		//		//	reinterpret_cast<ID3D11ShaderResourceView**>(&mppNullptr));
-		//	}
-
-		//	else
-		//	{
-		//		CONTEXT->CSSetUnorderedAccessViews(static_cast<int>(RegisterUAV::u0) + i, 1,
-		//			mMaterialContainerVec[0]->materialSubsetVec[0]->textures[i]->GetUAV().GetAddressOf(), 0);
-
-		//		CONTEXT->CSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
-		//			mMaterialContainerVec[0]->materialSubsetVec[0]->textures[i]->GetSRV().GetAddressOf());
-		//	}
-		//}
 	}
 
 	void Material::Dispatch(UINT32 _countX, UINT32 _countY, UINT32 _countZ)
@@ -311,18 +294,7 @@ namespace hm
 
 	void Material::SetVec3(int _index, Vec3 _value, int _containerIndex, int _subsetIndex)
 	{
-		mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams.SetVec3(_index, _value);
-	}
-
-	void Material::SetVec3AllSubset(int _index, Vec3 _value)
-	{
-		for (int i = 0; i < mMaterialContainerVec.size(); ++i)
-		{
-			for (int j = 0; j < mMaterialContainerVec[i]->materialSubsetVec.size(); ++j)
-			{
-				mMaterialContainerVec[i]->materialSubsetVec[j]->materialParams.SetVec3(_index, _value);
-			}
-		}
+		mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams.SetVec4(_index, Vec4(_value.x, _value.y, _value.z, 1.f));
 	}
 
 	void Material::SetVec4(int _index, Vec4 _value, int _containerIndex, int _subsetIndex)
@@ -330,10 +302,9 @@ namespace hm
 		mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams.SetVec4(_index, _value);
 	}
 
-	void Material::SetColorAllSubset(Vec3 _color)
+	void Material::SetMatrix(int _index, Matrix _value, int _containerIndex, int _subsetIndex)
 	{
-		SetTextureAllSubset(0, nullptr);
-		SetVec3AllSubset(0, _color);
+		mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams.SetMatrix(_index, _value);
 	}
 
 	shared_ptr<Material> Material::Clone()

@@ -31,7 +31,7 @@ namespace hm
 
 				if (nullptr != mpParent)
 					mMatWorld *= mpParent->GetWorldMatrix();
-				
+
 				return;
 			}
 
@@ -58,16 +58,16 @@ namespace hm
 			{
 				if (nullptr != mpParent)
 					mMatWorld *= mpParent->GetWorldMatrix();
-				
+
 				return;
 			}
 
 			Matrix matScale = Matrix::CreateScale(mScale);
 			Vec4 rotateQuat = XMQuaternionRotationRollPitchYaw(
-				mRotation.x * XM_PI / 180.f, 
-				mRotation.y * XM_PI / 180.f, 
+				mRotation.x * XM_PI / 180.f,
+				mRotation.y * XM_PI / 180.f,
 				mRotation.z * XM_PI / 180.f);
-	
+
 			Matrix matRotation = XMMatrixRotationQuaternion(rotateQuat.Convert());
 			Matrix matTranslation = Matrix::CreateTranslation(mPosition);
 
@@ -108,7 +108,7 @@ namespace hm
 			pRigidBody->SetPhysicsTransform(transform);
 		}
 
-		mRotation = _rotation; 
+		mRotation = _rotation;
 	}
 
 	void Transform::SetRotation(Axis _eAxis, float _degree)
@@ -219,25 +219,6 @@ namespace hm
 			mPosition.z = _position;
 			break;
 		}
-	}
-
-	void Transform::SetScaleFromTool(const Vec3& _scale)
-	{
-		mMatWorld._11 = _scale.x;
-		mMatWorld._22 = _scale.y;
-		mMatWorld._33 = _scale.z;
-
-		DecomposeWorld();
-
-		mScale = _scale;
-	}
-
-	void Transform::SetRotationFromTool(const Vec3& _rotation)
-	{
-	}
-
-	void Transform::SetPositionFromTool(const Vec3& _position)
-	{
 	}
 
 	void Transform::SetPositionExcludingColliders(const Vec3& _position)
@@ -412,6 +393,82 @@ namespace hm
 		return mScale;
 	}
 
+	void Transform::LookAt(const Vec3& _look)
+	{
+		Vec3 front = _look;
+		front.Normalize();
+
+		Vec3 right = Vec3::Up.Cross(_look);
+		if (right == Vec3::Zero)
+			right = Vec3::Forward.Cross(_look);
+
+		right.Normalize();
+
+		Vec3 up = front.Cross(right);
+		up.Normalize();
+
+		Matrix matrix = XMMatrixIdentity();
+		matrix.Right(right);
+		matrix.Up(up);
+		matrix.Backward(front);
+
+		mRotation = DecomposeRotationMatrix(matrix);
+		PxQuat q = EulerToQuaternion(mRotation);
+		mRotation = QuaternionToEuler(q.x, q.y, q.z, q.w);
+	}
+
+	bool Transform::CloseEnough(const float& _a, const float& _b, const float& _epsilon)
+	{
+		return (_epsilon > std::abs(_a - _b));
+	}
+
+	Vec3 Transform::DecomposeRotationMatrix(const Matrix& _rotation)
+	{
+		Vec4 v[4];
+		XMStoreFloat4(&v[0], _rotation.Right());
+		XMStoreFloat4(&v[1], _rotation.Up());
+		XMStoreFloat4(&v[2], _rotation.Backward());
+		XMStoreFloat4(&v[3], _rotation.Translation());
+
+		Vec3 ret;
+		if (CloseEnough(v[0].z, -1.0f))
+		{
+			float x = 0;
+			float y = XM_PI / 2;
+			float z = x + atan2(v[1].x, v[2].x);
+			ret = Vec3{ x, y, z };
+		}
+		else if (CloseEnough(v[0].z, 1.0f))
+		{
+			float x = 0;
+			float y = -XM_PI / 2;
+			float z = -x + atan2(-v[1].x, -v[2].x);
+			ret = Vec3{ x, y, z };
+		}
+		else
+		{
+			float y1 = -asin(v[0].z);
+			float y2 = XM_PI - y1;
+
+			float x1 = atan2f(v[1].z / cos(y1), v[2].z / cos(y1));
+			float x2 = atan2f(v[1].z / cos(y2), v[2].z / cos(y2));
+
+			float z1 = atan2f(v[0].y / cos(y1), v[0].x / cos(y1));
+			float z2 = atan2f(v[0].y / cos(y2), v[0].x / cos(y2));
+
+			if ((std::abs(x1) + std::abs(y1) + std::abs(z1)) <= (std::abs(x2) + std::abs(y2) + std::abs(z2)))
+			{
+				ret = Vec3{ x1, y1, z1 };
+			}
+			else
+			{
+				ret = Vec3{ x2, y2, z2 };
+			}
+		}
+
+		return ret;
+	}
+
 	void Transform::AddRotation(Axis _eAxis, float _degree)
 	{
 		if (true == IsPhysicsObject())
@@ -466,7 +523,7 @@ namespace hm
 			else
 				AssertEx(false, L"Transform::Move() - Static Actor에 대한 Move 호출");
 		}
-		
+
 		else
 		{
 			mPosition += _velocity * DELTA_TIME;
@@ -482,6 +539,7 @@ namespace hm
 		transformParams.matProjection = _pCamera->GetProjectionMatrix();
 		transformParams.matWV = mMatWorld * transformParams.matView;
 		transformParams.matWVP = mMatWorld * transformParams.matView * transformParams.matProjection;
+		transformParams.matViewInv = transformParams.matView.Invert();
 		transformParams.matWVPInv = transformParams.matWVP.Invert();
 
 		CONST_BUFFER(ConstantBufferType::Transform)->PushData(&transformParams, sizeof(transformParams));

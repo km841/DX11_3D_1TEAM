@@ -31,6 +31,7 @@ struct alignas(16) TransformParams
 	Matrix matProjection;
 	Matrix matWV;
 	Matrix matWVP;
+	Matrix matViewInv;
 	Matrix matWVPInv;
 };
 
@@ -68,16 +69,16 @@ public:
 	void SetFloat(int _index, float _value) { floatParams[_index] = _value; }
 	void SetTexOn(int _index, int _value) { texOnParams[_index] = _value; }
 	void SetVec2(int _index, Vec2 _value) { vec2Params[_index] = _value; }
-	void SetVec3(int _index, Vec3 _value) { vec3Params[_index] = _value; }
 	void SetVec4(int _index, Vec4 _value) { vec4Params[_index] = _value; }
+	void SetMatrix(int _index, Matrix _value) { matParams[_index] = _value; }
 
 public:
 	std::array<int, MATERIAL_VALUE_COUNT> intParams; // 16
 	std::array<float, MATERIAL_VALUE_COUNT> floatParams; // 16
 	std::array<int, TEXTURE_VALUE_COUNT> texOnParams; // 64
 	std::array<Vec2, MATERIAL_VALUE_COUNT> vec2Params; // 4 * 8 = 32
-	std::array<Vec3, MATERIAL_VALUE_COUNT> vec3Params; // 4 * 12 = 48
 	std::array<Vec4, MATERIAL_VALUE_COUNT> vec4Params; // 4 * 16 = 64
+	std::array<Matrix, MATERIAL_VALUE_COUNT> matParams;
 };
 
 struct MassProperties

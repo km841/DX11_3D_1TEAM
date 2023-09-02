@@ -13,12 +13,17 @@ namespace hm
 	Camera::Camera()
 		: Component(ComponentType::Camera)
 		, meProjectionType(ProjectionType::Perspective)
-		, mNear(0.1f)
-		, mFar(1000.f)
+		, mNear(1.f)
+		, mFar(10000.f)
 		, mFov(XM_PI/4.f)
 		, mScale(1.f)
 		, mCullingMask(0)
+		, mWidth(0.f)
+		, mHeight(0.f)
 	{
+		Vec2 resolution = gpEngine->GetResolution();
+		mWidth = resolution.x;
+		mHeight = resolution.y;
 	}
 	Camera::~Camera()
 	{
@@ -40,14 +45,13 @@ namespace hm
 		Matrix matWorldInv = matWorld.Invert();
 		mMatView = matWorldInv;
 
-		Vec2 resolution = gpEngine->GetResolution();
 		if (ProjectionType::Perspective == meProjectionType)
 		{
-			mMatProjection = XMMatrixPerspectiveFovLH(mFov, resolution.x / resolution.y, mNear, mFar);
+			mMatProjection = XMMatrixPerspectiveFovLH(mFov, mWidth / mHeight, mNear, mFar);
 		}
 		else
 		{
-			mMatProjection = XMMatrixOrthographicLH(resolution.x / mScale, resolution.y / mScale, mNear, mFar);
+			mMatProjection = XMMatrixOrthographicLH(mWidth / mScale, mHeight / mScale, mNear, mFar);
 		}
 
 		mFrustumCulling.FinalUpdate(this);
@@ -122,6 +126,35 @@ namespace hm
 			}
 		}
 	}
+	void Camera::SortShadowObject()
+	{
+		mShadowObjects.clear();
+		Scene* pActiveScene = GET_SINGLE(SceneManager)->GetActiveScene();
+
+		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
+		{
+			if (mCullingMask & 1 << i)
+				continue;
+
+			const auto& gameObjects = pActiveScene->GetGameObjects(static_cast<LayerType>(i));
+
+			for (auto& pGameObject : gameObjects)
+			{
+				if (nullptr == pGameObject->GetMeshRenderer())
+					continue;
+
+				if (true == pGameObject->IsFrustumCheck())
+				{
+					if (false == mFrustumCulling.ContainsSphere(
+						pGameObject->GetTransform()->GetWorldPosition(),
+						pGameObject->GetTransform()->GetBoundingSphereRadius()))
+						continue;
+				}
+
+				mShadowObjects.push_back(pGameObject);
+			}
+		}
+	}
 	void Camera::RenderForward()
 	{
 		for (GameObject* pGameObject : mForwardObjects)
@@ -141,6 +174,13 @@ namespace hm
 		for (GameObject* pGameObject : mParticleObjects)
 		{
 			pGameObject->GetParticleSystem()->Render(this);
+		}
+	}
+	void Camera::RenderShadow()
+	{
+		for (auto& pGameObject : mShadowObjects)
+		{
+			pGameObject->GetMeshRenderer()->RenderShadow(this);
 		}
 	}
 }

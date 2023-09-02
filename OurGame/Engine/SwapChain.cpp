@@ -24,13 +24,13 @@ namespace hm
 		sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // 버퍼의 디스플레이 형식
 		sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 		sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-		sd.SampleDesc.Count = 1; // 멀티 샘플링 Off
+		sd.SampleDesc.Count = 1;
 		sd.SampleDesc.Quality = 0;
 		sd.BufferUsage = DXGI_USAGE_SHADER_INPUT | DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		sd.BufferCount = 2;
 		sd.OutputWindow = windowInfo.hwnd;
 		sd.Windowed = true;
-		sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+		sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 		HRESULT hr = DXGI->CreateSwapChain(DEVICE.Get(), &sd, &mpSwapChain);

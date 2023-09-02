@@ -52,8 +52,10 @@ namespace hm
         virtual Component* Clone(GameObject* _pGameObject);
 
     public:
+        void RenderShadow();
+
         const LightInfo& GetLightInfo() { return mLightInfo; }
-        void SetLightDirection(const Vec3& _direction) { mLightInfo.direction = _direction; }
+        void SetLightDirection(Vec3 _direction);
 
         Vec3 GetDiffuse() { return Vec3(mLightInfo.color.diffuse.x, mLightInfo.color.diffuse.y, mLightInfo.color.diffuse.z); }
         Vec3 GetAmbient() { return Vec3(mLightInfo.color.ambient.x, mLightInfo.color.ambient.y, mLightInfo.color.ambient.z); }
@@ -67,8 +69,9 @@ namespace hm
         void SetLightType(LightType _eLightType);
         void SetLightRange(float _range) { mLightInfo.range = _range; }
         void SetLightAngle(float _angle) { mLightInfo.angle = _angle; }
-
         void SetLightIndex(int _index) { mLightIndex = _index; }
+
+        LightType GetLightType() { return static_cast<LightType>(mLightInfo.eLightType); }
 
     private:
         LightInfo mLightInfo;
@@ -76,6 +79,7 @@ namespace hm
         shared_ptr<Mesh> mpMesh;
         shared_ptr<Material> mpMaterial;
 
+        GameObject* mpShadowCamera;
 	};
 
 }

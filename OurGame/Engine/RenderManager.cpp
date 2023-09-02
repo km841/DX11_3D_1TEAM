@@ -64,10 +64,11 @@ namespace hm
 		PushLightData(_pScene);
 		SortGameObject(_pScene);
 
+		//RenderShadow(_pScene);
 		RenderDeferred(_pScene);
 		RenderBloom();
 		RenderLight(_pScene);
-		//ComputeLight();
+
 		if (true == mbEnableRim)
 			RenderRimLighting();
 
@@ -78,8 +79,6 @@ namespace hm
 			PostProcessing();
 
 		RenderForward(_pScene);
-
-		
 	}
 
 	void RenderManager::ClearInstancingBuffer()
@@ -99,6 +98,7 @@ namespace hm
 	void RenderManager::ClearRenderTargets()
 	{
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::SwapChain)->ClearRenderTargetView();
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::Shadow)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::G_Buffer)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::Light)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::RimLighting)->ClearRenderTargetView();
@@ -159,6 +159,19 @@ namespace hm
 		for (GameObject* pLightObject : _pScene->mLightObjects)
 		{
 			pLightObject->GetLight()->Render(_pScene->mpMainCamera->GetCamera());
+		}
+	}
+
+	void RenderManager::RenderShadow(Scene* _pScene)
+	{
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::Shadow)->OMSetRenderTarget();
+
+		for (auto pLight : _pScene->mLightObjects)
+		{
+			if (LightType::DirectionalLight != pLight->GetLight()->GetLightType())
+				continue;
+
+			pLight->GetLight()->RenderShadow();
 		}
 	}
 
@@ -531,7 +544,7 @@ namespace hm
 				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS,
 				mWidth / 4, mHeight / 4);
 
-		mpTempFirstTexture = 
+		mpTempFirstTexture =
 			GET_SINGLE(Resources)->CreateTexture(
 				L"PostProcessTempFirst", DXGI_FORMAT_R32G32B32A32_TYPELESS,
 				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS,
@@ -549,7 +562,7 @@ namespace hm
 				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS,
 				mWidth / 4, mHeight / 4);
 
-		mpBlurXTexture = 
+		mpBlurXTexture =
 			GET_SINGLE(Resources)->CreateTexture(
 				L"BlurXTempTex", DXGI_FORMAT_R8G8B8A8_UNORM,
 				D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE,

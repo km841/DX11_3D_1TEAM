@@ -34,7 +34,7 @@ namespace hm
 
 	void Collider::FinalUpdate()
 	{
-		mpMaterial->SetVec3(0, 0 < mCollisionCount ? Vec3(1.f, 0.f, 0.f) : Vec3(0.f, 1.f, 0.f));
+		mpMaterial->SetVec4(0, 0 < mCollisionCount ? Vec4(1.f, 0.f, 0.f, 1.f) : Vec4(0.f, 1.f, 0.f, 1.f));
 	}
 
 	void Collider::Render()

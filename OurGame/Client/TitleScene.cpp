@@ -160,14 +160,11 @@ namespace hm
 			GameObject* pGameObject = new GameObject(LayerType::Unknown);
 			pGameObject->SetDontDestroyObject(L"DirLight");
 			Transform* pTransform = pGameObject->AddComponent(new Transform);
-			pTransform->SetPosition(Vec3(100.f, 100.f, -100.f));
-			pTransform->SetScale(Vec3(10.f, 10.f, 10.f));
+			pTransform->SetPosition(Vec3(0.f, 1.f, 0.f));
 			Light* pLight = pGameObject->AddComponent(new Light);
 			pLight->SetDiffuse(Vec3(1.f, 1.f, 1.f));
 			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
-			pLight->SetSpecular(Vec3(0.5f, 0.5f, 0.5f));
-			pLight->SetLightRange(100.f);
-			pLight->SetLightDirection(Vec3(-0.1f, -1.f, 0.1f));
+			pLight->SetLightDirection(Vec3(0.f, -1.f, 0.f));
 			pLight->SetLightType(LightType::DirectionalLight);
 			AddGameObject(pGameObject);
 		}

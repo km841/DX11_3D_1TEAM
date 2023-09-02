@@ -7,6 +7,7 @@ namespace hm
     {
         Forward,
         Deferred,
+        Shadow,
         Light,
         Particle,
         Compute,

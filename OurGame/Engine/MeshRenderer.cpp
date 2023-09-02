@@ -9,6 +9,7 @@
 #include "InstancingBuffer.h"
 #include "MeshData.h"
 #include "Animator.h"
+#include "Resources.h"
 
 namespace hm
 {
@@ -88,6 +89,15 @@ namespace hm
 				mpMaterial->ClearGraphicData();
 			}
 		}
+	}
+	void MeshRenderer::RenderShadow(Camera* _pCamera)
+	{
+		GetTransform()->PushData(_pCamera);
+		GET_SINGLE(Resources)->Get<Material>(L"Shadow")->PushGraphicData();
+
+		CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
+		CONST_BUFFER(ConstantBufferType::Material)->Mapping();
+		mpMesh->Render();
 	}
 	void MeshRenderer::SetMaterial(shared_ptr<Material> _pMaterial)
 	{

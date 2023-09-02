@@ -25,10 +25,6 @@ namespace hm
 		void  SetPosition(const Vec3& _position);
 		void  SetPosition(Axis _eAxis, float _position);
 
-		void SetScaleFromTool(const Vec3& _scale);
-		void SetRotationFromTool(const Vec3& _rotation);
-		void SetPositionFromTool(const Vec3& _position);
-
 		/* 콜라이더를 제외하고 오브젝트만 회전시키는 함수 */
 		void  SetRotationExcludingColliders(const Vec3& _rotation);
 		void  SetRotationExcludingColliders(Axis _eAxis, float _degree);
@@ -57,6 +53,9 @@ namespace hm
 		Vec3 GetUp() { return mMatWorld.Up(); }
 		Vec3 GetLook() { return mMatWorld.Backward(); }
 
+		void LookAt(const Vec3& _look);
+		static bool CloseEnough(const float& _a, const float& _b, const float& _epsilon = std::numeric_limits<float>::epsilon());
+		static Vec3 DecomposeRotationMatrix(const Matrix& _rotation);
 		void AddRotation(Axis _eAxis, float _degree);
 
 		void Move(const Vec3& _velocity);
