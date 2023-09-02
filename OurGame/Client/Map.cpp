@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Map.h"
 #include "PlacementScript.h"
+#include "Input.h"
 
 namespace hm
 {
@@ -19,6 +20,9 @@ namespace hm
 	void Map::Update()
 	{
 		Scene::Update();
+
+		if (IS_DOWN(KeyType::M) && nullptr != mpShadowCamera)
+			SetGizmoTarget(mpShadowCamera);
 	}
 	void Map::FixedUpdate()
 	{

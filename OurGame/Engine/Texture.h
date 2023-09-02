@@ -3,9 +3,9 @@
 
 namespace hm
 {
-	class Texture :
-		public Object
-	{
+    class Texture :
+        public Object
+    {
     public:
         Texture();
         virtual ~Texture();
@@ -55,7 +55,6 @@ namespace hm
         ComPtr<ID3D11ShaderResourceView>    mpSRV;
         ComPtr<ID3D11DepthStencilView>      mpDSV;
         ComPtr<ID3D11UnorderedAccessView>   mpUAV;
-	};
+    };
 
 }
-

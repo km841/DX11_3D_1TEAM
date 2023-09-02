@@ -14,18 +14,31 @@ namespace hm
 
 	void MultiRenderTarget::OMSetRenderTarget()
 	{
-		std::vector<ID3D11RenderTargetView*> vRenderTargets(mRenderTargetCount);
+		Vec3 texSize = mRenderTargets[0].pTarget->GetTexSize();
+		D3D11_VIEWPORT vp = D3D11_VIEWPORT{ 0.f, 0.f, texSize.x, texSize.y, 0.f, 1.f };
+		D3D11_RECT rect = D3D11_RECT{ 0, 0, static_cast<LONG>(texSize.x), static_cast<LONG>(texSize.y) };
 
+		CONTEXT->RSSetViewports(1, &vp);
+		CONTEXT->RSSetScissorRects(1, &rect);
+
+		std::vector<ID3D11RenderTargetView*> renderTargets(mRenderTargetCount);
 		for (int i = 0; i < mRenderTargetCount; ++i)
 		{
-			vRenderTargets[i] = mRenderTargets[i].pTarget->GetRTV().Get();
+			renderTargets[i] = mRenderTargets[i].pTarget->GetRTV().Get();
 		}
 
-		CONTEXT->OMSetRenderTargets(mRenderTargetCount, vRenderTargets.data(), mpDepthStencilTexture->GetDSV().Get());
+		CONTEXT->OMSetRenderTargets(mRenderTargetCount, renderTargets.data(), mpDepthStencilTexture->GetDSV().Get());
 	}
 
 	void MultiRenderTarget::OMSetRenderTarget(int _index)
 	{
+		Vec2 resolution = gpEngine->GetResolution();
+		D3D11_VIEWPORT vp = D3D11_VIEWPORT{ 0.f, 0.f, resolution.x, resolution.y, 0.f, 1.f };
+		D3D11_RECT rect = D3D11_RECT{ 0, 0, static_cast<LONG>(resolution.x), static_cast<LONG>(resolution.y) };
+
+		CONTEXT->RSSetViewports(1, &vp);
+		CONTEXT->RSSetScissorRects(1, &rect);
+
 		CONTEXT->OMSetRenderTargets(_index, mRenderTargets[0].pTarget->GetRTV().GetAddressOf(), mpDepthStencilTexture->GetDSV().Get());
 	}
 

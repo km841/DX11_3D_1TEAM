@@ -34,8 +34,15 @@ namespace hm
         const Matrix& GetViewMatrix()       const { return mMatView; }
         const Matrix& GetProjectionMatrix() const { return mMatProjection; }
 
+        void SetWidth(float _width) { mWidth = _width; }
+        void SetHeight(float _height) { mHeight = _height; }
+        void SetScale(float _scale) { mScale = _scale; }
+        void SetFar(float _far) { mFar = _far; }
+        void SetFov(float _fov) { mFov = _fov; }
+
     public:
         void SortGameObject();
+        void SortShadowObject();
 
         /* Forward Rendering으로 그려질 물체들을 그려주는 함수 */
         void RenderForward();
@@ -43,6 +50,8 @@ namespace hm
         void RenderDeferred();
 
         void RenderParticle();
+
+        void RenderShadow();
 
 
         const std::vector<GameObject*>& GetForwardObjects() { return mForwardObjects; }
@@ -59,9 +68,13 @@ namespace hm
         Matrix          mMatView;
         Matrix          mMatProjection;
 
+        float           mWidth;
+        float           mHeight;
+
         std::vector<GameObject*> mForwardObjects;
         std::vector<GameObject*> mDeferredObjects;
         std::vector<GameObject*> mParticleObjects;
+        std::vector<GameObject*> mShadowObjects;
 
         Frustum         mFrustumCulling;
 	};

@@ -25,6 +25,7 @@ cbuffer TRANSFORM_PARAMS : register(b0)
     row_major matrix g_matProjection;
     row_major matrix g_matWV;
     row_major matrix g_matWVP;
+    row_major matrix g_matViewInv;
     row_major matrix g_matWVPInv;
 }
 
@@ -72,17 +73,16 @@ cbuffer MATERIAL_PARAMS : register(b1)
     float2 g_vec2_3;
     //4 * 8 = 32 + 32 = 64
     
-    float3 g_vec3_0;
-    float3 g_vec3_1;
-    float3 g_vec3_2;
-    float3 g_vec3_3;
-    //4 * 12 = 48 + 64 = 112
-    
     float4 g_vec4_0;
     float4 g_vec4_1;
     float4 g_vec4_2;
     float4 g_vec4_3;
     //4 * 16 = 64 + 112 = 176
+    
+    row_major matrix g_mat_0;
+    row_major matrix g_mat_1;
+    row_major matrix g_mat_2;
+    row_major matrix g_mat_3;
 }
 
 struct LightColor

@@ -518,7 +518,7 @@ namespace hm
             {
                 ShaderType::Light,
                 DepthStencilType::NoDepthTestNoWrite,
-                RasterizerType::CullNone,
+                RasterizerType::CullFront,
                 BlendType::OneToOneBlend
             };
 
@@ -877,6 +877,21 @@ namespace hm
             Add<Shader>(L"DownScale", pShader);
         }
 
+        // Shadow Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Shadow,
+                DepthStencilType::LessEqual,
+                RasterizerType::CullNone,
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"Shadow");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\shadow.fx", shaderInfo);
+            Add<Shader>(L"Shadow", pShader);
+        }
+
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -957,6 +972,7 @@ namespace hm
 
             pMaterial->SetTexture(0, Get<Texture>(L"PositionTarget"));
             pMaterial->SetTexture(1, Get<Texture>(L"NormalTarget"));
+            pMaterial->SetTexture(2, Get<Texture>(L"ShadowTarget"));
             pMaterial->SetShader(pShader);
             Add<Material>(L"DirLight", pMaterial);
         }
@@ -1173,6 +1189,15 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"DownScale", pMaterial);
+        }
+
+        // Shadow Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"Shadow");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"Shadow", pMaterial);
         }
     }
 }

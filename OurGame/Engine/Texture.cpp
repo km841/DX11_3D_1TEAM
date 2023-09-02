@@ -140,4 +140,3 @@ namespace hm
 		CONTEXT->GSSetShaderResources(static_cast<UINT32>(_eSRV), 1, mpSRV.GetAddressOf());
 	}
 }
-
