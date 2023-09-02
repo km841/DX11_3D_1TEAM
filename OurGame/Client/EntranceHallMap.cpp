@@ -254,7 +254,7 @@ void EntranceHallMap::Enter()
 		pEntranceHall->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 
 		shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"EntranceHallTexture", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\EntranceHall.fbm\\grandmaWallPaperTexture.png");
-		pEntranceHall->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture); // 텍스쳐 강제로 적용시키는법aaaaaaaaaaaaa
+		pEntranceHall->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture); // 텍스쳐 강제로 적용시키는법
 
 		pEntranceHall->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.03f, 0.03f));
 
@@ -500,7 +500,7 @@ void EntranceHallMap::Enter()
 		DecoObject* pPOT_Key = Factory::CreateObject<DecoObject>(Vec3(-7.1f, -7.7f, -12.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\POT_Key.fbx");
 		pPOT_Key->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 		pPOT_Key->GetTransform()->SetScale(Vec3(4.f, 4.f, 4.f));
-		SetGizmoTarget(pPOT_Key);
+		
 		AddGameObject(pPOT_Key);
 	}
 }

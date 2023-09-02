@@ -87,7 +87,7 @@ namespace hm
 		// - RightSecretPassageMap
 		if (IS_DOWN(KeyType::L))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::EntranceHallMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::LeftSecretFightMap);
 		}
 
 		// ¿µÁø
