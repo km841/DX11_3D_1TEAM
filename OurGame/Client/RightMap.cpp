@@ -265,6 +265,26 @@ namespace yj
 		mCurtainHorizontalList[2]->GetTransform()->SetRotation(Vec3(0.0f, 88.f, 0.0f));
 		mCurtainHorizontalList[2]->GetTransform()->SetScale(Vec3(24.0f, 24.0f, 24.0f));
 
+		mCurtainHorizontalList[3]->GetTransform()->SetPosition(Vec3(-5.0f, 8.8f, -17.6f));
+		mCurtainHorizontalList[3]->GetTransform()->SetRotation(Vec3(0.0f, 88.f, 0.0f));
+		mCurtainHorizontalList[3]->GetTransform()->SetScale(Vec3(24.0f, 24.0f, 24.0f));
+
+		std::vector<GameObject*> mCurtainVerticalList;
+		for (int i = 0; i < 4; i++)
+		{
+			DecoObject* pCurtainVertical = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\CurtainVertical.fbx");
+
+			AddGameObject(pCurtainVertical);
+			mCurtainVerticalList.push_back(pCurtainVertical);
+		}
+
+		mCurtainVerticalList[0]->GetTransform()->SetPosition(Vec3(13.4f, 5.2f, 10.3f));
+		mCurtainVerticalList[0]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+		mCurtainVerticalList[0]->GetTransform()->SetScale(Vec3(24.0f, 24.0f, 24.0f));
+
+		mCurtainVerticalList[1]->GetTransform()->SetPosition(Vec3(-0.1f, 4.7f, -17.6f));
+		mCurtainVerticalList[1]->GetTransform()->SetRotation(Vec3(0.0f, 90.0f, 0.0f));
+		mCurtainVerticalList[1]->GetTransform()->SetScale(Vec3(9.6f, 24.0f, 24.0f));
 
 		{
 			DecoObject* pFireplace = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\Fireplace.fbx");
@@ -350,43 +370,204 @@ namespace yj
 		}
 
 
-		mTwoTierShelf_Middle_LegList[0]->GetTransform()->SetPosition(Vec3(12.8f, 3.2f, -12.4f));
+		mTwoTierShelf_Middle_LegList[0]->GetTransform()->SetPosition(Vec3(12.8f, 3.5f, -12.4f));
 		mTwoTierShelf_Middle_LegList[0]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[0]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
+		mTwoTierShelf_Middle_LegList[0]->GetTransform()->SetScale(Vec3(1.1f, 2.2f, 1.1f));
 
-		mTwoTierShelf_Middle_LegList[1]->GetTransform()->SetPosition(Vec3(14.4f, 3.2f, -12.4f));
+		mTwoTierShelf_Middle_LegList[1]->GetTransform()->SetPosition(Vec3(14.4f, 3.5f, -12.4f));
 		mTwoTierShelf_Middle_LegList[1]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[1]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
+		mTwoTierShelf_Middle_LegList[1]->GetTransform()->SetScale(Vec3(1.1f, 2.2f, 1.1f));
 
-		mTwoTierShelf_Middle_LegList[2]->GetTransform()->SetPosition(Vec3(14.4f, 3.2f, -18.0f));
+		mTwoTierShelf_Middle_LegList[2]->GetTransform()->SetPosition(Vec3(14.4f, 3.5f, -18.0f));
 		mTwoTierShelf_Middle_LegList[2]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[2]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
+		mTwoTierShelf_Middle_LegList[2]->GetTransform()->SetScale(Vec3(1.1f, 2.2f, 1.1f));
 
-		mTwoTierShelf_Middle_LegList[3]->GetTransform()->SetPosition(Vec3(12.6f, 3.2f, -18.0f));
+		mTwoTierShelf_Middle_LegList[3]->GetTransform()->SetPosition(Vec3(12.6f, 3.5f, -18.0f));
 		mTwoTierShelf_Middle_LegList[3]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[3]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
+		mTwoTierShelf_Middle_LegList[3]->GetTransform()->SetScale(Vec3(1.1f, 2.2f, 1.1f));
 
-		mTwoTierShelf_Middle_LegList[4]->GetTransform()->SetPosition(Vec3(12.0f, 3.2f, -17.8f));
+		mTwoTierShelf_Middle_LegList[4]->GetTransform()->SetPosition(Vec3(12.0f, 3.5f, -17.8f));
 		mTwoTierShelf_Middle_LegList[4]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[4]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
+		mTwoTierShelf_Middle_LegList[4]->GetTransform()->SetScale(Vec3(1.1f, 2.2f, 1.1f));
 
-		mTwoTierShelf_Middle_LegList[5]->GetTransform()->SetPosition(Vec3(12.0f, 3.2f, -16.2f));
+		mTwoTierShelf_Middle_LegList[5]->GetTransform()->SetPosition(Vec3(12.0f, 3.5f, -16.2f));
 		mTwoTierShelf_Middle_LegList[5]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[5]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
+		mTwoTierShelf_Middle_LegList[5]->GetTransform()->SetScale(Vec3(1.1f, 2.2f, 1.1f));
 
-		mTwoTierShelf_Middle_LegList[6]->GetTransform()->SetPosition(Vec3(6.6f, 3.2f, -16.2f));
+		mTwoTierShelf_Middle_LegList[6]->GetTransform()->SetPosition(Vec3(6.6f, 3.5f, -16.2f));
 		mTwoTierShelf_Middle_LegList[6]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[6]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
+		mTwoTierShelf_Middle_LegList[6]->GetTransform()->SetScale(Vec3(1.1f, 2.2f, 1.1f));
 
-		mTwoTierShelf_Middle_LegList[7]->GetTransform()->SetPosition(Vec3(6.6f, 3.2f, -17.8f));
+		mTwoTierShelf_Middle_LegList[7]->GetTransform()->SetPosition(Vec3(6.6f, 3.5f, -17.8f));
 		mTwoTierShelf_Middle_LegList[7]->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 180.0f));
-		mTwoTierShelf_Middle_LegList[7]->GetTransform()->SetScale(Vec3(1.1f, 1.5f, 1.1f));
+		mTwoTierShelf_Middle_LegList[7]->GetTransform()->SetScale(Vec3(1.1f, 2.2f, 1.1f));
+
+		std::vector<GameObject*> mEmptyBoxList;
+
+		for(int i =0; i<3;i++)
+		{
+			DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\EmptyBox.fbx");
+
+			AddGameObject(pEmptyBox);
+			mEmptyBoxList.push_back(pEmptyBox);
+
+		}
+		mEmptyBoxList[0]->GetTransform()->SetPosition(Vec3(7.7f, 3.4f, -0.7f));
+		mEmptyBoxList[0]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+		mEmptyBoxList[0]->GetTransform()->SetScale(Vec3(35.0f, 35.0f, 35.0f));
+
+		mEmptyBoxList[1]->GetTransform()->SetPosition(Vec3(9.35f, 3.4f, -0.1f));
+		mEmptyBoxList[1]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f,0.0f));
+		mEmptyBoxList[1]->GetTransform()->SetScale(Vec3(35.0f, 35.0f, 35.0f));
+
+		mEmptyBoxList[2]->GetTransform()->SetPosition(Vec3(11.0f, 3.4f, -0.7f));
+		mEmptyBoxList[2]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+		mEmptyBoxList[2]->GetTransform()->SetScale(Vec3(35.0f, 35.0f, 35.0f));
+
+
+		std::vector<GameObject*> mTwoTierShelfTopList;
+		for (int i = 0; i < 2; i++)
+		{
+			DecoObject* pTwoTierShelf_Top = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\TwoTierShelfTop.fbx");
+
+			AddGameObject(pTwoTierShelf_Top);
+			mTwoTierShelfTopList.push_back(pTwoTierShelf_Top);
+		}
+		mTwoTierShelfTopList[0]->GetTransform()->SetPosition(Vec3(9.3f, 4.5f, -17.0f));
+		mTwoTierShelfTopList[0]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+		mTwoTierShelfTopList[0]->GetTransform()->SetScale(Vec3(5.8f, 6.5f, 6.5f));
+
+		mTwoTierShelfTopList[1]->GetTransform()->SetPosition(Vec3(13.6f, 4.5f, -15.2f));
+		mTwoTierShelfTopList[1]->GetTransform()->SetRotation(Vec3(0.0f, 90.0f, 0.0f));
+		mTwoTierShelfTopList[1]->GetTransform()->SetScale(Vec3(5.8f, 6.5f, 6.5f));
+
+	
+
+		{
+			DecoObject* pJewellery = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\Jewellery.fbx");
+
+			AddGameObject(pJewellery);
+
+			pJewellery->GetTransform()->SetPosition(Vec3(9.35f, 4.2f, -0.5f));
+			pJewellery->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+			pJewellery->GetTransform()->SetScale(Vec3(34.5f, 24.0f, 34.0f));
+		}
+
+		{
+			DecoObject* pPOSSESSED_Chair = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\POSSESSED_Chair.fbx");
+
+			AddGameObject(pPOSSESSED_Chair);
+
+			pPOSSESSED_Chair->GetTransform()->SetPosition(Vec3(10.35f, 2.9f, -2.6f));
+			pPOSSESSED_Chair->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+			pPOSSESSED_Chair->GetTransform()->SetScale(Vec3(25.0f, 25.0f, 25.0f));
+
+		}
+
+		std::vector<GameObject*> mPOTHEALGenericVariantList;
+		for(int i =0;i<3;i++)
+		{
+			DecoObject* pPOTHEALGenericVariant = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\POT_HEAL_Generic_Variant.fbx");
+
+			AddGameObject(pPOTHEALGenericVariant);
+
+			
+			mPOTHEALGenericVariantList.push_back(pPOTHEALGenericVariant);
+		}
+
+		mPOTHEALGenericVariantList[0]->GetTransform()->SetPosition(Vec3(4.85f, 2.0f, -0.4f));
+		mPOTHEALGenericVariantList[0]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+		mPOTHEALGenericVariantList[0]->GetTransform()->SetScale(Vec3(35.0f, 35.0f, 35.0f));
+
+		mPOTHEALGenericVariantList[1]->GetTransform()->SetPosition(Vec3(12.35f, 2.0f, 23.0f));
+		mPOTHEALGenericVariantList[1]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+		mPOTHEALGenericVariantList[1]->GetTransform()->SetScale(Vec3(35.0f, 35.0f, 35.0f));
+
+		mPOTHEALGenericVariantList[2]->GetTransform()->SetPosition(Vec3(-16.48f, 2.0f, 23.0f));
+		mPOTHEALGenericVariantList[2]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+		mPOTHEALGenericVariantList[2]->GetTransform()->SetScale(Vec3(35.0f, 35.0f, 35.0f));
 
 
 
 
 
 
+		{
+			DecoObject* pFancyChairSit = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\FancyChairSit.fbx");
+
+			AddGameObject(pFancyChairSit);
+
+			pFancyChairSit->GetTransform()->SetPosition(Vec3(-1.15f, 4.6f, 4.4f));
+			pFancyChairSit->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+			pFancyChairSit->GetTransform()->SetScale(Vec3(25.0f, 25.0f, 25.0f));
+
+		}
+
+		{
+			DecoObject* pBook3 = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\Book3.fbx");
+
+			AddGameObject(pBook3);
+
+			pBook3->GetTransform()->SetPosition(Vec3(13.65f, 4.6f, 1.8f));
+			pBook3->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+			pBook3->GetTransform()->SetScale(Vec3(32.0f, 32.0f, 32.0f));
+
+			SetGizmoTarget(pBook3);
+		}
+
+		{
+			DecoObject* pMansionPlantPot2 = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\MansionPlantPot2.fbx");
+
+			AddGameObject(pMansionPlantPot2);
+
+			pMansionPlantPot2->GetTransform()->SetPosition(Vec3(13.00f, 5.9f, -2.1f));
+			pMansionPlantPot2->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+			pMansionPlantPot2->GetTransform()->SetScale(Vec3(32.0f, 32.0f, 32.0f));
+
+		}
+
+		std::vector<GameObject*> mMansionSpicePotList;
+
+		for (int i = 0; i < 2; i++)
+		{
+			DecoObject* pMansionSpicePot = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\MansionSpicePot.fbx");
+
+			AddGameObject(pMansionSpicePot);
+			mMansionSpicePotList.push_back(pMansionSpicePot);
+		}
+		mMansionSpicePotList[0]->GetTransform()->SetPosition(Vec3(10.5f, 5.1f, -4.6f));
+		mMansionSpicePotList[0]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+		mMansionSpicePotList[0]->GetTransform()->SetScale(Vec3(25.0f, 25.0f, 25.0f));
+
+		mMansionSpicePotList[1]->GetTransform()->SetPosition(Vec3(8.9f, 5.1f, -1.5f));
+		mMansionSpicePotList[1]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+		mMansionSpicePotList[1]->GetTransform()->SetScale(Vec3(32.0f, 32.0f, 32.0f));
+
+
+
+
+		{
+			DecoObject* pScrolls6 = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\Scrolls_6.fbx");
+
+			AddGameObject(pScrolls6);
+
+			pScrolls6->GetTransform()->SetPosition(Vec3(13.5f, 3.1f, -3.2f));
+			pScrolls6->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+			pScrolls6->GetTransform()->SetScale(Vec3(25.0f, 25.0f, 25.0f));
+		
+		}
+
+		{
+			DecoObject* pSpikeDoor = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\SpikeDoor.fbx");
+
+			AddGameObject(pSpikeDoor);
+
+			pSpikeDoor->GetTransform()->SetPosition(Vec3(-17.5f, 2.8f, 6.9f));
+			pSpikeDoor->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+			pSpikeDoor->GetTransform()->SetScale(Vec3(22.0f, 22.0f, 22.0f));
+
+			SetGizmoTarget(pSpikeDoor);
+		}
 
 		{
 		/*	DecoObject* pFireHolder = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\Holder.fbx");
