@@ -59,6 +59,11 @@ void LeftSecretFightMap::Initialize()
 	Map::Initialize();
 }
 
+void LeftSecretFightMap::Start()
+{
+	Map::Start();
+}
+
 void LeftSecretFightMap::Update()
 {
 	Map::Update();

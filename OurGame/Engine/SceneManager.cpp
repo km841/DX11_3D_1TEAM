@@ -78,5 +78,6 @@ namespace hm
 		ActiveAndInitializeScene(_eSceneType);
 
 		mpActiveScene->PushGameObjects(mGameObjects);
+		mpActiveScene->Start();
 	}
 }

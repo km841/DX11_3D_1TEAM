@@ -98,7 +98,7 @@ namespace hm
 	void RenderManager::ClearRenderTargets()
 	{
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::SwapChain)->ClearRenderTargetView();
-		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::Shadow)->ClearRenderTargetView();
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::DynamicShadow)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::G_Buffer)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::Light)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::RimLighting)->ClearRenderTargetView();
@@ -173,14 +173,35 @@ namespace hm
 
 	void RenderManager::RenderShadow(Scene* _pScene)
 	{
-		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::Shadow)->OMSetRenderTarget();
+		if (false == _pScene->IsBakedStaticShadow())
+			BakeStaticShadow(_pScene);
+
+		RenderDynamicShadow(_pScene);
+	}
+
+	void RenderManager::RenderStaticShadow(Scene* _pScene)
+	{
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::StaticShadow)->OMSetRenderTarget();
 
 		for (auto pLight : _pScene->mLightObjects)
 		{
 			if (LightType::DirectionalLight != pLight->GetLight()->GetLightType())
 				continue;
 
-			pLight->GetLight()->RenderShadow();
+			pLight->GetLight()->RenderStaticShadow();
+		}
+	}
+
+	void RenderManager::RenderDynamicShadow(Scene* _pScene)
+	{
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::DynamicShadow)->OMSetRenderTarget();
+
+		for (auto pLight : _pScene->mLightObjects)
+		{
+			if (LightType::DirectionalLight != pLight->GetLight()->GetLightType())
+				continue;
+
+			pLight->GetLight()->RenderDynamicShadow();
 		}
 	}
 
@@ -251,6 +272,13 @@ namespace hm
 
 		ComputeSSAO();
 		//Bloom();
+	}
+
+	void RenderManager::BakeStaticShadow(Scene* _pScene)
+	{
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::StaticShadow)->ClearRenderTargetView();
+		RenderStaticShadow(_pScene);
+		_pScene->mbIsBakedStaticShadow = true;
 	}
 
 	void RenderManager::SetPostProcessing(bool _bFlag)

@@ -126,7 +126,7 @@ namespace hm
 			}
 		}
 	}
-	void Camera::SortShadowObject()
+	void Camera::SortStaticShadowObject()
 	{
 		mShadowObjects.clear();
 		Scene* pActiveScene = GET_SINGLE(SceneManager)->GetActiveScene();
@@ -134,6 +134,45 @@ namespace hm
 		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 		{
 			if (mCullingMask & 1 << i)
+				continue;
+
+			if (LayerType::Player == static_cast<LayerType>(i) ||
+				LayerType::Monster == static_cast<LayerType>(i) ||
+				LayerType::Npc == static_cast<LayerType>(i))
+				continue;
+
+			const auto& gameObjects = pActiveScene->GetGameObjects(static_cast<LayerType>(i));
+
+			for (auto& pGameObject : gameObjects)
+			{
+				if (nullptr == pGameObject->GetMeshRenderer())
+					continue;
+
+				if (true == pGameObject->IsFrustumCheck())
+				{
+					if (false == mFrustumCulling.ContainsSphere(
+						pGameObject->GetTransform()->GetWorldPosition(),
+						pGameObject->GetTransform()->GetBoundingSphereRadius()))
+						continue;
+				}
+
+				mShadowObjects.push_back(pGameObject);
+			}
+		}
+	}
+	void Camera::SortDynamicShadowObject()
+	{
+		mShadowObjects.clear();
+		Scene* pActiveScene = GET_SINGLE(SceneManager)->GetActiveScene();
+
+		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
+		{
+			if (mCullingMask & 1 << i)
+				continue;
+
+			if (LayerType::Player != static_cast<LayerType>(i) &&
+				LayerType::Monster != static_cast<LayerType>(i) &&
+				LayerType::Npc != static_cast<LayerType>(i))
 				continue;
 
 			const auto& gameObjects = pActiveScene->GetGameObjects(static_cast<LayerType>(i));

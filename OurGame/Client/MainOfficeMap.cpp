@@ -145,6 +145,11 @@ namespace yj
 		}
 	}
 
+	void MainOfficeMap::Start()
+	{
+		Map::Start();
+	}
+
 	void MainOfficeMap::FixedUpdate()
 	{
 		Map::FixedUpdate();

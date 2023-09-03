@@ -13,6 +13,7 @@
 #include "RenderManager.h"
 #include "Collider.h"
 #include "Input.h"
+#include "Transform.h"
 
 namespace hm
 {
@@ -24,6 +25,7 @@ namespace hm
 		, mpUICamera(nullptr)
 		, mpShadowCamera(nullptr)
 		, mpDirLight(nullptr)
+		, mbIsBakedStaticShadow(false)
 	{
 	}
 	Scene::~Scene()
@@ -152,8 +154,10 @@ namespace hm
 
 		if (nullptr != _pGameObject->GetCamera())
 		{
-			if (mCameraObjects.empty())
+			if (_pGameObject->GetName() == L"MainCamera")
 				mpMainCamera = _pGameObject;
+			if (_pGameObject->GetName() == L"UICamera")
+				mpUICamera = _pGameObject;
 			if (_pGameObject->GetName() == L"ShadowCamera")
 				mpShadowCamera = _pGameObject;
 			mCameraObjects.push_back(_pGameObject);
@@ -175,10 +179,13 @@ namespace hm
 
 			if (nullptr != pGameObject->GetCamera())
 			{
-				if (mCameraObjects.empty())
+				if (pGameObject->GetName() == L"MainCamera")
 					mpMainCamera = pGameObject;
+				if (pGameObject->GetName() == L"UICamera")
+					mpUICamera = pGameObject;
 				if (pGameObject->GetName() == L"ShadowCamera")
 					mpShadowCamera = pGameObject;
+
 				mCameraObjects.push_back(pGameObject);
 			}
 
@@ -295,13 +302,29 @@ namespace hm
 	}
 	Camera* Scene::GetMainCamera()
 	{
-		AssertEx(mpMainCamera, L"Scene::GetMainCamera : Main CameraObject is nullptr");
+		AssertEx(mpMainCamera, L"Scene::GetMainCamera() : Main CameraObject is nullptr");
 		return mpMainCamera->GetCamera();
 	}
 	Camera* Scene::GetUICamera()
 	{
-		AssertEx(mpUICamera, L"Scene::GetMainCamera : UI CameraObject is nullptr");
+		AssertEx(mpUICamera, L"Scene::GetMainCamera() : UI CameraObject is nullptr");
 		return mpUICamera->GetCamera();
+	}
+	Camera* Scene::GetShadowCamera()
+	{
+		AssertEx(mpShadowCamera, L"Scene::GetMainCamera() : Shadow CameraObject is nullptr");
+		return mpShadowCamera->GetCamera();
+	}
+	void Scene::SetDirLightPosition(const Vec3& _position)
+	{
+		AssertEx(mpDirLight, L"Scene::SetDirLightPosition() : DirLight is nullptr");
+		mpShadowCamera->GetTransform()->SetPosition(_position);
+	}
+
+	void Scene::SetDirLightRotation(const Vec3& _rotation)
+	{
+		AssertEx(mpDirLight, L"Scene::SetDirLightRotation() : DirLight is nullptr");
+		mpShadowCamera->GetTransform()->SetRotation(_rotation);
 	}
 	void Scene::RemoveCameraInObjectFromScene(GameObject* _pGameObject)
 	{
@@ -316,6 +339,9 @@ namespace hm
 
 			if (_pGameObject == mpUICamera)
 				mpUICamera = nullptr;
+
+			if (_pGameObject == mpShadowCamera)
+				mpShadowCamera = nullptr;
 		}
 	}
 	void Scene::RemoveLightInObjectFromScene(GameObject* _pGameObject)

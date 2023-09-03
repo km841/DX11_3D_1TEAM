@@ -11,6 +11,7 @@ namespace hm
 
 	public:
 		virtual void Initialize();
+		virtual void Start() {}
 		virtual void Update();
 		virtual void FixedUpdate();
 		virtual void FinalUpdate();
@@ -24,6 +25,7 @@ namespace hm
 
 	protected:
 		GameObject* mTarget = nullptr;
+		bool mbShadow;
 	};
 }
 

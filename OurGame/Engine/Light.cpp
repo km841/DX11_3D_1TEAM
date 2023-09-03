@@ -30,6 +30,10 @@ namespace hm
 		Vec3 worldPos = GetTransform()->GetPosition();
 		mLightInfo.position = Vec4(worldPos.x, worldPos.y, worldPos.z, 1.f);
 
+		Vec3 lookDir = mpShadowCamera->GetTransform()->GetLook();
+		lookDir.Normalize();
+		mLightInfo.direction = lookDir;
+
 	}
 	void Light::Render(Camera* _pCamera)
 	{
@@ -61,11 +65,16 @@ namespace hm
 
 		return pLight;
 	}
-	void Light::RenderShadow()
+	void Light::RenderStaticShadow()
 	{
-		mpShadowCamera->GetCamera()->SortShadowObject();
+		mpShadowCamera->GetCamera()->SortStaticShadowObject();
 		mpShadowCamera->GetCamera()->RenderShadow();
 
+	}
+	void Light::RenderDynamicShadow()
+	{
+		mpShadowCamera->GetCamera()->SortDynamicShadowObject();
+		mpShadowCamera->GetCamera()->RenderShadow();
 	}
 	void Light::SetLightDirection(Vec3 _direction)
 	{
@@ -98,9 +107,9 @@ namespace hm
 		}
 	}
 
-	void Light::SetDirectionalCamera(GameObject* _pDirCamera)
+	void Light::SetShadowCamera(GameObject* _pShadowCamera)
 	{
-		mpShadowCamera = _pDirCamera;
+		mpShadowCamera = _pShadowCamera;
 	}
 }
 

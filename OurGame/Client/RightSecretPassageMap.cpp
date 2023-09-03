@@ -15,6 +15,11 @@ void RightSecretPassageMap::Initialize()
 	Map::Initialize();
 }
 
+void RightSecretPassageMap::Start()
+{
+	Map::Start();
+}
+
 void RightSecretPassageMap::Update()
 {
 	Map::Update();
