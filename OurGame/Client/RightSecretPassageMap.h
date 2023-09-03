@@ -12,7 +12,7 @@ namespace jh
 
 	public:
 		virtual void Initialize();
-    virtual void Start();
+		virtual void Start();
 		virtual void Update();
 		virtual void FixedUpdate();
 		virtual void FinalUpdate();

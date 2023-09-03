@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "RightSecretPassageMap.h"
 #include "Engine.h"
 
@@ -53,11 +53,11 @@ namespace jh
 	{
 		Map::Initialize();
 	}
-  
-  void RightSecretPassageMap::Start()
-  {
-	  Map::Start();
-  }
+
+	void RightSecretPassageMap::Start()
+	{
+		Map::Start();
+	}
 
 	void RightSecretPassageMap::Update()
 	{
@@ -84,11 +84,11 @@ namespace jh
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 
-		//���� �Ͼ������ ������ִ� �ڵ�
+		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
-#pragma region ��
-		// ��
+#pragma region 벽
+		// 벽
 		{
 			DecoObject* pWall = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\R_RightSecretPassage.fbx");
 
@@ -103,8 +103,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region �ٴ�
-		// �ٴ�
+#pragma region 바닥
+		// 바닥
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
@@ -124,8 +124,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region ���
-		// ���
+#pragma region 기둥
+		// 기둥
 		{
 			DecoObject* pColumn = Factory::CreateObject<DecoObject>(Vec3(13.85f, -0.4f, 8.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\ColumnOuterCorner.fbx");
 
@@ -133,7 +133,7 @@ namespace jh
 
 			AddGameObject(pColumn);
 		}
-		// ���2
+		// 기둥2
 		{
 			DecoObject* pColumn2 = Factory::CreateObject<DecoObject>(Vec3(-14.55f, -0.4f, 8.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\ColumnOuterCorner.fbx");
 
@@ -141,7 +141,7 @@ namespace jh
 
 			AddGameObject(pColumn2);
 		}
-		// ���3
+		// 기둥3
 		{
 			DecoObject* pColumn3 = Factory::CreateObject<DecoObject>(Vec3(-14.55f, -0.4f, -11.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\ColumnOuterCorner.fbx");
 
@@ -152,8 +152,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region �ٴ�Ʋ
-		// ª�� �ٴ�Ʋ(�ٱ���)
+#pragma region 바닥틀
+		// 짧은 바닥틀(바깥쪽)
 		{
 			DecoObject* pFloorRimOutsideShort = Factory::CreateObject<DecoObject>(Vec3(-12.15f, -5.23f, -12.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\EdgeLeft.fbx");
 
@@ -161,7 +161,7 @@ namespace jh
 
 			AddGameObject(pFloorRimOutsideShort);
 		}
-		// �� �ٴ�Ʋ(�ٱ���)
+		// 긴 바닥틀(바깥쪽)
 		{
 			DecoObject* pFloorRimOutsideLong = Factory::CreateObject<DecoObject>(Vec3(4.53f, -5.23f, -2.58f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\EdgeCorner.fbx");
 
@@ -170,7 +170,7 @@ namespace jh
 
 			AddGameObject(pFloorRimOutsideLong);
 		}
-		// �ٴ�Ʋ(����)
+		// 바닥틀(안쪽)
 		{
 			DecoObject* pFloorRimInside = Factory::CreateObject<DecoObject>(Vec3(8.23f, -4.33f, 8.82f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\WallPanel (2).fbx");
 
@@ -178,7 +178,7 @@ namespace jh
 
 			AddGameObject(pFloorRimInside);
 		}
-		// �ٴ�Ʋ(����)2
+		// 바닥틀(안쪽)2
 		{
 			DecoObject* pFloorRimInside2 = Factory::CreateObject<DecoObject>(Vec3(-7.77f, -4.33f, 8.82f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\WallPanel (2).fbx");
 
@@ -186,7 +186,7 @@ namespace jh
 
 			AddGameObject(pFloorRimInside2);
 		}
-		// �ٴ�Ʋ(����)3
+		// 바닥틀(안쪽)3
 		{
 			DecoObject* pFloorRimInside3 = Factory::CreateObject<DecoObject>(Vec3(-14.57f, -4.33f, -1.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\WallPanel (2).fbx");
 
@@ -197,8 +197,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region õ��Ʋ
-		// õ��Ʋ
+#pragma region 천장틀
+		// 천장틀
 		{
 			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(-0.35f, 4.57f, 8.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\WallRim.fbx");
 
@@ -206,7 +206,7 @@ namespace jh
 
 			AddGameObject(pWallRim);
 		}
-		// õ��Ʋ2
+		// 천장틀2
 		{
 			DecoObject* pWallRim2 = Factory::CreateObject<DecoObject>(Vec3(-14.65f, 4.57f, -1.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\WallRim.fbx");
 
@@ -217,8 +217,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region ��Ʋ+�Ź���
-		// ��Ʋ
+#pragma region 문틀+거미줄
+		// 문틀
 		{
 			DecoObject* pDoorFrame = Factory::CreateObject<DecoObject>(Vec3(0.65f, -1.45f, 8.82f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\DoorFrameBig (1).fbx");
 
@@ -227,7 +227,7 @@ namespace jh
 
 			AddGameObject(pDoorFrame);
 		}
-		// �Ź���(����)
+		// 거미줄(구석)
 		{
 			DecoObject* pCobwebCorner = Factory::CreateObject<DecoObject>(Vec3(-13.05f, -2.95f, 7.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\Cobweb1.fbx");
 
@@ -236,7 +236,7 @@ namespace jh
 
 			AddGameObject(pCobwebCorner);
 		}
-		// �Ź���(��)
+		// 거미줄(문)
 		{
 			DecoObject* pCobwebDoor = Factory::CreateObject<DecoObject>(Vec3(0.55f, -0.05f, 8.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\Cobweb_Flat.fbx");
 
@@ -248,8 +248,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region �ٴ� ��ǰ
-		// �׾Ƹ�(�ٱ���)
+#pragma region 바닥 소품
+		// 항아리(바깥쪽)
 		for (int i = 0; i < 3; i++)
 		{
 			DecoObject* pPotGeneric = Factory::CreateObject<DecoObject>(Vec3(11.25f, -3.05f, 5.42f - (i * 6.9f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\POT_HEAL_Generic Variant (3).fbx");
@@ -258,7 +258,7 @@ namespace jh
 
 			AddGameObject(pPotGeneric);
 		}
-		// �׾Ƹ�(����)
+		// 항아리(안쪽)
 		for (int i = 0; i < 3; i++)
 		{
 			DecoObject* pPotGeneric2 = Factory::CreateObject<DecoObject>(Vec3(-11.75f, -3.05f, 5.42f - (i * 6.9f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\POT_HEAL_Generic Variant (3).fbx");
@@ -267,7 +267,7 @@ namespace jh
 
 			AddGameObject(pPotGeneric2);
 		}
-		// ȭ���
+		// 화톳불
 		{
 			DecoObject* pFireLamp = Factory::CreateObject<DecoObject>(Vec3(0.21f, -3.19f, -1.48f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\GRANDMA_FireLamp.fbx");
 
