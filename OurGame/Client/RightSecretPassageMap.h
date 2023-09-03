@@ -1,20 +1,23 @@
 #pragma once
 #include "Map.h"
-class RightSecretPassageMap :
-    public Map
+
+namespace jh
 {
-public:
-	RightSecretPassageMap();
-	virtual ~RightSecretPassageMap();
+	class RightSecretPassageMap :
+		public Map
+	{
+	public:
+		RightSecretPassageMap();
+		virtual ~RightSecretPassageMap();
 
-public:
-	virtual void Initialize();
-	virtual void Update();
-	virtual void FixedUpdate();
-	virtual void FinalUpdate();
-	virtual void Render();
+	public:
+		virtual void Initialize();
+		virtual void Update();
+		virtual void FixedUpdate();
+		virtual void FinalUpdate();
+		virtual void Render();
 
-	virtual void Enter();
-	virtual void Exit();
-};
-
+		virtual void Enter();
+		virtual void Exit();
+	};
+}
