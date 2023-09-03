@@ -72,7 +72,7 @@ namespace hm
 		// - CorridorRightMap
 		if (IS_DOWN(KeyType::O))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::HallColliderCheckMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::RightSecretPassageMap);
 		}
 		if (IS_DOWN(KeyType::I))
 		{

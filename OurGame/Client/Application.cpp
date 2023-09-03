@@ -41,7 +41,7 @@ namespace hm
 		GET_SINGLE(SceneManager)->AddMap(new LeftSecretTrialMap);
 		GET_SINGLE(SceneManager)->AddMap(new Right2Map);
 		GET_SINGLE(SceneManager)->AddMap(new yj::RightMap);
-		GET_SINGLE(SceneManager)->AddMap(new RightSecretPassageMap);
+		GET_SINGLE(SceneManager)->AddMap(new jh::RightSecretPassageMap);
 		GET_SINGLE(SceneManager)->AddMap(new yj::MainOfficeMap);
 
 		GET_SINGLE(SceneManager)->ActiveAndInitializeScene(SceneType::Title);

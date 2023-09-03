@@ -88,7 +88,7 @@ namespace jh
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
 #pragma region º®
-	// º®
+		// º®
 		{
 			DecoObject* pWall = Factory::CreateObject<DecoObject>(Vec3(0.00f, 0.00f, 0.00f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\Corridor.fbx");
 
