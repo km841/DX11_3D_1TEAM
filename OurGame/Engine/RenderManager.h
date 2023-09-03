@@ -34,6 +34,8 @@ namespace hm
 		void RenderDeferred(Scene* _pScene);
 		void RenderLight(Scene* _pScene);
 		void RenderShadow(Scene* _pScene);
+		void RenderStaticShadow(Scene* _pScene);
+		void RenderDynamicShadow(Scene* _pScene);
 		void RenderRimLighting();
 		void RenderLightBlend();
 		void RenderBloom();
@@ -41,6 +43,7 @@ namespace hm
 		void PushLightData(Scene* _pScene);
 
 		void PostProcessing();
+		void BakeStaticShadow(Scene* _pScene);
 
 	public:
 		void SetPostProcessing(bool _bFlag);
@@ -50,7 +53,7 @@ namespace hm
 		bool IsApplyHDR()			 { return mbEnableHDR; }
 
 		void SetRimLighting(bool _bFlag);
-		bool IsApplyRimLighting() { return mbEnableRim; }
+		bool IsApplyRimLighting()    { return mbEnableRim; }
 
 	private:
 		void DownScale();
@@ -79,10 +82,10 @@ namespace hm
 		shared_ptr<ImageFilter> mpCombineFilter;
 
 		shared_ptr<StructuredBuffer> mpDownScaleBuffer;    // 휘도값 계산 시 중간값 저장하는 버퍼
-		shared_ptr<StructuredBuffer> mpAvgLumBuffer;       //평균 휘도값 저장하는 버퍼
+		shared_ptr<StructuredBuffer> mpAvgLumBuffer;       // 평균 휘도값 저장하는 버퍼
 		shared_ptr<StructuredBuffer> mpPrevAdaptionBuffer; // 다음 프레임 직전 휘도값을 저장하는 버퍼
 		
-		shared_ptr<Texture> mpDownScaleSceneTexture; // 다운 스케일된 HDR 텍스쳐
+		shared_ptr<Texture> mpDownScaleSceneTexture;       // 다운 스케일된 HDR 텍스쳐
 		shared_ptr<Texture> mpBloomTexture;
 		shared_ptr<Texture> mpTempFirstTexture;
 		shared_ptr<Texture> mpTempSecondTexture;

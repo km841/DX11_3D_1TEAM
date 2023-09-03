@@ -13,6 +13,7 @@ namespace hm
 
 	public:
 		virtual void Initialize();
+		virtual void Start() {}
 		virtual void Update();
 		virtual void FixedUpdate();
 		virtual void FinalUpdate();
@@ -70,8 +71,13 @@ namespace hm
 
 		Camera* GetMainCamera();
 		Camera* GetUICamera();
+		Camera* GetShadowCamera();
 
 		SceneType GetSceneType() { return meSceneType; }
+
+		bool IsBakedStaticShadow() { return mbIsBakedStaticShadow; }
+		void SetDirLightPosition(const Vec3& _position);
+		void SetDirLightRotation(const Vec3& _rotation);
 
 	private:
 		/* 인자로 넘어온 게임 오브젝트가 가진 카메라를 씬에서 제거해주는 함수 */
@@ -91,6 +97,8 @@ namespace hm
 		std::vector<GameObject*> mCameraObjects;
 		std::vector<GameObject*> mLightObjects;
 		std::vector<shared_ptr<ImageFilter>> mImageFilters;
+
+		bool mbIsBakedStaticShadow;
 
 	protected:
 		static std::vector<wstring> mDontDestroyObjectNames;

@@ -53,6 +53,11 @@ namespace jh
 	{
 		Map::Initialize();
 	}
+  
+  void RightSecretPassageMap::Start()
+  {
+	  Map::Start();
+  }
 
 	void RightSecretPassageMap::Update()
 	{
@@ -79,11 +84,11 @@ namespace jh
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 
-		//¹è°æ¸Ê ÇÏ¾á»öÀ¸·Î ¸¸µé¾îÁÖ´Â ÄÚµå
+		//ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Úµï¿½
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
-#pragma region º®
-		// º®
+#pragma region ï¿½ï¿½
+		// ï¿½ï¿½
 		{
 			DecoObject* pWall = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\R_RightSecretPassage.fbx");
 
@@ -98,8 +103,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region ¹Ù´Ú
-		// ¹Ù´Ú
+#pragma region ï¿½Ù´ï¿½
+		// ï¿½Ù´ï¿½
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
@@ -119,8 +124,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region ±âµÕ
-		// ±âµÕ
+#pragma region ï¿½ï¿½ï¿½
+		// ï¿½ï¿½ï¿½
 		{
 			DecoObject* pColumn = Factory::CreateObject<DecoObject>(Vec3(13.85f, -0.4f, 8.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\ColumnOuterCorner.fbx");
 
@@ -128,7 +133,7 @@ namespace jh
 
 			AddGameObject(pColumn);
 		}
-		// ±âµÕ2
+		// ï¿½ï¿½ï¿½2
 		{
 			DecoObject* pColumn2 = Factory::CreateObject<DecoObject>(Vec3(-14.55f, -0.4f, 8.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\ColumnOuterCorner.fbx");
 
@@ -136,7 +141,7 @@ namespace jh
 
 			AddGameObject(pColumn2);
 		}
-		// ±âµÕ3
+		// ï¿½ï¿½ï¿½3
 		{
 			DecoObject* pColumn3 = Factory::CreateObject<DecoObject>(Vec3(-14.55f, -0.4f, -11.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\ColumnOuterCorner.fbx");
 
@@ -147,8 +152,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region ¹Ù´ÚÆ²
-		// ÂªÀº ¹Ù´ÚÆ²(¹Ù±ùÂÊ)
+#pragma region ï¿½Ù´ï¿½Æ²
+		// Âªï¿½ï¿½ ï¿½Ù´ï¿½Æ²(ï¿½Ù±ï¿½ï¿½ï¿½)
 		{
 			DecoObject* pFloorRimOutsideShort = Factory::CreateObject<DecoObject>(Vec3(-12.15f, -5.23f, -12.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\EdgeLeft.fbx");
 
@@ -156,7 +161,7 @@ namespace jh
 
 			AddGameObject(pFloorRimOutsideShort);
 		}
-		// ±ä ¹Ù´ÚÆ²(¹Ù±ùÂÊ)
+		// ï¿½ï¿½ ï¿½Ù´ï¿½Æ²(ï¿½Ù±ï¿½ï¿½ï¿½)
 		{
 			DecoObject* pFloorRimOutsideLong = Factory::CreateObject<DecoObject>(Vec3(4.53f, -5.23f, -2.58f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\EdgeCorner.fbx");
 
@@ -165,7 +170,7 @@ namespace jh
 
 			AddGameObject(pFloorRimOutsideLong);
 		}
-		// ¹Ù´ÚÆ²(¾ÈÂÊ)
+		// ï¿½Ù´ï¿½Æ²(ï¿½ï¿½ï¿½ï¿½)
 		{
 			DecoObject* pFloorRimInside = Factory::CreateObject<DecoObject>(Vec3(8.23f, -4.33f, 8.82f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\WallPanel (2).fbx");
 
@@ -173,7 +178,7 @@ namespace jh
 
 			AddGameObject(pFloorRimInside);
 		}
-		// ¹Ù´ÚÆ²(¾ÈÂÊ)2
+		// ï¿½Ù´ï¿½Æ²(ï¿½ï¿½ï¿½ï¿½)2
 		{
 			DecoObject* pFloorRimInside2 = Factory::CreateObject<DecoObject>(Vec3(-7.77f, -4.33f, 8.82f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\WallPanel (2).fbx");
 
@@ -181,7 +186,7 @@ namespace jh
 
 			AddGameObject(pFloorRimInside2);
 		}
-		// ¹Ù´ÚÆ²(¾ÈÂÊ)3
+		// ï¿½Ù´ï¿½Æ²(ï¿½ï¿½ï¿½ï¿½)3
 		{
 			DecoObject* pFloorRimInside3 = Factory::CreateObject<DecoObject>(Vec3(-14.57f, -4.33f, -1.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\WallPanel (2).fbx");
 
@@ -192,8 +197,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region ÃµÀåÆ²
-		// ÃµÀåÆ²
+#pragma region Ãµï¿½ï¿½Æ²
+		// Ãµï¿½ï¿½Æ²
 		{
 			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(-0.35f, 4.57f, 8.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\WallRim.fbx");
 
@@ -201,7 +206,7 @@ namespace jh
 
 			AddGameObject(pWallRim);
 		}
-		// ÃµÀåÆ²2
+		// Ãµï¿½ï¿½Æ²2
 		{
 			DecoObject* pWallRim2 = Factory::CreateObject<DecoObject>(Vec3(-14.65f, 4.57f, -1.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\WallRim.fbx");
 
@@ -212,8 +217,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region ¹®Æ²+°Å¹ÌÁÙ
-		// ¹®Æ²
+#pragma region ï¿½ï¿½Æ²+ï¿½Å¹ï¿½ï¿½ï¿½
+		// ï¿½ï¿½Æ²
 		{
 			DecoObject* pDoorFrame = Factory::CreateObject<DecoObject>(Vec3(0.65f, -1.45f, 8.82f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\DoorFrameBig (1).fbx");
 
@@ -222,7 +227,7 @@ namespace jh
 
 			AddGameObject(pDoorFrame);
 		}
-		// °Å¹ÌÁÙ(±¸¼®)
+		// ï¿½Å¹ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)
 		{
 			DecoObject* pCobwebCorner = Factory::CreateObject<DecoObject>(Vec3(-13.05f, -2.95f, 7.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\Cobweb1.fbx");
 
@@ -231,7 +236,7 @@ namespace jh
 
 			AddGameObject(pCobwebCorner);
 		}
-		// °Å¹ÌÁÙ(¹®)
+		// ï¿½Å¹ï¿½ï¿½ï¿½(ï¿½ï¿½)
 		{
 			DecoObject* pCobwebDoor = Factory::CreateObject<DecoObject>(Vec3(0.55f, -0.05f, 8.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\Cobweb_Flat.fbx");
 
@@ -243,8 +248,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region ¹Ù´Ú ¼ÒÇ°
-		// Ç×¾Æ¸®(¹Ù±ùÂÊ)
+#pragma region ï¿½Ù´ï¿½ ï¿½ï¿½Ç°
+		// ï¿½×¾Æ¸ï¿½(ï¿½Ù±ï¿½ï¿½ï¿½)
 		for (int i = 0; i < 3; i++)
 		{
 			DecoObject* pPotGeneric = Factory::CreateObject<DecoObject>(Vec3(11.25f, -3.05f, 5.42f - (i * 6.9f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\POT_HEAL_Generic Variant (3).fbx");
@@ -253,7 +258,7 @@ namespace jh
 
 			AddGameObject(pPotGeneric);
 		}
-		// Ç×¾Æ¸®(¾ÈÂÊ)
+		// ï¿½×¾Æ¸ï¿½(ï¿½ï¿½ï¿½ï¿½)
 		for (int i = 0; i < 3; i++)
 		{
 			DecoObject* pPotGeneric2 = Factory::CreateObject<DecoObject>(Vec3(-11.75f, -3.05f, 5.42f - (i * 6.9f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\POT_HEAL_Generic Variant (3).fbx");
@@ -262,7 +267,7 @@ namespace jh
 
 			AddGameObject(pPotGeneric2);
 		}
-		// È­ÅêºÒ
+		// È­ï¿½ï¿½ï¿½
 		{
 			DecoObject* pFireLamp = Factory::CreateObject<DecoObject>(Vec3(0.21f, -3.19f, -1.48f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\GRANDMA_FireLamp.fbx");
 

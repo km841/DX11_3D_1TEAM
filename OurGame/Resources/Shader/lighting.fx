@@ -63,13 +63,24 @@ PS_OUT PS_DirLight(VS_OUT _in)
         float2 uv = shadowClipPos.xy / shadowClipPos.w;
         uv.y = -uv.y;
         uv = uv * 0.5 + 0.5;
-
+        float bias = 0.000018f;
         if (0 < uv.x && uv.x < 1 && 0 < uv.y && uv.y < 1)
         {
-            float shadowDepth = g_tex_2.Sample(g_sam_0, uv).x;
-            if (shadowDepth > 0 && depth > shadowDepth + 0.00018f)
+            float staticShadowDepth = g_tex_2.Sample(g_sam_0, uv).x;
+            if (0 < staticShadowDepth)
             {
-                color.diffuse *= 0.5f;
+                if (staticShadowDepth > 0 && depth > staticShadowDepth - 0.02f)
+                {
+                    color.diffuse *= 0.5f;
+                }
+            }
+            else
+            {
+                float dynamicShadowDepth = g_tex_3.Sample(g_sam_0, uv).x;
+                if (dynamicShadowDepth > 0 && depth > dynamicShadowDepth + bias)
+                {
+                    color.diffuse *= 0.5f;
+                }
             }
         }
     }

@@ -54,6 +54,11 @@ namespace jh
 		Map::Initialize();
 	}
 
+	void CorridorRightMap::Start()
+	{
+		Map::Start();
+	}
+
 	void CorridorRightMap::Update()
 	{
 		Map::Update();

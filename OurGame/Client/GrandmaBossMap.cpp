@@ -60,6 +60,11 @@ namespace hm
 		Map::Initialize();
 	}
 
+	void GrandmaBossMap::Start()
+	{
+		Map::Start();
+	}
+
 	void GrandmaBossMap::Update()
 	{
 		Map::Update();

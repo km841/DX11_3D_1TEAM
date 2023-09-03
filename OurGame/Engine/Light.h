@@ -52,7 +52,8 @@ namespace hm
         virtual Component* Clone(GameObject* _pGameObject);
 
     public:
-        void RenderShadow();
+        void RenderStaticShadow();
+        void RenderDynamicShadow();
 
         const LightInfo& GetLightInfo() { return mLightInfo; }
         void SetLightDirection(Vec3 _direction);
@@ -71,7 +72,7 @@ namespace hm
         void SetLightAngle(float _angle) { mLightInfo.angle = _angle; }
         void SetLightIndex(int _index) { mLightIndex = _index; }
 
-        void SetDirectionalCamera(GameObject* _pDirCamera);
+        void SetShadowCamera(GameObject* _pShadowCamera);
         LightType GetLightType() { return static_cast<LightType>(mLightInfo.eLightType); }
 
     private:

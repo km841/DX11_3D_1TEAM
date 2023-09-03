@@ -59,6 +59,11 @@ void EntranceHallMap::Initialize()
 	Map::Initialize();
 }
 
+void EntranceHallMap::Start()
+{
+	Map::Start();
+}
+
 void EntranceHallMap::Update()
 {
 	Map::Update();

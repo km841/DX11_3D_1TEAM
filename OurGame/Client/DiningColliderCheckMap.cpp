@@ -56,6 +56,11 @@ namespace sy
 		Map::Initialize();
 	}
 
+	void DiningColliderCheckMap::Start()
+	{
+		Map::Start();
+	}
+
 	void DiningColliderCheckMap::Update()
 	{
 		Map::Update();
