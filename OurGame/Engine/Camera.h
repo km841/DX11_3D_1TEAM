@@ -42,7 +42,8 @@ namespace hm
 
     public:
         void SortGameObject();
-        void SortShadowObject();
+        void SortStaticShadowObject();
+        void SortDynamicShadowObject();
 
         /* Forward Rendering으로 그려질 물체들을 그려주는 함수 */
         void RenderForward();

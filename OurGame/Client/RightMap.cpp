@@ -53,6 +53,11 @@ namespace yj
 		Map::Initialize();
 	}
 
+	void RightMap::Start()
+	{
+		Map::Start();
+	}
+
 	void RightMap::Update()
 	{
 		Map::Update();

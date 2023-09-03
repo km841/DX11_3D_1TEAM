@@ -67,6 +67,11 @@ namespace hm
 		Map::Update();
 	}
 
+	void Right2Map::Start()
+	{
+		Map::Start();
+	}
+
 	void Right2Map::FixedUpdate()
 	{
 		Map::FixedUpdate();

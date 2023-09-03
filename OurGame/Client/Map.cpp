@@ -2,11 +2,13 @@
 #include "Map.h"
 #include "PlacementScript.h"
 #include "Input.h"
+#include "RenderManager.h"
 
 namespace hm
 {
 	Map::Map(MapType _eMapType)
 		: Scene(_eMapType)
+		, mbShadow(false)
 	{
 	}
 
@@ -23,6 +25,10 @@ namespace hm
 
 		if (IS_DOWN(KeyType::M) && nullptr != mpShadowCamera)
 			SetGizmoTarget(mpShadowCamera);
+
+		if (IS_DOWN(KeyType::N) && nullptr != mpShadowCamera)
+			GET_SINGLE(RenderManager)->BakeStaticShadow(this);
+
 	}
 	void Map::FixedUpdate()
 	{

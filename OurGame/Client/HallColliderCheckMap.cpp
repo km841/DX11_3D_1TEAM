@@ -56,6 +56,12 @@ namespace jh
 		Map::Initialize();
 	}
 
+	void HallColliderCheckMap::Start()
+	{
+		SetDirLightPosition(Vec3(20.7f, 53.4f, 69.3f));
+		SetDirLightRotation(Vec3(38.3f, 199.57f, 167.5f));
+	}
+
 	void HallColliderCheckMap::Update()
 	{
 		Map::Update();
@@ -81,6 +87,8 @@ namespace jh
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 
+
+
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
@@ -105,7 +113,7 @@ namespace jh
 
 			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
 			//pPlayer->AddComponent(new TestAnimationScript);
-			//pPlayer->AddComponent(new PlayerMoveScript);
+			pPlayer->AddComponent(new PlayerMoveScript);
 			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
 
 			AddGameObject(pPlayer);

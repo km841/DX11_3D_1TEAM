@@ -58,6 +58,11 @@ void LeftSecretTrialMap::Initialize()
 	Map::Initialize();
 }
 
+void LeftSecretTrialMap::Start()
+{
+	Map::Start();
+}
+
 void LeftSecretTrialMap::Update()
 {
 	Map::Update();

@@ -166,8 +166,8 @@ namespace hm
 
 			pCamera->SetCullingMask(LayerType::UI, true);
 
-			pTransform->SetPosition(Vec3(0.f, 30.f, 0.f));
-			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+			pTransform->SetPosition(Vec3(63.f, 63.f, 61.5f));
+			pTransform->SetRotation(Vec3(37.2f, 242.f, 180.f));
 			AddGameObject(pShadowCamera);
 		}
 		
@@ -181,7 +181,7 @@ namespace hm
 			pLight->SetDiffuse(Vec3(1.f, 1.f, 1.f));
 			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
 			pLight->SetLightDirection(Vec3(0.f, -1.f, 0.f));
-			pLight->SetDirectionalCamera(pShadowCamera);
+			pLight->SetShadowCamera(pShadowCamera);
 			pLight->SetLightType(LightType::DirectionalLight);
 			AddGameObject(pGameObject);
 		}
