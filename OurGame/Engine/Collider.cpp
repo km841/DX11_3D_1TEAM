@@ -75,6 +75,24 @@ namespace hm
 		return pCollider;
 	}
 
+	bool Collider::Raycast(const Vec3& _origin, const Vec3& _dir, Collider* _pOther, float _maxDist)
+	{
+		GeometryType eGeometryType = _pOther->GetRigidBody()->GetGeometryType();
+		switch (eGeometryType)
+		{
+		case GeometryType::Box:
+			return Raycast<PxBoxGeometry>(_pOther->GetRigidBody()->GetGeometries()->boxGeom, _origin, _dir, _pOther, _maxDist);
+
+		case GeometryType::Capsule:
+			return Raycast<PxCapsuleGeometry>(_pOther->GetRigidBody()->GetGeometries()->capsuleGeom, _origin, _dir, _pOther, _maxDist);
+	
+		case GeometryType::Sphere:
+			return Raycast<PxSphereGeometry>(_pOther->GetRigidBody()->GetGeometries()->sphereGeom, _origin, _dir, _pOther, _maxDist);
+		}
+
+		return false;
+	}
+
 	void Collider::OnCollisionEnter(Collider* _pOtherCollider)
 	{
 		mpGameObject->OnCollisionEnter(_pOtherCollider);

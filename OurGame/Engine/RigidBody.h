@@ -38,6 +38,7 @@ namespace hm
 
 		ActorType GetActorType() { return mPhysicsInfo.eActorType; }
 		GeometryType GetGeometryType() { return mPhysicsInfo.eGeometryType; }
+		Geometries* GetGeometries() { return mPhysicsInfo.pGeometries; }
 		Vec3 GetGeometrySize() { return mPhysicsInfo.size * 2.f; }
 		const PxFilterData& GetFilterData() { return mPhysicsInfo.filterData; }
 		void SetOtherLayerInFilterData(LayerType _eOtherLayer) { mPhysicsInfo.filterData.word1 |= 1 << static_cast<int>(_eOtherLayer); }

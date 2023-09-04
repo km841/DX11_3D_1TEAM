@@ -223,6 +223,10 @@ namespace hm
 				break;
 			}
 
+			CONTEXT->VSSetSamplers(2, 1, mpShadowSamplerState.GetAddressOf());
+			CONTEXT->PSSetSamplers(2, 1, mpShadowSamplerState.GetAddressOf());
+			CONTEXT->GSSetSamplers(2, 1, mpShadowSamplerState.GetAddressOf());
+
 			CONTEXT->VSSetShader(mpVertexShader.Get(), nullptr, 0);
 			CONTEXT->PSSetShader(mpPixelShader.Get(), nullptr, 0);
 			CONTEXT->GSSetShader(mpGeometryShader.Get(), nullptr, 0);
@@ -329,5 +333,18 @@ namespace hm
 
 		hr = DEVICE->CreateSamplerState(&samplerDesc, mpLinearClampSamplerState.GetAddressOf());
 		AssertEx(SUCCEEDED(hr), L"Shader::CreateSampler() - Create Linear Sampler Failed");
+
+
+		// Shadow Sampler
+
+		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_BORDER;
+		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_BORDER;
+		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_BORDER;
+		samplerDesc.BorderColor[0] = 100.f;
+		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_COMPARISON_MIN_MAG_MIP_POINT;
+		samplerDesc.ComparisonFunc = D3D11_COMPARISON_LESS_EQUAL;
+
+		hr = DEVICE->CreateSamplerState(&samplerDesc, mpShadowSamplerState.GetAddressOf());
+		AssertEx(SUCCEEDED(hr), L"Shader::CreateSampler() - Create Shadow Sampler Failed");
 	}
 }

@@ -23,6 +23,7 @@
 #include "DecoObject.h"
 #include "WallObject.h"
 #include "Npc.h"
+#include "Monster.h"
 
 /* Component */
 #include "Collider.h"
@@ -107,13 +108,27 @@ namespace jh
 		// Toy
 		{
 			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eActorType = ActorType::Kinematic;
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
 			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
 			//pPlayer->AddComponent(new TestAnimationScript);
 			pPlayer->AddComponent(new PlayerMoveScript);
+			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+
+			AddGameObject(pPlayer);
+		}
+
+		// Toy
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+
+			Monster* pPlayer = Factory::CreateObjectHasPhysical<Monster>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+			//pPlayer->AddComponent(new TestAnimationScript);
 			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
 
 			AddGameObject(pPlayer);
@@ -1706,14 +1721,14 @@ namespace jh
 
 
 		// PotHead
-		//{
-		//	PhysicsInfo info = {};
+		{
+			PhysicsInfo info = {};
 
-		//	Npc* pPotHead = Factory::CreateObjectHasPhysical<Npc>(Vec3(2.9f, 14.5f, 43.2f), info, L"Deferred", L"..\\Resources\\FBX\\Npc\\Npc_PotHead.fbx");
-		//	pPotHead->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
-		//	pPotHead->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-		//	AddGameObject(pPotHead);
-		//}
+			Npc* pPotHead = Factory::CreateObjectHasPhysical<Npc>(Vec3(2.9f, 14.5f, 43.2f), info, L"Deferred", L"..\\Resources\\FBX\\Npc\\Npc_PotHead.fbx");
+			pPotHead->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+			pPotHead->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			AddGameObject(pPotHead);
+		}
 	}
 
 	void HallColliderCheckMap::Exit()
