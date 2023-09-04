@@ -116,9 +116,9 @@ namespace jh
 			pFloor->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
 			pFloor->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
 
-			//shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"rspFloorTexture", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\Floor.fbm\\grandmaFloorNewTest.png");
-			//pFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
-			//pFloor->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.3f, 0.3f));
+			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"rspFloorTexture", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\Floor.fbm\\grandmaFloorNewTestWhiteIsh.png");
+			pFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture, 2);
+			pFloor->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.03f, 0.03f), 1);
 
 			AddGameObject(pFloor);
 		}
