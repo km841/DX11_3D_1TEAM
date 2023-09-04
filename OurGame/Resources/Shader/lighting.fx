@@ -4,6 +4,13 @@
 #include "params.fx"
 #include "utils.fx"
 
+static const float2 offsets[9] =
+{
+    float2(-1, -1), float2(0, -1), float2(1, -1),
+            float2(-1, 0), float2(0, 0), float2(1, 0),
+            float2(-1, +1), float2(0, +1), float2(1, +1)
+};
+
 struct VS_IN
 {
     float3 pos : POSITION;
@@ -63,25 +70,23 @@ PS_OUT PS_DirLight(VS_OUT _in)
         float2 uv = shadowClipPos.xy / shadowClipPos.w;
         uv.y = -uv.y;
         uv = uv * 0.5 + 0.5;
-        float bias = 0.000018f;
+        float bias = 0.05f;
         if (0 < uv.x && uv.x < 1 && 0 < uv.y && uv.y < 1)
         {
-            float staticShadowDepth = g_tex_2.Sample(g_sam_0, uv).x;
-            if (0 < staticShadowDepth)
+            float shadowFactor = g_tex_2.SampleCmpLevelZero(g_sam_2, uv, depth - bias).r;
+            if (0 < shadowFactor)
             {
-                if (staticShadowDepth > 0 && depth > staticShadowDepth - 0.02f)
-                {
-                    color.diffuse *= 0.5f;
-                }
+                color.diffuse *= 0.5;
             }
             else
             {
-                float dynamicShadowDepth = g_tex_3.Sample(g_sam_0, uv).x;
-                if (dynamicShadowDepth > 0 && depth > dynamicShadowDepth + bias)
+                shadowFactor = g_tex_3.SampleCmpLevelZero(g_sam_2, uv, depth - bias).r;
+                if (0 < shadowFactor)
                 {
-                    color.diffuse *= 0.5f;
+                    color.diffuse *= 0.5;
                 }
             }
+
         }
     }
     

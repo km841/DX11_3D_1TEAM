@@ -134,6 +134,7 @@ namespace hm
         ComPtr<ID3D11SamplerState>      mpPointWrapSamplerState;
         ComPtr<ID3D11SamplerState>      mpPointClampSamplerState;
         ComPtr<ID3D11SamplerState>      mpLinearClampSamplerState;
+        ComPtr<ID3D11SamplerState>      mpShadowSamplerState;
 
         ComPtr<ID3D11DepthStencilState> mpDepthStencilState;
         ComPtr<ID3D11RasterizerState>   mpRasterizerState;

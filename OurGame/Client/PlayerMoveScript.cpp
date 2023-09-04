@@ -5,6 +5,8 @@
 #include "Transform.h"
 #include "RigidBody.h"
 #include "MeshRenderer.h"
+#include "Collider.h"
+#include "SceneManager.h"
 
 PlayerMoveScript::PlayerMoveScript()
 	: mMoveSpeed(2.f)
@@ -21,8 +23,6 @@ void PlayerMoveScript::FixedUpdate()
 	{
 		tr->SetPosition(Vec3(0.0f, 0.0f, 0.f));
 	}
-
-
 
 	if (IS_PRESS(KeyType::UP))
 	{
@@ -48,6 +48,22 @@ void PlayerMoveScript::FixedUpdate()
 	{
 		GetRigidBody()->SetVelocity(AXIS_Y, mMoveSpeed);
 	}
+
+
+	Vec3 mPos = GetRigidBody()->GetPhysicsTransform().p;
+	Vec3 mBottomDir = Vec3(0.f, 0.f, 1.f);
+	
+	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Monster);
+	
+	for (int i = 0; i < gameObjects.size(); ++i)
+	{
+		if (gameObjects[i]->GetCollider())
+		{
+			if (GetCollider()->Raycast(mPos, mBottomDir, gameObjects[i]->GetCollider(), 0.1f))
+				int a = 0;
+		}
+	}
+	
 }
 
 Component* PlayerMoveScript::Clone(GameObject* _pGameObject)

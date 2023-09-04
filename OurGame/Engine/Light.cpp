@@ -96,6 +96,7 @@ namespace hm
 			mpShadowCamera->GetCamera()->SetFar(10000.f);
 			mpShadowCamera->GetCamera()->SetWidth(4096.f);
 			mpShadowCamera->GetCamera()->SetHeight(4096.f);
+			mpShadowCamera->GetCamera()->SetFov(XM_PI/2.f);
 
 
 			break;

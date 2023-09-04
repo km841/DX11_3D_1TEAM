@@ -17,6 +17,7 @@ StructuredBuffer<Matrix> g_mat_bone : register(t16);
 
 SamplerState g_sam_0 : register(s0);
 SamplerState g_sam_1 : register(s1);
+SamplerComparisonState g_sam_2 : register(s2);
 
 cbuffer TRANSFORM_PARAMS : register(b0)
 {

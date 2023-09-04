@@ -882,7 +882,7 @@ namespace hm
             ShaderInfo shaderInfo =
             {
                 ShaderType::Shadow,
-                DepthStencilType::Less,
+                DepthStencilType::LessEqual,
                 RasterizerType::CullNone,
             };
 
