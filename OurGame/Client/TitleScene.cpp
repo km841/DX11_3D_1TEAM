@@ -95,7 +95,7 @@ namespace hm
 		// - RightMap
 		if (IS_DOWN(KeyType::K))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::RightMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
 		}
 	}
 

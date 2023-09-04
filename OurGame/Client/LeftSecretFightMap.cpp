@@ -132,10 +132,10 @@ void LeftSecretFightMap::Enter()
 		DecoObject* pGrimace_Decay_Floor = Factory::CreateObject<DecoObject>(Vec3(-4.8f, -9.f, 9.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\Grimace_Decay_Floor.fbx");
 		pGrimace_Decay_Floor->GetTransform()->SetScale(Vec3(39.f, 40.f, 38.f));
 
-		//shared_ptr<Texture> pTexture2 = GET_SINGLE(Resources)->Load<Texture>(L"Grimace_Decay_FloorTexture", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\Grimace_Decay_Floor.fbm\\grandmaFloorNewTest.png");
-		//pGrimace_Decay_Floor->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture2); // 텍스쳐 강제로 적용시키는법
+		//shared_ptr<Texture> pTexture2 = GET_SINGLE(Resources)->Load<Texture>(L"Grimace_Decay_FloorTexture", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\Grimace_Decay_Floor.fbm\\floormark_tiling_broken.png");
+		//pGrimace_Decay_Floor->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture2 ,1); // 텍스쳐 강제로 적용시키는법
 
-		pGrimace_Decay_Floor->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.01f, 0.01f));
+		pGrimace_Decay_Floor->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.01f, 0.01f),1);
 
 		AddGameObject(pGrimace_Decay_Floor);
 	}
