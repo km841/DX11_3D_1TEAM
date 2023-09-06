@@ -18,6 +18,7 @@ namespace hm
 		Monster,
 		Npc,
 		Ground,
+		Obstacle,
 		DecoObject,
 		WallObject,
 		UI,
@@ -29,7 +30,11 @@ namespace hm
 		LAYER_TYPE_COUNT = static_cast<int>(LayerType::End),
 	};
 
-	
+	enum class GroundMaterial
+	{
+		Marble, // ´ë¸®¼® ¹Ù´Ú
+		Wood,   // ³ª¹« ¹Ù´Ú
+	};
 
 	enum class ObjectType
 	{

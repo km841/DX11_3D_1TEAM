@@ -52,6 +52,7 @@ namespace hm
         int			    frameCount;
         double			duration;
         std::vector<std::vector<KeyFrameInfo>>	keyFrames;
+        bool            bLoop = false;
     };
 
     struct FbxMeshInfo;
@@ -101,9 +102,9 @@ namespace hm
         IndexBufferInfo CreateIndexBuffer(void* _pIdxData, UINT32 _size);
 
     public:
-        const std::vector<BoneInfo>*     GetBones() { return &mBones; }
+        std::vector<BoneInfo>*     GetBones() { return &mBones; }
         UINT32						     GetBoneCount() { return static_cast<UINT32>(mBones.size()); }
-        const std::vector<AnimClipInfo>* GetAnimClip() { return &mAnimClips; }
+        std::vector<AnimClipInfo>* GetAnimClip() { return &mAnimClips; }
 
         bool							 IsAnimMesh() { return !mAnimClips.empty(); }
         shared_ptr<StructuredBuffer>	 GetBoneFrameDataBuffer(int index = 0) { return frameBuffer[index]; } // 전체 본 프레임 정보

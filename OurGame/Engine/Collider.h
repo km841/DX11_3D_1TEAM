@@ -29,12 +29,11 @@ namespace hm
         template<typename T>
         bool Raycast(T _geom, const Vec3& _origin, const Vec3& _dir, Collider* _pOther, float _maxDist)
         {
-            T geom = _geom;
             PxTransform otherTr = _pOther->GetRigidBody()->GetPhysicsTransform();
             bool bResult = PxGeometryQuery::raycast(
                 _origin,
                 _dir,
-                geom, otherTr,
+                _geom, otherTr,
                 _maxDist,
                 PxHitFlag::ePOSITION | PxHitFlag::eDEFAULT,
                 5,

@@ -239,7 +239,7 @@ namespace hm
 		// Real-Time Shadow
 		{
 			float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-			std::vector<RenderTarget> renderTargets(STATIC_SHADOW_GROUP_COUNT);
+			std::vector<RenderTarget> renderTargets(DYNAMIC_SHADOW_GROUP_COUNT);
 
 			renderTargets[0].pTarget = GET_SINGLE(Resources)->CreateTexture(
 				L"DynamicShadowTarget",

@@ -53,6 +53,7 @@ namespace hm
 		transformParams.matProjection = pMainCamera->GetProjectionMatrix();
 		transformParams.matWV = matWorld * transformParams.matView;
 		transformParams.matWVP = matWorld * transformParams.matView * transformParams.matProjection;
+		transformParams.matViewInv = transformParams.matView.Invert();
 		transformParams.matWVPInv = transformParams.matWVP.Invert();
 		CONST_BUFFER(ConstantBufferType::Transform)->PushData(&transformParams, sizeof(transformParams));
 

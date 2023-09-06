@@ -19,26 +19,43 @@ namespace hm
 
 	public:
 		void Play(int _idx);
+		void Play(const wstring& _animName);
+		int FindAnimationIndex(const wstring& _animName);
 
-		void SetBones(const std::vector<BoneInfo>* _bones);
-		void SetAnimClip(const std::vector<AnimClipInfo>* _animClips);
+		void SetBones(std::vector<BoneInfo>* _bones);
+		void SetAnimClip(std::vector<AnimClipInfo>* _animClips);
 		void PushData();
 
-		int GetAnimCount() { return static_cast<UINT32>(animClips->size()); }
-		int GetCurrentClipIndex() { return clipIndex; }
+		int GetAnimCount() { return static_cast<UINT32>(mAnimClips->size()); }
+		int GetCurrentClipIndex() { return mClipIndex; }
+		float GetFrameRatio() { return mFrameRatio; }
+
+		void SetHasExitFlag(bool _bFlag) { mbHasExit = _bFlag; }
+
+		void RenameAnimation(const wstring& _orgName, const wstring& _newName);
+		void RenameAnimation(int _index, const wstring& _newName);
+
+		void SetLoop(const wstring& _animName, bool _bFlag);
+		void SetLoop(int _index, bool _bFlag);
+
+		bool IsFinished() { return mbIsFinished; }
 
 	private:
-		const std::vector<BoneInfo>* bones;
-		const std::vector<AnimClipInfo>* animClips;
+		std::vector<BoneInfo>*			mBones;
+		std::vector<AnimClipInfo>*		mAnimClips;
 
-		float	updateTime = 0.f;
-		int		clipIndex = 0;
-		int		frame = 0;
-		int		nextFrame = 0;
-		float	frameRatio = 0;
-		shared_ptr<StructuredBuffer>	pBoneFinalMatrix; 
-		shared_ptr<Material>			 mpComputeMaterial;
-		bool							bBoneFinalUpdated = false;
+		float							mUpdateTime = 0.f;
+		int								mClipIndex = 0;
+		int								mFrame = 0;
+		int								mNextFrame = 0;
+		float							mFrameRatio = 0;
+		shared_ptr<StructuredBuffer>	mpBoneFinalMatrix; 
+		shared_ptr<Material>			mpComputeMaterial;
+		bool							mbBoneFinalUpdated = false;
+		bool							mbIsFinished;
+
+		bool							mbHasExit;
+		int								mAfterFrame;
 	};
 }
 

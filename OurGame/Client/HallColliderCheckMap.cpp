@@ -33,10 +33,12 @@
 #include "Camera.h"
 #include "Light.h"
 #include "ParticleSystem.h"
+#include "Animator.h"
 
 /* Script */
 #include "PlayerMoveScript.h"
 #include "PlacementScript.h"
+#include "TestAnimationScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -1727,6 +1729,10 @@ namespace jh
 			Npc* pPotHead = Factory::CreateObjectHasPhysical<Npc>(Vec3(2.9f, 14.5f, 43.2f), info, L"Deferred", L"..\\Resources\\FBX\\Npc\\Npc_PotHead.fbx");
 			pPotHead->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
 			pPotHead->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			pPotHead->AddComponent(new TestAnimationScript);
+
+			pPotHead->GetAnimator()->RenameAnimation(L"Sat_loop", L"PotHead_Idle");
+			pPotHead->GetAnimator()->SetLoop(L"PotHead_Idle", true);
 			AddGameObject(pPotHead);
 		}
 	}

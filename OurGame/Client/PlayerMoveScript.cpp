@@ -59,11 +59,10 @@ void PlayerMoveScript::FixedUpdate()
 	{
 		if (gameObjects[i]->GetCollider())
 		{
-			if (GetCollider()->Raycast(mPos, mBottomDir, gameObjects[i]->GetCollider(), 0.1f))
+			if (GetCollider()->Raycast(mPos, mBottomDir, gameObjects[i]->GetCollider(), 0.1f)) // ∏ÛΩ∫≈Õ
 				int a = 0;
 		}
-	}
-	
+	}	
 }
 
 Component* PlayerMoveScript::Clone(GameObject* _pGameObject)
