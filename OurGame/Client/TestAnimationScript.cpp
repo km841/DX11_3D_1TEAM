@@ -32,5 +32,14 @@ namespace hm
 			int index = (currentIndex - 1 + count) % count;
 			GetAnimator()->Play(index);
 		}
+
+		if (IS_DOWN(KeyType::N_3))
+		{
+			bool bFinFlag = GetAnimator()->IsFinished();
+
+			GetAnimator()->Play(L"PotHead_Idle");
+			GetAnimator()->SetHasExitFlag(false);
+
+		}
 	}
 }

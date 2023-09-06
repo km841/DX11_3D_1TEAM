@@ -9,10 +9,11 @@ namespace hm
 {
 	Animator::Animator()
 		: Component(ComponentType::Animator)
+		, mbHasExit(false)
+		, mAfterFrame(-1)
 	{
 		mpComputeMaterial = GET_SINGLE(Resources)->Get<Material>(L"ComputeAnimation");
-		pBoneFinalMatrix = make_shared<StructuredBuffer>();
-
+		mpBoneFinalMatrix = make_shared<StructuredBuffer>();
 	}
 	Animator::~Animator()
 	{
@@ -25,54 +26,112 @@ namespace hm
 	}
 	void Animator::FinalUpdate()
 	{
-		updateTime += DELTA_TIME;
+		mUpdateTime += DELTA_TIME;
 
-		const AnimClipInfo& animClip = animClips->at(clipIndex);
-		if (updateTime >= animClip.duration)
-			updateTime = 0.f;
+		const AnimClipInfo& animClip = mAnimClips->at(mClipIndex);
+		
+		if (mUpdateTime >= animClip.duration)
+		{
+			if (-1 != mAfterFrame)
+			{
+				mClipIndex = mAfterFrame;
+				mAfterFrame = -1;
+				mUpdateTime = 0.f;
+				return;
+			}
+
+			if (true == animClip.bLoop)
+				mUpdateTime = 0.f;
+			else
+				mbIsFinished = true;
+		}
 
 		const int ratio = static_cast<int>(animClip.frameCount / animClip.duration);
-		frame = static_cast<int>(updateTime * ratio);
-		frame = min(frame, animClip.frameCount - 1);
-		nextFrame = min(frame + 1, animClip.frameCount - 1);
-		frameRatio = static_cast<float>(frame - frame);
+		mFrame = static_cast<int>(mUpdateTime * ratio);
+		mFrame = min(mFrame, animClip.frameCount - 1);
+		mNextFrame = min(mFrame + 1, animClip.frameCount - 1);
+		mFrameRatio = static_cast<float>(mFrame - mFrame);
 	}
 	void Animator::Play(int _idx)
 	{
-		AssertEx(_idx < animClips->size(), L"Animator::Play() - 해당 인덱스에 해당하는 애니메이션 클립 없음");
-		clipIndex = _idx;
-		updateTime = 0.f;
+		AssertEx(_idx < mAnimClips->size(), L"Animator::Play() - 해당 인덱스에 해당하는 애니메이션 클립 없음");
+		
+		if ((true == mbHasExit) && (mUpdateTime < mAnimClips->at(mClipIndex).duration))
+		{
+			mAfterFrame = _idx;
+			return;
+		}
+
+		mClipIndex = _idx;
+		mUpdateTime = 0.f;
+		mbIsFinished = false;
 	}
-	void Animator::SetBones(const std::vector<BoneInfo>* _bones)
+	void Animator::Play(const wstring& _animName)
 	{
-		bones = _bones;
+		mClipIndex = FindAnimationIndex(_animName);
+		AssertEx(mClipIndex != -1, L"Animator::Play() - 해당 인덱스에 해당하는 애니메이션 클립 없음");
+		Play(mClipIndex);
 	}
-	void Animator::SetAnimClip(const std::vector<AnimClipInfo>* _animClips)
+	int Animator::FindAnimationIndex(const wstring& _animName)
 	{
-		animClips = _animClips;
+		for (int i = 0; i < mAnimClips->size(); ++i)
+		{
+			if ((*mAnimClips)[i].animName == _animName)
+				return i;
+		}
+
+		return -1;
+	}
+	void Animator::SetBones(std::vector<BoneInfo>* _bones)
+	{
+		mBones = _bones;
+	}
+	void Animator::SetAnimClip(std::vector<AnimClipInfo>* _animClips)
+	{
+		mAnimClips = _animClips;
 	}
 	void Animator::PushData()
 	{
-		int boneCount = static_cast<int>(bones->size());
-		if (pBoneFinalMatrix->GetElementCount() < boneCount)
-			pBoneFinalMatrix->Create(sizeof(Matrix), boneCount);
+		int boneCount = static_cast<int>(mBones->size());
+		if (mpBoneFinalMatrix->GetElementCount() < boneCount)
+			mpBoneFinalMatrix->Create(sizeof(Matrix), boneCount);
 
 		// Compute Shader
-		shared_ptr<Mesh> mesh = GetGameObject()->GetMeshRenderer()->GetMesh();
-		mesh->GetBoneFrameDataBuffer(clipIndex)->PushGraphicsData(RegisterSRV::t8);
-		mesh->GetBoneOffsetBuffer()->PushGraphicsData(RegisterSRV::t9);
+		shared_ptr<Mesh> pMesh = GetGameObject()->GetMeshRenderer()->GetMesh();
+		pMesh->GetBoneFrameDataBuffer(mClipIndex)->PushGraphicsData(RegisterSRV::t8);
+		pMesh->GetBoneOffsetBuffer()->PushGraphicsData(RegisterSRV::t9);
 
-		pBoneFinalMatrix->PushComputeUAVData(RegisterUAV::u0);
+		mpBoneFinalMatrix->PushComputeUAVData(RegisterUAV::u0);
 
 		mpComputeMaterial->SetInt(0, boneCount);
-		mpComputeMaterial->SetInt(1, frame);
-		mpComputeMaterial->SetInt(2, nextFrame);
-		mpComputeMaterial->SetFloat(0, frameRatio);
+		mpComputeMaterial->SetInt(1, mFrame);
+		mpComputeMaterial->SetInt(2, mNextFrame);
+		mpComputeMaterial->SetFloat(0, mFrameRatio);
 
 		UINT32 groupCount = (boneCount / 256) + 1;
 		mpComputeMaterial->Dispatch(groupCount, 1, 1);
 
 		// Graphics Shader
-		pBoneFinalMatrix->PushGraphicsData(static_cast<RegisterSRV>(16));
+		mpBoneFinalMatrix->PushGraphicsData(static_cast<RegisterSRV>(16));
+	}
+	void Animator::RenameAnimation(const wstring& _orgName, const wstring& _newName)
+	{
+		int idx = FindAnimationIndex(_orgName);
+		RenameAnimation(idx, _newName);
+	}
+	void Animator::RenameAnimation(int _index, const wstring& _newName)
+	{
+		AssertEx(-1 != _index, L"Animator::RenameAnimation() - 해당 이름을 가진 애니메이션을 찾을 수 없음");
+		(*mAnimClips)[_index].animName = _newName;
+	}
+	void Animator::SetLoop(const wstring& _animName, bool _bFlag)
+	{
+		int idx = FindAnimationIndex(_animName);
+		SetLoop(idx, _bFlag);
+	}
+	void Animator::SetLoop(int _index, bool _bFlag)
+	{
+		AssertEx(-1 != _index, L"Animator::SetLoop() - 해당 이름을 가진 애니메이션을 찾을 수 없음");
+		(*mAnimClips)[_index].bLoop = _bFlag;
 	}
 }
