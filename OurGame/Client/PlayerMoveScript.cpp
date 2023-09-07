@@ -15,6 +15,7 @@ PlayerMoveScript::PlayerMoveScript()
 
 void PlayerMoveScript::FixedUpdate()
 {
+	GameObject* obj = GetGameObject(); // == Getowner();
 	Transform* tr = GetTransform();
 	RigidBody* rb = GetRigidBody();
 	MeshRenderer* mr = GetMeshRenderer();

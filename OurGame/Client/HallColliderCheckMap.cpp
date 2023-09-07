@@ -119,7 +119,7 @@ namespace jh
 			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
 			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
 
-			pPlayer->GetRigidBody()->ApplyGravity();
+			pPlayer->GetRigidBody()->ApplyGravity(); // 중력을 받겠다 , 반대도있음
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 			AddGameObject(pPlayer);
