@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Player.h"
+#include "Collider.h"
+#include "RigidBody.h"
 
 Player::Player()
 	: GameObject(LayerType::Player)
@@ -38,4 +40,25 @@ void Player::Render()
 void Player::Destroy()
 {
 	GameObject::Destroy();
+}
+
+void Player::OnTriggerEnter(Collider* pOtherCollider)
+{
+	if (LayerType::Ground == pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		GetRigidBody()->RemoveGravity();
+		GetRigidBody()->SetVelocity(Vec3::Zero);
+	}
+}
+
+void Player::OnTriggerStay(Collider* pOtherCollider)
+{
+}
+
+void Player::OnTriggerExit(Collider* pOtherCollider)
+{
+	if (LayerType::Ground == pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		GetRigidBody()->ApplyGravity();
+	}
 }

@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "GameObject.h"
 #include "CollisionManager.h"
+#include "Timer.h"
 
 namespace hm
 {
@@ -16,6 +17,7 @@ namespace hm
 		, mpMaterial(nullptr)
 		, mpShape(nullptr)
 		, mbIsActorInScene(false)
+		, mZeroAxisV{}
 	{
 	}
 	RigidBody::~RigidBody()
@@ -32,7 +34,8 @@ namespace hm
 
 	void RigidBody::FinalUpdate()
 	{
-		if (true == mbAppliedGravity && false == mbAppliedPhysics)
+		if (true == mbAppliedGravity && 
+			(false == mbAppliedPhysics || ActorType::Kinematic == mPhysicsInfo.eActorType))
 		{
 			AddGravity();
 		}
@@ -41,7 +44,24 @@ namespace hm
 			return;
 		
 		else
+		{
 			GetTransform()->Move(mVelocity);
+		}
+
+
+		bool bChangedFlag = false;
+		for (int i = 0; i < AXIS_MAX; ++i)
+		{
+			if (true == mZeroAxisV[i])
+			{
+				float& axisValue = *(&mVelocity.x + i);
+				axisValue = 0.f;
+				bChangedFlag = true;
+			}
+		}
+
+		if (true == bChangedFlag)
+			SetVelocity(mVelocity);
 	}
 
 	void RigidBody::Destroy()
@@ -125,8 +145,9 @@ namespace hm
 	{
 		if (true == mbAppliedPhysics)
 		{
-			AssertEx(ActorType::Dynamic == mPhysicsInfo.eActorType, L"RigidBody::SetVelocity() - Dynamic Actor가 아닌 물체에 대한 SetVelocity() 호출 시도");
+			AssertEx(ActorType::Static != mPhysicsInfo.eActorType, L"RigidBody::SetVelocity() - Dynamic Actor가 아닌 물체에 대한 SetVelocity() 호출 시도");
 			GetDynamicActor()->setLinearVelocity(_velocity);
+			mVelocity = _velocity;
 		}
 		else
 		{
@@ -141,7 +162,7 @@ namespace hm
 		if (true == mbAppliedPhysics)
 		{
 			AssertEx(ActorType::Static != mPhysicsInfo.eActorType, L"RigidBody::SetVelocity() - Static Actor 물체에 대한 SetVelocity() 호출 시도");
-			Vec3 velocity = GetDynamicActor()->getLinearVelocity();
+			Vec3 velocity = ActorType::Kinematic == mPhysicsInfo.eActorType ? mVelocity : static_cast<Vec3>(GetDynamicActor()->getLinearVelocity());
 			switch (_eAxis)
 			{
 			case hm::AXIS_X:
@@ -155,7 +176,6 @@ namespace hm
 				break;
 			}
 			GetDynamicActor()->setLinearVelocity(velocity);
-
 			mVelocity = velocity;
 		}
 		else
@@ -234,7 +254,7 @@ namespace hm
 
 	void RigidBody::AddGravity()
 	{
-		mVelocity += GLOBAL_GRAVITY;
+		mVelocity += GLOBAL_GRAVITY * DELTA_TIME;
 	}
 
 	void RigidBody::SetMaxVelocity(float _maxVelocity)
@@ -259,7 +279,7 @@ namespace hm
 	{
 		if (true == mbAppliedPhysics)
 		{
-			AssertEx(ActorType::Dynamic == mPhysicsInfo.eActorType, L"RigidBody::ApplyGravity() - Dynamic Actor가 아닌 물체에 대한 ApplyGravity() 호출 시도");
+			AssertEx(ActorType::Static != mPhysicsInfo.eActorType, L"RigidBody::ApplyGravity() - Dynamic Actor가 아닌 물체에 대한 ApplyGravity() 호출 시도");
 			GetDynamicActor()->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, false);
 		}
 
@@ -270,7 +290,7 @@ namespace hm
 	{
 		if (true == mbAppliedPhysics)
 		{
-			AssertEx(ActorType::Dynamic == mPhysicsInfo.eActorType, L"RigidBody::RemoveGravity() - Dynamic Actor가 아닌 물체에 대한 RemoveGravity() 호출 시도");
+			AssertEx(ActorType::Static != mPhysicsInfo.eActorType, L"RigidBody::RemoveGravity() - Dynamic Actor가 아닌 물체에 대한 RemoveGravity() 호출 시도");
 			GetDynamicActor()->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
 		}
 
@@ -311,6 +331,11 @@ namespace hm
 			GetTransform()->GetPosition(),
 			PxForceMode::eIMPULSE
 		);
+	}
+
+	void RigidBody::RemoveAxisSpeedAtUpdate(Axis _eAxis, bool _bFlag)
+	{
+		mZeroAxisV[_eAxis] = _bFlag;
 	}
 
 	void RigidBody::CreateBoxGeometry()

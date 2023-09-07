@@ -107,7 +107,7 @@ namespace jh
 			AddGameObject(pGround);
 		}
 
-		// Toy
+		// Player
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Kinematic;
@@ -119,22 +119,25 @@ namespace jh
 			pPlayer->AddComponent(new PlayerMoveScript);
 			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
 
+			pPlayer->GetRigidBody()->ApplyGravity();
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 			AddGameObject(pPlayer);
 		}
 
 		// Toy
-		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Static;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+		//{
+		//	PhysicsInfo physicsInfo;
+		//	physicsInfo.eActorType = ActorType::Static;
+		//	physicsInfo.eGeometryType = GeometryType::Box;
+		//	physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
-			Monster* pPlayer = Factory::CreateObjectHasPhysical<Monster>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
-			//pPlayer->AddComponent(new TestAnimationScript);
-			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+		//	Monster* pPlayer = Factory::CreateObjectHasPhysical<Monster>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+		//	//pPlayer->AddComponent(new TestAnimationScript);
+		//	pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
 
-			AddGameObject(pPlayer);
-		}
+		//	AddGameObject(pPlayer);
+		//}
 
 #pragma region 1층
 		// 1층 벽
