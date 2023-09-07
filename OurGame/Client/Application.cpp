@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "TitleScene.h"
 #include "TestScene.h"
+#include "Monster_Player_TestScene.h"
 
 #include "MainOfficeMap.h"
 #include "CorridorRightMap.h"
@@ -43,6 +44,8 @@ namespace hm
 		GET_SINGLE(SceneManager)->AddMap(new yj::RightMap);
 		GET_SINGLE(SceneManager)->AddMap(new jh::RightSecretPassageMap);
 		GET_SINGLE(SceneManager)->AddMap(new yj::MainOfficeMap);
+
+		GET_SINGLE(SceneManager)->AddMap(new Monster_Player_TestScene);
 
 		GET_SINGLE(SceneManager)->ActiveAndInitializeScene(SceneType::Title);
 	}

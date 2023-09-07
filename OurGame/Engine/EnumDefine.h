@@ -75,6 +75,8 @@ namespace hm
 		RightMap,
 		RightSecretPassageMap,
 
+		Monster_Player_Test,
+
 		End,
 	};
 

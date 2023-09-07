@@ -116,7 +116,7 @@ namespace jh
 
 			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
 			//pPlayer->AddComponent(new TestAnimationScript);
-			pPlayer->AddComponent(new PlayerMoveScript);
+			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
 			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
 
 			pPlayer->GetRigidBody()->ApplyGravity();

@@ -159,6 +159,7 @@
     <ClInclude Include="MainOfficeMap.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="Monster_Player_TestScene.h" />
     <ClInclude Include="Npc.h" />
     <ClInclude Include="PaperBurnScript.h" />
     <ClInclude Include="pch.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="MainOfficeMap.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="Monster_Player_TestScene.cpp" />
     <ClCompile Include="Npc.cpp" />
     <ClCompile Include="PaperBurnScript.cpp" />
     <ClCompile Include="pch.cpp">
