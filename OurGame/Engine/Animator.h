@@ -18,25 +18,27 @@ namespace hm
 		virtual void FinalUpdate() override;
 
 	public:
-		void Play(int _idx);
-		void Play(const wstring& _animName);
+		void Play(int _idx, bool _bLoop);
+		void Play(const wstring& _animName, bool _bLoop);
 		int FindAnimationIndex(const wstring& _animName);
 
 		void SetBones(std::vector<BoneInfo>* _bones);
 		void SetAnimClip(std::vector<AnimClipInfo>* _animClips);
+		std::vector<AnimClipInfo>* GetAnimClip() { return mAnimClips; }
 		void PushData();
 
 		int GetAnimCount() { return static_cast<UINT32>(mAnimClips->size()); }
 		int GetCurrentClipIndex() { return mClipIndex; }
-		float GetFrameRatio() { return mFrameRatio; }
-
-		void SetHasExitFlag(bool _bFlag) { mbHasExit = _bFlag; }
+		double GetFrameRatio() { return mUpdateTime / (*mAnimClips)[mClipIndex].duration; }
 
 		void RenameAnimation(const wstring& _orgName, const wstring& _newName);
 		void RenameAnimation(int _index, const wstring& _newName);
 
 		void SetLoop(const wstring& _animName, bool _bFlag);
 		void SetLoop(int _index, bool _bFlag);
+
+		void SetHasExitFlag(const wstring& _animName, bool _bFlag);
+		void SetHasExitFlag(int _index, bool _bFlag);
 
 		bool IsFinished() { return mbIsFinished; }
 
@@ -53,9 +55,8 @@ namespace hm
 		shared_ptr<Material>			mpComputeMaterial;
 		bool							mbBoneFinalUpdated = false;
 		bool							mbIsFinished;
-
-		bool							mbHasExit;
 		int								mAfterFrame;
+		bool							mAfterLoop;
 	};
 }
 

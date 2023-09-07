@@ -53,6 +53,7 @@ namespace hm
         double			duration;
         std::vector<std::vector<KeyFrameInfo>>	keyFrames;
         bool            bLoop = false;
+        bool            bHasExit = true;
     };
 
     struct FbxMeshInfo;
