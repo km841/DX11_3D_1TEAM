@@ -72,7 +72,7 @@ namespace hm
 	{
 		mClipIndex = FindAnimationIndex(_animName);
 		AssertEx(mClipIndex != -1, L"Animator::Play() - 해당 인덱스에 해당하는 애니메이션 클립 없음");
-		Play(mClipIndex);
+		Play(mClipIndex, _bLoop);
 	}
 	int Animator::FindAnimationIndex(const wstring& _animName)
 	{

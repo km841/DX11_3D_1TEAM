@@ -35,7 +35,9 @@ namespace hm
 				return;
 			}
 
+
 			PxTransform transform = GetRigidBody()->GetPhysicsTransform();
+			mPosition = transform.p;
 			PxQuat relativeX(mRelativeRotation.x * XM_PI / 180.f, Vec3(1.f, 0.f, 0.f));
 			PxQuat relativeY(mRelativeRotation.y * XM_PI / 180.f, Vec3(0.f, 1.f, 0.f));
 			PxQuat relativeZ(mRelativeRotation.z * XM_PI / 180.f, Vec3(0.f, 0.f, 1.f));

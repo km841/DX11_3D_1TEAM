@@ -46,23 +46,42 @@ void PlayerMoveScript::FixedUpdate()
 
 	if (IS_DOWN(KeyType::SPACE))
 	{
-		GetRigidBody()->SetVelocity(AXIS_Y, mMoveSpeed);
+		GetRigidBody()->SetVelocity(AXIS_Y, mMoveSpeed * 5.f);
 	}
 
 
-	Vec3 mPos = GetRigidBody()->GetPhysicsTransform().p;
-	Vec3 mBottomDir = Vec3(0.f, 0.f, 1.f);
-	
-	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Monster);
-	
-	for (int i = 0; i < gameObjects.size(); ++i)
-	{
-		if (gameObjects[i]->GetCollider())
-		{
-			if (GetCollider()->Raycast(mPos, mBottomDir, gameObjects[i]->GetCollider(), 0.1f)) // ¸ó½ºÅÍ
-				int a = 0;
-		}
-	}	
+	//Vec3 mPos = GetTransform()->GetPosition();
+	//Vec3 mScale = GetTransform()->GetScale();
+	//Vec3 mFootPos = Vec3(mPos.x, mPos.y - mScale.y / 2.f, mPos.z);
+	//Vec3 mBottomDir = Vec3(0.f, -1.f, 0.f);
+	//
+	//const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+	//
+	//bool bIsGround = false;
+	//for (int i = 0; i < gameObjects.size(); ++i)
+	//{
+	//	if (gameObjects[i]->GetCollider())
+	//	{
+	//		if (GetCollider()->Raycast(mFootPos, mBottomDir, gameObjects[i]->GetCollider(), 1.f))
+	//		{
+	//			bIsGround = true;
+	//		}
+	//	}
+	//}	
+
+	//if (false == bIsGround)
+	//{
+	//	GetRigidBody()->ApplyGravity();
+	//	GetRigidBody()->SetGround(false);
+	//}
+	//else
+	//{
+	//	GetRigidBody()->SetGround(true);
+	//	GetRigidBody()->RemoveGravity();
+
+	//	if (0.f < fabs(GetRigidBody()->GetVelocity().y))
+	//		GetRigidBody()->SetVelocity(AXIS_Y, 0.f);
+	//}
 }
 
 Component* PlayerMoveScript::Clone(GameObject* _pGameObject)

@@ -21,6 +21,10 @@ public:
 	virtual void Destroy();
 
 public:
+	virtual void OnTriggerEnter(Collider* pOtherCollider);
+	virtual void OnTriggerStay(Collider* pOtherCollider);
+	virtual void OnTriggerExit(Collider* pOtherCollider);
 
+public:
 };
 

@@ -49,6 +49,8 @@ namespace hm
 		void AddVelocity(Axis _eAxis, float _velocity);
 		void AddGravity();
 
+		const Vec3& GetVelocity() { return mVelocity; }
+
 		void SetMaxVelocity(float _maxVelocity);
 		void CheckMaxVelocity();
 
@@ -63,6 +65,7 @@ namespace hm
 		bool IsActorInScene() { return mbIsActorInScene; }
 
 		void AddForce(const Vec3& _force);
+		void RemoveAxisSpeedAtUpdate(Axis _eAxis, bool _bFlag);
 
 	private:
 		void CreateBoxGeometry();
@@ -89,6 +92,7 @@ namespace hm
 
 		Vec3 mVelocity;
 		float mMaxVelocity;
+		bool mZeroAxisV[AXIS_MAX];
 	};
 }
 

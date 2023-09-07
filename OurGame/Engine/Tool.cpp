@@ -319,7 +319,7 @@ namespace hm
 			for (int i = 0; i < animNames.size(); i++) {
 				if (ImGui::Selectable((std::to_string(i) + " : " + animNames[i]).c_str(), i == selectItemIdx)) {
 					selectItemIdx = i;
-					pAnimator->Play(selectItemIdx);
+					pAnimator->Play(selectItemIdx, false);
 				}
 			}
 			ImGui::EndChild();
