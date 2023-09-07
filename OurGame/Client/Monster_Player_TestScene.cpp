@@ -71,7 +71,7 @@ namespace hm {
 	}
 	void Monster_Player_TestScene::FinalUpdate()
 	{
-		Map::FixedUpdate();
+		Map::FinalUpdate();
 	}
 	void Monster_Player_TestScene::Render()
 	{

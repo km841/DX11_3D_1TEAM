@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Collider.h"
 #include "RigidBody.h"
+#include "Animator.h"
 
 Player::Player()
 	: GameObject(LayerType::Player)
@@ -15,6 +16,9 @@ Player::~Player()
 void Player::Initialize()
 {
 	GameObject::Initialize();
+
+	//GetAnimator()->RenameAnimation(L"Sat_loop", L"PotHead_Idle");
+	
 }
 
 void Player::Update()
