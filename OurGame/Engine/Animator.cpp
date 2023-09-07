@@ -9,8 +9,8 @@ namespace hm
 {
 	Animator::Animator()
 		: Component(ComponentType::Animator)
-		, mbHasExit(false)
 		, mAfterFrame(-1)
+		, mAfterLoop(false)
 	{
 		mpComputeMaterial = GET_SINGLE(Resources)->Get<Material>(L"ComputeAnimation");
 		mpBoneFinalMatrix = make_shared<StructuredBuffer>();
@@ -35,6 +35,7 @@ namespace hm
 			if (-1 != mAfterFrame)
 			{
 				mClipIndex = mAfterFrame;
+				(*mAnimClips)[mClipIndex].bLoop = mAfterLoop;
 				mAfterFrame = -1;
 				mUpdateTime = 0.f;
 				return;
@@ -52,21 +53,22 @@ namespace hm
 		mNextFrame = min(mFrame + 1, animClip.frameCount - 1);
 		mFrameRatio = static_cast<float>(mFrame - mFrame);
 	}
-	void Animator::Play(int _idx)
+	void Animator::Play(int _idx, bool _bLoop)
 	{
 		AssertEx(_idx < mAnimClips->size(), L"Animator::Play() - 해당 인덱스에 해당하는 애니메이션 클립 없음");
 		
-		if ((true == mbHasExit) && (mUpdateTime < mAnimClips->at(mClipIndex).duration))
+		if ((false == mAnimClips->at(mClipIndex).bHasExit) && (mUpdateTime < mAnimClips->at(mClipIndex).duration))
 		{
 			mAfterFrame = _idx;
 			return;
 		}
 
 		mClipIndex = _idx;
+		(*mAnimClips)[mClipIndex].bLoop = _bLoop;
 		mUpdateTime = 0.f;
 		mbIsFinished = false;
 	}
-	void Animator::Play(const wstring& _animName)
+	void Animator::Play(const wstring& _animName, bool _bLoop)
 	{
 		mClipIndex = FindAnimationIndex(_animName);
 		AssertEx(mClipIndex != -1, L"Animator::Play() - 해당 인덱스에 해당하는 애니메이션 클립 없음");
@@ -133,5 +135,16 @@ namespace hm
 	{
 		AssertEx(-1 != _index, L"Animator::SetLoop() - 해당 이름을 가진 애니메이션을 찾을 수 없음");
 		(*mAnimClips)[_index].bLoop = _bFlag;
+	}
+
+	void Animator::SetHasExitFlag(const wstring& _animName, bool _bFlag)
+	{
+		int idx = FindAnimationIndex(_animName);
+		SetHasExitFlag(idx, _bFlag);
+	}
+	void Animator::SetHasExitFlag(int _index, bool _bFlag)
+	{
+		AssertEx(-1 != _index, L"Animator::SetLoop() - 해당 이름을 가진 애니메이션을 찾을 수 없음");
+		(*mAnimClips)[_index].bHasExit = _bFlag;
 	}
 }

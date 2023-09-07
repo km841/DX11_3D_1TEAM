@@ -75,6 +75,12 @@ namespace hm
 	}
 	void Map::SetGizmoTarget(GameObject* _pTarget)
 	{
+		TOOL->UseGizmo();
+		TOOL->SetGameObject(_pTarget);
+	}
+	void Map::SetAnimTarget(GameObject* _pTarget)
+	{
+		TOOL->UseAnimTool();
 		TOOL->SetGameObject(_pTarget);
 	}
 }

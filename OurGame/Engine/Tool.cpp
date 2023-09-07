@@ -7,6 +7,8 @@
 #include "Resources.h"
 #include "GameObject.h"
 #include "Input.h"
+#include "Mesh.h"
+#include "Animator.h"
 
 namespace hm
 {
@@ -40,7 +42,12 @@ namespace hm
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-		UpdateGizmo();
+
+		if (true == mbUseGizmo)
+			UpdateGizmo();
+
+		else if (true == mbUseAnimGui)
+			UpdateAnimation();
 
 	}
 	void Tool::Render()
@@ -59,6 +66,16 @@ namespace hm
 		ImGui_ImplWin32_Init(mHwnd);
 		ImGui_ImplDX11_Init(mpDevice.Get(), mpContext.Get());
 
+		if (true == mbUseGizmo)
+			InitGizmoGui();
+
+		else if (true == mbUseAnimGui)
+			InitAnimGui();
+
+	}
+
+	void Tool::InitGizmoGui()
+	{
 		ImGuiIO& io = ImGui::GetIO();
 		io.DisplaySize = ImVec2(1600, 900);
 
@@ -263,6 +280,65 @@ namespace hm
 		FONT->DrawString(transformName, 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, color, FONT_ALIGN::LEFT);
 		FONT->DrawString(strTransform, 20.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
 		FONT->DrawString(strUnit, 15.f, Vec3(50.f, 765.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, color, FONT_ALIGN::LEFT);
+	}
+
+	void Tool::InitAnimGui()
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		io.DisplaySize = ImVec2(500, 500);
+	}
+
+	void Tool::UpdateAnimation()
+	{
+		if (nullptr == mpGameObject)
+			return;
+
+		Animator* pAnimator = mpGameObject->GetAnimator();
+
+		Vec2 Resolution = gpEngine->GetResolution();
+		ImGui::SetNextWindowPos(ImVec2(Resolution.x - 300.f, 0));
+		ImGui::SetNextWindowSize(ImVec2(300.f, 400.f));
+
+		std::vector<AnimClipInfo>* clipInfo = pAnimator->GetAnimClip();
+		std::vector<string> animNames = {};
+		for (int i = 0; i < clipInfo->size(); ++i)
+		{
+			animNames.push_back(ws2s((*clipInfo)[i].animName));
+		}
+
+		if (ImGui::Begin("AnimGui", nullptr,
+			ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar))
+		{
+			ImGui::Text("Animation Tool");
+
+			static int selectItemIdx = 0;
+			ImGui::Text("Items:");
+
+			ImGui::BeginChild("ListBox", ImVec2(250, 200), true);
+			for (int i = 0; i < animNames.size(); i++) {
+				if (ImGui::Selectable((std::to_string(i) + " : " + animNames[i]).c_str(), i == selectItemIdx)) {
+					selectItemIdx = i;
+					pAnimator->Play(selectItemIdx);
+				}
+			}
+			ImGui::EndChild();
+			
+
+			if (selectItemIdx != -1) 
+			{
+				AnimClipInfo& clip = (*clipInfo)[selectItemIdx];
+				ImGui::Text("Anim Index : %d", selectItemIdx);
+				ImGui::Text("Anim Name : %s", animNames[selectItemIdx].c_str());
+				ImGui::Text("Frame count : %d", clip.frameCount);
+				ImGui::Text("Duration : %f", clip.duration);
+				ImGui::Text("Loop : %s", clip.bLoop ? "True" : "False");
+				ImGui::Text("HasExit : %s", clip.bHasExit ? "True" : "False");
+				ImGui::Text("IsFinished : %s", pAnimator->IsFinished() ? "True" : "False");
+				ImGui::ProgressBar(static_cast<float>(pAnimator->GetFrameRatio()), ImVec2(200.f, 20.f));
+			}
+		}
+		ImGui::End();
 	}
 
 	void Tool::SetGameObject(GameObject* _pGameObject)

@@ -17,8 +17,13 @@ namespace hm
 		void SetGameObject(GameObject* _pGameObject);
 		const Vec3& GetSnaps() { return mSnaps; }
 
+		void UseGizmo() { InitGizmoGui();  mbUseGizmo = true; }
+		void UseAnimTool() { InitAnimGui(); mbUseAnimGui = true; }
+
 	private:
 		void InitGui();
+
+		void InitGizmoGui();
 		void UpdateGizmo();
 		void EditTransform();
 
@@ -26,6 +31,10 @@ namespace hm
 		void EditTranslationFromKeyboard(Matrix& _mat);
 
 		void ShowTransform();
+
+	private:
+		void InitAnimGui();
+		void UpdateAnimation();
 
 	private:
 		HWND mHwnd;
@@ -40,6 +49,9 @@ namespace hm
 
 		std::list<Matrix> mUndoStack;
 		std::list<Matrix> mRedoStack;
+
+		bool mbUseGizmo;
+		bool mbUseAnimGui;
 	};
 }
 

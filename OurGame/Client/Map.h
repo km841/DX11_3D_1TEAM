@@ -22,6 +22,7 @@ namespace hm
 
 	public:
 		void SetGizmoTarget(GameObject* _pTarget);
+		void SetAnimTarget(GameObject* _pTarget);
 
 	protected:
 		GameObject* mTarget = nullptr;

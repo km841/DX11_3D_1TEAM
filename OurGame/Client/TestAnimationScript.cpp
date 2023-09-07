@@ -21,7 +21,7 @@ namespace hm
 			int currentIndex = GetAnimator()->GetCurrentClipIndex();
 
 			int index = (currentIndex + 1) % count;
-			GetAnimator()->Play(index);
+			GetAnimator()->Play(index, false);
 		}
 
 		if (IS_DOWN(KeyType::N_2))
@@ -30,16 +30,7 @@ namespace hm
 			int currentIndex = GetAnimator()->GetCurrentClipIndex();
 
 			int index = (currentIndex - 1 + count) % count;
-			GetAnimator()->Play(index);
-		}
-
-		if (IS_DOWN(KeyType::N_3))
-		{
-			bool bFinFlag = GetAnimator()->IsFinished();
-
-			GetAnimator()->Play(L"PotHead_Idle");
-			GetAnimator()->SetHasExitFlag(false);
-
+			GetAnimator()->Play(index, false);
 		}
 	}
 }
