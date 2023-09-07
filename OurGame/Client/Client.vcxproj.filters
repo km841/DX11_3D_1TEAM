@@ -97,6 +97,9 @@
     <ClInclude Include="Npc.h">
       <Filter>소스 파일\GameObject\Npc</Filter>
     </ClInclude>
+    <ClInclude Include="Monster_Player_TestScene.h">
+      <Filter>소스 파일\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -194,6 +197,9 @@
     </ClCompile>
     <ClCompile Include="Npc.cpp">
       <Filter>소스 파일\GameObject\Npc</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster_Player_TestScene.cpp">
+      <Filter>소스 파일\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

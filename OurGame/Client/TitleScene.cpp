@@ -61,6 +61,7 @@ namespace hm
 		
 		// 현모
 		// - GrandmaBossMap
+		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
 			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::HallColliderCheckMap);
@@ -68,8 +69,8 @@ namespace hm
 
 		// 지형
 		// - HallColliderCheckMap - 2개치 분량
-		// - Right2Map
 		// - CorridorRightMap
+		// - RightSecretPassageMap
 		if (IS_DOWN(KeyType::O))
 		{
 			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::RightSecretPassageMap);
@@ -84,10 +85,10 @@ namespace hm
 		// - EntranceHallMap
 		// - LeftSecretFightMap
 		// - LeftSecretTrialMap
-		// - RightSecretPassageMap
+		// - Monster_Player_TestScene
 		if (IS_DOWN(KeyType::L))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::LeftSecretFightMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Monster_Player_TestScene);
 		}
 
 		// 영진
