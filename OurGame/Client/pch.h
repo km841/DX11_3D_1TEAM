@@ -3,6 +3,7 @@
 // Windows 헤더 파일
 #include "EnginePch.h"
 #include "Engine.h"
+#include "ClientEnum.h"
 
 #pragma comment(lib, "Engine.lib")
 using namespace hm;

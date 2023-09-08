@@ -100,8 +100,8 @@
     <ClInclude Include="Monster_Player_TestScene.h">
       <Filter>소스 파일\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsTestScene.h">
-      <Filter>소스 파일\Scene</Filter>
+    <ClInclude Include="ClientEnum.h">
+      <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="CameraMoveScript.h" />
+    <ClInclude Include="ClientEnum.h" />
     <ClInclude Include="CorridorRightMap.h" />
     <ClInclude Include="DecoObject.h" />
     <ClInclude Include="DiningColliderCheckMap.h" />
