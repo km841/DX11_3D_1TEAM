@@ -239,43 +239,29 @@ namespace hm {
 			Monster* p_E_BAT_White = Factory::CreateObjectHasPhysical<Monster>(Vec3(-9.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
 			p_E_BAT_White->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
 			p_E_BAT_White->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-
+			p_E_BAT_White->SetFrustumCheckFlag(false);
 			//SetGizmoTarget(p_E_BAT_White);
 			AddGameObject(p_E_BAT_White);
 			//SetAnimTarget(p_E_BAT_White);
 		}
 
-		// 항아리 미믹
-		{
-			PhysicsInfo info = {};
-			info.eActorType = ActorType::Kinematic;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(2.f, 2.f, 2.f);
+		
 
-			Monster* pPOT_Mimic_Melee = Factory::CreateObjectHasPhysical<Monster>(Vec3(-11.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\POT_Mimic_Melee.fbx");
-			pPOT_Mimic_Melee->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
-			pPOT_Mimic_Melee->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+		////최종보스 할머니 - _E_Grandma
+		//{
+		//	PhysicsInfo info = {};
+		//	info.eActorType = ActorType::Kinematic;
+		//	info.eGeometryType = GeometryType::Box;
+		//	info.size = Vec3(2.f, 2.f, 2.f);
 
-			//SetGizmoTarget(pPOT_Mimic_Melee);
-			AddGameObject(pPOT_Mimic_Melee);
-			//SetAnimTarget(pPOT_Mimic_Melee);
-		}
+		//	Monster* p_E_Grandma = Factory::CreateObjectHasPhysical<Monster>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_Grandma.fbx");
+		//	p_E_Grandma->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+		//	p_E_Grandma->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 
-		//최종보스 할머니 - _E_Grandma
-		{
-			PhysicsInfo info = {};
-			info.eActorType = ActorType::Kinematic;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(2.f, 2.f, 2.f);
-
-			Monster* p_E_Grandma = Factory::CreateObjectHasPhysical<Monster>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_Grandma.fbx");
-			p_E_Grandma->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
-			p_E_Grandma->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-
-			//SetGizmoTarget(p_E_Grandma);
-			AddGameObject(p_E_Grandma);
-			//SetAnimTarget(p_E_Grandma);
-		}
+		//	//SetGizmoTarget(p_E_Grandma);
+		//	AddGameObject(p_E_Grandma);
+		//	//SetAnimTarget(p_E_Grandma);
+		//}
 
 
 	}
