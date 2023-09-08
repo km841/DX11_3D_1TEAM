@@ -73,11 +73,7 @@ namespace hm
 		// - RightSecretPassageMap
 		if (IS_DOWN(KeyType::O))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::RightSecretPassageMap);
-		}
-		if (IS_DOWN(KeyType::I))
-		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::CorridorRightMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::PhysicsTest);
 		}
 
 		// »ó¿¬
