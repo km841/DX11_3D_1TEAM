@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+class State;
 class Player :
     public GameObject
 {
@@ -26,5 +27,14 @@ public:
 	virtual void OnTriggerExit(Collider* pOtherCollider);
 
 public:
+	void StateChange(PlayerState _eState);
+
+public:
+	static Player* spPlayer;
+	static Player* GetPlayer();
+
+	State* mState[PLAYER_STATE_COUNT]; //조건 확인용
+    State* mActiveState; //현재 상태 확인
+
 };
 

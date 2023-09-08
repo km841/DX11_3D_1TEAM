@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="AttackState.h" />
     <ClInclude Include="CameraMoveScript.h" />
     <ClInclude Include="ClientEnum.h" />
     <ClInclude Include="CorridorRightMap.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="GrandmaBossMap.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="HallColliderCheckMap.h" />
+    <ClInclude Include="IdleState.h" />
     <ClInclude Include="LeftSecretFightMap.h" />
     <ClInclude Include="LeftSecretTrialMap.h" />
     <ClInclude Include="MainOfficeMap.h" />
@@ -175,6 +177,7 @@
     <ClInclude Include="RightMap.h" />
     <ClInclude Include="RightSecretPassageMap.h" />
     <ClInclude Include="RotateKeyScript.h" />
+    <ClInclude Include="State.h" />
     <ClInclude Include="TestAnimationScript.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TitleScene.h" />
@@ -182,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="CameraMoveScript.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="CorridorRightMap.cpp" />
@@ -192,6 +196,7 @@
     <ClCompile Include="GrandmaBossMap.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="HallColliderCheckMap.cpp" />
+    <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="LeftSecretFightMap.cpp" />
     <ClCompile Include="LeftSecretTrialMap.cpp" />
     <ClCompile Include="MainOfficeMap.cpp" />
@@ -214,6 +219,7 @@
     <ClCompile Include="RightMap.cpp" />
     <ClCompile Include="RightSecretPassageMap.cpp" />
     <ClCompile Include="RotateKeyScript.cpp" />
+    <ClCompile Include="State.cpp" />
     <ClCompile Include="TestAnimationScript.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />

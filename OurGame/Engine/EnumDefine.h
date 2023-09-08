@@ -15,6 +15,7 @@ namespace hm
 	{
 		Unknown,
 		Player,
+		Grandma_Boss,
 		Monster,
 		Npc,
 		Ground,
