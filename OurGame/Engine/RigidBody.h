@@ -40,6 +40,7 @@ namespace hm
 		GeometryType GetGeometryType() { return mPhysicsInfo.eGeometryType; }
 		Geometries* GetGeometries() { return mPhysicsInfo.pGeometries; }
 		Vec3 GetGeometrySize() { return mPhysicsInfo.size * 2.f; }
+		void SetGeometrySize(const Vec3& _geomSize);
 		const PxFilterData& GetFilterData() { return mPhysicsInfo.filterData; }
 		void SetOtherLayerInFilterData(LayerType _eOtherLayer) { mPhysicsInfo.filterData.word1 |= 1 << static_cast<int>(_eOtherLayer); }
 

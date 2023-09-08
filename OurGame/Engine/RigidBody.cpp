@@ -141,6 +141,26 @@ namespace hm
 		
 	}
 
+	void RigidBody::SetGeometrySize(const Vec3& _geomSize)
+	{
+		SAFE_DELETE(mPhysicsInfo.pGeometries);
+		mPhysicsInfo.size = _geomSize;
+		CreateGeometry();
+
+		switch (mPhysicsInfo.eGeometryType)
+		{
+		case GeometryType::Box:
+			mpShape->setGeometry(mPhysicsInfo.pGeometries->boxGeom);
+			break;
+		case GeometryType::Sphere:
+			mpShape->setGeometry(mPhysicsInfo.pGeometries->sphereGeom);
+			break;
+		case GeometryType::Capsule:
+			mpShape->setGeometry(mPhysicsInfo.pGeometries->capsuleGeom);
+			break;
+		}
+	}
+
 	void RigidBody::SetVelocity(const Vec3& _velocity)
 	{
 		if (true == mbAppliedPhysics)

@@ -9,6 +9,7 @@
 #include "Input.h"
 #include "Mesh.h"
 #include "Animator.h"
+#include "RigidBody.h"
 
 namespace hm
 {
@@ -18,6 +19,7 @@ namespace hm
 		, meCurrentOperation(ImGuizmo::ROTATE)
 		, meCurrentMode(ImGuizmo::WORLD)
 		, mSnaps{ 0.1f, 0.1f, 0.1f }
+		, mbUseCollider(false)
 	{
 	}
 
@@ -118,6 +120,8 @@ namespace hm
 			meCurrentOperation = ImGuizmo::ROTATE;
 		if (IS_DOWN(KeyType::N_1))
 			meCurrentOperation = ImGuizmo::SCALE;
+		if (IS_DOWN(KeyType::C))
+			mbUseCollider = !mbUseCollider;
 		if (IS_DOWN(KeyType::SQUARE_BKT_L))
 			mSnaps *= 0.1f;
 		if (IS_DOWN(KeyType::SQUARE_BKT_R))
@@ -161,6 +165,7 @@ namespace hm
 		Matrix viewMat = pActiveScene->GetMainCamera()->GetViewMatrix();
 		Matrix projMat = pActiveScene->GetMainCamera()->GetProjectionMatrix();
 		Matrix worldMat = mpGameObject->GetTransform()->GetWorldMatrix();
+		Matrix orgWorldMat = worldMat;
 		Matrix identityMat = Matrix::Identity;
 
 		ImGui::Begin("Gizmo");
@@ -169,7 +174,31 @@ namespace hm
 		float windowHeight = static_cast<float>(ImGui::GetWindowHeight());
 		ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
+		Vec3 orgScale = {};
+		if (true == mbUseCollider)
+		{
+			Vec3 geomSize = mpGameObject->GetRigidBody()->GetGeometrySize();
+			Matrix colScaleMat = Matrix::CreateScale(geomSize);
+
+			Vec3 orgRot = mpGameObject->GetTransform()->GetRotation();
+			Matrix orgRotMat = Matrix::CreateFromQuaternion(mpGameObject->GetTransform()->EulerToQuaternion(orgRot));
+			Matrix orgTransMat = Matrix::CreateTranslation(mpGameObject->GetTransform()->GetPosition());
+			worldMat = colScaleMat * orgRotMat * orgTransMat;
+		}
+
 		ImGuizmo::Manipulate(&viewMat._11, &projMat._11, meCurrentOperation, meCurrentMode, &worldMat._11, &identityMat._11, &mSnaps.x);
+
+		if (true == mbUseCollider)
+		{
+			Vec3 scale, rotation, pos;
+			Transform::DecomposeWorld(worldMat, scale, rotation, pos);
+
+			mpGameObject->GetRigidBody()->SetGeometrySize(scale);
+			Matrix scaleMat = Matrix::CreateScale(mpGameObject->GetTransform()->GetScale());
+			Matrix rotMat = Matrix::CreateFromQuaternion(mpGameObject->GetTransform()->EulerToQuaternion(rotation));
+			Matrix transMat = Matrix::CreateTranslation(pos);
+			worldMat = scaleMat * rotMat * transMat;
+		}
 
 		if (ImGuizmo::SCALE == meCurrentOperation)
 			EditScaleFromKeyboard(worldMat);
@@ -255,7 +284,7 @@ namespace hm
 			color = 0xff0000ff;
 			break;
 		case ImGuizmo::SCALE:
-			transform = pTransform->GetScale();
+			transform = mbUseCollider ? mpGameObject->GetRigidBody()->GetGeometrySize() : pTransform->GetScale();
 			transformName = L"SCALE";
 			color = 0xffff0000;
 			break;
@@ -265,6 +294,8 @@ namespace hm
 			color = 0xff00ff00;
 			break;
 		}
+
+		transformName += true == mbUseCollider ? L" (COLLIDER MODE)" : L"";
 
 		wstring strTransform = {};
 		strTransform += L"x = " + std::to_wstring(transform.x) + L"\n";
