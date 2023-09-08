@@ -114,15 +114,17 @@ namespace jh
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
 			//pPlayer->AddComponent(new TestAnimationScript);
 			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
-			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			pPlayer->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+			pPlayer->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 
 			pPlayer->GetRigidBody()->ApplyGravity(); // 중력을 받겠다 , 반대도있음
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 			AddGameObject(pPlayer);
+			SetGizmoTarget(pPlayer);
 		}
 
 		// Toy
@@ -1751,7 +1753,7 @@ namespace jh
 			pPotHead->GetAnimator()->Play(L"PotHead_Idle", true);
 
 			AddGameObject(pPotHead);
-			SetAnimTarget(pPotHead);
+			
 		}
 	}
 

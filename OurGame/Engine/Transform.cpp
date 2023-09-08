@@ -258,7 +258,6 @@ namespace hm
 		XMVECTOR vPos;
 		XMMatrixDecompose(&vScale, &vRotQ, &vPos, mMatWorld);
 
-
 		mScale = vScale;
 		mPosition = vPos;
 
@@ -302,6 +301,59 @@ namespace hm
 		}
 
 		mRotation = NormalizeAngles(v);
+	}
+
+	void Transform::DecomposeWorld(Matrix _worldMat, Vec3& _scale, Vec3& _rotation, Vec3& _position)
+	{
+		XMVECTOR vScale;
+		XMVECTOR vRotQ;
+		XMVECTOR vPos;
+		XMMatrixDecompose(&vScale, &vRotQ, &vPos, _worldMat);
+
+
+		_scale = vScale;
+		_position = vPos;
+
+		// Quaternion to Euler Angle
+		// ÃâÃ³ http://www.littlecandle.co.kr/bbs/board.php?bo_table=codingnote&wr_id=174&page=2
+		float w, x, y, z;
+		w = vRotQ.m128_f32[3];
+		x = vRotQ.m128_f32[0];
+		y = vRotQ.m128_f32[1];
+		z = vRotQ.m128_f32[2];
+
+		float sqW = w * w;
+		float sqX = x * x;
+		float sqY = y * y;
+		float sqZ = z * z;
+		float unit = sqX + sqY + sqZ + sqW;
+		float test = x * w - y * z;
+		Vec3 v;
+
+		if (test > 0.4955f * unit)
+		{
+			v.y = 2.f * atan2f(y, x);
+			v.x = XM_PI / 2.f;
+			v.z = 0;
+			v = v * (180.f / XM_PI);
+		}
+		else if (test < -0.4995f * unit)
+		{
+			v.x = -2.f * atan2f(y, x);
+			v.x = -XM_PI / 2.f;
+			v.z = 0;
+			v = v * (180.f / XM_PI);
+		}
+		else
+		{
+			Vec4 Quat(w, z, x, y);
+			v.x = (float)asinf(2.f * (Quat.x * Quat.z - Quat.w * Quat.y)); // Pitch
+			v.y = (float)atan2(2.f * Quat.x * Quat.w + 2.f * Quat.y * Quat.z, 1.f - 2.f * (Quat.z * Quat.z + Quat.w * Quat.w)); // Yaw
+			v.z = (float)atan2(2.f * Quat.x * Quat.y + 2.f * Quat.z * Quat.w, 1.f - 2.f * (Quat.y * Quat.y + Quat.z * Quat.z)); // Roll
+			v = v * (180.f / XM_PI);
+		}
+
+		_rotation = v;
 	}
 
 	float Transform::NormalizeAngle(float _angle)

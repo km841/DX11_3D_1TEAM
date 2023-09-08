@@ -46,6 +46,7 @@ namespace hm
 
 		ImGuizmo::OPERATION meCurrentOperation;
 		ImGuizmo::MODE meCurrentMode;
+		bool mbUseCollider;
 
 		std::list<Matrix> mUndoStack;
 		std::list<Matrix> mRedoStack;
