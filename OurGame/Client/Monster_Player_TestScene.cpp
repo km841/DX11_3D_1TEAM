@@ -205,23 +205,37 @@ namespace hm {
 
 		
 
-		//최종보스 할머니 - _E_Grandma
+		////최종보스 할머니 - _E_Grandma
+		//{
+		//	PhysicsInfo info = {};
+		//	info.eActorType = ActorType::Kinematic;
+		//	info.eGeometryType = GeometryType::Box;
+		//	info.size = Vec3(2.f, 2.f, 2.f);
+
+		//	Monster* p_E_Grandma = Factory::CreateObjectHasPhysical<Monster>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_Grandma.fbx");
+		//	p_E_Grandma->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+		//	p_E_Grandma->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+
+		//	//SetGizmoTarget(p_E_Grandma);
+		//	AddGameObject(p_E_Grandma);
+		//	SetAnimTarget(p_E_Grandma);
+		//}
+
+		//항아리 미믹 - POT_Mimic_Melee_AVARICE
 		{
 			PhysicsInfo info = {};
 			info.eActorType = ActorType::Kinematic;
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(2.f, 2.f, 2.f);
 
-			Monster* p_E_Grandma = Factory::CreateObjectHasPhysical<Monster>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_Grandma.fbx");
-			p_E_Grandma->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
-			p_E_Grandma->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			Monster* pPOT_Mimic_Melee_AVARICE = Factory::CreateObjectHasPhysical<Monster>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\POT_Mimic_Melee_AVARICE.fbx");
+			pPOT_Mimic_Melee_AVARICE->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+			pPOT_Mimic_Melee_AVARICE->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 
 			//SetGizmoTarget(p_E_Grandma);
-			AddGameObject(p_E_Grandma);
-			SetAnimTarget(p_E_Grandma);
+			AddGameObject(pPOT_Mimic_Melee_AVARICE);
+			//SetAnimTarget(pPOT_Mimic_Melee_AVARICE);
 		}
-
-
 	}
 	void Monster_Player_TestScene::Exit()
 	{

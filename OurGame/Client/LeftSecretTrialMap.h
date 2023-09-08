@@ -13,8 +13,7 @@ public:
 	virtual void Update();
 	virtual void FixedUpdate();
 	virtual void FinalUpdate();
-	virtual void Render();
-
+	virtual void Render();	
 	virtual void Enter();
 	virtual void Exit();
 
