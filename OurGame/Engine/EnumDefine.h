@@ -76,6 +76,7 @@ namespace hm
 		RightSecretPassageMap,
 
 		Monster_Player_Test,
+		PhysicsTest,
 
 		End,
 	};
