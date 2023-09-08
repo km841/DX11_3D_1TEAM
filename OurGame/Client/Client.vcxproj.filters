@@ -103,6 +103,16 @@
     <ClInclude Include="ClientEnum.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsTestScene.h" />
+    <ClInclude Include="State.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="IdleState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -207,6 +217,15 @@
     <ClCompile Include="PhysicsTestScene.cpp">
       <Filter>소스 파일\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="IdleState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -252,6 +271,9 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Npc">
       <UniqueIdentifier>{8325972f-9790-451c-b075-2346a254e786}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Player\State">
+      <UniqueIdentifier>{b96b57c7-c115-4e3b-ac6f-52785c4f409f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
