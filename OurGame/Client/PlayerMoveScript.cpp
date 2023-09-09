@@ -50,7 +50,6 @@ void PlayerMoveScript::FixedUpdate()
 		GetRigidBody()->SetVelocity(AXIS_Y, mMoveSpeed * 5.f);
 	}
 
-
 	//Vec3 mPos = GetTransform()->GetPosition();
 	//Vec3 mScale = GetTransform()->GetScale();
 	//Vec3 mFootPos = Vec3(mPos.x, mPos.y - mScale.y / 2.f, mPos.z);

@@ -149,6 +149,7 @@ public:						  \
 #define ACTIVE_SCENE GET_SINGLE(SceneManager)->GetActiveScene()
 #define RESOLUTION gpEngine->GetResolution()
 #define RENDERTARGET_2D gpEngine->GetGraphicsCore()->GetRenderTarget2D()
+#define LARGE_RESOURCE(path) wstring(L"..\\..\\..\\LargeResource\\") + path
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 /*
