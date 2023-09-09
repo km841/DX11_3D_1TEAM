@@ -1,6 +1,7 @@
 #pragma once
 
 #define PLAYER Player::GetPlayer()
+#define GRANDMA Grandma::GetGrandma()
 
 enum class PlayerState
 {
@@ -25,5 +26,12 @@ enum
 
 enum class GrandmaState
 {
+	IdleState,
 
+	End
+};
+
+enum
+{
+	GRANDMA_STATE_COUNT = GrandmaState::End,
 };

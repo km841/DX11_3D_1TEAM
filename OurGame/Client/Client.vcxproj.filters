@@ -113,6 +113,39 @@
     <ClInclude Include="AttackState.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
+    <ClInclude Include="EvasionState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="FallDownState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="FallState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="HitState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="MagicAttackState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Grandma.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="State_Grandma.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="IdleState_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -226,6 +259,39 @@
     <ClCompile Include="AttackState.cpp">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClCompile>
+    <ClCompile Include="EvasionState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="DeadState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="FallDownState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="FallState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="HitState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="MagicAttackState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Grandma.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="State_Grandma.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="IdleState_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -274,6 +340,15 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Player\State">
       <UniqueIdentifier>{b96b57c7-c115-4e3b-ac6f-52785c4f409f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Monster\Grandma_Boss">
+      <UniqueIdentifier>{42fff264-7830-451d-8ab7-385de20487f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Monster\Grandma_Boss\Script">
+      <UniqueIdentifier>{8082225f-eec9-4c0a-8ffd-3f9c31988a0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Monster\Grandma_Boss\State">
+      <UniqueIdentifier>{66740e09-23cd-4f24-8b56-2a4b1da49304}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
