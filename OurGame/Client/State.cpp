@@ -2,6 +2,7 @@
 #include "State.h"
 
 State::State(PlayerState _mePlayerState)
+	:mePlayerState(PlayerState::IdleState)
 {
 }
 

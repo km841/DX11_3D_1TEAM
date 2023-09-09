@@ -3,9 +3,19 @@
 #include "Collider.h"
 #include "RigidBody.h"
 #include "Animator.h"
+
+ /*State 모음*/
 #include "State.h"
+#include "PauseState.h"
 #include "IdleState.h"
+#include "MoveState.h"
 #include "AttackState.h"
+#include "MagicAttackState.h"
+#include "EvasionState.h"
+#include "FallState.h"
+#include "HitState.h"
+#include "FallDownState.h"
+#include "DeadState.h"
 
 Player* Player::spPlayer;
 
@@ -15,11 +25,18 @@ Player::Player()
 	AssertEx(spPlayer == nullptr, L"이미 정적 플레이어 존재함");
 	spPlayer = this; //정적변수 선언
 
+	mState[int(PlayerState::PauseState)] = new PauseState;
 	mState[int(PlayerState::IdleState)] = new IdleState;
+	mState[int(PlayerState::MoveState)] = new MoveState;
 	mState[int(PlayerState::AttackState)] = new AttackState;
+	mState[int(PlayerState::MagicAttackState)] = new MagicAttackState;
+	mState[int(PlayerState::EvasionState)] = new EvasionState;
+	mState[int(PlayerState::FallState)] = new FallState;
+	mState[int(PlayerState::HitState)] = new HitState;
+	mState[int(PlayerState::FallDownState)] = new FallDownState;
+	mState[int(PlayerState::DeadState)] = new DeadState;
 
 	
-
 }
 
 Player::~Player()

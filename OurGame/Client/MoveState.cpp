@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "AttackState.h"
+#include "MoveState.h"
 #include "Engine.h"
 
 /* Resource */
@@ -24,7 +24,6 @@
 #include "WallObject.h"
 #include "Npc.h"
 #include "Monster.h"
-#include "Grandma.h"
 
 /* Component */
 #include "Collider.h"
@@ -44,16 +43,16 @@
 /* Event */
 #include "SceneChangeEvent.h"
 
-AttackState::AttackState()
-	:State(PlayerState::AttackState)
+MoveState::MoveState()
+	:State(PlayerState::MoveState)
 {
 }
 
-void AttackState::Initialize()
+void MoveState::Initialize()
 {
 }
 
-void AttackState::Update()
+void MoveState::Update()
 {
 	//조건 걸어서 다른 스테이트 넘어가게 해주는 구조 만들기
 	Player* pPlayer = Player::GetPlayer();
@@ -63,21 +62,21 @@ void AttackState::Update()
 	//pPlayer->StateChange(PlayerState::AttackState);
 }
 
-void AttackState::Enter()
+void MoveState::Enter()
 {
 	PlayAnimation();
-	
 }
 
-void AttackState::Exit()
+void MoveState::Exit()
 {
 }
 
-void AttackState::PlayAnimation()
+void MoveState::PlayAnimation()
 {
-	//애니메이션 출력
+	//조건 걸어서 다른 스테이트 넘어가게 해주는 구조 만들기
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
+
 
 	//pAni->Play(4, true);
 }
