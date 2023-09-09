@@ -74,6 +74,9 @@ namespace hm
 		UINT32 meshCount = mpMesh->GetMeshContainerCount();
 		for (UINT32 i = 0; i < meshCount; ++i)
 		{
+			if (false == mSubsetRenderFlags.empty() && false == mSubsetRenderFlags[i])
+				continue;
+
 			MaterialContainer* pContainer = mpMaterial->GetMaterialContainer(i);
 
 			if (nullptr != GetAnimator())

@@ -23,7 +23,6 @@ namespace hm
 		: meSceneType(_eSceneType)
 		, mpMainCamera(nullptr)
 		, mpUICamera(nullptr)
-		, mpShadowCamera(nullptr)
 		, mpDirLight(nullptr)
 		, mbIsBakedStaticShadow(false)
 	{
@@ -158,14 +157,12 @@ namespace hm
 				mpMainCamera = _pGameObject;
 			if (_pGameObject->GetName() == L"UICamera")
 				mpUICamera = _pGameObject;
-			if (_pGameObject->GetName() == L"ShadowCamera")
-				mpShadowCamera = _pGameObject;
 			mCameraObjects.push_back(_pGameObject);
 		}
 
 		if (nullptr != _pGameObject->GetLight())
 		{
-			if (mLightObjects.empty())
+			if (_pGameObject->GetName() == L"DirLight")
 				mpDirLight = _pGameObject;
 			mLightObjects.push_back(_pGameObject);
 		}
@@ -183,15 +180,13 @@ namespace hm
 					mpMainCamera = pGameObject;
 				if (pGameObject->GetName() == L"UICamera")
 					mpUICamera = pGameObject;
-				if (pGameObject->GetName() == L"ShadowCamera")
-					mpShadowCamera = pGameObject;
 
 				mCameraObjects.push_back(pGameObject);
 			}
 
 			if (nullptr != pGameObject->GetLight())
 			{
-				if (mLightObjects.empty())
+				if (pGameObject->GetName() == L"DirLight")
 					mpDirLight = pGameObject;
 				mLightObjects.push_back(pGameObject);
 			}
@@ -310,21 +305,16 @@ namespace hm
 		AssertEx(mpUICamera, L"Scene::GetMainCamera() : UI CameraObject is nullptr");
 		return mpUICamera->GetCamera();
 	}
-	Camera* Scene::GetShadowCamera()
-	{
-		AssertEx(mpShadowCamera, L"Scene::GetMainCamera() : Shadow CameraObject is nullptr");
-		return mpShadowCamera->GetCamera();
-	}
 	void Scene::SetDirLightPosition(const Vec3& _position)
 	{
 		AssertEx(mpDirLight, L"Scene::SetDirLightPosition() : DirLight is nullptr");
-		mpShadowCamera->GetTransform()->SetPosition(_position);
+		mpDirLight->GetTransform()->SetPosition(_position);
 	}
 
 	void Scene::SetDirLightRotation(const Vec3& _rotation)
 	{
 		AssertEx(mpDirLight, L"Scene::SetDirLightRotation() : DirLight is nullptr");
-		mpShadowCamera->GetTransform()->SetRotation(_rotation);
+		mpDirLight->GetTransform()->SetRotation(_rotation);
 	}
 	void Scene::RemoveCameraInObjectFromScene(GameObject* _pGameObject)
 	{
@@ -339,9 +329,6 @@ namespace hm
 
 			if (_pGameObject == mpUICamera)
 				mpUICamera = nullptr;
-
-			if (_pGameObject == mpShadowCamera)
-				mpShadowCamera = nullptr;
 		}
 	}
 	void Scene::RemoveLightInObjectFromScene(GameObject* _pGameObject)

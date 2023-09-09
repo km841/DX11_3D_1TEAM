@@ -71,7 +71,6 @@ namespace hm
 
 		Camera* GetMainCamera();
 		Camera* GetUICamera();
-		Camera* GetShadowCamera();
 
 		SceneType GetSceneType() { return meSceneType; }
 
@@ -92,8 +91,8 @@ namespace hm
 
 		GameObject* mpMainCamera;
 		GameObject* mpUICamera;
-		GameObject* mpShadowCamera;
 		GameObject* mpDirLight;
+
 		std::vector<GameObject*> mCameraObjects;
 		std::vector<GameObject*> mLightObjects;
 		std::vector<shared_ptr<ImageFilter>> mImageFilters;

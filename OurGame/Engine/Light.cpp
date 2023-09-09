@@ -14,17 +14,24 @@ namespace hm
 		, mLightIndex(-1)
 		, mpShadowCamera(nullptr)
 	{
+		mpShadowCamera = new GameObject(LayerType::Unknown);
+		Transform* pTransform = mpShadowCamera->AddComponent(new Transform);
+		Camera* pCamera = mpShadowCamera->AddComponent(new Camera);
+		pCamera->SetCullingMask(LayerType::UI, true);
 	}
 	Light::~Light()
 	{
+		SAFE_DELETE(mpShadowCamera);
 	}
 	void Light::FinalUpdate()
 	{
 		if (nullptr != mpShadowCamera)
 		{
-			GetTransform()->SetRotation(mpShadowCamera->GetTransform()->GetRotation());
-			GetTransform()->SetPosition(mpShadowCamera->GetTransform()->GetPosition());
-			GetTransform()->SetScale(mpShadowCamera->GetTransform()->GetScale());
+
+			mpShadowCamera->GetTransform()->SetRotation(GetTransform()->GetRotation());
+			mpShadowCamera->GetTransform()->SetPosition(GetTransform()->GetPosition());
+			mpShadowCamera->GetTransform()->SetScale(GetTransform()->GetScale());
+			mpShadowCamera->FinalUpdate();
 		}
 
 		Vec3 worldPos = GetTransform()->GetPosition();
@@ -92,13 +99,6 @@ namespace hm
 		case LightType::DirectionalLight:
 			mpMesh = GET_SINGLE(Resources)->LoadRectMesh();
 			mpMaterial = GET_SINGLE(Resources)->Get<Material>(L"DirLight");
-			mpShadowCamera->GetCamera()->SetScale(1.f);
-			mpShadowCamera->GetCamera()->SetFar(10000.f);
-			mpShadowCamera->GetCamera()->SetWidth(4096.f);
-			mpShadowCamera->GetCamera()->SetHeight(4096.f);
-			mpShadowCamera->GetCamera()->SetFov(XM_PI/2.f);
-
-
 			break;
 		case LightType::PointLight:
 		case LightType::SpotLight:
@@ -106,6 +106,12 @@ namespace hm
 			mpMaterial = GET_SINGLE(Resources)->Get<Material>(L"PointLight");
 			break;
 		}
+
+		mpShadowCamera->GetCamera()->SetScale(1.f);
+		mpShadowCamera->GetCamera()->SetFar(10000.f);
+		mpShadowCamera->GetCamera()->SetWidth(4096.f);
+		mpShadowCamera->GetCamera()->SetHeight(4096.f);
+		mpShadowCamera->GetCamera()->SetFov(XM_PI / 2.f);
 	}
 
 	void Light::SetShadowCamera(GameObject* _pShadowCamera)

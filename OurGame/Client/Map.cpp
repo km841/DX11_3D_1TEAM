@@ -23,10 +23,10 @@ namespace hm
 	{
 		Scene::Update();
 
-		if (IS_DOWN(KeyType::M) && nullptr != mpShadowCamera)
-			SetGizmoTarget(mpShadowCamera);
+		if (IS_DOWN(KeyType::M) && nullptr != mpDirLight)
+			SetGizmoTarget(mpDirLight);
 
-		if (IS_DOWN(KeyType::N) && nullptr != mpShadowCamera)
+		if (IS_DOWN(KeyType::N) && nullptr != mpDirLight)
 			GET_SINGLE(RenderManager)->BakeStaticShadow(this);
 
 	}
