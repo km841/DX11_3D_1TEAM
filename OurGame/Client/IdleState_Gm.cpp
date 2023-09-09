@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "AttackState.h"
+#include "IdleState_Gm.h"
 #include "Engine.h"
 
 /* Resource */
@@ -24,7 +24,6 @@
 #include "WallObject.h"
 #include "Npc.h"
 #include "Monster.h"
-#include "Grandma.h"
 
 /* Component */
 #include "Collider.h"
@@ -44,40 +43,37 @@
 /* Event */
 #include "SceneChangeEvent.h"
 
-AttackState::AttackState()
-	:State(PlayerState::AttackState)
+IdleState_Gm::IdleState_Gm()
+	:State_Grandma(GrandmaState::IdleState)
 {
 }
 
-void AttackState::Initialize()
+void IdleState_Gm::Initialize()
 {
 }
 
-void AttackState::Update()
+void IdleState_Gm::Update()
 {
-	//조건 걸어서 다른 스테이트 넘어가게 해주는 구조 만들기
-	Player* pPlayer = Player::GetPlayer();
-	Animator* pAni = pPlayer->GetAnimator();
+	Grandma* pGrandma = Grandma::GetGrandma();
+	Animator* pAni_Gm = pGrandma->GetAnimator();
 
-
-	//pPlayer->StateChange(PlayerState::AttackState);
+	//pGrandma->StateChange_Grandma(GrandmaState::IdleState);
 }
 
-void AttackState::Enter()
+void IdleState_Gm::Enter()
 {
 	PlayAnimation();
-	
 }
 
-void AttackState::Exit()
+void IdleState_Gm::Exit()
 {
 }
 
-void AttackState::PlayAnimation()
+void IdleState_Gm::PlayAnimation()
 {
-	//애니메이션 출력
-	Player* pPlayer = Player::GetPlayer();
-	Animator* pAni = pPlayer->GetAnimator();
+	Grandma* pGrandma = Grandma::GetGrandma();
+	Animator* pAni_Gm = pGrandma->GetAnimator();
 
-	//pAni->Play(4, true);
+	//pAni_Gm->Play(4, true);
+
 }
