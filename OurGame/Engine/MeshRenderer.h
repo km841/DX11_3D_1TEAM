@@ -34,9 +34,12 @@ namespace hm
 
         UINT64 GetInstanceID();
 
+        void SetSubsetRenderFlag(UINT32 _index, bool _flag);
+
     private:
         shared_ptr<Material> mpMaterial; // 고유의 id 
         shared_ptr<Mesh>     mpMesh; // 고유의 id
+        std::vector<bool>    mSubsetRenderFlags;
 	};
 }
 

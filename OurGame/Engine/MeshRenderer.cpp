@@ -39,6 +39,9 @@ namespace hm
 		UINT32 meshCount = mpMesh->GetMeshContainerCount();
 		for (UINT i = 0; i < meshCount; ++i)
 		{
+			if (false == mSubsetRenderFlags.empty() && false == mSubsetRenderFlags[i])
+				continue;
+
 			MaterialContainer* pContainer = mpMaterial->GetMaterialContainer(i);
 
 			if (nullptr != GetAnimator())
@@ -116,6 +119,8 @@ namespace hm
 			GetAnimator()->SetBones(mpMesh->GetBones());
 			GetAnimator()->SetAnimClip(mpMesh->GetAnimClip());
 		}
+
+		mSubsetRenderFlags.resize(mpMesh->GetMeshContainerCount(), true);
 	}
 	UINT64 MeshRenderer::GetInstanceID()
 	{
@@ -127,5 +132,10 @@ namespace hm
 
 		InstanceID instanceID = { meshID, materialID };
 		return instanceID.id;
+	}
+	void MeshRenderer::SetSubsetRenderFlag(UINT32 _index, bool _flag)
+	{
+		AssertEx(_index < mpMesh->GetMeshContainerCount(), L"MeshRenderer::SetSubsetRenderFlag() - 메쉬 개수가 입력된 Index보다 작음");
+		mSubsetRenderFlags[_index] = _flag;
 	}
 }
