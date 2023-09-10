@@ -98,7 +98,6 @@ namespace hm
 	void RenderManager::ClearRenderTargets()
 	{
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::SwapChain)->ClearRenderTargetView();
-		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::DynamicShadow)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::G_Buffer)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::Light)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::RimLighting)->ClearRenderTargetView();
@@ -119,9 +118,6 @@ namespace hm
 			if (pCameraObject == _pScene->mpMainCamera)
 				continue;
 
-			if (pCameraObject == _pScene->mpShadowCamera)
-				continue;
-
 			pCameraObject->GetCamera()->SortGameObject();
 		}
 	}
@@ -135,9 +131,6 @@ namespace hm
 		for (GameObject* pCameraObject : _pScene->mCameraObjects)
 		{
 			if (pCameraObject == _pScene->mpMainCamera)
-				continue;
-
-			if (pCameraObject == _pScene->mpShadowCamera)
 				continue;
 
 			RenderInstancing(pCameraObject->GetCamera(), pCameraObject->GetCamera()->GetForwardObjects());
@@ -155,9 +148,6 @@ namespace hm
 			if (pCameraObject == _pScene->mpMainCamera)
 				continue;
 
-			if (pCameraObject == _pScene->mpShadowCamera)
-				continue;
-
 			RenderInstancing(pCameraObject->GetCamera(), pCameraObject->GetCamera()->GetDeferredObjects());
 		}
 	}
@@ -165,6 +155,7 @@ namespace hm
 	void RenderManager::RenderLight(Scene* _pScene)
 	{
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::Light)->OMSetRenderTarget();
+
 		for (GameObject* pLightObject : _pScene->mLightObjects)
 		{
 			pLightObject->GetLight()->Render(_pScene->mpMainCamera->GetCamera());
@@ -181,26 +172,16 @@ namespace hm
 
 	void RenderManager::RenderStaticShadow(Scene* _pScene)
 	{
-		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::StaticShadow)->OMSetRenderTarget();
-
 		for (auto pLight : _pScene->mLightObjects)
 		{
-			if (LightType::DirectionalLight != pLight->GetLight()->GetLightType())
-				continue;
-
 			pLight->GetLight()->RenderStaticShadow();
 		}
 	}
 
 	void RenderManager::RenderDynamicShadow(Scene* _pScene)
 	{
-		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::DynamicShadow)->OMSetRenderTarget();
-
 		for (auto pLight : _pScene->mLightObjects)
 		{
-			if (LightType::DirectionalLight != pLight->GetLight()->GetLightType())
-				continue;
-
 			pLight->GetLight()->RenderDynamicShadow();
 		}
 	}
@@ -276,7 +257,6 @@ namespace hm
 
 	void RenderManager::BakeStaticShadow(Scene* _pScene)
 	{
-		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::StaticShadow)->ClearRenderTargetView();
 		RenderStaticShadow(_pScene);
 		_pScene->mbIsBakedStaticShadow = true;
 	}

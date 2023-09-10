@@ -972,8 +972,7 @@ namespace hm
 
             pMaterial->SetTexture(0, Get<Texture>(L"PositionTarget"));
             pMaterial->SetTexture(1, Get<Texture>(L"NormalTarget"));
-            pMaterial->SetTexture(2, Get<Texture>(L"StaticShadowTarget"));
-            pMaterial->SetTexture(3, Get<Texture>(L"DynamicShadowTarget"));
+
             pMaterial->SetShader(pShader);
             Add<Material>(L"DirLight", pMaterial);
         }
@@ -985,8 +984,8 @@ namespace hm
 
             pMaterial->SetTexture(0, Get<Texture>(L"PositionTarget"));
             pMaterial->SetTexture(1, Get<Texture>(L"NormalTarget"));
-            pMaterial->SetVec2(0, gpEngine->GetResolution());
 
+            pMaterial->SetVec2(0, gpEngine->GetResolution());
             pMaterial->SetShader(pShader);
             Add<Material>(L"PointLight", pMaterial);
         }

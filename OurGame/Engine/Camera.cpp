@@ -148,13 +148,13 @@ namespace hm
 				if (nullptr == pGameObject->GetMeshRenderer())
 					continue;
 
-				if (true == pGameObject->IsFrustumCheck())
-				{
-					if (false == mFrustumCulling.ContainsSphere(
-						pGameObject->GetTransform()->GetWorldPosition(),
-						pGameObject->GetTransform()->GetBoundingSphereRadius()))
-						continue;
-				}
+				//if (true == pGameObject->IsFrustumCheck())
+				//{
+				//	if (false == mFrustumCulling.ContainsSphere(
+				//		pGameObject->GetTransform()->GetWorldPosition(),
+				//		pGameObject->GetTransform()->GetBoundingSphereRadius()))
+				//		continue;
+				//}
 
 				mShadowObjects.push_back(pGameObject);
 			}
@@ -217,6 +217,7 @@ namespace hm
 	}
 	void Camera::RenderShadow()
 	{
+		size_t size = mShadowObjects.size();
 		for (auto& pGameObject : mShadowObjects)
 		{
 			pGameObject->GetMeshRenderer()->RenderShadow(this);
