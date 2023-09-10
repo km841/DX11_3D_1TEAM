@@ -1732,10 +1732,11 @@ namespace jh
 		{
 			GameObject* pGameObject = new GameObject(LayerType::Unknown);
 			Transform* pTransform = pGameObject->AddComponent(new Transform);
-			pTransform->SetPosition(Vec3(2.3f, 36.4f, -45.7f));
+			pTransform->SetPosition(Vec3(2.3f, 43.6f, -2.f));
 			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
 			Light* pLight = pGameObject->AddComponent(new Light);
-			pLight->SetDiffuse(Vec3(1.f, 1.f, 0.5f));
+			pLight->SetDiffuse(Vec3(0.5f, 0.5f, 0.2f));
 			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
 			pLight->SetLightRange(50.f);
 			pLight->SetLightType(LightType::PointLight);

@@ -6,6 +6,7 @@ namespace hm
     class Mesh;
     class Material;
     class Camera;
+    class Texture;
 
     enum class LightType
     {
@@ -75,11 +76,20 @@ namespace hm
         void SetShadowCamera(GameObject* _pShadowCamera);
         LightType GetLightType() { return static_cast<LightType>(mLightInfo.eLightType); }
 
+        shared_ptr<Texture> GetStaticShadowMap() { return mpStaticShadowMap; }
+        shared_ptr<Texture> GetDynamicShadowMap() { return mpDynamicShadowMap; }
+
     private:
         LightInfo mLightInfo;
         int mLightIndex;
         shared_ptr<Mesh> mpMesh;
         shared_ptr<Material> mpMaterial;
+
+        shared_ptr<Texture> mpStaticShadowMap;
+        shared_ptr<Texture> mpStaticDepthMap;
+
+        shared_ptr<Texture> mpDynamicShadowMap;
+        shared_ptr<Texture> mpDynamicDepthMap;
 
         GameObject* mpShadowCamera;
 	};

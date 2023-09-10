@@ -98,7 +98,6 @@ namespace hm
 	void RenderManager::ClearRenderTargets()
 	{
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::SwapChain)->ClearRenderTargetView();
-		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::DynamicShadow)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::G_Buffer)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::Light)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::RimLighting)->ClearRenderTargetView();
@@ -156,6 +155,7 @@ namespace hm
 	void RenderManager::RenderLight(Scene* _pScene)
 	{
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::Light)->OMSetRenderTarget();
+
 		for (GameObject* pLightObject : _pScene->mLightObjects)
 		{
 			pLightObject->GetLight()->Render(_pScene->mpMainCamera->GetCamera());
@@ -172,8 +172,6 @@ namespace hm
 
 	void RenderManager::RenderStaticShadow(Scene* _pScene)
 	{
-		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::StaticShadow)->OMSetRenderTarget();
-
 		for (auto pLight : _pScene->mLightObjects)
 		{
 			pLight->GetLight()->RenderStaticShadow();
@@ -182,8 +180,6 @@ namespace hm
 
 	void RenderManager::RenderDynamicShadow(Scene* _pScene)
 	{
-		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::DynamicShadow)->OMSetRenderTarget();
-
 		for (auto pLight : _pScene->mLightObjects)
 		{
 			pLight->GetLight()->RenderDynamicShadow();
@@ -261,7 +257,6 @@ namespace hm
 
 	void RenderManager::BakeStaticShadow(Scene* _pScene)
 	{
-		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::StaticShadow)->ClearRenderTargetView();
 		RenderStaticShadow(_pScene);
 		_pScene->mbIsBakedStaticShadow = true;
 	}

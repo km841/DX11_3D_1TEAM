@@ -103,7 +103,12 @@ namespace hm
 
 		CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
 		CONST_BUFFER(ConstantBufferType::Material)->Mapping();
-		mpMesh->Render();
+
+		UINT32 containerCount = mpMesh->GetMeshContainerCount();
+		for (UINT32 i = 0; i < containerCount; ++i)
+		{
+			mpMesh->RenderInstancing(1, i);
+		}
 	}
 	void MeshRenderer::SetMaterial(shared_ptr<Material> _pMaterial)
 	{

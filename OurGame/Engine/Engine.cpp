@@ -212,53 +212,6 @@ namespace hm
 			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::LightBlend)] = new MultiRenderTarget;
 			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::LightBlend)]->Create(MultiRenderTargetType::LightBlend, renderTargets, pDepthStencilTexture);
 		}
-
-		// Static Shadow
-		{
-			float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-			std::vector<RenderTarget> renderTargets(STATIC_SHADOW_GROUP_COUNT);
-
-			renderTargets[0].pTarget = GET_SINGLE(Resources)->CreateTexture(
-				L"StaticShadowTarget",
-				DXGI_FORMAT_R32_FLOAT,
-				D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE,
-				4096, 4096);
-
-			shared_ptr<Texture> pDepthTexture = GET_SINGLE(Resources)->CreateTexture(
-				L"ShadowDepthStencil",
-				DXGI_FORMAT_D32_FLOAT,
-				D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL,
-				4096, 4096);
-
-			memcpy(renderTargets[0].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
-
-			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::StaticShadow)] = new MultiRenderTarget;
-			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::StaticShadow)]->Create(MultiRenderTargetType::StaticShadow, renderTargets, pDepthTexture);
-		}
-
-		// Real-Time Shadow
-		{
-			float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-			std::vector<RenderTarget> renderTargets(DYNAMIC_SHADOW_GROUP_COUNT);
-
-			renderTargets[0].pTarget = GET_SINGLE(Resources)->CreateTexture(
-				L"DynamicShadowTarget",
-				DXGI_FORMAT_R32_FLOAT,
-				D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE,
-				4096, 4096);
-
-			shared_ptr<Texture> pDepthTexture = GET_SINGLE(Resources)->CreateTexture(
-				L"ShadowDepthStencil",
-				DXGI_FORMAT_D32_FLOAT,
-				D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL,
-				4096, 4096);
-
-			memcpy(renderTargets[0].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
-
-			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::DynamicShadow)] = new MultiRenderTarget;
-			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::DynamicShadow)]->Create(MultiRenderTargetType::DynamicShadow, renderTargets, pDepthTexture);
-		}
-
 	}
 
 	void Engine::CreateConstantBuffer(RegisterCBV _eRegister, int _size)

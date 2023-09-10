@@ -188,6 +188,7 @@ namespace hm
 			{
 				if (pGameObject->GetName() == L"DirLight")
 					mpDirLight = pGameObject;
+
 				mLightObjects.push_back(pGameObject);
 			}
 		}

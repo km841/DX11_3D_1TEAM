@@ -5,8 +5,6 @@ namespace hm
 	enum class MultiRenderTargetType
 	{
 		SwapChain,
-		StaticShadow,
-		DynamicShadow,
 		G_Buffer,
 		Light,
 		RimLighting,
@@ -19,6 +17,7 @@ namespace hm
 		MULTI_RENDER_TARGET_TYPE_COUNT = MultiRenderTargetType::End,
 		STATIC_SHADOW_GROUP_COUNT = 1,
 		DYNAMIC_SHADOW_GROUP_COUNT = 1,
+		POINT_SHADOW_GROUP_COUNT = 1,
 		G_BUGGER_GROUP_COUNT = 5,
 		SWAP_CHAIN_BUFFER_COUNT = 1,
 		LIGHTING_GROUP_COUNT = 2,

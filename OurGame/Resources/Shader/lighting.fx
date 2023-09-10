@@ -70,17 +70,19 @@ PS_OUT PS_DirLight(VS_OUT _in)
         float2 uv = shadowClipPos.xy / shadowClipPos.w;
         uv.y = -uv.y;
         uv = uv * 0.5 + 0.5;
-        float bias = 0.05f;
+        float bias = 0.00005f;
         if (0 < uv.x && uv.x < 1 && 0 < uv.y && uv.y < 1)
         {
             float shadowFactor = g_tex_2.SampleCmpLevelZero(g_sam_2, uv, depth - bias).r;
+            shadowFactor = 1.f - shadowFactor;
             if (0 < shadowFactor)
             {
                 color.diffuse *= 0.5;
             }
             else
             {
-                shadowFactor = g_tex_3.SampleCmpLevelZero(g_sam_2, uv, depth - bias).r;
+                shadowFactor = g_tex_3.SampleCmpLevelZero(g_sam_2, uv, depth - 0.05f).r;
+                
                 if (0 < shadowFactor)
                 {
                     color.diffuse *= 0.5;
@@ -132,6 +134,41 @@ PS_OUT PS_PointLight(VS_OUT _in)
 
     float3 viewNormal = g_tex_1.Sample(g_sam_0, uv).xyz;
     LightColor color = CalculateLightColor(g_int_0, viewNormal, viewPos);
+    
+    if (length(color.diffuse) != 0)
+    {
+        matrix shadowCameraVP = g_mat_0;
+
+        float4 worldPos = mul(float4(viewPos.xyz, 1.f), g_matViewInv);
+        float4 shadowClipPos = mul(worldPos, shadowCameraVP);
+        float depth = shadowClipPos.z / shadowClipPos.w;
+
+        // x [-1 ~ 1] -> u [0 ~ 1]
+        // y [1 ~ -1] -> v [0 ~ 1]
+        float2 uv = shadowClipPos.xy / shadowClipPos.w;
+        uv.y = -uv.y;
+        uv = uv * 0.5 + 0.5;
+        float bias = 0.05f;
+        if (0 < uv.x && uv.x < 1 && 0 < uv.y && uv.y < 1)
+        {
+            float shadowFactor = g_tex_2.SampleCmpLevelZero(g_sam_2, uv, depth - bias).r;
+            shadowFactor = 1 - shadowFactor;
+            if (0 < shadowFactor)
+            {
+                color.diffuse *= 0.5;
+            }
+            else
+            {
+                shadowFactor = g_tex_3.SampleCmpLevelZero(g_sam_2, uv, depth - bias).r;
+                shadowFactor = 1 - shadowFactor;
+                if (0 < shadowFactor)
+                {
+                    color.diffuse *= 0.5;
+                }
+            }
+
+        }
+    }
    
     output.diffuse = color.diffuse + color.ambient;
     return output;

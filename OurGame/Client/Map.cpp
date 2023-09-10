@@ -26,7 +26,7 @@ namespace hm
 		if (IS_DOWN(KeyType::M) && nullptr != mpDirLight)
 			SetGizmoTarget(mpDirLight);
 
-		if (IS_DOWN(KeyType::N) && nullptr != mpDirLight)
+		if (IS_DOWN(KeyType::N))
 			GET_SINGLE(RenderManager)->BakeStaticShadow(this);
 
 	}
