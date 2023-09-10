@@ -27,6 +27,21 @@ enum
 enum class GrandmaState
 {
 	IdleState,
+	RangeAttack01State,
+	Teleport_InState,
+	RangeAttack02State,
+	AngryMotionState,
+	SpinStartState,
+	SpinningState,
+	SpinEndState,
+	DeathState,
+	Teleport_OutState,
+	SmallTransStartState,
+	SmallTransEndState,
+	BigTransStartState,
+	SmallAttack01State,
+	Small_IdleState,
+	BigTransEndState,
 
 	End
 };

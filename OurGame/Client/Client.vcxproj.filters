@@ -103,7 +103,6 @@
     <ClInclude Include="ClientEnum.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsTestScene.h" />
     <ClInclude Include="State.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
@@ -144,6 +143,54 @@
       <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
     </ClInclude>
     <ClInclude Include="IdleState_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsTestScene.h">
+      <Filter>소스 파일\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="AngryMotionState_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BigTransEndState_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="BigTransStartState_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="DeathState_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="RangeAttack01State_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="RangeAttack02State_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Small_IdleState_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="SmallAttack01State_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="SmallTransEndState_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="SmallTransStartState_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="SpinEndState_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="SpinningState_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="SpinStartState_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Teleport_InState_Gm.h">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Teleport_OutState_Gm.h">
       <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
     </ClInclude>
   </ItemGroup>
@@ -290,6 +337,51 @@
       <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
     </ClCompile>
     <ClCompile Include="IdleState_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="AngryMotionState_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BigTransEndState_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BigTransStartState_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="DeathState_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="RangeAttack01State_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="RangeAttack02State_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Small_IdleState_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="SmallAttack01State_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="SmallTransEndState_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="SmallTransStartState_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="SpinEndState_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="SpinningState_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="SpinStartState_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Teleport_InState_Gm.cpp">
+      <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Teleport_OutState_Gm.cpp">
       <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
     </ClCompile>
   </ItemGroup>

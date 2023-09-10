@@ -24,6 +24,7 @@
 #include "WallObject.h"
 #include "Npc.h"
 #include "Monster.h"
+#include "Grandma.h"
 
 /* Component */
 #include "Collider.h"
@@ -212,7 +213,7 @@ namespace hm {
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(2.f, 2.f, 2.f);
 
-			Monster* p_E_Grandma = Factory::CreateObjectHasPhysical<Monster>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
+			Grandma* p_E_Grandma = Factory::CreateObjectHasPhysical<Grandma>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
 			p_E_Grandma->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
 			p_E_Grandma->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 			p_E_Grandma->SetFrustumCheckFlag(false);
