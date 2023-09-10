@@ -144,12 +144,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AngryMotionState_Gm.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="AttackState.h" />
+    <ClInclude Include="BigTransEndState_Gm.h" />
+    <ClInclude Include="BigTransStartState_Gm.h" />
     <ClInclude Include="CameraMoveScript.h" />
     <ClInclude Include="ClientEnum.h" />
     <ClInclude Include="CorridorRightMap.h" />
     <ClInclude Include="DeadState.h" />
+    <ClInclude Include="DeathState_Gm.h" />
     <ClInclude Include="DecoObject.h" />
     <ClInclude Include="DiningColliderCheckMap.h" />
     <ClInclude Include="EntranceHallMap.h" />
@@ -182,25 +186,40 @@
     <ClInclude Include="PlayerMoveScript.h" />
     <ClInclude Include="PlayerSlashScript.h" />
     <ClInclude Include="PrefabManager.h" />
+    <ClInclude Include="RangeAttack01State_Gm.h" />
+    <ClInclude Include="RangeAttack02State_Gm.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Right2Map.h" />
     <ClInclude Include="RightMap.h" />
     <ClInclude Include="RightSecretPassageMap.h" />
     <ClInclude Include="RotateKeyScript.h" />
+    <ClInclude Include="SmallAttack01State_Gm.h" />
+    <ClInclude Include="SmallTransEndState_Gm.h" />
+    <ClInclude Include="SmallTransStartState_Gm.h" />
+    <ClInclude Include="Small_IdleState_Gm.h" />
+    <ClInclude Include="SpinEndState_Gm.h" />
+    <ClInclude Include="SpinningState_Gm.h" />
+    <ClInclude Include="SpinStartState_Gm.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="State_Grandma.h" />
+    <ClInclude Include="Teleport_InState_Gm.h" />
+    <ClInclude Include="Teleport_OutState_Gm.h" />
     <ClInclude Include="TestAnimationScript.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="WallObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AngryMotionState_Gm.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AttackState.cpp" />
+    <ClCompile Include="BigTransEndState_Gm.cpp" />
+    <ClCompile Include="BigTransStartState_Gm.cpp" />
     <ClCompile Include="CameraMoveScript.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="CorridorRightMap.cpp" />
     <ClCompile Include="DeadState.cpp" />
+    <ClCompile Include="DeathState_Gm.cpp" />
     <ClCompile Include="DecoObject.cpp" />
     <ClCompile Include="DiningColliderCheckMap.cpp" />
     <ClCompile Include="EntranceHallMap.cpp" />
@@ -236,12 +255,23 @@
     <ClCompile Include="PlayerMoveScript.cpp" />
     <ClCompile Include="PlayerSlashScript.cpp" />
     <ClCompile Include="PrefabManager.cpp" />
+    <ClCompile Include="RangeAttack01State_Gm.cpp" />
+    <ClCompile Include="RangeAttack02State_Gm.cpp" />
     <ClCompile Include="Right2Map.cpp" />
     <ClCompile Include="RightMap.cpp" />
     <ClCompile Include="RightSecretPassageMap.cpp" />
     <ClCompile Include="RotateKeyScript.cpp" />
+    <ClCompile Include="SmallAttack01State_Gm.cpp" />
+    <ClCompile Include="SmallTransEndState_Gm.cpp" />
+    <ClCompile Include="SmallTransStartState_Gm.cpp" />
+    <ClCompile Include="Small_IdleState_Gm.cpp" />
+    <ClCompile Include="SpinEndState_Gm.cpp" />
+    <ClCompile Include="SpinningState_Gm.cpp" />
+    <ClCompile Include="SpinStartState_Gm.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="State_Grandma.cpp" />
+    <ClCompile Include="Teleport_InState_Gm.cpp" />
+    <ClCompile Include="Teleport_OutState_Gm.cpp" />
     <ClCompile Include="TestAnimationScript.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
