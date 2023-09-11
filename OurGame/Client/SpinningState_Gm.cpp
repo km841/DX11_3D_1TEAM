@@ -24,6 +24,7 @@
 #include "WallObject.h"
 #include "Npc.h"
 #include "Monster.h"
+#include "TimerObject.h"
 
 /* Component */
 #include "Collider.h"
@@ -45,6 +46,8 @@
 SpinningState_Gm::SpinningState_Gm()
 	:State_Grandma(GrandmaState::SpinningState)
 {
+	mTimerObj[0].SetEndTime(3.f);
+	mTimerObj.push_back(TimerObject());
 }
 
 void SpinningState_Gm::Initialize()
@@ -55,20 +58,38 @@ void SpinningState_Gm::Update()
 {
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
-	//pGrandma->StateChange_Grandma(GrandmaState::IdleState);
+
+	Transform* Tr = pGrandma->GetTransform();
+	//Transform* pPlayer_Tr = PLAYER->GetTransform();
+
+	mTimerObj[0].Update();
+	
+	if(mTimerObj[0].IsFinished() == true)
+		pGrandma->StateChange_Grandma(GrandmaState::SpinEndState);
+
+	if(pAni_Gm->GetFrameRatio() > 0.15 )
+		PlayAnimation();
+
+	
+
 }
 
 void SpinningState_Gm::Enter()
 {
+	mTimerObj[0].Start();
 	PlayAnimation();
 }
 
 void SpinningState_Gm::Exit()
 {
+	mTimerObj[0].Stop();
 }
 
 void SpinningState_Gm::PlayAnimation()
 {
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
+
+	pAni_Gm->Play(10, false);
+
 }

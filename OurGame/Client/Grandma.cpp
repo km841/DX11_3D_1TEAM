@@ -209,6 +209,11 @@ void Grandma::Destroy()
 
 void Grandma::OnTriggerEnter(Collider* pOtherCollider)
 {
+    if (LayerType::Ground == pOtherCollider->GetGameObject()->GetLayerType())
+    {
+        GetRigidBody()->RemoveGravity();
+        GetRigidBody()->SetVelocity(Vec3::Zero);
+    }
 }
 
 void Grandma::OnTriggerStay(Collider* pOtherCollider)
@@ -217,6 +222,10 @@ void Grandma::OnTriggerStay(Collider* pOtherCollider)
 
 void Grandma::OnTriggerExit(Collider* pOtherCollider)
 {
+    if (LayerType::Ground == pOtherCollider->GetGameObject()->GetLayerType())
+    {
+        GetRigidBody()->ApplyGravity();
+    }
 }
 
 void Grandma::StateChange_Grandma(GrandmaState _eState)
