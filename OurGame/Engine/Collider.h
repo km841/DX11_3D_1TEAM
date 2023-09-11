@@ -7,9 +7,9 @@ namespace hm
     class Mesh;
     class Material;
 
-	class Collider :
-		public Component
-	{
+    class Collider :
+        public Component
+    {
     public:
         Collider();
         virtual ~Collider();
@@ -53,8 +53,22 @@ namespace hm
 
         bool IsCollision() { return mCollisionCount; }
         void ClearCollisionCount() { mCollisionCount = 0; }
-
         bool IsPenetrate();
+        
+        bool CheckIsCollisionObject(LayerType _layerType) {
+            if (mCollisionCount == 0)
+            {
+                return false;
+            }
+            for (int i = 0; i < collLayerTypeList.size(); i++)
+            {
+                if (collLayerTypeList[0] == _layerType)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
 	private:
         shared_ptr<Mesh> mpMesh;
@@ -62,6 +76,9 @@ namespace hm
 
         int mCollisionCount;
         PxRaycastHit mRaycastHit;
+        
+        LayerType myLayerType;
+        std::vector<LayerType> collLayerTypeList;
 	};
 }
 

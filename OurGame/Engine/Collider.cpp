@@ -72,6 +72,7 @@ namespace hm
 		pCollider->mpMaterial = mpMaterial->Clone();
 
 		pCollider->mCollisionCount = 0;
+		pCollider->myLayerType = _pGameObject->GetLayerType();
 
 		return pCollider;
 	}
@@ -118,6 +119,7 @@ namespace hm
 	{
 		mpGameObject->OnTriggerEnter(_pOtherCollider);
 		mCollisionCount++;
+		collLayerTypeList.push_back(_pOtherCollider->myLayerType);
 	}
 
 	void Collider::OnTriggerStay(Collider* _pOtherCollider)
@@ -132,6 +134,15 @@ namespace hm
 
 		if (0 > mCollisionCount)
 			mCollisionCount = 0;
+
+		for (int i = 0; collLayerTypeList.size(); i++)
+		{
+			if (collLayerTypeList[i] == _pOtherCollider->myLayerType)
+			{
+				collLayerTypeList.erase(collLayerTypeList.begin() + i);
+				return;
+			}
+		}
 	}
 
 	bool Collider::IsPenetrate()
