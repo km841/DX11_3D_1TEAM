@@ -78,9 +78,9 @@ namespace hm
 		TOOL->UseGizmo();
 		TOOL->SetGameObject(_pTarget);
 	}
-	void Map::SetAnimTarget(GameObject* _pTarget)
+	void Map::SetMeshTarget(GameObject* _pTarget)
 	{
-		TOOL->UseAnimTool();
+		TOOL->UseMeshTool();
 		TOOL->SetGameObject(_pTarget);
 	}
 }

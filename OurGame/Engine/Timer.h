@@ -23,7 +23,7 @@ namespace hm
 		float  mFrameTime = 0.f;
 		float  mDeltaTime = 0.f;
 
-		float mStepSize = 1.f / 60.f;
+		float mStepSize = 1.f / 30.f;
 
 	};
 }

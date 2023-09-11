@@ -175,7 +175,7 @@ namespace hm
 			Transform* pTransform = pGameObject->AddComponent(new Transform);
 			pTransform->SetPosition(Vec3(0.f, 10.f, 0.f));
 			Light* pLight = pGameObject->AddComponent(new Light);
-			pLight->SetDiffuse(Vec3(0.5f, 0.5f, 0.5f));
+			pLight->SetDiffuse(Vec3(1.f, 1.f, 1.f));
 			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
 			pLight->SetLightDirection(Vec3(0.f, -1.f, 0.f));
 			pLight->SetLightType(LightType::DirectionalLight);
