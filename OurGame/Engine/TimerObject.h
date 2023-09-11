@@ -2,7 +2,7 @@
 class TimerObject
 {
 public:
-	TimerObject();
+	TimerObject(float _endTime  = 1.0f);
 	~TimerObject() = default;
 
 public:
@@ -12,6 +12,8 @@ public:
 	void Stop();
 	bool IsFinished();
 	float GetProgress();
+
+	void SetEndTime(float _endTime) { mEndTime = _endTime; }
 
 private:
 	float mEndTime;

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "TimerObject.h"
 class State;
 class Player :
     public GameObject
@@ -35,6 +36,20 @@ public:
 
 	State* mState[PLAYER_STATE_COUNT]; //조건 확인용
     State* mActiveState; //현재 상태 확인
+
+protected:
+	TimerObject mTimerObj;
+
+private:
+	int GetHp() { return mHP; }
+
+private:
+	int mHP;
+	int mCost;
+	float mSpeed;
+	float mAttack;
+	float mAttack_Speed;
+	
 
 };
 
