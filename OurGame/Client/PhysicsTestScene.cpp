@@ -274,7 +274,7 @@ namespace jh
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(1.f, 15.f, 30.f);
 
-			WallObject* pWestWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-14.5f, 0.f, 0.f), info, L"Deferred");
+			WallObject* pWestWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-15.f, 0.f, 0.f), info, L"Deferred");
 			pWestWall->SetName(L"WestWall");
 
 			pWestWall->GetTransform()->SetScale(Vec3(1.f, 15.f, 30.f));
@@ -303,7 +303,7 @@ namespace jh
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(30.f, 15.f, 1.f);
 
-			WallObject* pNorthWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(0.f, 0.f, 9.f), info, L"Deferred");
+			WallObject* pNorthWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(0.f, 0.f, 9.5f), info, L"Deferred");
 			pNorthWall->SetName(L"NorthWall");
 
 			pNorthWall->GetTransform()->SetScale(Vec3(30.f, 15.f, 1.f));
@@ -316,7 +316,7 @@ namespace jh
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Kinematic;
-			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.eGeometryType = GeometryType::Capsule;
 			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
 			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");

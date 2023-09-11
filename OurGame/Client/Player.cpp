@@ -51,7 +51,7 @@ void Player::Initialize()
 {
 	GameObject::Initialize();
 	
-	StateChange(PlayerState::IdleState);
+	//StateChange(PlayerState::IdleState);
 
 	//mActiveState->Initialize();
 	
@@ -80,7 +80,7 @@ void Player::Initialize()
 void Player::Update()
 {
 	GameObject::Update();
-	mActiveState->Update();
+	//mActiveState->Update();
 }
 
 void Player::FixedUpdate()
