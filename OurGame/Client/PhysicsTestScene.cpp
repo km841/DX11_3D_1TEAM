@@ -248,21 +248,84 @@ namespace jh
 			pCobwebDoor->GetTransform()->SetRotation(Vec3(90.f, -90.f, 0.f));
 			pCobwebDoor->GetTransform()->SetScale(Vec3(3.f, 8.4f, 9.27f));
 
-			SetGizmoTarget(pCobwebDoor);
 			AddGameObject(pCobwebDoor);
+		}
+#pragma endregion
+
+#pragma region 투명벽
+		// 동쪽
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(1.f, 15.f, 30.f);
+
+			WallObject* pEastWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(15.f, 0.f, 0.f), info, L"Deferred");
+			pEastWall->SetName(L"EastWall");
+
+			pEastWall->GetTransform()->SetScale(Vec3(1.f, 15.f, 30.f));
+
+			AddGameObject(pEastWall);
+		}
+		// 서쪽
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(1.f, 15.f, 30.f);
+
+			WallObject* pWestWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-14.5f, 0.f, 0.f), info, L"Deferred");
+			pWestWall->SetName(L"WestWall");
+
+			pWestWall->GetTransform()->SetScale(Vec3(1.f, 15.f, 30.f));
+
+			AddGameObject(pWestWall);
+		}
+		// 남쪽
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(30.f, 15.f, 1.f);
+
+			WallObject* pSouthWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(0.f, 0.f, -13.2f), info, L"Deferred");
+			pSouthWall->SetName(L"SouthWall");
+
+			pSouthWall->GetTransform()->SetScale(Vec3(30.f, 15.f, 1.f));
+
+			//SetGizmoTarget(pSouthWall);
+			AddGameObject(pSouthWall);
+		}
+		// 북쪽(거미줄 문쪽)
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(30.f, 15.f, 1.f);
+
+			WallObject* pNorthWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(0.f, 0.f, 9.f), info, L"Deferred");
+			pNorthWall->SetName(L"NorthWall");
+
+			pNorthWall->GetTransform()->SetScale(Vec3(30.f, 15.f, 1.f));
+
+			AddGameObject(pNorthWall);
 		}
 #pragma endregion
 
 		// Toy
 		{
 			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eActorType = ActorType::Kinematic;
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
 			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
 			pPlayer->AddComponent(new PlayerMoveScript);
 			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+
+			pPlayer->GetRigidBody()->ApplyGravity();			
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 
 			AddGameObject(pPlayer);
 		}
