@@ -193,6 +193,12 @@
     <ClInclude Include="Teleport_OutState_Gm.h">
       <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
     </ClInclude>
+    <ClInclude Include="ObstacleObject.h">
+      <Filter>소스 파일\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="TestRigidBodyScript.h">
+      <Filter>소스 파일\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -383,6 +389,12 @@
     </ClCompile>
     <ClCompile Include="Teleport_OutState_Gm.cpp">
       <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="ObstacleObject.cpp">
+      <Filter>소스 파일\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="TestRigidBodyScript.cpp">
+      <Filter>소스 파일\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
