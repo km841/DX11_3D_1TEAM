@@ -11,6 +11,8 @@ public:
     virtual Component* Clone(GameObject* _pGameObject) override;
 
 private:
+    void CheckPenetration(RigidBody* _rigidBody, LayerType _eLayertype);
+
     float mMoveSpeed;
 };
 

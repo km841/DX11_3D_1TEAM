@@ -57,7 +57,10 @@ void IdleState_Gm::Update()
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
 
-	//pGrandma->StateChange_Grandma(GrandmaState::IdleState);
+	if (IS_PRESS(KeyType::UP))
+	{
+		pGrandma->StateChange_Grandma(GrandmaState::SpinningState);
+	}
 }
 
 void IdleState_Gm::Enter()

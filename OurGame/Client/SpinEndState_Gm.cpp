@@ -71,4 +71,5 @@ void SpinEndState_Gm::PlayAnimation()
 {
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
+	pAni_Gm->Play(11, false);
 }

@@ -345,12 +345,31 @@ namespace hm
 		AssertEx(mbAppliedPhysics, L"RigidBody::AddForce() - 물리가 들어가지 않은 오브젝트에 대한 AddForce 호출");
 		AssertEx(ActorType::Static != mPhysicsInfo.eActorType, L"RigidBody::AddForce() - Static 객체에 대해 힘 적용");
 
-		PxRigidBodyExt::addForceAtPos(
+		/*PxRigidBodyExt::addForceAtPos(
 			*GetDynamicActor(),
 			_force,
 			GetTransform()->GetPosition(),
 			PxForceMode::eIMPULSE
-		);
+		);*/
+
+		GetDynamicActor()->addForce(_force, PxForceMode::eIMPULSE);
+	}
+
+	void RigidBody::AddTorque(const Vec3& _force)
+	{
+		AssertEx(mbAppliedPhysics, L"RigidBody::AddForce() - 물리가 들어가지 않은 오브젝트에 대한 AddForce 호출");
+		AssertEx(ActorType::Static != mPhysicsInfo.eActorType, L"RigidBody::AddForce() - Static 객체에 대해 힘 적용");
+
+		GetDynamicActor()->addTorque(_force, PxForceMode::eIMPULSE);
+	}
+
+	void RigidBody::AddForceAndTorque(const Vec3& _force)
+	{
+		AssertEx(mbAppliedPhysics, L"RigidBody::AddForce() - 물리가 들어가지 않은 오브젝트에 대한 AddForce 호출");
+		AssertEx(ActorType::Static != mPhysicsInfo.eActorType, L"RigidBody::AddForce() - Static 객체에 대해 힘 적용");
+
+		GetDynamicActor()->addForce(_force, PxForceMode::eIMPULSE);
+		GetDynamicActor()->addTorque(_force, PxForceMode::eIMPULSE);
 	}
 
 	void RigidBody::RemoveAxisSpeedAtUpdate(Axis _eAxis, bool _bFlag)

@@ -81,6 +81,8 @@ namespace hm {
 	void Monster_Player_TestScene::Enter()
 	{
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Grandma_Boss, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 
 		// 1층 바닥 - Floor
@@ -100,25 +102,25 @@ namespace hm {
 			
 		}
 
-		 //Player
-		//{
-		//	PhysicsInfo physicsInfo;
-		//	physicsInfo.eActorType = ActorType::Kinematic;
-		//	physicsInfo.eGeometryType = GeometryType::Box;
-		//	physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+		// Player
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
-		//	Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
-		//	//pPlayer->AddComponent(new TestAnimationScript);
-		//	PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
-		//	pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
-		//	pPlayer->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
+			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
+			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
+			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
+			pPlayer->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 
-		//	pPlayer->GetRigidBody()->ApplyGravity();
-		//	pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-		//	pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-		//	AddGameObject(pPlayer);
-		//	//SetAnimTarget(pPlayer);
-		//}
+			pPlayer->GetRigidBody()->ApplyGravity();
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+			AddGameObject(pPlayer);
+			SetMeshTarget(pPlayer);
+		}
 
 		
 		
@@ -142,17 +144,17 @@ namespace hm {
 		//// 초록거미
 		//{
 		//	PhysicsInfo info = {};
-		//	info.eActorType = ActorType::Kinematic;
+		//	info.eActorType = ActorType::Dynamic;
 		//	info.eGeometryType = GeometryType::Box;
 		//	info.size = Vec3(2.f, 2.f, 2.f);
 
 		//	Monster* p_E_LURKER = Factory::CreateObjectHasPhysical<Monster>(Vec3(1.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_LURKER.fbx");
 		//	p_E_LURKER->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
 		//	p_E_LURKER->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-
+		//	p_E_LURKER->GetRigidBody()->ApplyGravity();
 		//	//SetGizmoTarget(p_E_LURKER);
 		//	AddGameObject(p_E_LURKER);
-		//	//SetAnimTarget(p_E_LURKER);
+		//	SetMeshTarget(p_E_LURKER);
 		//}
 		
 	
@@ -188,7 +190,7 @@ namespace hm {
 		//	SetAnimTarget(p_E_GRIMACE_KNIGHT);
 		//}
 
-		// 박쥐
+		 //박쥐
 		//{
 		//	PhysicsInfo info = {};
 		//	info.eActorType = ActorType::Kinematic;
@@ -201,27 +203,27 @@ namespace hm {
 		//	p_E_BAT_White->SetFrustumCheckFlag(false);
 		//	//SetGizmoTarget(p_E_BAT_White);
 		//	AddGameObject(p_E_BAT_White);
-		//	//SetAnimTarget(p_E_BAT_White);
+		//	SetMeshTarget(p_E_BAT_White);
 		//}
 
 		
 
-		//최종보스 할머니 - _E_Grandma
-		{
-			PhysicsInfo info = {};
-			info.eActorType = ActorType::Kinematic;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(2.f, 2.f, 2.f);
+		////최종보스 할머니 - _E_Grandma
+		//{
+		//	PhysicsInfo info = {};
+		//	info.eActorType = ActorType::Kinematic;
+		//	info.eGeometryType = GeometryType::Box;
+		//	info.size = Vec3(2.f, 2.f, 2.f);
 
-			Grandma* p_E_Grandma = Factory::CreateObjectHasPhysical<Grandma>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
-			p_E_Grandma->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
-			p_E_Grandma->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-			p_E_Grandma->SetFrustumCheckFlag(false);
-
-			//SetGizmoTarget(p_E_Grandma);
-			AddGameObject(p_E_Grandma);
-			SetMeshTarget(p_E_Grandma);
-		}
+		//	Grandma* p_E_Grandma = Factory::CreateObjectHasPhysical<Grandma>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
+		//	p_E_Grandma->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+		//	p_E_Grandma->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+		//	p_E_Grandma->SetFrustumCheckFlag(false);
+		//	p_E_Grandma->GetRigidBody()->ApplyGravity();
+		//	//SetGizmoTarget(p_E_Grandma);
+		//	AddGameObject(p_E_Grandma);
+		//	SetMeshTarget(p_E_Grandma);
+		//}
 
 		////항아리 미믹 - POT_Mimic_Melee_AVARICE
 		//{

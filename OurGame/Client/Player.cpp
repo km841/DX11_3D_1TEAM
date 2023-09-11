@@ -21,6 +21,12 @@ Player* Player::spPlayer;
 
 Player::Player()
 	: GameObject(LayerType::Player)
+	, mHP(4)
+	, mCost(4)
+	, mSpeed(1.f)
+	, mAttack(1.f)
+	, mAttack_Speed(0.5f)
+
 {
 	AssertEx(spPlayer == nullptr, L"이미 정적 플레이어 존재함");
 	spPlayer = this; //정적변수 선언
@@ -37,6 +43,9 @@ Player::Player()
 	mState[int(PlayerState::DeadState)] = new DeadState;
 
 	
+
+
+	
 }
 
 Player::~Player()
@@ -51,7 +60,7 @@ void Player::Initialize()
 {
 	GameObject::Initialize();
 	
-	StateChange(PlayerState::IdleState);
+	//StateChange(PlayerState::IdleState);
 
 	//mActiveState->Initialize();
 	
@@ -80,7 +89,7 @@ void Player::Initialize()
 void Player::Update()
 {
 	GameObject::Update();
-	mActiveState->Update();
+	//mActiveState->Update();
 }
 
 void Player::FixedUpdate()

@@ -9,7 +9,7 @@
 #include "SceneManager.h"
 
 PlayerMoveScript::PlayerMoveScript()
-	: mMoveSpeed(2.f)
+	: mMoveSpeed(10.f)
 {
 }
 
@@ -50,26 +50,8 @@ void PlayerMoveScript::FixedUpdate()
 		rb->SetVelocity(AXIS_Y, mMoveSpeed * 5.f);
 	}
 
-	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::WallObject);
-	
-	for (int i = 0; i < gameObjects.size(); ++i)
-	{
-		if (gameObjects[i]->GetCollider())
-		{
-			PxVec3 dir;
-			float depth;
-			PxBoxGeometry geom0 = rb->GetGeometries()->boxGeom;
-			PxTransform pxTr(tr->GetPosition());
-			PxBoxGeometry geom1 = gameObjects[i]->GetRigidBody()->GetGeometries()->boxGeom;
-			PxTransform pxTr2(gameObjects[i]->GetTransform()->GetPosition());
-
-			bool isPenetrating = PxGeometryQuery::computePenetration(dir, depth, geom0, pxTr, geom1, pxTr2);
-			if (true == isPenetrating)
-			{
-				rb->SetVelocity(dir);
-			}
-		}
-	}
+	CheckPenetration(rb, LayerType::WallObject);
+	CheckPenetration(rb, LayerType::Obstacle);
 
 	//Vec3 mPos = GetTransform()->GetPosition();
 	//Vec3 mScale = GetTransform()->GetScale();
@@ -108,4 +90,44 @@ void PlayerMoveScript::FixedUpdate()
 Component* PlayerMoveScript::Clone(GameObject* _pGameObject)
 {
 	return _pGameObject->AddComponent(new PlayerMoveScript);
+}
+
+void PlayerMoveScript::CheckPenetration(RigidBody* _rigidBody, LayerType _eLayertype)
+{
+	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(_eLayertype);
+
+	for (int i = 0; i < gameObjects.size(); ++i)
+	{
+		if (gameObjects[i]->GetCollider())
+		{
+			PxVec3 dir;
+			float depth;
+			PxCapsuleGeometry playerGeom = _rigidBody->GetGeometries()->capsuleGeom;
+			PxTransform pxTr = _rigidBody->GetPhysicsTransform();
+			Geometries* otherGeom = gameObjects[i]->GetRigidBody()->GetGeometries();
+			PxTransform pxTr2 = gameObjects[i]->GetRigidBody()->GetPhysicsTransform();
+
+			bool isPenetrating = false;
+			switch (gameObjects[i]->GetRigidBody()->GetGeometryType())
+			{
+			case hm::GeometryType::Sphere:
+				isPenetrating = PxGeometryQuery::computePenetration(dir, depth, playerGeom, pxTr, otherGeom->sphereGeom, pxTr2);
+				break;
+			case hm::GeometryType::Box:
+				isPenetrating = PxGeometryQuery::computePenetration(dir, depth, playerGeom, pxTr, otherGeom->boxGeom, pxTr2);
+				break;
+			case hm::GeometryType::Capsule:
+				isPenetrating = PxGeometryQuery::computePenetration(dir, depth, playerGeom, pxTr, otherGeom->capsuleGeom, pxTr2);
+				break;
+			case hm::GeometryType::Plane:
+				isPenetrating = PxGeometryQuery::computePenetration(dir, depth, playerGeom, pxTr, otherGeom->planeGeom, pxTr2);
+				break;
+			}
+			
+			if (true == isPenetrating)
+			{
+				_rigidBody->SetVelocity(dir);
+			}
+		}
+	}
 }
