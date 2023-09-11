@@ -51,27 +51,7 @@ void PlayerMoveScript::FixedUpdate()
 	}
 
 	CheckPenetration(rb, LayerType::WallObject);
-
-	/*const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::WallObject);
-	
-	for (int i = 0; i < gameObjects.size(); ++i)
-	{
-		if (gameObjects[i]->GetCollider())
-		{
-			PxVec3 dir;
-			float depth;
-			PxBoxGeometry geom0 = rb->GetGeometries()->boxGeom;
-			PxTransform pxTr = rb->GetPhysicsTransform();
-			PxBoxGeometry geom1 = gameObjects[i]->GetRigidBody()->GetGeometries()->boxGeom;
-			PxTransform pxTr2 = gameObjects[i]->GetRigidBody()->GetPhysicsTransform();
-
-			bool isPenetrating = PxGeometryQuery::computePenetration(dir, depth, geom0, pxTr, geom1, pxTr2);
-			if (true == isPenetrating)
-			{
-				rb->SetVelocity(dir);
-			}
-		}
-	}*/
+	CheckPenetration(rb, LayerType::Obstacle);
 
 	//Vec3 mPos = GetTransform()->GetPosition();
 	//Vec3 mScale = GetTransform()->GetScale();
