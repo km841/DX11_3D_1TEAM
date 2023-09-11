@@ -22,7 +22,7 @@ namespace hm
 
 	public:
 		void SetGizmoTarget(GameObject* _pTarget);
-		void SetAnimTarget(GameObject* _pTarget);
+		void SetMeshTarget(GameObject* _pTarget);
 
 	protected:
 		GameObject* mTarget = nullptr;

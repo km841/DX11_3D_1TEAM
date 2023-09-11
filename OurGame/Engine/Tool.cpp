@@ -8,8 +8,10 @@
 #include "GameObject.h"
 #include "Input.h"
 #include "Mesh.h"
+#include "Material.h"
 #include "Animator.h"
 #include "RigidBody.h"
+#include "MeshRenderer.h"
 
 namespace hm
 {
@@ -49,7 +51,7 @@ namespace hm
 			UpdateGizmo();
 
 		else if (true == mbUseAnimGui)
-			UpdateAnimation();
+			UpdateMeshGui();
 
 	}
 	void Tool::Render()
@@ -72,7 +74,7 @@ namespace hm
 			InitGizmoGui();
 
 		else if (true == mbUseAnimGui)
-			InitAnimGui();
+			InitMeshGui();
 
 	}
 
@@ -313,13 +315,13 @@ namespace hm
 		FONT->DrawString(strUnit, 15.f, Vec3(50.f, 765.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, color, FONT_ALIGN::LEFT);
 	}
 
-	void Tool::InitAnimGui()
+	void Tool::InitMeshGui()
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		io.DisplaySize = ImVec2(500, 500);
+		io.DisplaySize = ImVec2(500, 620);
 	}
 
-	void Tool::UpdateAnimation()
+	void Tool::UpdateMeshGui()
 	{
 		if (nullptr == mpGameObject)
 			return;
@@ -328,46 +330,81 @@ namespace hm
 
 		Vec2 Resolution = gpEngine->GetResolution();
 		ImGui::SetNextWindowPos(ImVec2(Resolution.x - 300.f, 0));
-		ImGui::SetNextWindowSize(ImVec2(300.f, 400.f));
+		ImGui::SetNextWindowSize(ImVec2(300.f, 520.f));
 
-		std::vector<AnimClipInfo>* clipInfo = pAnimator->GetAnimClip();
-		std::vector<string> animNames = {};
-		for (int i = 0; i < clipInfo->size(); ++i)
-		{
-			animNames.push_back(ws2s((*clipInfo)[i].animName));
-		}
+		static int selectItemIdx = 0;
+		static int selectMeshIdx = 0;
 
 		if (ImGui::Begin("AnimGui", nullptr,
 			ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar))
 		{
-			ImGui::Text("Animation Tool");
+			if (nullptr != pAnimator)
+			{
+				std::vector<AnimClipInfo>* clipInfo = pAnimator->GetAnimClip();
+				std::vector<string> animNames = {};
+				for (int i = 0; i < clipInfo->size(); ++i)
+				{
+					animNames.push_back(ws2s((*clipInfo)[i].animName));
+				}
 
-			static int selectItemIdx = 0;
-			ImGui::Text("Items:");
+				ImGui::Text("Animation Tool");
+				ImGui::Text("Items:");
 
-			ImGui::BeginChild("ListBox", ImVec2(250, 200), true);
-			for (int i = 0; i < animNames.size(); i++) {
-				if (ImGui::Selectable((std::to_string(i) + " : " + animNames[i]).c_str(), i == selectItemIdx)) {
-					selectItemIdx = i;
-					pAnimator->Play(selectItemIdx, false);
+				ImGui::BeginChild("ListBox", ImVec2(250, 200), true);
+				for (int i = 0; i < animNames.size(); i++) {
+					if (ImGui::Selectable((std::to_string(i) + " : " + animNames[i]).c_str(), i == selectItemIdx)) {
+						selectItemIdx = i;
+						pAnimator->Play(selectItemIdx, false);
+					}
+				}
+				ImGui::EndChild();
+
+				if (selectItemIdx != -1)
+				{
+					AnimClipInfo& clip = (*clipInfo)[selectItemIdx];
+					ImGui::Text("Anim Index : %d", selectItemIdx);
+					ImGui::Text("Anim Name : %s", animNames[selectItemIdx].c_str());
+					ImGui::Text("Frame count : %d", clip.frameCount);
+					ImGui::Text("Duration : %f", clip.duration);
+					ImGui::Text("Loop : %s", clip.bLoop ? "True" : "False");
+					ImGui::Text("HasExit : %s", clip.bHasExit ? "True" : "False");
+					ImGui::Text("IsFinished : %s", pAnimator->IsFinished() ? "True" : "False");
+					ImGui::ProgressBar(static_cast<float>(pAnimator->GetFrameRatio()), ImVec2(200.f, 20.f));
 				}
 			}
-			ImGui::EndChild();
-			
 
-			if (selectItemIdx != -1) 
-			{
-				AnimClipInfo& clip = (*clipInfo)[selectItemIdx];
-				ImGui::Text("Anim Index : %d", selectItemIdx);
-				ImGui::Text("Anim Name : %s", animNames[selectItemIdx].c_str());
-				ImGui::Text("Frame count : %d", clip.frameCount);
-				ImGui::Text("Duration : %f", clip.duration);
-				ImGui::Text("Loop : %s", clip.bLoop ? "True" : "False");
-				ImGui::Text("HasExit : %s", clip.bHasExit ? "True" : "False");
-				ImGui::Text("IsFinished : %s", pAnimator->IsFinished() ? "True" : "False");
-				ImGui::ProgressBar(static_cast<float>(pAnimator->GetFrameRatio()), ImVec2(200.f, 20.f));
+			ImGui::Spacing();
+			ImGui::Separator();
+			ImGui::Spacing();
+
+			shared_ptr<Mesh> pMesh = mpGameObject->GetMeshRenderer()->GetMesh();
+			shared_ptr<Material> pMaterial = mpGameObject->GetMeshRenderer()->GetMaterial();
+
+			ImGui::Text("Mesh List:");
+			UINT32 maxCount = pMesh->GetMeshContainerCount();
+			for (UINT32 i = 0; i < maxCount; i++) {
+				if (ImGui::Selectable(("No." + std::to_string(i) + " Mesh").c_str(), i == selectMeshIdx)) {
+					pMaterial->SetBloom(false, selectMeshIdx);
+					selectMeshIdx = i;
+					pMaterial->SetBloom(true, i);
+				}
 			}
+
+			if (IS_DOWN(KeyType::DOWN) && static_cast<UINT32>(selectMeshIdx) < maxCount - 1)
+			{
+				pMaterial->SetBloom(false, selectMeshIdx);
+				selectMeshIdx += 1;
+				pMaterial->SetBloom(true, selectMeshIdx);
+			}
+
+			if (IS_DOWN(KeyType::UP) && static_cast<UINT32>(selectMeshIdx) > 0)
+			{
+				pMaterial->SetBloom(false, selectMeshIdx);
+				selectMeshIdx -= 1;
+				pMaterial->SetBloom(true, selectMeshIdx);
+			}
+			
 		}
 		ImGui::End();
 	}

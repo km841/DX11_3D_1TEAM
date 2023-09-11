@@ -18,7 +18,7 @@ namespace hm
 		const Vec3& GetSnaps() { return mSnaps; }
 
 		void UseGizmo() { InitGizmoGui();  mbUseGizmo = true; }
-		void UseAnimTool() { InitAnimGui(); mbUseAnimGui = true; }
+		void UseMeshTool() { InitMeshGui(); mbUseAnimGui = true; }
 
 	private:
 		void InitGui();
@@ -33,8 +33,8 @@ namespace hm
 		void ShowTransform();
 
 	private:
-		void InitAnimGui();
-		void UpdateAnimation();
+		void InitMeshGui();
+		void UpdateMeshGui();
 
 	private:
 		HWND mHwnd;

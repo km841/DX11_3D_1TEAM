@@ -117,7 +117,6 @@ namespace jh
 			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 15.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
 			//pPlayer->AddComponent(new TestAnimationScript);
 			pPlayer->SetFrustumCheckFlag(false);
-			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
 			pPlayer->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
 			pPlayer->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 
@@ -126,7 +125,7 @@ namespace jh
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 
 			AddGameObject(pPlayer);
-			SetAnimTarget(pPlayer);
+			SetMeshTarget(pPlayer);
 		}
 
 		// Toy
@@ -157,6 +156,7 @@ namespace jh
 				pTotalFrame->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(148.f, 147.f, 150.f));
 
 				AddGameObject(pTotalFrame);
+				
 			}
 
 			// 숨은통로
@@ -1741,7 +1741,6 @@ namespace jh
 			pLight->SetLightRange(50.f);
 			pLight->SetLightType(LightType::PointLight);
 			AddGameObject(pGameObject);
-			SetGizmoTarget(pGameObject);
 		}
 
 

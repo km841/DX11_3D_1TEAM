@@ -220,7 +220,7 @@ namespace hm {
 
 			//SetGizmoTarget(p_E_Grandma);
 			AddGameObject(p_E_Grandma);
-			SetAnimTarget(p_E_Grandma);
+			SetMeshTarget(p_E_Grandma);
 		}
 
 		////Ç×¾Æ¸® ¹Ì¹Í - POT_Mimic_Melee_AVARICE
