@@ -30,6 +30,7 @@ namespace hm
 		PxDefaultErrorCallback  mErrorCallback;
 		PxFoundation* mpFoundation;
 		PxPhysics* mpPhysics;
+		PxCooking* mpCooking;
 
 		PxPvdTransport* mpTransfort;
 		PxPvd* mpPvd;
