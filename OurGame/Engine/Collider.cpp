@@ -133,5 +133,11 @@ namespace hm
 		if (0 > mCollisionCount)
 			mCollisionCount = 0;
 	}
+
+	bool Collider::IsPenetrate()
+	{
+
+		return false;
+	}
 }
 

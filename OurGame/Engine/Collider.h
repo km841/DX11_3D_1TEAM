@@ -54,6 +54,8 @@ namespace hm
         bool IsCollision() { return mCollisionCount; }
         void ClearCollisionCount() { mCollisionCount = 0; }
 
+        bool IsPenetrate();
+
 	private:
         shared_ptr<Mesh> mpMesh;
         shared_ptr<Material> mpMaterial;

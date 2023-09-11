@@ -27,27 +27,48 @@ void PlayerMoveScript::FixedUpdate()
 
 	if (IS_PRESS(KeyType::UP))
 	{
-		GetRigidBody()->SetVelocity(AXIS_Z, mMoveSpeed);
+		rb->SetVelocity(AXIS_Z, mMoveSpeed);
 	}
 
 	if (IS_PRESS(KeyType::DOWN))
 	{
-		GetRigidBody()->SetVelocity(AXIS_Z, -mMoveSpeed);
+		rb->SetVelocity(AXIS_Z, -mMoveSpeed);
 	}
 
 	if (IS_PRESS(KeyType::LEFT))
 	{
-		GetRigidBody()->SetVelocity(AXIS_X, -mMoveSpeed);
+		rb->SetVelocity(AXIS_X, -mMoveSpeed);
 	}
 
 	if (IS_PRESS(KeyType::RIGHT))
 	{
-		GetRigidBody()->SetVelocity(AXIS_X, mMoveSpeed);
+		rb->SetVelocity(AXIS_X, mMoveSpeed);
 	}
 
 	if (IS_DOWN(KeyType::SPACE))
 	{
-		GetRigidBody()->SetVelocity(AXIS_Y, mMoveSpeed * 5.f);
+		rb->SetVelocity(AXIS_Y, mMoveSpeed * 5.f);
+	}
+
+	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::WallObject);
+	
+	for (int i = 0; i < gameObjects.size(); ++i)
+	{
+		if (gameObjects[i]->GetCollider())
+		{
+			PxVec3 dir;
+			float depth;
+			PxBoxGeometry geom0 = rb->GetGeometries()->boxGeom;
+			PxTransform pxTr(tr->GetPosition());
+			PxBoxGeometry geom1 = gameObjects[i]->GetRigidBody()->GetGeometries()->boxGeom;
+			PxTransform pxTr2(gameObjects[i]->GetTransform()->GetPosition());
+
+			bool isPenetrating = PxGeometryQuery::computePenetration(dir, depth, geom0, pxTr, geom1, pxTr2);
+			if (true == isPenetrating)
+			{
+				rb->SetVelocity(dir);
+			}
+		}
 	}
 
 	//Vec3 mPos = GetTransform()->GetPosition();
