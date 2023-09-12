@@ -109,14 +109,15 @@ namespace jh
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Kinematic;
-			physicsInfo.eGeometryType = GeometryType::Mesh;
+			physicsInfo.eGeometryType = GeometryType::Capsule;
 			physicsInfo.size = Vec3(1.f, 1.f, 1.f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 15.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 15.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
 			pPlayer->AddComponent(new PlayerMoveScript);
 			pPlayer->SetFrustumCheckFlag(false);
 			pPlayer->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
-			pPlayer->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
+			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 0.f, -90.f));
 
 			pPlayer->GetRigidBody()->ApplyGravity(); // 중력을 받겠다 , 반대도있음
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);

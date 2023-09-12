@@ -75,6 +75,7 @@ namespace hm
 		shared_ptr<Mesh> LoadCubeMesh();
 		shared_ptr<Mesh> LoadSphereMesh();
 		shared_ptr<Mesh> LoadBoundingCubeMesh();
+		shared_ptr<Mesh> CreateCapsuleMesh(float _radius, float _height);
 
 		shared_ptr<Mesh> CreateTriangleMesh(const wstring& _key, const struct TriangleMeshInfo& _meshInfo);
 
