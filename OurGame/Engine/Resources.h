@@ -37,9 +37,7 @@ namespace hm
 
 
 		shared_ptr<MeshData> LoadFBX(const wstring& _path, const wstring& _shaderName = L"Deferred", bool _bInvNormal = false);
-		shared_ptr<MeshData> LoadFBX(const FbxFileInfo& _fbxFileInfo, const wstring& _shaderName = L"Deferred");
-
-
+		
 		/* 리소스를 로드하는 함수
 		* _key : 불러올 리소스의 키
 		* _path : 만약 리소스가 없다면 불러올 리소스의 경로
@@ -77,6 +75,8 @@ namespace hm
 		shared_ptr<Mesh> LoadCubeMesh();
 		shared_ptr<Mesh> LoadSphereMesh();
 		shared_ptr<Mesh> LoadBoundingCubeMesh();
+
+		shared_ptr<Mesh> CreateTriangleMesh(const wstring& _key, const struct TriangleMeshInfo& _meshInfo);
 
 		// 자주 사용할 Shader를 생성한다.
 		void CreateDefaultShader();

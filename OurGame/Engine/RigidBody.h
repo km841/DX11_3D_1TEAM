@@ -1,6 +1,5 @@
 #pragma once
 #include "Component.h"
-
 namespace hm
 {
 	class RigidBody :
@@ -75,6 +74,8 @@ namespace hm
 		void CreateCapsuleGeometry();
 		void CreatePlaneGeometry();
 		void CreateSphereGeometry();
+		void CreateMeshGeometry();
+		PxTriangleMesh* CreateTriangleMesh(const struct TriangleMeshInfo& _meshInfo);
 
 	private:
 		void CreateGeometry();

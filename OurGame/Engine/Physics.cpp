@@ -27,6 +27,7 @@ namespace hm
 		SAFE_DELETE(mpCallback);
 		mpScene->release();
 		mpPhysics->release();
+		mpCooking->release();
 		mpPvd->release();
 		mpTransfort->release();
 		mpFoundation->release();
@@ -41,6 +42,7 @@ namespace hm
 		mpPvd->connect(*mpTransfort, PxPvdInstrumentationFlag::eALL);
 
 		mpPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *mpFoundation, PxTolerancesScale(), false, mpPvd);
+		mpCooking = PxCreateCooking(PX_PHYSICS_VERSION, *mpFoundation, PxCookingParams(mpPhysics->getTolerancesScale()));
 
 		mpCpuDispatcher = PxDefaultCpuDispatcherCreate(1);
 		mpCallback = new ContactCallback;

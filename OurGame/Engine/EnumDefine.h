@@ -176,7 +176,8 @@ namespace hm
 		Sphere,
 		Box,
 		Capsule,
-		Plane
+		Plane,
+		Mesh,
 	};
 
 	enum class ModelType

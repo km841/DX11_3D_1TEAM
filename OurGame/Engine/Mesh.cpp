@@ -109,8 +109,6 @@ namespace hm
 		desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
 		desc.CPUAccessFlags = 0;
 
-		//Vertex* pVtx = (Vertex*)_pVtxData;
-
 		D3D11_SUBRESOURCE_DATA subData = {};
 		subData.pSysMem = _pVtxData;
 
@@ -459,6 +457,59 @@ namespace hm
 			frameBuffer.back()->Create(sizeof(AnimFrameParams), static_cast<UINT32>(frameParams.size()), frameParams.data());
 		}
 
+	}
+
+	TriangleMeshInfo Mesh::GetTriangleMeshInfo()
+	{
+		TriangleMeshInfo info = {};
+
+		UINT32 totalVertices = 0;
+		UINT32 totalIndices = 0;
+		
+		int vtxAccCount = 0;
+		int idxAccCount = 0;
+
+		for (int i = 0; i < mMeshContainerVec.size(); ++i)
+		{
+			totalVertices += mMeshContainerVec[i]->vertexBufferInfo.count;
+			totalIndices += mMeshContainerVec[i]->indexBufferGroup[0].count;
+		}
+
+		info.vertices.resize(totalVertices);
+		info.indices.resize(totalIndices);
+
+		for (int i = 0; i < mMeshContainerVec.size(); ++i)
+		{
+			UINT32 verticeCount = mMeshContainerVec[i]->vertexBufferInfo.count;
+			int vertexSize = sizeof(Vertex);
+			int vertexOffset = 0;
+			for (UINT32 j = 0; j < verticeCount; ++j)
+			{
+				Vertex* v = new Vertex;
+				memcpy(v, (char*)mMeshContainerVec[i]->vertexBufferInfo.pData + vertexOffset, vertexSize);
+				info.vertices[vtxAccCount + j] = (*v).pos;
+				vertexOffset += vertexSize;
+				SAFE_DELETE(v);
+			}
+
+			UINT32 indicesCount = mMeshContainerVec[i]->indexBufferGroup[0].count;
+			int indexSize = sizeof(int);
+			int indexOffset = 0;
+
+			for (UINT32 j = 0; j < indicesCount; ++j)
+			{
+				int* idx = new int;
+				memcpy(idx, (char*)mMeshContainerVec[i]->indexBufferGroup[0].pData + indexOffset, indexSize);
+				info.indices[idxAccCount + j] = vtxAccCount + *idx;
+				indexOffset += indexSize;
+				SAFE_DELETE(idx);
+			}
+
+			vtxAccCount += verticeCount;
+			idxAccCount += indicesCount;
+		}
+
+		return info;
 	}
 
 	Matrix Mesh::GetMatrix(const FbxAMatrix& _matrix)

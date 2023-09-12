@@ -71,6 +71,7 @@ namespace hm
 
 		Camera* GetMainCamera();
 		Camera* GetUICamera();
+		Light* GetDirLight();
 
 		SceneType GetSceneType() { return meSceneType; }
 
@@ -95,7 +96,6 @@ namespace hm
 
 		std::vector<GameObject*> mCameraObjects;
 		std::vector<GameObject*> mLightObjects;
-		std::vector<shared_ptr<ImageFilter>> mImageFilters;
 
 		bool mbIsBakedStaticShadow;
 

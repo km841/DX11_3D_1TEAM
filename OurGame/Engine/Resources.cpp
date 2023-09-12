@@ -373,6 +373,25 @@ namespace hm
 
         return pMesh;
     }
+    shared_ptr<Mesh> Resources::CreateTriangleMesh(const wstring& _key, const TriangleMeshInfo& _meshInfo)
+    {
+        shared_ptr<Mesh> pFindMesh = Get<Mesh>(_key);
+        if (pFindMesh)
+            return pFindMesh;
+
+        shared_ptr<Mesh> pMesh = make_shared<Mesh>();
+
+        std::vector<Vertex> vertices(_meshInfo.vertices.size());
+
+        for (int i = 0; i < vertices.size(); ++i)
+        {
+            vertices[i].pos = _meshInfo.vertices[i];
+        }
+
+        pMesh->Initialize(vertices, _meshInfo.indices);
+        Add(_key, pMesh);
+        return pMesh;
+    }
     void Resources::CreateDefaultShader()
     {
         // Forward Shader

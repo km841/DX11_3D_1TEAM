@@ -71,6 +71,7 @@ namespace hm
             pMaterial->AddMaterialContainer(pMaterialContainer);
         }
 
+        pMesh->SetName(_path);
         pMaterial->SetName(_path);
         GET_SINGLE(Resources)->Add<Mesh>(pMesh->GetName(), pMesh);
         GET_SINGLE(Resources)->Add<Material>(pMaterial->GetName(), pMaterial);
@@ -154,6 +155,7 @@ namespace hm
             mpMaterial->ClearMaterialContainers();
 
             mpMaterial->Load(pFile);
+            mpMaterial->SetName(_path);
         }
 
         fread(&mbHasAnimation, sizeof(bool), 1, pFile);
@@ -161,6 +163,8 @@ namespace hm
         {
             mpMesh->LoadBoneAndAnimations(pFile);
         }
+        
+        mpMesh->SetName(_path);
         
         fclose(pFile);
     }
