@@ -34,6 +34,7 @@ public:
 	static Grandma* spGrandma;
 	static Grandma* GetGrandma();
 
+private:
 	State_Grandma* mState_Grandma[GRANDMA_STATE_COUNT]; //조건 확인용
 	State_Grandma* mActiveState_Grandma; //현재 상태 확인
 

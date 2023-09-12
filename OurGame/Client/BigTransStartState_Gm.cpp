@@ -56,6 +56,11 @@ void BigTransStartState_Gm::Update()
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
 	//pGrandma->StateChange_Grandma(GrandmaState::IdleState);
+
+	if (pAni_Gm->GetFrameRatio() > 0.30f)
+	{
+		pGrandma->StateChange_Grandma(GrandmaState::BigTransEndState);
+	}
 }
 
 void BigTransStartState_Gm::Enter()
@@ -71,4 +76,6 @@ void BigTransStartState_Gm::PlayAnimation()
 {
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
+
+	pAni_Gm->Play(17, false);
 }

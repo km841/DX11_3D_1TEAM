@@ -43,7 +43,8 @@
 /* Event */
 #include "SceneChangeEvent.h"
 SmallAttack01State_Gm::SmallAttack01State_Gm()
-	:State_Grandma(GrandmaState::SmallAttack01State)
+	: State_Grandma(GrandmaState::SmallAttack01State)
+	, mCount_Ani(0)
 {
 }
 
@@ -55,7 +56,27 @@ void SmallAttack01State_Gm::Update()
 {
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
+	Transform* Tr_Gm = pGrandma->GetTransform();
+
 	//pGrandma->StateChange_Grandma(GrandmaState::IdleState);
+
+	if (mCount_Ani > 2) {
+		mCount_Ani = 0;
+		pGrandma->StateChange_Grandma(GrandmaState::Small_IdleState);
+	}
+
+	if (pAni_Gm->GetFrameRatio() > 0.25) {
+		PlayAnimation(); // 애니메이션 실행
+
+		//포지션 이동
+		{
+			Vec3 pos = Tr_Gm->GetPosition();
+			pos.z = pos.z - 6.f;
+			Tr_Gm->SetPosition(pos);
+		}
+
+		mCount_Ani++; // 횟수 조절
+	}
 }
 
 void SmallAttack01State_Gm::Enter()
@@ -71,4 +92,5 @@ void SmallAttack01State_Gm::PlayAnimation()
 {
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
+	pAni_Gm->Play(18, false);
 }
