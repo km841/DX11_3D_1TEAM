@@ -17,7 +17,7 @@ namespace hm
 		: Component(ComponentType::Collider)
 		, mCollisionCount(0)
 	{
-		mpMesh = GET_SINGLE(Resources)->LoadBoundingCubeMesh();
+		
 		mpMaterial = GET_SINGLE(Resources)->Get<Material>(L"Collider")->Clone();
 	}
 
@@ -29,10 +29,23 @@ namespace hm
 	{
 		AssertEx(IsPhysicsObject(), L"Collider::Initialize() - 충돌을 사용하기 위해서는 RigidBody->SetPhysical()가 선행되어야 함.");
 
-		if (GeometryType::Mesh == GetRigidBody()->GetGeometryType())
+		switch (GetRigidBody()->GetGeometryType())
+		{
+		case GeometryType::Box:
+			mpMesh = GET_SINGLE(Resources)->LoadBoundingCubeMesh();
+			break;
+		case GeometryType::Capsule:
+		{
+			Vec3 geomSize = GetRigidBody()->GetGeometrySize();
+			mpMesh = GET_SINGLE(Resources)->CreateCapsuleMesh(geomSize.x / 2.f, geomSize.y);
+		}
+			break;
+		case GeometryType::Mesh:
 		{
 			wstring name = GetMeshRenderer()->GetMesh()->GetName();
 			mpMesh = GET_SINGLE(Resources)->Get<Mesh>(name + L"Col");
+		}
+			break;
 		}
 	}
 
@@ -49,9 +62,11 @@ namespace hm
 	{
 		Camera* pMainCamera = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera();
 
+		bool bIsCapsule = GeometryType::Capsule == GetRigidBody()->GetGeometryType();
+
 		PxTransform transform = GetRigidBody()->GetPhysicsTransform();
 		Matrix matWorld =
-			Matrix::CreateScale(GetRigidBody()->GetGeometrySize()) *
+			Matrix::CreateScale(bIsCapsule ? Vec3(1.f, 1.f, 1.f) : GetRigidBody()->GetGeometrySize()) *
 			Matrix::CreateFromQuaternion(transform.q) *
 			Matrix::CreateTranslation(transform.p);
 

@@ -373,6 +373,165 @@ namespace hm
 
         return pMesh;
     }
+    shared_ptr<Mesh> Resources::CreateCapsuleMesh(float _radius, float _height)
+    {
+        float radius = _radius; // 반구의 반지름
+        float height = _height; // 원기둥의 높이
+        int stackCount = 10; // 가로 분할
+        int sliceCount = 10; // 세로 분할
+
+        std::vector<Vertex> vec;
+
+        Vertex v;
+
+        // 상단 반구 생성
+        // 북극
+        v.pos = Vec3(height / 2 + radius, 0.0f, 0.0f);
+        v.uv = Vec2(0.5f, 0.0f);
+        v.normal = v.pos;
+        v.normal.Normalize();
+        v.tangent = Vec3(1.0f, 0.0f, 1.0f);
+        vec.push_back(v);
+
+        float stackAngle = XM_PI / stackCount;
+        float sliceAngle = XM_2PI / sliceCount;
+
+        float deltaU = 1.f / static_cast<float>(sliceCount);
+        float deltaV = 1.f / static_cast<float>(stackCount);
+
+        // 고리마다 돌면서 정점을 계산한다 (북극/남극 단일점은 고리가 X)
+        for (int y = 1; y <= stackCount / 2; ++y)
+        {
+            float phi = y * stackAngle;
+
+            // 고리에 위치한 정점
+            for (int x = 0; x <= sliceCount; ++x)
+            {
+                float theta = x * sliceAngle;
+
+                v.pos.x = height / 2 + radius * cosf(phi);
+                v.pos.y = radius * sinf(phi) * cosf(theta);
+                v.pos.z = radius * sinf(phi) * sinf(theta);
+
+                v.uv = Vec2(deltaU * x, deltaV * y);
+
+                v.normal = v.pos;
+                v.normal.Normalize();
+
+                v.tangent.x = -radius * sinf(phi) * sinf(theta);
+                v.tangent.y = 0.0f;
+                v.tangent.z = radius * sinf(phi) * cosf(theta);
+                v.tangent.Normalize();
+
+                vec.push_back(v);
+            }
+        }
+
+        // 원기둥 생성
+        for (int y = stackCount / 2 + 1; y <= stackCount - stackCount / 2 - 1; ++y)
+        {
+            float phi = y * stackAngle;
+
+            // 고리에 위치한 정점
+            for (int x = 0; x <= sliceCount; ++x)
+            {
+                float theta = x * sliceAngle;
+
+                v.pos.x = height / 2 - height * (y - stackCount / 2) / (stackCount - stackCount / 2);
+                v.pos.y = radius * cosf(theta);
+                v.pos.z = radius * sinf(theta);
+
+                v.normal.x = cosf(theta);
+                v.normal.y = 0;
+                v.normal.z = sinf(theta);
+
+                v.tangent.x = -sinf(theta);
+                v.tangent.y = 0.0f;
+                v.tangent.z = cosf(theta);
+
+                vec.push_back(v);
+            }
+        }
+
+        // 하단 반구 생성
+        for (int y = stackCount - stackCount / 2; y <= stackCount - 1; ++y)
+        {
+            float phi = y * stackAngle;
+
+            // 고리에 위치한 정점
+            for (int x = 0; x <= sliceCount; ++x)
+            {
+                float theta = x * sliceAngle;
+
+                v.pos.x = -height / 2 + radius * cosf(phi);
+                v.pos.y = radius * sinf(phi) * cosf(theta);
+                v.pos.z = radius * sinf(phi) * sinf(theta);
+
+                v.uv = Vec2(deltaU * x, deltaV * y);
+
+                v.normal.x = sinf(phi) * cosf(theta);
+                v.normal.y = cosf(phi);
+                v.normal.z = sinf(phi) * sinf(theta);
+
+                v.tangent.x = -radius * sinf(phi) * sinf(theta);
+                v.tangent.y = 0.0f;
+                v.tangent.z = radius * sinf(phi) * cosf(theta);
+                v.tangent.Normalize();
+
+                vec.push_back(v);
+            }
+        }
+
+        // 남극
+        v.pos = Vec3(-height / 2 - radius, 0.0f, 0.0f);
+        v.uv = Vec2(0.5f, 1.0f);
+        v.normal = v.pos;
+        v.normal.Normalize();
+        v.tangent = Vec3(1.0f, 0.0f, 0.0f);
+        vec.push_back(v);
+
+        // 인덱스 생성
+        std::vector<int> idx;
+
+        // 상단 반구 인덱스
+        for (int i = 0; i <= sliceCount; ++i)
+        {
+            idx.push_back(0);
+            idx.push_back(i + 2);
+            idx.push_back(i + 1);
+        }
+
+        // 몸통 인덱스
+        int ringVertexCount = sliceCount + 1;
+        for (int y = 0; y < stackCount - 2; ++y)
+        {
+            for (int x = 0; x < sliceCount; ++x)
+            {
+                idx.push_back(1 + (y)*ringVertexCount + (x));
+                idx.push_back(1 + (y)*ringVertexCount + (x + 1));
+                idx.push_back(1 + (y + 1) * ringVertexCount + (x));
+
+                idx.push_back(1 + (y + 1) * ringVertexCount + (x));
+                idx.push_back(1 + (y)*ringVertexCount + (x + 1));
+                idx.push_back(1 + (y + 1) * ringVertexCount + (x + 1));
+            }
+        }
+
+        // 하단 반구 인덱스
+        int bottomIndex = static_cast<int>(vec.size()) - 1;
+        int lastRingStartIndex = bottomIndex - ringVertexCount;
+        for (int i = 0; i < sliceCount; ++i)
+        {
+            idx.push_back(bottomIndex);
+            idx.push_back(lastRingStartIndex + i);
+            idx.push_back(lastRingStartIndex + i + 1);
+        }
+
+        shared_ptr<Mesh> pMesh = make_shared<Mesh>();
+        pMesh->Initialize(vec, idx);
+
+        return pMesh;
+    }
     shared_ptr<Mesh> Resources::CreateTriangleMesh(const wstring& _key, const TriangleMeshInfo& _meshInfo)
     {
         shared_ptr<Mesh> pFindMesh = Get<Mesh>(_key);
