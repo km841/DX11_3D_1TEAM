@@ -56,6 +56,10 @@ void RangeAttack01State_Gm::Update()
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
 	//pGrandma->StateChange_Grandma(GrandmaState::IdleState);
+
+	if (pAni_Gm->GetFrameRatio() > 0.9) {
+		pGrandma->StateChange_Grandma(GrandmaState::Teleport_OutState);
+	}
 }
 
 void RangeAttack01State_Gm::Enter()
@@ -71,4 +75,6 @@ void RangeAttack01State_Gm::PlayAnimation()
 {
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
+
+	pAni_Gm->Play(1, false);
 }

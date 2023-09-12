@@ -46,6 +46,7 @@
 IdleState_Gm::IdleState_Gm()
 	:State_Grandma(GrandmaState::IdleState)
 {
+	int a = 0;
 }
 
 void IdleState_Gm::Initialize()
@@ -57,9 +58,21 @@ void IdleState_Gm::Update()
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
 
-	if (IS_PRESS(KeyType::UP))
+	if (IS_DOWN(KeyType::UP))
 	{
-		pGrandma->StateChange_Grandma(GrandmaState::SpinningState);
+		pGrandma->StateChange_Grandma(GrandmaState::SpinStartState);
+	}
+	if (IS_DOWN(KeyType::RIGHT))
+	{
+		pGrandma->StateChange_Grandma(GrandmaState::SmallTransStartState);
+	}
+	if (IS_DOWN(KeyType::DOWN))
+	{
+		pGrandma->StateChange_Grandma(GrandmaState::RangeAttack01State);
+	}
+	if (IS_DOWN(KeyType::LEFT))
+	{
+		pGrandma->StateChange_Grandma(GrandmaState::RangeAttack02State);
 	}
 }
 
@@ -77,6 +90,6 @@ void IdleState_Gm::PlayAnimation()
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
 
-	//pAni_Gm->Play(4, true);
+	pAni_Gm->Play(0, true);
 
 }

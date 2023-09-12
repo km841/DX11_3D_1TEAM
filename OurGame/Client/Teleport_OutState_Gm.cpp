@@ -56,6 +56,10 @@ void Teleport_OutState_Gm::Update()
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
 	//pGrandma->StateChange_Grandma(GrandmaState::IdleState);
+
+	if (pAni_Gm->GetFrameRatio() > 0.3) {
+		pGrandma->StateChange_Grandma(GrandmaState::Teleport_InState);
+	}
 }
 
 void Teleport_OutState_Gm::Enter()
@@ -71,4 +75,7 @@ void Teleport_OutState_Gm::PlayAnimation()
 {
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
+
+	pAni_Gm->Play(13, false);
+
 }

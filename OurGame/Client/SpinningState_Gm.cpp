@@ -44,10 +44,11 @@
 /* Event */
 #include "SceneChangeEvent.h"
 SpinningState_Gm::SpinningState_Gm()
-	:State_Grandma(GrandmaState::SpinningState)
+	: State_Grandma(GrandmaState::SpinningState)
+	, mCount_Ani(0) //애니메이션 카운트
 {
 	mTimerObj[0].SetEndTime(3.f);
-	mTimerObj.push_back(TimerObject());
+	mTimerObj.push_back(TimerObject()); //1
 }
 
 void SpinningState_Gm::Initialize()
@@ -60,15 +61,22 @@ void SpinningState_Gm::Update()
 	Animator* pAni_Gm = pGrandma->GetAnimator();
 
 	Transform* Tr = pGrandma->GetTransform();
-	//Transform* pPlayer_Tr = PLAYER->GetTransform();
+	//Transform* pPlayer_Tr = PLAYER->GetTransform(); //플레이어 가져오기
 
-	mTimerObj[0].Update();
+	/*mTimerObj[0].Update();
 	
 	if(mTimerObj[0].IsFinished() == true)
-		pGrandma->StateChange_Grandma(GrandmaState::SpinEndState);
+		pGrandma->StateChange_Grandma(GrandmaState::SpinEndState);*/
 
-	if(pAni_Gm->GetFrameRatio() > 0.15 )
+	if (mCount_Ani > 2) {
+		mCount_Ani = 0;
+		pGrandma->StateChange_Grandma(GrandmaState::SpinEndState);
+	}
+
+	if (pAni_Gm->GetFrameRatio() > 0.16) {
 		PlayAnimation();
+		mCount_Ani++;
+	}
 
 	
 
