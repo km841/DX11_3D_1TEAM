@@ -57,7 +57,7 @@ void RangeAttack01State_Gm::Update()
 	Animator* pAni_Gm = pGrandma->GetAnimator();
 	//pGrandma->StateChange_Grandma(GrandmaState::IdleState);
 
-	if (pAni_Gm->GetFrameRatio() > 0.9) {
+	if (pAni_Gm->GetFrameRatio() > 0.8) {
 		pGrandma->StateChange_Grandma(GrandmaState::Teleport_OutState);
 	}
 }

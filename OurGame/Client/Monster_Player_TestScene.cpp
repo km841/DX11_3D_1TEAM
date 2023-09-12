@@ -213,13 +213,13 @@ namespace hm {
 			PhysicsInfo info = {};
 			info.eActorType = ActorType::Kinematic;
 			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(2.f, 2.f, 2.f);
+			info.size = Vec3(5.f, 5.f, 5.f);
 
-			Grandma* p_E_Grandma = Factory::CreateObjectHasPhysical<Grandma>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
-			p_E_Grandma->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+			Grandma* p_E_Grandma = Factory::CreateObjectHasPhysical<Grandma>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred_CullNone", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
+			p_E_Grandma->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
 			p_E_Grandma->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 			p_E_Grandma->SetFrustumCheckFlag(false);
-			p_E_Grandma->GetRigidBody()->ApplyGravity();
+			//p_E_Grandma->GetRigidBody()->ApplyGravity();
 			//SetGizmoTarget(p_E_Grandma);
 			AddGameObject(p_E_Grandma);
 			SetMeshTarget(p_E_Grandma);
