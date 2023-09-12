@@ -7,6 +7,8 @@
 #include "SceneManager.h"
 #include "Engine.h"
 #include "Camera.h"
+#include "MeshRenderer.h"
+#include "Mesh.h"
 
 
 namespace hm
@@ -26,6 +28,12 @@ namespace hm
 	void Collider::Initialize()
 	{
 		AssertEx(IsPhysicsObject(), L"Collider::Initialize() - 충돌을 사용하기 위해서는 RigidBody->SetPhysical()가 선행되어야 함.");
+
+		if (GeometryType::Mesh == GetRigidBody()->GetGeometryType())
+		{
+			wstring name = GetMeshRenderer()->GetMesh()->GetName();
+			mpMesh = GET_SINGLE(Resources)->Get<Mesh>(name + L"Col");
+		}
 	}
 
 	void Collider::Update()
@@ -90,6 +98,9 @@ namespace hm
 	
 		case GeometryType::Sphere:
 			return Raycast<PxSphereGeometry>(_pOther->GetRigidBody()->GetGeometries()->sphereGeom, _origin, _dir, _pOther, _maxDist);
+
+		case GeometryType::Mesh:
+			return Raycast<PxTriangleMeshGeometry>(_pOther->GetRigidBody()->GetGeometries()->triangleGeom, _origin, _dir, _pOther, _maxDist);
 		}
 
 		return false;

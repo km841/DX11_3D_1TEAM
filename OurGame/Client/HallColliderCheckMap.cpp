@@ -90,8 +90,6 @@ namespace jh
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 
-
-
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
@@ -111,16 +109,16 @@ namespace jh
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Kinematic;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+			physicsInfo.eGeometryType = GeometryType::Mesh;
+			physicsInfo.size = Vec3(1.f, 1.f, 1.f);
 
 			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 15.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
-			//pPlayer->AddComponent(new TestAnimationScript);
+			pPlayer->AddComponent(new PlayerMoveScript);
 			pPlayer->SetFrustumCheckFlag(false);
 			pPlayer->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
 			pPlayer->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 
-			//pPlayer->GetRigidBody()->ApplyGravity(); // 중력을 받겠다 , 반대도있음
+			pPlayer->GetRigidBody()->ApplyGravity(); // 중력을 받겠다 , 반대도있음
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 
