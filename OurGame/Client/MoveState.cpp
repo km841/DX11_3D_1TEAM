@@ -15,6 +15,7 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "Resources.h"
+#include "State.h"
 
 /* GameObject */
 #include "GameObject.h"
@@ -58,6 +59,66 @@ void MoveState::Update()
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 
+//#pragma region "방향 설정"
+//	if (IS_DOWN(KeyType::UP))
+//	{
+//		pPlayer->DirectionEvasionChange(DirectionEvasion::FORWARD);
+//	}
+//
+//	if (IS_DOWN(KeyType::DOWN))
+//	{
+//		pPlayer->DirectionEvasionChange(DirectionEvasion::BACKWARD);
+//	}
+//
+//	if (IS_DOWN(KeyType::RIGHT))
+//	{
+//		pPlayer->DirectionEvasionChange(DirectionEvasion::RIGHT);
+//	}
+//
+//	if (IS_DOWN(KeyType::LEFT))
+//	{
+//		pPlayer->DirectionEvasionChange(DirectionEvasion::LEFT);
+//	}
+//
+//	if (IS_DOWN(KeyType::UP) && IS_PRESS(KeyType::LEFT))
+//	{
+//		pPlayer->DirectionEvasionChange(DirectionEvasion::TOPLEFT);
+//	}
+//
+//	if (IS_DOWN(KeyType::UP) && IS_PRESS(KeyType::RIGHT))
+//	{
+//		pPlayer->DirectionEvasionChange(DirectionEvasion::TOPRIGHT);
+//	}
+//
+//	if (IS_DOWN(KeyType::DOWN) && IS_PRESS(KeyType::LEFT))
+//	{
+//		pPlayer->DirectionEvasionChange(DirectionEvasion::BOTTOMLEFT);
+//	}
+//
+//	if (IS_DOWN(KeyType::DOWN) && IS_PRESS(KeyType::RIGHT))
+//	{
+//		pPlayer->DirectionEvasionChange(DirectionEvasion::BOTTOMRIGHT);
+//	}
+
+#pragma endregion
+
+	if (IS_UP(KeyType::UP) || IS_UP(KeyType::DOWN) ||
+		IS_UP(KeyType::LEFT) || IS_UP(KeyType::RIGHT))
+	{
+		pPlayer->StateChange(PlayerState::IdleState);
+	}
+	if (IS_DOWN(KeyType::LBUTTON))
+	{
+		pPlayer->StateChange(PlayerState::AttackState);
+	}
+	if (IS_DOWN(KeyType::SHIFT_L))
+	{
+		pPlayer->StateChange(PlayerState::EvasionState);
+	}
+
+	if(pAni->GetFrameRatio() > 0.7)
+		PlayAnimation();
+
 
 	//pPlayer->StateChange(PlayerState::AttackState);
 }
@@ -78,5 +139,5 @@ void MoveState::PlayAnimation()
 	Animator* pAni = pPlayer->GetAnimator();
 
 
-	//pAni->Play(4, true);
+	pAni->Play(67, true);
 }

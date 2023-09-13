@@ -35,6 +35,7 @@ void TimerObject::Start()
 
 void TimerObject::Stop()
 {
+	mbIsFinished = false;
 	mbIsRunning = false;
 	mCurTime = 0.f;
 }

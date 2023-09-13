@@ -4,7 +4,7 @@
 State_Grandma::State_Grandma(GrandmaState _meGrandmaState)
 	:meGrandmaState(GrandmaState::IdleState)
 {
-	mTimerObj.push_back(TimerObject());
+	mTimerObj_Gm.push_back(TimerObject());
 	
 }
 

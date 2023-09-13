@@ -16,4 +16,5 @@ public:
 	virtual void PlayAnimation() override;
 private:
 	int mDuplicateIndex;
+	
 };

@@ -1,9 +1,11 @@
 #pragma once
 #include "Player.h"
-
+#include "TimerObject.h"
 
 class State
 {
+public:
+	
 public:
 	State(PlayerState _mePlayerState);
 	virtual ~State() = default;
@@ -17,5 +19,9 @@ public:
 
 private:
 	PlayerState mePlayerState;
+	DirectionEvasion meDirectionEvasion; // 바라보는 방향 설정
+
+protected:
+	std::vector<TimerObject> mTimerObj;
 };
 
