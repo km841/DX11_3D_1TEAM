@@ -173,6 +173,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClInclude Include="Animator.h" />
     <ClInclude Include="BlurFilter.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ChangeMaterialEvent.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="CombineFilter.h" />
@@ -250,6 +251,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="BlurFilter.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ChangeMaterialEvent.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="CombineFilter.cpp" />

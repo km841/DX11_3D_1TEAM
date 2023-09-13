@@ -10,6 +10,7 @@ namespace hm
 	class RemoveGameObjectEvent;
 	class DeleteGameObjectsEvent;
 	class DeleteGameObjectEvent;
+	class ChangeMaterialEvent;
 
 
 	class EventManager
@@ -31,6 +32,7 @@ namespace hm
 		void ProcessRemoveGameObject(RemoveGameObjectEvent* _pEvent);
 		void ProcessDeleteGameObjects(DeleteGameObjectsEvent* _pEvent);
 		void ProcessDeleteGameObject(DeleteGameObjectEvent* _pEvent);
+		void ProcessChangeMaterial(ChangeMaterialEvent* _pEvent);
 
 	private:
 		std::queue<Event*> mEventQueue;

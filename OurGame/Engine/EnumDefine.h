@@ -9,6 +9,7 @@ namespace hm
 		DeleteGameObjectsEvent,
 		RemoveGameObjectEvent,
 		RemoveGameObjectsEvent,
+		ChangeMaterialEvent,
 	};
 
 	enum class LayerType

@@ -220,6 +220,9 @@
     <ClInclude Include="imconfig.h">
       <Filter>Utils\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="ChangeMaterialEvent.h">
+      <Filter>Manager\EventManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EnginePch.cpp">
@@ -416,6 +419,9 @@
     </ClCompile>
     <ClCompile Include="GraphEditor.cpp">
       <Filter>Utils\ImGui\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangeMaterialEvent.cpp">
+      <Filter>Manager\EventManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

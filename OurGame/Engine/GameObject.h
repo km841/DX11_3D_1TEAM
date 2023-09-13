@@ -109,6 +109,19 @@ namespace hm
 			return _pComponent;
 		}
 
+		//template<typename T>
+		//T* GetScript()
+		//{
+		//	std::type_index tIndex = std::type_index(typeid(T));
+		//	for (auto pScript : mScripts)
+		//	{
+		//		if (pScript->getType() == tIndex)
+		//			return dynamic_cast<T*>(pScript);
+		//	}
+
+		//	return nullptr;
+		//}
+
 		virtual void OnCollisionEnter(Collider* pOtherCollider) {}
 		virtual void OnCollisionStay(Collider* pOtherCollider) {}
 		virtual void OnCollisionExit(Collider* pOtherCollider) {}
