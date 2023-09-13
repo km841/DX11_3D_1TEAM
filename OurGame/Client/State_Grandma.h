@@ -18,6 +18,6 @@ public:
 private:
 	GrandmaState meGrandmaState;
 protected:
-	std::vector<TimerObject> mTimerObj ;
+	std::vector<TimerObject> mTimerObj_Gm;
 	
 };

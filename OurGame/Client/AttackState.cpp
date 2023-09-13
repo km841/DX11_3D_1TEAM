@@ -45,7 +45,8 @@
 #include "SceneChangeEvent.h"
 
 AttackState::AttackState()
-	:State(PlayerState::AttackState)
+	: State(PlayerState::AttackState)
+	, mTrigger(true)
 {
 }
 
@@ -55,12 +56,30 @@ void AttackState::Initialize()
 
 void AttackState::Update()
 {
-	//조건 걸어서 다른 스테이트 넘어가게 해주는 구조 만들기
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 
+	if (pAni->GetFrameRatio() > 0.1f) {
+		pPlayer->StateChange(PlayerState::IdleState);
+	}
 
-	//pPlayer->StateChange(PlayerState::AttackState);
+
+	if (IS_DOWN(KeyType::LBUTTON) && pAni->GetFrameRatio() > 0.03f)
+	{
+		if (mTrigger == true)
+		{
+			mTrigger = false;
+			PlayAnimation();
+			return;
+		}
+		if (mTrigger == false)
+		{
+			mTrigger = true;
+			PlayAnimation();
+			return;
+		}
+	}
+
 }
 
 void AttackState::Enter()
@@ -79,5 +98,10 @@ void AttackState::PlayAnimation()
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 
-	//pAni->Play(4, true);
+	if(!mTrigger)
+		pAni->Play(69, false);
+	else
+		pAni->Play(70, false);
+
+	
 }

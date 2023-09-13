@@ -85,6 +85,9 @@ namespace hm {
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Grandma_Boss, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 
+		//배경맵 하얀색으로 만들어주는 코드
+		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
+
 		// 1층 바닥 - Floor
 		{
 			PhysicsInfo info;
@@ -92,7 +95,7 @@ namespace hm {
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(30.f, 0.1f, 37.f);
 
-			Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Floor.fbx");
+			Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\RoughLowerFloor.fbx");
 
 			pFloor->GetTransform()->SetScale(Vec3(37.f, 37.f, 37.f));
 			pFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
@@ -102,25 +105,25 @@ namespace hm {
 			
 		}
 
-		// Player
-		//{
-		//	PhysicsInfo physicsInfo;
-		//	physicsInfo.eActorType = ActorType::Kinematic;
-		//	physicsInfo.eGeometryType = GeometryType::Box;
-		//	physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+		//Player
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
-		//	Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
-		//	//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
-		//	PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
-		//	pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
-		//	pPlayer->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
+			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
+			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
+			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
+			pPlayer->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 
-		//	pPlayer->GetRigidBody()->ApplyGravity();
-		//	pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-		//	pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-		//	AddGameObject(pPlayer);
-		//	SetMeshTarget(pPlayer);
-		//}
+			pPlayer->GetRigidBody()->ApplyGravity();
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+			AddGameObject(pPlayer);
+			SetMeshTarget(pPlayer);
+		}
 
 		
 		
@@ -208,22 +211,22 @@ namespace hm {
 
 		
 
-		//최종보스 할머니 - _E_Grandma
-		{
-			PhysicsInfo info = {};
-			info.eActorType = ActorType::Kinematic;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(5.f, 5.f, 5.f);
+		////최종보스 할머니 - _E_Grandma
+		//{
+		//	PhysicsInfo info = {};
+		//	info.eActorType = ActorType::Kinematic;
+		//	info.eGeometryType = GeometryType::Box;
+		//	info.size = Vec3(5.f, 5.f, 5.f);
 
-			Grandma* p_E_Grandma = Factory::CreateObjectHasPhysical<Grandma>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred_CullNone", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
-			p_E_Grandma->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
-			p_E_Grandma->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-			p_E_Grandma->SetFrustumCheckFlag(false);
-			//p_E_Grandma->GetRigidBody()->ApplyGravity();
-			//SetGizmoTarget(p_E_Grandma);
-			AddGameObject(p_E_Grandma);
-			SetMeshTarget(p_E_Grandma);
-		}
+		//	Grandma* p_E_Grandma = Factory::CreateObjectHasPhysical<Grandma>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred_CullNone", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
+		//	p_E_Grandma->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+		//	p_E_Grandma->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+		//	p_E_Grandma->SetFrustumCheckFlag(false);
+		//	//p_E_Grandma->GetRigidBody()->ApplyGravity();
+		//	//SetGizmoTarget(p_E_Grandma);
+		//	AddGameObject(p_E_Grandma);
+		//	SetMeshTarget(p_E_Grandma);
+		//}
 
 		
 	}

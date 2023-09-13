@@ -53,6 +53,7 @@ namespace hm
 
 		void SetMaxVelocity(float _maxVelocity);
 		void CheckMaxVelocity();
+		bool GetmbAppliedGravity() { return mbAppliedGravity; }
 
 		void ApplyGravity();
 		void RemoveGravity();

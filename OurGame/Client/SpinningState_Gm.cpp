@@ -26,6 +26,7 @@
 #include "Monster.h"
 #include "TimerObject.h"
 
+
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -47,8 +48,8 @@ SpinningState_Gm::SpinningState_Gm()
 	: State_Grandma(GrandmaState::SpinningState)
 	, mCount_Ani(0) //애니메이션 카운트
 {
-	mTimerObj[0].SetEndTime(3.f);
-	mTimerObj.push_back(TimerObject()); //1
+	mTimerObj_Gm[0].SetEndTime(3.f);
+	mTimerObj_Gm.push_back(TimerObject()); //1
 }
 
 void SpinningState_Gm::Initialize()
@@ -84,13 +85,13 @@ void SpinningState_Gm::Update()
 
 void SpinningState_Gm::Enter()
 {
-	mTimerObj[0].Start();
+	mTimerObj_Gm[0].Start();
 	PlayAnimation();
 }
 
 void SpinningState_Gm::Exit()
 {
-	mTimerObj[0].Stop();
+	mTimerObj_Gm[0].Stop();
 }
 
 void SpinningState_Gm::PlayAnimation()

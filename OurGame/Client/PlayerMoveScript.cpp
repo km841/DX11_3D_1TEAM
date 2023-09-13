@@ -9,7 +9,7 @@
 #include "SceneManager.h"
 
 PlayerMoveScript::PlayerMoveScript()
-	: mMoveSpeed(10.f)
+	: mMoveSpeed(5.f)
 {
 }
 
@@ -20,34 +20,66 @@ void PlayerMoveScript::FixedUpdate()
 	RigidBody* rb = GetRigidBody();
 	MeshRenderer* mr = GetMeshRenderer();
 
-	if (IS_PRESS(KeyType::H))
+	Vec3 mPos = tr->GetLook();
+
+	
+	if (IS_DOWN(KeyType::H))
 	{
-		tr->SetPosition(Vec3(0.0f, 0.0f, 0.f));
+		tr->SetPosition(Vec3::Zero);
 	}
+	
 
 	if (IS_PRESS(KeyType::UP))
 	{
 		rb->SetVelocity(AXIS_Z, mMoveSpeed);
+		tr->SetRotation(Vec3(-90.f, 0.f, 180.f));
 	}
 
 	if (IS_PRESS(KeyType::DOWN))
 	{
 		rb->SetVelocity(AXIS_Z, -mMoveSpeed);
+		tr->SetRotation(Vec3(-90.f, 0.f, 0.f));
+
 	}
 
 	if (IS_PRESS(KeyType::LEFT))
 	{
 		rb->SetVelocity(AXIS_X, -mMoveSpeed);
+		tr->SetRotation(Vec3(-90.f, 0.f, 90.f));
+
 	}
 
 	if (IS_PRESS(KeyType::RIGHT))
 	{
 		rb->SetVelocity(AXIS_X, mMoveSpeed);
+		tr->SetRotation(Vec3(-90.f, 0.f, -90.f));
+
 	}
 
 	if (IS_DOWN(KeyType::SPACE))
 	{
 		rb->SetVelocity(AXIS_Y, mMoveSpeed * 5.f);
+	}
+
+	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::LEFT))
+	{
+		mMoveSpeed / 2;
+		tr->SetRotation(Vec3(-90.f, 0.f, 135.f));
+	}
+	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::RIGHT))
+	{
+		mMoveSpeed / 2;
+		tr->SetRotation(Vec3(-90.f, 0.f, 225.f));
+	}
+	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::RIGHT))
+	{
+		mMoveSpeed / 2;
+		tr->SetRotation(Vec3(-90.f, 0.f, 315.f));
+	}
+	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::LEFT))
+	{
+		mMoveSpeed / 2;
+		tr->SetRotation(Vec3(-90.f, 0.f, 45.f));
 	}
 
 	CheckPenetration(rb, LayerType::WallObject);

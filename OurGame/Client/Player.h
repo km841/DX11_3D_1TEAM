@@ -1,11 +1,12 @@
 #pragma once
 #include "GameObject.h"
-#include "TimerObject.h"
+
 class State;
 class Player :
     public GameObject
 {
 public:
+	
     Player();
 	virtual ~Player();
 	Player* Clone()
@@ -29,7 +30,7 @@ public:
 
 public:
 	void StateChange(PlayerState _eState);
-
+	/*void DirectionEvasionChange(DirectionEvasion _eState);*/
 public:
 	static Player* spPlayer;
 	static Player* GetPlayer();
@@ -37,12 +38,15 @@ public:
 	State* mState[PLAYER_STATE_COUNT]; //조건 확인용
     State* mActiveState; //현재 상태 확인
 
-protected:
-	TimerObject mTimerObj;
+	//State* mEvasionState[EVASION_STATE_COUNT]; //조건 확인용
+	//State* mEvasionActiveState; //현재 상태 확인
 
+	
 private:
 	int GetHp() { return mHP; }
 
+
+	
 private:
 	int mHP;
 	int mCost;
