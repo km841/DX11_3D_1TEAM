@@ -1239,6 +1239,7 @@ namespace hm
         {
             shared_ptr<Material> pMaterial = make_shared<Material>();
             shared_ptr<Shader> pShader = Get<Shader>(L"PaperBurn");
+            pMaterial->SetTexture(1, Load<Texture>(L"BurnNoise", L"..\\Resources\\Texture\\BurnNoise.png"));
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"PaperBurn", pMaterial);

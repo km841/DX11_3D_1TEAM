@@ -20,6 +20,8 @@
 #include <numeric>
 #include <filesystem>
 #include <algorithm>
+#include <typeinfo>
+#include <typeindex>
 
 #include "imgui_internal.h"
 #include "imgui.h"

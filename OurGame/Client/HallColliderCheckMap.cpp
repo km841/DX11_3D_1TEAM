@@ -39,6 +39,7 @@
 #include "PlayerMoveScript.h"
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
+#include "PaperBurnScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -105,13 +106,42 @@ namespace jh
 			AddGameObject(pGround);
 		}
 
+		// Door
+		{
+			DecoObject* pDoor = Factory::CreateObject<DecoObject>(Vec3(2.8f, 15.3f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\ShortcutDoor_Fix.fbx");
+			
+			PaperBurnScript* pScript = pDoor->AddComponent(new PaperBurnScript);
+			pScript->SetReverse(true);
+			pScript->SetPaperBurn();
+
+			//auto p = pDoor->GetScript<PaperBurnScript>();
+
+			pDoor->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+			pDoor->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+
+			AddGameObject(pDoor);
+			SetMeshTarget(pDoor);
+		}
+
+		// Door Back Glow
+		{
+			DecoObject* pDoor = Factory::CreateObject<DecoObject>(Vec3(2.8f, 15.3f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\DoorBackGlow.fbx");
+
+			pDoor->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+			pDoor->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+
+			pDoor->GetMeshRenderer()->GetMaterial()->SetBloom(true);
+			pDoor->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f));
+
+			AddGameObject(pDoor);
+		}
+
 		// Player
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Kinematic;
 			physicsInfo.eGeometryType = GeometryType::Capsule;
 			physicsInfo.size = Vec3(1.f, 1.f, 1.f);
-
 			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 15.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
 			pPlayer->AddComponent(new PlayerMoveScript);
 			pPlayer->SetFrustumCheckFlag(false);
@@ -124,7 +154,7 @@ namespace jh
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 
 			AddGameObject(pPlayer);
-			SetMeshTarget(pPlayer);
+			
 		}
 
 		// Toy
@@ -154,6 +184,7 @@ namespace jh
 				pTotalFrame->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
 				pTotalFrame->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(148.f, 147.f, 150.f));
 
+				
 				AddGameObject(pTotalFrame);
 				
 			}
