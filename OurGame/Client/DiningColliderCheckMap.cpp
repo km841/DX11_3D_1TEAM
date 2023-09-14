@@ -232,7 +232,7 @@ namespace sy
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
 
-#pragma region "어드민"
+#pragma region 어드민
 #pragma endregion
 
 		//DecoObject == 콜라이더 없는 오브젝트
@@ -257,7 +257,7 @@ namespace sy
 			AddGameObject(pNormalBase);
 		}
 
-#pragma region "1층"
+#pragma region 1층
 		//1층
 		{
 			// 1층 바닥 - Floor
@@ -642,7 +642,7 @@ namespace sy
 
 
 
-#pragma region "2층"
+#pragma region 2층
 
 		//2층
 		{
@@ -904,7 +904,7 @@ namespace sy
 
 
 
-#pragma region "3층"
+#pragma region 3층
 		// 3층 바닥 콜라이더
 		{
 			PhysicsInfo info;
@@ -1229,7 +1229,6 @@ namespace sy
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Kinematic;
 			physicsInfo.eGeometryType = GeometryType::Capsule;
-
 			physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
 
 			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
@@ -1244,8 +1243,6 @@ namespace sy
 			pPlayer->GetRigidBody()->ApplyGravity();
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-
-
 			AddGameObject(pPlayer);
 		}
 
