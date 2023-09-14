@@ -15,4 +15,5 @@ public:
 	virtual void PlayAnimation() override;
 private:
 	bool mTrigger;
+	
 };
