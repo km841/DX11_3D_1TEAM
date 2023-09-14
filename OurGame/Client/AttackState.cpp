@@ -64,7 +64,7 @@ void AttackState::Update()
 	}
 
 
-	if (IS_DOWN(KeyType::LBUTTON) && pAni->GetFrameRatio() > 0.03f)
+	if (IS_DOWN(KeyType::LBUTTON) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed())
 	{
 		if (mTrigger == true)
 		{

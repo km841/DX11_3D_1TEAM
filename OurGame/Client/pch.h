@@ -15,3 +15,49 @@ using namespace hm;
 #define IDI_SMALL				108
 #define IDC_CLIENT			109
 #define IDC_STATIC                      -1
+
+
+static Vec3 ConvertDir(DirectionEvasion _dir)
+{
+
+	Vec3 forwardDir = Vec3(0, 0, 1);
+	Vec3 BackwardDir = Vec3(0, 0, -1);
+	Vec3 LeftwardDir = Vec3(-1, 0, 0);
+	Vec3 RightwardDir = Vec3(1, 0, 0);
+
+	Vec3 totalDir = {};
+
+	if (_dir == DirectionEvasion::FORWARD)
+	{
+		totalDir = forwardDir;
+	}
+	if (_dir == DirectionEvasion::BACKWARD)
+	{
+		totalDir = BackwardDir;
+	}
+	if (_dir == DirectionEvasion::LEFT)
+	{
+		totalDir = LeftwardDir;
+	}
+	if (_dir == DirectionEvasion::RIGHT)
+	{
+		totalDir = RightwardDir;
+	}
+	if (_dir == DirectionEvasion::TOPLEFT)
+	{
+		totalDir = (forwardDir + LeftwardDir);
+	}
+	if (_dir == DirectionEvasion::TOPRIGHT)
+	{
+		totalDir = (forwardDir + RightwardDir);
+	}
+	if (_dir == DirectionEvasion::BOTTOMLEFT)
+	{
+		totalDir = (BackwardDir + LeftwardDir);
+	}
+	if (_dir == DirectionEvasion::BOTTOMRIGHT)
+	{
+		totalDir = (BackwardDir + RightwardDir);
+	}
+	return totalDir;
+}

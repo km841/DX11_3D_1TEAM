@@ -8,14 +8,17 @@
 #include "Collider.h"
 #include "SceneManager.h"
 #include "PaperBurnScript.h"
+#include "Player.h"
 
 PlayerMoveScript::PlayerMoveScript()
-	: mMoveSpeed(5.f)
+	: mMoveSpeed(NULL)
 {
 }
 
 void PlayerMoveScript::FixedUpdate()
 {
+	Player* pPlayer = Player::GetPlayer();
+
 	GameObject* obj = GetGameObject(); // == Getowner();
 	Transform* tr = GetTransform();
 	RigidBody* rb = GetRigidBody();
@@ -26,59 +29,6 @@ void PlayerMoveScript::FixedUpdate()
 	if (IS_DOWN(KeyType::H))
 	{
 		tr->SetPosition(Vec3::Zero);
-	}
-
-	if (IS_PRESS(KeyType::UP))
-	{
-		rb->SetVelocity(AXIS_Z, mMoveSpeed);
-		tr->SetRotation(Vec3(0.f, 180.f, 90.f));
-		//tr->SetRotation(Vec3(-90.f, 0.f, 180.f));
-	}
-
-	if (IS_PRESS(KeyType::DOWN))
-	{
-		rb->SetVelocity(AXIS_Z, -mMoveSpeed);
-		tr->SetRotation(Vec3(0.f, 0.f, 90.f));
-
-	}
-
-	if (IS_PRESS(KeyType::LEFT))
-	{
-		rb->SetVelocity(AXIS_X, -mMoveSpeed);
-		tr->SetRotation(Vec3(0.f, 90.f, 90.f));
-
-	}
-
-	if (IS_PRESS(KeyType::RIGHT))
-	{
-		rb->SetVelocity(AXIS_X, mMoveSpeed);
-		tr->SetRotation(Vec3(0.f, -90.f, 90.f));
-	}
-
-	if (IS_DOWN(KeyType::SPACE))
-	{
-		rb->SetVelocity(AXIS_Y, mMoveSpeed * 5.f);
-	}
-
-	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::LEFT))
-	{
-		mMoveSpeed / 2;
-		tr->SetRotation(Vec3(0.f, 135.f, 90.f));
-	}
-	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::RIGHT))
-	{
-		mMoveSpeed / 2;
-		tr->SetRotation(Vec3(0.f, 225.f, 90.f));
-	}
-	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::RIGHT))
-	{
-		mMoveSpeed / 2;
-		tr->SetRotation(Vec3(0.f, 315.f, 90.f));
-	}
-	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::LEFT))
-	{
-		mMoveSpeed / 2;
-		tr->SetRotation(Vec3(0.f, 45.f, 90.f));
 	}
 
 	CheckPenetration(rb, LayerType::WallObject);
@@ -94,7 +44,7 @@ void PlayerMoveScript::FixedUpdate()
 
 	if (pPaperBurn->IsFinished())
 	{
-		// �����۹��� ����
+		// ÆäÀÌÆÛ¹øÀÌ ³¡³²
 		int a = 0;
 	}
 
