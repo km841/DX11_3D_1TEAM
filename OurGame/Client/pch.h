@@ -45,9 +45,9 @@ static Vec3 ConvertDir(DirectionEvasion _dir)
 	}
 	if (_dir == DirectionEvasion::TOPLEFT)
 	{
-		totalDir = (forwardDir + LeftwardDir);
+		totalDir = (forwardDir + LeftwardDir) ;
 	}
-	if (_dir == DirectionEvasion::TOPRIGHT)
+	if (_dir == DirectionEvasion::TOPRIGHT) 
 	{
 		totalDir = (forwardDir + RightwardDir);
 	}

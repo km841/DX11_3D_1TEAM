@@ -35,6 +35,7 @@ void PlayerMoveScript::FixedUpdate()
 	//CheckPenetration(rb, LayerType::Ground);
 	CheckPenetration(rb, LayerType::WallObject);
 	CheckPenetration(rb, LayerType::Obstacle);
+	CheckPenetration(rb, LayerType::Ground);
 
 	PaperBurnScript* pPaperBurn = GetGameObject()->GetScript<PaperBurnScript>();
 	pPaperBurn->SetReverse(true);

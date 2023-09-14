@@ -11,6 +11,7 @@ public:
     virtual Component* Clone(GameObject* _pGameObject);
 
     void Attack() { mElapsedTime = 0.f; }
+    void ChangeReverse();
 
 private:
     float mElapsedTime;

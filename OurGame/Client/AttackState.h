@@ -14,6 +14,18 @@ public:
 	virtual void Exit()  override;
 	virtual void PlayAnimation() override;
 private:
+	void DirSlash();
+
+	void ForwardSlash();
+	void BackwardSlash();
+	void LeftSlash();
+	void RightSlash();
+	void TopLeftSlash();
+	void TopRightSlash();
+	void BottomLeftSlash();
+	void BottomRightSlash();
+	
+private:
 	bool mTrigger;
 	
 };

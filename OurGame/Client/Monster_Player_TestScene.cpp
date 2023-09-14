@@ -131,21 +131,7 @@ namespace hm {
 			AddGameObject(pPlayer);
 		}
 
-		// Sword_Heavy
-		{
-			SwordHeavyEffect* pSlashTest = Factory::CreateObject<SwordHeavyEffect>(Vec3(0.f, 8.f, 0.f), L"PlayerSlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbx");
-			pSlashTest->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
-			pSlashTest->AddComponent(new PlayerSlashScript);
-			auto pFollowScript = pSlashTest->AddComponent(new OwnerFollowScript(PLAYER));
-			pFollowScript->SetOffset(Vec3(0.f, 1.f, 0.f));
-
-			pSlashTest->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::Clamp);
-
-			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"HeavySlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbm\\sword_slash_texture_1.png");
-			pSlashTest->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
-			pSlashTest->GetRigidBody()->RemoveGravity();
-			AddGameObject(pSlashTest);
-		}
+		
 
 		
 		
@@ -233,22 +219,22 @@ namespace hm {
 
 		
 
-		////최종보스 할머니 - _E_Grandma
-		//{
-		//	PhysicsInfo info = {};
-		//	info.eActorType = ActorType::Kinematic;
-		//	info.eGeometryType = GeometryType::Box;
-		//	info.size = Vec3(5.f, 5.f, 5.f);
+		//최종보스 할머니 - _E_Grandma
+		{
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Kinematic;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(5.f, 5.f, 5.f);
 
-		//	Grandma* p_E_Grandma = Factory::CreateObjectHasPhysical<Grandma>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred_CullNone", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
-		//	p_E_Grandma->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
-		//	p_E_Grandma->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-		//	p_E_Grandma->SetFrustumCheckFlag(false);
-		//	//p_E_Grandma->GetRigidBody()->ApplyGravity();
-		//	//SetGizmoTarget(p_E_Grandma);
-		//	AddGameObject(p_E_Grandma);
-		//	SetMeshTarget(p_E_Grandma);
-		//}
+			Grandma* p_E_Grandma = Factory::CreateObjectHasPhysical<Grandma>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred_CullNone", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
+			p_E_Grandma->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+			p_E_Grandma->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			p_E_Grandma->SetFrustumCheckFlag(false);
+			//p_E_Grandma->GetRigidBody()->ApplyGravity();
+			//SetGizmoTarget(p_E_Grandma);
+			AddGameObject(p_E_Grandma);
+			//SetMeshTarget(p_E_Grandma);
+		}
 
 		
 	}
