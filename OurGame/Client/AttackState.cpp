@@ -40,6 +40,7 @@
 #include "PlayerMoveScript.h"
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
+#include "SwordHeavyEffect.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -58,11 +59,21 @@ void AttackState::Update()
 {
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
+	
+	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
+	Transform* pEff_Tr = pEffect->GetTransform();
+	DirectionEvasion eDir = pPlayer->GetDirectionChange();
+	Vec3 Pos = ConvertDir(eDir);
+	float Flo = atan2(Pos.z, Pos.x);
 
+	//pEff_Tr->SetRotation(AXIS_Y, Flo * 180.f / XM_PI);
+	pEff_Tr->SetRotation(Vec3(0.f, Flo * 180.f / XM_PI,0.f));
+
+	int a = 0;
 	if (pAni->GetFrameRatio() > 0.1f) {
 		pPlayer->StateChange(PlayerState::IdleState);
 	}
-
+	
 
 	if (IS_DOWN(KeyType::LBUTTON) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed())
 	{
