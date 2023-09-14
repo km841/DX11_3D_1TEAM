@@ -14,14 +14,18 @@ namespace hm
 
 		virtual Component* Clone(class GameObject* _pGameObject);
 
-		void Initialize();
-		void SetPaperBurn() { Initialize();  mbFlag = true; }
+		void Begin();
+		void SetPaperBurn() { Begin();  mbFlag = true; }
 		void SetReverse(bool _bFlag) { mbReverseFlag = _bFlag; }
+		bool IsFinished() { return mbPaperBurnFinished; }
+		void SetFinishedCallback(std::function<void()> _func) { mCallback = _func; }
 
 	private:
 		float mAccTime;
 		bool mbFlag;
 		bool mbReverseFlag;
+		bool mbPaperBurnFinished;
+		std::function<void()> mCallback;
 		wstring mBeforeMatName;
 		shared_ptr<Material> mpOrgMat;
 		shared_ptr<Material> mpPaperBurnMat;

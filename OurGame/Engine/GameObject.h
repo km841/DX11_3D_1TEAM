@@ -119,8 +119,8 @@ namespace hm
 			for (auto pScript : mScripts)
 			{
 				T* pPtr = dynamic_cast<T*>(pScript);
-				AssertEx(nullptr != pPtr, L"GameObject::GetScript() - 찾는 스크립트가 존재하지 않음");
-				return pPtr;
+				if (nullptr != pPtr)
+					return pPtr;
 			}
 
 			return nullptr;

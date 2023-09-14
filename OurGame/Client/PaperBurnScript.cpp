@@ -31,11 +31,22 @@ namespace hm
 		{
 			if (mAccTime < 10.f)
 			{
+				if (true == mbPaperBurnFinished)
+					return;
+
 				mAccTime += DELTA_TIME;
 				mpPaperBurnMat->SetFloatAllSubset(0, mbReverseFlag ? 10.0f - mAccTime : mAccTime);
+
+				if (mAccTime > 9.9f)
+				{
+					mbPaperBurnFinished = true;
+					if (mCallback) 
+						mCallback();
+				}
 			}
 			else
 			{
+				mpPaperBurnMat->SetFloatAllSubset(0, mbReverseFlag ? 0.f : 10.f);
 				GetMeshRenderer()->SetMaterial(mpOrgMat);
 				mbFlag = false;
 			}
@@ -45,11 +56,12 @@ namespace hm
 	{
 		return _pGameObject->AddComponent(new PaperBurnScript);
 	}
-	void PaperBurnScript::Initialize()
+	void PaperBurnScript::Begin()
 	{
 		if (true == mbFlag)
 			return;
 
+		mbPaperBurnFinished = false;
 		mAccTime = 0.f;
 		mpOrgMat = GetMeshRenderer()->GetMaterial();
 
