@@ -15,6 +15,7 @@ namespace hm
 	PaperBurnScript::PaperBurnScript()
 		: mAccTime(0.f)
 		, mbFlag(false)
+		, mbReverseFlag(false)
 	{
 	}
 
@@ -23,7 +24,6 @@ namespace hm
 		mpOrgMat = nullptr;
 		mpPaperBurnMat = nullptr;
 	}
-
 
 	void PaperBurnScript::FixedUpdate()
 	{

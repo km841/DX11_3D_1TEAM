@@ -109,18 +109,22 @@ namespace hm
 			return _pComponent;
 		}
 
-		//template<typename T>
-		//T* GetScript()
-		//{
-		//	std::type_index tIndex = std::type_index(typeid(T));
-		//	for (auto pScript : mScripts)
-		//	{
-		//		if (pScript->getType() == tIndex)
-		//			return dynamic_cast<T*>(pScript);
-		//	}
 
-		//	return nullptr;
-		//}
+		/* 
+		* 타입을 템플릿 매개변수로 넘기면 타입에 맞는 스크립트를 찾아서 반환하는 함수
+		*/
+		template<typename T>
+		T* GetScript()
+		{
+			for (auto pScript : mScripts)
+			{
+				T* pPtr = dynamic_cast<T*>(pScript);
+				AssertEx(nullptr != pPtr, L"GameObject::GetScript() - 찾는 스크립트가 존재하지 않음");
+				return pPtr;
+			}
+
+			return nullptr;
+		}
 
 		virtual void OnCollisionEnter(Collider* pOtherCollider) {}
 		virtual void OnCollisionStay(Collider* pOtherCollider) {}

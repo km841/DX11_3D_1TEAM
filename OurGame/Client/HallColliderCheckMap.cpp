@@ -109,12 +109,11 @@ namespace jh
 		// Door
 		{
 			DecoObject* pDoor = Factory::CreateObject<DecoObject>(Vec3(2.8f, 15.3f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\ShortcutDoor_Fix.fbx");
-			
-			PaperBurnScript* pScript = pDoor->AddComponent(new PaperBurnScript);
+			pDoor->AddComponent(new PaperBurnScript);
+
+			PaperBurnScript* pScript = pDoor->GetScript<PaperBurnScript>();
 			pScript->SetReverse(true);
 			pScript->SetPaperBurn();
-
-			//auto p = pDoor->GetScript<PaperBurnScript>();
 
 			pDoor->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
 			pDoor->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
