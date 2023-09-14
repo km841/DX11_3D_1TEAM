@@ -199,6 +199,16 @@
     <ClInclude Include="TestRigidBodyScript.h">
       <Filter>소스 파일\Script</Filter>
     </ClInclude>
+
+    <ClInclude Include="ClimingDownState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="ClimingEndState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="ClimingUpState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+
     <ClInclude Include="Effect.h">
       <Filter>소스 파일\GameObject\Effect</Filter>
     </ClInclude>
@@ -207,6 +217,7 @@
     </ClInclude>
     <ClInclude Include="OwnerFollowScript.h">
       <Filter>소스 파일\GameObject\Effect\Script</Filter>
+
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -405,6 +416,16 @@
     <ClCompile Include="TestRigidBodyScript.cpp">
       <Filter>소스 파일\Script</Filter>
     </ClCompile>
+
+    <ClCompile Include="ClimingDownState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="ClimingEndState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="ClimingUpState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+
     <ClCompile Include="Effect.cpp">
       <Filter>소스 파일\GameObject\Effect</Filter>
     </ClCompile>
@@ -413,6 +434,7 @@
     </ClCompile>
     <ClCompile Include="OwnerFollowScript.cpp">
       <Filter>소스 파일\GameObject\Effect\Script</Filter>
+
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

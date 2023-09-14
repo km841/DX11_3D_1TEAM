@@ -111,7 +111,7 @@ namespace hm {
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Kinematic;
 			physicsInfo.eGeometryType = GeometryType::Capsule;
-			physicsInfo.size = Vec3(1.f, 1.f, 1.f);
+			physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
 
 			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
 			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
@@ -120,6 +120,7 @@ namespace hm {
 			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
 			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
 			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
+			pPlayer->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.6f, 0.f));
 
 			pPlayer->GetRigidBody()->ApplyGravity();
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
