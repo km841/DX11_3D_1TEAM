@@ -62,6 +62,7 @@ void IdleState::Update()
 {
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
+	RigidBody* pRb = pPlayer->GetRigidBody();
 
 	if (pAni->GetFrameRatio() > 0.99f) {
 		if (mIdleStatebool == true)
@@ -95,10 +96,20 @@ void IdleState::Update()
 	}
 	if (IS_DOWN(KeyType::SPACE))
 	{
+		pRb->SetVelocity(AXIS_Y, 25.f);
 		mFallStartbool = true;
 		mTimerObj[0].Start();
 	}
 	FallLate(); // 낙하 지연 시작
+
+	if (IS_DOWN(KeyType::G))
+	{
+		pPlayer->StateChange(PlayerState::ClimingUpState);
+	}
+	if (IS_DOWN(KeyType::B))
+	{
+		pPlayer->StateChange(PlayerState::ClimingDownState);
+	}
 		
 	
 }

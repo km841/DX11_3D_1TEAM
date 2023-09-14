@@ -15,6 +15,9 @@ enum class PlayerState
 	HitState,
 	FallDownState,
 	DeadState,
+	ClimingUpState,
+	ClimingDownState,
+	ClimingEndState,
 
 	End
 };

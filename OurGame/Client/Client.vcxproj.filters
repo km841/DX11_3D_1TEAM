@@ -199,6 +199,15 @@
     <ClInclude Include="TestRigidBodyScript.h">
       <Filter>소스 파일\Script</Filter>
     </ClInclude>
+    <ClInclude Include="ClimingDownState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="ClimingEndState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="ClimingUpState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -395,6 +404,15 @@
     </ClCompile>
     <ClCompile Include="TestRigidBodyScript.cpp">
       <Filter>소스 파일\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="ClimingDownState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="ClimingEndState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="ClimingUpState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

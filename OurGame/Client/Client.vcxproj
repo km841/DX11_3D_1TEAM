@@ -151,6 +151,9 @@
     <ClInclude Include="BigTransStartState_Gm.h" />
     <ClInclude Include="CameraMoveScript.h" />
     <ClInclude Include="ClientEnum.h" />
+    <ClInclude Include="ClimingDownState.h" />
+    <ClInclude Include="ClimingEndState.h" />
+    <ClInclude Include="ClimingUpState.h" />
     <ClInclude Include="CorridorRightMap.h" />
     <ClInclude Include="DeadState.h" />
     <ClInclude Include="DeathState_Gm.h" />
@@ -219,6 +222,9 @@
     <ClCompile Include="BigTransStartState_Gm.cpp" />
     <ClCompile Include="CameraMoveScript.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="ClimingDownState.cpp" />
+    <ClCompile Include="ClimingEndState.cpp" />
+    <ClCompile Include="ClimingUpState.cpp" />
     <ClCompile Include="CorridorRightMap.cpp" />
     <ClCompile Include="DeadState.cpp" />
     <ClCompile Include="DeathState_Gm.cpp" />

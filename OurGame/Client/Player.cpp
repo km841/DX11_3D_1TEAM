@@ -16,6 +16,9 @@
 #include "HitState.h"
 #include "FallDownState.h"
 #include "DeadState.h"
+#include "ClimingDownState.h"
+#include "ClimingEndState.h"
+#include "ClimingUpState.h"
 
 Player* Player::spPlayer;
 
@@ -43,6 +46,9 @@ Player::Player()
 	mState[int(PlayerState::HitState)] = new HitState;
 	mState[int(PlayerState::FallDownState)] = new FallDownState;
 	mState[int(PlayerState::DeadState)] = new DeadState;
+	mState[int(PlayerState::ClimingDownState)] = new ClimingDownState;
+	mState[int(PlayerState::ClimingEndState)] = new ClimingEndState;
+	mState[int(PlayerState::ClimingUpState)] = new ClimingUpState;
 
 	
 
