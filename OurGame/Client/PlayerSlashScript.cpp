@@ -19,7 +19,6 @@ void PlayerSlashScript::FixedUpdate()
 {
 	if (IS_DOWN(KeyType::LBUTTON))
 	{
-		mbReverse = !mbReverse;
 		Attack();
 	}
 
@@ -28,6 +27,11 @@ void PlayerSlashScript::FixedUpdate()
 	GetMeshRenderer()->GetMaterial()->SetFloat(1, mEndTime);
 	GetMeshRenderer()->GetMaterial()->SetFloat(2, mAttackSpeed);
 	GetMeshRenderer()->GetMaterial()->SetInt(1, static_cast<int>(mbReverse));
+
+
+
+
+
 }
 
 Component* PlayerSlashScript::Clone(GameObject* _pGameObject)

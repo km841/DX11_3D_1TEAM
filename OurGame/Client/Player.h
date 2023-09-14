@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
+class SwordHeavyEffect;
 class State;
 class Player :
     public GameObject
@@ -42,6 +43,8 @@ public:
 
 	float GetDashSpeed() { return mDash_Speed; }
 	void SetDashSpeed(float _Dash_Speed) { mDash_Speed = _Dash_Speed; }
+
+	SwordHeavyEffect* GetSwordEffect() { return mpSlashEffect; }
 public:
 	static Player* spPlayer;
 	static Player* GetPlayer();
@@ -66,6 +69,7 @@ private:
 	float mAttack;
 	float mAttack_Speed;
 	
+	SwordHeavyEffect* mpSlashEffect;
 	DirectionEvasion meDirectionEvasion; // 이동 상태 FSM
 };
 

@@ -1,9 +1,51 @@
 #include "pch.h"
 #include "Player.h"
+#include "Engine.h"
+
+/* Resource */
+#include "MeshData.h"
+#include "Material.h"
+#include "Mesh.h"
+
+/* Manager */
+#include "PrefabManager.h"
+#include "EventManager.h"
+#include "Factory.h"
+#include "CollisionManager.h"
+#include "Input.h"
+#include "SceneManager.h"
+#include "Resources.h"
+
+/* GameObject */
+#include "GameObject.h"
+#include "Player.h"
+#include "Ground.h"
+#include "DecoObject.h"
+#include "WallObject.h"
+#include "Npc.h"
+#include "Monster.h"
+#include "SwordHeavyEffect.h"
+
+/* Component */
 #include "Collider.h"
 #include "RigidBody.h"
+#include "MeshRenderer.h"
+#include "Transform.h"
+#include "Camera.h"
+#include "Light.h"
+#include "ParticleSystem.h"
 #include "Animator.h"
 
+/* Script */
+#include "PlayerMoveScript.h"
+#include "PlacementScript.h"
+#include "TestAnimationScript.h"
+#include "PaperBurnScript.h"
+#include "PlayerSlashScript.h"
+#include "OwnerFollowScript.h"
+
+/* Event */
+#include "SceneChangeEvent.h"
  /*State 모음*/
 #include "State.h"
 #include "PauseState.h"
@@ -50,7 +92,21 @@ Player::Player()
 	mState[int(PlayerState::ClimingEndState)] = new ClimingEndState;
 	mState[int(PlayerState::ClimingUpState)] = new ClimingUpState;
 
-	
+	// Sword_Heavy
+	{
+		mpSlashEffect = Factory::CreateObject<SwordHeavyEffect>(Vec3(0.f, 8.f, 0.f), L"PlayerSlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbx");
+		mpSlashEffect->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+		mpSlashEffect->AddComponent(new PlayerSlashScript);
+		auto pFollowScript = mpSlashEffect->AddComponent(new OwnerFollowScript(this));
+		pFollowScript->SetOffset(Vec3(0.f, 1.f, 0.f));
+
+		mpSlashEffect->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::Clamp);
+
+		shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"HeavySlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbm\\sword_slash_texture_1.png");
+		mpSlashEffect->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
+		mpSlashEffect->GetRigidBody()->RemoveGravity();
+		
+	}
 
 
 	
@@ -62,6 +118,7 @@ Player::~Player()
 	{
 		SAFE_DELETE(mState[i]);
 	}
+	SAFE_DELETE(mpSlashEffect);
 }
 
 void Player::Initialize()
@@ -69,7 +126,7 @@ void Player::Initialize()
 	GameObject::Initialize();
 	
 	StateChange(PlayerState::IdleState);
-
+	mpSlashEffect->Initialize();
 	//mActiveState->Initialize();
 	
 #pragma region "플레이어 애니메이션 이름 변경"
@@ -161,27 +218,36 @@ void Player::Initialize()
 void Player::Update()
 {
 	GameObject::Update();
+	mpSlashEffect->Update();
 	mActiveState->Update();
 }
 
 void Player::FixedUpdate()
 {
 	GameObject::FixedUpdate();
+	mpSlashEffect->FixedUpdate();
+	
 }
 
 void Player::FinalUpdate()
 {
 	GameObject::FinalUpdate();
+	mpSlashEffect->FinalUpdate();
+
 }
 
 void Player::Render()
 {
 	GameObject::Render();
+	mpSlashEffect->Render();
+
 }
 
 void Player::Destroy()
 {
 	GameObject::Destroy();
+	mpSlashEffect->Destroy();
+
 }
 
 void Player::OnTriggerEnter(Collider* pOtherCollider)
