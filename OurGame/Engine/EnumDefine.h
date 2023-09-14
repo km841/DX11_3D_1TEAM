@@ -19,6 +19,7 @@ namespace hm
 		Grandma_Boss,
 		Monster,
 		Npc,
+		Effect,
 		Ground,
 		Obstacle,
 		DecoObject,

@@ -26,13 +26,10 @@ void PlayerMoveScript::FixedUpdate()
 
 	Vec3 mPos = tr->GetLook();
 
-	
 	if (IS_DOWN(KeyType::H))
 	{
 		tr->SetPosition(Vec3::Zero);
 	}
-	
-	
 
 	CheckPenetration(rb, LayerType::WallObject);
 	CheckPenetration(rb, LayerType::Obstacle);
@@ -47,7 +44,7 @@ void PlayerMoveScript::FixedUpdate()
 
 	if (pPaperBurn->IsFinished())
 	{
-		// �����۹��� ����
+		// ÆäÀÌÆÛ¹øÀÌ ³¡³²
 		int a = 0;
 	}
 
