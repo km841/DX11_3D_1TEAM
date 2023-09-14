@@ -82,6 +82,8 @@ void PlayerMoveScript::FixedUpdate()
 		tr->SetRotation(Vec3(-90.f, 0.f, 45.f));
 	}
 
+	CheckPenetration(rb, LayerType::DecoObject);
+	//CheckPenetration(rb, LayerType::Ground);
 	CheckPenetration(rb, LayerType::WallObject);
 	CheckPenetration(rb, LayerType::Obstacle);
 

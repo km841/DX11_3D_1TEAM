@@ -1226,12 +1226,16 @@ namespace sy
 		// Toy 까마귀 일단 배치
 		{
 			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Dynamic;
-			physicsInfo.eGeometryType = GeometryType::Sphere;
-			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Capsule;
+			physicsInfo.size = Vec3(1.5f, 0.4f, 1.5f);
 
 			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
 			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+
+			pPlayer->GetRigidBody()->ApplyGravity();
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 
 			PlayerMoveScript* pPlayerSc =  pPlayer->AddComponent(new PlayerMoveScript);
 	
