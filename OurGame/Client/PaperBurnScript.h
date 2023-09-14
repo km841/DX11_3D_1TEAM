@@ -22,6 +22,7 @@ namespace hm
 
 	private:
 		float mAccTime;
+		float mEndTime;
 		bool mbFlag;
 		bool mbReverseFlag;
 		bool mbPaperBurnFinished;

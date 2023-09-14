@@ -23,12 +23,10 @@ void PlayerMoveScript::FixedUpdate()
 
 	Vec3 mPos = tr->GetLook();
 
-	
 	if (IS_DOWN(KeyType::H))
 	{
 		tr->SetPosition(Vec3::Zero);
 	}
-	
 
 	if (IS_PRESS(KeyType::UP))
 	{
@@ -55,7 +53,6 @@ void PlayerMoveScript::FixedUpdate()
 	{
 		rb->SetVelocity(AXIS_X, mMoveSpeed);
 		tr->SetRotation(Vec3(0.f, -90.f, 90.f));
-
 	}
 
 	if (IS_DOWN(KeyType::SPACE))

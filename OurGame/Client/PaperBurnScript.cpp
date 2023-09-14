@@ -16,6 +16,8 @@ namespace hm
 		: mAccTime(0.f)
 		, mbFlag(false)
 		, mbReverseFlag(false)
+		, mbPaperBurnFinished(false)
+		, mEndTime(6.f)
 	{
 	}
 
@@ -29,15 +31,18 @@ namespace hm
 	{
 		if (true == mbFlag)
 		{
-			if (mAccTime < 10.f)
+			if (mAccTime < mEndTime)
 			{
 				if (true == mbPaperBurnFinished)
+				{
+					mAccTime = mEndTime;
 					return;
+				}
 
 				mAccTime += DELTA_TIME;
-				mpPaperBurnMat->SetFloatAllSubset(0, mbReverseFlag ? 10.0f - mAccTime : mAccTime);
+				mpPaperBurnMat->SetFloatAllSubset(0, mbReverseFlag ? mEndTime - mAccTime : mAccTime);
 
-				if (mAccTime > 9.9f)
+				if (mAccTime > mEndTime - 0.1f)
 				{
 					mbPaperBurnFinished = true;
 					if (mCallback) 
@@ -46,8 +51,9 @@ namespace hm
 			}
 			else
 			{
-				mpPaperBurnMat->SetFloatAllSubset(0, mbReverseFlag ? 0.f : 10.f);
+				mpPaperBurnMat->SetFloatAllSubset(0, mbReverseFlag ? 0.f : mEndTime);
 				GetMeshRenderer()->SetMaterial(mpOrgMat);
+				mbPaperBurnFinished = false;
 				mbFlag = false;
 			}
 		}
