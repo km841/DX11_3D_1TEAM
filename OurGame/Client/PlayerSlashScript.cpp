@@ -17,10 +17,10 @@ PlayerSlashScript::PlayerSlashScript()
 
 void PlayerSlashScript::FixedUpdate()
 {
-	if (IS_DOWN(KeyType::LBUTTON))
+	/*if (IS_DOWN(KeyType::LBUTTON))
 	{
 		Attack();
-	}
+	}*/
 
 	mElapsedTime += DELTA_TIME;
 	GetMeshRenderer()->GetMaterial()->SetFloat(0, mElapsedTime);
@@ -37,4 +37,12 @@ void PlayerSlashScript::FixedUpdate()
 Component* PlayerSlashScript::Clone(GameObject* _pGameObject)
 {
 	return _pGameObject->AddComponent(new PlayerSlashScript);
+}
+
+void PlayerSlashScript::ChangeReverse()
+{
+	if (mbReverse == true)
+		mbReverse = false;
+	if (mbReverse == false)
+		mbReverse = true;
 }

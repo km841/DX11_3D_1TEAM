@@ -35,6 +35,7 @@
 /* Script */
 #include "PlayerMoveScript.h"
 #include "PlacementScript.h"
+#include "PaperBurnScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -1223,18 +1224,25 @@ namespace sy
 
 
 
-		// Toy 까마귀 일단 배치
+		//Player
 		{
 			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Dynamic;
-			physicsInfo.eGeometryType = GeometryType::Sphere;
-			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Capsule;
+			physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
-			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
+			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
+			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
+			pPlayer->AddComponent(new PaperBurnScript);
+			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
+			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
+			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
+			pPlayer->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.6f, 0.f));
 
-			PlayerMoveScript* pPlayerSc =  pPlayer->AddComponent(new PlayerMoveScript);
-	
+			pPlayer->GetRigidBody()->ApplyGravity();
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 			AddGameObject(pPlayer);
 		}
 

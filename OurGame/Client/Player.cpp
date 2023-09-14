@@ -98,7 +98,7 @@ Player::Player()
 		mpSlashEffect->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 		mpSlashEffect->AddComponent(new PlayerSlashScript);
 		auto pFollowScript = mpSlashEffect->AddComponent(new OwnerFollowScript(this));
-		pFollowScript->SetOffset(Vec3(0.f, 1.f, 0.f));
+		pFollowScript->SetOffset(Vec3(0.f, -0.f, -0.f));
 
 		mpSlashEffect->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::Clamp);
 
@@ -106,10 +106,12 @@ Player::Player()
 		mpSlashEffect->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
 		mpSlashEffect->GetRigidBody()->RemoveGravity();
 		
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(mpSlashEffect);
 	}
 
-
-	
+	//검 오브젝트
+	//검  -> Sc 
+	// Sc ( 검오브젝트 , 플레이어 오브젝트 
 }
 
 Player::~Player()
@@ -118,7 +120,7 @@ Player::~Player()
 	{
 		SAFE_DELETE(mState[i]);
 	}
-	SAFE_DELETE(mpSlashEffect);
+	
 }
 
 void Player::Initialize()
@@ -126,7 +128,7 @@ void Player::Initialize()
 	GameObject::Initialize();
 	
 	StateChange(PlayerState::IdleState);
-	mpSlashEffect->Initialize();
+
 	//mActiveState->Initialize();
 	
 #pragma region "플레이어 애니메이션 이름 변경"
@@ -218,35 +220,35 @@ void Player::Initialize()
 void Player::Update()
 {
 	GameObject::Update();
-	mpSlashEffect->Update();
+	
 	mActiveState->Update();
 }
 
 void Player::FixedUpdate()
 {
 	GameObject::FixedUpdate();
-	mpSlashEffect->FixedUpdate();
+	
 	
 }
 
 void Player::FinalUpdate()
 {
 	GameObject::FinalUpdate();
-	mpSlashEffect->FinalUpdate();
+	
 
 }
 
 void Player::Render()
 {
 	GameObject::Render();
-	mpSlashEffect->Render();
+
 
 }
 
 void Player::Destroy()
 {
 	GameObject::Destroy();
-	mpSlashEffect->Destroy();
+	
 
 }
 

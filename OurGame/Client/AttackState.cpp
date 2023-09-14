@@ -41,6 +41,8 @@
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
 #include "SwordHeavyEffect.h"
+#include "PlayerSlashScript.h"
+#include "OwnerFollowScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -63,13 +65,12 @@ void AttackState::Update()
 	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
 	Transform* pEff_Tr = pEffect->GetTransform();
 	DirectionEvasion eDir = pPlayer->GetDirectionChange();
-	Vec3 Pos = ConvertDir(eDir);
-	float Flo = atan2(Pos.z, Pos.x);
+	//Vec3 Pos = ConvertDir(eDir);
+	//float Flo = atan2(Pos.z, Pos.x);
 
 	//pEff_Tr->SetRotation(AXIS_Y, Flo * 180.f / XM_PI);
-	pEff_Tr->SetRotation(Vec3(0.f, Flo * 180.f / XM_PI,0.f));
-
-	int a = 0;
+	//pEff_Tr->SetRotation(Vec3(0.f, Flo * 180.f / XM_PI, 0.f));
+	
 	if (pAni->GetFrameRatio() > 0.1f) {
 		pPlayer->StateChange(PlayerState::IdleState);
 	}
@@ -77,6 +78,8 @@ void AttackState::Update()
 
 	if (IS_DOWN(KeyType::LBUTTON) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed())
 	{
+	
+
 		if (mTrigger == true)
 		{
 			mTrigger = false;
@@ -108,11 +111,77 @@ void AttackState::PlayAnimation()
 	//애니메이션 출력
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
+	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
+	PlayerSlashScript* pSlashSc = pEffect->GetScript<PlayerSlashScript>();
 
-	if(!mTrigger)
+
+	DirSlash();
+
+	if (!mTrigger)
+	{
 		pAni->Play(69, false);
+	
+		pSlashSc->Attack();
+	}
 	else
+	{
 		pAni->Play(70, false);
+	
+		pSlashSc->ChangeReverse();
+		pSlashSc->Attack();
+
+	}
 
 	
+}
+
+void AttackState::DirSlash()
+{
+	Player* pPlayer = Player::GetPlayer();
+	Animator* pAni = pPlayer->GetAnimator();
+
+	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
+	PlayerSlashScript* pSlashSc = pEffect->GetScript<PlayerSlashScript>();
+	OwnerFollowScript* pOFSc = pEffect->GetScript<OwnerFollowScript>();
+
+	Transform* pEff_Tr = pEffect->GetTransform();
+	DirectionEvasion eDir = pPlayer->GetDirectionChange();
+	{
+		Vec3 Pos = ConvertDir(eDir);
+		Pos.Normalize();
+		pOFSc->SetOffset(Pos* 1.2f);
+	}
+
+	if (eDir == DirectionEvasion::FORWARD)
+	{
+		pEff_Tr->SetRotation(AXIS_Y, 180);
+	}
+	if (eDir == DirectionEvasion::BACKWARD)
+	{
+		pEff_Tr->SetRotation(AXIS_Y, 0);
+	}
+	if (eDir == DirectionEvasion::LEFT)
+	{
+		pEff_Tr->SetRotation(AXIS_Y, 90);
+	}
+	if (eDir == DirectionEvasion::RIGHT)
+	{
+		pEff_Tr->SetRotation(AXIS_Y, 270);
+	}
+	if (eDir == DirectionEvasion::TOPLEFT)
+	{
+		pEff_Tr->SetRotation(AXIS_Y, 135);
+	}
+	if (eDir == DirectionEvasion::TOPRIGHT)
+	{
+		pEff_Tr->SetRotation(AXIS_Y, 225);
+	}
+	if (eDir == DirectionEvasion::BOTTOMLEFT)
+	{
+		pEff_Tr->SetRotation(AXIS_Y, 45);
+	}
+	if (eDir == DirectionEvasion::BOTTOMRIGHT)
+	{
+		pEff_Tr->SetRotation(AXIS_Y, 315);
+	}
 }
