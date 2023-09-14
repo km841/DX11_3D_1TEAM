@@ -58,15 +58,33 @@ float4 PS_Main(VS_OUT _in) : SV_Target
 {
     float4 color = float4(0, 0, 0, 1);
     float elapsedTime = g_float_0;
+    float endTime = g_float_1;
+    float attackSpeed = g_float_2;
+    int rev = g_int_1;
+    
+    if (elapsedTime > endTime)
+        discard;
+    
+    if (rev == 1)
+        _in.uv.x = 1.f - _in.uv.x;
     
     if (1 == g_tex_on_0)
-        color = g_tex_0.Sample(g_sam_0, 1.f - (_in.uv + sin(elapsedTime * 6.f)));
+        color = g_tex_0.Sample(g_sam_0, 1.f - (_in.uv + sin(elapsedTime * attackSpeed)));
     
-    if (color.r + color.g + color.b < 0.1f)
+    if (color.r + color.g + color.b < 0.1f || color.r > 0.7f)
         color.a = 0;
+    
+    if (length(color) < 0.4f)
+        color.a = 0;
+    
+    if (_in.uv.y > 0.7f || _in.uv.x < 0.1f || _in.uv.x > 0.9f)
+        color.a = 0;
+    
     // Left -> Right
     
-    color *= 3.f;
+    color *= 1.5f;
+    
+
     
     return color;
 }

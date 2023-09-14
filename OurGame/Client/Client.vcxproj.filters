@@ -199,6 +199,7 @@
     <ClInclude Include="TestRigidBodyScript.h">
       <Filter>소스 파일\Script</Filter>
     </ClInclude>
+
     <ClInclude Include="ClimingDownState.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
@@ -207,6 +208,16 @@
     </ClInclude>
     <ClInclude Include="ClimingUpState.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
+
+    <ClInclude Include="Effect.h">
+      <Filter>소스 파일\GameObject\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="SwordHeavyEffect.h">
+      <Filter>소스 파일\GameObject\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="OwnerFollowScript.h">
+      <Filter>소스 파일\GameObject\Effect\Script</Filter>
+
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -405,6 +416,7 @@
     <ClCompile Include="TestRigidBodyScript.cpp">
       <Filter>소스 파일\Script</Filter>
     </ClCompile>
+
     <ClCompile Include="ClimingDownState.cpp">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClCompile>
@@ -413,6 +425,16 @@
     </ClCompile>
     <ClCompile Include="ClimingUpState.cpp">
       <Filter>소스 파일\GameObject\Player\State</Filter>
+
+    <ClCompile Include="Effect.cpp">
+      <Filter>소스 파일\GameObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="SwordHeavyEffect.cpp">
+      <Filter>소스 파일\GameObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="OwnerFollowScript.cpp">
+      <Filter>소스 파일\GameObject\Effect\Script</Filter>
+
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -471,6 +493,12 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Monster\Grandma_Boss\State">
       <UniqueIdentifier>{66740e09-23cd-4f24-8b56-2a4b1da49304}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Effect">
+      <UniqueIdentifier>{7a113ce3-4fa5-4e55-8a43-2a6a57f9264a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Effect\Script">
+      <UniqueIdentifier>{a1596e7f-2c75-4c76-a136-ed50bdf64fd5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
