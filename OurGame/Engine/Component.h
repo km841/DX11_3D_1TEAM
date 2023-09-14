@@ -66,7 +66,6 @@ namespace hm
 		RigidBody* GetRigidBody();
 		Animator* GetAnimator();
 
-
 		bool IsPhysicsObject();
 
 	private:

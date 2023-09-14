@@ -7,6 +7,7 @@
 #include "MeshRenderer.h"
 #include "Collider.h"
 #include "SceneManager.h"
+#include "PaperBurnScript.h"
 
 PlayerMoveScript::PlayerMoveScript()
 	: mMoveSpeed(5.f)
@@ -32,27 +33,28 @@ void PlayerMoveScript::FixedUpdate()
 	if (IS_PRESS(KeyType::UP))
 	{
 		rb->SetVelocity(AXIS_Z, mMoveSpeed);
-		tr->SetRotation(Vec3(-90.f, 0.f, 180.f));
+		tr->SetRotation(Vec3(0.f, 180.f, 90.f));
+		//tr->SetRotation(Vec3(-90.f, 0.f, 180.f));
 	}
 
 	if (IS_PRESS(KeyType::DOWN))
 	{
 		rb->SetVelocity(AXIS_Z, -mMoveSpeed);
-		tr->SetRotation(Vec3(-90.f, 0.f, 0.f));
+		tr->SetRotation(Vec3(0.f, 0.f, 90.f));
 
 	}
 
 	if (IS_PRESS(KeyType::LEFT))
 	{
 		rb->SetVelocity(AXIS_X, -mMoveSpeed);
-		tr->SetRotation(Vec3(-90.f, 0.f, 90.f));
+		tr->SetRotation(Vec3(0.f, 90.f, 90.f));
 
 	}
 
 	if (IS_PRESS(KeyType::RIGHT))
 	{
 		rb->SetVelocity(AXIS_X, mMoveSpeed);
-		tr->SetRotation(Vec3(-90.f, 0.f, -90.f));
+		tr->SetRotation(Vec3(0.f, -90.f, 90.f));
 
 	}
 
@@ -64,26 +66,40 @@ void PlayerMoveScript::FixedUpdate()
 	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::LEFT))
 	{
 		mMoveSpeed / 2;
-		tr->SetRotation(Vec3(-90.f, 0.f, 135.f));
+		tr->SetRotation(Vec3(0.f, 135.f, 90.f));
 	}
 	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::RIGHT))
 	{
 		mMoveSpeed / 2;
-		tr->SetRotation(Vec3(-90.f, 0.f, 225.f));
+		tr->SetRotation(Vec3(0.f, 225.f, 90.f));
 	}
 	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::RIGHT))
 	{
 		mMoveSpeed / 2;
-		tr->SetRotation(Vec3(-90.f, 0.f, 315.f));
+		tr->SetRotation(Vec3(0.f, 315.f, 90.f));
 	}
 	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::LEFT))
 	{
 		mMoveSpeed / 2;
-		tr->SetRotation(Vec3(-90.f, 0.f, 45.f));
+		tr->SetRotation(Vec3(0.f, 45.f, 90.f));
 	}
 
 	CheckPenetration(rb, LayerType::WallObject);
 	CheckPenetration(rb, LayerType::Obstacle);
+
+	PaperBurnScript* pPaperBurn = GetGameObject()->GetScript<PaperBurnScript>();
+	pPaperBurn->SetReverse(true);
+	pPaperBurn->SetFinishedCallback(std::bind(&PlayerMoveScript::SimpleFunc, this));
+	if (IS_DOWN(KeyType::F))
+	{
+		pPaperBurn->SetPaperBurn();
+	}
+
+	if (pPaperBurn->IsFinished())
+	{
+		// 페이퍼번이 끝남
+		int a = 0;
+	}
 
 	//Vec3 mPos = GetTransform()->GetPosition();
 	//Vec3 mScale = GetTransform()->GetScale();
