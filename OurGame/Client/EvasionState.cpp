@@ -6,6 +6,7 @@
 #include "MeshData.h"
 #include "Material.h"
 #include "Mesh.h"
+#include "ClientEnum.h"
 
 /* Manager */
 #include "PrefabManager.h"
@@ -39,6 +40,7 @@
 #include "PlayerMoveScript.h"
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
+#include "State.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -57,14 +59,26 @@ void EvasionState::Update()
 	//조건 걸어서 다른 스테이트 넘어가게 해주는 구조 만들기
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
+	Transform* pTr = pPlayer->GetTransform();
+	RigidBody* pRb = pPlayer->GetRigidBody();
 
-
-	//pPlayer->StateChange(PlayerState::AttackState);
+	if (pAni->GetFrameRatio() > 0.2f)
+		pPlayer->StateChange(PlayerState::IdleState);
 }
 
 void EvasionState::Enter()
 {
+	Player* pPlayer = Player::GetPlayer();
+	Animator* pAni = pPlayer->GetAnimator();
+	Transform* pTr = pPlayer->GetTransform();
+	RigidBody* pRb = pPlayer->GetRigidBody();
+
 	PlayAnimation();
+
+	
+
+
+
 }
 
 void EvasionState::Exit()
@@ -77,5 +91,5 @@ void EvasionState::PlayAnimation()
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 
-	//pAni->Play(4, true);
+	pAni->Play(63, false);
 }

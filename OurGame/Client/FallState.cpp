@@ -24,6 +24,7 @@
 #include "WallObject.h"
 #include "Npc.h"
 #include "Monster.h"
+#include "TimerObject.h"
 
 /* Component */
 #include "Collider.h"
@@ -35,6 +36,7 @@
 #include "ParticleSystem.h"
 #include "Animator.h"
 
+
 /* Script */
 #include "PlayerMoveScript.h"
 #include "PlacementScript.h"
@@ -45,6 +47,9 @@
 FallState::FallState()
 	:State(PlayerState::FallState)
 {
+	mTimerObj[0].SetEndTime(2.f);
+	mTimerObj.push_back(TimerObject());
+	mTimerObj[1].SetEndTime(2.f);
 }
 
 void FallState::Initialize()
@@ -57,9 +62,12 @@ void FallState::Update()
 	//조건 걸어서 다른 스테이트 넘어가게 해주는 구조 만들기
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
+	RigidBody* pRigid = pPlayer->GetRigidBody();
+	bool mbool = pRigid->GetmbAppliedGravity(); // 그래비티 상태 가져오기
 
-
-	//pPlayer->StateChange(PlayerState::AttackState);
+	if (pAni->GetFrameRatio() > 0.3f)
+		pPlayer->StateChange(PlayerState::IdleState);
+	
 }
 
 void FallState::Enter()
@@ -69,6 +77,7 @@ void FallState::Enter()
 
 void FallState::Exit()
 {
+	
 }
 
 void FallState::PlayAnimation()
@@ -77,5 +86,5 @@ void FallState::PlayAnimation()
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 
-	//pAni->Play(4, true);
+	pAni->Play(7, false);
 }

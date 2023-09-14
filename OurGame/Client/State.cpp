@@ -2,8 +2,10 @@
 #include "State.h"
 
 State::State(PlayerState _mePlayerState)
-	:mePlayerState(PlayerState::IdleState)
+	: mePlayerState(PlayerState::IdleState)
 {
+	mTimerObj.push_back(TimerObject());
+
 }
 
 void State::Update()

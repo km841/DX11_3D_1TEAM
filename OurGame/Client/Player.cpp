@@ -26,7 +26,7 @@ Player::Player()
 	, mSpeed(1.f)
 	, mAttack(1.f)
 	, mAttack_Speed(0.5f)
-
+	
 {
 	AssertEx(spPlayer == nullptr, L"이미 정적 플레이어 존재함");
 	spPlayer = this; //정적변수 선언
@@ -60,10 +60,74 @@ void Player::Initialize()
 {
 	GameObject::Initialize();
 	
-	//StateChange(PlayerState::IdleState);
+	StateChange(PlayerState::IdleState);
 
 	//mActiveState->Initialize();
 	
+#pragma region "플레이어 애니메이션 이름 변경"
+/*애니메이션 이름 변경*/
+	//아이들
+	GetAnimator()->RenameAnimation(42, L"_Player_Idle01"); //이름변경
+	GetAnimator()->SetLoop(42, true); //루프
+	GetAnimator()->SetHasExitFlag(42, true); // 기존 애니메이션 다끝나고 실행 f ? t
+	GetAnimator()->RenameAnimation(43, L"_Player_Idle02");
+	GetAnimator()->SetLoop(43, true); 
+	GetAnimator()->SetHasExitFlag(43, true); 
+
+	//이동
+	GetAnimator()->RenameAnimation(67, L"_Player_Move");
+	GetAnimator()->SetLoop(67, true);
+	GetAnimator()->SetHasExitFlag(67, true);
+
+	//회피
+	GetAnimator()->RenameAnimation(63, L"_Player_Evasion");
+	GetAnimator()->SetLoop(63, true);
+	GetAnimator()->SetHasExitFlag(63, true);
+	
+	//공격
+	GetAnimator()->RenameAnimation(69, L"_Player_Attack01");
+	GetAnimator()->SetLoop(69, true);
+	GetAnimator()->SetHasExitFlag(69, true);
+	GetAnimator()->RenameAnimation(70, L"_Player_Attack02");
+	GetAnimator()->SetLoop(70, true);
+	GetAnimator()->SetHasExitFlag(70, true);
+
+	//낙하
+	GetAnimator()->RenameAnimation(7, L"_Player_Fallstart");
+	GetAnimator()->SetLoop(7, true);
+	GetAnimator()->SetHasExitFlag(7, true);
+	GetAnimator()->RenameAnimation(8, L"_Player_Fallend");
+	GetAnimator()->SetLoop(8, true);
+	GetAnimator()->SetHasExitFlag(8, true);
+
+	//사다리
+	GetAnimator()->RenameAnimation(20, L"_Player_ClimingUp");
+	GetAnimator()->SetLoop(20, true);
+	GetAnimator()->SetHasExitFlag(20, true);
+	GetAnimator()->RenameAnimation(21, L"_Player_ClimingDown");
+	GetAnimator()->SetLoop(21, true);
+	GetAnimator()->SetHasExitFlag(21, true);
+	GetAnimator()->RenameAnimation(22, L"_Player_ClimingEnd");
+	GetAnimator()->SetLoop(22, true);
+	GetAnimator()->SetHasExitFlag(22, true);
+
+
+
+
+
+#pragma endregion
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -89,7 +153,7 @@ void Player::Initialize()
 void Player::Update()
 {
 	GameObject::Update();
-	//mActiveState->Update();
+	mActiveState->Update();
 }
 
 void Player::FixedUpdate()
@@ -119,6 +183,11 @@ void Player::OnTriggerEnter(Collider* pOtherCollider)
 		GetRigidBody()->RemoveGravity();
 		GetRigidBody()->SetVelocity(Vec3::Zero);
 	}
+
+	if (LayerType::Monster == pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		
+	}
 }
 
 void Player::OnTriggerStay(Collider* pOtherCollider)
@@ -142,6 +211,11 @@ void Player::StateChange(PlayerState _eState)
 	mActiveState = mState[int(_eState)];
 	mActiveState->Enter();
 }
+
+//void Player::DirectionEvasionChange(DirectionEvasion _eState)
+//{
+//	mEvasionActiveState = mEvasionState[int(_eState)];
+//}
 
 Player* Player::GetPlayer()
 {

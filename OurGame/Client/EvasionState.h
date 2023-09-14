@@ -4,6 +4,7 @@
 class EvasionState :
 	public State
 {
+
 public:
 	EvasionState();
 	virtual ~EvasionState() = default;
