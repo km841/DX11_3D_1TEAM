@@ -985,7 +985,28 @@ namespace yj
 //		}
 #pragma endregion
 
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::DecoObject);
 
+		// Toy
+		/*{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Capsule;
+			physicsInfo.size = Vec3(1.5f, 0.4f, 1.5f);
+
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+			pPlayer->AddComponent(new PlayerMoveScript);
+			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
+			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 0.f, -90.f));
+			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+
+			pPlayer->GetRigidBody()->ApplyGravity();
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+
+			AddGameObject(pPlayer);
+		}*/
 
 	}
 	
