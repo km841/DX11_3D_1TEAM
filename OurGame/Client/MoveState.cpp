@@ -58,47 +58,108 @@ void MoveState::Update()
 	//조건 걸어서 다른 스테이트 넘어가게 해주는 구조 만들기
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
+	Transform* tr = pPlayer->GetTransform();
+	RigidBody* rb = pPlayer->GetRigidBody();
 
-//#pragma region "방향 설정"
-//	if (IS_DOWN(KeyType::UP))
-//	{
-//		pPlayer->DirectionEvasionChange(DirectionEvasion::FORWARD);
-//	}
-//
-//	if (IS_DOWN(KeyType::DOWN))
-//	{
-//		pPlayer->DirectionEvasionChange(DirectionEvasion::BACKWARD);
-//	}
-//
-//	if (IS_DOWN(KeyType::RIGHT))
-//	{
-//		pPlayer->DirectionEvasionChange(DirectionEvasion::RIGHT);
-//	}
-//
-//	if (IS_DOWN(KeyType::LEFT))
-//	{
-//		pPlayer->DirectionEvasionChange(DirectionEvasion::LEFT);
-//	}
-//
-//	if (IS_DOWN(KeyType::UP) && IS_PRESS(KeyType::LEFT))
-//	{
-//		pPlayer->DirectionEvasionChange(DirectionEvasion::TOPLEFT);
-//	}
-//
-//	if (IS_DOWN(KeyType::UP) && IS_PRESS(KeyType::RIGHT))
-//	{
-//		pPlayer->DirectionEvasionChange(DirectionEvasion::TOPRIGHT);
-//	}
-//
-//	if (IS_DOWN(KeyType::DOWN) && IS_PRESS(KeyType::LEFT))
-//	{
-//		pPlayer->DirectionEvasionChange(DirectionEvasion::BOTTOMLEFT);
-//	}
-//
-//	if (IS_DOWN(KeyType::DOWN) && IS_PRESS(KeyType::RIGHT))
-//	{
-//		pPlayer->DirectionEvasionChange(DirectionEvasion::BOTTOMRIGHT);
-//	}
+#pragma region "이동 방향 힘 결정"
+	float mMoveSpeed = pPlayer->GetMoveSpeed();
+
+	if (IS_PRESS(KeyType::UP))
+	{
+		rb->SetVelocity(AXIS_Z, mMoveSpeed);
+		tr->SetRotation(Vec3(0.f, 180.f, 90.f));
+		//tr->SetRotation(Vec3(-90.f, 0.f, 180.f));
+	}
+
+	if (IS_PRESS(KeyType::DOWN))
+	{
+		rb->SetVelocity(AXIS_Z, -mMoveSpeed);
+		tr->SetRotation(Vec3(0.f, 0.f, 90.f));
+
+	}
+
+	if (IS_PRESS(KeyType::LEFT))
+	{
+		rb->SetVelocity(AXIS_X, -mMoveSpeed);
+		tr->SetRotation(Vec3(0.f, 90.f, 90.f));
+
+	}
+
+	if (IS_PRESS(KeyType::RIGHT))
+	{
+		rb->SetVelocity(AXIS_X, mMoveSpeed);
+		tr->SetRotation(Vec3(0.f, -90.f, 90.f));
+
+	}
+
+	if (IS_DOWN(KeyType::SPACE))
+	{
+		rb->SetVelocity(AXIS_Y, mMoveSpeed * 5.f);
+	}
+
+	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::LEFT))
+	{
+		mMoveSpeed = mMoveSpeed / 2;
+		tr->SetRotation(Vec3(0.f, 135.f, 90.f));
+	}
+	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::RIGHT))
+	{
+		mMoveSpeed /= 2;
+		tr->SetRotation(Vec3(0.f, 225.f, 90.f));
+	}
+	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::RIGHT))
+	{
+		mMoveSpeed /= 2;
+		tr->SetRotation(Vec3(0.f, 315.f, 90.f));
+	}
+	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::LEFT))
+	{
+		mMoveSpeed /= 2;
+		tr->SetRotation(Vec3(0.f, 45.f, 90.f));
+	}
+#pragma endregion
+
+
+#pragma region "방향 설정"
+	if (IS_PRESS(KeyType::UP))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::FORWARD);
+	}
+
+	if (IS_PRESS(KeyType::DOWN))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::BACKWARD);
+	}
+
+	if (IS_PRESS(KeyType::RIGHT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::RIGHT);
+	}
+
+	if (IS_PRESS(KeyType::LEFT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::LEFT);
+	}
+
+	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::LEFT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::TOPLEFT);
+	}
+
+	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::RIGHT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::TOPRIGHT);
+	}
+
+	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::LEFT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::BOTTOMLEFT);
+	}
+
+	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::RIGHT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::BOTTOMRIGHT);
+	}
 
 #pragma endregion
 

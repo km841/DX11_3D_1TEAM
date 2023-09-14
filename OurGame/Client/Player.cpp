@@ -23,9 +23,11 @@ Player::Player()
 	: GameObject(LayerType::Player)
 	, mHP(4)
 	, mCost(4)
-	, mSpeed(1.f)
+	, mSpeed(5.f)
 	, mAttack(1.f)
-	, mAttack_Speed(0.5f)
+	, mAttack_Speed(0.04f)
+	, mDash_Speed(25.f)
+	, meDirectionEvasion(DirectionEvasion::NONE)
 	
 {
 	AssertEx(spPlayer == nullptr, L"이미 정적 플레이어 존재함");
@@ -212,10 +214,10 @@ void Player::StateChange(PlayerState _eState)
 	mActiveState->Enter();
 }
 
-//void Player::DirectionEvasionChange(DirectionEvasion _eState)
-//{
-//	mEvasionActiveState = mEvasionState[int(_eState)];
-//}
+void Player::SetDirectionChange(DirectionEvasion _eState)
+{
+	meDirectionEvasion = _eState;
+}
 
 Player* Player::GetPlayer()
 {

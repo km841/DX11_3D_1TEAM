@@ -64,6 +64,16 @@ void EvasionState::Update()
 
 	if (pAni->GetFrameRatio() > 0.2f)
 		pPlayer->StateChange(PlayerState::IdleState);
+
+
+	//가져와서 튕기는 힘 주기
+	DirectionEvasion eDE = pPlayer->GetDirectionChange();
+	float DashSpeed = pPlayer->GetDashSpeed();
+
+	Vec3 totalDir = ConvertDir(eDE); // 8가지 방향 체크후 주는 힘 방향 설정
+	pRb->SetVelocity(totalDir * DashSpeed);
+	
+	
 }
 
 void EvasionState::Enter()
@@ -76,8 +86,6 @@ void EvasionState::Enter()
 	PlayAnimation();
 
 	
-
-
 
 }
 
