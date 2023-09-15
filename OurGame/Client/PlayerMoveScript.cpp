@@ -37,6 +37,8 @@ void PlayerMoveScript::FixedUpdate()
 	CheckPenetration(rb, LayerType::Obstacle);
 	CheckPenetration(rb, LayerType::Ground);
 
+	//AutoStepping(1.f);
+
 	PaperBurnScript* pPaperBurn = GetGameObject()->GetScript<PaperBurnScript>();
 	pPaperBurn->SetReverse(true);
 	pPaperBurn->SetFinishedCallback(std::bind(&PlayerMoveScript::SimpleFunc, this));
@@ -47,7 +49,6 @@ void PlayerMoveScript::FixedUpdate()
 
 	if (pPaperBurn->IsFinished())
 	{
-		// ÆäÀÌÆÛ¹øÀÌ ³¡³²
 		int a = 0;
 	}
 
@@ -120,12 +121,58 @@ void PlayerMoveScript::CheckPenetration(RigidBody* _rigidBody, LayerType _eLayer
 			case hm::GeometryType::Plane:
 				isPenetrating = PxGeometryQuery::computePenetration(dir, depth, playerGeom, pxTr, otherGeom->planeGeom, pxTr2);
 				break;
+			case hm::GeometryType::Mesh:
+				isPenetrating = PxGeometryQuery::computePenetration(dir, depth, playerGeom, pxTr, otherGeom->triangleGeom, pxTr2);
+				break;
 			}
 			
-			if (true == isPenetrating)
+			if (true == isPenetrating && depth > 0.1f)
 			{
-				_rigidBody->SetVelocity(dir);
+				_rigidBody->SetVelocity(dir * depth);
 			}
 		}
 	}
+}
+
+void PlayerMoveScript::AutoStepping(float _height)
+{
+	Vec3 scale = GetRigidBody()->GetGeometrySize();
+	Vec3 pos = GetTransform()->GetPosition();
+	Vec3 footPos = pos;
+	footPos.y -= scale.y / 2.f;
+
+	DirectionEvasion eDir = PLAYER->GetDirectionChange();
+	Vec3 lookDir = ConvertDir(eDir);
+
+	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+	Vec3 tempScale = lookDir * scale;
+	float offset = max(max(fabs(tempScale.x), fabs(tempScale.y)), fabs(tempScale.z));
+
+	for (int i = 0; i < gameObjects.size(); ++i)
+	{
+		if (nullptr != gameObjects[i]->GetCollider())
+		{
+			bool bIsBlocked = GetCollider()->Raycast(footPos, lookDir, gameObjects[i]->GetCollider(), 0.1f + offset);
+			if (true == bIsBlocked)
+			{
+				Vec3 steppingPos = footPos;
+				float tempHeight = 0.f;
+				while (tempHeight <= _height)
+				{
+					bool bIsStepping = GetCollider()->Raycast(steppingPos, lookDir, gameObjects[i]->GetCollider(), 0.1f + offset);
+					if (false == bIsStepping)
+					{
+						Vec3 fixedPos = pos;
+						fixedPos.y += tempHeight;
+						GetTransform()->SetPosition(fixedPos);
+						return;
+					}
+
+					tempHeight += 0.1f;
+					steppingPos.y += 0.1f;
+				}
+			}
+		}
+	}
+	
 }

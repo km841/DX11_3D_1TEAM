@@ -241,7 +241,7 @@ namespace hm
 	{
 		if (true == mbAppliedPhysics)
 		{
-			AssertEx(ActorType::Dynamic == mPhysicsInfo.eActorType, L"RigidBody::AddVelocity() - Dynamic Actor가 아닌 물체에 대한 SetVelocity() 호출 시도");
+			AssertEx(ActorType::Static != mPhysicsInfo.eActorType, L"RigidBody::AddVelocity() - Dynamic Actor가 아닌 물체에 대한 AddVelocity() 호출 시도");
 			Vec3 velocity = GetDynamicActor()->getLinearVelocity();
 			switch (_eAxis)
 			{
@@ -256,6 +256,7 @@ namespace hm
 				break;
 			}
 			GetDynamicActor()->setLinearVelocity(velocity);
+			mVelocity = velocity;
 		}
 		else
 		{
