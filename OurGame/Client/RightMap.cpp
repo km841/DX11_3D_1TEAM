@@ -55,6 +55,7 @@ namespace yj
 
 	void RightMap::Start()
 	{
+		
 		Map::Start();
 	}
 
