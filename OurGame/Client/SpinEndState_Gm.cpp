@@ -56,6 +56,10 @@ void SpinEndState_Gm::Update()
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
 	//pGrandma->StateChange_Grandma(GrandmaState::IdleState);
+
+	if (pAni_Gm->GetFrameRatio() > 0.15) {
+		pGrandma->StateChange_Grandma(GrandmaState::IdleState);
+	}
 }
 
 void SpinEndState_Gm::Enter()
@@ -71,4 +75,5 @@ void SpinEndState_Gm::PlayAnimation()
 {
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
+	pAni_Gm->Play(11, false);
 }

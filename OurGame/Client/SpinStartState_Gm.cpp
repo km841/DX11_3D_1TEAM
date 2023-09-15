@@ -56,6 +56,10 @@ void SpinStartState_Gm::Update()
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
 	//pGrandma->StateChange_Grandma(GrandmaState::IdleState);
+
+	if (pAni_Gm->GetFrameRatio() > 0.25) {
+		pGrandma->StateChange_Grandma(GrandmaState::SpinningState);
+	}
 }
 
 void SpinStartState_Gm::Enter()
@@ -71,4 +75,7 @@ void SpinStartState_Gm::PlayAnimation()
 {
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
+
+	pAni_Gm->Play(9, false);
+
 }

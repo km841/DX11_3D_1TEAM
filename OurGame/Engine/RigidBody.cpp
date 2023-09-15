@@ -5,6 +5,9 @@
 #include "GameObject.h"
 #include "CollisionManager.h"
 #include "Timer.h"
+#include "Mesh.h"
+#include "MeshRenderer.h"
+#include "Resources.h"
 
 namespace hm
 {
@@ -345,12 +348,31 @@ namespace hm
 		AssertEx(mbAppliedPhysics, L"RigidBody::AddForce() - 물리가 들어가지 않은 오브젝트에 대한 AddForce 호출");
 		AssertEx(ActorType::Static != mPhysicsInfo.eActorType, L"RigidBody::AddForce() - Static 객체에 대해 힘 적용");
 
-		PxRigidBodyExt::addForceAtPos(
+		/*PxRigidBodyExt::addForceAtPos(
 			*GetDynamicActor(),
 			_force,
 			GetTransform()->GetPosition(),
 			PxForceMode::eIMPULSE
-		);
+		);*/
+
+		GetDynamicActor()->addForce(_force, PxForceMode::eIMPULSE);
+	}
+
+	void RigidBody::AddTorque(const Vec3& _force)
+	{
+		AssertEx(mbAppliedPhysics, L"RigidBody::AddForce() - 물리가 들어가지 않은 오브젝트에 대한 AddForce 호출");
+		AssertEx(ActorType::Static != mPhysicsInfo.eActorType, L"RigidBody::AddForce() - Static 객체에 대해 힘 적용");
+
+		GetDynamicActor()->addTorque(_force, PxForceMode::eIMPULSE);
+	}
+
+	void RigidBody::AddForceAndTorque(const Vec3& _force)
+	{
+		AssertEx(mbAppliedPhysics, L"RigidBody::AddForce() - 물리가 들어가지 않은 오브젝트에 대한 AddForce 호출");
+		AssertEx(ActorType::Static != mPhysicsInfo.eActorType, L"RigidBody::AddForce() - Static 객체에 대해 힘 적용");
+
+		GetDynamicActor()->addForce(_force, PxForceMode::eIMPULSE);
+		GetDynamicActor()->addTorque(_force, PxForceMode::eIMPULSE);
 	}
 
 	void RigidBody::RemoveAxisSpeedAtUpdate(Axis _eAxis, bool _bFlag)
@@ -378,6 +400,39 @@ namespace hm
 		mPhysicsInfo.pGeometries = new Geometries(mPhysicsInfo.eGeometryType, mPhysicsInfo.size.x);
 	}
 
+	void RigidBody::CreateMeshGeometry()
+	{
+		TriangleMeshInfo info = GetMeshRenderer()->GetMesh()->GetTriangleMeshInfo();
+		
+		wstring name = GetMeshRenderer()->GetMesh()->GetName();
+		shared_ptr<Mesh> pMesh = GET_SINGLE(Resources)->CreateTriangleMesh(name + L"Col", info);
+		PxTriangleMesh* _pTriMesh = CreateTriangleMesh(info);
+
+		mPhysicsInfo.pGeometries = new Geometries(mPhysicsInfo.eGeometryType, _pTriMesh, mPhysicsInfo.size * 2.f);
+	}
+
+	PxTriangleMesh* RigidBody::CreateTriangleMesh(const TriangleMeshInfo& _meshInfo)
+	{
+		const std::vector<PxVec3>& vertices = _meshInfo.vertices;
+		const std::vector<int>& indices = _meshInfo.indices;
+
+		PxTriangleMeshDesc meshDesc;
+		meshDesc.points.count = static_cast<PxU32>(vertices.size());
+		meshDesc.points.stride = sizeof(PxVec3);
+		meshDesc.points.data = &vertices[0];
+
+		meshDesc.triangles.count = static_cast<PxU32>(indices.size() / 3);
+		meshDesc.triangles.stride = sizeof(PxU32) * 3;
+		meshDesc.triangles.data = &indices[0];
+
+		PxDefaultMemoryOutputStream stream;
+		bool bRes = gpEngine->GetPhysics()->GetCooking()->cookTriangleMesh(meshDesc, stream);
+		AssertEx(bRes, L"RigidBody::CreateTriangleMesh() - 메쉬콜라이더 생성 실패");
+
+		PxTriangleMesh* _pMesh = gpEngine->GetPhysics()->GetCooking()->createTriangleMesh(meshDesc, PHYSICS->getPhysicsInsertionCallback());
+		return _pMesh;
+	}
+
 	void RigidBody::CreateGeometry()
 	{
 		mPhysicsInfo.size /= 2.f;
@@ -397,6 +452,10 @@ namespace hm
 
 		case GeometryType::Plane:
 			CreatePlaneGeometry();
+			break;
+
+		case GeometryType::Mesh:
+			CreateMeshGeometry();
 			break;
 		}
 
@@ -419,6 +478,8 @@ namespace hm
 		case GeometryType::Plane:
 			mpShape = PxRigidActorExt::createExclusiveShape(*mpActor->is<PxRigidActor>(), mPhysicsInfo.pGeometries->planeGeom, *mpMaterial);
 			break;
+		case GeometryType::Mesh:
+			mpShape = PxRigidActorExt::createExclusiveShape(*mpActor->is<PxRigidActor>(), mPhysicsInfo.pGeometries->triangleGeom, *mpMaterial);
 		}
 
 		AssertEx(mpShape, L"RigidBody::CreateShape() - Shape 생성 실패");

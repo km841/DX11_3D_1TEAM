@@ -15,6 +15,9 @@ enum class PlayerState
 	HitState,
 	FallDownState,
 	DeadState,
+	ClimingUpState,
+	ClimingDownState,
+	ClimingEndState,
 
 	End
 };
@@ -49,4 +52,25 @@ enum class GrandmaState
 enum
 {
 	GRANDMA_STATE_COUNT = GrandmaState::End,
+};
+
+enum class DirectionEvasion {
+	NONE,
+
+	FORWARD,
+	BACKWARD,
+	LEFT,
+	RIGHT,
+	TOPLEFT,
+	TOPRIGHT,
+	BOTTOMLEFT,
+	BOTTOMRIGHT,
+
+	END,
+
+};
+
+enum
+{
+	EVASION_STATE_COUNT = DirectionEvasion::END,
 };

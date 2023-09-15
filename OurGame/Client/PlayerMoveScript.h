@@ -10,7 +10,11 @@ public:
     virtual void FixedUpdate() override;
     virtual Component* Clone(GameObject* _pGameObject) override;
 
+    void SimpleFunc() { MessageBoxA(NULL, "Callback", "Test", MB_OK); }
+
 private:
+    void CheckPenetration(RigidBody* _rigidBody, LayerType _eLayertype);
+
     float mMoveSpeed;
 };
 

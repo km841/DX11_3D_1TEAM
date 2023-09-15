@@ -13,5 +13,10 @@ public:
 	virtual void Enter()  override;
 	virtual void Exit()  override;
 	virtual void PlayAnimation() override;
+	void PlayAnimayton2();
+	void FallLate();
+private:
+	bool mIdleStatebool;
+	bool mFallStartbool;
 };
 

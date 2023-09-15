@@ -35,6 +35,7 @@
 /* Script */
 #include "PlayerMoveScript.h"
 #include "PlacementScript.h"
+#include "PaperBurnScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -104,90 +105,90 @@ namespace sy
 		//		mTarget->GetTransform()->SetPosition(fixed_pos);
 
 		//	}
-		//	if (IS_UP(KeyType::R)) //È¸Àü
+		//	if (IS_UP(KeyType::R)) //íšŒì „
 		//	{
 		//		Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
 		//		Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 10.0f, target_rot.z);
 		//		mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
 		//	}
-		//	if (IS_UP(KeyType::T)) //È¸Àü
+		//	if (IS_UP(KeyType::T)) //íšŒì „
 		//	{
 		//		Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
 		//		Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 10.0f, target_rot.z);
 		//		mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
 		//	}
 
-		//	if (IS_UP(KeyType::Y)) //È¸Àü
+		//	if (IS_UP(KeyType::Y)) //íšŒì „
 		//	{
 		//		Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
 		//		Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 1.0f, target_rot.z);
 		//		mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
 		//	}
-		//	if (IS_UP(KeyType::U)) //È¸Àü
+		//	if (IS_UP(KeyType::U)) //íšŒì „
 		//	{
 		//		Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
 		//		Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 1.0f, target_rot.z);
 		//		mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
 		//	}
 
-		//	if (IS_UP(KeyType::O)) //½ºÄÉÀÏ - ÀüÃ¼Àû Å°¿ì±â
+		//	if (IS_UP(KeyType::O)) //ìŠ¤ì¼€ì¼ - ì „ì²´ì  í‚¤ìš°ê¸°
 		//	{
 		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
 		//		Vec3 fixed_scale = Vec3(target_scale.x += 0.5f, target_scale.y += 0.5f, target_scale.z += 0.5f);
 		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
 		//	}
-		//	if (IS_UP(KeyType::P)) //½ºÄÉÀÏ - ÀüÃ¼Àû ÁÙÀÌ±â
+		//	if (IS_UP(KeyType::P)) //ìŠ¤ì¼€ì¼ - ì „ì²´ì  ì¤„ì´ê¸°
 		//	{
 		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
 		//		Vec3 fixed_scale = Vec3(target_scale.x -= 0.5f, target_scale.y -= 0.5f, target_scale.z -= 0.5f);
 		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
 		//	}
 
-		//	if (IS_UP(KeyType::K)) //½ºÄÉÀÏ - yÃàÁ¦¿Ü Å°¿ì±â
+		//	if (IS_UP(KeyType::K)) //ìŠ¤ì¼€ì¼ - yì¶•ì œì™¸ í‚¤ìš°ê¸°
 		//	{
 		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
 		//		Vec3 fixed_scale = Vec3(target_scale.x += 0.5f, target_scale.y, target_scale.z += 0.5f);
 		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
 		//	}
-		//	if (IS_UP(KeyType::L)) //½ºÄÉÀÏ - yÃà Á¦¿Ü ÁÙÀÌ±â
+		//	if (IS_UP(KeyType::L)) //ìŠ¤ì¼€ì¼ - yì¶• ì œì™¸ ì¤„ì´ê¸°
 		//	{
 		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
 		//		Vec3 fixed_scale = Vec3(target_scale.x -= 0.5f, target_scale.y, target_scale.z -= 0.5f);
 		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
 		//	}
-		//	if (IS_UP(KeyType::N)) //½ºÄÉÀÏ -yÃà¸¸ Å°¿ì±â
+		//	if (IS_UP(KeyType::N)) //ìŠ¤ì¼€ì¼ -yì¶•ë§Œ í‚¤ìš°ê¸°
 		//	{
 		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
 		//		Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y += 0.5, target_scale.z);
 		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
 		//	}
-		//	if (IS_UP(KeyType::M)) //½ºÄÉÀÏ -yÃà¸¸ ÁÙÀÌ±â
+		//	if (IS_UP(KeyType::M)) //ìŠ¤ì¼€ì¼ -yì¶•ë§Œ ì¤„ì´ê¸°
 		//	{
 		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
 		//		Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y -= 0.5, target_scale.z);
 		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
 		//	}
 
-		//	if (IS_UP(KeyType::H)) //½ºÄÉÀÏ - xÃà¸¸ Å°¿ì±â
+		//	if (IS_UP(KeyType::H)) //ìŠ¤ì¼€ì¼ - xì¶•ë§Œ í‚¤ìš°ê¸°
 		//	{
 		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
 		//		Vec3 fixed_scale = Vec3(target_scale.x +=0.5, target_scale.y, target_scale.z);
 		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
 		//	}
-		//	if (IS_UP(KeyType::J)) //½ºÄÉÀÏ -xÃà¸¸ ÁÙÀÌ±â
+		//	if (IS_UP(KeyType::J)) //ìŠ¤ì¼€ì¼ -xì¶•ë§Œ ì¤„ì´ê¸°
 		//	{
 		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
 		//		Vec3 fixed_scale = Vec3(target_scale.x -=0.5, target_scale.y, target_scale.z);
 		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
 		//	}
 
-		//	if (IS_UP(KeyType::F)) //½ºÄÉÀÏ -zÃà¸¸ Å°¿ì±â
+		//	if (IS_UP(KeyType::F)) //ìŠ¤ì¼€ì¼ -zì¶•ë§Œ í‚¤ìš°ê¸°
 		//	{
 		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
 		//		Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y, target_scale.z += 0.5);
 		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
 		//	}
-		//	if (IS_UP(KeyType::G)) //½ºÄÉÀÏ -zÃà¸¸ ÁÙÀÌ±â
+		//	if (IS_UP(KeyType::G)) //ìŠ¤ì¼€ì¼ -zì¶•ë§Œ ì¤„ì´ê¸°
 		//	{
 		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
 		//		Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y, target_scale.z -= 0.5);
@@ -227,39 +228,39 @@ namespace sy
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 
 
-		//¹è°æ¸Ê ÇÏ¾á»öÀ¸·Î ¸¸µé¾îÁÖ´Â ÄÚµå
+		//ë°°ê²½ë§µ í•˜ì–€ìƒ‰ìœ¼ë¡œ ë§Œë“¤ì–´ì£¼ëŠ” ì½”ë“œ
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
 
-#pragma region "¾îµå¹Î"
+#pragma region ì–´ë“œë¯¼
 #pragma endregion
 
-		//DecoObject == Äİ¶óÀÌ´õ ¾ø´Â ¿ÀºêÁ§Æ®
-		//WallObject == Äİ¶óÀÌ´õ ÀÖ´Â ¿ÀºêÁ§Æ®
+		//DecoObject == ì½œë¼ì´ë” ì—†ëŠ” ì˜¤ë¸Œì íŠ¸
+		//WallObject == ì½œë¼ì´ë” ìˆëŠ” ì˜¤ë¸Œì íŠ¸
 
-		//Forward == ºû °è»êÀÌ ¾ø´Â ¸í·É¾î
-		//Deferred == ºû °è»êÀÌ ÀÖ´Â ¸í·É¾î
+		//Forward == ë¹› ê³„ì‚°ì´ ì—†ëŠ” ëª…ë ¹ì–´
+		//Deferred == ë¹› ê³„ì‚°ì´ ìˆëŠ” ëª…ë ¹ì–´
 
-		//->GetTransform()->SetPositionExcludingColliders == Äİ¶óÀÌ´õ¸¦ Á¦¿ÜÇÏ°í ¿ÀºêÁ§Æ®¸¸ [ÀÌµ¿] ½ÃÅ°´Â ÇÔ¼ö
-		//->GetTransform()->SetRotationExcludingColliders == Äİ¶óÀÌ´õ¸¦ Á¦¿ÜÇÏ°í ¿ÀºêÁ§Æ®¸¸ [È¸Àü] ½ÃÅ°´Â ÇÔ¼ö
+		//->GetTransform()->SetPositionExcludingColliders == ì½œë¼ì´ë”ë¥¼ ì œì™¸í•˜ê³  ì˜¤ë¸Œì íŠ¸ë§Œ [ì´ë™] ì‹œí‚¤ëŠ” í•¨ìˆ˜
+		//->GetTransform()->SetRotationExcludingColliders == ì½œë¼ì´ë”ë¥¼ ì œì™¸í•˜ê³  ì˜¤ë¸Œì íŠ¸ë§Œ [íšŒì „] ì‹œí‚¤ëŠ” í•¨ìˆ˜
 
 
 
-		// ÀüÃ¼¸Ê °¡ÀÌµå¶óÀÎ º®
+		// ì „ì²´ë§µ ê°€ì´ë“œë¼ì¸ ë²½
 		{
 			DecoObject* pNormalBase = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Diningroom.fbx",true);
 
 			pNormalBase->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 			pNormalBase->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
-			pNormalBase->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr,2,0); //3¹øÂ°ÀÎÀÚ == ÅØ½ºÃ³ Ã¹¹øÂ° png ÀÎÁö µÎ¹øÂ° pngÀÎÁö ±¸º°ÇÏ°Ô ÇØÁÖ´Â°Å
-			pNormalBase->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(115, 118, 128),2,0); //3¹øÂ°ÀÎÀÚ == ÅØ½ºÃ³ Ã¹¹øÂ° png ÀÎÁö µÎ¹øÂ° pngÀÎÁö ±¸º°ÇÏ°Ô ÇØÁÖ´Â°Å
+			pNormalBase->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr,2,0); //3ë²ˆì§¸ì¸ì == í…ìŠ¤ì²˜ ì²«ë²ˆì§¸ png ì¸ì§€ ë‘ë²ˆì§¸ pngì¸ì§€ êµ¬ë³„í•˜ê²Œ í•´ì£¼ëŠ”ê±°
+			pNormalBase->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(115, 118, 128),2,0); //3ë²ˆì§¸ì¸ì == í…ìŠ¤ì²˜ ì²«ë²ˆì§¸ png ì¸ì§€ ë‘ë²ˆì§¸ pngì¸ì§€ êµ¬ë³„í•˜ê²Œ í•´ì£¼ëŠ”ê±°
 			AddGameObject(pNormalBase);
 		}
 
-#pragma region "1Ãş"
-		//1Ãş
+#pragma region 1ì¸µ
+		//1ì¸µ
 		{
-			// 1Ãş ¹Ù´Ú - Floor
+			// 1ì¸µ ë°”ë‹¥ - Floor
 			{
 				PhysicsInfo info;
 				info.eActorType = ActorType::Static;
@@ -274,7 +275,7 @@ namespace sy
 
 				AddGameObject(pFloor);
 			}
-			//1Ãş °è´Ü - Stairs
+			//1ì¸µ ê³„ë‹¨ - Stairs
 			{
 				PhysicsInfo info;
 				info.eActorType = ActorType::Static;
@@ -291,7 +292,7 @@ namespace sy
 			}
 
 			{
-				//1-2Ãş °è´Ü ¾Õ ±âµÕ
+				//1-2ì¸µ ê³„ë‹¨ ì• ê¸°ë‘¥
 				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(-16.7f, -0.7f, -6.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 				pColumnFull->GetTransform()->SetScale(Vec3(15.f, 4.0f, 15.f));
@@ -300,7 +301,7 @@ namespace sy
 				AddGameObject(pColumnFull);
 			}
 
-			//1Ãş °è´Ü º® - Cube1 
+			//1ì¸µ ê³„ë‹¨ ë²½ - Cube1 
 			{
 				PhysicsInfo info;
 				info.eActorType = ActorType::Static;
@@ -317,7 +318,7 @@ namespace sy
 			}
 
 			{
-				//1Ãş ¸Ç¾Õ ±âµÕ
+				//1ì¸µ ë§¨ì• ê¸°ë‘¥
 				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(0.f, 3.f, 25.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 				pColumnFull->GetTransform()->SetScale(Vec3(30.f, 40.f, 30.f));
@@ -326,7 +327,7 @@ namespace sy
 			}
 
 			{
-				//1Ãş ¤¡ÀÚ »çÀÌ ±âµÕ
+				//1ì¸µ ã„±ì ì‚¬ì´ ê¸°ë‘¥
 				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(0.5f, -2.8f, -5.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 				pColumnFull->GetTransform()->SetScale(Vec3(30.f, 22.f, 30.f));
@@ -336,7 +337,7 @@ namespace sy
 
 
 
-			//¿Ü°û °¨½ÎÁÖ´Â °è´Ü ¤¡ÀÚ ¶óÀÎ ÁÙ -wallPanel_Merged
+			//ì™¸ê³½ ê°ì‹¸ì£¼ëŠ” ê³„ë‹¨ ã„±ì ë¼ì¸ ì¤„ -wallPanel_Merged
 			{
 				DecoObject* pWallPanel_Merged = Factory::CreateObject<DecoObject>(Vec3(0.2f, -5.35f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\wallPanel_Merged.fbx");
 
@@ -346,7 +347,7 @@ namespace sy
 			}
 
 
-			// ÇÎÅ©»ö Àá±İ ¿©´Â ¹® -POT_Door_4_Variant
+			// í•‘í¬ìƒ‰ ì ê¸ˆ ì—¬ëŠ” ë¬¸ -POT_Door_4_Variant
 			{
 				PhysicsInfo info = {};
 				info.eActorType = ActorType::Static;
@@ -359,7 +360,7 @@ namespace sy
 				AddGameObject(pPOT_Door);
 			}
 
-			// ÇÎÅ©»ö ¹® ÇÁ·¹ÀÓ ³ª¹« - DoorFrame
+			// í•‘í¬ìƒ‰ ë¬¸ í”„ë ˆì„ ë‚˜ë¬´ - DoorFrame
 			{
 				DecoObject* pDoorFrame = Factory::CreateObject<DecoObject>(Vec3(8.75f, -6.0f, -1.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\DoorFrame.fbx");
 
@@ -368,7 +369,7 @@ namespace sy
 				AddGameObject(pDoorFrame);
 			}
 
-			//º®³­·Î -fireplace
+			//ë²½ë‚œë¡œ -fireplace
 			{
 				DecoObject* pfireplace = Factory::CreateObject<DecoObject>(Vec3(-0.4f, -5.f, -1.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\fireplace.fbx");
 
@@ -378,7 +379,7 @@ namespace sy
 				AddGameObject(pfireplace);
 			}
 
-			//1Ãş ¹Ù´Ú ±¸¸Û Å×µÎ¸® - RimStarter
+			//1ì¸µ ë°”ë‹¥ êµ¬ë© í…Œë‘ë¦¬ - RimStarter
 			{
 				DecoObject* pRimStarter = Factory::CreateObject<DecoObject>(Vec3(-0.3f, -8.5f, 3.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\RimStarter.fbx");
 
@@ -388,7 +389,7 @@ namespace sy
 				AddGameObject(pRimStarter);
 			}
 
-			//1Ãş º®¿¡ ºÙÀº º®µ¹¸ğ¾ç Å×µÎ¸® ¿À¸¥ÂÊ º®1 - WallPanel
+			//1ì¸µ ë²½ì— ë¶™ì€ ë²½ëŒëª¨ì–‘ í…Œë‘ë¦¬ ì˜¤ë¥¸ìª½ ë²½1 - WallPanel
 			{
 				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(13.5f, -7.2f, -5.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
 
@@ -398,7 +399,7 @@ namespace sy
 				AddGameObject(pWallPanel);
 			}
 
-			//1Ãş º®¿¡ ºÙÀº º®µ¹¸ğ¾ç Å×µÎ¸® ¿À¸¥ÂÊ º®2 - WallPanel
+			//1ì¸µ ë²½ì— ë¶™ì€ ë²½ëŒëª¨ì–‘ í…Œë‘ë¦¬ ì˜¤ë¥¸ìª½ ë²½2 - WallPanel
 			{
 				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(4.0f, -7.2f, -5.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
 
@@ -409,7 +410,7 @@ namespace sy
 				AddGameObject(pWallPanel);
 			}
 
-			//1Ãş º®¿¡ ºÙÀº º®µ¹¸ğ¾ç Å×µÎ¸® ¿À¸¥ÂÊ º®3 - WallPanel
+			//1ì¸µ ë²½ì— ë¶™ì€ ë²½ëŒëª¨ì–‘ í…Œë‘ë¦¬ ì˜¤ë¥¸ìª½ ë²½3 - WallPanel
 			{
 				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(-6.8f, -7.2f, -5.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
 
@@ -420,7 +421,7 @@ namespace sy
 				AddGameObject(pWallPanel);
 			}
 
-			//1Ãş º®¿¡ ºÙÀº º®µ¹¸ğ¾ç Å×µÎ¸® ¿ŞÂÊº®1 - WallPanel
+			//1ì¸µ ë²½ì— ë¶™ì€ ë²½ëŒëª¨ì–‘ í…Œë‘ë¦¬ ì™¼ìª½ë²½1 - WallPanel
 			{
 				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(14.01f, -7.2f, -2.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
 
@@ -431,7 +432,7 @@ namespace sy
 				AddGameObject(pWallPanel);
 			}
 
-			//1Ãş º®¿¡ ºÙÀº º®µ¹¸ğ¾ç Å×µÎ¸® ¿ŞÂÊº®2 - WallPanel
+			//1ì¸µ ë²½ì— ë¶™ì€ ë²½ëŒëª¨ì–‘ í…Œë‘ë¦¬ ì™¼ìª½ë²½2 - WallPanel
 			{
 				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(14.01f, -7.2f, 2.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
 
@@ -442,7 +443,7 @@ namespace sy
 				AddGameObject(pWallPanel);
 			}
 
-			//1Ãş º®¿¡ ºÙÀº º®µ¹¸ğ¾ç Å×µÎ¸® ¿ŞÂÊº®3 - WallPanel
+			//1ì¸µ ë²½ì— ë¶™ì€ ë²½ëŒëª¨ì–‘ í…Œë‘ë¦¬ ì™¼ìª½ë²½3 - WallPanel
 			{
 				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(14.01f, -7.2f, 7.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
 
@@ -451,7 +452,7 @@ namespace sy
 
 				AddGameObject(pWallPanel);
 			}
-			//1Ãş º®¿¡ ºÙÀº º®µ¹¸ğ¾ç Å×µÎ¸® ¿ŞÂÊº®4 - WallPanel
+			//1ì¸µ ë²½ì— ë¶™ì€ ë²½ëŒëª¨ì–‘ í…Œë‘ë¦¬ ì™¼ìª½ë²½4 - WallPanel
 			{
 				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(14.01f, -7.2f, 12.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
 
@@ -462,7 +463,7 @@ namespace sy
 				AddGameObject(pWallPanel);
 			}
 
-			//1Ãş º®¿¡ ºÙÀº º®µ¹¸ğ¾ç Å×µÎ¸® ¿ŞÂÊº®4 - WallPanel
+			//1ì¸µ ë²½ì— ë¶™ì€ ë²½ëŒëª¨ì–‘ í…Œë‘ë¦¬ ì™¼ìª½ë²½4 - WallPanel
 			{
 				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(14.01f, -7.2f, 16.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
 
@@ -473,7 +474,7 @@ namespace sy
 				AddGameObject(pWallPanel);
 			}
 
-			//1Ãş º®¿¡ ºÙÀº º®µ¹¸ğ¾ç Å×µÎ¸® ¿ŞÂÊº®5 - WallPanel
+			//1ì¸µ ë²½ì— ë¶™ì€ ë²½ëŒëª¨ì–‘ í…Œë‘ë¦¬ ì™¼ìª½ë²½5 - WallPanel
 			{
 				DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(14.01f, -7.2f, 21.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallPanel.fbx");
 
@@ -484,7 +485,7 @@ namespace sy
 				AddGameObject(pWallPanel);
 			}
 
-			// 1Ãş ÃµÀå ¼§µé¸®¿¡ - ChandelierWithChain
+			// 1ì¸µ ì²œì¥ ìƒ¹ë“¤ë¦¬ì— - ChandelierWithChain
 			{
 				DecoObject* pChandelierWithChain = Factory::CreateObject<DecoObject>(Vec3(0.0f, 20.0f, 16.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ChandelierWithChain.fbx");
 
@@ -494,7 +495,7 @@ namespace sy
 				AddGameObject(pChandelierWithChain);
 			}
 
-			//1Ãş Å×ÀÌºí 1 -CofeeTableWithCloth
+			//1ì¸µ í…Œì´ë¸” 1 -CofeeTableWithCloth
 			{
 				PhysicsInfo Info;
 				Info.eActorType = ActorType::Static;
@@ -509,7 +510,7 @@ namespace sy
 				AddGameObject(pCofeeTableWithCloth);
 			}
 
-			//1Ãş Å×ÀÌºí 2 -CofeeTableWithCloth
+			//1ì¸µ í…Œì´ë¸” 2 -CofeeTableWithCloth
 			{
 				PhysicsInfo Info;
 				Info.eActorType = ActorType::Static;
@@ -524,7 +525,7 @@ namespace sy
 				AddGameObject(pCofeeTableWithCloth);
 			}
 
-			//1Ãş ·¯±× - Rug_Mark
+			//1ì¸µ ëŸ¬ê·¸ - Rug_Mark
 			{
 				DecoObject* pRug_Mark = Factory::CreateObject<DecoObject>(Vec3(-0.2f, -8.5f, 16.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Rug_Mark.fbx");
 
@@ -533,7 +534,7 @@ namespace sy
 				AddGameObject(pRug_Mark);
 			}
 
-			//1Ãş Ã¼¾î 1 - Chair
+			//1ì¸µ ì²´ì–´ 1 - Chair
 			{
 				PhysicsInfo Info;
 				Info.eActorType = ActorType::Static;
@@ -550,7 +551,7 @@ namespace sy
 				AddGameObject(pChair);
 			}
 
-			//1Ãş Ã¼¾î 2 - Chair
+			//1ì¸µ ì²´ì–´ 2 - Chair
 			{
 				PhysicsInfo Info;
 				Info.eActorType = ActorType::Static;
@@ -567,7 +568,7 @@ namespace sy
 				AddGameObject(pChair);
 			}
 
-			//1Ãş Ã¼¾î 3 - Chair
+			//1ì¸µ ì²´ì–´ 3 - Chair
 			{
 				PhysicsInfo Info;
 				Info.eActorType = ActorType::Static;
@@ -583,7 +584,7 @@ namespace sy
 				AddGameObject(pChair);
 			}
 
-			//1Ãş Ã¼¾î 4 - Chair
+			//1ì¸µ ì²´ì–´ 4 - Chair
 			{
 				PhysicsInfo Info;
 				Info.eActorType = ActorType::Static;
@@ -600,7 +601,7 @@ namespace sy
 				AddGameObject(pChair);
 			}
 
-			//1Ãş Ã¼¾î 5 - Chair
+			//1ì¸µ ì²´ì–´ 5 - Chair
 			{
 				PhysicsInfo Info;
 				Info.eActorType = ActorType::Static;
@@ -617,7 +618,7 @@ namespace sy
 				AddGameObject(pChair);
 			}
 
-			//1Ãş Ã¼¾î 6 - Chair
+			//1ì¸µ ì²´ì–´ 6 - Chair
 			{
 				PhysicsInfo Info;
 				Info.eActorType = ActorType::Static;
@@ -641,11 +642,11 @@ namespace sy
 
 
 
-#pragma region "2Ãş"
+#pragma region 2ì¸µ
 
-		//2Ãş
+		//2ì¸µ
 		{
-			// 2Ãş ¹Ù´Ú - floorextension_nocollider
+			// 2ì¸µ ë°”ë‹¥ - floorextension_nocollider
 			{
 				PhysicsInfo info;
 				info.eActorType = ActorType::Static;
@@ -661,7 +662,7 @@ namespace sy
 				AddGameObject(pfloorextension_nocollider);
 			}
 
-			//2Ãş °è´Ü - Stairs
+			//2ì¸µ ê³„ë‹¨ - Stairs
 			{
 				PhysicsInfo info;
 				info.eActorType = ActorType::Static;
@@ -680,7 +681,7 @@ namespace sy
 			}
 
 			{
-				//2Ãş °è´Ü ¾Æ·¡ °¡·ÎÁÙ - WallRim
+				//2ì¸µ ê³„ë‹¨ ì•„ë˜ ê°€ë¡œì¤„ - WallRim
 				DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(5.6f, -1.8f, -20.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
 
 				pWallRim->GetTransform()->SetScale(Vec3(29.5f, 51.f, 21.5f));
@@ -691,7 +692,7 @@ namespace sy
 			}
 
 			{
-				//2Ãş °è´Ü-º® »çÀÌ °¡·ÎÁÙ - WallRim
+				//2ì¸µ ê³„ë‹¨-ë²½ ì‚¬ì´ ê°€ë¡œì¤„ - WallRim
 				DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(-3.4f, -1.8f, -25.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
 
 				pWallRim->GetTransform()->SetScale(Vec3(29.5f, 51.f, 21.5f));
@@ -701,7 +702,7 @@ namespace sy
 
 			}
 
-			//2Ãş °è´Ü º® ¿ŞÂÊ- Cube2
+			//2ì¸µ ê³„ë‹¨ ë²½ ì™¼ìª½- Cube2
 			{
 				PhysicsInfo info;
 				info.eActorType = ActorType::Static;
@@ -717,7 +718,7 @@ namespace sy
 				AddGameObject(pCube2);
 			}
 
-			//2Ãş °è´Ü º® ¿À¸¥ÂÊ - Cube2
+			//2ì¸µ ê³„ë‹¨ ë²½ ì˜¤ë¥¸ìª½ - Cube2
 			{
 				PhysicsInfo info;
 				info.eActorType = ActorType::Static;
@@ -734,7 +735,7 @@ namespace sy
 			}
 
 			{
-				//2Ãş ³­°£ ¾Æ·¡ °¡·ÎÁÙ - WallRim
+				//2ì¸µ ë‚œê°„ ì•„ë˜ ê°€ë¡œì¤„ - WallRim
 				DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(3.8f, -1.9f, -6.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
 
 				pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 27.5f));
@@ -744,7 +745,7 @@ namespace sy
 
 			}
 			{
-				//2Ãş ³­°£ À§ °¡·ÎÁÙ - WallRim
+				//2ì¸µ ë‚œê°„ ìœ„ ê°€ë¡œì¤„ - WallRim
 				DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(3.8f, -0.4f, -6.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
 
 				pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 27.5f));
@@ -755,7 +756,7 @@ namespace sy
 			}
 
 
-			// 2Ãş °è´Ü ¾Æ·§º® - Cube3
+			// 2ì¸µ ê³„ë‹¨ ì•„ë«ë²½ - Cube3
 			{
 				DecoObject* pCube3 = Factory::CreateObject<DecoObject>(Vec3(3.f, 0.5f, -20.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube3.fbx");
 
@@ -765,7 +766,7 @@ namespace sy
 			}
 
 			{
-				//2Ãş ¸Ç¾Õ ±âµÕ
+				//2ì¸µ ë§¨ì• ê¸°ë‘¥
 				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(0.2f, 2.7f, -6.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 				pColumnFull->GetTransform()->SetScale(Vec3(19.f, 16.f, 19.f));
@@ -776,7 +777,7 @@ namespace sy
 			}
 
 			{
-				//2Ãş Áß°£ ±âµÕ
+				//2ì¸µ ì¤‘ê°„ ê¸°ë‘¥
 				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(0.2f, 2.7f, -13.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 				pColumnFull->GetTransform()->SetScale(Vec3(19.f, 16.f, 19.f));
@@ -786,7 +787,7 @@ namespace sy
 			}
 
 			{
-				//2Ãş °è´Ü ±âµÕ
+				//2ì¸µ ê³„ë‹¨ ê¸°ë‘¥
 				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.1f, 2.5f, -20.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 				pColumnFull->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
@@ -795,7 +796,7 @@ namespace sy
 			}
 
 			{
-				//2Ãş °è´Ü ¾Õ ±âµÕ
+				//2ì¸µ ê³„ë‹¨ ì• ê¸°ë‘¥
 				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(-11.8f, -0.7f, -20.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 				pColumnFull->GetTransform()->SetScale(Vec3(15.f, 4.0f, 15.f));
@@ -804,7 +805,7 @@ namespace sy
 			}
 
 			{
-				//2Ãş °è´Ü ¾Õ º®ÂÊ ±âµÕ
+				//2ì¸µ ê³„ë‹¨ ì• ë²½ìª½ ê¸°ë‘¥
 				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(-11.8f, -0.7f, -24.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 				pColumnFull->GetTransform()->SetScale(Vec3(15.f, 4.0f, 15.f));
@@ -814,7 +815,7 @@ namespace sy
 			}
 
 			{
-				//2-3Ãş °è´Ü º®ÂÊ ±âµÕ
+				//2-3ì¸µ ê³„ë‹¨ ë²½ìª½ ê¸°ë‘¥
 				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.1f, 9.8f, -25.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 				pColumnFull->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
@@ -823,7 +824,7 @@ namespace sy
 			}
 
 			{
-				//2Ãş ¸Ç¿À¸¥ÂÊ Å«±âµÕ
+				//2ì¸µ ë§¨ì˜¤ë¥¸ìª½ í°ê¸°ë‘¥
 				DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(-27.6f, 6.2f, -25.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 				pColumnFull->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
@@ -832,7 +833,7 @@ namespace sy
 			}
 
 			{
-				//2Ãş ³­°£ ¸·´ë±â - BannisterStick
+				//2ì¸µ ë‚œê°„ ë§‰ëŒ€ê¸° - BannisterStick
 				for (float i = 0; i < 12; i++)
 				{
 					DecoObject* pBannisterStick = Factory::CreateObject<DecoObject>(Vec3(7.5f - (i * 1.5f), -1.f, -6.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
@@ -846,7 +847,7 @@ namespace sy
 			}
 
 			{
-				//º®¿¡ ºÙÀº ±×¸² - AssortedPaintings
+				//ë²½ì— ë¶™ì€ ê·¸ë¦¼ - AssortedPaintings
 				DecoObject* pAssortedPaintings = Factory::CreateObject<DecoObject>(Vec3(-4.3f, 6.4f, -12.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\AssortedPaintings.fbx");
 
 				pAssortedPaintings->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
@@ -855,7 +856,7 @@ namespace sy
 				AddGameObject(pAssortedPaintings);
 			}
 
-			//2Ãş Å×ÀÌºí 1 -CofeeTableWithCloth
+			//2ì¸µ í…Œì´ë¸” 1 -CofeeTableWithCloth
 			{
 				PhysicsInfo Info;
 				Info.eActorType = ActorType::Static;
@@ -870,7 +871,7 @@ namespace sy
 				AddGameObject(pCofeeTableWithCloth);
 			}
 
-			//2Ãş ·¯±× - Rug_Mark
+			//2ì¸µ ëŸ¬ê·¸ - Rug_Mark
 			{
 				DecoObject* pRug_Mark = Factory::CreateObject<DecoObject>(Vec3(-9.2f, -1.8f, -13.7f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Rug_Mark.fbx");
 
@@ -880,7 +881,7 @@ namespace sy
 				AddGameObject(pRug_Mark);
 			}
 
-			//2Ãş ¿ÕÀÇÀÚ - fancyChairSit
+			//2ì¸µ ì™•ì˜ì - fancyChairSit
 			{
 				PhysicsInfo Info;
 				Info.eActorType = ActorType::Static;
@@ -903,8 +904,8 @@ namespace sy
 
 
 
-#pragma region "3Ãş"
-		// 3Ãş ¹Ù´Ú Äİ¶óÀÌ´õ
+#pragma region 3ì¸µ
+		// 3ì¸µ ë°”ë‹¥ ì½œë¼ì´ë”
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
@@ -915,7 +916,7 @@ namespace sy
 			AddGameObject(pWallObject);
 		}
 
-		// 3Ãş ¹Ù´Ú - floorextension_nocollider
+		// 3ì¸µ ë°”ë‹¥ - floorextension_nocollider
 		{
 			Ground* pfloorextension_nocollider = Factory::CreateObject<Ground>(Vec3(11.5f, 5.f, 169.8f), L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\floorextension_nocollider.fbx");
 
@@ -926,7 +927,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş º®ÂÊ Ä¿Æ° 1 - CurtainHorizontal
+			//3ì¸µ ë²½ìª½ ì»¤íŠ¼ 1 - CurtainHorizontal
 			DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(1.8f, 12.5f, 18.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CurtainHorizontal.fbx");
 
 			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
@@ -936,7 +937,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş º®ÂÊ Ä¿Æ° 2 - CurtainHorizontal
+			//3ì¸µ ë²½ìª½ ì»¤íŠ¼ 2 - CurtainHorizontal
 			DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(1.8f, 12.5f, 9.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CurtainHorizontal.fbx");
 
 			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
@@ -946,7 +947,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş º®ÂÊ Ä¿Æ° 3 - CurtainHorizontal
+			//3ì¸µ ë²½ìª½ ì»¤íŠ¼ 3 - CurtainHorizontal
 			DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(1.8f, 12.5f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CurtainHorizontal.fbx");
 
 			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
@@ -957,7 +958,7 @@ namespace sy
 
 
 		{
-			//3Ãş º®ÂÊ Ä¿Æ° 4 - CurtainHorizontal
+			//3ì¸µ ë²½ìª½ ì»¤íŠ¼ 4 - CurtainHorizontal
 			DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(1.8f, 12.5f, -11.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CurtainHorizontal.fbx");
 
 			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
@@ -967,7 +968,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş º®ÂÊ Ä¿Æ° 5 - CurtainHorizontal
+			//3ì¸µ ë²½ìª½ ì»¤íŠ¼ 5 - CurtainHorizontal
 			DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(1.8f, 12.5f, -20.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CurtainHorizontal.fbx");
 
 			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
@@ -977,7 +978,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş º®ÂÊ Ä¿Æ° 6 - CurtainHorizontal
+			//3ì¸µ ë²½ìª½ ì»¤íŠ¼ 6 - CurtainHorizontal
 			DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(2.1f, 12.5f, -12.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CurtainHorizontal.fbx");
 
 			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
@@ -986,7 +987,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş º®ÂÊ Ä¿Æ° 7 - CurtainHorizontal
+			//3ì¸µ ë²½ìª½ ì»¤íŠ¼ 7 - CurtainHorizontal
 			DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(-7.1f, 12.5f, -12.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CurtainHorizontal.fbx");
 
 			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
@@ -999,7 +1000,7 @@ namespace sy
 
 
 		{
-			//3Ãş ¤¡ÀÚ º®ÂÊ ±âµÕ
+			//3ì¸µ ã„±ì ë²½ìª½ ê¸°ë‘¥
 			DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(6.3f, 9.8f, -25.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 			pColumnFull->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
@@ -1009,7 +1010,7 @@ namespace sy
 
 
 		{
-			//3Ãş Áß°£ º®ÂÊ ±âµÕ
+			//3ì¸µ ì¤‘ê°„ ë²½ìª½ ê¸°ë‘¥
 			DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(6.3f, 9.8f, -6.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 			pColumnFull->GetTransform()->SetScale(Vec3(17.f, 17.f, 17.f));
@@ -1019,7 +1020,7 @@ namespace sy
 
 
 		{
-			//3Ãş ³­°£ ¸Ç¿ŞÂÊ ±âµÕ
+			//3ì¸µ ë‚œê°„ ë§¨ì™¼ìª½ ê¸°ë‘¥
 			DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.4f, 6.2f, 23.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 			pColumnFull->GetTransform()->SetScale(Vec3(16.5f, 4.5f, 16.5f));
@@ -1030,7 +1031,7 @@ namespace sy
 
 		
 		{
-			//3Ãş ³­°£ ¸Ç¿ŞÂÊ µÎ¹øÂ° ±âµÕ
+			//3ì¸µ ë‚œê°„ ë§¨ì™¼ìª½ ë‘ë²ˆì§¸ ê¸°ë‘¥
 			DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.3f, 6.2f, 18.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 			pColumnFull->GetTransform()->SetScale(Vec3(16.5f, 4.5f, 16.5f));
@@ -1040,7 +1041,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş ³­°£ ¸Ç¿ŞÂÊ ¼¼¹øÂ° ±âµÕ
+			//3ì¸µ ë‚œê°„ ë§¨ì™¼ìª½ ì„¸ë²ˆì§¸ ê¸°ë‘¥
 			DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.3f, 6.2f, 13.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
 
 			pColumnFull->GetTransform()->SetScale(Vec3(16.5f, 4.5f, 16.5f));
@@ -1049,7 +1050,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş ³­°£ ±ä ¸·´ë±â ¾Æ·¡ °¡·ÎÁÙ - WallRim
+			//3ì¸µ ë‚œê°„ ê¸´ ë§‰ëŒ€ê¸° ì•„ë˜ ê°€ë¡œì¤„ - WallRim
 			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(9.1f, 5.1f, 4.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
 
 			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 49.5f));
@@ -1059,7 +1060,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş ³­°£ ±ä ¸·´ë±â À§ °¡·ÎÁÙ 
+			//3ì¸µ ë‚œê°„ ê¸´ ë§‰ëŒ€ê¸° ìœ„ ê°€ë¡œì¤„ 
 			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(9.1f, 6.5f, 4.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
 
 			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 49.5f));
@@ -1069,7 +1070,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş ³­°£ ±ä ¸·´ë±â ¹İ´ëÆí °¡·ÎÁÙ - WallRim
+			//3ì¸µ ë‚œê°„ ê¸´ ë§‰ëŒ€ê¸° ë°˜ëŒ€í¸ ê°€ë¡œì¤„ - WallRim
 			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(14.1f, 5.1f, 10.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
 
 			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 72.f));
@@ -1079,7 +1080,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş ³­°£ ±ä ¸·´ë±â ¹İ´ëÆí ÃµÀå °¡·ÎÁÙ - WallRim
+			//3ì¸µ ë‚œê°„ ê¸´ ë§‰ëŒ€ê¸° ë°˜ëŒ€í¸ ì²œì¥ ê°€ë¡œì¤„ - WallRim
 			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(14.3f, 14.2f, 12.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
 
 			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 20.f, 73.f));
@@ -1090,7 +1091,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş ³­°£ ±ä ÃµÀå ¼¼·ÎÁÙ - WallRim
+			//3ì¸µ ë‚œê°„ ê¸´ ì²œì¥ ì„¸ë¡œì¤„ - WallRim
 			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(-5.7f, 14.2f, -25.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
 
 			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 20.f, 40.f));
@@ -1101,7 +1102,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş ³­°£ ÂªÀº ¸·´ë±â ¾Æ·¡ °¡·ÎÁÙ - WallRim
+			//3ì¸µ ë‚œê°„ ì§§ì€ ë§‰ëŒ€ê¸° ì•„ë˜ ê°€ë¡œì¤„ - WallRim
 			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(9.1f, 5.1f, 21.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
 
 			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 6.5f));
@@ -1111,7 +1112,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş ³­°£ ÂªÀº ¸·´ë±â À§ °¡·ÎÁÙ - WallRim
+			//3ì¸µ ë‚œê°„ ì§§ì€ ë§‰ëŒ€ê¸° ìœ„ ê°€ë¡œì¤„ - WallRim
 			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(9.1f, 6.5f, 21.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
 
 			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 6.5f));
@@ -1122,7 +1123,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş ³­°£ ÂªÀº ¸·´ë±â ¼¼·Î /  ¾Æ·¡ °¡·ÎÁÙ - WallRim
+			//3ì¸µ ë‚œê°„ ì§§ì€ ë§‰ëŒ€ê¸° ì„¸ë¡œ /  ì•„ë˜ ê°€ë¡œì¤„ - WallRim
 			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(10.8f, 5.1f, 23.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
 
 			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 6.5f));
@@ -1132,7 +1133,7 @@ namespace sy
 		}
 
 		{
-			//3Ãş ³­°£ ÂªÀº ¸·´ë±â ¼¼·Î / À§ °¡·ÎÁÙ - WallRim
+			//3ì¸µ ë‚œê°„ ì§§ì€ ë§‰ëŒ€ê¸° ì„¸ë¡œ / ìœ„ ê°€ë¡œì¤„ - WallRim
 			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(10.8f, 6.5f, 23.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\WallRim.fbx");
 
 			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 6.5f));
@@ -1143,7 +1144,7 @@ namespace sy
 		}
 
 		{
-			//³­°£ ¸·´ë±â - BannisterStick
+			//ë‚œê°„ ë§‰ëŒ€ê¸° - BannisterStick
 			DecoObject* pBannisterStick = Factory::CreateObject<DecoObject>(Vec3(9.f, 5.8f, 21.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
 
 			pBannisterStick->GetTransform()->SetScale(Vec3(2.f, 1.3f, 2.f));
@@ -1152,7 +1153,7 @@ namespace sy
 		}
 
 		{
-			//³­°£ ¸·´ë±â - BannisterStick
+			//ë‚œê°„ ë§‰ëŒ€ê¸° - BannisterStick
 			DecoObject* pBannisterStick = Factory::CreateObject<DecoObject>(Vec3(9.f, 5.8f, 20.01f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
 
 			pBannisterStick->GetTransform()->SetScale(Vec3(2.f, 1.3f, 2.f));
@@ -1161,7 +1162,7 @@ namespace sy
 		}
 
 		{
-			//³­°£ ¸·´ë±â - BannisterStick
+			//ë‚œê°„ ë§‰ëŒ€ê¸° - BannisterStick
 			for (float i = 0; i < 9; i++)
 			{
 				DecoObject* pBannisterStick = Factory::CreateObject<DecoObject>(Vec3(9.f, 5.8f, 11.7f-(i*2)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
@@ -1174,7 +1175,7 @@ namespace sy
 		}
 
 		{
-			//³­°£ ¸·´ë±â - BannisterStick
+			//ë‚œê°„ ë§‰ëŒ€ê¸° - BannisterStick
 			for (float i = 0; i < 3; i++)
 			{
 				DecoObject* pBannisterStick = Factory::CreateObject<DecoObject>(Vec3(9.f, 5.8f, -7.7f - (i * 2)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
@@ -1187,7 +1188,7 @@ namespace sy
 		}
 
 		{
-			//³­°£ ¸·´ë±â - BannisterStick
+			//ë‚œê°„ ë§‰ëŒ€ê¸° - BannisterStick
 			for (float i = 0; i < 3; i++)
 			{
 				DecoObject* pBannisterStick = Factory::CreateObject<DecoObject>(Vec3(9.f, 5.8f, -14.7f - (i * 2)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
@@ -1223,18 +1224,25 @@ namespace sy
 
 
 
-		// Toy ±î¸¶±Í ÀÏ´Ü ¹èÄ¡
+		//Player
 		{
 			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Dynamic;
-			physicsInfo.eGeometryType = GeometryType::Sphere;
-			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Capsule;
+			physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
-			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
+			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
+			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
+			pPlayer->AddComponent(new PaperBurnScript);
+			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
+			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
+			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
+			pPlayer->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.6f, 0.f));
 
-			PlayerMoveScript* pPlayerSc =  pPlayer->AddComponent(new PlayerMoveScript);
-	
+			pPlayer->GetRigidBody()->ApplyGravity();
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 			AddGameObject(pPlayer);
 		}
 
@@ -1243,7 +1251,7 @@ namespace sy
 
 
 
-		// Table // ±×³É ÇÏ´Â°Å ¿¹½Ã
+		// Table // ê·¸ëƒ¥ í•˜ëŠ”ê±° ì˜ˆì‹œ
 		/*{
 			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(5.f, 10.f, 20.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossTable.fbx");
 			pDecoObject->GetRigidBody()->RemoveGravity();
@@ -1253,7 +1261,7 @@ namespace sy
 			AddGameObject(pDecoObject);
 		}*/
 
-		// Left Collider // ±×·¡ÇÈ ¾È°¡Á®¿À°í Äİ¶óÀÌ´õ¸¸ ¼³Á¤ÇÏ´Â°Å
+		// Left Collider // ê·¸ë˜í”½ ì•ˆê°€ì ¸ì˜¤ê³  ì½œë¼ì´ë”ë§Œ ì„¤ì •í•˜ëŠ”ê±°
 		/*{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;

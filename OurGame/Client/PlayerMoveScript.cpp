@@ -7,68 +7,48 @@
 #include "MeshRenderer.h"
 #include "Collider.h"
 #include "SceneManager.h"
+#include "PaperBurnScript.h"
+#include "Player.h"
 
 PlayerMoveScript::PlayerMoveScript()
-	: mMoveSpeed(2.f)
+	: mMoveSpeed(NULL)
 {
 }
 
 void PlayerMoveScript::FixedUpdate()
 {
+	Player* pPlayer = Player::GetPlayer();
+
 	GameObject* obj = GetGameObject(); // == Getowner();
 	Transform* tr = GetTransform();
 	RigidBody* rb = GetRigidBody();
 	MeshRenderer* mr = GetMeshRenderer();
 
-	if (IS_PRESS(KeyType::H))
+	Vec3 mPos = tr->GetLook();
+
+	if (IS_DOWN(KeyType::H))
 	{
-		tr->SetPosition(Vec3(0.0f, 0.0f, 0.f));
+		tr->SetPosition(Vec3::Zero);
 	}
 
-	if (IS_PRESS(KeyType::UP))
+	CheckPenetration(rb, LayerType::DecoObject);
+	//CheckPenetration(rb, LayerType::Ground);
+	CheckPenetration(rb, LayerType::WallObject);
+	CheckPenetration(rb, LayerType::Obstacle);
+	CheckPenetration(rb, LayerType::Ground);
+
+	PaperBurnScript* pPaperBurn = GetGameObject()->GetScript<PaperBurnScript>();
+	pPaperBurn->SetReverse(true);
+	pPaperBurn->SetFinishedCallback(std::bind(&PlayerMoveScript::SimpleFunc, this));
+	if (IS_DOWN(KeyType::F))
 	{
-		rb->SetVelocity(AXIS_Z, mMoveSpeed);
+		pPaperBurn->SetPaperBurn();
 	}
 
-	if (IS_PRESS(KeyType::DOWN))
+	if (pPaperBurn->IsFinished())
 	{
-		rb->SetVelocity(AXIS_Z, -mMoveSpeed);
-	}
-
-	if (IS_PRESS(KeyType::LEFT))
-	{
-		rb->SetVelocity(AXIS_X, -mMoveSpeed);
-	}
-
-	if (IS_PRESS(KeyType::RIGHT))
-	{
-		rb->SetVelocity(AXIS_X, mMoveSpeed);
-	}
-
-	if (IS_DOWN(KeyType::SPACE))
-	{
-		rb->SetVelocity(AXIS_Y, mMoveSpeed * 5.f);
-	}
-
-	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::WallObject);
-	
-	for (int i = 0; i < gameObjects.size(); ++i)
-	{
-		if (gameObjects[i]->GetCollider())
-		{
-			PxVec3 dir;
-			float depth;
-			PxBoxGeometry geom0 = rb->GetGeometries()->boxGeom;
-			PxTransform pxTr(tr->GetPosition());
-			PxBoxGeometry geom1 = gameObjects[i]->GetRigidBody()->GetGeometries()->boxGeom;
-			PxTransform pxTr2(gameObjects[i]->GetTransform()->GetPosition());
-
-			bool isPenetrating = PxGeometryQuery::computePenetration(dir, depth, geom0, pxTr, geom1, pxTr2);
-			if (true == isPenetrating)
-			{
-				rb->SetVelocity(dir);
-			}
-		}
+		// ÆäÀÌÆÛ¹øÀÌ ³¡³²
+		int a = 0;
 	}
 
 	//Vec3 mPos = GetTransform()->GetPosition();
@@ -108,4 +88,44 @@ void PlayerMoveScript::FixedUpdate()
 Component* PlayerMoveScript::Clone(GameObject* _pGameObject)
 {
 	return _pGameObject->AddComponent(new PlayerMoveScript);
+}
+
+void PlayerMoveScript::CheckPenetration(RigidBody* _rigidBody, LayerType _eLayertype)
+{
+	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(_eLayertype);
+
+	for (int i = 0; i < gameObjects.size(); ++i)
+	{
+		if (gameObjects[i]->GetCollider())
+		{
+			PxVec3 dir;
+			float depth;
+			PxCapsuleGeometry playerGeom = _rigidBody->GetGeometries()->capsuleGeom;
+			PxTransform pxTr = _rigidBody->GetPhysicsTransform();
+			Geometries* otherGeom = gameObjects[i]->GetRigidBody()->GetGeometries();
+			PxTransform pxTr2 = gameObjects[i]->GetRigidBody()->GetPhysicsTransform();
+
+			bool isPenetrating = false;
+			switch (gameObjects[i]->GetRigidBody()->GetGeometryType())
+			{
+			case hm::GeometryType::Sphere:
+				isPenetrating = PxGeometryQuery::computePenetration(dir, depth, playerGeom, pxTr, otherGeom->sphereGeom, pxTr2);
+				break;
+			case hm::GeometryType::Box:
+				isPenetrating = PxGeometryQuery::computePenetration(dir, depth, playerGeom, pxTr, otherGeom->boxGeom, pxTr2);
+				break;
+			case hm::GeometryType::Capsule:
+				isPenetrating = PxGeometryQuery::computePenetration(dir, depth, playerGeom, pxTr, otherGeom->capsuleGeom, pxTr2);
+				break;
+			case hm::GeometryType::Plane:
+				isPenetrating = PxGeometryQuery::computePenetration(dir, depth, playerGeom, pxTr, otherGeom->planeGeom, pxTr2);
+				break;
+			}
+			
+			if (true == isPenetrating)
+			{
+				_rigidBody->SetVelocity(dir);
+			}
+		}
+	}
 }

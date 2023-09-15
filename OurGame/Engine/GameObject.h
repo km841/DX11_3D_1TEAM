@@ -109,6 +109,23 @@ namespace hm
 			return _pComponent;
 		}
 
+
+		/* 
+		* 타입을 템플릿 매개변수로 넘기면 타입에 맞는 스크립트를 찾아서 반환하는 함수
+		*/
+		template<typename T>
+		T* GetScript()
+		{
+			for (auto pScript : mScripts)
+			{
+				T* pPtr = dynamic_cast<T*>(pScript);
+				if (nullptr != pPtr)
+					return pPtr;
+			}
+
+			return nullptr;
+		}
+
 		virtual void OnCollisionEnter(Collider* pOtherCollider) {}
 		virtual void OnCollisionStay(Collider* pOtherCollider) {}
 		virtual void OnCollisionExit(Collider* pOtherCollider) {}

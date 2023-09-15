@@ -36,6 +36,7 @@
 #include "Animator.h"
 
 /* Script */
+#include "PaperBurnScript.h"
 #include "PlayerMoveScript.h"
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
@@ -71,4 +72,11 @@ void BigTransEndState_Gm::PlayAnimation()
 {
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
+	/*pGrandma->AddComponent(new PaperBurnScript);
+
+	shared_ptr<Texture> pNoiseTex = GET_SINGLE(Resources)->Load<Texture>(L"BurnNoise", L"..\\Resources\\Texture\\BurnNoise.png");
+	pGrandma->GetMeshRenderer()->GetMaterial()->SetTextureAllSubset(1, pNoiseTex);*/
+
+	pAni_Gm->Play(24, false);
+
 }

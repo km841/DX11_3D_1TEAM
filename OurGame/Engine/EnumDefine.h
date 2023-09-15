@@ -9,6 +9,7 @@ namespace hm
 		DeleteGameObjectsEvent,
 		RemoveGameObjectEvent,
 		RemoveGameObjectsEvent,
+		ChangeMaterialEvent,
 	};
 
 	enum class LayerType
@@ -18,6 +19,7 @@ namespace hm
 		Grandma_Boss,
 		Monster,
 		Npc,
+		Effect,
 		Ground,
 		Obstacle,
 		DecoObject,
@@ -176,7 +178,8 @@ namespace hm
 		Sphere,
 		Box,
 		Capsule,
-		Plane
+		Plane,
+		Mesh,
 	};
 
 	enum class ModelType

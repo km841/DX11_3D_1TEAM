@@ -19,6 +19,7 @@ namespace hm
 
 		const Vec3& GetGravity() { return mGravity; }
 		PxPhysics* GetPhysics() { return mpPhysics; }
+		PxCooking* GetCooking() { return mpCooking; }
 
 		static PxFilterFlags PlayerFilterShader(
 			PxFilterObjectAttributes _attributes0, PxFilterData _filterData0,
@@ -30,6 +31,7 @@ namespace hm
 		PxDefaultErrorCallback  mErrorCallback;
 		PxFoundation* mpFoundation;
 		PxPhysics* mpPhysics;
+		PxCooking* mpCooking;
 
 		PxPvdTransport* mpTransfort;
 		PxPvd* mpPvd;

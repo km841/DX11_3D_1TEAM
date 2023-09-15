@@ -22,6 +22,7 @@
 #include "Ground.h"
 #include "DecoObject.h"
 #include "WallObject.h"
+#include "ObstacleObject.h"
 #include "Npc.h"
 #include "Monster.h"
 
@@ -39,6 +40,7 @@
 #include "PlayerMoveScript.h"
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
+#include "TestRigidBodyScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -88,6 +90,8 @@ namespace jh
 	{
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Obstacle);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Obstacle, LayerType::Ground);
 
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
@@ -274,7 +278,7 @@ namespace jh
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(1.f, 15.f, 30.f);
 
-			WallObject* pWestWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-14.5f, 0.f, 0.f), info, L"Deferred");
+			WallObject* pWestWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-15.f, 0.f, 0.f), info, L"Deferred");
 			pWestWall->SetName(L"WestWall");
 
 			pWestWall->GetTransform()->SetScale(Vec3(1.f, 15.f, 30.f));
@@ -303,7 +307,7 @@ namespace jh
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(30.f, 15.f, 1.f);
 
-			WallObject* pNorthWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(0.f, 0.f, 9.f), info, L"Deferred");
+			WallObject* pNorthWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(0.f, 0.f, 9.5f), info, L"Deferred");
 			pNorthWall->SetName(L"NorthWall");
 
 			pNorthWall->GetTransform()->SetScale(Vec3(30.f, 15.f, 1.f));
@@ -316,11 +320,13 @@ namespace jh
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Kinematic;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+			physicsInfo.eGeometryType = GeometryType::Capsule;
+			physicsInfo.size = Vec3(1.5f, 0.4f, 1.5f);
 
 			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
 			pPlayer->AddComponent(new PlayerMoveScript);
+			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
+			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 0.f, -90.f));
 			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
 
 			pPlayer->GetRigidBody()->ApplyGravity();			
@@ -328,6 +334,22 @@ namespace jh
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 
 			AddGameObject(pPlayer);
+		}
+
+		// AddForce 테스트용 Dynamic 오브젝트
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+			ObstacleObject* testPot = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(5.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\POT_HEAL_Generic Variant (3).fbx");
+			
+			testPot->GetTransform()->SetScale(Vec3(2.87f, 3.1f, 2.87f));
+
+			testPot->AddComponent(new TestRigidBodyScript);
+
+			AddGameObject(testPot);
 		}
 	}
 

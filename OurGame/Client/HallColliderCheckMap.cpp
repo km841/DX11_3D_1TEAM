@@ -24,6 +24,7 @@
 #include "WallObject.h"
 #include "Npc.h"
 #include "Monster.h"
+#include "SwordHeavyEffect.h"
 
 /* Component */
 #include "Collider.h"
@@ -39,6 +40,9 @@
 #include "PlayerMoveScript.h"
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
+#include "PaperBurnScript.h"
+#include "PlayerSlashScript.h"
+#include "OwnerFollowScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -90,8 +94,6 @@ namespace jh
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 
-
-
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
@@ -107,25 +109,70 @@ namespace jh
 			AddGameObject(pGround);
 		}
 
-		// Player
+		// Door
+		{
+			DecoObject* pDoor = Factory::CreateObject<DecoObject>(Vec3(2.8f, 15.3f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\ShortcutDoor_Fix.fbx");
+			pDoor->AddComponent(new PaperBurnScript);
+
+			PaperBurnScript* pScript = pDoor->GetScript<PaperBurnScript>();
+			pScript->SetReverse(true);
+			pScript->SetPaperBurn();
+
+			pDoor->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+			pDoor->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+
+			AddGameObject(pDoor);
+			SetMeshTarget(pDoor);
+		}
+
+		// Door Back Glow
+		{
+			DecoObject* pDoor = Factory::CreateObject<DecoObject>(Vec3(2.8f, 15.3f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\DoorBackGlow.fbx");
+
+			pDoor->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+			pDoor->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+
+			pDoor->GetMeshRenderer()->GetMaterial()->SetBloom(true);
+			pDoor->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f));
+
+			AddGameObject(pDoor);
+		}
+
+		//Player
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Kinematic;
-			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.eGeometryType = GeometryType::Capsule;
 			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 15.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
-			//pPlayer->AddComponent(new TestAnimationScript);
-			pPlayer->SetFrustumCheckFlag(false);
-			pPlayer->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
-			pPlayer->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
+			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
+			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
+			pPlayer->AddComponent(new PaperBurnScript);
+			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
+			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
+			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
 
-			//pPlayer->GetRigidBody()->ApplyGravity(); // 중력을 받겠다 , 반대도있음
+			pPlayer->GetRigidBody()->ApplyGravity();
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-
 			AddGameObject(pPlayer);
-			SetMeshTarget(pPlayer);
+		}
+
+		// Sword_Heavy
+		{
+			SwordHeavyEffect* pSlashTest = Factory::CreateObject<SwordHeavyEffect>(Vec3(0.f, 8.f, 0.f), L"PlayerSlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbx");
+			pSlashTest->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pSlashTest->AddComponent(new PlayerSlashScript);
+			auto pFollowScript = pSlashTest->AddComponent(new OwnerFollowScript(PLAYER));
+			pFollowScript->SetOffset(Vec3(0.f, 1.f, 0.f));
+
+			pSlashTest->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::Clamp);
+
+			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"HeavySlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbm\\sword_slash_texture_1.png");
+			pSlashTest->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
+			pSlashTest->GetRigidBody()->RemoveGravity();
+			AddGameObject(pSlashTest);
 		}
 
 		// Toy
@@ -155,6 +202,7 @@ namespace jh
 				pTotalFrame->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
 				pTotalFrame->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(148.f, 147.f, 150.f));
 
+				
 				AddGameObject(pTotalFrame);
 				
 			}

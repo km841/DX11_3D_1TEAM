@@ -2,10 +2,10 @@
 #include "TimerObject.h"
 #include "Timer.h"
 
-TimerObject::TimerObject()
+TimerObject::TimerObject(float _endTime)
 	: mbIsFinished(false)
 	, mbIsRunning(false)
-	, mEndTime(0.f)
+	, mEndTime(_endTime)
 	, mCurTime(0.f)
 {
 }
@@ -35,6 +35,7 @@ void TimerObject::Start()
 
 void TimerObject::Stop()
 {
+	mbIsFinished = false;
 	mbIsRunning = false;
 	mCurTime = 0.f;
 }

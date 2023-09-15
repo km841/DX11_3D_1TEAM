@@ -1,9 +1,51 @@
 #include "pch.h"
 #include "Player.h"
+#include "Engine.h"
+
+/* Resource */
+#include "MeshData.h"
+#include "Material.h"
+#include "Mesh.h"
+
+/* Manager */
+#include "PrefabManager.h"
+#include "EventManager.h"
+#include "Factory.h"
+#include "CollisionManager.h"
+#include "Input.h"
+#include "SceneManager.h"
+#include "Resources.h"
+
+/* GameObject */
+#include "GameObject.h"
+#include "Player.h"
+#include "Ground.h"
+#include "DecoObject.h"
+#include "WallObject.h"
+#include "Npc.h"
+#include "Monster.h"
+#include "SwordHeavyEffect.h"
+
+/* Component */
 #include "Collider.h"
 #include "RigidBody.h"
+#include "MeshRenderer.h"
+#include "Transform.h"
+#include "Camera.h"
+#include "Light.h"
+#include "ParticleSystem.h"
 #include "Animator.h"
 
+/* Script */
+#include "PlayerMoveScript.h"
+#include "PlacementScript.h"
+#include "TestAnimationScript.h"
+#include "PaperBurnScript.h"
+#include "PlayerSlashScript.h"
+#include "OwnerFollowScript.h"
+
+/* Event */
+#include "SceneChangeEvent.h"
  /*State 모음*/
 #include "State.h"
 #include "PauseState.h"
@@ -16,11 +58,22 @@
 #include "HitState.h"
 #include "FallDownState.h"
 #include "DeadState.h"
+#include "ClimingDownState.h"
+#include "ClimingEndState.h"
+#include "ClimingUpState.h"
 
 Player* Player::spPlayer;
 
 Player::Player()
 	: GameObject(LayerType::Player)
+	, mHP(4)
+	, mCost(4)
+	, mSpeed(5.f)
+	, mAttack(1.f)
+	, mAttack_Speed(0.04f)
+	, mDash_Speed(25.f)
+	, meDirectionEvasion(DirectionEvasion::NONE)
+	
 {
 	AssertEx(spPlayer == nullptr, L"이미 정적 플레이어 존재함");
 	spPlayer = this; //정적변수 선언
@@ -35,8 +88,30 @@ Player::Player()
 	mState[int(PlayerState::HitState)] = new HitState;
 	mState[int(PlayerState::FallDownState)] = new FallDownState;
 	mState[int(PlayerState::DeadState)] = new DeadState;
+	mState[int(PlayerState::ClimingDownState)] = new ClimingDownState;
+	mState[int(PlayerState::ClimingEndState)] = new ClimingEndState;
+	mState[int(PlayerState::ClimingUpState)] = new ClimingUpState;
 
-	
+	// Sword_Heavy
+	{
+		mpSlashEffect = Factory::CreateObject<SwordHeavyEffect>(Vec3(0.f, 8.f, 0.f), L"PlayerSlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbx");
+		mpSlashEffect->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+		mpSlashEffect->AddComponent(new PlayerSlashScript);
+		auto pFollowScript = mpSlashEffect->AddComponent(new OwnerFollowScript(this));
+		pFollowScript->SetOffset(Vec3(0.f, -0.f, -0.f));
+
+		mpSlashEffect->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::Clamp);
+
+		shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"HeavySlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbm\\sword_slash_texture_1.png");
+		mpSlashEffect->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
+		mpSlashEffect->GetRigidBody()->RemoveGravity();
+		
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(mpSlashEffect);
+	}
+
+	//검 오브젝트
+	//검  -> Sc 
+	// Sc ( 검오브젝트 , 플레이어 오브젝트 
 }
 
 Player::~Player()
@@ -45,6 +120,7 @@ Player::~Player()
 	{
 		SAFE_DELETE(mState[i]);
 	}
+	
 }
 
 void Player::Initialize()
@@ -55,6 +131,70 @@ void Player::Initialize()
 
 	//mActiveState->Initialize();
 	
+#pragma region "플레이어 애니메이션 이름 변경"
+/*애니메이션 이름 변경*/
+	//아이들
+	GetAnimator()->RenameAnimation(42, L"_Player_Idle01"); //이름변경
+	GetAnimator()->SetLoop(42, true); //루프
+	GetAnimator()->SetHasExitFlag(42, true); // 기존 애니메이션 다끝나고 실행 f ? t
+	GetAnimator()->RenameAnimation(43, L"_Player_Idle02");
+	GetAnimator()->SetLoop(43, true); 
+	GetAnimator()->SetHasExitFlag(43, true); 
+
+	//이동
+	GetAnimator()->RenameAnimation(67, L"_Player_Move");
+	GetAnimator()->SetLoop(67, true);
+	GetAnimator()->SetHasExitFlag(67, true);
+
+	//회피
+	GetAnimator()->RenameAnimation(63, L"_Player_Evasion");
+	GetAnimator()->SetLoop(63, true);
+	GetAnimator()->SetHasExitFlag(63, true);
+	
+	//공격
+	GetAnimator()->RenameAnimation(69, L"_Player_Attack01");
+	GetAnimator()->SetLoop(69, true);
+	GetAnimator()->SetHasExitFlag(69, true);
+	GetAnimator()->RenameAnimation(70, L"_Player_Attack02");
+	GetAnimator()->SetLoop(70, true);
+	GetAnimator()->SetHasExitFlag(70, true);
+
+	//낙하
+	GetAnimator()->RenameAnimation(7, L"_Player_Fallstart");
+	GetAnimator()->SetLoop(7, true);
+	GetAnimator()->SetHasExitFlag(7, true);
+	GetAnimator()->RenameAnimation(8, L"_Player_Fallend");
+	GetAnimator()->SetLoop(8, true);
+	GetAnimator()->SetHasExitFlag(8, true);
+
+	//사다리
+	GetAnimator()->RenameAnimation(20, L"_Player_ClimingUp");
+	GetAnimator()->SetLoop(20, true);
+	GetAnimator()->SetHasExitFlag(20, true);
+	GetAnimator()->RenameAnimation(21, L"_Player_ClimingDown");
+	GetAnimator()->SetLoop(21, true);
+	GetAnimator()->SetHasExitFlag(21, true);
+	GetAnimator()->RenameAnimation(22, L"_Player_ClimingEnd");
+	GetAnimator()->SetLoop(22, true);
+	GetAnimator()->SetHasExitFlag(22, true);
+
+
+
+
+
+#pragma endregion
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -80,27 +220,36 @@ void Player::Initialize()
 void Player::Update()
 {
 	GameObject::Update();
+	
 	mActiveState->Update();
 }
 
 void Player::FixedUpdate()
 {
 	GameObject::FixedUpdate();
+	
+	
 }
 
 void Player::FinalUpdate()
 {
 	GameObject::FinalUpdate();
+	
+
 }
 
 void Player::Render()
 {
 	GameObject::Render();
+
+
 }
 
 void Player::Destroy()
 {
 	GameObject::Destroy();
+	
+
 }
 
 void Player::OnTriggerEnter(Collider* pOtherCollider)
@@ -109,6 +258,11 @@ void Player::OnTriggerEnter(Collider* pOtherCollider)
 	{
 		GetRigidBody()->RemoveGravity();
 		GetRigidBody()->SetVelocity(Vec3::Zero);
+	}
+
+	if (LayerType::Monster == pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		
 	}
 }
 
@@ -132,6 +286,11 @@ void Player::StateChange(PlayerState _eState)
 
 	mActiveState = mState[int(_eState)];
 	mActiveState->Enter();
+}
+
+void Player::SetDirectionChange(DirectionEvasion _eState)
+{
+	meDirectionEvasion = _eState;
 }
 
 Player* Player::GetPlayer()

@@ -4,6 +4,7 @@
 class EvasionState :
 	public State
 {
+
 public:
 	EvasionState();
 	virtual ~EvasionState() = default;
@@ -14,4 +15,5 @@ public:
 	virtual void Enter()  override;
 	virtual void Exit()  override;
 	virtual void PlayAnimation() override;
+
 };

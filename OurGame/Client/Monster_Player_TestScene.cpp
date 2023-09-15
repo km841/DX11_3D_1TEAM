@@ -26,6 +26,7 @@
 #include "Monster.h"
 #include "Grandma.h"
 
+#include "SwordHeavyEffect.h"
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -40,6 +41,9 @@
 #include "PlayerMoveScript.h"
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
+#include "PaperBurnScript.h"
+#include "OwnerFollowScript.h"
+#include "PlayerSlashScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -81,7 +85,12 @@ namespace hm {
 	void Monster_Player_TestScene::Enter()
 	{
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Grandma_Boss, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
+
+		//¹è°æ¸Ê ÇÏ¾á»öÀ¸·Î ¸¸µé¾îÁÖ´Â ÄÚµå
+		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
 		// 1Ãþ ¹Ù´Ú - Floor
 		{
@@ -90,7 +99,7 @@ namespace hm {
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(30.f, 0.1f, 37.f);
 
-			Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Floor.fbx");
+			Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\RoughLowerFloor.fbx");
 
 			pFloor->GetTransform()->SetScale(Vec3(37.f, 37.f, 37.f));
 			pFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
@@ -100,25 +109,29 @@ namespace hm {
 			
 		}
 
-		 //Player
-		//{
-		//	PhysicsInfo physicsInfo;
-		//	physicsInfo.eActorType = ActorType::Kinematic;
-		//	physicsInfo.eGeometryType = GeometryType::Box;
-		//	physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+		//Player
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Capsule;
+			physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
 
-		//	Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
-		//	//pPlayer->AddComponent(new TestAnimationScript);
-		//	PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
-		//	pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
-		//	pPlayer->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
+			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
+			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
+			pPlayer->AddComponent(new PaperBurnScript);
+			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
+			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
+			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
+			pPlayer->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.6f, 0.f));
 
-		//	pPlayer->GetRigidBody()->ApplyGravity();
-		//	pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-		//	pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-		//	AddGameObject(pPlayer);
-		//	//SetAnimTarget(pPlayer);
-		//}
+			pPlayer->GetRigidBody()->ApplyGravity();
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+			AddGameObject(pPlayer);
+		}
+
+		
 
 		
 		
@@ -142,17 +155,17 @@ namespace hm {
 		//// ÃÊ·Ï°Å¹Ì
 		//{
 		//	PhysicsInfo info = {};
-		//	info.eActorType = ActorType::Kinematic;
+		//	info.eActorType = ActorType::Dynamic;
 		//	info.eGeometryType = GeometryType::Box;
 		//	info.size = Vec3(2.f, 2.f, 2.f);
 
 		//	Monster* p_E_LURKER = Factory::CreateObjectHasPhysical<Monster>(Vec3(1.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_LURKER.fbx");
 		//	p_E_LURKER->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
 		//	p_E_LURKER->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-
+		//	p_E_LURKER->GetRigidBody()->ApplyGravity();
 		//	//SetGizmoTarget(p_E_LURKER);
 		//	AddGameObject(p_E_LURKER);
-		//	//SetAnimTarget(p_E_LURKER);
+		//	SetMeshTarget(p_E_LURKER);
 		//}
 		
 	
@@ -188,7 +201,7 @@ namespace hm {
 		//	SetAnimTarget(p_E_GRIMACE_KNIGHT);
 		//}
 
-		// ¹ÚÁã
+		 //¹ÚÁã
 		//{
 		//	PhysicsInfo info = {};
 		//	info.eActorType = ActorType::Kinematic;
@@ -201,7 +214,7 @@ namespace hm {
 		//	p_E_BAT_White->SetFrustumCheckFlag(false);
 		//	//SetGizmoTarget(p_E_BAT_White);
 		//	AddGameObject(p_E_BAT_White);
-		//	//SetAnimTarget(p_E_BAT_White);
+		//	SetMeshTarget(p_E_BAT_White);
 		//}
 
 		
@@ -211,33 +224,19 @@ namespace hm {
 			PhysicsInfo info = {};
 			info.eActorType = ActorType::Kinematic;
 			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(2.f, 2.f, 2.f);
+			info.size = Vec3(5.f, 5.f, 5.f);
 
-			Grandma* p_E_Grandma = Factory::CreateObjectHasPhysical<Grandma>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
-			p_E_Grandma->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+			Grandma* p_E_Grandma = Factory::CreateObjectHasPhysical<Grandma>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred_CullNone", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
+			p_E_Grandma->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
 			p_E_Grandma->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 			p_E_Grandma->SetFrustumCheckFlag(false);
-
+			//p_E_Grandma->GetRigidBody()->ApplyGravity();
 			//SetGizmoTarget(p_E_Grandma);
 			AddGameObject(p_E_Grandma);
-			SetMeshTarget(p_E_Grandma);
+			//SetMeshTarget(p_E_Grandma);
 		}
 
-		////Ç×¾Æ¸® ¹Ì¹Í - POT_Mimic_Melee_AVARICE
-		//{
-		//	PhysicsInfo info = {};
-		//	info.eActorType = ActorType::Kinematic;
-		//	info.eGeometryType = GeometryType::Box;
-		//	info.size = Vec3(2.f, 2.f, 2.f);
-
-		//	Monster* pPOT_Mimic_Melee_AVARICE = Factory::CreateObjectHasPhysical<Monster>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\POT_Mimic_Melee_AVARICE.fbx");
-		//	pPOT_Mimic_Melee_AVARICE->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
-		//	pPOT_Mimic_Melee_AVARICE->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-
-		//	//SetGizmoTarget(p_E_Grandma);
-		//	AddGameObject(pPOT_Mimic_Melee_AVARICE);
-		//	//SetAnimTarget(pPOT_Mimic_Melee_AVARICE);
-		//}
+		
 	}
 	void Monster_Player_TestScene::Exit()
 	{

@@ -1,6 +1,7 @@
 #pragma once
 #include "Grandma.h"	
-
+#include "TimerObject.h"
+class Player;
 class State_Grandma
 {
 public:
@@ -16,4 +17,7 @@ public:
 
 private:
 	GrandmaState meGrandmaState;
+protected:
+	std::vector<TimerObject> mTimerObj_Gm;
+	
 };

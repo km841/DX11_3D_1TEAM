@@ -1,9 +1,11 @@
 #pragma once
 #include "Player.h"
-
+#include "TimerObject.h"
 
 class State
 {
+public:
+	friend class Player;
 public:
 	State(PlayerState _mePlayerState);
 	virtual ~State() = default;
@@ -17,5 +19,9 @@ public:
 
 private:
 	PlayerState mePlayerState;
+	
+
+protected:
+	std::vector<TimerObject> mTimerObj;
 };
 

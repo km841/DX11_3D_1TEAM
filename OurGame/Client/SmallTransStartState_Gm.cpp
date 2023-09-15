@@ -56,6 +56,9 @@ void SmallTransStartState_Gm::Update()
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
 	//pGrandma->StateChange_Grandma(GrandmaState::IdleState);
+	if(pAni_Gm->GetFrameRatio() > 0.99)
+		pGrandma->StateChange_Grandma(GrandmaState::SmallTransEndState);
+
 }
 
 void SmallTransStartState_Gm::Enter()
@@ -71,4 +74,6 @@ void SmallTransStartState_Gm::PlayAnimation()
 {
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
+
+	pAni_Gm->Play(14, false);
 }

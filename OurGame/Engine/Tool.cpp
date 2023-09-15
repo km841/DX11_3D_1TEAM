@@ -394,15 +394,19 @@ namespace hm
 			if (IS_DOWN(KeyType::DOWN) && static_cast<UINT32>(selectMeshIdx) < maxCount - 1)
 			{
 				pMaterial->SetBloom(false, selectMeshIdx);
+				pMaterial->SetBloomColor(Vec4(0.f, 0.f, 0.f, 1.f), selectMeshIdx);
 				selectMeshIdx += 1;
 				pMaterial->SetBloom(true, selectMeshIdx);
+				pMaterial->SetBloomColor(Vec4(1.f, 0.f, 0.f, 1.f), selectMeshIdx);
 			}
 
 			if (IS_DOWN(KeyType::UP) && static_cast<UINT32>(selectMeshIdx) > 0)
 			{
 				pMaterial->SetBloom(false, selectMeshIdx);
+				pMaterial->SetBloomColor(Vec4(0.f, 0.f, 0.f, 1.f), selectMeshIdx);
 				selectMeshIdx -= 1;
 				pMaterial->SetBloom(true, selectMeshIdx);
+				pMaterial->SetBloomColor(Vec4(1.f, 0.f, 0.f, 1.f), selectMeshIdx);
 			}
 			
 		}

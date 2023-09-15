@@ -20,6 +20,8 @@
 #include <numeric>
 #include <filesystem>
 #include <algorithm>
+#include <typeinfo>
+#include <typeindex>
 
 #include "imgui_internal.h"
 #include "imgui.h"
@@ -65,6 +67,7 @@
 #pragma comment(lib, "PhysX\\debug\\PhysX_64.lib")
 #pragma comment(lib, "PhysX\\debug\\PhysXFoundation_64.lib")
 #pragma comment(lib, "PhysX\\debug\\PhysXCommon_64.lib")
+#pragma comment(lib, "PhysX\\debug\\PhysXCooking_64.lib")
 #pragma comment(lib, "PhysX\\debug\\PhysXExtensions_static_64.lib")
 #pragma comment(lib, "PhysX\\debug\\PhysXPvdSDK_static_64.lib")
 #pragma comment(lib, "PhysX\\debug\\PhysXCharacterKinematic_static_64.lib")
@@ -79,6 +82,7 @@
 #pragma comment(lib, "PhysX\\release\\PhysX_64.lib")
 #pragma comment(lib, "PhysX\\release\\PhysXFoundation_64.lib")
 #pragma comment(lib, "PhysX\\release\\PhysXCommon_64.lib")
+#pragma comment(lib, "PhysX\\release\\PhysXCooking_64.lib")
 #pragma comment(lib, "PhysX\\release\\PhysXExtensions_static_64.lib")
 #pragma comment(lib, "PhysX\\release\\PhysXPvdSDK_static_64.lib")
 #pragma comment(lib, "PhysX\\release\\PhysXCharacterKinematic_static_64.lib")

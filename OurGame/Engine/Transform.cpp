@@ -179,6 +179,7 @@ namespace hm
 			PxTransform transform = pRigidBody->GetActor<PxRigidActor>()->getGlobalPose();
 			transform.p = _position;
 			pRigidBody->GetActor<PxRigidActor>()->setGlobalPose(transform);
+			mPosition = _position;
 		}
 		else
 		{

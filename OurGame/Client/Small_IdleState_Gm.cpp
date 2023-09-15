@@ -56,6 +56,24 @@ void Small_IdleState_Gm::Update()
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
 	//pGrandma->StateChange_Grandma(GrandmaState::IdleState);
+
+	if (pAni_Gm->GetFrameRatio() > 0.4f)
+		pGrandma->StateChange_Grandma(GrandmaState::SmallAttack01State);
+
+
+
+
+
+
+	if (IS_DOWN(KeyType::UP))
+	{
+		pGrandma->StateChange_Grandma(GrandmaState::SmallAttack01State);
+	}
+	if (IS_DOWN(KeyType::DOWN))
+	{
+		pGrandma->StateChange_Grandma(GrandmaState::BigTransStartState);
+	}
+	
 }
 
 void Small_IdleState_Gm::Enter()
@@ -71,4 +89,6 @@ void Small_IdleState_Gm::PlayAnimation()
 {
 	Grandma* pGrandma = Grandma::GetGrandma();
 	Animator* pAni_Gm = pGrandma->GetAnimator();
+	pAni_Gm->Play(19, false);
+
 }

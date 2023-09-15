@@ -15,6 +15,7 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "Resources.h"
+#include "State.h"
 
 /* GameObject */
 #include "GameObject.h"
@@ -57,6 +58,136 @@ void MoveState::Update()
 	//조건 걸어서 다른 스테이트 넘어가게 해주는 구조 만들기
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
+	Transform* tr = pPlayer->GetTransform();
+	RigidBody* rb = pPlayer->GetRigidBody();
+
+#pragma region "이동 방향 힘 결정"
+	float mMoveSpeed = pPlayer->GetMoveSpeed();
+
+	if (IS_PRESS(KeyType::UP))
+	{
+		rb->SetVelocity(AXIS_Z, mMoveSpeed);
+		tr->SetRotation(Vec3(0.f, 180.f, 90.f));
+		//tr->SetRotation(Vec3(-90.f, 0.f, 180.f));
+	}
+
+	if (IS_PRESS(KeyType::DOWN))
+	{
+		rb->SetVelocity(AXIS_Z, -mMoveSpeed);
+		tr->SetRotation(Vec3(0.f, 0.f, 90.f));
+
+	}
+
+	if (IS_PRESS(KeyType::LEFT))
+	{
+		rb->SetVelocity(AXIS_X, -mMoveSpeed);
+		tr->SetRotation(Vec3(0.f, 90.f, 90.f));
+
+	}
+
+	if (IS_PRESS(KeyType::RIGHT))
+	{
+		rb->SetVelocity(AXIS_X, mMoveSpeed);
+		tr->SetRotation(Vec3(0.f, -90.f, 90.f));
+
+	}
+
+	if (IS_DOWN(KeyType::SPACE))
+	{
+		rb->SetVelocity(AXIS_Y, mMoveSpeed * 5.f);
+	}
+
+	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::LEFT))
+	{
+		mMoveSpeed = mMoveSpeed / 2;
+		tr->SetRotation(Vec3(0.f, 135.f, 90.f));
+	}
+	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::RIGHT))
+	{
+		mMoveSpeed /= 2;
+		tr->SetRotation(Vec3(0.f, 225.f, 90.f));
+	}
+	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::RIGHT))
+	{
+		mMoveSpeed /= 2;
+		tr->SetRotation(Vec3(0.f, 315.f, 90.f));
+	}
+	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::LEFT))
+	{
+		mMoveSpeed /= 2;
+		tr->SetRotation(Vec3(0.f, 45.f, 90.f));
+	}
+#pragma endregion
+
+
+#pragma region "방향 설정"
+	if (IS_PRESS(KeyType::UP))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::FORWARD);
+	}
+
+	if (IS_PRESS(KeyType::DOWN))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::BACKWARD);
+	}
+
+	if (IS_PRESS(KeyType::RIGHT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::RIGHT);
+	}
+
+	if (IS_PRESS(KeyType::LEFT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::LEFT);
+	}
+
+	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::LEFT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::TOPLEFT);
+	}
+
+	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::RIGHT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::TOPRIGHT);
+	}
+
+	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::LEFT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::BOTTOMLEFT);
+	}
+
+	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::RIGHT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::BOTTOMRIGHT);
+	}
+
+#pragma endregion
+
+	if (IS_UP(KeyType::UP) || IS_UP(KeyType::DOWN) ||
+		IS_UP(KeyType::LEFT) || IS_UP(KeyType::RIGHT))
+	{
+		pPlayer->StateChange(PlayerState::IdleState);
+	}
+	if (IS_DOWN(KeyType::LBUTTON))
+	{
+		pPlayer->StateChange(PlayerState::AttackState);
+	}
+	if (IS_DOWN(KeyType::SHIFT_L))
+	{
+		pPlayer->StateChange(PlayerState::EvasionState);
+	}
+	if (IS_DOWN(KeyType::G))
+	{
+		pPlayer->StateChange(PlayerState::ClimingUpState);
+	}
+	if (IS_DOWN(KeyType::B))
+	{
+		pPlayer->StateChange(PlayerState::ClimingDownState);
+	}
+
+
+	if(pAni->GetFrameRatio() > 0.7)
+		PlayAnimation();
 
 
 	//pPlayer->StateChange(PlayerState::AttackState);
@@ -78,5 +209,5 @@ void MoveState::PlayAnimation()
 	Animator* pAni = pPlayer->GetAnimator();
 
 
-	//pAni->Play(4, true);
+	pAni->Play(67, true);
 }

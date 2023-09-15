@@ -133,10 +133,21 @@ struct Geometries
 		}
 	}
 
+	Geometries(GeometryType eGeometryType, PxTriangleMesh* _pTriangleMesh, Vec3 _size)
+		: eGeomType(GeometryType::Mesh)
+	{
+		// RigidStatic¿œ ãö,
+		if (GeometryType::Mesh == eGeometryType)
+		{
+			triangleGeom = PxTriangleMeshGeometry(_pTriangleMesh, PxMeshScale(_size));
+		}
+	}
+
 	PxBoxGeometry boxGeom;
 	PxCapsuleGeometry capsuleGeom;
 	PxPlaneGeometry planeGeom;
 	PxSphereGeometry sphereGeom;
+	PxTriangleMeshGeometry triangleGeom;
 	GeometryType eGeomType;
 };
 

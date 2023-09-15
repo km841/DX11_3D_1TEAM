@@ -18,6 +18,12 @@ namespace hm
         void*                     pData;
     };
 
+    struct TriangleMeshInfo
+    {
+        std::vector<PxVec3> vertices;
+        std::vector<int> indices;
+    };
+
     struct MeshContainer
     {
         VertexBufferInfo             vertexBufferInfo;
@@ -93,6 +99,8 @@ namespace hm
 
         void SaveBoneAndAnimations(FILE* _pFile);
         void LoadBoneAndAnimations(FILE* _pFile);
+
+        TriangleMeshInfo GetTriangleMeshInfo();
 
     public:
         // 정점 정보를 통해 정점 버퍼를 생성하는 함수

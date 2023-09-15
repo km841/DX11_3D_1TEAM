@@ -193,6 +193,30 @@
     <ClInclude Include="Teleport_OutState_Gm.h">
       <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
     </ClInclude>
+    <ClInclude Include="ObstacleObject.h">
+      <Filter>소스 파일\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="TestRigidBodyScript.h">
+      <Filter>소스 파일\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="ClimingUpState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="ClimingDownState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="ClimingEndState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>소스 파일\GameObject\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="OwnerFollowScript.h">
+      <Filter>소스 파일\GameObject\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="SwordHeavyEffect.h">
+      <Filter>소스 파일\GameObject\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -384,6 +408,30 @@
     <ClCompile Include="Teleport_OutState_Gm.cpp">
       <Filter>소스 파일\GameObject\Monster\Grandma_Boss\State</Filter>
     </ClCompile>
+    <ClCompile Include="ObstacleObject.cpp">
+      <Filter>소스 파일\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="TestRigidBodyScript.cpp">
+      <Filter>소스 파일\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="ClimingDownState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="ClimingEndState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="ClimingUpState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>소스 파일\GameObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="OwnerFollowScript.cpp">
+      <Filter>소스 파일\GameObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="SwordHeavyEffect.cpp">
+      <Filter>소스 파일\GameObject\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -441,6 +489,9 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Monster\Grandma_Boss\State">
       <UniqueIdentifier>{66740e09-23cd-4f24-8b56-2a4b1da49304}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Effect">
+      <UniqueIdentifier>{42c4b81b-5a0c-45e4-bcaa-ea135f7766a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

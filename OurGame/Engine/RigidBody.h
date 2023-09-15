@@ -1,6 +1,5 @@
 #pragma once
 #include "Component.h"
-
 namespace hm
 {
 	class RigidBody :
@@ -54,6 +53,7 @@ namespace hm
 
 		void SetMaxVelocity(float _maxVelocity);
 		void CheckMaxVelocity();
+		bool GetmbAppliedGravity() { return mbAppliedGravity; }
 
 		void ApplyGravity();
 		void RemoveGravity();
@@ -66,6 +66,8 @@ namespace hm
 		bool IsActorInScene() { return mbIsActorInScene; }
 
 		void AddForce(const Vec3& _force);
+		void AddTorque(const Vec3& _force);
+		void AddForceAndTorque(const Vec3& _force);
 		void RemoveAxisSpeedAtUpdate(Axis _eAxis, bool _bFlag);
 
 	private:
@@ -73,6 +75,8 @@ namespace hm
 		void CreateCapsuleGeometry();
 		void CreatePlaneGeometry();
 		void CreateSphereGeometry();
+		void CreateMeshGeometry();
+		PxTriangleMesh* CreateTriangleMesh(const struct TriangleMeshInfo& _meshInfo);
 
 	private:
 		void CreateGeometry();

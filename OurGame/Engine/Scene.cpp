@@ -306,6 +306,11 @@ namespace hm
 		AssertEx(mpUICamera, L"Scene::GetMainCamera() : UI CameraObject is nullptr");
 		return mpUICamera->GetCamera();
 	}
+	Light* Scene::GetDirLight()
+	{
+		AssertEx(mpDirLight, L"GetDirLight() : Dir LightObject is nullptr");
+		return mpDirLight->GetLight();
+	}
 	void Scene::SetDirLightPosition(const Vec3& _position)
 	{
 		AssertEx(mpDirLight, L"Scene::SetDirLightPosition() : DirLight is nullptr");
