@@ -66,13 +66,13 @@ Player* Player::spPlayer;
 
 Player::Player()
 	: GameObject(LayerType::Player)
-	, mHP(4)
-	, mCost(4)
-	, mSpeed(5.f)
-	, mAttack(1.f)
-	, mAttack_Speed(0.04f)
-	, mDash_Speed(25.f)
-	, meDirectionEvasion(DirectionEvasion::NONE)
+	, mHP(4) // 피통
+	, mCost(4) // 마나
+	, mSpeed(5.f) // 이동속도
+	, mAttack(1.f) // 데미지
+	, mAttack_Speed(0.04f) // 공속
+	, mDash_Speed(25.f) // 회피시 주는 물리 힘
+	, meDirectionEvasion(DirectionEvasion::NONE) // 플레이어 8방향 enum 으로 표시
 	
 {
 	AssertEx(spPlayer == nullptr, L"이미 정적 플레이어 존재함");
