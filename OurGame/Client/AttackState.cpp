@@ -49,7 +49,7 @@
 
 AttackState::AttackState()
 	: State(PlayerState::AttackState)
-	, mTrigger(true)
+	, mbTrigger(true)
 {
 }
 
@@ -80,15 +80,15 @@ void AttackState::Update()
 	{
 	
 
-		if (mTrigger == true)
+		if (mbTrigger == true)
 		{
-			mTrigger = false;
+			mbTrigger = false;
 			PlayAnimation();
 			return;
 		}
-		if (mTrigger == false)
+		if (mbTrigger == false)
 		{
-			mTrigger = true;
+			mbTrigger = true;
 			PlayAnimation();
 			return;
 		}
@@ -117,10 +117,11 @@ void AttackState::PlayAnimation()
 
 	DirSlash();
 
-	if (!mTrigger)
+	if (!mbTrigger)
 	{
 		pAni->Play(69, false);
-	
+
+		pSlashSc->ChangeReverse();
 		pSlashSc->Attack();
 	}
 	else

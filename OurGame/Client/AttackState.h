@@ -26,6 +26,6 @@ private:
 	void BottomRightSlash();
 	
 private:
-	bool mTrigger;
+	bool mbTrigger;
 	
 };
