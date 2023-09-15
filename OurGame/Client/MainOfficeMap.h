@@ -1,5 +1,6 @@
 #pragma once
 #include "Map.h"
+#include "Elevator.h"
 namespace yj {
 	class MainOfficeMap :
 		public Map
@@ -18,7 +19,8 @@ namespace yj {
 			
 		virtual void Enter();
 		virtual void Exit();
-		GameObject* Target;
+
+		Elevator* eTarget;
 	};
 }
 
