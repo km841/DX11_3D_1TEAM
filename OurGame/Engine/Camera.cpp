@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "MeshRenderer.h"
 #include "ParticleSystem.h"
+#include "Effect.h"
 
 namespace hm
 {
@@ -79,6 +80,7 @@ namespace hm
 		mForwardObjects.clear();
 		mDeferredObjects.clear();
 		mParticleObjects.clear();
+		mEffectObjects.clear();
 
 		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 		{
@@ -100,6 +102,9 @@ namespace hm
 
 				if (nullptr != pGameObject->GetMeshRenderer())
 				{
+					if (LayerType::Effect == pGameObject->GetLayerType())
+						mEffectObjects.push_back(pGameObject);
+
 					if (nullptr == pGameObject->GetMeshRenderer()->GetMaterial())
 						continue;
 
@@ -221,6 +226,15 @@ namespace hm
 		for (auto& pGameObject : mShadowObjects)
 		{
 			pGameObject->GetMeshRenderer()->RenderShadow(this);
+		}
+	}
+	void Camera::RenderEffect()
+	{
+		for (GameObject* pGameObject : mEffectObjects)
+		{
+			Effect* pEffect = static_cast<Effect*>(pGameObject);
+			pEffect->PushBloomData();
+			pEffect->GetMeshRenderer()->RenderEffect(this);
 		}
 	}
 }

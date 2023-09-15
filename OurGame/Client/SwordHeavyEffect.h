@@ -21,6 +21,8 @@ public:
 	virtual void Render();
 	virtual void Destroy();
 
+	virtual void PushBloomData();
+
 private:
 
 };

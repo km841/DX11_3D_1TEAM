@@ -23,6 +23,7 @@ namespace hm
         */
         void                 Render(Camera* _pCamera);
         void                 Render(Camera* _pCamera, InstancingBuffer* _pBuffer);
+        void                 RenderEffect(Camera* _pCamera);
         void                 RenderShadow(Camera* _pCamera);
 
         void                 SetMaterial(shared_ptr<Material> _pMaterial);

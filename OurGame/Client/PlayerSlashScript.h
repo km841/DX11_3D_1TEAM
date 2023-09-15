@@ -3,6 +3,7 @@
 class PlayerSlashScript :
     public MonoBehavior
 {
+    friend class SwordHeavyEffect;
 public:
     PlayerSlashScript();
     virtual ~PlayerSlashScript() = default;

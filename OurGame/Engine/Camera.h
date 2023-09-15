@@ -54,9 +54,11 @@ namespace hm
 
         void RenderShadow();
 
+        void RenderEffect();
 
         const std::vector<GameObject*>& GetForwardObjects() { return mForwardObjects; }
         const std::vector<GameObject*>& GetDeferredObjects() { return mDeferredObjects; }
+        const std::vector<GameObject*>& GetEffectObjects() { return mEffectObjects; }
 
 	private:
         ProjectionType meProjectionType;
@@ -76,6 +78,7 @@ namespace hm
         std::vector<GameObject*> mDeferredObjects;
         std::vector<GameObject*> mParticleObjects;
         std::vector<GameObject*> mShadowObjects;
+        std::vector<GameObject*> mEffectObjects;
 
         Frustum         mFrustumCulling;
 	};
