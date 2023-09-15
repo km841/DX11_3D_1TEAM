@@ -173,7 +173,7 @@ namespace yj
 			AddGameObject(pBusStop);
 		}
 
-#pragma region "사무실 책상 리스트"
+#pragma region 사무실 책상 리스트
 
 
 		{
@@ -224,7 +224,7 @@ namespace yj
 #pragma endregion
 
 
-#pragma region "사무실 의자 리스트"
+#pragma region 사무실 의자 리스트
 
 		std::vector<GameObject*> chairList;
 

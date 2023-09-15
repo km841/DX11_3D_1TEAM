@@ -208,14 +208,14 @@
     <ClInclude Include="ClimingEndState.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="Effect.h">
-      <Filter>소스 파일\GameObject\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="OwnerFollowScript.h">
       <Filter>소스 파일\GameObject\Effect</Filter>
     </ClInclude>
     <ClInclude Include="SwordHeavyEffect.h">
       <Filter>소스 파일\GameObject\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Elevator.h">
+      <Filter>소스 파일\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -423,14 +423,14 @@
     <ClCompile Include="ClimingUpState.cpp">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="Effect.cpp">
-      <Filter>소스 파일\GameObject\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="OwnerFollowScript.cpp">
       <Filter>소스 파일\GameObject\Effect</Filter>
     </ClCompile>
     <ClCompile Include="SwordHeavyEffect.cpp">
       <Filter>소스 파일\GameObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Elevator.cpp">
+      <Filter>소스 파일\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

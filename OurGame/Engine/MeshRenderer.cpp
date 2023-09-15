@@ -96,6 +96,28 @@ namespace hm
 			}
 		}
 	}
+	void MeshRenderer::RenderEffect(Camera* _pCamera)
+	{
+		AssertEx(nullptr != mpMaterial, L"MeshRenderer::Render() - Material is empty");
+		AssertEx(nullptr != mpMaterial->GetShader(), L"MeshRenderer::Render() - Shader is empty");
+		AssertEx(nullptr != mpMesh, L"MeshRenderer::Render() - Mesh is empty");
+
+		GetTransform()->PushData(_pCamera);
+		CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
+
+		UINT32 meshCount = mpMesh->GetMeshContainerCount();
+		for (UINT i = 0; i < meshCount; ++i)
+		{
+			if (false == mSubsetRenderFlags.empty() && false == mSubsetRenderFlags[i])
+				continue;
+
+			MaterialContainer* pContainer = mpMaterial->GetMaterialContainer(i);
+			for (UINT32 j = 0; j < pContainer->materialSubsetVec.size(); ++j)
+			{
+				mpMesh->RenderInstancing(1, i);
+			}
+		}
+	}
 	void MeshRenderer::RenderShadow(Camera* _pCamera)
 	{
 		GetTransform()->PushData(_pCamera);

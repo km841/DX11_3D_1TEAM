@@ -223,6 +223,7 @@
     <ClInclude Include="ChangeMaterialEvent.h">
       <Filter>Manager\EventManager</Filter>
     </ClInclude>
+    <ClInclude Include="Effect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EnginePch.cpp">
@@ -423,6 +424,7 @@
     <ClCompile Include="ChangeMaterialEvent.cpp">
       <Filter>Manager\EventManager</Filter>
     </ClCompile>
+    <ClCompile Include="Effect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -478,6 +480,9 @@
     </Filter>
     <Filter Include="Utils\ImGui\ImGuizmo">
       <UniqueIdentifier>{42cf2c1c-5dfb-433a-81f6-8dbbc494918e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\GameObject\Effect">
+      <UniqueIdentifier>{66548ec0-bd97-4d33-9f06-3fbc4ea9dec6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

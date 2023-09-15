@@ -66,6 +66,7 @@ namespace hm
 
 		RenderShadow(_pScene);
 		RenderDeferred(_pScene);
+		RenderEffect(_pScene);
 		RenderBloom();
 		RenderLight(_pScene);
 
@@ -149,6 +150,20 @@ namespace hm
 				continue;
 
 			RenderInstancing(pCameraObject->GetCamera(), pCameraObject->GetCamera()->GetDeferredObjects());
+		}
+	}
+
+	void RenderManager::RenderEffect(Scene* _pScene)
+	{
+		shared_ptr<Texture> pBloomTarget = GET_SINGLE(Resources)->Get<Texture>(L"BloomTarget");
+		CONTEXT->OMSetRenderTargets(1, pBloomTarget->GetRTV().GetAddressOf(), nullptr);
+		RenderInstancing(_pScene->mpMainCamera->GetCamera(), _pScene->mpMainCamera->GetCamera()->GetEffectObjects());
+		for (GameObject* pCameraObject : _pScene->mCameraObjects)
+		{
+			if (pCameraObject == _pScene->mpMainCamera)
+				continue;
+
+			RenderInstancing(pCameraObject->GetCamera(), pCameraObject->GetCamera()->GetEffectObjects());
 		}
 	}
 

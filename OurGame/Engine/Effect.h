@@ -22,7 +22,7 @@ namespace hm
 		virtual void FinalUpdate();
 		virtual void Render();
 		virtual void Destroy();
+
+		virtual void PushBloomData() {}
 	};
 }
-
-

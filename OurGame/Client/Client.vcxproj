@@ -159,7 +159,7 @@
     <ClInclude Include="DeathState_Gm.h" />
     <ClInclude Include="DecoObject.h" />
     <ClInclude Include="DiningColliderCheckMap.h" />
-    <ClInclude Include="Effect.h" />
+    <ClInclude Include="Elevator.h" />
     <ClInclude Include="EntranceHallMap.h" />
     <ClInclude Include="EvasionState.h" />
     <ClInclude Include="Factory.h" />
@@ -233,7 +233,7 @@
     <ClCompile Include="DeathState_Gm.cpp" />
     <ClCompile Include="DecoObject.cpp" />
     <ClCompile Include="DiningColliderCheckMap.cpp" />
-    <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="Elevator.cpp" />
     <ClCompile Include="EntranceHallMap.cpp" />
     <ClCompile Include="EvasionState.cpp" />
     <ClCompile Include="Factory.cpp" />
