@@ -308,7 +308,7 @@ namespace sy
 				info.eGeometryType = GeometryType::Box;
 				info.size = Vec3(0.7f, 3.f, 16.f);
 
-				Ground* pCube1 = Factory::CreateObjectHasPhysical<Ground>(Vec3(-9.8f, -4.f, 1.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube1.fbx");
+				WallObject* pCube1 = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-9.8f, -4.f, 1.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube1.fbx");
 
 				pCube1->GetTransform()->SetScale(Vec3(30.f, 26.f, 25.f));
 				pCube1->GetTransform()->SetRotation(Vec3(28.f, 0.f, 0.f));

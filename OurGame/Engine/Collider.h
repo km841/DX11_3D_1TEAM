@@ -24,6 +24,7 @@ namespace hm
 
     public:
         bool Raycast(const Vec3& _origin, const Vec3& _dir, Collider* _pOther, float _maxDist);
+        const PxRaycastHit& GetRayHitInfo() { return mRaycastHit; }
 
     private:
         template<typename T>
