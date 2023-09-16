@@ -103,7 +103,9 @@ Player::Player()
 		mpSlashEffect->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::Clamp);
 
 		shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"HeavySlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbm\\sword_slash_texture_1.png");
+		shared_ptr<Texture> pTexture2 = GET_SINGLE(Resources)->Load<Texture>(L"HeavySlash2", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbm\\sword_slash_texture_2.png");
 		mpSlashEffect->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
+		mpSlashEffect->GetMeshRenderer()->GetMaterial()->SetTexture(1, pTexture2);
 		mpSlashEffect->GetRigidBody()->RemoveGravity();
 		
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(mpSlashEffect);
