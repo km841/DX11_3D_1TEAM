@@ -29,8 +29,8 @@ void PlayerSlashScript::FixedUpdate()
 	GetMeshRenderer()->GetMaterial()->SetInt(1, static_cast<int>(mbReverse));
 
 	GetMeshRenderer()->GetMaterial()->SetBloom(true);
-	GetMeshRenderer()->GetMaterial()->SetBloomPower(2.0f);
-	GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 0.f, 0.f, 1.f));
+	GetMeshRenderer()->GetMaterial()->SetBloomPower(2.5f);
+	//GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 0.f, 0.f, 1.f));
 }
 
 Component* PlayerSlashScript::Clone(GameObject* _pGameObject)

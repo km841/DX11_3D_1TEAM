@@ -65,37 +65,27 @@ float4 PS_Main(VS_OUT _in) : SV_Target
     if (elapsedTime > endTime)
         discard;
     
-    if (rev == 1)
+    if (1 == rev)
         _in.uv.x = 1.f - _in.uv.x;
     
     if (1 == g_tex_on_0)
         color = g_tex_0.Sample(g_sam_0, 1.f - (_in.uv + sin(elapsedTime * attackSpeed)));
     
+    float4 subColor = g_tex_1.Sample(g_sam_0, (_in.uv + sin(elapsedTime * attackSpeed)));
+    
     if (color.r + color.g + color.b < 0.1f || color.r > 0.8f)
         color.a = 0;
     
-    if (length(color) < 0.4f)
+    if (length(color) < 1.03f || length(subColor) < 1.03f)
         color.a = 0;
     
-    if (_in.uv.y > 0.7f || _in.uv.x < 0.05f || _in.uv.x > 0.95f)
+    if (_in.uv.y > 0.7f || _in.uv.x < 0.05f)
         color.a = 0;
     
+    if (1 == g_bloomEnable)
+        color *= 0.f < g_bloomPower ? g_bloomPower : 1.25f;
     
-    if (length(g_bloomColor) > 0.0f)
-    {
-        float alpha = color.a;
-        color = g_bloomColor;
-        color.a = alpha;
-        
-    }
-    else
-    {
-            // Left -> Right
-        color.r = 1.0f;
-        color.g = 1.0f;
-        color.b = 1.0f;
-    }
-
+    color = pow(color, 4);
     
     return color;
 }
