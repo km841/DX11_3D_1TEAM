@@ -38,7 +38,8 @@ namespace hm
 	void RigidBody::FinalUpdate()
 	{
 		if (true == mbAppliedGravity && 
-			(false == mbAppliedPhysics || ActorType::Kinematic == mPhysicsInfo.eActorType))
+		   (false == mbAppliedPhysics || 
+			ActorType::Kinematic == mPhysicsInfo.eActorType))
 		{
 			AddGravity();
 		}

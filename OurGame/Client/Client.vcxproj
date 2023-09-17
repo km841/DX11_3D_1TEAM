@@ -172,6 +172,7 @@
     <ClInclude Include="HitEndState.h" />
     <ClInclude Include="HitStartState.h" />
     <ClInclude Include="HittingState.h" />
+    <ClInclude Include="HeadRoller.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="IdleState_Gm.h" />
     <ClInclude Include="LeftSecretFightMap.h" />
@@ -249,6 +250,7 @@
     <ClCompile Include="HitEndState.cpp" />
     <ClCompile Include="HitStartState.cpp" />
     <ClCompile Include="HittingState.cpp" />
+    <ClCompile Include="HeadRoller.cpp" /> 
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="IdleState_Gm.cpp" />
     <ClCompile Include="LeftSecretFightMap.cpp" />

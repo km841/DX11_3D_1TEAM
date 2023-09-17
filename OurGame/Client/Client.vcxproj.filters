@@ -217,6 +217,9 @@
     <ClInclude Include="Elevator.h">
       <Filter>소스 파일\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="HeadRoller.h">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClInclude>
     <ClInclude Include="SwordScript.h">
       <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClInclude>
@@ -441,6 +444,9 @@
     <ClCompile Include="Elevator.cpp">
       <Filter>소스 파일\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="HeadRoller.cpp">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClCompile>
     <ClCompile Include="SwordScript.cpp">
       <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClCompile>
@@ -510,6 +516,9 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Effect">
       <UniqueIdentifier>{42c4b81b-5a0c-45e4-bcaa-ea135f7766a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Monster\Node">
+      <UniqueIdentifier>{b52b02d9-ae3a-42be-b5b9-b4885039a9b1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@
 #include "RigidBody.h"
 #include "Animator.h"
 #include "GameObject.h"
+#include "AI.h"
 
 namespace hm
 {
@@ -54,6 +55,10 @@ namespace hm
 	Animator* Component::GetAnimator()
 	{
 		return mpGameObject->GetAnimator();
+	}
+	AI* Component::GetAI()
+	{
+		return mpGameObject->GetAI();
 	}
 	bool Component::IsPhysicsObject()
 	{
