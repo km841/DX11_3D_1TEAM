@@ -169,7 +169,9 @@
     <ClInclude Include="GrandmaBossMap.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="HallColliderCheckMap.h" />
-    <ClInclude Include="HitState.h" />
+    <ClInclude Include="HitEndState.h" />
+    <ClInclude Include="HitStartState.h" />
+    <ClInclude Include="HittingState.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="IdleState_Gm.h" />
     <ClInclude Include="LeftSecretFightMap.h" />
@@ -244,7 +246,9 @@
     <ClCompile Include="GrandmaBossMap.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="HallColliderCheckMap.cpp" />
-    <ClCompile Include="HitState.cpp" />
+    <ClCompile Include="HitEndState.cpp" />
+    <ClCompile Include="HitStartState.cpp" />
+    <ClCompile Include="HittingState.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="IdleState_Gm.cpp" />
     <ClCompile Include="LeftSecretFightMap.cpp" />

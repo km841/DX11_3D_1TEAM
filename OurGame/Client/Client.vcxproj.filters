@@ -127,7 +127,7 @@
     <ClInclude Include="FallState.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="HitState.h">
+    <ClInclude Include="HitStartState.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
     <ClInclude Include="MagicAttackState.h">
@@ -219,6 +219,12 @@
     </ClInclude>
     <ClInclude Include="SwordScript.h">
       <Filter>소스 파일\GameObject\Player\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="HitEndState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="HittingState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -348,7 +354,7 @@
     <ClCompile Include="FallState.cpp">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="HitState.cpp">
+    <ClCompile Include="HitStartState.cpp">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClCompile>
     <ClCompile Include="MagicAttackState.cpp">
@@ -437,6 +443,12 @@
     </ClCompile>
     <ClCompile Include="SwordScript.cpp">
       <Filter>소스 파일\GameObject\Player\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="HitEndState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="HittingState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

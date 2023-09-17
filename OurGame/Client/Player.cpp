@@ -56,7 +56,9 @@
 #include "MagicAttackState.h"
 #include "EvasionState.h"
 #include "FallState.h"
-#include "HitState.h"
+#include "HitStartState.h"
+#include "HittingState.h"
+#include "HitEndState.h"
 #include "FallDownState.h"
 #include "DeadState.h"
 #include "ClimingDownState.h"
@@ -86,7 +88,9 @@ Player::Player()
 	mState[int(PlayerState::MagicAttackState)] = new MagicAttackState;
 	mState[int(PlayerState::EvasionState)] = new EvasionState;
 	mState[int(PlayerState::FallState)] = new FallState;
-	mState[int(PlayerState::HitState)] = new HitState;
+	mState[int(PlayerState::HitStartState)] = new HitStartState;
+	mState[int(PlayerState::HittingState)] = new HittingState;
+	mState[int(PlayerState::HitEndState)] = new HitEndState;
 	mState[int(PlayerState::FallDownState)] = new FallDownState;
 	mState[int(PlayerState::DeadState)] = new DeadState;
 	mState[int(PlayerState::ClimingDownState)] = new ClimingDownState;
