@@ -215,12 +215,14 @@ namespace yj
 			pMoveFrame->GetTransform()->SetPosition(mFixedPos);
 			if (mFixedPos.y <= belowLimit)
 			{
-				
 				if (isPlayerIn)
 				{
 					state = ArriveDown;
 				}
-				
+				else
+				{
+					state = StandbyDown;
+				}
 				BarricadeOff(0);
 				BarricadeOff(1);
 			}
@@ -236,6 +238,10 @@ namespace yj
 				if (isPlayerIn)
 				{
 					state = ArriveUp;
+				}
+				else
+				{
+					state = StandbyUp;
 				}
 				BarricadeOff(0);
 				BarricadeOff(1);

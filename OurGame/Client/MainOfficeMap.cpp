@@ -22,7 +22,7 @@
 #include "Ground.h"
 #include "DecoObject.h"
 #include "Elevator.h"
-
+#include "Bus.h"
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -95,14 +95,14 @@ namespace yj
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::DecoObject);
 		gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
 
-		// Player
+		//// Player
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Kinematic;
 			physicsInfo.eGeometryType = GeometryType::Capsule;
 			physicsInfo.size = Vec3(1.f, 1.f, 1.f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 15.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 15.f, 0.f), physicsInfo, L"Deferred", L"..\Resources\\FBX\\Player\\Crow2.fbx");
 			pPlayer->AddComponent(new PlayerMoveScript);
 			pPlayer->SetFrustumCheckFlag(false);
 			pPlayer->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
@@ -117,10 +117,12 @@ namespace yj
 		}
 
 		{
-			DecoObject* pBus = Factory::CreateObject<DecoObject>(Vec3(-17.0f, -8.0f, 33.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\CUTSCENE_Bus.fbx");
-			pBus->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+			Bus* pBus = Factory::CreateObject<Bus>(Vec3(-17.0f, -8.0f, 33.0f), L"Deferred",
+				L"..\\Resources\\FBX\\Map\\MainOfficeMap\\CUTSCENE_Bus.fbx");
+			pBus->GetTransform()->SetScale(Vec3(50.0f, 50.0f, 50.0f));
 
 			AddGameObject(pBus);
+			//SetGizmoTarget(pBus);
 		}
 
 		{
@@ -133,7 +135,6 @@ namespace yj
 			pFrontGround->GetTransform()->SetScale(Vec3(49.0f, 49.0f, 49.0f));
 
 			AddGameObject(pFrontGround);
-
 		}
 
 		{
@@ -891,13 +892,11 @@ namespace yj
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::DecoObject);
 
 		// Toy
-		{
+		/*{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Kinematic;
 			physicsInfo.eGeometryType = GeometryType::Capsule;
 			physicsInfo.size = Vec3(1.5f, 0.4f, 1.5f);
-
-
 
 			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
 			pPlayer->AddComponent(new PlayerMoveScript);
@@ -910,7 +909,7 @@ namespace yj
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 
 			AddGameObject(pPlayer);
-		}
+		}*/
 
 
 	}
