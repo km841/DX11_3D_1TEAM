@@ -212,6 +212,23 @@ namespace hm
 			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::LightBlend)] = new MultiRenderTarget;
 			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::LightBlend)]->Create(MultiRenderTargetType::LightBlend, renderTargets, pDepthStencilTexture);
 		}
+
+		// Screen Effect
+		{
+			float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+			std::vector<RenderTarget> renderTargets(EFFECT_GROUP_COUNT);
+
+			renderTargets[0].pTarget = GET_SINGLE(Resources)->CreateTexture(
+				L"ScreenEffectTarget",
+				DXGI_FORMAT_R8G8B8A8_UNORM,
+				D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE,
+				mWindowInfo.width, mWindowInfo.height);
+
+			memcpy(renderTargets[0].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
+
+			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::ScreenEffect)] = new MultiRenderTarget;
+			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::ScreenEffect)]->Create(MultiRenderTargetType::ScreenEffect, renderTargets, pDepthStencilTexture);
+		}
 	}
 
 	void Engine::CreateConstantBuffer(RegisterCBV _eRegister, int _size)

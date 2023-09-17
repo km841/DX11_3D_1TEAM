@@ -223,7 +223,9 @@
     <ClInclude Include="ChangeMaterialEvent.h">
       <Filter>Manager\EventManager</Filter>
     </ClInclude>
-    <ClInclude Include="Effect.h" />
+    <ClInclude Include="Effect.h">
+      <Filter>Object\GameObject\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EnginePch.cpp">
@@ -424,7 +426,9 @@
     <ClCompile Include="ChangeMaterialEvent.cpp">
       <Filter>Manager\EventManager</Filter>
     </ClCompile>
-    <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="Effect.cpp">
+      <Filter>Object\GameObject\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -573,6 +577,9 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resources\Shader\shadow.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\screeneffect.fx">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

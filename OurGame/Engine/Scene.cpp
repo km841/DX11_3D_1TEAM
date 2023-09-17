@@ -60,22 +60,28 @@ namespace hm
 			}
 		}
 
+		if (IS_DOWN(KeyType::N_7))
+		{
+			bool bIsDebugMode = GET_SINGLE(RenderManager)->IsDebugMode();
+			GET_SINGLE(RenderManager)->SetDebugMode(!bIsDebugMode);
+		}
+
 		if (IS_DOWN(KeyType::N_8))
 		{
 			bool bIsApplyPostProcessing = GET_SINGLE(RenderManager)->IsApplyPostProcessing();
-			GET_SINGLE(RenderManager)->SetPostProcessing(true == bIsApplyPostProcessing ? false : true);
+			GET_SINGLE(RenderManager)->SetPostProcessing(!bIsApplyPostProcessing);
 		}
 
 		if (IS_DOWN(KeyType::N_9))
 		{
 			bool bIsApplyHDR = GET_SINGLE(RenderManager)->IsApplyHDR();
-			GET_SINGLE(RenderManager)->SetHDR(true == bIsApplyHDR ? false : true);
+			GET_SINGLE(RenderManager)->SetHDR(!bIsApplyHDR);
 		}
 
 		if (IS_DOWN(KeyType::N_0))
 		{
 			bool bIsApplyRimLighting = GET_SINGLE(RenderManager)->IsApplyRimLighting();
-			GET_SINGLE(RenderManager)->SetRimLighting(true == bIsApplyRimLighting ? false : true);
+			GET_SINGLE(RenderManager)->SetRimLighting(!bIsApplyRimLighting);
 		}
 
 	}
@@ -106,14 +112,19 @@ namespace hm
 		GET_SINGLE(RenderManager)->ClearRenderTargets();
 		GET_SINGLE(RenderManager)->Render(this);
 
-		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
+		
+		if (GET_SINGLE(RenderManager)->IsDebugMode())
 		{
-			for (GameObject* pGameObject : mGameObjects[i])
+			for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 			{
-				AssertEx(pGameObject, L"This gameobject is nullptr");
-				pGameObject->Render();
+				for (GameObject* pGameObject : mGameObjects[i])
+				{
+					AssertEx(pGameObject, L"This gameobject is nullptr");
+					pGameObject->Render();
+				}
 			}
 		}
+
 
 		FONT->Render();
 	}

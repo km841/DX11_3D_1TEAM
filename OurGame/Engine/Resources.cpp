@@ -1070,6 +1070,23 @@ namespace hm
             Add<Shader>(L"Shadow", pShader);
         }
 
+        // Screen Effect Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Light,
+                DepthStencilType::NoDepthTestNoWrite,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"ScreenEffect");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\screeneffect.fx", shaderInfo);
+
+            Add<Shader>(L"ScreenEffect", pShader);
+        }
+
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -1377,6 +1394,15 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"Shadow", pMaterial);
+        }
+
+        // ScreenEffect Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"ScreenEffect");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"ScreenEffect", pMaterial);
         }
     }
 }

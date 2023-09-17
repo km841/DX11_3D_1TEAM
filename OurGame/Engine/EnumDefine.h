@@ -188,6 +188,16 @@ namespace hm
 		DynamicModel,
 	};
 
+	enum class ScreenEffectType
+	{
+		None,
+		FadeIn,
+		FadeOut,
+	};
 
+	enum
+	{
+		SCREEN_EFFECT_GROUP_COUNT = 2,
+	};
 }
 

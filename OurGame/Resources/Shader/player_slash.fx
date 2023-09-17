@@ -74,13 +74,13 @@ float4 PS_Main(VS_OUT _in) : SV_Target
     float4 subColor = g_tex_1.Sample(g_sam_0, (_in.uv + sin(elapsedTime * attackSpeed)));
     
     if (color.r + color.g + color.b < 0.1f || color.r > 0.8f)
-        color.a = 0;
+        discard;
     
     if (length(color) < 1.03f || length(subColor) < 1.03f)
-        color.a = 0;
+        discard;
     
     if (_in.uv.y > 0.7f || _in.uv.x < 0.05f)
-        color.a = 0;
+        discard;
     
     if (1 == g_bloomEnable)
         color *= 0.f < g_bloomPower ? g_bloomPower : 1.25f;
