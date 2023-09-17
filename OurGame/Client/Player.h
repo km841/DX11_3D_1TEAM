@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
+
 class SwordHeavyEffect;
 class State;
 class Player :
@@ -68,6 +69,7 @@ private:
 	float mDash_Speed;
 	float mAttack;
 	float mAttack_Speed;
+
 	
 	SwordHeavyEffect* mpSlashEffect;
 	DirectionEvasion meDirectionEvasion; // 이동 상태 FSM

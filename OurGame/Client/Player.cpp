@@ -112,6 +112,25 @@ Player::Player()
 	//검 오브젝트
 	//검  -> Sc 
 	// Sc ( 검오브젝트 , 플레이어 오브젝트 
+
+	//무기 테스트
+	{
+		/*PhysicsInfo info = {};
+		info.eActorType = ActorType::Kinematic;
+		info.eGeometryType = GeometryType::Box;
+		info.size = Vec3(2.f, 0.2f, 0.2f);*/
+
+		DecoObject* pGreatSword = Factory::CreateObject<DecoObject>(Vec3(0.f, -5.f, 0.f), L"Forward_CullNone", L"..\\Resources\\FBX\\Weapon\\Sword.fbx");
+		pGreatSword->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+		pGreatSword->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+
+		
+		//AddComponent(new PlayerSlashScript); 넣자
+		gpEngine->GetTool()->UseGizmo();
+		gpEngine->GetTool()->SetGameObject(pGreatSword);
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pGreatSword);
+		//SetMeshTarget(pGreatSword);
+	}
 }
 
 Player::~Player()
