@@ -72,31 +72,31 @@ void SwordScript::FixedUpdate()
 	Vec3 Rot = pTr->GetRotation();
 
 	if (eDir == DirectionEvasion::BACKWARD) {
-		Pos.z += 0.25f;
-		Pos.y += 0.15f;
+		Pos.z += 0.2f;
+		Pos.y += 0.2f;
 		pTr->SetPosition(Pos);
 		pTr->SetRotation(Vec3(330.f, 100.f, 60.f));
 
 	}
 	if (eDir == DirectionEvasion::FORWARD) {
-		Pos.z -= 0.25f;
-		Pos.y += 0.15f;
+		Pos.z -= 0.2f;
+		Pos.y += 0.2f;
 
 		pTr->SetPosition(Pos);
 		pTr->SetRotation(Vec3(330.f, 270.f, 60.f));
 	}
 	if (eDir == DirectionEvasion::LEFT) {
-		Pos.x += 0.25f;
+		Pos.x += 0.2f;
 		Pos.z += 0.f;
-		Pos.y += 0.15f;
+		Pos.y += 0.2f;
 		
 		pTr->SetPosition(Pos);
 		pTr->SetRotation(Vec3(330.f, 200.f, 60.f));
 	}
 	if (eDir == DirectionEvasion::RIGHT) {
-		Pos.x -= 0.25f;
+		Pos.x -= 0.2f;
 		Pos.z += 0.f;
-		Pos.y += 0.15f;
+		Pos.y += 0.2f;
 
 		pTr->SetPosition(Pos);
 		pTr->SetRotation(Vec3(330.f, 350.f, 60.f));
@@ -105,10 +105,37 @@ void SwordScript::FixedUpdate()
 	if (eDir == DirectionEvasion::TOPLEFT) {
 		//Pos.z += 0.125f;
 		//Pos.x += 0.125f;
-		Pos.y += 0.15f;
+		Pos.y += 0.2f;
 
 		pTr->SetPosition(Pos);
-		pTr->SetRotation(Vec3(330.f, 235.f, 60.f));
+		pTr->SetRotation(Vec3(330.f, 240.f, 60.f));
+	}
+
+	if (eDir == DirectionEvasion::TOPRIGHT) {
+		//Pos.z += 0.125f;
+		//Pos.x += 0.125f;
+		Pos.y += 0.2f;
+
+		pTr->SetPosition(Pos);
+		pTr->SetRotation(Vec3(330.f, 310.f, 60.f));
+	}
+
+	if (eDir == DirectionEvasion::BOTTOMLEFT) {
+		//Pos.z += 0.125f;
+		//Pos.x += 0.125f;
+		Pos.y += 0.2f;
+
+		pTr->SetPosition(Pos);
+		pTr->SetRotation(Vec3(330.f, 150.f, 60.f));
+	}
+
+	if (eDir == DirectionEvasion::BOTTOMRIGHT) {
+		//Pos.z += 0.125f;
+		//Pos.x += 0.125f;
+		Pos.y += 0.2f;
+
+		pTr->SetPosition(Pos);
+		pTr->SetRotation(Vec3(330.f, 50.f, 60.f));
 	}
 
 	
