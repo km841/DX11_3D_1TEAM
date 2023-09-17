@@ -199,5 +199,12 @@ namespace hm
 	{
 		SCREEN_EFFECT_GROUP_COUNT = 2,
 	};
+
+	enum class BehaviorResult
+	{
+		Success,
+		Running,
+		Failure,
+	};
 }
 

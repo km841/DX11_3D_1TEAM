@@ -74,3 +74,11 @@ enum
 {
 	EVASION_STATE_COUNT = DirectionEvasion::END,
 };
+
+enum class MonsterBasicState
+{
+	Idle,
+	Patrol,
+	Trace,
+	Attack,
+};

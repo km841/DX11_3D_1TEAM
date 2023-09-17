@@ -15,6 +15,7 @@ namespace hm
 	class Collider;
 	class RigidBody;
 	class Animator;
+	class AI;
 
 	class GameObject :
 		public Object
@@ -67,6 +68,7 @@ namespace hm
 		Collider* GetCollider();
 		RigidBody* GetRigidBody();
 		Animator* GetAnimator();
+		AI* GetAI();
 
 		LayerType GetLayerType() { return meLayerType; }
 

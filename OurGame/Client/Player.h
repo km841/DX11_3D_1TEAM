@@ -26,9 +26,9 @@ public:
 	virtual void Destroy();
 
 public:
-	virtual void OnTriggerEnter(Collider* pOtherCollider);
-	virtual void OnTriggerStay(Collider* pOtherCollider);
-	virtual void OnTriggerExit(Collider* pOtherCollider);
+	virtual void OnTriggerEnter(Collider* _pOtherCollider);
+	virtual void OnTriggerStay(Collider* _pOtherCollider);
+	virtual void OnTriggerExit(Collider* _pOtherCollider);
 
 public:
 	void StateChange(PlayerState _eState);
