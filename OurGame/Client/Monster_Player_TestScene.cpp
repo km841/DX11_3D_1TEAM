@@ -87,7 +87,10 @@ namespace hm {
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Grandma_Boss, LayerType::Ground);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
+		
+
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Item, LayerType::Monster); // 검 충돌
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Item, LayerType::Grandma_Boss);
 
 		//배경맵 하얀색으로 만들어주는 코드
 		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
@@ -116,7 +119,7 @@ namespace hm {
 			physicsInfo.eGeometryType = GeometryType::Capsule;
 			physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, -7.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
 			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
 			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
 			pPlayer->AddComponent(new PaperBurnScript);

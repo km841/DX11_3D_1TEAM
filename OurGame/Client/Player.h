@@ -34,7 +34,7 @@ public:
 	void StateChange(PlayerState _eState);
 
 	void SetDirectionChange(DirectionEvasion _eState);
-	DirectionEvasion GetDirectionChange() { return meDirectionEvasion; }
+	DirectionEvasion GetDirectioninfo() { return meDirectionEvasion; }
 
 	float GetAttackSpeed() { return mAttack_Speed; }
 	void SetAttackSpeed(float _attackspeed) { mAttack_Speed = _attackspeed; }
@@ -70,7 +70,7 @@ private:
 	float mAttack;
 	float mAttack_Speed;
 
-	
+	GameObject* pGreatSword;
 	SwordHeavyEffect* mpSlashEffect;
 	DirectionEvasion meDirectionEvasion; // 이동 상태 FSM
 };

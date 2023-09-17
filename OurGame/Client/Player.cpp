@@ -43,6 +43,7 @@
 #include "PaperBurnScript.h"
 #include "PlayerSlashScript.h"
 #include "OwnerFollowScript.h"
+#include "SwordScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -114,22 +115,25 @@ Player::Player()
 	//검 오브젝트
 	//검  -> Sc 
 	// Sc ( 검오브젝트 , 플레이어 오브젝트 
+	// 방향 가져와서 쓰기
 
-	//무기 테스트
+	//무기 오브젝트
 	{
-		/*PhysicsInfo info = {};
-		info.eActorType = ActorType::Kinematic;
-		info.eGeometryType = GeometryType::Box;
-		info.size = Vec3(2.f, 0.2f, 0.2f);*/
-
-		DecoObject* pGreatSword = Factory::CreateObject<DecoObject>(Vec3(0.f, -5.f, 0.f), L"Forward_CullNone", L"..\\Resources\\FBX\\Weapon\\Sword.fbx");
-		pGreatSword->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
-		pGreatSword->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
-
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(1.f, 0.2f, 0.2f);
 		
-		//AddComponent(new PlayerSlashScript); 넣자
-		gpEngine->GetTool()->UseGizmo();
-		gpEngine->GetTool()->SetGameObject(pGreatSword);
+		pGreatSword = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, -5.f, 0.f), physicsInfo, L"Forward_CullNone", L"..\\Resources\\FBX\\Weapon\\Sword.fbx",false, LayerType::Item);
+		pGreatSword->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+		pGreatSword->GetTransform()->SetRotation(Vec3(330.f, 100.f, 50.f));
+
+		auto pFollowSc = pGreatSword->AddComponent(new OwnerFollowScript(this));
+		
+		
+		SwordScript* pSwordSc = pGreatSword->AddComponent(new SwordScript);
+		//gpEngine->GetTool()->UseGizmo();
+		//gpEngine->GetTool()->SetGameObject(pGreatSword);
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pGreatSword);
 		//SetMeshTarget(pGreatSword);
 	}

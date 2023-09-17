@@ -67,7 +67,7 @@ void EvasionState::Update()
 
 
 	//가져와서 튕기는 힘 주기
-	DirectionEvasion eDE = pPlayer->GetDirectionChange();
+	DirectionEvasion eDE = pPlayer->GetDirectioninfo();
 	float DashSpeed = pPlayer->GetDashSpeed();
 
 	Vec3 totalDir = ConvertDir(eDE); // 8가지 방향 체크후 주는 힘 방향 설정
