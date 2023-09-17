@@ -99,22 +99,26 @@ void MoveState::Update()
 
 	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::LEFT))
 	{
-		mMoveSpeed = mMoveSpeed / 2;
+		mMoveSpeed = mMoveSpeed / 1.5f;
+		rb->SetVelocity(Vec3(-mMoveSpeed, 0.f, mMoveSpeed));
 		tr->SetRotation(Vec3(0.f, 135.f, 90.f));
 	}
 	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::RIGHT))
 	{
-		mMoveSpeed /= 2;
+		mMoveSpeed = mMoveSpeed / 1.5f;
+		rb->SetVelocity(Vec3(mMoveSpeed, 0.f, mMoveSpeed));
 		tr->SetRotation(Vec3(0.f, 225.f, 90.f));
 	}
 	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::RIGHT))
 	{
-		mMoveSpeed /= 2;
+		mMoveSpeed = mMoveSpeed / 1.5f;
+		rb->SetVelocity(Vec3(mMoveSpeed, 0.f, -mMoveSpeed));
 		tr->SetRotation(Vec3(0.f, 315.f, 90.f));
 	}
 	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::LEFT))
 	{
-		mMoveSpeed /= 2;
+		mMoveSpeed = mMoveSpeed / 1.5f;
+		rb->SetVelocity(Vec3(-mMoveSpeed, 0.f, -mMoveSpeed));
 		tr->SetRotation(Vec3(0.f, 45.f, 90.f));
 	}
 #pragma endregion
@@ -160,6 +164,9 @@ void MoveState::Update()
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::BOTTOMRIGHT);
 	}
+
+	PlayerMoveScript* pScript = PLAYER->GetScript<PlayerMoveScript>();
+	pScript->AutoStepping(2.0f);
 
 #pragma endregion
 

@@ -117,7 +117,6 @@ namespace hm
 		case GeometryType::Mesh:
 			return Raycast<PxTriangleMeshGeometry>(_pOther->GetRigidBody()->GetGeometries()->triangleGeom, _origin, _dir, _pOther, _maxDist);
 		}
-
 		return false;
 	}
 

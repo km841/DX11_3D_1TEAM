@@ -15,6 +15,7 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "Resources.h"
+#include "RenderManager.h"
 
 /* GameObject */
 #include "GameObject.h"
@@ -95,116 +96,7 @@ namespace sy
 		//	if (IS_UP(KeyType::Z))
 		//	{
 		//		Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-		//		Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y += 0.1f, target_pos.z);
-		//		mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
-		//	}
-		//	if (IS_UP(KeyType::X))
-		//	{
-		//		Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-		//		Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y -= 0.1f, target_pos.z);
-		//		mTarget->GetTransform()->SetPosition(fixed_pos);
-
-		//	}
-		//	if (IS_UP(KeyType::R)) //회전
-		//	{
-		//		Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
-		//		Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 10.0f, target_rot.z);
-		//		mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
-		//	}
-		//	if (IS_UP(KeyType::T)) //회전
-		//	{
-		//		Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
-		//		Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 10.0f, target_rot.z);
-		//		mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
-		//	}
-
-		//	if (IS_UP(KeyType::Y)) //회전
-		//	{
-		//		Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
-		//		Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 1.0f, target_rot.z);
-		//		mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
-		//	}
-		//	if (IS_UP(KeyType::U)) //회전
-		//	{
-		//		Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
-		//		Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 1.0f, target_rot.z);
-		//		mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
-		//	}
-
-		//	if (IS_UP(KeyType::O)) //스케일 - 전체적 키우기
-		//	{
-		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-		//		Vec3 fixed_scale = Vec3(target_scale.x += 0.5f, target_scale.y += 0.5f, target_scale.z += 0.5f);
-		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-		//	}
-		//	if (IS_UP(KeyType::P)) //스케일 - 전체적 줄이기
-		//	{
-		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-		//		Vec3 fixed_scale = Vec3(target_scale.x -= 0.5f, target_scale.y -= 0.5f, target_scale.z -= 0.5f);
-		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-		//	}
-
-		//	if (IS_UP(KeyType::K)) //스케일 - y축제외 키우기
-		//	{
-		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-		//		Vec3 fixed_scale = Vec3(target_scale.x += 0.5f, target_scale.y, target_scale.z += 0.5f);
-		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-		//	}
-		//	if (IS_UP(KeyType::L)) //스케일 - y축 제외 줄이기
-		//	{
-		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-		//		Vec3 fixed_scale = Vec3(target_scale.x -= 0.5f, target_scale.y, target_scale.z -= 0.5f);
-		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-		//	}
-		//	if (IS_UP(KeyType::N)) //스케일 -y축만 키우기
-		//	{
-		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-		//		Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y += 0.5, target_scale.z);
-		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-		//	}
-		//	if (IS_UP(KeyType::M)) //스케일 -y축만 줄이기
-		//	{
-		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-		//		Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y -= 0.5, target_scale.z);
-		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-		//	}
-
-		//	if (IS_UP(KeyType::H)) //스케일 - x축만 키우기
-		//	{
-		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-		//		Vec3 fixed_scale = Vec3(target_scale.x +=0.5, target_scale.y, target_scale.z);
-		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-		//	}
-		//	if (IS_UP(KeyType::J)) //스케일 -x축만 줄이기
-		//	{
-		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-		//		Vec3 fixed_scale = Vec3(target_scale.x -=0.5, target_scale.y, target_scale.z);
-		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-		//	}
-
-		//	if (IS_UP(KeyType::F)) //스케일 -z축만 키우기
-		//	{
-		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-		//		Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y, target_scale.z += 0.5);
-		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-		//	}
-		//	if (IS_UP(KeyType::G)) //스케일 -z축만 줄이기
-		//	{
-		//		Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-		//		Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y, target_scale.z -= 0.5);
-		//		mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-		//	}
-
-		//	if (IS_UP(KeyType::ENTER))
-		//	{
-		//		Vec3 a = mTarget->GetTransform()->GetPosition();
-		//		Vec3 b = mTarget->GetTransform()->GetRotation();
-		//		Vec3 c = mTarget->GetTransform()->GetScale();
-		//		int d = 0;
-
-
-		//	}
-		//}
+		//		Vec3 fixed_pos = Vec3
 	}
 
 	void DiningColliderCheckMap::FixedUpdate()
@@ -230,6 +122,12 @@ namespace sy
 
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
+
+		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 3.0f);
+		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1.0f, 
+			std::bind(&DiningColliderCheckMap::TestCallback, this), // 멤버함수로 콜백 등록 (다른 클래스의 함수도 가능 (ex. &Player::Attack)
+			[&]() { MessageBoxA(NULL, "End Callback", "Caption", MB_OK); }); // 람다식으로 콜백 등록
+
 
 
 #pragma region 어드민
@@ -308,7 +206,7 @@ namespace sy
 				info.eGeometryType = GeometryType::Box;
 				info.size = Vec3(0.7f, 3.f, 16.f);
 
-				Ground* pCube1 = Factory::CreateObjectHasPhysical<Ground>(Vec3(-9.8f, -4.f, 1.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube1.fbx");
+				WallObject* pCube1 = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-9.8f, -4.f, 1.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Cube1.fbx");
 
 				pCube1->GetTransform()->SetScale(Vec3(30.f, 26.f, 25.f));
 				pCube1->GetTransform()->SetRotation(Vec3(28.f, 0.f, 0.f));

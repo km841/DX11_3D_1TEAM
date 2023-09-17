@@ -17,6 +17,9 @@ namespace sy
 		virtual void FinalUpdate();
 		virtual void Render();
 
+	public:
+		void TestCallback() { MessageBoxA(NULL, "Start Callback", "Caption", MB_OK); }
+
 		virtual void Enter();
 		virtual void Exit();
 	};

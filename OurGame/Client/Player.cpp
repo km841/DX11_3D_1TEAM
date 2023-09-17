@@ -66,13 +66,13 @@ Player* Player::spPlayer;
 
 Player::Player()
 	: GameObject(LayerType::Player)
-	, mHP(4)
-	, mCost(4)
-	, mSpeed(5.f)
-	, mAttack(1.f)
-	, mAttack_Speed(0.04f)
-	, mDash_Speed(25.f)
-	, meDirectionEvasion(DirectionEvasion::NONE)
+	, mHP(4) // 피통
+	, mCost(4) // 마나
+	, mSpeed(5.f) // 이동속도
+	, mAttack(1.f) // 데미지
+	, mAttack_Speed(0.04f) // 공속
+	, mDash_Speed(25.f) // 회피시 주는 물리 힘
+	, meDirectionEvasion(DirectionEvasion::NONE) // 플레이어 8방향 enum 으로 표시
 	
 {
 	AssertEx(spPlayer == nullptr, L"이미 정적 플레이어 존재함");
@@ -103,7 +103,9 @@ Player::Player()
 		mpSlashEffect->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::Clamp);
 
 		shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"HeavySlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbm\\sword_slash_texture_1.png");
+		shared_ptr<Texture> pTexture2 = GET_SINGLE(Resources)->Load<Texture>(L"HeavySlash2", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbm\\sword_slash_texture_2.png");
 		mpSlashEffect->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
+		mpSlashEffect->GetMeshRenderer()->GetMaterial()->SetTexture(1, pTexture2);
 		mpSlashEffect->GetRigidBody()->RemoveGravity();
 		
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(mpSlashEffect);
@@ -112,6 +114,25 @@ Player::Player()
 	//검 오브젝트
 	//검  -> Sc 
 	// Sc ( 검오브젝트 , 플레이어 오브젝트 
+
+	//무기 테스트
+	{
+		/*PhysicsInfo info = {};
+		info.eActorType = ActorType::Kinematic;
+		info.eGeometryType = GeometryType::Box;
+		info.size = Vec3(2.f, 0.2f, 0.2f);*/
+
+		DecoObject* pGreatSword = Factory::CreateObject<DecoObject>(Vec3(0.f, -5.f, 0.f), L"Forward_CullNone", L"..\\Resources\\FBX\\Weapon\\Sword.fbx");
+		pGreatSword->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+		pGreatSword->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+
+		
+		//AddComponent(new PlayerSlashScript); 넣자
+		gpEngine->GetTool()->UseGizmo();
+		gpEngine->GetTool()->SetGameObject(pGreatSword);
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pGreatSword);
+		//SetMeshTarget(pGreatSword);
+	}
 }
 
 Player::~Player()
