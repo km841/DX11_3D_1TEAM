@@ -18,6 +18,7 @@ namespace hm
 		Player,
 		Grandma_Boss,
 		Monster,
+		Item,
 		Npc,
 		Effect,
 		Ground,

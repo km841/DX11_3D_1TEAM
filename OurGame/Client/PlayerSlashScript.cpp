@@ -45,3 +45,8 @@ void PlayerSlashScript::ChangeReverse()
 	else
 		mbReverse = true;
 }
+
+void PlayerSlashScript::ChangeReverse(bool _bool)
+{
+	mbReverse = _bool;
+}

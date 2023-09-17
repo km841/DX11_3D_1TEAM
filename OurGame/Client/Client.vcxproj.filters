@@ -220,6 +220,9 @@
     <ClInclude Include="HeadRoller.h">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="SwordScript.h">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -437,6 +440,9 @@
     </ClCompile>
     <ClCompile Include="HeadRoller.cpp">
       <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="SwordScript.cpp">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

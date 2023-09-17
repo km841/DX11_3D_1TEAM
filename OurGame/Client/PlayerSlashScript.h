@@ -13,6 +13,7 @@ public:
 
     void Attack() { mElapsedTime = 0.f; }
     void ChangeReverse();
+    void ChangeReverse(bool _bool);
 
 private:
     float mElapsedTime;

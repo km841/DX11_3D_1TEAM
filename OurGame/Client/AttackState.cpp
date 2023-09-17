@@ -64,7 +64,7 @@ void AttackState::Update()
 	
 	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
 	Transform* pEff_Tr = pEffect->GetTransform();
-	DirectionEvasion eDir = pPlayer->GetDirectionChange();
+	DirectionEvasion eDir = pPlayer->GetDirectioninfo();
 	//Vec3 Pos = ConvertDir(eDir);
 	//float Flo = atan2(Pos.z, Pos.x);
 
@@ -121,14 +121,14 @@ void AttackState::PlayAnimation()
 	{
 		pAni->Play(69, false);
 
-		pSlashSc->ChangeReverse();
+		pSlashSc->ChangeReverse(false);
 		pSlashSc->Attack();
 	}
 	else
 	{
 		pAni->Play(70, false);
 	
-		pSlashSc->ChangeReverse();
+		pSlashSc->ChangeReverse(true);
 		pSlashSc->Attack();
 
 	}
@@ -146,7 +146,7 @@ void AttackState::DirSlash()
 	OwnerFollowScript* pOFSc = pEffect->GetScript<OwnerFollowScript>();
 
 	Transform* pEff_Tr = pEffect->GetTransform();
-	DirectionEvasion eDir = pPlayer->GetDirectionChange();
+	DirectionEvasion eDir = pPlayer->GetDirectioninfo();
 	{
 		Vec3 Pos = ConvertDir(eDir);
 		Pos.Normalize();

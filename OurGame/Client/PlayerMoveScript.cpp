@@ -31,8 +31,7 @@ void PlayerMoveScript::FixedUpdate()
 		tr->SetPosition(Vec3::Zero);
 	}
 
-	CheckPenetration(rb, LayerType::DecoObject);
-	//CheckPenetration(rb, LayerType::Ground);
+	//CheckPenetration(rb, LayerType::DecoObject);
 	CheckPenetration(rb, LayerType::WallObject);
 	CheckPenetration(rb, LayerType::Obstacle);
 	CheckPenetration(rb, LayerType::Ground);
@@ -141,7 +140,7 @@ void PlayerMoveScript::AutoStepping(float _height)
 	Vec3 footPos = pos;
 	footPos.y -= scale.y / 2.f;
 
-	DirectionEvasion eDir = PLAYER->GetDirectionChange();
+	DirectionEvasion eDir = PLAYER->GetDirectioninfo();
 	Vec3 lookDir = ConvertDir(eDir);
 
 	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);

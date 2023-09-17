@@ -210,6 +210,7 @@
     <ClInclude Include="State.h" />
     <ClInclude Include="State_Grandma.h" />
     <ClInclude Include="SwordHeavyEffect.h" />
+    <ClInclude Include="SwordScript.h" />
     <ClInclude Include="Teleport_InState_Gm.h" />
     <ClInclude Include="Teleport_OutState_Gm.h" />
     <ClInclude Include="TestAnimationScript.h" />
@@ -287,6 +288,7 @@
     <ClCompile Include="State.cpp" />
     <ClCompile Include="State_Grandma.cpp" />
     <ClCompile Include="SwordHeavyEffect.cpp" />
+    <ClCompile Include="SwordScript.cpp" />
     <ClCompile Include="Teleport_InState_Gm.cpp" />
     <ClCompile Include="Teleport_OutState_Gm.cpp" />
     <ClCompile Include="TestAnimationScript.cpp" />
