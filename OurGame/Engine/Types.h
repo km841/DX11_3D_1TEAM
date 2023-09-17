@@ -188,9 +188,11 @@ struct alignas(16) InstancingParams
 	Matrix matWVP;
 };
 
-struct FbxFileInfo
+struct ScreenEffectInfo
 {
-	wstring fbxPath = L"";
-	Vec2 uvTiling = Vec2(1.f, 1.f);
-	bool bInvNormal = false;
+	ScreenEffectType eEffectType;
+	float endTime;
+	float curTime = 0.f;
+	std::function<void()> startCallback;
+	std::function<void()> endCallback;
 };

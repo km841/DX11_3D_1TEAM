@@ -9,6 +9,7 @@ namespace hm
 		Light,
 		RimLighting,
 		LightBlend,
+		ScreenEffect,
 		End,
 	};
 
@@ -23,6 +24,7 @@ namespace hm
 		LIGHTING_GROUP_COUNT = 2,
 		RIM_LIGHTING_GROUP_COUNT = 1,
 		LIGHTBLEND_GROUP_COUNT = 1,
+		EFFECT_GROUP_COUNT = 1,
 	};
 
 	struct RenderTarget

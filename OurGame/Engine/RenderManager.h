@@ -41,7 +41,11 @@ namespace hm
 		void RenderLightBlend();
 		void RenderBloom();
 		void RenderFinal();
+		void RenderScreenEffect();
 		void PushLightData(Scene* _pScene);
+
+		void UpdateScreenEffect();
+		void ComputeScreenEffect(ScreenEffectInfo* _effectInfo, int _groupIndex);
 
 		void PostProcessing();
 		void BakeStaticShadow(Scene* _pScene);
@@ -55,6 +59,15 @@ namespace hm
 
 		void SetRimLighting(bool _bFlag);
 		bool IsApplyRimLighting()    { return mbEnableRim; }
+
+		void SetDebugMode(bool _bFlag) { mbDebugMode = _bFlag; }
+		bool IsDebugMode()			   { return mbDebugMode; }
+
+		void AddScreenEffect(ScreenEffectInfo* _effectInfo, int _groupIndex = 0);
+		void AddFadeEffect(ScreenEffectType _eType, float _endTime, std::function<void()> _startCallback = nullptr, std::function<void()> _endCallback = nullptr, int _groupIndex = 0);
+		void RemoveCurrentEffect(int _groupIndex = 0);
+		void RemoveGroupEffect(int _groupIndex = 0);
+		void RemoveAllEffect();
 
 	private:
 		void DownScale();
@@ -102,6 +115,9 @@ namespace hm
 		shared_ptr<Texture> mpBlurXTexture;
 		shared_ptr<Texture> mpBlurYTexture;
 
+		std::array<std::queue<ScreenEffectInfo*>, SCREEN_EFFECT_GROUP_COUNT> mScreenEffectGroup;
+		std::array<ScreenEffectInfo*, SCREEN_EFFECT_GROUP_COUNT> mActiveEffect;
+
 		float mDOFFarStart;
 		float mDOFFarRange;
 		float mBloomThreshold;
@@ -119,6 +135,7 @@ namespace hm
 		bool mbEnablePostProcessing;
 		bool mbEnableHDR;
 		bool mbEnableRim;
+		bool mbDebugMode;
 
 		std::map<UINT64, InstancingBuffer*> mBuffers;
 		

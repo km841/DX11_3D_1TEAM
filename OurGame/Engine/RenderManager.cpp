@@ -12,6 +12,7 @@
 #include "Transform.h"
 #include "Material.h"
 #include "StructuredBuffer.h"
+#include "Timer.h"
 
 
 namespace hm
@@ -25,6 +26,8 @@ namespace hm
 		, mpDownScaleBuffer(nullptr)
 		, mpAvgLumBuffer(nullptr)
 		, mpPrevAdaptionBuffer(nullptr)
+		, mActiveEffect{}
+		, mbDebugMode(true)
 	{
 		mDOFFarStart = 0.f;
 		mDOFFarRange = 0.f;
@@ -46,6 +49,16 @@ namespace hm
 		{
 			InstancingBuffer* buffer = pair.second;
 			SAFE_DELETE(buffer);
+		}
+
+		for (int i = 0; i < SCREEN_EFFECT_GROUP_COUNT; ++i)
+		{
+			while (!mScreenEffectGroup[i].empty())
+			{
+				auto p = mScreenEffectGroup[i].front();
+				SAFE_DELETE(p);
+				mScreenEffectGroup[i].pop();
+			}
 		}
 	}
 
@@ -80,6 +93,10 @@ namespace hm
 			PostProcessing();
 
 		RenderForward(_pScene);
+
+		UpdateScreenEffect();
+		RenderScreenEffect();
+
 	}
 
 	void RenderManager::ClearInstancingBuffer()
@@ -103,6 +120,7 @@ namespace hm
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::Light)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::RimLighting)->ClearRenderTargetView();
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::LightBlend)->ClearRenderTargetView();
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::ScreenEffect)->ClearRenderTargetView();
 
 		float clearColor[4] = { 0.f, 0.f, 0.f, 0.f };
 		CONTEXT->ClearRenderTargetView(mpBlurXTexture->GetRTV().Get(), clearColor);
@@ -125,7 +143,7 @@ namespace hm
 
 	void RenderManager::RenderForward(Scene* _pScene)
 	{
-		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::SwapChain)->OMSetRenderTarget(1);
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::ScreenEffect)->OMSetRenderTarget();
 		RenderInstancing(_pScene->mpMainCamera->GetCamera(), _pScene->mpMainCamera->GetCamera()->GetForwardObjects());
 		_pScene->mpMainCamera->GetCamera()->RenderParticle();
 
@@ -255,9 +273,19 @@ namespace hm
 
 	void RenderManager::RenderFinal()
 	{
-		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::SwapChain)->OMSetRenderTarget(1);
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::ScreenEffect)->OMSetRenderTarget();
 
 		GET_SINGLE(Resources)->Get<Material>(L"Final")->PushGraphicData();
+		GET_SINGLE(Resources)->LoadRectMesh()->Render();
+	}
+
+	void RenderManager::RenderScreenEffect()
+	{
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::SwapChain)->OMSetRenderTarget(1);
+
+		shared_ptr<Texture> pScreenEffectTarget = GET_SINGLE(Resources)->Get<Texture>(L"ScreenEffectTarget");
+		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetTexture(0, pScreenEffectTarget);
+		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->PushGraphicData();
 		GET_SINGLE(Resources)->LoadRectMesh()->Render();
 	}
 
@@ -291,6 +319,78 @@ namespace hm
 		mbEnableRim = _bFlag;
 	}
 
+	void RenderManager::AddScreenEffect(ScreenEffectInfo* _effectInfo, int _groupIndex)
+	{
+		AssertEx(_groupIndex < SCREEN_EFFECT_GROUP_COUNT, L"RenderManager::AddScreenEffect() - 잘못된 인덱스 기입");
+
+		ScreenEffectInfo* pOtherEffect = _groupIndex == 0 ? mActiveEffect[1] : mActiveEffect[0];
+		if (nullptr != pOtherEffect)
+			AssertEx(pOtherEffect != _effectInfo, L"RenderManager::AddScreenEffect() - 실행 중인 두 이펙트 효과가 같은 포인터를 공유");
+
+		if (nullptr == mActiveEffect[_groupIndex])
+		{
+			mActiveEffect[_groupIndex] = _effectInfo;
+
+			if (mActiveEffect[_groupIndex]->startCallback)
+				mActiveEffect[_groupIndex]->startCallback();
+		}
+		else
+		{
+			mScreenEffectGroup[_groupIndex].push(_effectInfo);
+		}
+	}
+
+	void RenderManager::AddFadeEffect(ScreenEffectType _eType, float _endTime,  std::function<void()> _startCallback, std::function<void()> _endCallback, int _groupIndex)
+	{
+		ScreenEffectInfo* pInfo = new ScreenEffectInfo;
+		pInfo->eEffectType = _eType;
+		pInfo->endTime = _endTime;
+		pInfo->startCallback = _startCallback;
+		pInfo->endCallback = _endCallback;
+
+		AddScreenEffect(pInfo, _groupIndex);
+	}
+
+	void RenderManager::RemoveCurrentEffect(int _groupIndex)
+	{
+		if (nullptr == mActiveEffect[_groupIndex])
+			return;
+		
+		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetInt(_groupIndex + 1, 0);
+		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetFloat(_groupIndex, 0.f);
+
+		SAFE_DELETE(mActiveEffect[_groupIndex]);
+
+		if (false == mScreenEffectGroup[_groupIndex].empty())
+		{
+			mActiveEffect[_groupIndex] = mScreenEffectGroup[_groupIndex].front();
+			mScreenEffectGroup[_groupIndex].pop();
+
+			if (mActiveEffect[_groupIndex]->startCallback)
+				mActiveEffect[_groupIndex]->startCallback();
+		}
+	}
+
+	void RenderManager::RemoveGroupEffect(int _groupIndex)
+	{
+		while (!mScreenEffectGroup[_groupIndex].empty())
+		{
+			ScreenEffectInfo* pInfo = mScreenEffectGroup[_groupIndex].front();
+			SAFE_DELETE(pInfo);
+			mScreenEffectGroup[_groupIndex].pop();
+		}
+
+		RemoveCurrentEffect(_groupIndex);
+	}
+
+	void RenderManager::RemoveAllEffect()
+	{
+		for (int i = 0; i < SCREEN_EFFECT_GROUP_COUNT; ++i)
+		{
+			RemoveGroupEffect(i);
+		}
+	}
+
 	void RenderManager::PushLightData(Scene* _pScene)
 	{
 		LightParams lightParams = {};
@@ -308,6 +408,53 @@ namespace hm
 		CONST_BUFFER(ConstantBufferType::Light)->PushData(&lightParams, sizeof(lightParams));
 		CONST_BUFFER(ConstantBufferType::Light)->Mapping();
 	}
+
+	void RenderManager::UpdateScreenEffect()
+	{
+		for (int i = 0; i < SCREEN_EFFECT_GROUP_COUNT; ++i)
+		{
+			if (nullptr != mActiveEffect[i])
+			{
+				mActiveEffect[i]->curTime += DELTA_TIME;
+
+				if (mActiveEffect[i]->curTime > mActiveEffect[i]->endTime)
+				{
+					if (mActiveEffect[i]->endCallback)
+						mActiveEffect[i]->endCallback();
+
+					SAFE_DELETE(mActiveEffect[i]);
+
+					if (false == mScreenEffectGroup[i].empty())
+					{
+						mActiveEffect[i] = mScreenEffectGroup[i].front();
+						mScreenEffectGroup[i].pop();
+
+						if (mActiveEffect[i]->startCallback)
+							mActiveEffect[i]->startCallback();
+					}
+					else
+					{
+						GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetInt(i + 1, 0);
+						GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetFloat(i, 0.f);
+					}
+				}
+				else
+				{
+					ComputeScreenEffect(mActiveEffect[i], i);
+				}
+			}
+		}
+	}
+
+	void RenderManager::ComputeScreenEffect(ScreenEffectInfo* _effectInfo, int _groupIndex)
+	{
+		ScreenEffectType eType = _effectInfo->eEffectType;
+		float ratio = _effectInfo->curTime / _effectInfo->endTime;
+
+		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetFloat(0 + _groupIndex, ratio);
+		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetInt(1 + _groupIndex, static_cast<int>(eType));
+	}
+
 
 	void RenderManager::DownScale()
 	{

@@ -15,6 +15,7 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "Resources.h"
+#include "RenderManager.h"
 
 /* GameObject */
 #include "GameObject.h"
@@ -121,6 +122,12 @@ namespace sy
 
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
+
+		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 3.0f);
+		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1.0f, 
+			std::bind(&DiningColliderCheckMap::TestCallback, this), // 멤버함수로 콜백 등록 (다른 클래스의 함수도 가능 (ex. &Player::Attack)
+			[&]() { MessageBoxA(NULL, "End Callback", "Caption", MB_OK); }); // 람다식으로 콜백 등록
+
 
 
 #pragma region 어드민
