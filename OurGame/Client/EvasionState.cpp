@@ -83,12 +83,9 @@ void EvasionState::Enter()
 	Transform* pTr = pPlayer->GetTransform();
 	RigidBody* pRb = pPlayer->GetRigidBody();
 
-	GameObject* pObj = pPlayer->GetGreatSword();
+	GameObject* pObj = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
 	pObj->Disable();
 	PlayAnimation();
-
-	
-	
 
 }
 
@@ -96,8 +93,8 @@ void EvasionState::Exit()
 {
 	Player* pPlayer = Player::GetPlayer();
 
-	GameObject* pObj = pPlayer->GetGreatSword();
-	pObj->Enable();
+	GameObject* pObj = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
+	pObj->Enable(); 
 }
 
 void EvasionState::PlayAnimation()

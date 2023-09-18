@@ -86,7 +86,7 @@ void IdleState::Update()
 	}
 
 
-	if (IS_DOWN(KeyType::LBUTTON))
+	if (IS_DOWN(KeyType::LBUTTON) || IS_DOWN(KeyType::LCTRL))
 	{
 		pPlayer->StateChange(PlayerState::AttackState);
 	}

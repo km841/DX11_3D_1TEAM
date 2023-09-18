@@ -61,28 +61,53 @@ void AttackState::Update()
 {
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
+	RigidBody* pRb = pPlayer->GetRigidBody();
 	
 	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
 	Transform* pEff_Tr = pEffect->GetTransform();
-	DirectionEvasion eDir = pPlayer->GetDirectioninfo();
 
 	mbTrigger = pPlayer->GetAttackDir();
 
-	//Vec3 Pos = ConvertDir(eDir);
-	//float Flo = atan2(Pos.z, Pos.x);
+#pragma region 공격시 앞으로 튕기는 힘
+		//가져와서 튕기는 힘 주기
+		DirectionEvasion eDir = pPlayer->GetDirectioninfo();
+		Vec3 totalDir = ConvertDir(eDir); // 8가지 방향 체크후 주는 힘 방향 설정
+		float DashSpeed = 5.f;
 
-	//pEff_Tr->SetRotation(AXIS_Y, Flo * 180.f / XM_PI);
-	//pEff_Tr->SetRotation(Vec3(0.f, Flo * 180.f / XM_PI, 0.f));
-	
-	if (pAni->GetFrameRatio() > 0.1f) {
+		if (pAni->GetFrameRatio() > 0.02f)
+			DashSpeed = 0;
+
+		pRb->SetVelocity(totalDir * DashSpeed);
+#pragma endregion
+
+	if (pAni->GetFrameRatio() > 0.07f) {
+		
 		pPlayer->StateChange(PlayerState::IdleState);
+
 	}
 	
-
+	//마우스 좌측 버튼 클릭했을때
 	if (IS_DOWN(KeyType::LBUTTON) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed())
 	{
-	
+		if (mbTrigger == true) //오른쪽 공격
+		{
+			mbTrigger = false;
+			pPlayer->SetAttackDir(mbTrigger);
+			PlayAnimation();
+			return;
+		}
+		if (mbTrigger == false) //왼쪽 공격
+		{
+			mbTrigger = true;
+			pPlayer->SetAttackDir(mbTrigger);
+			PlayAnimation();
+			return;
+		}
+	}
 
+	//LCTRL 버튼 눌렀을떄
+	if (IS_DOWN(KeyType::LCTRL) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed())
+	{
 		if (mbTrigger == true) //오른쪽 공격
 		{
 			mbTrigger = false;
