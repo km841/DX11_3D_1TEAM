@@ -67,7 +67,15 @@ void SwordScript::FixedUpdate()
 	Transform* pTr = GetTransform();
 	GameObject* pObj = GetGameObject(); // 검 오브젝트
 	DirectionEvasion eDir = pPlayer->GetDirectioninfo(); // 8방향 상태 가져오는거
+
+
 	
+	pObj->GetRigidBody()->SetGeometrySize(Vec3(1.f, 0.2f, 0.2f)); //이미 만들어진 콜라이더 사이즈 변경
+	//pObj->GetRigidBody()->SetSimulationShapeFlag(false); // 콜라이더 끄기
+	//pObj->GetRigidBody()->SetSimulationShapeFlag(true); // 콜라이더 켜기
+
+
+
 	Vec3 Pos = pPlyer_Tr->GetPosition();
 	Vec3 Rot = pTr->GetRotation();
 
@@ -139,20 +147,16 @@ void SwordScript::FixedUpdate()
 	}
 
 	
-	//Fsm 가져오고
-	//검 콜라이더 켜기 끄지 fsm 만들고
-	//8방향에 알맞는 Tr설정
-	//어택했을때 알맞는 8방향 Tr 설정
+	//Fsm 가져오고 O 
+	//검 콜라이더 켜기 끄지 fsm 만들고 O
+	//8방향에 알맞는 Tr설정 O
+	//어택했을때 알맞는 8방향 Tr 설정 X
 	//
 
 
 
 
 
-	pObj->GetRigidBody()->SetGeometrySize(Vec3(1.f, 0.2f, 0.2f)); //이미 만들어진 콜라이더 사이즈 변경
-
-	pObj->GetRigidBody()->SetSimulationShapeFlag(false); // 콜라이더 끄기
-	//pObj->GetRigidBody()->SetSimulationShapeFlag(true); // 콜라이더 켜기
 	
 
 
