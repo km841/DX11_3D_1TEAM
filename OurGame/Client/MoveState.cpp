@@ -45,12 +45,17 @@
 #include "SceneChangeEvent.h"
 
 MoveState::MoveState()
-	:State(PlayerState::MoveState)
+	: State(PlayerState::MoveState)
+	, mEndTime(0.07f)
 {
-	mTimeObject01.SetEndTime(0.05f);
-	mTimeObject02.SetEndTime(0.05f);
-	mTimeObject03.SetEndTime(0.05f);
-	mTimeObject04.SetEndTime(0.05f);
+	mTimeTopLeft01.SetEndTime(mEndTime);
+	mTimeTopLeft02.SetEndTime(mEndTime);
+	mTimeTopRight01.SetEndTime(mEndTime);
+	mTimeTopRight02.SetEndTime(mEndTime);
+	mTimeBottomLeft01.SetEndTime(mEndTime);
+	mTimeBottomLeft02.SetEndTime(mEndTime);
+	mTimeBottomRight01.SetEndTime(mEndTime);
+	mTimeBottomRight02.SetEndTime(mEndTime);
 }
 
 void MoveState::Initialize()
@@ -66,10 +71,15 @@ void MoveState::Update()
 	RigidBody* rb = pPlayer->GetRigidBody();
 	DirectionEvasion Dir = pPlayer->GetDirectioninfo();
 
-	mTimeObject01.Update();
-	mTimeObject02.Update();
-	mTimeObject03.Update();
-	mTimeObject04.Update();
+	mTimeTopLeft01.Update();
+	mTimeTopLeft02.Update();
+	mTimeTopRight01.Update();
+	mTimeTopRight02.Update();
+	mTimeBottomLeft01.Update();
+	mTimeBottomLeft02.Update();
+	mTimeBottomRight01.Update();
+	mTimeBottomRight02.Update();
+
 #pragma region "이동 방향 힘 결정"
 	float mMoveSpeed = pPlayer->GetMoveSpeed();
 
@@ -118,25 +128,23 @@ void MoveState::Update()
 		rb->SetVelocity(Vec3(mMoveSpeed, 0.f, mMoveSpeed));
 		tr->SetRotation(Vec3(0.f, 225.f, 90.f));
 	}
-	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::RIGHT))
-	{
-		mMoveSpeed = mMoveSpeed / 1.5f;
-		rb->SetVelocity(Vec3(mMoveSpeed, 0.f, -mMoveSpeed));
-		tr->SetRotation(Vec3(0.f, 315.f, 90.f));
-	}
 	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::LEFT))
 	{
 		mMoveSpeed = mMoveSpeed / 1.5f;
 		rb->SetVelocity(Vec3(-mMoveSpeed, 0.f, -mMoveSpeed));
 		tr->SetRotation(Vec3(0.f, 45.f, 90.f));
 	}
+	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::RIGHT))
+	{
+		mMoveSpeed = mMoveSpeed / 1.5f;
+		rb->SetVelocity(Vec3(mMoveSpeed, 0.f, -mMoveSpeed));
+		tr->SetRotation(Vec3(0.f, 315.f, 90.f));
+	}
 #pragma endregion
 
 
 #pragma region "방향 설정"
 
-	
-	
 	if (IS_PRESS(KeyType::UP))
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::FORWARD);
@@ -177,54 +185,130 @@ void MoveState::Update()
 		pPlayer->SetDirectionChange(DirectionEvasion::BOTTOMRIGHT);
 	}
 
-	
-	
-	
-
-
-
-#pragma region "왼쪽위 설정"
+#pragma region TopLeft 고정 설정
 	if (IS_UP(KeyType::UP)) {
-		mTimeObject01.Stop();
-		mTimeObject01.Start();
+		mTimeTopLeft01.Stop();
+		mTimeTopLeft01.Start();
 	}
 	if (IS_UP(KeyType::LEFT)) {
-		if (mTimeObject01.GetIsRun())
+		if (mTimeTopLeft01.GetIsRun())
 		{
-			mTimeObject01.Stop();
+			mTimeTopLeft01.Stop();
 			pPlayer->SetDirectionChange(DirectionEvasion::TOPLEFT);
 			tr->SetRotation(Vec3(0.f, 135.f, 90.f));
 		}
 	}
 	
 	if (IS_UP(KeyType::LEFT)) {
-		mTimeObject02.Stop();
-		mTimeObject02.Start();
+		mTimeTopLeft02.Stop();
+		mTimeTopLeft02.Start();
 	}
 	if (IS_UP(KeyType::UP)) {
-		if (mTimeObject02.GetIsRun())
+		if (mTimeTopLeft02.GetIsRun())
 		{
-			mTimeObject02.Stop();
+			mTimeTopLeft02.Stop();
 			pPlayer->SetDirectionChange(DirectionEvasion::TOPLEFT);
 			tr->SetRotation(Vec3(0.f, 135.f, 90.f));
 		}
 	}
 #pragma endregion
 
+#pragma region TopRight 고정 설정
+	if (IS_UP(KeyType::UP)) {
+		mTimeTopRight01.Stop();
+		mTimeTopRight01.Start();
+	}
+	if (IS_UP(KeyType::RIGHT)) {
+		if (mTimeTopRight01.GetIsRun())
+		{
+			mTimeTopRight01.Stop();
+			pPlayer->SetDirectionChange(DirectionEvasion::TOPRIGHT);
+			tr->SetRotation(Vec3(0.f, 225.f, 90.f));
+		}
+	}
 
+	if (IS_UP(KeyType::RIGHT)) {
+		mTimeTopRight02.Stop();
+		mTimeTopRight02.Start();
+	}
+	if (IS_UP(KeyType::UP)) {
+		if (mTimeTopRight02.GetIsRun())
+		{
+			mTimeTopRight02.Stop();
+			pPlayer->SetDirectionChange(DirectionEvasion::TOPRIGHT);
+			tr->SetRotation(Vec3(0.f, 225.f, 90.f));
+		}
+	}
+#pragma endregion
 
+#pragma region BottomLeft 고정 설정
+	if (IS_UP(KeyType::DOWN)) {
+		mTimeBottomLeft01.Stop();
+		mTimeBottomLeft01.Start();
+	}
+	if (IS_UP(KeyType::LEFT)) {
+		if (mTimeBottomLeft01.GetIsRun())
+		{
+			mTimeBottomLeft01.Stop();
+			pPlayer->SetDirectionChange(DirectionEvasion::BOTTOMLEFT);
+			tr->SetRotation(Vec3(0.f, 45.f, 90.f));
+		}
+	}
+
+	if (IS_UP(KeyType::LEFT)) {
+		mTimeBottomLeft02.Stop();
+		mTimeBottomLeft02.Start();
+	}
+	if (IS_UP(KeyType::DOWN)) {
+		if (mTimeBottomLeft02.GetIsRun())
+		{
+			mTimeBottomLeft02.Stop();
+			pPlayer->SetDirectionChange(DirectionEvasion::BOTTOMLEFT);
+			tr->SetRotation(Vec3(0.f, 45.f, 90.f));
+		}
+	}
+#pragma endregion
+
+#pragma region BottomRight 고정 설정
+	if (IS_UP(KeyType::DOWN)) {
+		mTimeBottomRight01.Stop();
+		mTimeBottomRight01.Start();
+	}
+	if (IS_UP(KeyType::RIGHT)) {
+		if (mTimeBottomRight01.GetIsRun())
+		{
+			mTimeBottomRight01.Stop();
+			pPlayer->SetDirectionChange(DirectionEvasion::BOTTOMRIGHT);
+			tr->SetRotation(Vec3(0.f, 315.f, 90.f));
+		}
+	}
+
+	if (IS_UP(KeyType::RIGHT)) {
+		mTimeBottomRight02.Stop();
+		mTimeBottomRight02.Start();
+	}
+	if (IS_UP(KeyType::DOWN)) {
+		if (mTimeBottomRight02.GetIsRun())
+		{
+			mTimeBottomRight02.Stop();
+			pPlayer->SetDirectionChange(DirectionEvasion::BOTTOMRIGHT);
+			tr->SetRotation(Vec3(0.f, 315.f, 90.f));
+		}
+	}
+#pragma endregion
 
 	PlayerMoveScript* pScript = PLAYER->GetScript<PlayerMoveScript>();
 	pScript->AutoStepping(2.0f);
 
 #pragma endregion
 
+	/*키 입력시 넘어가는 행동들*/
 	if (IS_UP(KeyType::UP) || IS_UP(KeyType::DOWN) ||
 		IS_UP(KeyType::LEFT) || IS_UP(KeyType::RIGHT))
 	{
 		pPlayer->StateChange(PlayerState::IdleState);
 	}
-	if (IS_DOWN(KeyType::LBUTTON))
+	if (IS_DOWN(KeyType::LBUTTON) || IS_DOWN(KeyType::LCTRL))
 	{
 		pPlayer->StateChange(PlayerState::AttackState);
 	}
@@ -242,11 +326,9 @@ void MoveState::Update()
 	}
 
 
+	//MOVE 애니메이션 반복 
 	if(pAni->GetFrameRatio() > 0.7)
 		PlayAnimation();
-
-
-	//pPlayer->StateChange(PlayerState::AttackState);
 }
 
 void MoveState::Enter()
