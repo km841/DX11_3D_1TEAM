@@ -67,36 +67,44 @@ void SwordScript::FixedUpdate()
 	Transform* pTr = GetTransform();
 	GameObject* pObj = GetGameObject(); // 검 오브젝트
 	DirectionEvasion eDir = pPlayer->GetDirectioninfo(); // 8방향 상태 가져오는거
+
+
 	
+	pObj->GetRigidBody()->SetGeometrySize(Vec3(1.f, 0.2f, 0.2f)); //이미 만들어진 콜라이더 사이즈 변경
+	//pObj->GetRigidBody()->SetSimulationShapeFlag(false); // 콜라이더 끄기
+	//pObj->GetRigidBody()->SetSimulationShapeFlag(true); // 콜라이더 켜기
+
+
+
 	Vec3 Pos = pPlyer_Tr->GetPosition();
 	Vec3 Rot = pTr->GetRotation();
 
 	if (eDir == DirectionEvasion::BACKWARD) {
-		Pos.z += 0.25f;
-		Pos.y += 0.15f;
+		Pos.z += 0.2f;
+		Pos.y += 0.2f;
 		pTr->SetPosition(Pos);
 		pTr->SetRotation(Vec3(330.f, 100.f, 60.f));
 
 	}
 	if (eDir == DirectionEvasion::FORWARD) {
-		Pos.z -= 0.25f;
-		Pos.y += 0.15f;
+		Pos.z -= 0.2f;
+		Pos.y += 0.2f;
 
 		pTr->SetPosition(Pos);
 		pTr->SetRotation(Vec3(330.f, 270.f, 60.f));
 	}
 	if (eDir == DirectionEvasion::LEFT) {
-		Pos.x += 0.25f;
+		Pos.x += 0.2f;
 		Pos.z += 0.f;
-		Pos.y += 0.15f;
+		Pos.y += 0.2f;
 		
 		pTr->SetPosition(Pos);
 		pTr->SetRotation(Vec3(330.f, 200.f, 60.f));
 	}
 	if (eDir == DirectionEvasion::RIGHT) {
-		Pos.x -= 0.25f;
+		Pos.x -= 0.2f;
 		Pos.z += 0.f;
-		Pos.y += 0.15f;
+		Pos.y += 0.2f;
 
 		pTr->SetPosition(Pos);
 		pTr->SetRotation(Vec3(330.f, 350.f, 60.f));
@@ -105,27 +113,50 @@ void SwordScript::FixedUpdate()
 	if (eDir == DirectionEvasion::TOPLEFT) {
 		//Pos.z += 0.125f;
 		//Pos.x += 0.125f;
-		Pos.y += 0.15f;
+		Pos.y += 0.2f;
 
 		pTr->SetPosition(Pos);
-		pTr->SetRotation(Vec3(330.f, 235.f, 60.f));
+		pTr->SetRotation(Vec3(330.f, 240.f, 60.f));
+	}
+
+	if (eDir == DirectionEvasion::TOPRIGHT) {
+		//Pos.z += 0.125f;
+		//Pos.x += 0.125f;
+		Pos.y += 0.2f;
+
+		pTr->SetPosition(Pos);
+		pTr->SetRotation(Vec3(330.f, 310.f, 60.f));
+	}
+
+	if (eDir == DirectionEvasion::BOTTOMLEFT) {
+		//Pos.z += 0.125f;
+		//Pos.x += 0.125f;
+		Pos.y += 0.2f;
+
+		pTr->SetPosition(Pos);
+		pTr->SetRotation(Vec3(330.f, 150.f, 60.f));
+	}
+
+	if (eDir == DirectionEvasion::BOTTOMRIGHT) {
+		//Pos.z += 0.125f;
+		//Pos.x += 0.125f;
+		Pos.y += 0.2f;
+
+		pTr->SetPosition(Pos);
+		pTr->SetRotation(Vec3(330.f, 50.f, 60.f));
 	}
 
 	
-	//Fsm 가져오고
-	//검 콜라이더 켜기 끄지 fsm 만들고
-	//8방향에 알맞는 Tr설정
-	//어택했을때 알맞는 8방향 Tr 설정
+	//Fsm 가져오고 O 
+	//검 콜라이더 켜기 끄지 fsm 만들고 O
+	//8방향에 알맞는 Tr설정 O
+	//어택했을때 알맞는 8방향 Tr 설정 X
 	//
 
 
 
 
 
-	pObj->GetRigidBody()->SetGeometrySize(Vec3(1.f, 0.2f, 0.2f)); //이미 만들어진 콜라이더 사이즈 변경
-
-	pObj->GetRigidBody()->SetSimulationShapeFlag(false); // 콜라이더 끄기
-	//pObj->GetRigidBody()->SetSimulationShapeFlag(true); // 콜라이더 켜기
 	
 
 

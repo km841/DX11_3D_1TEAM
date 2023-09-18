@@ -110,6 +110,10 @@ void IdleState::Update()
 	{
 		pPlayer->StateChange(PlayerState::ClimingDownState);
 	}
+	if (IS_DOWN(KeyType::N))
+	{
+		pPlayer->StateChange(PlayerState::HitStartState);
+	}
 		
 	
 }
