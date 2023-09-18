@@ -26,6 +26,10 @@ namespace hm
 		virtual void Destroy();
 
 	public:
+		virtual void OnCollisionEnter(Collider* _pOtherCollider);
+		virtual void OnCollisionStay(Collider* _pOtherCollider);
+		virtual void OnCollisionExit(Collider* _pOtherCollider);
+
 		virtual void OnTriggerEnter(Collider* _pOtherCollider);
 		virtual void OnTriggerStay(Collider* _pOtherCollider);
 		virtual void OnTriggerExit(Collider* _pOtherCollider);

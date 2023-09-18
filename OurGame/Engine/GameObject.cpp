@@ -179,6 +179,24 @@ namespace hm
 		return static_cast<AI*>(GetFixedComponent(ComponentType::Ai));
 	}
 
+	void GameObject::Enable()
+	{
+		mbEnable = true;
+		if (true == IsPhysicsObject())
+		{
+			GetRigidBody()->SetSimulationShapeFlag(mbEnable);
+		}
+	}
+
+	void GameObject::Disable()
+	{
+		mbEnable = false;
+		if (true == IsPhysicsObject())
+		{
+			GetRigidBody()->SetSimulationShapeFlag(mbEnable);
+		}
+	}
+
 	void GameObject::SetDontDestroyObject(const wstring& _name)
 	{
 		mbDontDestroy = true;
