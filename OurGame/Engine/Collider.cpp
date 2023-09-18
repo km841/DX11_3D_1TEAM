@@ -61,6 +61,9 @@ namespace hm
 
 	void Collider::Render()
 	{
+		if (false == GetGameObject()->IsEnable())
+			return;
+
 		Camera* pMainCamera = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera();
 
 		bool bIsCapsule = GeometryType::Capsule == GetRigidBody()->GetGeometryType();

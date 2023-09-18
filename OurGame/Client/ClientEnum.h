@@ -12,7 +12,9 @@ enum class PlayerState
 	MagicAttackState,
 	EvasionState,
 	FallState,
-	HitState,
+	HitStartState,
+	HittingState,
+	HitEndState,
 	FallDownState,
 	DeadState,
 	ClimingUpState,
@@ -73,4 +75,12 @@ enum class DirectionEvasion {
 enum
 {
 	EVASION_STATE_COUNT = DirectionEvasion::END,
+};
+
+enum class MonsterBasicState
+{
+	Idle,
+	Patrol,
+	Trace,
+	Attack,
 };

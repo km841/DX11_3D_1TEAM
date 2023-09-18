@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-
+class SwordScript;
 class SwordHeavyEffect;
 class State;
 class Player :
@@ -26,15 +26,15 @@ public:
 	virtual void Destroy();
 
 public:
-	virtual void OnTriggerEnter(Collider* pOtherCollider);
-	virtual void OnTriggerStay(Collider* pOtherCollider);
-	virtual void OnTriggerExit(Collider* pOtherCollider);
+	virtual void OnTriggerEnter(Collider* _pOtherCollider);
+	virtual void OnTriggerStay(Collider* _pOtherCollider);
+	virtual void OnTriggerExit(Collider* _pOtherCollider);
 
 public:
 	void StateChange(PlayerState _eState);
 
 	void SetDirectionChange(DirectionEvasion _eState);
-	DirectionEvasion GetDirectionChange() { return meDirectionEvasion; }
+	DirectionEvasion GetDirectioninfo() { return meDirectionEvasion; }
 
 	float GetAttackSpeed() { return mAttack_Speed; }
 	void SetAttackSpeed(float _attackspeed) { mAttack_Speed = _attackspeed; }
@@ -44,6 +44,9 @@ public:
 
 	float GetDashSpeed() { return mDash_Speed; }
 	void SetDashSpeed(float _Dash_Speed) { mDash_Speed = _Dash_Speed; }
+
+	bool GetAttackDir() { return mbAttackDir; }
+	void SetAttackDir(bool _AttackDir) { mbAttackDir = _AttackDir; }
 
 	SwordHeavyEffect* GetSwordEffect() { return mpSlashEffect; }
 public:
@@ -69,9 +72,11 @@ private:
 	float mDash_Speed;
 	float mAttack;
 	float mAttack_Speed;
-
-	
+	bool mbAttackDir;
+	GameObject* pGreatSword;
 	SwordHeavyEffect* mpSlashEffect;
 	DirectionEvasion meDirectionEvasion; // 이동 상태 FSM
+
+	SwordScript* pSwordSc;
 };
 

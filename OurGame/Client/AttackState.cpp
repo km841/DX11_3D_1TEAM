@@ -49,7 +49,7 @@
 
 AttackState::AttackState()
 	: State(PlayerState::AttackState)
-	, mbTrigger(true)
+	, mbTrigger(true) 
 {
 }
 
@@ -64,7 +64,10 @@ void AttackState::Update()
 	
 	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
 	Transform* pEff_Tr = pEffect->GetTransform();
-	DirectionEvasion eDir = pPlayer->GetDirectionChange();
+	DirectionEvasion eDir = pPlayer->GetDirectioninfo();
+
+	mbTrigger = pPlayer->GetAttackDir();
+
 	//Vec3 Pos = ConvertDir(eDir);
 	//float Flo = atan2(Pos.z, Pos.x);
 
@@ -80,15 +83,17 @@ void AttackState::Update()
 	{
 	
 
-		if (mbTrigger == true)
+		if (mbTrigger == true) //오른쪽 공격
 		{
 			mbTrigger = false;
+			pPlayer->SetAttackDir(mbTrigger);
 			PlayAnimation();
 			return;
 		}
-		if (mbTrigger == false)
+		if (mbTrigger == false) //왼쪽 공격
 		{
 			mbTrigger = true;
+			pPlayer->SetAttackDir(mbTrigger);
 			PlayAnimation();
 			return;
 		}
@@ -114,21 +119,22 @@ void AttackState::PlayAnimation()
 	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
 	PlayerSlashScript* pSlashSc = pEffect->GetScript<PlayerSlashScript>();
 
+	mbTrigger = pPlayer->GetAttackDir();
 
-	DirSlash();
+	DirSlash(); // 플레이어 방향 회전 함수
 
 	if (!mbTrigger)
 	{
 		pAni->Play(69, false);
 
-		pSlashSc->ChangeReverse();
+		pSlashSc->ChangeReverse(false);
 		pSlashSc->Attack();
 	}
 	else
 	{
 		pAni->Play(70, false);
 	
-		pSlashSc->ChangeReverse();
+		pSlashSc->ChangeReverse(true);
 		pSlashSc->Attack();
 
 	}
@@ -146,7 +152,7 @@ void AttackState::DirSlash()
 	OwnerFollowScript* pOFSc = pEffect->GetScript<OwnerFollowScript>();
 
 	Transform* pEff_Tr = pEffect->GetTransform();
-	DirectionEvasion eDir = pPlayer->GetDirectionChange();
+	DirectionEvasion eDir = pPlayer->GetDirectioninfo();
 	{
 		Vec3 Pos = ConvertDir(eDir);
 		Pos.Normalize();

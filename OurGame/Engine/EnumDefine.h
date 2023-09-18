@@ -18,6 +18,7 @@ namespace hm
 		Player,
 		Grandma_Boss,
 		Monster,
+		Item,
 		Npc,
 		Effect,
 		Ground,
@@ -199,6 +200,13 @@ namespace hm
 	enum
 	{
 		SCREEN_EFFECT_GROUP_COUNT = 2,
+	};
+
+	enum class BehaviorResult
+	{
+		Success,
+		Running,
+		Failure,
 	};
 }
 

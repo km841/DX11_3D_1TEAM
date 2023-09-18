@@ -17,7 +17,9 @@ public:
 	virtual void Exit() = 0;
 	virtual void PlayAnimation() = 0;
 
-private:
+	PlayerState GetStateEnum() { return mePlayerState; }
+
+protected:
 	PlayerState mePlayerState;
 	
 

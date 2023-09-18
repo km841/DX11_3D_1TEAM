@@ -1,12 +1,11 @@
 #include "pch.h"
-#include "EvasionState.h"
+#include "HittingState.h"
 #include "Engine.h"
 
 /* Resource */
 #include "MeshData.h"
 #include "Material.h"
 #include "Mesh.h"
-#include "ClientEnum.h"
 
 /* Manager */
 #include "PrefabManager.h"
@@ -40,64 +39,42 @@
 #include "PlayerMoveScript.h"
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
-#include "State.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
-
-EvasionState::EvasionState()
-	:State(PlayerState::EvasionState)
+HittingState::HittingState()
+	:State(PlayerState::HittingState)
 {
 }
 
-void EvasionState::Initialize()
+void HittingState::Initialize()
 {
 }
 
-void EvasionState::Update()
-{
-	//조건 걸어서 다른 스테이트 넘어가게 해주는 구조 만들기
-	Player* pPlayer = Player::GetPlayer();
-	Animator* pAni = pPlayer->GetAnimator();
-	Transform* pTr = pPlayer->GetTransform();
-	RigidBody* pRb = pPlayer->GetRigidBody();
-
-	if (pAni->GetFrameRatio() > 0.2f)
-		pPlayer->StateChange(PlayerState::IdleState);
-
-
-	//가져와서 튕기는 힘 주기
-	DirectionEvasion eDE = pPlayer->GetDirectioninfo();
-	float DashSpeed = pPlayer->GetDashSpeed();
-
-	Vec3 totalDir = ConvertDir(eDE); // 8가지 방향 체크후 주는 힘 방향 설정
-	pRb->SetVelocity(totalDir * DashSpeed);
-	
-	
-}
-
-void EvasionState::Enter()
+void HittingState::Update()
 {
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
-	Transform* pTr = pPlayer->GetTransform();
-	RigidBody* pRb = pPlayer->GetRigidBody();
 
+	if (pAni->GetFrameRatio() > 0.9)
+	{
+		pPlayer->StateChange(PlayerState::HitEndState);
+	}
+}
+
+void HittingState::Enter()
+{
 	PlayAnimation();
-
-	
-
 }
 
-void EvasionState::Exit()
+void HittingState::Exit()
 {
 }
 
-void EvasionState::PlayAnimation()
+void HittingState::PlayAnimation()
 {
-	//애니메이션 출력
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 
-	pAni->Play(63, false);
+	pAni->Play(38, false);
 }

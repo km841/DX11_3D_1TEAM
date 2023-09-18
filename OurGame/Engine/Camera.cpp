@@ -92,6 +92,9 @@ namespace hm
 
 			for (GameObject* pGameObject : gameObjects)
 			{
+				if (false == pGameObject->IsEnable())
+					continue; 
+
 				if (pGameObject->IsFrustumCheck())
 				{
 					if (false == mFrustumCulling.ContainsSphere(

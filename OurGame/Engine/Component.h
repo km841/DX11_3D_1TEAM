@@ -13,6 +13,7 @@ namespace hm
 	class Collider;
 	class RigidBody;
 	class Animator;
+	class AI;
 
 	enum class ComponentType
 	{
@@ -48,6 +49,7 @@ namespace hm
 		virtual ~Component();
 
 		virtual void Initialize() { }
+		virtual void Start() { }
 		virtual void Update() { }
 		virtual void FixedUpdate() { }
 		virtual void FinalUpdate() { }
@@ -65,6 +67,7 @@ namespace hm
 		Collider* GetCollider();
 		RigidBody* GetRigidBody();
 		Animator* GetAnimator();
+		AI* GetAI();
 
 		bool IsPhysicsObject();
 

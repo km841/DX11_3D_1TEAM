@@ -11,6 +11,7 @@
 #include "Animator.h"
 #include "Engine.h"
 #include "Resources.h"
+#include "AI.h"
 
 namespace hm
 {
@@ -173,6 +174,30 @@ namespace hm
 	{
 		return static_cast<Animator*>(GetFixedComponent(ComponentType::Animator));
 	}
+
+	AI* GameObject::GetAI()
+	{
+		return static_cast<AI*>(GetFixedComponent(ComponentType::Ai));
+	}
+
+	void GameObject::Enable()
+	{
+		mbEnable = true;
+		if (true == IsPhysicsObject())
+		{
+			GetRigidBody()->SetSimulationShapeFlag(mbEnable);
+		}
+	}
+
+	void GameObject::Disable()
+	{
+		mbEnable = false;
+		if (true == IsPhysicsObject())
+		{
+			GetRigidBody()->SetSimulationShapeFlag(mbEnable);
+		}
+	}
+
 	void GameObject::SetDontDestroyObject(const wstring& _name)
 	{
 		mbDontDestroy = true;

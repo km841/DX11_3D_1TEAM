@@ -2,12 +2,12 @@
 
 #pragma once
 #include "State.h"
-class HitState :
+class HitEndState :
 	public State
 {
 public:
-	HitState();
-	virtual ~HitState() = default;
+	HitEndState();
+	virtual ~HitEndState() = default;
 
 	virtual void Initialize() override;
 	virtual void Update() override;
