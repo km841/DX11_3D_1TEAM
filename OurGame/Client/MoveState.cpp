@@ -47,6 +47,10 @@
 MoveState::MoveState()
 	:State(PlayerState::MoveState)
 {
+	mTimeObject01.SetEndTime(0.05f);
+	mTimeObject02.SetEndTime(0.05f);
+	mTimeObject03.SetEndTime(0.05f);
+	mTimeObject04.SetEndTime(0.05f);
 }
 
 void MoveState::Initialize()
@@ -60,7 +64,12 @@ void MoveState::Update()
 	Animator* pAni = pPlayer->GetAnimator();
 	Transform* tr = pPlayer->GetTransform();
 	RigidBody* rb = pPlayer->GetRigidBody();
+	DirectionEvasion Dir = pPlayer->GetDirectioninfo();
 
+	mTimeObject01.Update();
+	mTimeObject02.Update();
+	mTimeObject03.Update();
+	mTimeObject04.Update();
 #pragma region "이동 방향 힘 결정"
 	float mMoveSpeed = pPlayer->GetMoveSpeed();
 
@@ -125,6 +134,9 @@ void MoveState::Update()
 
 
 #pragma region "방향 설정"
+
+	
+	
 	if (IS_PRESS(KeyType::UP))
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::FORWARD);
@@ -139,12 +151,12 @@ void MoveState::Update()
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::RIGHT);
 	}
-
+	
 	if (IS_PRESS(KeyType::LEFT))
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::LEFT);
 	}
-
+	
 	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::LEFT))
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::TOPLEFT);
@@ -164,6 +176,43 @@ void MoveState::Update()
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::BOTTOMRIGHT);
 	}
+
+	
+	
+	
+
+
+
+#pragma region "왼쪽위 설정"
+	if (IS_UP(KeyType::UP)) {
+		mTimeObject01.Stop();
+		mTimeObject01.Start();
+	}
+	if (IS_UP(KeyType::LEFT)) {
+		if (mTimeObject01.GetIsRun())
+		{
+			mTimeObject01.Stop();
+			pPlayer->SetDirectionChange(DirectionEvasion::TOPLEFT);
+			tr->SetRotation(Vec3(0.f, 135.f, 90.f));
+		}
+	}
+	
+	if (IS_UP(KeyType::LEFT)) {
+		mTimeObject02.Stop();
+		mTimeObject02.Start();
+	}
+	if (IS_UP(KeyType::UP)) {
+		if (mTimeObject02.GetIsRun())
+		{
+			mTimeObject02.Stop();
+			pPlayer->SetDirectionChange(DirectionEvasion::TOPLEFT);
+			tr->SetRotation(Vec3(0.f, 135.f, 90.f));
+		}
+	}
+#pragma endregion
+
+
+
 
 	PlayerMoveScript* pScript = PLAYER->GetScript<PlayerMoveScript>();
 	pScript->AutoStepping(2.0f);

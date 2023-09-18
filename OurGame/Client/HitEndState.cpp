@@ -66,6 +66,10 @@ void HitEndState::Enter()
 
 void HitEndState::Exit()
 {
+	Player* pPlayer = Player::GetPlayer();
+
+	GameObject* pObj = pPlayer->GetGreatSword();
+	pObj->Enable();
 }
 
 void HitEndState::PlayAnimation()

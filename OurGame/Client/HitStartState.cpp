@@ -67,6 +67,10 @@ void HitStartState::Update()
 void HitStartState::Enter()
 {
 	PlayAnimation();
+	Player* pPlayer = Player::GetPlayer();
+
+	GameObject* pObj = pPlayer->GetGreatSword();
+	pObj->Disable();
 }
 
 void HitStartState::Exit()
