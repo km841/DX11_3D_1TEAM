@@ -7,24 +7,26 @@
 namespace yj
 {
 
-	class CinematicCamMove : public MonoBehavior
+	class CinematicCamMove : public GameObject
 	{
 	public:
 		CinematicCamMove();
 		virtual ~CinematicCamMove() = default;
-
-		virtual void Initialize();
 		virtual Component* Clone(GameObject* _pGameObject);
 
-		void CamEventTrigger(int _event_num);
-
 	public:
+		virtual void Initialize();
 		virtual void Update();
+		void CamEventTrigger(int _event_num);
 
 
 		void MoveTo(Vec3 _dot_a, Vec3 _dot_b);
 		void RotateTo();
 		Vec3 mObjectivePos;
+
+		float Dot(Vec3 a, Vec3 b);
+
+		float Mag(Vec3 a);
 
 	private:
 		GameObject* pCamera;
@@ -32,3 +34,4 @@ namespace yj
 		int mPlayedNum = 0;
 	};
 }
+

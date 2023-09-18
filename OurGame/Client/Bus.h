@@ -25,20 +25,21 @@ namespace yj
 
 		void Shake();
 
-		enum Sequence
-		{
-			Stanby,
-			Move,
-			Wait,
-			End
-		};
-		Sequence sequence;
+		void BusActive() { isBusActive = true; }
+
 	private:
 
+
+		void BusEvent();
+
+		bool isBusActive = false;
 		int shake;
 
-		Vec3 mOriginPos;
+		int sequenceNum = 0;
 
-		float stopX;
+		float timer;
+		float mAddedDist = 0;
 	};
 }
+
+

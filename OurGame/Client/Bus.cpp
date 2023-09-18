@@ -6,7 +6,6 @@
 
 namespace yj
 {
-
 	Bus::Bus()
 		: GameObject(LayerType::Ground),
 		shake(1)
@@ -19,10 +18,6 @@ namespace yj
 	void Bus::Initialize()
 	{
 		GameObject::Initialize();
-		
-	/*	mOriginPos = this->GetTransform()->GetPosition();
-		this->GetTransform()->SetScale(Vec3(50.0f, 50.0f, 50.0f));*/
-
 	}
 
 	void Bus::Start()
@@ -32,13 +27,11 @@ namespace yj
 	void Bus::Update()
 	{
 		GameObject::Update();
-
-		if (sequence == Stanby)
-		{
-
-		}
-
 		Shake();
+		if (isBusActive)
+		{
+			BusEvent();
+		}
 	}
 
 	void Bus::FixedUpdate()
@@ -62,28 +55,48 @@ namespace yj
 	}
 	void Bus::Shake()
 	{
-		this->GetTransform()->SetPosition(Vec3(-17.0f, -8.0f, 33.0f));
 		Vec3 mPos = this->GetTransform()->GetPosition();
 		Vec3 mAddPos;
 		Vec3 mFixedPos;
+		//타이머로 해야겠군
+		timer += DELTA_TIME;
 
 		if (shake == 1)
 		{
-			mAddPos = Vec3(5.0f, 0.0f, 0.0f);
-			if (mPos.x >= mOriginPos.x + 5.0f)
+			mAddPos = Vec3(0.5f, 0.0f, -0.5f);
+			mFixedPos = mPos + mAddPos * DELTA_TIME;
+			if (timer >= 0.02f)
 			{
 				shake = 2;
+				timer = 0;
 			}
 		}
 		if (shake == 2)
 		{
-			mAddPos = Vec3(5.0f, 0.0f, 0.0f);
-			if (mPos.x >= mOriginPos.x + 5.0f)
+			mAddPos = Vec3(-0.5f, 0.0f, 0.5f);
+			mFixedPos = mPos + mAddPos * DELTA_TIME;
+			if (timer >= 0.02f)
 			{
 				shake = 1;
+				timer = 0;
 			}
 		}
-		mFixedPos = mPos + mAddPos * DELTA_TIME;
 		this->GetTransform()->SetPosition(mFixedPos);
+	}
+
+	void Bus::BusEvent()
+	{
+		if (sequenceNum == 0)
+		{
+			Vec3 mPos = this->GetTransform()->GetPosition();
+			Vec3 mAddPos = Vec3(-4, 0, -4);
+			Vec3 mFixedPos = mPos + mAddPos * DELTA_TIME;
+			mAddedDist += 1 * DELTA_TIME;
+			this->GetTransform()->SetPosition(mFixedPos);
+			if (mAddedDist > 4)
+			{
+				sequenceNum = 1;
+			}
+		}
 	}
 }

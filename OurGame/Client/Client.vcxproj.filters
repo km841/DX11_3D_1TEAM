@@ -217,6 +217,8 @@
     <ClInclude Include="Elevator.h">
       <Filter>소스 파일\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Bus.h" />
+    <ClInclude Include="CinematicCamMove.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -432,6 +434,8 @@
     <ClCompile Include="Elevator.cpp">
       <Filter>소스 파일\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Bus.cpp" />
+    <ClCompile Include="CinematicCamMove.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

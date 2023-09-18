@@ -7,13 +7,15 @@
 namespace yj
 {
 	CinematicCamMove::CinematicCamMove()
-		:pCamera(nullptr)
+		:pCamera(nullptr),
+		isEventOn(false),
+		GameObject(LayerType::Ground)
 	{
 	}
 
 	void CinematicCamMove::Initialize()
 	{
-		GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetCamera();
+		GameObject::Initialize();
 	}
 
 	Component* CinematicCamMove::Clone(GameObject* _pGameObject)
@@ -38,10 +40,27 @@ namespace yj
 
 	void CinematicCamMove::Update()
 	{
+		GameObject::Update();
+		if (GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetCamera() == nullptr)
+		{
+			return;
+		}
+		this->GetTransform()->SetPosition(GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetCamera()->GetTransform()->GetPosition());
 		//평소에는 플레이어의 어디 위치에서 따라 오게
 		if (!isEventOn)
 		{
-			GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetCamera()->GetTransform()->SetPosition(Vec3());
+			Vec3 mPlayerPos = PLAYER->GetTransform()->GetPosition();
+			Transform* mCamTr = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetCamera()->GetTransform();
+			Vec3 mFiexedPos = Vec3(mPlayerPos.x - 20, mPlayerPos.y + 20, mPlayerPos.z + 20 );
+			mCamTr->SetPosition(mFiexedPos);
+			Vec3 mCamPos = mCamTr->GetPosition();
+
+			 Quaternion mCamQuater =  mCamTr->EulerToQuaternion(mCamTr->GetRotation());
+			 Quaternion mPlayerQuater = PLAYER->GetTransform()->EulerToQuaternion(PLAYER->GetTransform()->GetRotation());
+			 Quaternion mResult = mCamQuater.LookRotation(mPlayerPos - mCamPos,mCamPos.Up); 
+			/* Vec3 mResultVec3 = mResult.ToEuler();
+			 mCamTr->SetRotation(mResultVec3 * 100);*/
+			int c = 0;
 		}
 
 		if (this->GetName() == L"FirstEventCamera")
@@ -92,4 +111,16 @@ namespace yj
 	void CinematicCamMove::RotateTo()
 	{
 	}
+
+
+	float CinematicCamMove::Dot(Vec3 a, Vec3 b)
+	{
+		return a.x * b.x + a.y * b.y + a.z * b.z;
+	}
+
+	float CinematicCamMove::Mag(Vec3 a)
+	{
+		return std::sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+	}
+
 }
