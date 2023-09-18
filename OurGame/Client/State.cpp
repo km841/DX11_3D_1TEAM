@@ -2,7 +2,7 @@
 #include "State.h"
 
 State::State(PlayerState _mePlayerState)
-	: mePlayerState(PlayerState::IdleState)
+	: mePlayerState(_mePlayerState)
 {
 	mTimerObj.push_back(TimerObject());
 
