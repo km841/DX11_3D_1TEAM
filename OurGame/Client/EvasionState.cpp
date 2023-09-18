@@ -83,14 +83,21 @@ void EvasionState::Enter()
 	Transform* pTr = pPlayer->GetTransform();
 	RigidBody* pRb = pPlayer->GetRigidBody();
 
+	GameObject* pObj = pPlayer->GetGreatSword();
+	pObj->Disable();
 	PlayAnimation();
 
+	
 	
 
 }
 
 void EvasionState::Exit()
 {
+	Player* pPlayer = Player::GetPlayer();
+
+	GameObject* pObj = pPlayer->GetGreatSword();
+	pObj->Enable();
 }
 
 void EvasionState::PlayAnimation()

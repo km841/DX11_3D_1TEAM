@@ -33,7 +33,7 @@ namespace hm
 		* ex) RunAnimationTask의 경우 BehaviorTask를 상속받은 RunBehaviorTask 클래스를 구현한 후 생성자의 인자로 애니메이션의 인덱스나 이름을 받게끔 하여 구현
 		*/
 		AI* pAI = AddComponent(new AI);
-		Player* pPlayer = PLAYER;
+		
 		
 		// 루트 노드 등록
 		Selector* pRootNode = new Selector;

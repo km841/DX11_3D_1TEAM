@@ -57,7 +57,7 @@ void SwordScript::Initialize()
 {
 	GameObject* pObj = GetGameObject();
 
-	gpEngine->GetTool()->UseGizmo();
+	//gpEngine->GetTool()->UseMeshTool();
 	//gpEngine->GetTool()->SetGameObject(pObj);
 }
 
@@ -353,8 +353,8 @@ void SwordScript::FixedUpdate()
 		}
 
 		if (eDir == DirectionEvasion::TOPLEFT) {
-			//Pos.z += 0.125f;
-			//Pos.x += 0.125f;
+			Pos.z -= 0.125f;
+			Pos.x += 0.125f;
 			Pos.y += 0.2f;
 
 			pTr->SetPosition(Pos);
