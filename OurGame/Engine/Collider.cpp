@@ -47,6 +47,7 @@ namespace hm
 		}
 			break;
 		}
+		myLayerType = this->GetGameObject()->GetLayerType();
 	}
 
 	void Collider::Update()

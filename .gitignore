@@ -411,3 +411,11 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 *.dll
+OurGame/Library/Lib/FMod/debug/fmodstudioL.dll
+*.dll
+*.dll
+*.dll
+*.msh
+*.dll
+*.dll
+*.dll

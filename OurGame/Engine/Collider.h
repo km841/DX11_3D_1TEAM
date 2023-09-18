@@ -63,7 +63,7 @@ namespace hm
             }
             for (int i = 0; i < collLayerTypeList.size(); i++)
             {
-                if (collLayerTypeList[0] == _layerType)
+                if (collLayerTypeList[i] == _layerType)
                 {
                     return true;
                 }

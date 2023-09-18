@@ -136,6 +136,7 @@ namespace hm
 
 	Component* GameObject::GetFixedComponent(ComponentType _eComponentType)
 	{
+		this;
 		int index = static_cast<int>(_eComponentType);
 		AssertEx(FIXED_COMPONENT_COUNT > index, L"GameObject::GetFixedComponent() - 잘못된 컴포넌트 타입 전달");
 		return mComponents[index];

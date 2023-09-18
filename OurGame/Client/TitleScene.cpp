@@ -35,6 +35,7 @@
 /* Script */
 #include "PaperBurnScript.h"
 #include "CameraMoveScript.h"
+#include "CinematicCamMove.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -130,6 +131,7 @@ namespace hm
 
 			Camera* pCamera = pGameObject->AddComponent(new Camera);
 			pGameObject->AddComponent(new CameraMoveScript);
+			pGameObject->AddComponent(new yj::CinematicCamMove);
 
 			pCamera->SetCullingMask(LayerType::UI, true);
 

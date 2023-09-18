@@ -4,10 +4,9 @@
 #include "GameObject.h"
 #include "Camera.h"
 
-namespace yj
+namespace yj	
 {
-
-	class CinematicCamMove : public GameObject
+	class CinematicCamMove : public MonoBehavior
 	{
 	public:
 		CinematicCamMove();

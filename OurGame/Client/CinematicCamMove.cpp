@@ -8,14 +8,12 @@ namespace yj
 {
 	CinematicCamMove::CinematicCamMove()
 		:pCamera(nullptr),
-		isEventOn(false),
-		GameObject(LayerType::Ground)
+		isEventOn(false)
 	{
 	}
 
 	void CinematicCamMove::Initialize()
 	{
-		GameObject::Initialize();
 	}
 
 	Component* CinematicCamMove::Clone(GameObject* _pGameObject)
@@ -29,7 +27,7 @@ namespace yj
 		{
 		case 1:
 			//PLAYER.ControlAble;
-			//플레이어 조작 금지
+
 
 			isEventOn = true;
 			//Vec3
@@ -40,15 +38,20 @@ namespace yj
 
 	void CinematicCamMove::Update()
 	{
-		GameObject::Update();
 		if (GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetCamera() == nullptr)
 		{
 			return;
 		}
+
 		this->GetTransform()->SetPosition(GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetCamera()->GetTransform()->GetPosition());
 		//평소에는 플레이어의 어디 위치에서 따라 오게
-		if (!isEventOn)
+			
+		if (PLAYER->GetPlayer() == nullptr)
 		{
+			return;
+		}
+		if (!isEventOn)
+		{ 
 			Vec3 mPlayerPos = PLAYER->GetTransform()->GetPosition();
 			Transform* mCamTr = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetCamera()->GetTransform();
 			Vec3 mFiexedPos = Vec3(mPlayerPos.x - 20, mPlayerPos.y + 20, mPlayerPos.z + 20 );

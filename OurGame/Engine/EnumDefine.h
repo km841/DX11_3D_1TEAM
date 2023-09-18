@@ -25,6 +25,7 @@ namespace hm
 		DecoObject,
 		WallObject,
 		UI,
+		Portal,
 		End,
 	};
 

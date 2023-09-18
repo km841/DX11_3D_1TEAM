@@ -217,8 +217,13 @@
     <ClInclude Include="Elevator.h">
       <Filter>소스 파일\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Bus.h" />
-    <ClInclude Include="CinematicCamMove.h" />
+    <ClInclude Include="TeleportZone.h" />
+    <ClInclude Include="CinematicCamMove.h">
+      <Filter>소스 파일\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Bus.h">
+      <Filter>소스 파일\GameObject\Bus</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -434,8 +439,13 @@
     <ClCompile Include="Elevator.cpp">
       <Filter>소스 파일\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Bus.cpp" />
-    <ClCompile Include="CinematicCamMove.cpp" />
+    <ClCompile Include="TeleportZone.cpp" />
+    <ClCompile Include="CinematicCamMove.cpp">
+      <Filter>소스 파일\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Bus.cpp">
+      <Filter>소스 파일\GameObject\Bus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -496,6 +506,9 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Effect">
       <UniqueIdentifier>{42c4b81b-5a0c-45e4-bcaa-ea135f7766a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Bus">
+      <UniqueIdentifier>{2242b40b-c20d-40db-8a6a-86b0649b8775}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

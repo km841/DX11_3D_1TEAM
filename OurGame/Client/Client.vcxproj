@@ -149,7 +149,9 @@
     <ClInclude Include="AttackState.h" />
     <ClInclude Include="BigTransEndState_Gm.h" />
     <ClInclude Include="BigTransStartState_Gm.h" />
+    <ClInclude Include="Bus.h" />
     <ClInclude Include="CameraMoveScript.h" />
+    <ClInclude Include="CinematicCamMove.h" />
     <ClInclude Include="ClientEnum.h" />
     <ClInclude Include="ClimingDownState.h" />
     <ClInclude Include="ClimingEndState.h" />
@@ -209,6 +211,7 @@
     <ClInclude Include="State.h" />
     <ClInclude Include="State_Grandma.h" />
     <ClInclude Include="SwordHeavyEffect.h" />
+    <ClInclude Include="TeleportZone.h" />
     <ClInclude Include="Teleport_InState_Gm.h" />
     <ClInclude Include="Teleport_OutState_Gm.h" />
     <ClInclude Include="TestAnimationScript.h" />
@@ -223,7 +226,9 @@
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="BigTransEndState_Gm.cpp" />
     <ClCompile Include="BigTransStartState_Gm.cpp" />
+    <ClCompile Include="Bus.cpp" />
     <ClCompile Include="CameraMoveScript.cpp" />
+    <ClCompile Include="CinematicCamMove.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClimingDownState.cpp" />
     <ClCompile Include="ClimingEndState.cpp" />
@@ -285,6 +290,7 @@
     <ClCompile Include="State.cpp" />
     <ClCompile Include="State_Grandma.cpp" />
     <ClCompile Include="SwordHeavyEffect.cpp" />
+    <ClCompile Include="TeleportZone.cpp" />
     <ClCompile Include="Teleport_InState_Gm.cpp" />
     <ClCompile Include="Teleport_OutState_Gm.cpp" />
     <ClCompile Include="TestAnimationScript.cpp" />

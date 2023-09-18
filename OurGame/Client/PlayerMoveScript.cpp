@@ -36,6 +36,7 @@ void PlayerMoveScript::FixedUpdate()
 	CheckPenetration(rb, LayerType::WallObject);
 	CheckPenetration(rb, LayerType::Obstacle);
 	CheckPenetration(rb, LayerType::Ground);
+	CheckPenetration(rb, LayerType::Portal);
 
 	//AutoStepping(1.f);
 
