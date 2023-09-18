@@ -74,6 +74,7 @@ Player::Player()
 	, mSpeed(5.f) // 이동속도
 	, mAttack(1.f) // 데미지
 	, mAttack_Speed(0.04f) // 공속
+	, mbAttackDir(true) //true시 오른쪽공격, false시 왼쪽 공격
 	, mDash_Speed(25.f) // 회피시 주는 물리 힘
 	, meDirectionEvasion(DirectionEvasion::NONE) // 플레이어 8방향 enum 으로 표시
 	
@@ -135,7 +136,7 @@ Player::Player()
 		auto pFollowSc = pGreatSword->AddComponent(new OwnerFollowScript(this));
 		
 		
-		SwordScript* pSwordSc = pGreatSword->AddComponent(new SwordScript);
+		pSwordSc = pGreatSword->AddComponent(new SwordScript);
 		//gpEngine->GetTool()->UseGizmo();
 		//gpEngine->GetTool()->SetGameObject(pGreatSword);
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pGreatSword);
@@ -251,6 +252,8 @@ void Player::Update()
 	GameObject::Update();
 	
 	mActiveState->Update();
+	
+	pSwordSc->SetPlayerState(mActiveState->GetStateEnum());
 }
 
 void Player::FixedUpdate()
