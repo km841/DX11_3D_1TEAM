@@ -1151,7 +1151,7 @@ namespace sy
 			info.size = Vec3(5.f, 5.f, 5.f);
 
 			Monster* pMonster =
-				Factory::CreateObjectHasPhysical<Monster>(Vec3(10.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor.fbx");
+				Factory::CreateObjectHasPhysical<Monster>(Vec3(10.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor_Roller.fbx");
 
 			pMonster->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
 			pMonster->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
