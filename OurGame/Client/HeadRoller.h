@@ -35,7 +35,7 @@ namespace hm
 		virtual void OnTriggerExit(Collider* _pOtherCollider);
 
 	protected:
-		MonsterBasicState meBasicState;
+		
 	};
 }
 

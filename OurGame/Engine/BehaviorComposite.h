@@ -9,6 +9,8 @@ namespace hm
 		BehaviorComposite() = default;
 		virtual ~BehaviorComposite();
 		virtual void Release();
+		virtual void SetRoot(BehaviorNode* _pNode);
+		virtual void SetAI(AI* _pAI);
 
 	public:
 		void AddChild(BehaviorNode* _pChild);
