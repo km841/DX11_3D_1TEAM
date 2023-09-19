@@ -32,8 +32,6 @@ namespace yj
 
 		Scene* mScene = SceneManager::GetInstance()->GetScene(SceneType::MainOfficeMap); //원래는 씬을 받아서 넣어줘야 하나 엘레이베이터 기능은 현재 메인 오피스 씬에만 포함되어 있기 때문에 간략화를 위해 직접 넣어주었다.
 
-	
-
 		pMoveFrame= Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Hod_Elevator.fbx");
 		mScene->AddGameObject(pMoveFrame);
 
@@ -215,12 +213,14 @@ namespace yj
 			pMoveFrame->GetTransform()->SetPosition(mFixedPos);
 			if (mFixedPos.y <= belowLimit)
 			{
-				
 				if (isPlayerIn)
 				{
 					state = ArriveDown;
 				}
-				
+				else
+				{
+					state = StandbyDown;
+				}
 				BarricadeOff(0);
 				BarricadeOff(1);
 			}
@@ -236,6 +236,10 @@ namespace yj
 				if (isPlayerIn)
 				{
 					state = ArriveUp;
+				}
+				else
+				{
+					state = StandbyUp;
 				}
 				BarricadeOff(0);
 				BarricadeOff(1);

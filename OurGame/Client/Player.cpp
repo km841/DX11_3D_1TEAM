@@ -335,6 +335,6 @@ void Player::SetDirectionChange(DirectionEvasion _eState)
 
 Player* Player::GetPlayer()
 {
-	AssertEx(spPlayer != nullptr, L"플레이어가 Nullptr 이다 _ GetPlayer()~");
+	//AssertEx(spPlayer != nullptr, L"플레이어가 Nullptr 이다 _ GetPlayer()~");
 	return spPlayer; 
 }

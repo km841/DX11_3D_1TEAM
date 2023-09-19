@@ -1,6 +1,8 @@
 #pragma once
 #include "Map.h"
 #include "Elevator.h"
+#include "Bus.h"
+
 namespace yj {
 	class MainOfficeMap :
 		public Map
@@ -16,10 +18,14 @@ namespace yj {
 		virtual void FixedUpdate();
 		virtual void FinalUpdate();
 		virtual void Render();
-			
+
 		virtual void Enter();
 		virtual void Exit();
 
+		void InitObjectAdd();
+		void InitBusStart();
+
+		Bus* pBus;
 		Elevator* eTarget;
 	};
 }
