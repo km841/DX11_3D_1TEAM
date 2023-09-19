@@ -92,6 +92,10 @@ namespace hm
 			pStateSelector->AddChild(pIdleSequence);
 
 #pragma endregion
+
+
+
+
 #pragma region Trace Sequence
 			Sequence* pTraceSequence = new Sequence;
 			{

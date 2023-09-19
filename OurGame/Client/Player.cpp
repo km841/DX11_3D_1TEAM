@@ -133,8 +133,12 @@ Player::Player()
 		pGreatSword->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
 		pGreatSword->GetTransform()->SetRotation(Vec3(330.f, 100.f, 50.f));
 
+		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloom(true,0);
 		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloom(true,1);
+		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloom(true,2);
+		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.f,0);
 		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.f,1);
+		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.f,2);
 		//pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(0.f, 0.f, 0.f, 0.f),1);
 
 		auto pFollowSc = pGreatSword->AddComponent(new OwnerFollowScript(this));
