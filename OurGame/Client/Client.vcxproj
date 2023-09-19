@@ -163,6 +163,7 @@
     <ClInclude Include="Elevator.h" />
     <ClInclude Include="EntranceHallMap.h" />
     <ClInclude Include="EvasionState.h" />
+    <ClInclude Include="E_Bat.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="FallDownState.h" />
     <ClInclude Include="FallState.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="Elevator.cpp" />
     <ClCompile Include="EntranceHallMap.cpp" />
     <ClCompile Include="EvasionState.cpp" />
+    <ClCompile Include="E_Bat.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="FallDownState.cpp" />
     <ClCompile Include="FallState.cpp" />
