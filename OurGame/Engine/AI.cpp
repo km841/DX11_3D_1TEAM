@@ -8,6 +8,7 @@ namespace hm
 	AI::AI()
 		: Component(ComponentType::Ai)
 		, mpRoot(nullptr)
+		, mbInit(false)
 	{
 	}
 	AI::~AI()
@@ -26,6 +27,13 @@ namespace hm
 	{
 		if (nullptr != mpRoot)
 		{
+			if (false == mbInit)
+			{
+				mbInit = true;
+				mpRoot->SetRoot(mpRoot);
+				mpRoot->SetAI(this);
+			}
+
 			mpRoot->Run();
 		}
 	}

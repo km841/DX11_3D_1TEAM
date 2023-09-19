@@ -7,6 +7,7 @@
 #include "RigidBody.h"
 #include "Collider.h"
 #include "Input.h"
+#include "ChangeStateCondition.h"
 
 #define IDLE_ANIM_INDEX 0
 #define TRACE_ANIM_INDEX 3
@@ -14,7 +15,6 @@
 namespace hm
 {
 	HeadRoller::HeadRoller()
-		: meBasicState(MonsterBasicState::Idle)
 	{
 	}
 
@@ -84,7 +84,7 @@ namespace hm
 						return BehaviorResult::Success;
 					});
 
-				pIdleSequence->AddChild(pStateChecker);
+				pIdleSequence->AddChild(new ChangeStateCondition(MonsterBasicState::Idle));
 				pIdleSequence->AddChild(pRunAnimationTask);
 				pIdleSequence->AddChild(pCheckNearbyPlayer);
 				pIdleSequence->AddChild(pChangeState);
@@ -129,7 +129,7 @@ namespace hm
 					return BehaviorResult::Success;
 					});
 
-				pTraceSequence->AddChild(pStateChecker);
+				pTraceSequence->AddChild(new ChangeStateCondition(MonsterBasicState::Trace));
 				pTraceSequence->AddChild(pRunAnimationTask);
 				pTraceSequence->AddChild(pTraceTask);
 			}
@@ -147,14 +147,6 @@ namespace hm
 	void HeadRoller::Update()
 	{
 		Monster::Update();
-
-		if (IS_DOWN(KeyType::K))
-		{
-			if (IsEnable())
-				Disable();
-			else
-				Enable();
-		}
 	}
 
 	void HeadRoller::FixedUpdate()
@@ -183,11 +175,6 @@ namespace hm
 			GetRigidBody()->RemoveGravity();
 			GetRigidBody()->SetVelocity(Vec3::Zero);
 		}
-
-		if (LayerType::Player == _pOtherCollider->GetGameObject()->GetLayerType())
-		{
-			int i = 0;
-		}
 	}
 	void HeadRoller::OnCollisionStay(Collider* _pOtherCollider)
 	{
@@ -205,11 +192,6 @@ namespace hm
 		{
 			GetRigidBody()->RemoveGravity();
 			GetRigidBody()->SetVelocity(Vec3::Zero);
-		}
-
-		if (LayerType::Player == _pOtherCollider->GetGameObject()->GetLayerType())
-		{
-			int i = 0;
 		}
 	}
 	void HeadRoller::OnTriggerStay(Collider* _pOtherCollider)
