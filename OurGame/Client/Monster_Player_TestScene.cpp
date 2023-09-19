@@ -225,21 +225,21 @@ namespace hm {
 		//	SetAnimTarget(p_E_GRIMACE_KNIGHT);
 		//}
 
-		 //¹ÚÁã
-		//{
-		//	PhysicsInfo info = {};
-		//	info.eActorType = ActorType::Kinematic;
-		//	info.eGeometryType = GeometryType::Box;
-		//	info.size = Vec3(2.f, 2.f, 2.f);
+		// ¹ÚÁã
+		{
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Kinematic;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(2.f, 2.f, 2.f);
 
-		//	Monster* p_E_BAT_White = Factory::CreateObjectHasPhysical<Monster>(Vec3(-9.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
-		//	p_E_BAT_White->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
-		//	p_E_BAT_White->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-		//	p_E_BAT_White->SetFrustumCheckFlag(false);
-		//	//SetGizmoTarget(p_E_BAT_White);
-		//	AddGameObject(p_E_BAT_White);
-		//	SetMeshTarget(p_E_BAT_White);
-		//}
+			Monster* p_E_BAT_White = Factory::CreateObjectHasPhysical<Monster>(Vec3(-9.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
+			p_E_BAT_White->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+			p_E_BAT_White->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			p_E_BAT_White->SetFrustumCheckFlag(false);
+			//SetGizmoTarget(p_E_BAT_White);
+			AddGameObject(p_E_BAT_White);
+			//SetMeshTarget(p_E_BAT_White);
+		}
 
 		
 

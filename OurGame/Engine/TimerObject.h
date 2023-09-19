@@ -14,7 +14,7 @@ public:
 	float GetProgress();
 
 	void SetEndTime(float _endTime) { mEndTime = _endTime; }
-
+	bool GetIsRun() { return mbIsRunning; }
 private:
 	float mEndTime;
 	float mCurTime;

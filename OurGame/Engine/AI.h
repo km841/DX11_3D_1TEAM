@@ -21,6 +21,7 @@ namespace hm
 
 	private:
 		BehaviorNode* mpRoot;
+		bool mbInit;
 	};
 }
 

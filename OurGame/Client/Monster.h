@@ -28,6 +28,12 @@ namespace hm
 		virtual void FinalUpdate();
 		virtual void Render();
 		virtual void Destroy();
+
+	public:
+		MonsterBasicState GetBasicState() { return meBasicState; }
+
+	protected:
+		MonsterBasicState meBasicState;
 	};
 }
 

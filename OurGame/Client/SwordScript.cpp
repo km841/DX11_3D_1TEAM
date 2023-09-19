@@ -57,7 +57,7 @@ void SwordScript::Initialize()
 {
 	GameObject* pObj = GetGameObject();
 
-	gpEngine->GetTool()->UseGizmo();
+	//gpEngine->GetTool()->UseMeshTool();
 	//gpEngine->GetTool()->SetGameObject(pObj);
 }
 
@@ -353,8 +353,8 @@ void SwordScript::FixedUpdate()
 		}
 
 		if (eDir == DirectionEvasion::TOPLEFT) {
-			//Pos.z += 0.125f;
-			//Pos.x += 0.125f;
+			Pos.z -= 0.125f;
+			Pos.x += 0.125f;
 			Pos.y += 0.2f;
 
 			pTr->SetPosition(Pos);
@@ -362,8 +362,8 @@ void SwordScript::FixedUpdate()
 		}
 
 		if (eDir == DirectionEvasion::TOPRIGHT) {
-			//Pos.z += 0.125f;
-			//Pos.x += 0.125f;
+			Pos.z -= 0.125f;
+			Pos.x -= 0.125f;
 			Pos.y += 0.2f;
 
 			pTr->SetPosition(Pos);
@@ -371,8 +371,8 @@ void SwordScript::FixedUpdate()
 		}
 
 		if (eDir == DirectionEvasion::BOTTOMLEFT) {
-			//Pos.z += 0.125f;
-			//Pos.x += 0.125f;
+			Pos.z += 0.125f;
+			Pos.x += 0.125f;
 			Pos.y += 0.2f;
 
 			pTr->SetPosition(Pos);
@@ -380,8 +380,8 @@ void SwordScript::FixedUpdate()
 		}
 
 		if (eDir == DirectionEvasion::BOTTOMRIGHT) {
-			//Pos.z += 0.125f;
-			//Pos.x += 0.125f;
+			Pos.z += 0.125f;
+			Pos.x -= 0.125f;
 			Pos.y += 0.2f;
 
 			pTr->SetPosition(Pos);
@@ -410,11 +410,6 @@ void SwordScript::FixedUpdate()
 void SwordScript::SetPlayerState(PlayerState _eStateNum)
 {
 	mPlayerStateNum = _eStateNum;
-
-	if (PlayerState::AttackState == mPlayerStateNum)
-	{
-		int a = 0;
-	}
 }
 
 Component* SwordScript::Clone(GameObject* _pGameObject)

@@ -7,6 +7,7 @@
 #include "RigidBody.h"
 #include "Collider.h"
 #include "Input.h"
+#include "ChangeStateCondition.h"
 
 #define IDLE_ANIM_INDEX 0
 #define TRACE_ANIM_INDEX 3
@@ -14,7 +15,6 @@
 namespace hm
 {
 	HeadRoller::HeadRoller()
-		: meBasicState(MonsterBasicState::Idle)
 	{
 	}
 
@@ -33,7 +33,7 @@ namespace hm
 		* ex) RunAnimationTask의 경우 BehaviorTask를 상속받은 RunBehaviorTask 클래스를 구현한 후 생성자의 인자로 애니메이션의 인덱스나 이름을 받게끔 하여 구현
 		*/
 		AI* pAI = AddComponent(new AI);
-		Player* pPlayer = PLAYER;
+		
 		
 		// 루트 노드 등록
 		Selector* pRootNode = new Selector;
@@ -84,7 +84,7 @@ namespace hm
 						return BehaviorResult::Success;
 					});
 
-				pIdleSequence->AddChild(pStateChecker);
+				pIdleSequence->AddChild(new ChangeStateCondition(MonsterBasicState::Idle));
 				pIdleSequence->AddChild(pRunAnimationTask);
 				pIdleSequence->AddChild(pCheckNearbyPlayer);
 				pIdleSequence->AddChild(pChangeState);
@@ -92,6 +92,10 @@ namespace hm
 			pStateSelector->AddChild(pIdleSequence);
 
 #pragma endregion
+
+
+
+
 #pragma region Trace Sequence
 			Sequence* pTraceSequence = new Sequence;
 			{
@@ -129,7 +133,7 @@ namespace hm
 					return BehaviorResult::Success;
 					});
 
-				pTraceSequence->AddChild(pStateChecker);
+				pTraceSequence->AddChild(new ChangeStateCondition(MonsterBasicState::Trace));
 				pTraceSequence->AddChild(pRunAnimationTask);
 				pTraceSequence->AddChild(pTraceTask);
 			}
@@ -147,14 +151,6 @@ namespace hm
 	void HeadRoller::Update()
 	{
 		Monster::Update();
-
-		if (IS_DOWN(KeyType::K))
-		{
-			if (IsEnable())
-				Disable();
-			else
-				Enable();
-		}
 	}
 
 	void HeadRoller::FixedUpdate()
@@ -183,11 +179,6 @@ namespace hm
 			GetRigidBody()->RemoveGravity();
 			GetRigidBody()->SetVelocity(Vec3::Zero);
 		}
-
-		if (LayerType::Player == _pOtherCollider->GetGameObject()->GetLayerType())
-		{
-			int i = 0;
-		}
 	}
 	void HeadRoller::OnCollisionStay(Collider* _pOtherCollider)
 	{
@@ -205,11 +196,6 @@ namespace hm
 		{
 			GetRigidBody()->RemoveGravity();
 			GetRigidBody()->SetVelocity(Vec3::Zero);
-		}
-
-		if (LayerType::Player == _pOtherCollider->GetGameObject()->GetLayerType())
-		{
-			int i = 0;
 		}
 	}
 	void HeadRoller::OnTriggerStay(Collider* _pOtherCollider)

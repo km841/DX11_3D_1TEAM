@@ -55,6 +55,7 @@ struct alignas(16) BloomParams
 	float padding1 = 0.f;
 	float padding2 = 0.f;
 	Vec4 bloomColor = {};
+	Vec4 bloomFilter = {};
 };
 
 struct alignas(16) MaterialParams

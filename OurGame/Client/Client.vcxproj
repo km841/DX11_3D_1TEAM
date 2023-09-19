@@ -151,6 +151,7 @@
     <ClInclude Include="BigTransStartState_Gm.h" />
     <ClInclude Include="Bus.h" />
     <ClInclude Include="CameraMoveScript.h" />
+    <ClInclude Include="ChangeStateCondition.h" />
     <ClInclude Include="CinematicCamMove.h" />
     <ClInclude Include="ClientEnum.h" />
     <ClInclude Include="ClimingDownState.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="Elevator.h" />
     <ClInclude Include="EntranceHallMap.h" />
     <ClInclude Include="EvasionState.h" />
+    <ClInclude Include="E_Bat.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="FallDownState.h" />
     <ClInclude Include="FallState.h" />
@@ -232,6 +234,7 @@
     <ClCompile Include="BigTransStartState_Gm.cpp" />
     <ClCompile Include="Bus.cpp" />
     <ClCompile Include="CameraMoveScript.cpp" />
+    <ClCompile Include="ChangeStateCondition.cpp" />
     <ClCompile Include="CinematicCamMove.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClimingDownState.cpp" />
@@ -245,6 +248,7 @@
     <ClCompile Include="Elevator.cpp" />
     <ClCompile Include="EntranceHallMap.cpp" />
     <ClCompile Include="EvasionState.cpp" />
+    <ClCompile Include="E_Bat.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="FallDownState.cpp" />
     <ClCompile Include="FallState.cpp" />
@@ -255,7 +259,7 @@
     <ClCompile Include="HitEndState.cpp" />
     <ClCompile Include="HitStartState.cpp" />
     <ClCompile Include="HittingState.cpp" />
-    <ClCompile Include="HeadRoller.cpp" /> 
+    <ClCompile Include="HeadRoller.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="IdleState_Gm.cpp" />
     <ClCompile Include="LeftSecretFightMap.cpp" />

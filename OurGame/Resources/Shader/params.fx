@@ -118,6 +118,7 @@ cbuffer BLOOM_PARAMS : register(b3)
    float g_padding1;
    float g_padding2;
    float4 g_bloomColor;
+   float4 g_bloomFilter;
 }
 
 #endif

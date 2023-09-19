@@ -235,6 +235,12 @@
     <ClInclude Include="HittingState.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
+    <ClInclude Include="ChangeStateCondition.h">
+      <Filter>소스 파일\GameObject\Monster\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="E_Bat.h">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -467,6 +473,12 @@
     </ClCompile>
     <ClCompile Include="HittingState.cpp">
       <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangeStateCondition.cpp">
+      <Filter>소스 파일\GameObject\Monster\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="E_Bat.cpp">
+      <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

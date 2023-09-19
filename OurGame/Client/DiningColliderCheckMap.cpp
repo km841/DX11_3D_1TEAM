@@ -1150,13 +1150,14 @@ namespace sy
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(5.f, 5.f, 5.f);
 
-			HeadRoller* pHeadRoller =
-				Factory::CreateObjectHasPhysical<HeadRoller>(Vec3(10.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_HEADROLLER.fbx");
+			Monster* pMonster =
+				Factory::CreateObjectHasPhysical<Monster>(Vec3(10.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor_Roller.fbx");
 
-			pHeadRoller->GetTransform()->SetScale(Vec3(100.f, 100.f, 100.f));
-			pHeadRoller->GetRigidBody()->ApplyGravity();
+			pMonster->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+			pMonster->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 
-			AddGameObject(pHeadRoller);
+			AddGameObject(pMonster);
+			SetMeshTarget(pMonster);
 		}
 
 

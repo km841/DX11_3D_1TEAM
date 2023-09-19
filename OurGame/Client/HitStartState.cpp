@@ -67,6 +67,10 @@ void HitStartState::Update()
 void HitStartState::Enter()
 {
 	PlayAnimation();
+	Player* pPlayer = Player::GetPlayer();
+
+	GameObject* pObj = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
+	pObj->Disable(); // 칼 투명화 그리기
 }
 
 void HitStartState::Exit()

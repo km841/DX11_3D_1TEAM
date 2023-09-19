@@ -48,6 +48,9 @@ public:
 	bool GetAttackDir() { return mbAttackDir; }
 	void SetAttackDir(bool _AttackDir) { mbAttackDir = _AttackDir; }
 
+	GameObject* GetGreatSword() { return pGreatSword; }
+	
+
 	SwordHeavyEffect* GetSwordEffect() { return mpSlashEffect; }
 public:
 	static Player* spPlayer;
@@ -73,10 +76,10 @@ private:
 	float mAttack;
 	float mAttack_Speed;
 	bool mbAttackDir;
-	GameObject* pGreatSword;
 	SwordHeavyEffect* mpSlashEffect;
 	DirectionEvasion meDirectionEvasion; // 이동 상태 FSM
 
+	GameObject* pGreatSword;
 	SwordScript* pSwordSc;
 };
 

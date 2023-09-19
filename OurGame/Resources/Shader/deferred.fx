@@ -108,11 +108,28 @@ PS_OUT PS_Main(VS_OUT _in)
     
     output.position = float4(_in.viewPos, 0.f);
     output.normal = float4(viewNormal, 0.f);
-    output.color = 1 == g_bloomEnable ? totalBloomColor * bloomPower : color;
+    output.color = 1 == g_bloomEnable ? totalBloomColor : color;
     output.bloom = 1 == g_bloomEnable ? totalBloomColor * bloomPower : float4(0.f, 0.f, 0.f, 0.f);
     output.depth.xyz = (float3) (_in.projPos.z / _in.projPos.w);
     output.depth.w = _in.projPos.w;
     output.depth.yzw = _in.viewPos;
+    
+    if (length(g_bloomFilter) > 0)
+    {
+        output.color = totalBloomColor;
+        
+        if (totalBloomColor.r >= max(totalBloomColor.g, totalBloomColor.b) + 0.1f)
+            output.bloom = float4(1.f, 0.f, 0.f, 1.f);
+        
+        else if (totalBloomColor.g >= max(totalBloomColor.r, totalBloomColor.b) + 0.1f)
+            output.bloom = float4(0.f, 1.f, 0.f, 1.f);
+        
+        else if (totalBloomColor.b >= max(totalBloomColor.g, totalBloomColor.r) + 0.1f)
+            output.bloom = float4(0.f, 0.f, 1.f, 1.f);
+        
+        else
+            output.bloom = float4(0.f, 0.f, 0.f, 0.f);
+    }
    
     return output;
 }
