@@ -210,6 +210,7 @@
     <ClInclude Include="SmallTransEndState_Gm.h" />
     <ClInclude Include="SmallTransStartState_Gm.h" />
     <ClInclude Include="Small_IdleState_Gm.h" />
+    <ClInclude Include="SoulDoor.h" />
     <ClInclude Include="SpinEndState_Gm.h" />
     <ClInclude Include="SpinningState_Gm.h" />
     <ClInclude Include="SpinStartState_Gm.h" />
@@ -295,6 +296,7 @@
     <ClCompile Include="SmallTransEndState_Gm.cpp" />
     <ClCompile Include="SmallTransStartState_Gm.cpp" />
     <ClCompile Include="Small_IdleState_Gm.cpp" />
+    <ClCompile Include="SoulDoor.cpp" />
     <ClCompile Include="SpinEndState_Gm.cpp" />
     <ClCompile Include="SpinningState_Gm.cpp" />
     <ClCompile Include="SpinStartState_Gm.cpp" />

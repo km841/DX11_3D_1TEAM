@@ -235,6 +235,7 @@
     <ClInclude Include="E_Bat.h">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="SoulDoor.h" />
     <ClInclude Include="Bus.h" />
     <ClInclude Include="CinematicCamMove.h" />
     <ClInclude Include="TeleportZone.h" />
@@ -468,6 +469,7 @@
     <ClCompile Include="E_Bat.cpp">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="SoulDoor.cpp" />
     <ClCompile Include="Bus.cpp" />
     <ClCompile Include="CinematicCamMove.cpp" />
     <ClCompile Include="TeleportZone.cpp" />
