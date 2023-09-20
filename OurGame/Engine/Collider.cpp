@@ -35,7 +35,17 @@ namespace hm
 			mpMesh = GET_SINGLE(Resources)->LoadBoundingCubeMesh();
 			break;
 		case GeometryType::Capsule:
+		{
 			Vec3 geomSize = GetRigidBody()->GetGeometrySize();
+			mpMesh = GET_SINGLE(Resources)->CreateCapsuleMesh(geomSize.x / 2.f, geomSize.y);
+		}
+		break;
+		case GeometryType::Mesh:
+		{
+			wstring name = GetMeshRenderer()->GetMesh()->GetName();
+			mpMesh = GET_SINGLE(Resources)->Get<Mesh>(name + L"Col");
+		}
+		break;
 		}
 		myLayerType = this->GetGameObject()->GetLayerType();
 	}
