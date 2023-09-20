@@ -224,6 +224,7 @@
     <ClInclude Include="Bus.h">
       <Filter>소스 파일\GameObject\Bus</Filter>
     </ClInclude>
+    <ClInclude Include="SoulDoor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -446,6 +447,7 @@
     <ClCompile Include="Bus.cpp">
       <Filter>소스 파일\GameObject\Bus</Filter>
     </ClCompile>
+    <ClCompile Include="SoulDoor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
