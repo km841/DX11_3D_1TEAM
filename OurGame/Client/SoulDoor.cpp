@@ -20,6 +20,7 @@ namespace yj
 
 			break;
 		case MoveUp:
+		{
 			Vec3 mFixedPos = Vec3(mFramePos.x, mFramePos.y + mCurrAddSpeed * DELTA_TIME, mFramePos.z);
 			mCurrAddSpeed = mCurrAddSpeed - mDeceleration * DELTA_TIME;
 			pFrame->GetTransform()->SetPosition(mFixedPos);
@@ -29,14 +30,17 @@ namespace yj
 				mCurrAddSpeed = mInitAddSpeed;
 				state = MoveDown;
 			}
+		}
 			break;
 		case MoveDown:
+		{
 			Vec3 mFixedPos = Vec3(mFramePos.x, mFramePos.y + mDropSpeed * DELTA_TIME, mFramePos.z);
 			pFrame->GetTransform()->SetPosition(mFixedPos);
 			if (mFixedPos.y <= mDownLimit)
 			{
 				state = CloseStandby;
 			}
+		}
 			break;
 		case CloseStandby:
 
