@@ -23,6 +23,7 @@
 #include "Ground.h"
 #include "DecoObject.h"
 #include "WallObject.h"
+#include "HeadRoller.h"
 
 /* Component */
 #include "Collider.h"
@@ -123,11 +124,9 @@ namespace sy
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
-		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 3.0f);
-		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1.0f, 
-			std::bind(&DiningColliderCheckMap::TestCallback, this), // 멤버함수로 콜백 등록 (다른 클래스의 함수도 가능 (ex. &Player::Attack)
-			[&]() { MessageBoxA(NULL, "End Callback", "Caption", MB_OK); }); // 람다식으로 콜백 등록
+		
 
+	
 
 
 #pragma region 어드민
@@ -1144,7 +1143,22 @@ namespace sy
 			AddGameObject(pPlayer);
 		}
 
+		// HeadRoller
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Kinematic;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(5.f, 5.f, 5.f);
 
+			Monster* pMonster =
+				Factory::CreateObjectHasPhysical<Monster>(Vec3(10.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor_Roller.fbx");
+
+			pMonster->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+			pMonster->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+
+			AddGameObject(pMonster);
+			SetMeshTarget(pMonster);
+		}
 
 
 

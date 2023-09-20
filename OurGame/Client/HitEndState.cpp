@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "HitState.h"
+#include "HitEndState.h"
 #include "Engine.h"
 
 /* Resource */
@@ -42,39 +42,39 @@
 
 /* Event */
 #include "SceneChangeEvent.h"
-HitState::HitState()
-	:State(PlayerState::HitState)
+HitEndState::HitEndState()
+	:State(PlayerState::HitEndState)
 {
 }
 
-void HitState::Initialize()
+void HitEndState::Initialize()
 {
 }
 
-void HitState::Update()
+void HitEndState::Update()
 {
-	//조건 걸어서 다른 스테이트 넘어가게 해주는 구조 만들기
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
-
-
-	//pPlayer->StateChange(PlayerState::AttackState);
+	if (pAni->GetFrameRatio() > 0.6)
+		pPlayer->StateChange(PlayerState::IdleState);
 }
 
-void HitState::Enter()
+void HitEndState::Enter()
 {
 	PlayAnimation();
 }
 
-void HitState::Exit()
+void HitEndState::Exit()
 {
+	Player* pPlayer = Player::GetPlayer();
+
+	GameObject* pObj = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
+	pObj->Enable(); // 칼 투명화 종료
 }
 
-void HitState::PlayAnimation()
+void HitEndState::PlayAnimation()
 {
-	//애니메이션 출력
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
-
-	//pAni->Play(4, true);
+	pAni->Play(39, false);
 }

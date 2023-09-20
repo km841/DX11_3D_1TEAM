@@ -43,6 +43,7 @@
 #include "PaperBurnScript.h"
 #include "PlayerSlashScript.h"
 #include "OwnerFollowScript.h"
+#include "SwordScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -55,7 +56,9 @@
 #include "MagicAttackState.h"
 #include "EvasionState.h"
 #include "FallState.h"
-#include "HitState.h"
+#include "HitStartState.h"
+#include "HittingState.h"
+#include "HitEndState.h"
 #include "FallDownState.h"
 #include "DeadState.h"
 #include "ClimingDownState.h"
@@ -71,6 +74,7 @@ Player::Player()
 	, mSpeed(5.f) // 이동속도
 	, mAttack(1.f) // 데미지
 	, mAttack_Speed(0.04f) // 공속
+	, mbAttackDir(true) //true시 오른쪽공격, false시 왼쪽 공격
 	, mDash_Speed(25.f) // 회피시 주는 물리 힘
 	, meDirectionEvasion(DirectionEvasion::NONE) // 플레이어 8방향 enum 으로 표시
 	
@@ -85,7 +89,9 @@ Player::Player()
 	mState[int(PlayerState::MagicAttackState)] = new MagicAttackState;
 	mState[int(PlayerState::EvasionState)] = new EvasionState;
 	mState[int(PlayerState::FallState)] = new FallState;
-	mState[int(PlayerState::HitState)] = new HitState;
+	mState[int(PlayerState::HitStartState)] = new HitStartState;
+	mState[int(PlayerState::HittingState)] = new HittingState;
+	mState[int(PlayerState::HitEndState)] = new HitEndState;
 	mState[int(PlayerState::FallDownState)] = new FallDownState;
 	mState[int(PlayerState::DeadState)] = new DeadState;
 	mState[int(PlayerState::ClimingDownState)] = new ClimingDownState;
@@ -114,22 +120,33 @@ Player::Player()
 	//검 오브젝트
 	//검  -> Sc 
 	// Sc ( 검오브젝트 , 플레이어 오브젝트 
+	// 방향 가져와서 쓰기
 
-	//무기 테스트
+	//무기 오브젝트
 	{
-		/*PhysicsInfo info = {};
-		info.eActorType = ActorType::Kinematic;
-		info.eGeometryType = GeometryType::Box;
-		info.size = Vec3(2.f, 0.2f, 0.2f);*/
-
-		DecoObject* pGreatSword = Factory::CreateObject<DecoObject>(Vec3(0.f, -5.f, 0.f), L"Forward_CullNone", L"..\\Resources\\FBX\\Weapon\\Sword.fbx");
-		pGreatSword->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
-		pGreatSword->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
-
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(1.f, 0.2f, 0.2f);
 		
-		//AddComponent(new PlayerSlashScript); 넣자
-		gpEngine->GetTool()->UseGizmo();
-		gpEngine->GetTool()->SetGameObject(pGreatSword);
+		pGreatSword = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, -5.f, 0.f), physicsInfo, L"Forward_CullNone", L"..\\Resources\\FBX\\Weapon\\Sword.fbx",false, LayerType::Item);
+		pGreatSword->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+		pGreatSword->GetTransform()->SetRotation(Vec3(330.f, 100.f, 50.f));
+
+		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloom(true,0);
+		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloom(true,1);
+		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloom(true,2);
+		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.f,0);
+		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.f,1);
+		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.f,2);
+		//pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(0.f, 0.f, 0.f, 0.f),1);
+
+		auto pFollowSc = pGreatSword->AddComponent(new OwnerFollowScript(this));
+		
+		
+		pSwordSc = pGreatSword->AddComponent(new SwordScript);
+		//gpEngine->GetTool()->UseGizmo();
+		//gpEngine->GetTool()->SetGameObject(pGreatSword);
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pGreatSword);
 		//SetMeshTarget(pGreatSword);
 	}
@@ -243,6 +260,8 @@ void Player::Update()
 	GameObject::Update();
 	
 	mActiveState->Update();
+	
+	pSwordSc->SetPlayerState(mActiveState->GetStateEnum());
 }
 
 void Player::FixedUpdate()
@@ -273,27 +292,27 @@ void Player::Destroy()
 
 }
 
-void Player::OnTriggerEnter(Collider* pOtherCollider)
+void Player::OnTriggerEnter(Collider* _pOtherCollider)
 {
-	if (LayerType::Ground == pOtherCollider->GetGameObject()->GetLayerType())
+	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		GetRigidBody()->RemoveGravity();
 		GetRigidBody()->SetVelocity(Vec3::Zero);
 	}
 
-	if (LayerType::Monster == pOtherCollider->GetGameObject()->GetLayerType())
+	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		
 	}
 }
 
-void Player::OnTriggerStay(Collider* pOtherCollider)
+void Player::OnTriggerStay(Collider* _pOtherCollider)
 {
 }
 
-void Player::OnTriggerExit(Collider* pOtherCollider)
+void Player::OnTriggerExit(Collider* _pOtherCollider)
 {
-	if (LayerType::Ground == pOtherCollider->GetGameObject()->GetLayerType())
+	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		GetRigidBody()->ApplyGravity();
 	}

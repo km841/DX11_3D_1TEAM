@@ -226,6 +226,27 @@
     <ClInclude Include="Effect.h">
       <Filter>Object\GameObject\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Sequence.h">
+      <Filter>Object\GameObject\Component\AI\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorComposite.h">
+      <Filter>Object\GameObject\Component\AI\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorCondition.h">
+      <Filter>Object\GameObject\Component\AI\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorNode.h">
+      <Filter>Object\GameObject\Component\AI\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorTask.h">
+      <Filter>Object\GameObject\Component\AI\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Selector.h">
+      <Filter>Object\GameObject\Component\AI\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>Object\GameObject\Component\AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EnginePch.cpp">
@@ -428,6 +449,27 @@
     </ClCompile>
     <ClCompile Include="Effect.cpp">
       <Filter>Object\GameObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorComposite.cpp">
+      <Filter>Object\GameObject\Component\AI\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorCondition.cpp">
+      <Filter>Object\GameObject\Component\AI\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorNode.cpp">
+      <Filter>Object\GameObject\Component\AI\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorTask.cpp">
+      <Filter>Object\GameObject\Component\AI\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="Selector.cpp">
+      <Filter>Object\GameObject\Component\AI\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="Sequence.cpp">
+      <Filter>Object\GameObject\Component\AI\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>Object\GameObject\Component\AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

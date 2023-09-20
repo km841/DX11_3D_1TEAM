@@ -151,6 +151,7 @@
     <ClInclude Include="BigTransStartState_Gm.h" />
     <ClInclude Include="Bus.h" />
     <ClInclude Include="CameraMoveScript.h" />
+    <ClInclude Include="ChangeStateCondition.h" />
     <ClInclude Include="CinematicCamMove.h" />
     <ClInclude Include="ClientEnum.h" />
     <ClInclude Include="ClimingDownState.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="Elevator.h" />
     <ClInclude Include="EntranceHallMap.h" />
     <ClInclude Include="EvasionState.h" />
+    <ClInclude Include="E_Bat.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="FallDownState.h" />
     <ClInclude Include="FallState.h" />
@@ -171,7 +173,10 @@
     <ClInclude Include="GrandmaBossMap.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="HallColliderCheckMap.h" />
-    <ClInclude Include="HitState.h" />
+    <ClInclude Include="HitEndState.h" />
+    <ClInclude Include="HitStartState.h" />
+    <ClInclude Include="HittingState.h" />
+    <ClInclude Include="HeadRoller.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="IdleState_Gm.h" />
     <ClInclude Include="LeftSecretFightMap.h" />
@@ -213,6 +218,7 @@
     <ClInclude Include="State_Grandma.h" />
     <ClInclude Include="SwordHeavyEffect.h" />
     <ClInclude Include="TeleportZone.h" />
+    <ClInclude Include="SwordScript.h" />
     <ClInclude Include="Teleport_InState_Gm.h" />
     <ClInclude Include="Teleport_OutState_Gm.h" />
     <ClInclude Include="TestAnimationScript.h" />
@@ -229,6 +235,7 @@
     <ClCompile Include="BigTransStartState_Gm.cpp" />
     <ClCompile Include="Bus.cpp" />
     <ClCompile Include="CameraMoveScript.cpp" />
+    <ClCompile Include="ChangeStateCondition.cpp" />
     <ClCompile Include="CinematicCamMove.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClimingDownState.cpp" />
@@ -242,6 +249,7 @@
     <ClCompile Include="Elevator.cpp" />
     <ClCompile Include="EntranceHallMap.cpp" />
     <ClCompile Include="EvasionState.cpp" />
+    <ClCompile Include="E_Bat.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="FallDownState.cpp" />
     <ClCompile Include="FallState.cpp" />
@@ -249,7 +257,10 @@
     <ClCompile Include="GrandmaBossMap.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="HallColliderCheckMap.cpp" />
-    <ClCompile Include="HitState.cpp" />
+    <ClCompile Include="HitEndState.cpp" />
+    <ClCompile Include="HitStartState.cpp" />
+    <ClCompile Include="HittingState.cpp" />
+    <ClCompile Include="HeadRoller.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="IdleState_Gm.cpp" />
     <ClCompile Include="LeftSecretFightMap.cpp" />
@@ -292,7 +303,6 @@
     <ClCompile Include="State.cpp" />
     <ClCompile Include="State_Grandma.cpp" />
     <ClCompile Include="SwordHeavyEffect.cpp" />
-    <ClCompile Include="TeleportZone.cpp" />
     <ClCompile Include="Teleport_InState_Gm.cpp" />
     <ClCompile Include="Teleport_OutState_Gm.cpp" />
     <ClCompile Include="TestAnimationScript.cpp" />

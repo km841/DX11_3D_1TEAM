@@ -170,7 +170,12 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AI.h" />
     <ClInclude Include="Animator.h" />
+    <ClInclude Include="BehaviorComposite.h" />
+    <ClInclude Include="BehaviorCondition.h" />
+    <ClInclude Include="BehaviorNode.h" />
+    <ClInclude Include="BehaviorTask.h" />
     <ClInclude Include="BlurFilter.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ChangeMaterialEvent.h" />
@@ -235,6 +240,8 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneChangeEvent.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Selector.h" />
+    <ClInclude Include="Sequence.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="StructuredBuffer.h" />
@@ -249,7 +256,12 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClInclude Include="UIText.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI.cpp" />
     <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="BehaviorComposite.cpp" />
+    <ClCompile Include="BehaviorCondition.cpp" />
+    <ClCompile Include="BehaviorNode.cpp" />
+    <ClCompile Include="BehaviorTask.cpp" />
     <ClCompile Include="BlurFilter.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChangeMaterialEvent.cpp" />
@@ -312,6 +324,8 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneChangeEvent.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Selector.cpp" />
+    <ClCompile Include="Sequence.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleMath.cpp" />
     <ClCompile Include="StructuredBuffer.cpp" />

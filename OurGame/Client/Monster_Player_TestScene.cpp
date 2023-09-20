@@ -87,7 +87,10 @@ namespace hm {
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Grandma_Boss, LayerType::Ground);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
+		
+
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Item, LayerType::Monster); // 검 충돌
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Item, LayerType::Grandma_Boss);
 
 		//배경맵 하얀색으로 만들어주는 코드
 		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
@@ -116,7 +119,7 @@ namespace hm {
 			physicsInfo.eGeometryType = GeometryType::Capsule;
 			physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, -7.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
 			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
 			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
 			pPlayer->AddComponent(new PaperBurnScript);
@@ -222,21 +225,21 @@ namespace hm {
 		//	SetAnimTarget(p_E_GRIMACE_KNIGHT);
 		//}
 
-		 //박쥐
-		//{
-		//	PhysicsInfo info = {};
-		//	info.eActorType = ActorType::Kinematic;
-		//	info.eGeometryType = GeometryType::Box;
-		//	info.size = Vec3(2.f, 2.f, 2.f);
+		// 박쥐
+		{
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Kinematic;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(2.f, 2.f, 2.f);
 
-		//	Monster* p_E_BAT_White = Factory::CreateObjectHasPhysical<Monster>(Vec3(-9.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
-		//	p_E_BAT_White->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
-		//	p_E_BAT_White->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-		//	p_E_BAT_White->SetFrustumCheckFlag(false);
-		//	//SetGizmoTarget(p_E_BAT_White);
-		//	AddGameObject(p_E_BAT_White);
-		//	SetMeshTarget(p_E_BAT_White);
-		//}
+			Monster* p_E_BAT_White = Factory::CreateObjectHasPhysical<Monster>(Vec3(-9.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
+			p_E_BAT_White->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+			p_E_BAT_White->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			p_E_BAT_White->SetFrustumCheckFlag(false);
+			//SetGizmoTarget(p_E_BAT_White);
+			AddGameObject(p_E_BAT_White);
+			//SetMeshTarget(p_E_BAT_White);
+		}
 
 		
 

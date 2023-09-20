@@ -127,7 +127,7 @@
     <ClInclude Include="FallState.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="HitState.h">
+    <ClInclude Include="HitStartState.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
     <ClInclude Include="MagicAttackState.h">
@@ -223,6 +223,23 @@
     </ClInclude>
     <ClInclude Include="Bus.h">
       <Filter>소스 파일\GameObject\Bus</Filter>
+    <ClInclude Include="HeadRoller.h">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="SwordScript.h">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="HitEndState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="HittingState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangeStateCondition.h">
+      <Filter>소스 파일\GameObject\Monster\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="E_Bat.h">
+      <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
     <ClInclude Include="SoulDoor.h" />
   </ItemGroup>
@@ -353,7 +370,7 @@
     <ClCompile Include="FallState.cpp">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="HitState.cpp">
+    <ClCompile Include="HitStartState.cpp">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClCompile>
     <ClCompile Include="MagicAttackState.cpp">
@@ -446,6 +463,23 @@
     </ClCompile>
     <ClCompile Include="Bus.cpp">
       <Filter>소스 파일\GameObject\Bus</Filter>
+    <ClCompile Include="HeadRoller.cpp">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="SwordScript.cpp">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="HitEndState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="HittingState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangeStateCondition.cpp">
+      <Filter>소스 파일\GameObject\Monster\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="E_Bat.cpp">
+      <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
     <ClCompile Include="SoulDoor.cpp" />
   </ItemGroup>
@@ -511,6 +545,8 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Bus">
       <UniqueIdentifier>{2242b40b-c20d-40db-8a6a-86b0649b8775}</UniqueIdentifier>
+    <Filter Include="소스 파일\GameObject\Monster\Node">
+      <UniqueIdentifier>{b52b02d9-ae3a-42be-b5b9-b4885039a9b1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
