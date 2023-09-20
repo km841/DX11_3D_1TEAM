@@ -146,8 +146,10 @@ public:						  \
 #define SAFE_DELETE(p) { if(p) { delete (p); (p)=NULL; } }
 #define SAFE_DELETE_ARRAY(p) {if(p)	{ delete[] p; (p)=NULL; }}
 #define IS_PRESS(key) GET_SINGLE(Input)->GetButtonPress(key)
+#define IS_HOT_PRESS(key) GET_SINGLE(Input)->GetHotKeyPress(key)
 #define IS_DOWN(key) GET_SINGLE(Input)->GetButtonDown(key)
 #define IS_UP(key) GET_SINGLE(Input)->GetButtonUp(key)
+#define IS_HOT_UP(key) GET_SINGLE(Input)->GetHotKeyUp(key)
 #define IS_NONE(key) GET_SINGLE(Input)->GetButtonNone(key)
 #define DELTA_TIME GET_SINGLE(Timer)->GetDeltaTime()
 #define ACTIVE_SCENE GET_SINGLE(SceneManager)->GetActiveScene()

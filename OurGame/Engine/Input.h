@@ -1,5 +1,5 @@
 #pragma once
-
+#include "TimerObject.h"
 namespace hm
 {
 	enum class KeyType
@@ -35,6 +35,19 @@ namespace hm
 		SQUARE_BKT_R = VK_OEM_6,
 	};
 
+	enum class HotKeyType
+	{
+		UP_LEFT,
+		UP_RIGHT,
+		DOWN_LEFT,
+		DOWN_RIGHT,
+		
+		WA,
+		WD,
+		AS,
+		SD,
+	};
+
 	enum class KeyState
 	{
 		None,
@@ -60,7 +73,7 @@ namespace hm
 		void Initialize();
 		// 각 키의 상태를 업데이트하는 함수
 		void Update();
-
+		void HotKeyUpdate();
 		// 키가 눌려있는지 체크하는 함수
 		bool GetButtonPress(KeyType _eKey)     const { return KeyState::Press == GetState(_eKey); }
 		// 키가 방금 눌렸는지 체크하는 함수
@@ -73,6 +86,11 @@ namespace hm
 		const POINT& GetMousePos() const { return mMousePos; }
 		const POINT& GetPrevMousePos() const { return mPrevMousePos; }
 
+		bool GetHotKeyPress(HotKeyType _eKey) const { return KeyState::Press == mHotkeyStates[static_cast<int>(_eKey)]; }
+		bool GetHotKeyUp(HotKeyType _eKey) const { return KeyState::Up == mHotkeyStates[static_cast<int>(_eKey)]; }
+
+
+
 	private:
 		// 특정 키의 상태를 반환하는 함수
 		KeyState GetState(KeyType _eKeyType) const { return mStates[static_cast<int>(_eKeyType)]; }
@@ -80,8 +98,11 @@ namespace hm
 	private:
 		HWND				  mHwnd;
 		std::vector<KeyState> mStates;
+		std::vector<KeyState> mHotkeyStates;
+		HotKeyType			  mLastPressedHotkey;
 		POINT				  mMousePos = {};
 		POINT				  mPrevMousePos = {};
+		TimerObject			  mTimer;
 	};
 }
 
