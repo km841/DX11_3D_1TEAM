@@ -19,6 +19,8 @@ public:
 
 	PlayerState GetStateEnum() { return mePlayerState; }
 
+	bool IsGround();
+
 protected:
 	PlayerState mePlayerState;
 	
