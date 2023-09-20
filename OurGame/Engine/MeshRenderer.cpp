@@ -167,5 +167,6 @@ namespace hm
 	{
 		AssertEx(_index < mpMesh->GetMeshContainerCount(), L"MeshRenderer::SetSubsetRenderFlag() - 메쉬 개수가 입력된 Index보다 작음");
 		mSubsetRenderFlags[_index] = _flag;
+		mpMaterial = mpMaterial->Clone();
 	}
 }

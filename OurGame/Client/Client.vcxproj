@@ -303,6 +303,8 @@
     <ClCompile Include="State.cpp" />
     <ClCompile Include="State_Grandma.cpp" />
     <ClCompile Include="SwordHeavyEffect.cpp" />
+    <ClCompile Include="SwordScript.cpp" />
+    <ClCompile Include="TeleportZone.cpp" />
     <ClCompile Include="Teleport_InState_Gm.cpp" />
     <ClCompile Include="Teleport_OutState_Gm.cpp" />
     <ClCompile Include="TestAnimationScript.cpp" />
