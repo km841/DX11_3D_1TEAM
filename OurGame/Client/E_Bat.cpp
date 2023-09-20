@@ -85,30 +85,41 @@ void E_Bat::SetBehaviorTree()
 
 void E_Bat::Initialize()
 {
+	Monster::Initialize();
 }
 
 void E_Bat::Update()
 {
+	Monster::Update();
 }
 
 void E_Bat::FixedUpdate()
 {
+	Monster::FixedUpdate();
 }
 
 void E_Bat::FinalUpdate()
 {
+	Monster::FinalUpdate();
 }
 
 void E_Bat::Render()
 {
+	Monster::Render();
 }
 
 void E_Bat::Destroy()
 {
+	Monster::Destroy();
 }
 
 void E_Bat::OnCollisionEnter(Collider* _pOtherCollider)
 {
+	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		GetRigidBody()->RemoveGravity();
+		GetRigidBody()->SetVelocity(Vec3::Zero);
+	}
 }
 
 void E_Bat::OnCollisionStay(Collider* _pOtherCollider)
@@ -117,10 +128,19 @@ void E_Bat::OnCollisionStay(Collider* _pOtherCollider)
 
 void E_Bat::OnCollisionExit(Collider* _pOtherCollider)
 {
+	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		GetRigidBody()->ApplyGravity();
+	}
 }
 
 void E_Bat::OnTriggerEnter(Collider* _pOtherCollider)
 {
+	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		GetRigidBody()->RemoveGravity();
+		GetRigidBody()->SetVelocity(Vec3::Zero);
+	}
 }
 
 void E_Bat::OnTriggerStay(Collider* _pOtherCollider)
@@ -129,4 +149,8 @@ void E_Bat::OnTriggerStay(Collider* _pOtherCollider)
 
 void E_Bat::OnTriggerExit(Collider* _pOtherCollider)
 {
+	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		GetRigidBody()->ApplyGravity();
+	}
 }

@@ -139,7 +139,9 @@ Player::Player()
 		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.f,0);
 		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.f,1);
 		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.f,2);
-		//pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(0.f, 0.f, 0.f, 0.f),1);
+		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomFilter(Vec4(1.f, 0.f, 0.f, 0.f),0);
+		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomFilter(Vec4(1.f, 0.f, 0.f, 0.f),1);
+		pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomFilter(Vec4(1.f, 0.f, 0.f, 0.f),2);
 
 		auto pFollowSc = pGreatSword->AddComponent(new OwnerFollowScript(this));
 		
