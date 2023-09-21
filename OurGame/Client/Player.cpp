@@ -44,6 +44,7 @@
 #include "PlayerSlashScript.h"
 #include "OwnerFollowScript.h"
 #include "SwordScript.h"
+#include "PlayerColScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -72,7 +73,7 @@ Player::Player()
 	, mHP(4) // 피통
 	, mCost(4) // 마나
 	, mSpeed(5.f) // 이동속도
-	, mAttack(1.f) // 데미지
+	, mAttackDamage(1.f) // 데미지
 	, mAttack_Speed(0.04f) // 공속
 	, mbAttackDir(true) //true시 오른쪽공격, false시 왼쪽 공격
 	, mDash_Speed(25.f) // 회피시 주는 물리 힘
@@ -117,11 +118,6 @@ Player::Player()
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(mpSlashEffect);
 	}
 
-	//검 오브젝트
-	//검  -> Sc 
-	// Sc ( 검오브젝트 , 플레이어 오브젝트 
-	// 방향 가져와서 쓰기
-
 	//무기 오브젝트
 	{
 		PhysicsInfo physicsInfo;
@@ -151,6 +147,25 @@ Player::Player()
 		//gpEngine->GetTool()->SetGameObject(pGreatSword);
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pGreatSword);
 		//SetMeshTarget(pGreatSword);
+	}
+
+	//pAttackCol
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eGeometryType = GeometryType::Mesh;
+		physicsInfo.size = Vec3(3.f , 3.f, 3.f);
+
+		pAttackCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Forward", L"..\\Resources\\FBX\\Player\\Slash_Heavy_Col.fbx", false, LayerType::PlayerCol);
+		pAttackCol->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+		pAttackCol->GetTransform()->SetRotation(Vec3(00.f, 00.f, 0.f));
+		pAttackCol->AddComponent(new PlayerColScript);
+		pAttackCol->Disable();
+
+		auto pFollowSc2 = pAttackCol->AddComponent(new OwnerFollowScript(this));
+		pFollowSc2->SetOffset(Vec3(0.f, 0.f, 0.f));
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pAttackCol);
+		
 	}
 }
 

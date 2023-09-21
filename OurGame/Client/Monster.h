@@ -21,6 +21,8 @@ namespace hm
 
 		virtual void SetBehaviorTree() { }
 
+		void TakeDamage(float _float) { mHP -= _float; }
+
 	public:
 		virtual void Initialize();
 		virtual void Update();
@@ -31,9 +33,28 @@ namespace hm
 
 	public:
 		MonsterBasicState GetBasicState() { return meBasicState; }
+		void SetBasicState(MonsterBasicState _BasicState) { meBasicState = _BasicState; }
+
+		bool GetHitCheck() { return mHitCheck; }
+		void SetHitCheck(bool _hitcheck) { mHitCheck = _hitcheck; }
+
+		bool GetIsDead() { return isDead; }
+		void SetIsDead(bool _isDead) { isDead = _isDead; }
 
 	protected:
 		MonsterBasicState meBasicState;
+
+		bool mHitCheck = false;
+		bool isDead = false;
+
+		float mHP; // 피통
+		float mSpeed; //이동속도
+		int mAttackDamage; // 공격력
+		float mAttackRange; // 공격 감지 거리
+		float mRecogRange; //감지거리
+
+
+		
 	};
 }
 

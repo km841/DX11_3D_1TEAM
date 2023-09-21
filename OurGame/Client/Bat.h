@@ -1,14 +1,14 @@
 #pragma once
 #include "Monster.h"
-class E_Bat :
+class Bat :
 	public Monster
 {
 public:
-	E_Bat();
-	virtual ~E_Bat();
-	E_Bat* Clone()
+	Bat();
+	virtual ~Bat();
+	Bat* Clone()
 	{
-		E_Bat* pBat = GameObject::Clone<E_Bat>();
+		Bat* pBat = GameObject::Clone<Bat>();
 		return pBat;
 	}
 
@@ -23,11 +23,11 @@ public:
 	virtual void Destroy();
 
 public:
-	virtual void OnCollisionEnter(Collider* _pOtherCollider);
+	virtual void OnCollisionEnter(Collider* _pOtherCollider); //다이나믹,스태틱이 충돌 일어났을떄 이함수로
 	virtual void OnCollisionStay(Collider* _pOtherCollider);
 	virtual void OnCollisionExit(Collider* _pOtherCollider);
 
-	virtual void OnTriggerEnter(Collider* _pOtherCollider);
+	virtual void OnTriggerEnter(Collider* _pOtherCollider); //키네틱이 충돌이일어났을때 이함수로
 	virtual void OnTriggerStay(Collider* _pOtherCollider);
 	virtual void OnTriggerExit(Collider* _pOtherCollider);
 
