@@ -23,7 +23,7 @@ namespace hm
 		int FindAnimationIndex(const wstring& _animName);
 
 		void SetBones(std::vector<BoneInfo>* _bones);
-		void SetAnimClip(std::vector<AnimClipInfo>* _animClips);
+		void SetAnimClip(std::vector<AnimClipInfo>* _animClidwps);
 		std::vector<AnimClipInfo>* GetAnimClip() { return mAnimClips; }
 		void PushData();
 

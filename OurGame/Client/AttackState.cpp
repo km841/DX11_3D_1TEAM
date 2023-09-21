@@ -66,6 +66,7 @@ void AttackState::Update()
 	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
 	Transform* pEff_Tr = pEffect->GetTransform();
 
+	GameObject* pAttackCol_Obj = pPlayer->GetAttackCol();
 	mbTrigger = pPlayer->GetAttackDir();
 
 #pragma region 공격시 앞으로 튕기는 힘
@@ -80,30 +81,40 @@ void AttackState::Update()
 		pRb->SetVelocity(totalDir * DashSpeed);
 #pragma endregion
 
+	if (pAni->GetFrameRatio() > 0.01f && pAni->GetFrameRatio() < 0.02f) {
+
+		pAttackCol_Obj->Enable();
+	}
+	if (pAni->GetFrameRatio() > 0.02f ) {
+
+		pAttackCol_Obj->Disable();
+	}
+
+
 	if (pAni->GetFrameRatio() > 0.07f) {
 		
 		pPlayer->StateChange(PlayerState::IdleState);
 
 	}
 	
-	//마우스 좌측 버튼 클릭했을때
-	if (IS_DOWN(KeyType::LBUTTON) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed())
-	{
-		if (mbTrigger == true) //오른쪽 공격
-		{
-			mbTrigger = false;
-			pPlayer->SetAttackDir(mbTrigger);
-			PlayAnimation();
-			return;
-		}
-		if (mbTrigger == false) //왼쪽 공격
-		{
-			mbTrigger = true;
-			pPlayer->SetAttackDir(mbTrigger);
-			PlayAnimation();
-			return;
-		}
-	}
+	////마우스 좌측 버튼 클릭했을때
+	//if (IS_DOWN(KeyType::LBUTTON) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed())
+	//{
+	//	if (mbTrigger == true) //오른쪽 공격
+	//	{
+	//		mbTrigger = false;
+	//		pPlayer->SetAttackDir(mbTrigger);
+	//		PlayAnimation();
+	//		return;
+	//	}
+	//	if (mbTrigger == false) //왼쪽 공격
+	//	{
+	//		mbTrigger = true;
+	//		pPlayer->SetAttackDir(mbTrigger);
+	//		PlayAnimation();
+	//		return;
+	//	}
+	//}
 
 	//LCTRL 버튼 눌렀을떄
 	if (IS_DOWN(KeyType::LCTRL) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed())

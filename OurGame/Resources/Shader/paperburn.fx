@@ -88,7 +88,7 @@ float4 PS_Main(VS_OUT _in) : SV_Target
 
     float alpha = 1;
     if (finalColorWithBurn.r == 1 && finalColorWithBurn.g == 0.5 && finalColorWithBurn.b == 1)
-        alpha = 0;
+        discard;
 
     return float4(finalColorWithBurn, alpha);
 }
