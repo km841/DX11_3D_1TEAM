@@ -224,22 +224,15 @@ void Bat::SetBehaviorTree()
 				// 방향을 변경해주는 Task도 필요
 				GetRigidBody()->SetVelocity(dir * mSpeed);
 
-
-
 				Vec3 rot = Vec3(0, 0, -1);
-				Vec3 c = dir.Cross(rot);
+				double angleRadian = atan2(dir.x, dir.z) - atan2(rot.x, rot.z);
+				float angleDegree = angleRadian * 180.f / XM_PI;
 
-				float r = acos(dir.Dot(rot));
-				/*if (rot.x * rot.z - dir.x * dir.z < 0.f)
-					r = (XM_PI*2) - r;*/
-				float d = r * 180 / XM_PI;
+				if (angleDegree < 0.f)
+					angleDegree += 360.f;
 
-				if (d < 0)
-					d = 360.f - fabs(d);
-
-				
 				//몬스터의 고개를 돌리는 코드
-				pTr->SetRotation(Vec3(-90.f,0.f,d));
+				pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
 				
 				return BehaviorResult::Success;
 			});

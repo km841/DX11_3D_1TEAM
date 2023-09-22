@@ -17,12 +17,14 @@ namespace hm
 		void Begin();
 		void SetPaperBurn() { Begin();  mbFlag = true; }
 		void SetReverse(bool _bFlag) { mbReverseFlag = _bFlag; }
+		void SetSpeed(float _speed) { mSpeed = _speed; }
 		bool IsFinished() { return mbPaperBurnFinished; }
 		void SetFinishedCallback(std::function<void()> _func) { mCallback = _func; }
 
 	private:
 		float mAccTime;
 		float mEndTime;
+		float mSpeed;
 		bool mbFlag;
 		bool mbReverseFlag;
 		bool mbPaperBurnFinished;

@@ -624,5 +624,8 @@
     <FxCompile Include="..\Resources\Shader\screeneffect.fx">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\Resources\Shader\no_draw.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

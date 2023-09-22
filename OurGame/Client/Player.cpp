@@ -156,7 +156,7 @@ Player::Player()
 		physicsInfo.eGeometryType = GeometryType::Mesh;
 		physicsInfo.size = Vec3(3.f , 3.f, 3.f);
 
-		pAttackCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Forward", L"..\\Resources\\FBX\\Player\\Slash_Heavy_Col.fbx", false, LayerType::PlayerCol);
+		pAttackCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"NoDraw", L"..\\Resources\\FBX\\Player\\Slash_Heavy_Col.fbx", false, LayerType::PlayerCol);
 		pAttackCol->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 		pAttackCol->GetTransform()->SetRotation(Vec3(00.f, 00.f, 0.f));
 		pAttackCol->AddComponent(new PlayerColScript);

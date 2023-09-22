@@ -1087,6 +1087,21 @@ namespace hm
             Add<Shader>(L"ScreenEffect", pShader);
         }
 
+        // No Draw Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::Less,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\no_draw.fx", shaderInfo);
+            pShader->SetName(L"NoDraw");
+            Add<Shader>(L"NoDraw", pShader);
+        }
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -1403,6 +1418,15 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"ScreenEffect", pMaterial);
+        }
+
+        // No Draw Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"NoDraw");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"NoDraw", pMaterial);
         }
     }
 }
