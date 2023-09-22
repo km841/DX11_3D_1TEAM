@@ -9,6 +9,10 @@ namespace yj
 	{
 	public:
 
+		SoulDoor(GameObject* _frameObj,GameObject* _doorObj);
+		virtual ~SoulDoor();
+
+		virtual void Initialize();
 		virtual void Update();
 		void Drop();
 
@@ -27,7 +31,13 @@ namespace yj
 		};
 		State state;
 
+		bool GetIsMove() { return isMove; }
+		void SetMove() {state = MoveUp;	mCurrSpeed = 3.0f; isMove = true; }
+
 	private:
+
+		bool isMove;
+
 		Vec3 mApearPos;
 		Vec3 mBargePos;
 

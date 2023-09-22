@@ -239,6 +239,7 @@
     <ClInclude Include="Bus.h" />
     <ClInclude Include="CinematicCamMove.h" />
     <ClInclude Include="TeleportZone.h" />
+    <ClInclude Include="EtranceHallDoor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -476,6 +477,7 @@
     <ClCompile Include="SwordScript.cpp">
       <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClCompile>
+    <ClCompile Include="EtranceHallDoor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
