@@ -18,6 +18,7 @@ namespace hm
 		, mbReverseFlag(false)
 		, mbPaperBurnFinished(false)
 		, mEndTime(6.f)
+		, mSpeed(2.f)
 	{
 	}
 
@@ -39,7 +40,7 @@ namespace hm
 					return;
 				}
 
-				mAccTime += DELTA_TIME;
+				mAccTime += DELTA_TIME * mSpeed;
 				mpPaperBurnMat->SetFloatAllSubset(0, mbReverseFlag ? mEndTime - mAccTime : mAccTime);
 
 				if (mAccTime > mEndTime - 0.1f)

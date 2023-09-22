@@ -229,10 +229,7 @@
     <ClInclude Include="HittingState.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="ChangeStateCondition.h">
-      <Filter>소스 파일\GameObject\Monster\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="E_Bat.h">
+    <ClInclude Include="Bat.h">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
     <ClInclude Include="SoulDoor.h" />
@@ -240,6 +237,15 @@
     <ClInclude Include="CinematicCamMove.h" />
     <ClInclude Include="TeleportZone.h" />
     <ClInclude Include="EtranceHallDoor.h" />
+    <ClInclude Include="PlayerColScript.h">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangeStateCondition.h">
+      <Filter>소스 파일\GameObject\Monster\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangeStateTask.h">
+      <Filter>소스 파일\GameObject\Monster\Node</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -467,7 +473,7 @@
     <ClCompile Include="ChangeStateCondition.cpp">
       <Filter>소스 파일\GameObject\Monster\Node</Filter>
     </ClCompile>
-    <ClCompile Include="E_Bat.cpp">
+    <ClCompile Include="Bat.cpp">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
     <ClCompile Include="SoulDoor.cpp" />
@@ -478,6 +484,12 @@
       <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClCompile>
     <ClCompile Include="EtranceHallDoor.cpp" />
+    <ClCompile Include="PlayerColScript.cpp">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangeStateTask.cpp">
+      <Filter>소스 파일\GameObject\Monster\Node</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

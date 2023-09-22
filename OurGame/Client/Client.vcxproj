@@ -152,6 +152,7 @@
     <ClInclude Include="Bus.h" />
     <ClInclude Include="CameraMoveScript.h" />
     <ClInclude Include="ChangeStateCondition.h" />
+    <ClInclude Include="ChangeStateTask.h" />
     <ClInclude Include="CinematicCamMove.h" />
     <ClInclude Include="ClientEnum.h" />
     <ClInclude Include="ClimingDownState.h" />
@@ -166,7 +167,7 @@
     <ClInclude Include="EntranceHallMap.h" />
     <ClInclude Include="EtranceHallDoor.h" />
     <ClInclude Include="EvasionState.h" />
-    <ClInclude Include="E_Bat.h" />
+    <ClInclude Include="Bat.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="FallDownState.h" />
     <ClInclude Include="FallState.h" />
@@ -197,6 +198,7 @@
     <ClInclude Include="PhysicsTestScene.h" />
     <ClInclude Include="PlacementScript.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerColScript.h" />
     <ClInclude Include="PlayerMoveScript.h" />
     <ClInclude Include="PlayerSlashScript.h" />
     <ClInclude Include="PrefabManager.h" />
@@ -237,6 +239,7 @@
     <ClCompile Include="Bus.cpp" />
     <ClCompile Include="CameraMoveScript.cpp" />
     <ClCompile Include="ChangeStateCondition.cpp" />
+    <ClCompile Include="ChangeStateTask.cpp" />
     <ClCompile Include="CinematicCamMove.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClimingDownState.cpp" />
@@ -251,7 +254,7 @@
     <ClCompile Include="EntranceHallMap.cpp" />
     <ClCompile Include="EtranceHallDoor.cpp" />
     <ClCompile Include="EvasionState.cpp" />
-    <ClCompile Include="E_Bat.cpp" />
+    <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="FallDownState.cpp" />
     <ClCompile Include="FallState.cpp" />
@@ -285,6 +288,7 @@
     <ClCompile Include="PhysicsTestScene.cpp" />
     <ClCompile Include="PlacementScript.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerColScript.cpp" />
     <ClCompile Include="PlayerMoveScript.cpp" />
     <ClCompile Include="PlayerSlashScript.cpp" />
     <ClCompile Include="PrefabManager.cpp" />

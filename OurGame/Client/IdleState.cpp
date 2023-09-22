@@ -79,6 +79,30 @@ void IdleState::Update()
 		}
 	}
 
+	if (IS_HOT_UP(HotKeyType::UP_LEFT))
+	{
+		PLAYER->SetDirectionChange(DirectionEvasion::TOPLEFT);
+		PLAYER->GetTransform()->SetRotation(Vec3(0.f, 135.f, 90.f));
+	}
+
+	else if (IS_HOT_UP(HotKeyType::UP_RIGHT))
+	{
+		PLAYER->SetDirectionChange(DirectionEvasion::TOPRIGHT);
+		PLAYER->GetTransform()->SetRotation(Vec3(0.f, 225.f, 90.f));
+	}
+
+	else if (IS_HOT_UP(HotKeyType::DOWN_LEFT))
+	{
+		PLAYER->SetDirectionChange(DirectionEvasion::BOTTOMLEFT);
+		PLAYER->GetTransform()->SetRotation(Vec3(0.f, 45.f, 90.f));
+	}
+
+	else if (IS_HOT_UP(HotKeyType::DOWN_RIGHT))
+	{
+		PLAYER->SetDirectionChange(DirectionEvasion::BOTTOMRIGHT);
+		PLAYER->GetTransform()->SetRotation(Vec3(0.f, 315.f, 90.f));
+	}
+
 	if(IS_PRESS(KeyType::UP) || IS_PRESS(KeyType::DOWN) || 
 		IS_PRESS(KeyType::LEFT) || IS_PRESS(KeyType::RIGHT))
 	{
