@@ -236,6 +236,7 @@
     <ClInclude Include="Bus.h" />
     <ClInclude Include="CinematicCamMove.h" />
     <ClInclude Include="TeleportZone.h" />
+    <ClInclude Include="EtranceHallDoor.h" />
     <ClInclude Include="PlayerColScript.h">
       <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClInclude>
@@ -482,6 +483,7 @@
     <ClCompile Include="SwordScript.cpp">
       <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClCompile>
+    <ClCompile Include="EtranceHallDoor.cpp" />
     <ClCompile Include="PlayerColScript.cpp">
       <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClCompile>

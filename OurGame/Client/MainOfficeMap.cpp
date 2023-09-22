@@ -24,6 +24,7 @@
 #include "DecoObject.h"
 #include "Elevator.h"
 #include "TeleportZone.h"
+#include "SoulDoor.h"
 
 /* Component */
 #include "Collider.h"
@@ -33,6 +34,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include "ParticleSystem.h"
+
 /* Script */
 #include "PaperBurnScript.h"
 #include "CameraMoveScript.h"
@@ -47,6 +49,8 @@ namespace yj
 {
 	MainOfficeMap::MainOfficeMap()
 		: Map(MapType::MainOfficeMap)
+		,eTarget(nullptr)
+		,pBus(nullptr)
 	{
 	}
 
@@ -64,23 +68,11 @@ namespace yj
 	void MainOfficeMap::Update()
 	{
 		Map::Update();
-		/*if (GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetCamera() == nullptr)
-		{
-			return;
-		}
-		else
-		{
-			SetGizmoTarget(GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetCamera()->GetGameObject());
-		}*/
 	}
 
 	void MainOfficeMap::Start()
 	{
 		Map::Start();
-		if (eTarget != nullptr)
-		{
-			//SetGizmoTarget(eTarget->GetpMoveFrame());
-		}
 	}
 
 	void MainOfficeMap::FixedUpdate()
@@ -156,7 +148,6 @@ namespace yj
 			pBus->GetTransform()->SetScale(Vec3(50.0f, 50.0f, 50.0f));
 
 			AddGameObject(pBus);
-			//SetGizmoTarget(pBus);
 		}
 
 		{
@@ -504,6 +495,9 @@ namespace yj
 		mPlantBaseList[2]->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
 #pragma endregion
 
+#pragma region TypeMachine
+
+
 		std::vector<GameObject*> mTypeMachineList;
 		for (int i = 0; i < 4; i++)
 		{
@@ -528,6 +522,10 @@ namespace yj
 		mTypeMachineList[3]->GetTransform()->SetPosition(Vec3(14.1f, -6.8f, 0.5f));
 		mTypeMachineList[3]->GetTransform()->SetRotation(Vec3(0.0f, 37.0f, 0.0f));
 		mTypeMachineList[3]->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+#pragma endregion
+
+#pragma region SphereLight
+
 
 		std::vector<GameObject*> mSphereLightList;
 		for (int i = 0; i < 2; i++)
@@ -546,6 +544,9 @@ namespace yj
 		mSphereLightList[1]->GetTransform()->SetPosition(Vec3(21.0f, -1.6f, -1.5f));
 		mSphereLightList[1]->GetTransform()->SetRotation(Vec3(0.0f, -20.0f, 0.0f));
 		mSphereLightList[1]->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
+#pragma endregion
+
+#pragma region PostBoard
 
 
 		{
@@ -556,6 +557,10 @@ namespace yj
 			pPostBoard->GetTransform()->SetScale(Vec3(5.5f, 5.5f, 5.5f));
 
 		}
+#pragma endregion
+
+#pragma region HoD_LampPost
+
 
 		{
 			DecoObject* pHoD_LampPost = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\HoD_LampPost.fbx");
@@ -564,6 +569,7 @@ namespace yj
 			pHoD_LampPost->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
 			pHoD_LampPost->GetTransform()->SetScale(Vec3(8.0f, 8.0f, 8.0f));
 		}
+#pragma endregion
 
 
 		std::vector<GameObject*> mSideRallingBusStopStairList;
@@ -614,7 +620,6 @@ namespace yj
 			pGraveyardPlane->GetTransform()->SetRotation(Vec3(0.0f, -10.0f, 0.0f));
 			pGraveyardPlane->GetTransform()->SetScale(Vec3(12.0f, 12.0f, 12.0f));
 
-
 		}
 
 		{
@@ -626,15 +631,6 @@ namespace yj
 			pUpperStairContainer->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(12.0f, 12.0f));
 			pUpperStairContainer->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(12.0f, 12.0f), 1);
 
-		}
-		//요것만 자꾸 에러가 남...
-		{
-			//DecoObject* pShortcutDoor = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\ShortcutDoor.fbx");
-			//AddGameObject(pShortcutDoor);
-			//pShortcutDoor->GetTransform()->SetPosition(Vec3(22.6f, -5.6f, -2.9f));
-			//pShortcutDoor->GetTransform()->SetRotation(Vec3(0.0f, -10.0f, 0.0f));
-			//pShortcutDoor->GetTransform()->SetScale(Vec3(12.0f, 12.0f, 12.0f));
-			////Target = pShortcutDoor;
 		}
 
 
@@ -655,20 +651,6 @@ namespace yj
 			pShortcutDoorStatic->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));*/
 		}
 
-		{
-			/*PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Dynamic;
-			physicsInfo.eGeometryType = GeometryType::Sphere;
-			physicsInfo.size = Vec3(2.f, 2.f, 2.f);*/
-
-			/*Player* pPlayer = Factory::CreateObject<Player>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
-			pPlayer->GetTransform()->SetScale(Vec3(3.0f, 3.0f, 3.0f));
-
-			AddGameObject(pPlayer);
-			Target = pPlayer;*/
-		}
-
-
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Static;
 		physicsInfo.eGeometryType = GeometryType::Box;
@@ -677,7 +659,11 @@ namespace yj
 		DecoObject* pColobject = Factory::CreateObjectHasPhysical<DecoObject>(Vec3::Zero, physicsInfo, L"Deferred", L"");
 
 		AddGameObject(pColobject);
-		//mColliderList[0]->SetName();
+
+		{
+			SoulDoor* pSoulDoor = Factory::CreateObjectHasPhysical<SoulDoor>(Vec3::Zero, physicsInfo, L"Deferred", L"", false ,pColobject, pColobject);
+		}
+
 
 #pragma endregion
 
@@ -692,9 +678,38 @@ namespace yj
 			pTeleportZone->GetTransform()->SetPosition(Vec3(-19.2f, -12.1f, -31.6f));
 			pTeleportZone->GetTransform()->SetRotation(Vec3(0.0f, -140.0f, 0.0f));
 			pTeleportZone->GetTransform()->SetScale(Vec3(41.0f, 41.0f, 41.0f));
-			SetGizmoTarget(pTeleportZone);
+			//SetGizmoTarget(pTeleportZone);
 		}
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
+
+#pragma region SoulDoor
+		{
+
+			
+			//LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
+
+			DecoObject* pDoor = Factory::CreateObject<DecoObject>(Vec3(19.1f, 5.7f, -12.8f), L"Deferred", LARGE_RESOURCE(L"ShortcutDoor\\ShortcutDoor_Fix.fbx"));
+			
+			pDoor->GetTransform()->SetPosition(Vec3(19.1f, 6.7f, -12.8f));
+			pDoor->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
+			pDoor->GetTransform()->SetScale(Vec3(7.82f, 7.82f, 7.82f));
+
+			DecoObject* pBackUv = Factory::CreateObject<DecoObject>(Vec3(19.8f, 5.7f, -15.2f), L"Deferred", LARGE_RESOURCE(L"DoorBackGlow\\DoorBackGlow.fbx"));
+			pBackUv->GetTransform()->SetPosition(Vec3(19.8f, 5.7f, -15.2f));
+			pBackUv->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
+			pBackUv->GetTransform()->SetScale(Vec3(5.48f, 5.48f, 5.48f));
+
+
+			SoulDoor* pSoulDoor = Factory::CreateObject<SoulDoor>(Vec3(0, 0, 0), L"Deferred", L"", false , pDoor, pBackUv);
+			
+			AddGameObject(pDoor);
+			AddGameObject(pBackUv);
+			//SetGizmoTarget(pDoor);
+			AddGameObject(pSoulDoor);
+
+		}
+#pragma endregion
+
 	}
 	void MainOfficeMap::InitBusStart()
 	{

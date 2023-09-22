@@ -165,6 +165,7 @@
     <ClInclude Include="DiningColliderCheckMap.h" />
     <ClInclude Include="Elevator.h" />
     <ClInclude Include="EntranceHallMap.h" />
+    <ClInclude Include="EtranceHallDoor.h" />
     <ClInclude Include="EvasionState.h" />
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Factory.h" />
@@ -251,6 +252,7 @@
     <ClCompile Include="DiningColliderCheckMap.cpp" />
     <ClCompile Include="Elevator.cpp" />
     <ClCompile Include="EntranceHallMap.cpp" />
+    <ClCompile Include="EtranceHallDoor.cpp" />
     <ClCompile Include="EvasionState.cpp" />
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Factory.cpp" />
