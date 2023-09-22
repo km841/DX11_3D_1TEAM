@@ -32,7 +32,7 @@ namespace yj
 		State state;
 
 		bool GetIsMove() { return isMove; }
-		void SetMove() {state = MoveUp;	mCurrSpeed = 3.0f; isMove = true; }
+		void SetMove() {state = MoveUp;	mCurrSpeed = 3.0f;isMove = true; }
 
 	private:
 

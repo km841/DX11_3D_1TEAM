@@ -688,7 +688,7 @@ namespace yj
 			
 			//LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
 
-			DecoObject* pDoor = Factory::CreateObject<DecoObject>(Vec3(19.1f, 5.7f, -12.8f), L"Deferred", LARGE_RESOURCE(L"ShortcutDoor\\ShortcutDoor_Fix.fbx"));
+			DecoObject* pDoor = Factory::CreateObject<DecoObject>(Vec3(19.1f, 6.7f, -12.8f), L"Deferred", LARGE_RESOURCE(L"ShortcutDoor\\ShortcutDoor_Fix.fbx"));
 			
 			pDoor->GetTransform()->SetPosition(Vec3(19.1f, 6.7f, -12.8f));
 			pDoor->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
