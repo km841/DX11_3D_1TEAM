@@ -42,6 +42,9 @@ public:
 	float GetMoveSpeed() { return mSpeed; }
 	void SetMoveSpeed(float _speed) { mSpeed = _speed; }
 
+	float GetAttackDamage() { return mAttackDamage; }
+	void SetAttackDamage(float _Damage) { mAttackDamage = _Damage; }
+
 	float GetDashSpeed() { return mDash_Speed; }
 	void SetDashSpeed(float _Dash_Speed) { mDash_Speed = _Dash_Speed; }
 
@@ -49,6 +52,7 @@ public:
 	void SetAttackDir(bool _AttackDir) { mbAttackDir = _AttackDir; }
 
 	GameObject* GetGreatSword() { return pGreatSword; }
+	GameObject* GetAttackCol() { return pAttackCol; }
 	
 
 	SwordHeavyEffect* GetSwordEffect() { return mpSlashEffect; }
@@ -73,7 +77,7 @@ private:
 	int mCost;
 	float mSpeed;
 	float mDash_Speed;
-	float mAttack;
+	float mAttackDamage;
 	float mAttack_Speed;
 	bool mbAttackDir;
 	SwordHeavyEffect* mpSlashEffect;
@@ -81,5 +85,6 @@ private:
 
 	GameObject* pGreatSword;
 	SwordScript* pSwordSc;
+	GameObject* pAttackCol;
 };
 

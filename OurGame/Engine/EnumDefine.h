@@ -16,6 +16,7 @@ namespace hm
 	{
 		Unknown,
 		Player,
+		PlayerCol,
 		Grandma_Boss,
 		Monster,
 		Item,

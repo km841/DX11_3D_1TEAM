@@ -39,19 +39,6 @@ void PlayerMoveScript::FixedUpdate()
 
 	//AutoStepping(1.f);
 
-	PaperBurnScript* pPaperBurn = GetGameObject()->GetScript<PaperBurnScript>();
-	pPaperBurn->SetReverse(true);
-	pPaperBurn->SetFinishedCallback(std::bind(&PlayerMoveScript::SimpleFunc, this));
-	if (IS_DOWN(KeyType::F))
-	{
-		pPaperBurn->SetPaperBurn();
-	}
-
-	if (pPaperBurn->IsFinished())
-	{
-		int a = 0;
-	}
-
 	//Vec3 mPos = GetTransform()->GetPosition();
 	//Vec3 mScale = GetTransform()->GetScale();
 	//Vec3 mFootPos = Vec3(mPos.x, mPos.y - mScale.y / 2.f, mPos.z);

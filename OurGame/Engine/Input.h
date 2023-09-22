@@ -74,6 +74,7 @@ namespace hm
 		// 각 키의 상태를 업데이트하는 함수
 		void Update();
 		void HotKeyUpdate();
+		void ClearHotkey();
 		// 키가 눌려있는지 체크하는 함수
 		bool GetButtonPress(KeyType _eKey)     const { return KeyState::Press == GetState(_eKey); }
 		// 키가 방금 눌렸는지 체크하는 함수
@@ -99,7 +100,6 @@ namespace hm
 		HWND				  mHwnd;
 		std::vector<KeyState> mStates;
 		std::vector<KeyState> mHotkeyStates;
-		HotKeyType			  mLastPressedHotkey;
 		POINT				  mMousePos = {};
 		POINT				  mPrevMousePos = {};
 		TimerObject			  mTimer;

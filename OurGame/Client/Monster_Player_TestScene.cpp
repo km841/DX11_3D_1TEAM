@@ -25,7 +25,7 @@
 #include "Npc.h"
 #include "Monster.h"
 #include "Grandma.h"
-
+#include "Bat.h"
 #include "SwordHeavyEffect.h"
 /* Component */
 #include "Collider.h"
@@ -87,6 +87,7 @@ namespace hm {
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Grandma_Boss, LayerType::Ground);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::PlayerCol);
 		
 
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Item, LayerType::Monster); // °Ë Ãæµ¹
@@ -230,12 +231,17 @@ namespace hm {
 			PhysicsInfo info = {};
 			info.eActorType = ActorType::Kinematic;
 			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(2.f, 2.f, 2.f);
+			info.size = Vec3(0.5f, 0.5f, 1.0f);
 
-			Monster* p_E_BAT_White = Factory::CreateObjectHasPhysical<Monster>(Vec3(-9.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
-			p_E_BAT_White->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
+			Bat* p_E_BAT_White = Factory::CreateObjectHasPhysical<Bat>(Vec3(-9.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
+			p_E_BAT_White->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 			p_E_BAT_White->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 			p_E_BAT_White->SetFrustumCheckFlag(false);
+
+			p_E_BAT_White->AddComponent<PaperBurnScript>();
+
+			p_E_BAT_White->GetRigidBody()->ApplyGravity();
+
 			//SetGizmoTarget(p_E_BAT_White);
 			AddGameObject(p_E_BAT_White);
 			//SetMeshTarget(p_E_BAT_White);
