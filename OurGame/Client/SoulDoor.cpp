@@ -38,7 +38,7 @@ namespace yj
 		{
 			pFrame->GetScript<PaperBurnScript>()->SetReverse(true);
 			pFrame->GetScript<PaperBurnScript>()->SetPaperBurn();
-			pFrame->GetScript<PaperBurnScript>()->SetFinishedCallback(std::bind(&SoulDoor::Drop,this));
+			pFrame->GetScript<PaperBurnScript>()->SetFinishedCallback(std::bind(&SoulDoor::SetMove,this));
 		}
 
 		if (GetIsMove())
