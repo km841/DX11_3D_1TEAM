@@ -194,6 +194,8 @@ struct ScreenEffectInfo
 	ScreenEffectType eEffectType;
 	float endTime;
 	float curTime = 0.f;
+	Vec4 param1 = Vec4::Zero;
+	Vec4 param2 = Vec4::Zero;
 	std::function<void()> startCallback;
 	std::function<void()> endCallback;
 };
