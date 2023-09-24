@@ -211,5 +211,12 @@ namespace hm
 		Running,
 		Failure,
 	};
+
+	enum class NaviMeshCellType
+	{
+		None,
+		Open,
+		Close,
+	};
 }
 
