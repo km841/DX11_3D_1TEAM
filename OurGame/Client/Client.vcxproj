@@ -146,9 +146,12 @@
   <ItemGroup>
     <ClInclude Include="AngryMotionState_Gm.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="ArrowScript.h" />
     <ClInclude Include="AttackState.h" />
     <ClInclude Include="BigTransEndState_Gm.h" />
     <ClInclude Include="BigTransStartState_Gm.h" />
+    <ClInclude Include="BowScript.h" />
+    <ClInclude Include="BowState.h" />
     <ClInclude Include="Bus.h" />
     <ClInclude Include="CameraMoveScript.h" />
     <ClInclude Include="ChangeStateCondition.h" />
@@ -233,9 +236,12 @@
   <ItemGroup>
     <ClCompile Include="AngryMotionState_Gm.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="ArrowScript.cpp" />
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="BigTransEndState_Gm.cpp" />
     <ClCompile Include="BigTransStartState_Gm.cpp" />
+    <ClCompile Include="BowScript.cpp" />
+    <ClCompile Include="BowState.cpp" />
     <ClCompile Include="Bus.cpp" />
     <ClCompile Include="CameraMoveScript.cpp" />
     <ClCompile Include="ChangeStateCondition.cpp" />

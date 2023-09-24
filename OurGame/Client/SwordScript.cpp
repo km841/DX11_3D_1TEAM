@@ -71,7 +71,7 @@ void SwordScript::FixedUpdate()
 	GameObject* pObj = GetGameObject(); // 검 오브젝트
 	DirectionEvasion eDir = pPlayer->GetDirectioninfo(); // 8방향 상태 가져오는거
 
-	bool mbAttackDir = pPlayer->GetAttackDir(); //공격방향 
+	bool mbAttackDir = pPlayer->GetAttackDir(); //공격 헀는지 안했는지 체크
 
 	
 	pObj->GetRigidBody()->SetGeometrySize(Vec3(1.f, 0.2f, 0.2f)); //이미 만들어진 콜라이더 사이즈 변경

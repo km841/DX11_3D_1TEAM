@@ -21,7 +21,7 @@ namespace hm
 	}
 	void NavigationThread::Run()
 	{
-		while (true == mbLoop)
+		/*while (true == mbLoop)
 		{
 			if (false == mWorkQueue.Empty())
 			{
@@ -36,7 +36,7 @@ namespace hm
 			}
 		}
 
-		::SetEvent(mExitEvent);
+		::SetEvent(mExitEvent);*/
 	}
 	void NavigationThread::DisableCell(std::vector<Vec3>& _exceptPos)
 	{

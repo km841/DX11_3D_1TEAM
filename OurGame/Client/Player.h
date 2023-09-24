@@ -2,6 +2,9 @@
 #include "GameObject.h"
 
 class SwordScript;
+class BowScript;
+class ArrowScript;
+class SwordScript;
 class SwordHeavyEffect;
 class State;
 class Player :
@@ -26,6 +29,10 @@ public:
 	virtual void Destroy();
 
 public:
+	virtual void OnCollisionEnter(Collider* _pOtherCollider);
+	virtual void OnCollisionStay(Collider* _pOtherCollider);
+	virtual void OnCollisionExit(Collider* _pOtherCollider);
+
 	virtual void OnTriggerEnter(Collider* _pOtherCollider);
 	virtual void OnTriggerStay(Collider* _pOtherCollider);
 	virtual void OnTriggerExit(Collider* _pOtherCollider);
@@ -53,6 +60,8 @@ public:
 
 	GameObject* GetGreatSword() { return pGreatSword; }
 	GameObject* GetAttackCol() { return pAttackCol; }
+	GameObject* GetBow() { return pBow; }
+	GameObject* GetArrow() { return pArrow; }
 	
 
 	SwordHeavyEffect* GetSwordEffect() { return mpSlashEffect; }
@@ -86,5 +95,10 @@ private:
 	GameObject* pGreatSword;
 	SwordScript* pSwordSc;
 	GameObject* pAttackCol;
+
+	GameObject* pBow;
+	BowScript* pBowSc;
+	GameObject* pArrow;
+	ArrowScript* pArrowSc;
 };
 

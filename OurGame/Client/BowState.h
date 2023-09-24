@@ -1,11 +1,11 @@
 #pragma once
 #include "State.h"
-class AttackState :
+class BowState :
 	public State
 {
 public:
-	AttackState();
-	virtual ~AttackState() = default;
+	BowState();
+	virtual ~BowState() = default;
 
 	virtual void Initialize() override;
 	virtual void Update() override;
@@ -14,12 +14,4 @@ public:
 	virtual void Exit()  override;
 	virtual void PlayAnimation() override;
 
-	
-private:
-	void DirSlash();
-	
-private:
-	bool mbTrigger;
-
-	
 };
