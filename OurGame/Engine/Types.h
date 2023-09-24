@@ -199,3 +199,66 @@ struct ScreenEffectInfo
 	std::function<void()> startCallback;
 	std::function<void()> endCallback;
 };
+
+#include "Transform.h"
+struct NavWorkData
+{
+	std::function<void(const std::list<Vec3>&)> callback;
+	hm::Transform* pTransform;
+	Vec3 end;
+};
+
+struct NavResultData
+{
+	std::function<void(const std::list<Vec3>&)> callback;
+	std::list<Vec3> pathList;
+};
+
+struct NavMeshPolygon
+{
+	std::vector<Vec3>		mVertexPosVec;
+	std::vector<Vec3>		mVertexOriginPosVec;
+	std::vector<int>		mAdjIndexVec;
+	int                     mIndex;
+	Vec3                    mMin;
+	Vec3                    mMax;
+};
+
+struct NavigationCell
+{
+	NavigationCell()
+	{
+		eType = NaviMeshCellType::None;
+		parentIdx = -1;
+		g = 0.f;
+		h = 0.f;
+		f = 0.f;
+		bEnable = true;
+	}
+
+	void Clear()
+	{
+		eType = NaviMeshCellType::None;
+		parentIdx = -1;
+		g = -1.f;
+		h = -1.f;
+		f = -1.f;
+	}
+
+	NavigationCell operator+ (const NavigationCell& _cell)
+	{
+		NavigationCell cell;
+		return cell;
+	}
+
+	NaviMeshCellType eType;
+	NavMeshPolygon polygon;
+	Vec3 center;
+	int parentIdx;
+	float g;
+	float h;
+	float f;
+	bool bEnable;
+
+
+};

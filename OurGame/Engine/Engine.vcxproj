@@ -247,6 +247,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClInclude Include="SceneChangeEvent.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Selector.h" />
+    <ClInclude Include="SemaphoreSync.h" />
     <ClInclude Include="Sequence.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleMath.h" />
@@ -254,6 +255,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClInclude Include="SwapChain.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="ThreadBase.h" />
+    <ClInclude Include="ThreadQueue.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TimerObject.h" />
     <ClInclude Include="Tool.h" />
@@ -338,6 +340,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClCompile Include="SceneChangeEvent.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Selector.cpp" />
+    <ClCompile Include="SemaphoreSync.cpp" />
     <ClCompile Include="Sequence.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleMath.cpp" />
@@ -345,6 +348,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="ThreadBase.cpp" />
+    <ClCompile Include="ThreadQueue.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TimerObject.cpp" />
     <ClCompile Include="Tool.cpp" />

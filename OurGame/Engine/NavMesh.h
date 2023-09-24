@@ -3,16 +3,6 @@
 
 namespace hm
 {
-    struct NavMeshPolygon
-    {
-        std::vector<Vec3>		mVertexPosVec;
-        std::vector<Vec3>		mVertexOriginPosVec;
-        std::vector<int>		mAdjIndexVec;
-        int                     mIndex;
-        Vec3                    mMin;
-        Vec3                    mMax;
-    };
-
     class NavMesh :
         public Mesh
     {
@@ -25,6 +15,9 @@ namespace hm
         void CreatePolygonInfo();
         void CheckAdjacentInfo();
         bool CheckAdjVector(int _polyIndex, int _checkIndex);
+
+        size_t GetNavMeshPolygonCount() { return mNavMeshPolygonVec.size(); }
+        NavMeshPolygon& GetNavMeshPolygon(int _index) { return mNavMeshPolygonVec[_index]; }
 
     private:
         std::vector<NavMeshPolygon> mNavMeshPolygonVec;
