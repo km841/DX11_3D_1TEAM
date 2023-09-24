@@ -226,7 +226,7 @@ void Bat::SetBehaviorTree()
 
 				Vec3 rot = Vec3(0, 0, -1);
 				double angleRadian = atan2(dir.x, dir.z) - atan2(rot.x, rot.z);
-				float angleDegree = angleRadian * 180.f / XM_PI;
+				float angleDegree = static_cast<float>(angleRadian) * 180.f / XM_PI;
 
 				if (angleDegree < 0.f)
 					angleDegree += 360.f;

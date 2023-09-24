@@ -26,6 +26,7 @@ namespace hm
 		Movement,
 		Camera,
 		Collider,
+		NavAgent,
 		Ai,
 		ParticleSystem,
 		SoundListener,

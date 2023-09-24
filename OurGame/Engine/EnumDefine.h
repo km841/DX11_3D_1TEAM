@@ -196,6 +196,8 @@ namespace hm
 		None,
 		FadeIn,
 		FadeOut,
+		WhiteIn,
+		WhiteOut,
 	};
 
 	enum
