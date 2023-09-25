@@ -176,7 +176,7 @@ Player::Player()
 	{
 
 		pBow = Factory::CreateObject<GameObject>(Vec3(0.f, 0.f, 0.f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Bow.fbx", false, LayerType::Item);
-		pBow->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+		pBow->GetTransform()->SetScale(Vec3(2.f, 1.5f, 2.f));
 		pBow->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 
 		pBow->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);

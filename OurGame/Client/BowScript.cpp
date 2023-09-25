@@ -66,6 +66,77 @@ void BowScript::FixedUpdate()
 
 	Transform* pTr = GetTransform(); // 활 트랜스폼
 	GameObject* pObj = GetGameObject(); // 활 오브젝트
+
+	Vec3 Pos = pPlyer_Tr->GetPosition(); //플레이어 Pos
+	Vec3 Rot = pTr->GetRotation(); // 활 회전 Rot
+
+	if (eDir == DirectionEvasion::BACKWARD) {
+		Pos.x -= 0.15;
+		Pos.z -= 0.35;
+		Pos.y += 0.25f;
+		pTr->SetPosition(Pos);
+		pTr->SetRotation(Vec3(0.f, 270.f, 0.f));
+
+	}
+	if (eDir == DirectionEvasion::FORWARD) {
+		Pos.x += 0.15;
+		Pos.z += 0.35;
+		Pos.y += 0.25f;
+		pTr->SetPosition(Pos);
+		pTr->SetRotation(Vec3(0.f, 90.f, 0.f));
+	}
+	if (eDir == DirectionEvasion::LEFT) {
+		Pos.x -= 0.35;
+		Pos.z += 0.15;
+		Pos.y += 0.25f;
+
+		pTr->SetPosition(Pos);
+		pTr->SetRotation(Vec3(0.f, 0.f, 0.f));
+	}
+	if (eDir == DirectionEvasion::RIGHT) {
+		Pos.x += 0.35;
+		Pos.z -= 0.15;
+		Pos.y += 0.25f;
+
+		pTr->SetPosition(Pos);
+		pTr->SetRotation(Vec3(0.f, 180.f, 0.f));
+	}
+
+	if (eDir == DirectionEvasion::TOPLEFT) {
+		Pos.x -= 0.15;
+		Pos.z += 0.35;
+		Pos.y += 0.25f;
+
+		pTr->SetPosition(Pos);
+		pTr->SetRotation(Vec3(0.f, 45.f, 0.f));
+	}
+
+	if (eDir == DirectionEvasion::TOPRIGHT) {
+		Pos.x += 0.35;
+		Pos.z += 0.15;
+		Pos.y += 0.25f;
+
+		pTr->SetPosition(Pos);
+		pTr->SetRotation(Vec3(0.f, 135.f, 0.f));
+	}
+
+	if (eDir == DirectionEvasion::BOTTOMLEFT) {
+		Pos.x -= 0.35;
+		Pos.z -= 0.15;
+		Pos.y += 0.25f;
+
+		pTr->SetPosition(Pos);
+		pTr->SetRotation(Vec3(0.f, 315.f, 0.f));
+	}
+
+	if (eDir == DirectionEvasion::BOTTOMRIGHT) {
+		Pos.x += 0.15;
+		Pos.z -= 0.35;
+		Pos.y += 0.25f;
+
+		pTr->SetPosition(Pos);
+		pTr->SetRotation(Vec3(0.f,225.f, 0.f));
+	}
 }
 
 void BowScript::SetPlayerState(PlayerState _eStateNum)
