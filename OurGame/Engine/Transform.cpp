@@ -571,7 +571,7 @@ namespace hm
 
 			ActorType eActorType = pRigidBody->GetActorType();
 
-			if (ActorType::Kinematic == eActorType)
+			if ((ActorType::Kinematic == eActorType) || (ActorType::Character == eActorType))
 				pRigidBody->GetDynamicActor()->setKinematicTarget(transform);
 			else if (ActorType::Dynamic == eActorType)
 				pRigidBody->GetDynamicActor()->setGlobalPose(transform);

@@ -42,6 +42,9 @@
 /* Event */
 #include "SceneChangeEvent.h"
 
+#include "ContactCallback.h"
+#include "Timer.h"
+
 
 namespace sy
 {
@@ -107,6 +110,10 @@ namespace sy
 
 	void DiningColliderCheckMap::FinalUpdate()
 	{
+		PxVec3 disp = PLAYER->GetRigidBody()->GetVelocity();
+		disp.y = -9.8f;
+		mpCharacterController->move(disp * DELTA_TIME, 0.f, DELTA_TIME, filter);
+
 		Map::FinalUpdate();
 	}
 
@@ -1124,11 +1131,11 @@ namespace sy
 		//Player
 		{
 			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eActorType = ActorType::Character;
 			physicsInfo.eGeometryType = GeometryType::Capsule;
-			physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
+			//physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
 			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
 			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
 			pPlayer->AddComponent(new PaperBurnScript);
@@ -1140,11 +1147,14 @@ namespace sy
 			pPlayer->GetRigidBody()->ApplyGravity();
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+
+			mpCharacterController = pPlayer->GetRigidBody()->GetCharacterController();
+
 			AddGameObject(pPlayer);
 		}
 
 		// HeadRoller
-		{
+		/*{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Kinematic;
 			info.eGeometryType = GeometryType::Box;

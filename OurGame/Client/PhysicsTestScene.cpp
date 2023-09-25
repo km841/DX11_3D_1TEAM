@@ -15,6 +15,7 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "Resources.h"
+#include "Timer.h"
 
 /* GameObject */
 #include "GameObject.h"
@@ -41,19 +42,28 @@
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
 #include "TestRigidBodyScript.h"
+#include "PaperBurnScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
 
+/* Utility */
+#include "ContactCallback.h"
+
 namespace jh
 {
 	PhysicsTestScene::PhysicsTestScene() :
-		Map(MapType::PhysicsTest)
+		Map(MapType::PhysicsTest),
+		mpCharacterController(nullptr),
+		mFilterData(nullptr),
+		mFilterCallback(nullptr),
+		mCCTFilterCallback(nullptr)
 	{
 	}
 
 	PhysicsTestScene::~PhysicsTestScene()
 	{
+		//mpCharacterController->release();
 	}
 
 	void PhysicsTestScene::Initialize()
@@ -64,6 +74,8 @@ namespace jh
 	void PhysicsTestScene::Start()
 	{
 		Map::Start();
+
+		SetDirLightRotation(Vec3(40.f, 0.f, 0.f));
 	}
 
 	void PhysicsTestScene::Update()
@@ -78,6 +90,13 @@ namespace jh
 
 	void PhysicsTestScene::FinalUpdate()
 	{
+		//mFilterCallback = gpEngine->GetPhysics()->GetCallback();
+		//const PxControllerFilters filter(mFilterData, mFilterCallback, mCCTFilterCallback);
+		//
+		//PxVec3 disp = PLAYER->GetRigidBody()->GetVelocity();
+		//disp.y = -9.8f;
+		//const PxU32 flags = mpCharacterController->move(disp * DELTA_TIME, 0.f, DELTA_TIME, filter);
+
 		Map::FinalUpdate();
 	}
 
@@ -316,34 +335,66 @@ namespace jh
 		}
 #pragma endregion
 
-		// Toy
+		//1층 계단 - Stairs
 		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(5.f, 0.1f, 14.f);
+
+			Ground* pStairs = Factory::CreateObjectHasPhysical<Ground>(Vec3(-12.f, -5.2f, 0.5f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Stairs.fbx");
+
+			pStairs->GetTransform()->SetScale(Vec3(15.f, 15.f, 15.f));
+			pStairs->GetTransform()->SetRotation(Vec3(28.f, 0.f, 0.f));
+			pStairs->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.f, 1.f));
+			pStairs->GetTransform()->SetRotationExcludingColliders(Vec3(-28.f, 0.f, 0.f));
+			AddGameObject(pStairs);
+		}
+
+		// Toy
+		/*{
 			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eActorType = ActorType::Character;
 			physicsInfo.eGeometryType = GeometryType::Capsule;
 			physicsInfo.size = Vec3(1.5f, 0.4f, 1.5f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
 			pPlayer->AddComponent(new PlayerMoveScript);
+			pPlayer->AddComponent(new PaperBurnScript);
+			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
 			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
-			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 0.f, -90.f));
-			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
+			pPlayer->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.6f, 0.f));
 
 			pPlayer->GetRigidBody()->ApplyGravity();			
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 
+			mpCharacterController = pPlayer->GetRigidBody()->GetCharacterController();
+
 			AddGameObject(pPlayer);
-		}
+		}*/
+
+		// CharacterController
+		/*{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Character;
+			physicsInfo.eGeometryType = GeometryType::Capsule;
+			physicsInfo.size = Vec3(1.5f, 0.4f, 1.5f);
+
+			CctPlayer* pCctPlayer = Factory::CreateObjectHasPhysical<CctPlayer>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred");
+
+			AddGameObject(pCctPlayer);
+		}*/
 
 		// AddForce 테스트용 Dynamic 오브젝트
 		{
 			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eActorType = ActorType::Static;
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(2.f, 3.1f, 2.f);
 
-			ObstacleObject* testPot = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(5.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\POT_HEAL_Generic Variant (3).fbx");
+			ObstacleObject* testPot = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(-5.f, -0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\POT_HEAL_Generic Variant (3).fbx");
 			
 			testPot->GetTransform()->SetScale(Vec3(2.87f, 3.1f, 2.87f));
 
@@ -351,9 +402,218 @@ namespace jh
 
 			AddGameObject(testPot);
 		}
+
+#pragma region 항아리 조각
+		// 항아리 조각 1
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Convex;
+			//physicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+			ObstacleObject* potCell = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(0.f,0.f,0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\Pot_Cell1.fbx");
+
+			//potCell->GetTransform()->SetScale(Vec3(2.87f, 3.1f, 2.87f));
+			potCell->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 90.f));
+
+			AddGameObject(potCell);
+		}
+		// 항아리 조각 3
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Convex;
+			//physicsInfo.size = Vec3(1.11f, 1.11f, 1.11f);
+
+			ObstacleObject* potCell = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(-0.73f, 0.05f, 0.53f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\Pot_Cell3.fbx");
+
+			potCell->GetTransform()->SetScale(Vec3(1.11f, 1.11f, 1.11f));
+			potCell->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 90.f));
+
+			AddGameObject(potCell);
+		}
+		// 항아리 조각 4
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Convex;
+			//physicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+			ObstacleObject* potCell = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(-0.49f, 0.87f, 0.29f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\Pot_Cell4.fbx");
+
+			potCell->GetTransform()->SetScale(Vec3(1.276f, 1.276f, 1.276f));
+			potCell->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 90.f));
+
+			AddGameObject(potCell);
+		}
+		// 항아리 조각 6
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Convex;
+			//physicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+			ObstacleObject* potCell = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(-0.534f, 1.545f, 0.58f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\Pot_Cell6.fbx");
+
+			potCell->GetTransform()->SetScale(Vec3(0.99f, 0.99f, 0.99f));
+			potCell->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 90.f));
+
+			AddGameObject(potCell);
+		}
+		// 항아리 조각 7
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Convex;
+			//physicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+			ObstacleObject* potCell = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(0.33f, 0.44f, 0.35f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\Pot_Cell7.fbx");
+
+			potCell->GetTransform()->SetScale(Vec3(1.3f, 1.3f, 1.3f));
+			potCell->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 90.f));
+
+			AddGameObject(potCell);
+		}
+		// 항아리 조각 8
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Convex;
+			//physicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+			ObstacleObject* potCell = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(-0.45f, 0.95f, 0.74f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\Pot_Cell8.fbx");
+
+			potCell->GetTransform()->SetScale(Vec3(1.22f, 1.22f, 1.22f));
+			potCell->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 90.f));
+
+			AddGameObject(potCell);
+		}
+		// 항아리 조각 9
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Convex;
+			//physicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+			ObstacleObject* potCell = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(0.04f, -0.008f, 0.75f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\Pot_Cell9.fbx");
+
+			potCell->GetTransform()->SetScale(Vec3(0.8f, 0.8f, 0.8f));
+			potCell->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 90.f));
+
+			AddGameObject(potCell);
+		}
+		// 항아리 조각 10
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Convex;
+			//physicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+			ObstacleObject* potCell = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(-0.49f, 1.58f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\Pot_Cell10.fbx");
+
+			potCell->GetTransform()->SetScale(Vec3(0.87f, 0.87f, 0.87f));
+			potCell->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 90.f));
+
+			//SetGizmoTarget(potCell);
+			AddGameObject(potCell);
+		}
+		// 항아리 조각 11
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Convex;
+			//physicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+			ObstacleObject* potCell = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(0.06f, 1.41f, 0.4f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\Pot_Cell11.fbx");
+
+			potCell->GetTransform()->SetScale(Vec3(1.326f, 1.326f, 1.326f));
+			potCell->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 90.f));
+
+			AddGameObject(potCell);
+		}
+		// 항아리 조각 12
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Convex;
+			//physicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+			ObstacleObject* potCell = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(-0.29f, 0.074f, 0.996f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\Pot_Cell12.fbx");
+
+			potCell->GetTransform()->SetScale(Vec3(1.179f, 1.179f, 1.179f));
+			potCell->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 90.f));
+
+			AddGameObject(potCell);
+		}
+		// 항아리 조각 16
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Convex;
+			//physicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+			ObstacleObject* potCell = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(-0.22f, 0.62f, -0.165f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\Pot_Cell16.fbx");
+
+			potCell->GetTransform()->SetScale(Vec3(0.96f, 0.96f, 0.96f));
+			potCell->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 90.f));
+
+			AddGameObject(potCell);
+		}
+		// 항아리 조각 17
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Convex;
+			//physicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+			ObstacleObject* potCell = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(-0.3f,0.41f,1.005f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\Pot_Cell17.fbx");
+
+			potCell->GetTransform()->SetScale(Vec3(1.26f, 1.26f, 1.26f));
+			potCell->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 90.f));
+
+			AddGameObject(potCell);
+		}
+		// 항아리 조각 18
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eGeometryType = GeometryType::Convex;
+			//physicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+			ObstacleObject* potCell = Factory::CreateObjectHasPhysical<ObstacleObject>(Vec3(-0.465f, 0.22f, -0.085f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\Pot_Cell18.fbx");
+
+			potCell->GetTransform()->SetScale(Vec3(1.37f, 1.37f, 1.37f));
+			potCell->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 90.f));
+
+			AddGameObject(potCell);
+		}
+#pragma endregion
 	}
 
 	void PhysicsTestScene::Exit()
 	{
+	}
+
+	void PhysicsTestScene::CreateCharacterController()
+	{
+		PxCapsuleControllerDesc desc;
+		desc.climbingMode = PxCapsuleClimbingMode::eEASY;
+		desc.height = 10.f;
+		desc.radius = 1.5f;
+		desc.stepOffset = 0.5f;
+		//desc.material = 
+		desc.behaviorCallback = gpEngine->GetPhysics()->GetCallback();
+		desc.reportCallback = gpEngine->GetPhysics()->GetCallback();
+
+		//PxBoxControllerDesc desc;
+		//desc.halfHeight = 2.f;
+		//desc.halfForwardExtent = 1.f;
+		//desc.halfSideExtent = 1.f;
+		//desc.
+
+		if (true == desc.isValid())
+			int a = 0;
+
+		mpCharacterController = static_cast<PxCapsuleController*>(gpEngine->GetPhysics()->GetControllerManager()->createController(desc));
 	}
 }

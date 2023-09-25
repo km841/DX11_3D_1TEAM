@@ -28,14 +28,14 @@ void PlayerMoveScript::FixedUpdate()
 
 	if (IS_DOWN(KeyType::H))
 	{
-		tr->SetPosition(Vec3::Zero);
+		//tr->SetPosition(Vec3::Zero);
+		tr->SetPosition(Vec3(0.f, 5.f, 0.f));
 	}
 
 	CheckPenetration(rb, LayerType::DecoObject);
 	CheckPenetration(rb, LayerType::WallObject);
-	CheckPenetration(rb, LayerType::Obstacle);
+	//CheckPenetration(rb, LayerType::Obstacle);
 	CheckPenetration(rb, LayerType::Ground);
-	CheckPenetration(rb, LayerType::Portal);
 
 	//AutoStepping(1.f);
 

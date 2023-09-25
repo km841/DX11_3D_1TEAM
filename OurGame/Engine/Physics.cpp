@@ -25,13 +25,13 @@ namespace hm
 		mpCpuDispatcher->release();
 
 		SAFE_DELETE(mpCallback);
+		mpControllerMgr->release();
 		mpScene->release();
 		mpPhysics->release();
 		mpCooking->release();
 		mpPvd->release();
 		mpTransfort->release();
 		mpFoundation->release();
-
 	}
 	void Physics::Initialize()
 	{
@@ -59,6 +59,8 @@ namespace hm
 		mpSceneClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);
 		mpSceneClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
 		mpSceneClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
+
+		mpControllerMgr = PxCreateControllerManager(*mpScene);
 	}
 
 	void Physics::Update()
