@@ -144,11 +144,21 @@ struct Geometries
 		}
 	}
 
+	Geometries(GeometryType eGeometryType, PxConvexMesh* _pTriangleMesh, Vec3 _size)
+		: eGeomType(GeometryType::Convex)
+	{
+		if (GeometryType::Convex == eGeometryType)
+		{
+			convexGeom = PxConvexMeshGeometry(_pTriangleMesh, PxMeshScale(_size));
+		}
+	}
+
 	PxBoxGeometry boxGeom;
 	PxCapsuleGeometry capsuleGeom;
 	PxPlaneGeometry planeGeom;
 	PxSphereGeometry sphereGeom;
 	PxTriangleMeshGeometry triangleGeom;
+	PxConvexMeshGeometry convexGeom;
 	GeometryType eGeomType;
 };
 
