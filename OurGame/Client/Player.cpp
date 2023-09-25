@@ -25,6 +25,7 @@
 #include "Npc.h"
 #include "Monster.h"
 #include "SwordHeavyEffect.h"
+#include "Ladder.h"
 
 /* Component */
 #include "Collider.h"
@@ -50,7 +51,7 @@
 
 /* Event */
 #include "SceneChangeEvent.h"
- /*State ¸ğÀ½*/
+ /*State ëª¨ìŒ*/
 #include "State.h"
 #include "PauseState.h"
 #include "IdleState.h"
@@ -73,18 +74,18 @@ Player* Player::spPlayer;
 
 Player::Player()
 	: GameObject(LayerType::Player)
-	, mHP(4) // ÇÇÅë
-	, mCost(4) // ¸¶³ª
-	, mSpeed(5.f) // ÀÌµ¿¼Óµµ
-	, mAttackDamage(1.f) // µ¥¹ÌÁö
-	, mAttack_Speed(0.04f) // °ø¼Ó
-	, mbAttackDir(true) //true½Ã ¿À¸¥ÂÊ°ø°İ, false½Ã ¿ŞÂÊ °ø°İ
-	, mDash_Speed(25.f) // È¸ÇÇ½Ã ÁÖ´Â ¹°¸® Èû
-	, meDirectionEvasion(DirectionEvasion::NONE) // ÇÃ·¹ÀÌ¾î 8¹æÇâ enum À¸·Î Ç¥½Ã
+	, mHP(4) // í”¼í†µ
+	, mCost(4) // ë§ˆë‚˜
+	, mSpeed(5.f) // ì´ë™ì†ë„
+	, mAttackDamage(1.f) // ë°ë¯¸ì§€
+	, mAttack_Speed(0.04f) // ê³µì†
+	, mbAttackDir(true) //trueì‹œ ì˜¤ë¥¸ìª½ê³µê²©, falseì‹œ ì™¼ìª½ ê³µê²©
+	, mDash_Speed(25.f) // íšŒí”¼ì‹œ ì£¼ëŠ” ë¬¼ë¦¬ í˜
+	, meDirectionEvasion(DirectionEvasion::NONE) // í”Œë ˆì´ì–´ 8ë°©í–¥ enum ìœ¼ë¡œ í‘œì‹œ
 	
 {
-	AssertEx(spPlayer == nullptr, L"ÀÌ¹Ì Á¤Àû ÇÃ·¹ÀÌ¾î Á¸ÀçÇÔ");
-	spPlayer = this; //Á¤Àûº¯¼ö ¼±¾ğ
+	AssertEx(spPlayer == nullptr, L"ì´ë¯¸ ì •ì  í”Œë ˆì´ì–´ ì¡´ì¬í•¨");
+	spPlayer = this; //ì •ì ë³€ìˆ˜ ì„ ì–¸
 
 	mState[int(PlayerState::PauseState)] = new PauseState;
 	mState[int(PlayerState::IdleState)] = new IdleState;
@@ -122,7 +123,7 @@ Player::Player()
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(mpSlashEffect);
 	}
 
-	//¹«±â ¿ÀºêÁ§Æ®
+	//ë¬´ê¸° ì˜¤ë¸Œì íŠ¸
 	{
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Static;
@@ -153,7 +154,7 @@ Player::Player()
 		//SetMeshTarget(pGreatSword);
 	}
 
-	//°Ë °ø°İ¹üÀ§ Äİ¶óÀÌ´õ - pAttackCol
+	//ê²€ ê³µê²©ë²”ìœ„ ì½œë¼ì´ë” - pAttackCol
 	{
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Kinematic;
@@ -172,7 +173,7 @@ Player::Player()
 		
 	}
 
-	//È° ¿ÀºêÁ§Æ® - Bow
+	//í™œ ì˜¤ë¸Œì íŠ¸ - Bow
 	{
 
 		pBow = Factory::CreateObject<GameObject>(Vec3(0.f, 0.f, 0.f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Bow.fbx", false, LayerType::Item);
@@ -194,19 +195,19 @@ Player::Player()
 		//SetMeshTarget(pBow);
 	}
 
-	//È­»ì ¿ÀºêÁ§Æ® - Arrow
+	//í™”ì‚´ ì˜¤ë¸Œì íŠ¸ - Arrow
 	{
 		PhysicsInfo physicsInfo;
-		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eActorType = ActorType::Dynamic;
 		physicsInfo.eGeometryType = GeometryType::Box;
-		physicsInfo.size = Vec3(0.05f, 0.05f, 1.0f);
+		physicsInfo.size = Vec3(0.05f, 0.05f, 0.7f);
 
 		pArrow = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.f, 0.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Arrow.fbx", false, LayerType::ArrowCol);
-		pArrow->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+		pArrow->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 0.8f));
 		pArrow->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 
 		pArrow->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
-		pArrow->GetMeshRenderer()->GetMaterial()->SetBloomPower(2.f, 0);
+		pArrow->GetMeshRenderer()->GetMaterial()->SetBloomPower(3.f, 0);
 		pArrow->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.f, 0.f, 0.f));
 		pArrow->GetMeshRenderer()->GetMaterial()->SetBloomFilter(Vec4(1.f, 0.f, 0.f, 0.f), 0);
 
@@ -215,6 +216,8 @@ Player::Player()
 
 		pArrowSc = pArrow->AddComponent(new ArrowScript);
 
+		pArrow->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+		pArrow->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 		//gpEngine->GetTool()->UseGizmo();
 		//gpEngine->GetTool()->SetGameObject(pArrow);
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pArrow);
@@ -239,27 +242,27 @@ void Player::Initialize()
 
 	//mActiveState->Initialize();
 	
-#pragma region "ÇÃ·¹ÀÌ¾î ¾Ö´Ï¸ŞÀÌ¼Ç ÀÌ¸§ º¯°æ"
-/*¾Ö´Ï¸ŞÀÌ¼Ç ÀÌ¸§ º¯°æ*/
-	//¾ÆÀÌµé
-	GetAnimator()->RenameAnimation(42, L"_Player_Idle01"); //ÀÌ¸§º¯°æ
-	GetAnimator()->SetLoop(42, true); //·çÇÁ
-	GetAnimator()->SetHasExitFlag(42, true); // ±âÁ¸ ¾Ö´Ï¸ŞÀÌ¼Ç ´Ù³¡³ª°í ½ÇÇà f ? t
+#pragma region "í”Œë ˆì´ì–´ ì• ë‹ˆë©”ì´ì…˜ ì´ë¦„ ë³€ê²½"
+/*ì• ë‹ˆë©”ì´ì…˜ ì´ë¦„ ë³€ê²½*/
+	//ì•„ì´ë“¤
+	GetAnimator()->RenameAnimation(42, L"_Player_Idle01"); //ì´ë¦„ë³€ê²½
+	GetAnimator()->SetLoop(42, true); //ë£¨í”„
+	GetAnimator()->SetHasExitFlag(42, true); // ê¸°ì¡´ ì• ë‹ˆë©”ì´ì…˜ ë‹¤ëë‚˜ê³  ì‹¤í–‰ f ? t
 	GetAnimator()->RenameAnimation(43, L"_Player_Idle02");
 	GetAnimator()->SetLoop(43, true); 
 	GetAnimator()->SetHasExitFlag(43, true); 
 
-	//ÀÌµ¿
+	//ì´ë™
 	GetAnimator()->RenameAnimation(67, L"_Player_Move");
 	GetAnimator()->SetLoop(67, true);
 	GetAnimator()->SetHasExitFlag(67, true);
 
-	//È¸ÇÇ
+	//íšŒí”¼
 	GetAnimator()->RenameAnimation(63, L"_Player_Evasion");
 	GetAnimator()->SetLoop(63, true);
 	GetAnimator()->SetHasExitFlag(63, true);
 	
-	//°ø°İ
+	//ê³µê²©
 	GetAnimator()->RenameAnimation(69, L"_Player_Attack01");
 	GetAnimator()->SetLoop(69, true);
 	GetAnimator()->SetHasExitFlag(69, true);
@@ -267,7 +270,7 @@ void Player::Initialize()
 	GetAnimator()->SetLoop(70, true);
 	GetAnimator()->SetHasExitFlag(70, true);
 
-	//³«ÇÏ
+	//ë‚™í•˜
 	GetAnimator()->RenameAnimation(7, L"_Player_Fallstart");
 	GetAnimator()->SetLoop(7, true);
 	GetAnimator()->SetHasExitFlag(7, true);
@@ -275,7 +278,7 @@ void Player::Initialize()
 	GetAnimator()->SetLoop(8, true);
 	GetAnimator()->SetHasExitFlag(8, true);
 
-	//»ç´Ù¸®
+	//ì‚¬ë‹¤ë¦¬
 	GetAnimator()->RenameAnimation(20, L"_Player_ClimingUp");
 	GetAnimator()->SetLoop(20, true);
 	GetAnimator()->SetHasExitFlag(20, true);
@@ -286,7 +289,7 @@ void Player::Initialize()
 	GetAnimator()->SetLoop(22, true);
 	GetAnimator()->SetHasExitFlag(22, true);
 
-	//È°¸ğ¼Ç
+	//í™œëª¨ì…˜
 	GetAnimator()->RenameAnimation(0, L"_Player_Bow");
 	GetAnimator()->SetLoop(0, true);
 	GetAnimator()->SetHasExitFlag(0, true);
@@ -312,18 +315,18 @@ void Player::Initialize()
 
 	//GetAnimator()->RenameAnimation(L"Sat_loop", L"PotHead_Idle");
 
-	/* ¾Ö´Ï¸ŞÀÌ¼ÇÀÇ ÀÌ¸§Àº FBX¿¡ ÀúÀåµÇ¾î ÀÖ´Â °ÍÀ» ±×´ë·Î °¡Á®¿À¹Ç·Î ÇØ´ç FBX¸¦ »ç¿ëÇÏ´Â Å¬·¡½ºÀÇ »ı¼ºÀÚ¿Í °°Àº Æ¯Á¤ ºÎºĞ¿¡¼­
-			 »ç¿ëÇÏ±â ÆíÇÑ ÀÌ¸§À¸·Î ÀÏ°ıÀûÀ¸·Î ¹Ù²ãÁÙ ÇÊ¿ä°¡ ÀÖÀ½
+	/* ì• ë‹ˆë©”ì´ì…˜ì˜ ì´ë¦„ì€ FBXì— ì €ì¥ë˜ì–´ ìˆëŠ” ê²ƒì„ ê·¸ëŒ€ë¡œ ê°€ì ¸ì˜¤ë¯€ë¡œ í•´ë‹¹ FBXë¥¼ ì‚¬ìš©í•˜ëŠ” í´ë˜ìŠ¤ì˜ ìƒì„±ìì™€ ê°™ì€ íŠ¹ì • ë¶€ë¶„ì—ì„œ
+			 ì‚¬ìš©í•˜ê¸° í¸í•œ ì´ë¦„ìœ¼ë¡œ ì¼ê´„ì ìœ¼ë¡œ ë°”ê¿”ì¤„ í•„ìš”ê°€ ìˆìŒ
 	pPotHead->GetAnimator()->RenameAnimation(L"Sat_loop", L"PotHead_Idle");
 
-	 ¹İº¹ ¿©ºÎ¸¦ ¼³Á¤ÇÏ´Â ÇÔ¼ö (Finished ÇÃ·¡±×¸¦ »ç¿ëÇÒ ¼ö ¾øÀ½)
+	 ë°˜ë³µ ì—¬ë¶€ë¥¼ ì„¤ì •í•˜ëŠ” í•¨ìˆ˜ (Finished í”Œë˜ê·¸ë¥¼ ì‚¬ìš©í•  ìˆ˜ ì—†ìŒ)
 	pPotHead->GetAnimator()->SetLoop(L"PotHead_Idle", true);
 
-	 ÀÎµ¦½º ¹øÈ£·Îµµ »ç¿ë °¡´É
+	 ì¸ë±ìŠ¤ ë²ˆí˜¸ë¡œë„ ì‚¬ìš© ê°€ëŠ¥
 	pPotHead->GetAnimator()->SetLoop(9, true);
 
-	 HasExit´Â ÇöÀç ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇàÁß¿¡ ´Ù¸¥ ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇ¾úÀ» ¶§ ¹Ù·Î ³Ñ±æ°ÇÁö ¿©ºÎ¸¦ °áÁ¤ (±âº»ÀûÀ¸·Î true)
-	 ÀÌ °ªÀÌ false¸é ¾Ö´Ï¸ŞÀÌ¼Ç ÇÃ·¹ÀÌ µµÁß ´Ù¸¥ ¾Ö´Ï¸ŞÀÌ¼Ç Play°¡ ½ÇÇàµÇ¾úÀ» ¶§ ±âÁ¸ ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ´Ù ³¡³ª°í ½ÇÇàµÊ
+	 HasExitëŠ” í˜„ì¬ ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰ì¤‘ì— ë‹¤ë¥¸ ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì—ˆì„ ë•Œ ë°”ë¡œ ë„˜ê¸¸ê±´ì§€ ì—¬ë¶€ë¥¼ ê²°ì • (ê¸°ë³¸ì ìœ¼ë¡œ true)
+	 ì´ ê°’ì´ falseë©´ ì• ë‹ˆë©”ì´ì…˜ í”Œë ˆì´ ë„ì¤‘ ë‹¤ë¥¸ ì• ë‹ˆë©”ì´ì…˜ Playê°€ ì‹¤í–‰ë˜ì—ˆì„ ë•Œ ê¸°ì¡´ ì• ë‹ˆë©”ì´ì…˜ì´ ë‹¤ ëë‚˜ê³  ì‹¤í–‰ë¨
 	pPotHead->GetAnimator()->SetHasExitFlag(9, false);*/
 
 	
@@ -370,11 +373,8 @@ void Player::Destroy()
 
 void Player::OnCollisionEnter(Collider* _pOtherCollider)
 {
-	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
-	{
-		//ÀÛµ¿À» ¾ÈÇÏ³×
-		StateChange(PlayerState::HitStartState);
-	}
+	
+	
 }
 
 void Player::OnCollisionStay(Collider* _pOtherCollider)
@@ -396,15 +396,26 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 
 	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		//ÀÛµ¿À» ¾ÈÇÏ³×
+		
 		StateChange(PlayerState::HitStartState);
 	}
+
+	if (LayerType::Ladder == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		lastLadderName = _pOtherCollider->GetGameObject()->GetName();
+		isClimb = true;
+
+		pLadderEnter = static_cast<yj::Ladder*>(_pOtherCollider->GetGameObject())->GetEnterPoint();
+		pLadderExit = static_cast<yj::Ladder*>(_pOtherCollider->GetGameObject())->GetExitPoint();
+	}
+
 	
+
 }
 
 void Player::OnTriggerStay(Collider* _pOtherCollider)
 {
-	int a = 0;
+
 }
 
 void Player::OnTriggerExit(Collider* _pOtherCollider)
@@ -412,7 +423,12 @@ void Player::OnTriggerExit(Collider* _pOtherCollider)
 	/*if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		GetRigidBody()->ApplyGravity();
-	}*/
+	}
+
+ if (LayerType::Ladder == _pOtherCollider->GetGameObject()->GetLayerType())
+ {
+	 isClimb = false;
+ }
 }
 
 void Player::StateChange(PlayerState _eState)
@@ -432,6 +448,6 @@ void Player::SetDirectionChange(DirectionEvasion _eState)
 
 Player* Player::GetPlayer()
 {
-	//AssertEx(spPlayer != nullptr, L"ÇÃ·¹ÀÌ¾î°¡ Nullptr ÀÌ´Ù _ GetPlayer()~");
+	//AssertEx(spPlayer != nullptr, L"í”Œë ˆì´ì–´ê°€ Nullptr ì´ë‹¤ _ GetPlayer()~");
 	return spPlayer; 
 }

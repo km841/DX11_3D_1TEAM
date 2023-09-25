@@ -298,7 +298,7 @@ namespace hm
 	{
 		if (true == mbAppliedPhysics)
 		{
-			AssertEx(ActorType::Dynamic == mPhysicsInfo.eActorType, L"RigidBody::SetMaxVelocity() - Dynamic Actor가 아닌 물체에 대한 SetMaxVelocity() 호출 시도");
+			AssertEx(ActorType::Static != mPhysicsInfo.eActorType, L"RigidBody::SetMaxVelocity() - Dynamic Actor가 아닌 물체에 대한 SetMaxVelocity() 호출 시도");
 			GetDynamicActor()->setMaxLinearVelocity(_maxVelocity);
 		}
 

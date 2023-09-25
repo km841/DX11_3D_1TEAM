@@ -18,9 +18,10 @@ namespace hm
 		Player,
 		PlayerCol,
 		ArrowCol,
-		Grandma_Boss,
+		Grandma_Boss,  //이거 더미 목록
 		Monster,
 		Item,
+		Ladder,
 		Npc,
 		Effect,
 		Ground,

@@ -1,6 +1,5 @@
 #pragma once
 #include "GameObject.h"
-
 class SwordScript;
 class BowScript;
 class ArrowScript;
@@ -58,11 +57,18 @@ public:
 	bool GetAttackDir() { return mbAttackDir; }
 	void SetAttackDir(bool _AttackDir) { mbAttackDir = _AttackDir; }
 
+	bool GetisClimb() { return isClimb; }
+	void SetisClimb(bool _isClimb) { isClimb = _isClimb; }
+
+	wstring GetLadderName() { return lastLadderName; }
+
 	GameObject* GetGreatSword() { return pGreatSword; }
 	GameObject* GetAttackCol() { return pAttackCol; }
 	GameObject* GetBow() { return pBow; }
 	GameObject* GetArrow() { return pArrow; }
 	
+	GameObject* GetLadderEnter() { return pLadderEnter; }
+	GameObject* GetLadderExit() { return pLadderExit; }
 
 	SwordHeavyEffect* GetSwordEffect() { return mpSlashEffect; }
 public:
@@ -89,6 +95,13 @@ private:
 	float mAttackDamage;
 	float mAttack_Speed;
 	bool mbAttackDir;
+
+	bool isClimb=false;
+	wstring lastLadderName;
+
+	GameObject* pLadderEnter;
+	GameObject* pLadderExit;
+
 	SwordHeavyEffect* mpSlashEffect;
 	DirectionEvasion meDirectionEvasion; // 이동 상태 FSM
 

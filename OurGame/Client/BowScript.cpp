@@ -141,6 +141,7 @@ void BowScript::FixedUpdate()
 
 void BowScript::SetPlayerState(PlayerState _eStateNum)
 {
+	mPlayerStateNum = _eStateNum;
 }
 
 Component* BowScript::Clone(GameObject* _pGameObject)

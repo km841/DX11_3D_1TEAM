@@ -40,6 +40,7 @@
 #include "PlayerMoveScript.h"
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
+#include "ArrowScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -59,11 +60,26 @@ void BowState::Update()
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 	RigidBody* pRb = pPlayer->GetRigidBody();
+	DirectionEvasion eDir = pPlayer->GetDirectioninfo();
+
+	GameObject* pArrowObj = pPlayer->GetArrow(); //화살 오브젝트
+	ArrowScript* pArrowSc = pArrowObj->GetScript<ArrowScript>();
+
+	Vec3 Dir = ConvertDir(eDir);
 
 	if (IS_UP(KeyType::RBUTTON))
 	{
 		pPlayer->StateChange(PlayerState::IdleState);
+		pArrowSc->SetArrowAtkCheck(true); //화살 발사 부분 시작
+		pArrowSc->BurnReset(); //불화살 초기화 부분
+		pArrowSc->SetDirPos(Dir); // 화살 발사 방향 Set
 	}
+	if (pAni->GetFrameRatio() > 0.9)
+	{
+		pArrowObj->Enable();
+	}
+
+	
 }
 
 void BowState::Enter()
@@ -71,28 +87,30 @@ void BowState::Enter()
 	PlayAnimation();
 
 	Player* pPlayer = Player::GetPlayer();
-	GameObject* pObj01 = pPlayer->GetBow(); //활 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
-	pObj01->Enable();
+	GameObject* pBowObj = pPlayer->GetBow(); //활 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
+	pBowObj->Enable();
 
-	GameObject* pObj02 = pPlayer->GetArrow(); //화살 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
-	pObj02->Enable();
+	GameObject* pArrowObj = pPlayer->GetArrow(); //화살 오브젝트
+	pArrowObj->Disable();
+	ArrowScript* pArrowSc = pArrowObj->GetScript<ArrowScript>();
+	pArrowSc->SetArrowAtkCheck(false); //화살 발사 부분 종료
 
-	GameObject* pObj03 = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
-	pObj03->Disable();
+	GameObject* pSwordObj = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
+	pSwordObj->Disable();
 }
 
 void BowState::Exit()
 {
 	Player* pPlayer = Player::GetPlayer();
 
-	GameObject* pObj01 = pPlayer->GetBow(); //활 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
-	pObj01->Disable();
+	GameObject* pBowObj = pPlayer->GetBow(); //활 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
+	pBowObj->Disable();
 
-	GameObject* pObj02 = pPlayer->GetArrow(); //화살 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
-	pObj02->Disable();
+	//GameObject* pObj02 = pPlayer->GetArrow(); //화살 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
+	//pObj02->Disable();
 
-	GameObject* pObj03 = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
-	pObj03->Enable();
+	GameObject* pSwordObj = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
+	pSwordObj->Enable();
 }
 
 void BowState::PlayAnimation()

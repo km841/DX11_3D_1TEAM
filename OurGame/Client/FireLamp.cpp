@@ -2,8 +2,11 @@
 #include "FireLamp.h"
 
 #include "Transform.h"
+#include "Rigidbody.h"
+#include "Collider.h"
 #include "Timer.h"
 #include "Input.h"
+#include "ArrowScript.h"
 
 namespace yj
 {
@@ -12,6 +15,7 @@ namespace yj
 	{
 		pUpperPart = _UpperPart;
 		pBelowPart = _BelowPart;
+		this->SetName(L"FireLamp");
 	}
 	FireLamp::~FireLamp()
 	{
@@ -34,11 +38,67 @@ namespace yj
 		{
 			Active();
 		}
+
 	}
+
 	void FireLamp::Render()
 	{
 		GameObject::Render();
 	}
+
+	void FireLamp::OnCollisionEnter(Collider* pOtherCollider)
+	{
+		if (pOtherCollider->GetGameObject()->GetLayerType() == LayerType::ArrowCol)
+		{
+
+		}
+	}
+	void FireLamp::OnCollisionStay(Collider* pOtherCollider)
+	{
+
+	}
+	void FireLamp::OnCollisionExit(Collider* pOtherCollider)
+	{
+
+	}
+	void FireLamp::OnTriggerEnter(Collider* pOtherCollider)
+	{
+		if (GetIsBurn())
+		{
+			if (pOtherCollider->GetGameObject()->GetLayerType() == LayerType::ArrowCol)
+			{
+				//상대 화살에 불을 붙여준다
+				pOtherCollider->GetGameObject()->GetScript<ArrowScript>()->SetBurn();
+			}
+		}
+		else
+		{
+			if (pOtherCollider->GetGameObject()->GetLayerType() == LayerType::ArrowCol)
+			{
+				if (pOtherCollider->GetGameObject()->GetScript<ArrowScript>()->GetIsBurn());
+				{
+					isBurn = true;
+					if (mLampSequence == -1)
+					{
+						mLampSequence = 1;
+					}
+				}
+			}
+		}
+	}
+	void FireLamp::OnTriggerStay(Collider* pOtherCollider)
+	{
+
+	}
+	void FireLamp::OnTriggerExit(Collider* pOtherCollider)
+	{
+
+	}
+
+
+
+
+
 	void FireLamp::Active()
 	{
 		if (mLampSequence == 1)

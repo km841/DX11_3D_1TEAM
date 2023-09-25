@@ -25,6 +25,7 @@
 #include "Npc.h"
 #include "Monster.h"
 #include "Grandma.h"
+#include "Ladder.h"
 
 /* Component */
 #include "Collider.h"
@@ -60,12 +61,13 @@ void ClimingUpState::Update()
 	Transform* pTr = pPlayer->GetTransform();
 	RigidBody* pRb = pPlayer->GetRigidBody();
 
-	
+	GameObject* pLadder = pPlayer->GetLadderExit();
+	Transform* pLadder_Tr = pLadder->GetTransform();
 	pRb->SetVelocity(AXIS_Y, 2.f);
 
+	
 
-	if (mCount_Ani > 4) {
-		mCount_Ani = 0;
+	if (pLadder_Tr->GetPosition().y < pTr->GetPosition().y) {
 		pPlayer->StateChange(PlayerState::ClimingEndState);
 	}
 
@@ -79,6 +81,12 @@ void ClimingUpState::Update()
 
 void ClimingUpState::Enter()
 {
+	Player* pPlayer = Player::GetPlayer();
+	Animator* pAni = pPlayer->GetAnimator();
+	Transform* pTr = pPlayer->GetTransform();
+	RigidBody* pRb = pPlayer->GetRigidBody();
+
+
 	PlayAnimation();
 }
 

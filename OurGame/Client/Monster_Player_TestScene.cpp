@@ -86,12 +86,13 @@ namespace hm {
 	{
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Grandma_Boss, LayerType::Ground);
+		
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::PlayerCol);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::ArrowCol);
 		
 
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Item, LayerType::Monster); // 검 충돌
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Item, LayerType::Grandma_Boss);
+		
+		
 
 		//배경맵 하얀색으로 만들어주는 코드
 		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
@@ -231,7 +232,7 @@ namespace hm {
 			PhysicsInfo info = {};
 			info.eActorType = ActorType::Kinematic;
 			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(0.5f, 0.5f, 1.0f);
+			info.size = Vec3(3.5f, 3.5f, 3.0f);
 
 			Bat* p_E_BAT_White = Factory::CreateObjectHasPhysical<Bat>(Vec3(-9.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
 			p_E_BAT_White->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
@@ -242,6 +243,8 @@ namespace hm {
 
 			p_E_BAT_White->GetRigidBody()->ApplyGravity();
 
+			p_E_BAT_White->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			p_E_BAT_White->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 			//SetGizmoTarget(p_E_BAT_White);
 			AddGameObject(p_E_BAT_White);
 			//SetMeshTarget(p_E_BAT_White);

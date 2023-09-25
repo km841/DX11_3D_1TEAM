@@ -64,6 +64,8 @@ void IdleState::Update()
 	Animator* pAni = pPlayer->GetAnimator();
 	RigidBody* pRb = pPlayer->GetRigidBody();
 
+	wstring name = pPlayer->GetLadderName();
+
 	if (pAni->GetFrameRatio() > 0.99f) {
 		if (mIdleStatebool == true)
 		{
@@ -130,14 +132,17 @@ void IdleState::Update()
 	}
 	FallLate(); // 낙하 지연 시작
 
-	if (IS_DOWN(KeyType::G))
+
+	//사다리타기 잠시 막아눔
+	/*if (IS_DOWN(KeyType::E) && pPlayer->GetisClimb() == true)
 	{
-		pPlayer->StateChange(PlayerState::ClimingUpState);
-	}
-	if (IS_DOWN(KeyType::B))
-	{
-		pPlayer->StateChange(PlayerState::ClimingDownState);
-	}
+		if(name == L"LadderEnterCol")
+			pPlayer->StateChange(PlayerState::ClimingUpState);
+		else if (name == L"LadderExitCol")
+			pPlayer->StateChange(PlayerState::ClimingDownState);
+	}*/
+	
+
 	if (IS_DOWN(KeyType::N))
 	{
 		pPlayer->StateChange(PlayerState::HitStartState);
