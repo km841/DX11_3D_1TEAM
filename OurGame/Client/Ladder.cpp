@@ -13,6 +13,8 @@ namespace yj
 		pExitCol = _ExitCol;
 		pEnterPoint->SetName(L"LadderEnterPoint");
 		pExitPoint->SetName(L"LadderExitPoint");
+		pEnterCol->SetName(L"LadderEnterCol");
+		pExitCol->SetName(L"LadderExitCol");
 	}
 	Ladder::~Ladder()
 	{

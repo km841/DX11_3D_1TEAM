@@ -31,11 +31,11 @@ void PlayerMoveScript::FixedUpdate()
 		tr->SetPosition(Vec3::Zero);
 	}
 
-	//CheckPenetration(rb, LayerType::DecoObject);
-	/*CheckPenetration(rb, LayerType::WallObject);
+	CheckPenetration(rb, LayerType::DecoObject);
+	CheckPenetration(rb, LayerType::WallObject);
 	CheckPenetration(rb, LayerType::Obstacle);
 	CheckPenetration(rb, LayerType::Ground);
-	CheckPenetration(rb, LayerType::Portal);*/
+	CheckPenetration(rb, LayerType::Portal);
 
 	//AutoStepping(1.f);
 
