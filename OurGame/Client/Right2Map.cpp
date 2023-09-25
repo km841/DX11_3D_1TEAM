@@ -23,6 +23,7 @@
 #include "DecoObject.h"
 #include "Monster.h"
 #include "UI.h"
+#include "FireLamp.h"
 
 /* Component */
 #include "Collider.h"
@@ -116,7 +117,7 @@ namespace hm
 
 		// Toy
 		{
-			PhysicsInfo physicsInfo;
+		/*	PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Static;
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
@@ -126,7 +127,7 @@ namespace hm
 
 			SetGizmoTarget(pPlayer);
 
-			AddGameObject(pPlayer);
+			AddGameObject(pPlayer);*/
 		}
 
 		// ÁÂÃø º®ÂÊ 2´Ü ¼±¹Ý
@@ -437,12 +438,27 @@ namespace hm
 
 			// È­·ÔºÒ
 			{
-				DecoObject* pFirelamp = Factory::CreateObject<DecoObject>(Vec3(-5.8f, 7.4f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
 
-				pFirelamp->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				DecoObject* pLampUpper = Factory::CreateObject<DecoObject>(Vec3(-5.8f, 7.4f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+				pLampUpper->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 				//pTwoTierFootAbs->GetTransform()->SetRotation(AXIS_Y, 180.f);
 				//pFirelamp->AddComponent(new PlacementScript);
-				AddGameObject(pFirelamp);
+				pLampUpper->GetMeshRenderer()->SetSubsetRenderFlag(0,false);
+				AddGameObject(pLampUpper);
+
+
+				DecoObject* pLampBelow = Factory::CreateObject<DecoObject>(Vec3(-5.8f, 7.4f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+				pLampBelow->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				//pTwoTierFootAbs->GetTransform()->SetRotation(AXIS_Y, 180.f);
+				//pFirelamp->AddComponent(new PlacementScript);
+				pLampBelow->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
+				AddGameObject(pLampBelow);
+
+				yj::FireLamp* pFireLamp = Factory::CreateObject<yj::FireLamp>(Vec3(-5.8f, 7.4f, -16.5f), L"Deferred", L"",false, pLampUpper, pLampBelow);
+				AddGameObject(pFireLamp);
+
 			}
 
 			// È­·ÔºÒ
