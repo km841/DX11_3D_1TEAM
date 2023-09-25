@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "Player.h"
 #include "Engine.h"
 
@@ -242,7 +242,7 @@ void Player::Initialize()
 
 	//mActiveState->Initialize();
 	
-#pragma region "플레이어 애니메이션 이름 변경"
+#pragma region 플레이어 애니메이션 이름 변경
 /*애니메이션 이름 변경*/
 	//아이들
 	GetAnimator()->RenameAnimation(42, L"_Player_Idle01"); //이름변경
@@ -420,15 +420,15 @@ void Player::OnTriggerStay(Collider* _pOtherCollider)
 
 void Player::OnTriggerExit(Collider* _pOtherCollider)
 {
-	/*if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
+	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		GetRigidBody()->ApplyGravity();
 	}
 
- if (LayerType::Ladder == _pOtherCollider->GetGameObject()->GetLayerType())
- {
-	 isClimb = false;
- }
+	if (LayerType::Ladder == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		 isClimb = false;
+	}
 }
 
 void Player::StateChange(PlayerState _eState)
