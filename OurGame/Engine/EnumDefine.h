@@ -21,7 +21,6 @@ namespace hm
 		Grandma_Boss,  //이거 더미 목록
 		Monster,
 		Item,
-		Arrow,
 		Ladder,
 		Npc,
 		Effect,

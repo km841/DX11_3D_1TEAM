@@ -6,6 +6,7 @@
 #include "Collider.h"
 #include "Timer.h"
 #include "Input.h"
+#include "ArrowScript.h"
 
 namespace yj
 {
@@ -47,7 +48,7 @@ namespace yj
 
 	void FireLamp::OnCollisionEnter(Collider* pOtherCollider)
 	{
-		if (pOtherCollider->GetGameObject()->GetLayerType() == LayerType::Arrow)
+		if (pOtherCollider->GetGameObject()->GetLayerType() == LayerType::ArrowCols)
 		{
 
 		}
@@ -64,25 +65,24 @@ namespace yj
 	{
 		if (GetIsBurn())
 		{
-			if (pOtherCollider->GetGameObject()->GetLayerType() == LayerType::Arrow)
+			if (pOtherCollider->GetGameObject()->GetLayerType() == LayerType::ArrowCol)
 			{
 				//상대 화살에 불을 붙여준다
-				//pOtherCollider->GetGameObject()->GetScript<Arrow>().SetBurn();
-
+				pOtherCollider->GetGameObject()->GetScript<ArrowScript>()->SetBurn();
 			}
 		}
 		else
 		{
-			if (pOtherCollider->GetGameObject()->GetLayerType() == LayerType::Arrow)
+			if (pOtherCollider->GetGameObject()->GetLayerType() == LayerType::ArrowCol)
 			{
-				/*if (pOtherCollider->GetGameObject()->GetScript<Arrow>().GetIsBurn());
+				if (pOtherCollider->GetGameObject()->GetScript<ArrowScript>()->GetIsBurn());
 				{
 					isBurn = true;
 					if (mLampSequence == -1)
 					{
 						mLampSequence = 1;
 					}
-				}*/
+				}
 			}
 		}
 	}
