@@ -255,6 +255,11 @@
     <ClInclude Include="BowScript.h">
       <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClInclude>
+    <ClInclude Include="FireLamp.h" />
+    <ClInclude Include="JarDoor.h" />
+    <ClInclude Include="KeyDoor.h" />
+    <ClInclude Include="KeyPot.h" />
+    <ClInclude Include="Ladder.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -508,6 +513,11 @@
     <ClCompile Include="BowScript.cpp">
       <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClCompile>
+    <ClCompile Include="FireLamp.cpp" />
+    <ClCompile Include="JarDoor.cpp" />
+    <ClCompile Include="KeyDoor.cpp" />
+    <ClCompile Include="KeyPot.cpp" />
+    <ClCompile Include="Ladder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

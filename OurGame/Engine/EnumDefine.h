@@ -20,6 +20,8 @@ namespace hm
 		Grandma_Boss,
 		Monster,
 		Item,
+		Arrow,
+		Ladder,
 		Npc,
 		Effect,
 		Ground,

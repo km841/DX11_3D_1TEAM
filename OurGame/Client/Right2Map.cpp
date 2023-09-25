@@ -24,6 +24,7 @@
 #include "Monster.h"
 #include "UI.h"
 #include "FireLamp.h"
+#include "Ladder.h"
 
 /* Component */
 #include "Collider.h"
@@ -93,6 +94,23 @@ namespace hm
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 
+		InitObjectAdd();
+		InitCollidertAdd();
+	}
+
+	void Right2Map::Exit()
+	{
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Unknown);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Ground);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Monster);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::DecoObject);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::WallObject);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Player);
+	}
+
+
+	void Right2Map::InitObjectAdd()
+	{
 		// Ground
 		{
 			PhysicsInfo physicsInfo;
@@ -117,17 +135,17 @@ namespace hm
 
 		// Toy
 		{
-		/*	PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Static;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+			/*	PhysicsInfo physicsInfo;
+				physicsInfo.eActorType = ActorType::Static;
+				physicsInfo.eGeometryType = GeometryType::Box;
+				physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
-			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+				Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+				pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
 
-			SetGizmoTarget(pPlayer);
+				SetGizmoTarget(pPlayer);
 
-			AddGameObject(pPlayer);*/
+				AddGameObject(pPlayer);*/
 		}
 
 		// ÁÂÃø º®ÂÊ 2´Ü ¼±¹Ý
@@ -146,7 +164,7 @@ namespace hm
 			{
 				DecoObject* pMansionSpicePot = Factory::CreateObject<DecoObject>(Vec3(-12.4f + i * 2.6f, 3.2f, 16.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\MansionSpicePot.fbx");
 				pMansionSpicePot->GetTransform()->SetScale(Vec3(2.3f, 2.3f, 2.3f));
-				
+
 				AddGameObject(pMansionSpicePot);
 			}
 
@@ -163,7 +181,7 @@ namespace hm
 						DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-5.8f, 3.5f, 12.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\EmptyBox.fbx");
 						pEmptyBox->GetTransform()->SetScale(Vec3(3.5f, 3.5f, 3.5f));
 						pEmptyBox->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
-						
+
 						AddGameObject(pEmptyBox);
 					}
 
@@ -179,7 +197,7 @@ namespace hm
 						DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-5.8f, 3.5f, 8.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\EmptyBox.fbx");
 						pEmptyBox->GetTransform()->SetScale(Vec3(3.5f, 3.5f, 3.5f));
 						pEmptyBox->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
-						
+
 						AddGameObject(pEmptyBox);
 					}
 				}
@@ -241,7 +259,7 @@ namespace hm
 				{
 					DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(7.6f, 3.5f, -2.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\EmptyBox.fbx");
 					pEmptyBox->GetTransform()->SetScale(Vec3(3.5f, 3.5f, 3.5f));
-					
+
 					AddGameObject(pEmptyBox);
 				}
 
@@ -255,13 +273,33 @@ namespace hm
 
 			// »ç´Ù¸®
 			{
-				DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(5.f, 2.43f, -1.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Ladder.fbx");
-				pLadder->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
+				DecoObject* pLadderObj = Factory::CreateObject<DecoObject>(Vec3(5.f, 2.43f, -1.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Ladder.fbx");
+				pLadderObj->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
+				AddGameObject(pLadderObj);
 
-				//SetGizmoTarget(pLadder);
+				DecoObject* pEnterPoint = Factory::CreateObject<DecoObject>(Vec3(5.0f, 0.33f, -0.9f), L"Deferred", L"");
+				AddGameObject(pEnterPoint);
+				SetGizmoTarget(pEnterPoint);
+				
+				DecoObject* pExitPoint = Factory::CreateObject<DecoObject>(Vec3(5.0f, 6.13f, 1.3f), L"Deferred", L"");
+				AddGameObject(pExitPoint);
 
+				PhysicsInfo mEnterInfo;
+				mEnterInfo.eActorType = ActorType::Static;
+				mEnterInfo.eGeometryType = GeometryType::Box;
+				mEnterInfo.size = Vec3(0.95f, 1.9f, 0.45f);
+				GameObject* pEnterCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(5.0f, 1.0f, -0.8f), mEnterInfo, L"Deferred", L"",false, LayerType::Ladder);
+				AddGameObject(pEnterCol);
+
+				PhysicsInfo mExitInfo;
+				mExitInfo.eActorType = ActorType::Static;
+				mExitInfo.eGeometryType = GeometryType::Box;
+				mExitInfo.size = Vec3(0.95f, 1.9f, 0.45f);
+				GameObject* pExitCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(5.0f, 6.63f, -1.3f), mExitInfo, L"Deferred", L"",false,LayerType::Ladder);
+				AddGameObject(pExitCol);
+
+				yj::Ladder* pLadder = Factory::CreateObject<yj::Ladder>(Vec3(5.f, 2.43f, -1.1f), L"Deferred", L"",false, pEnterPoint,pExitCol,pEnterCol,pExitCol);
 				AddGameObject(pLadder);
-
 			}
 		}
 
@@ -270,7 +308,7 @@ namespace hm
 			DecoObject* pTableCloth = Factory::CreateObject<DecoObject>(Vec3(-5.6f, 5.3f, 11.9f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\tableCloth.fbx");
 			pTableCloth->GetTransform()->SetScale(Vec3(13.4f, 10.f, 12.4f));
 			pTableCloth->GetTransform()->SetRotation(Vec3(-180.f, 0.f, 180.f));
-			
+
 			//pKey->AddComponent(new RotateKeyScript);
 			AddGameObject(pTableCloth);
 		}
@@ -296,7 +334,7 @@ namespace hm
 		{
 			DecoObject* pChair = Factory::CreateObject<DecoObject>(Vec3(16.2f, 3.5f, 7.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Chair.fbx");
 
-			
+
 			pChair->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 			pChair->GetTransform()->SetRotation(Vec3(0.f, 18.f, 0.f));
 			AddGameObject(pChair);
@@ -327,7 +365,7 @@ namespace hm
 				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(14.f, 1.18f, 6.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\POT_HEAL_Generic.fbx");
 				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 				pPotHeal->GetTransform()->SetRotation(Vec3(0.f, 36.7f, 0.f));
-				
+
 				AddGameObject(pPotHeal);
 			}
 		}
@@ -354,7 +392,7 @@ namespace hm
 
 					DecoObject* pPlates = Factory::CreateObject<DecoObject>(Vec3(15.5f + j * -3.5f, 2.8f + i * 0.8f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Plates.fbx");
 					pPlates->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
-					
+
 					AddGameObject(pPlates);
 				}
 
@@ -413,7 +451,7 @@ namespace hm
 				//MansionPlantPot
 				DecoObject* pMansionPlantPot = Factory::CreateObject<DecoObject>(Vec3(20.1f, 8.1f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\MansionPlantPot.fbx");
 				pMansionPlantPot->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
-				
+
 				AddGameObject(pMansionPlantPot);
 			}
 
@@ -423,7 +461,7 @@ namespace hm
 				pLadder->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
 
 				AddGameObject(pLadder);
-				
+
 			}
 
 			// ¹Ù±ùÂÊ Ã¥ ½×¿©ÀÖ´Â °÷
@@ -431,20 +469,25 @@ namespace hm
 				DecoObject* pBookStack = Factory::CreateObject<DecoObject>(Vec3(23.5f, 3.5f, -15.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\BookStack.fbx");
 				pBookStack->GetTransform()->SetScale(Vec3(7.2f, 7.2f, 7.2f));
 				pBookStack->GetTransform()->SetRotation(AXIS_Y, 180.f);
-				
+
 
 				AddGameObject(pBookStack);
 			}
 
 			// È­·ÔºÒ
 			{
+				PhysicsInfo physicsInfo;
+				physicsInfo.eActorType = ActorType::Kinematic;
+				physicsInfo.eGeometryType = GeometryType::Box;
+				physicsInfo.size = Vec3(2.94f, 2.94f, 2.94f);
+
 
 				DecoObject* pLampUpper = Factory::CreateObject<DecoObject>(Vec3(-5.8f, 7.4f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
 
 				pLampUpper->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 				//pTwoTierFootAbs->GetTransform()->SetRotation(AXIS_Y, 180.f);
 				//pFirelamp->AddComponent(new PlacementScript);
-				pLampUpper->GetMeshRenderer()->SetSubsetRenderFlag(0,false);
+				pLampUpper->GetMeshRenderer()->SetSubsetRenderFlag(0, false);
 				AddGameObject(pLampUpper);
 
 
@@ -456,19 +499,37 @@ namespace hm
 				pLampBelow->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
 				AddGameObject(pLampBelow);
 
-				yj::FireLamp* pFireLamp = Factory::CreateObject<yj::FireLamp>(Vec3(-5.8f, 7.4f, -16.5f), L"Deferred", L"",false, pLampUpper, pLampBelow);
+				yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(-5.8f, 7.4f, -16.5f),physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow);
 				AddGameObject(pFireLamp);
-
 			}
 
 			// È­·ÔºÒ
 			{
-				DecoObject* pFirelamp = Factory::CreateObject<DecoObject>(Vec3(11.1f, 7.4f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+				PhysicsInfo physicsInfo;
+				physicsInfo.eActorType = ActorType::Kinematic;
+				physicsInfo.eGeometryType = GeometryType::Box;
+				physicsInfo.size = Vec3(2.94f, 2.94f, 2.94f);
 
-				pFirelamp->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+
+				DecoObject* pLampUpper = Factory::CreateObject<DecoObject>(Vec3(11.1f, 7.4f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+				pLampUpper->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 				//pTwoTierFootAbs->GetTransform()->SetRotation(AXIS_Y, 180.f);
+				//pFirelamp->AddComponent(new PlacementScript);
+				pLampUpper->GetMeshRenderer()->SetSubsetRenderFlag(0, false);
+				AddGameObject(pLampUpper);
 
-				AddGameObject(pFirelamp);
+
+				DecoObject* pLampBelow = Factory::CreateObject<DecoObject>(Vec3(11.1f, 7.4f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+				pLampBelow->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				//pTwoTierFootAbs->GetTransform()->SetRotation(AXIS_Y, 180.f);
+				//pFirelamp->AddComponent(new PlacementScript);
+				pLampBelow->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
+				AddGameObject(pLampBelow);
+
+				yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(11.1f, 7.4f, -16.5f), physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow);
+				AddGameObject(pFireLamp);
 			}
 		}
 
@@ -484,11 +545,32 @@ namespace hm
 
 			// È­·ÔºÒ
 			{
-				DecoObject* pFirelamp = Factory::CreateObject<DecoObject>(Vec3(-5.9f, 7.4f, -2.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
 
-				pFirelamp->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				PhysicsInfo physicsInfo;
+				physicsInfo.eActorType = ActorType::Kinematic;
+				physicsInfo.eGeometryType = GeometryType::Box;
+				physicsInfo.size = Vec3(2.94f, 2.94f, 2.94f);
+
+
+				DecoObject* pLampUpper = Factory::CreateObject<DecoObject>(Vec3(-5.9f, 7.4f, -2.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+				pLampUpper->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 				//pTwoTierFootAbs->GetTransform()->SetRotation(AXIS_Y, 180.f);
-				AddGameObject(pFirelamp);
+				//pFirelamp->AddComponent(new PlacementScript);
+				pLampUpper->GetMeshRenderer()->SetSubsetRenderFlag(0, false);
+				AddGameObject(pLampUpper);
+
+
+				DecoObject* pLampBelow = Factory::CreateObject<DecoObject>(Vec3(-5.9f, 7.4f, -2.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+				pLampBelow->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				//pTwoTierFootAbs->GetTransform()->SetRotation(AXIS_Y, 180.f);
+				//pFirelamp->AddComponent(new PlacementScript);
+				pLampBelow->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
+				AddGameObject(pLampBelow);
+
+				yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(-5.9f, 7.4f, -2.8f), physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow);
+				AddGameObject(pFireLamp);
 			}
 		}
 
@@ -632,19 +714,91 @@ namespace hm
 			pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 20, 0);
 			pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 20, 0);
 
-			//SetGizmoTarget(pChandelier);
 			AddGameObject(pChandelier);
 		}
 	}
 
-	void Right2Map::Exit()
+	void Right2Map::InitCollidertAdd()
 	{
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Unknown);
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Ground);
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Monster);
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::DecoObject);
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::WallObject);
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Player);
-	}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(35.57f, 11.28f, 3.7f);
 
+			DecoObject* pCol1 = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(3.5f,0.1f,16.3f), physicsInfo, L"Deferred", L"");
+
+			AddGameObject(pCol1);
+		}
+
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(3.78f, 11.28f, 23.27f);
+
+			DecoObject* pCol2= Factory::CreateObjectHasPhysical<DecoObject>(Vec3(21.7f,3.4f,6.5f), physicsInfo, L"Deferred", L"");
+
+			AddGameObject(pCol2);
+
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(20.88f, 11.28f, 3.35f);
+
+			DecoObject* pCol3 = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(13.7f, 0.0f, -2.7f), physicsInfo, L"Deferred", L"");
+
+			AddGameObject(pCol3);
+		}
+
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(11.68f, 0.341f, 3.35f);
+
+			DecoObject* pCol4 = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(14.9f, 6.8f, -2.7f), physicsInfo, L"Deferred", L"");
+			pCol4->GetTransform()->SetRotation(Vec3(0.0f,0.0f,201.0f));
+			AddGameObject(pCol4);
+		}
+
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(3.4f, 6.0f, 8.84f);
+
+			DecoObject* pCol5 = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(-5.7f, 2.7f, 10.2f), physicsInfo, L"Deferred", L"");
+			AddGameObject(pCol5);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(12.24f, 6.0f, 3.18f);
+
+			DecoObject* pCol6 = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(-10.1f, 2.7f, -16.3f), physicsInfo, L"Deferred", L"");
+			AddGameObject(pCol6);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(17.5f, 6.0f, 3.18f);
+
+			DecoObject* pCol7 = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(17.5f, 2.7f, -16.3f), physicsInfo, L"Deferred", L"");
+			AddGameObject(pCol7);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(3.78f, 6.41f, 3.43f);
+
+			DecoObject* pCol8 = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(-5.9f, 2.7f, -2.8f), physicsInfo, L"Deferred", L"");
+			AddGameObject(pCol8);
+		}
+	}
 }

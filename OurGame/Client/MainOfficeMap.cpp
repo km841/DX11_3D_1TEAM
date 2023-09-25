@@ -310,7 +310,6 @@ namespace yj
 
 #pragma region "laterWallList"
 
-
 		std::vector<GameObject*>laterWallList;
 
 		for (int i = 0; i < 2; i++)
@@ -330,8 +329,6 @@ namespace yj
 
 
 #pragma region "WallSlots"
-
-
 
 		std::vector<GameObject*>wallSlotList;
 

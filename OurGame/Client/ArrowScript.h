@@ -1,5 +1,6 @@
 #pragma once
-#include "C:\Users\sangy\source\repos\44Team_3D_DeathDoor\DX11_3D_1TEAM\OurGame\Engine\MonoBehavior.h"
+#include "MonoBehavior.h"
+
 class ArrowScript :
     public MonoBehavior
 {
