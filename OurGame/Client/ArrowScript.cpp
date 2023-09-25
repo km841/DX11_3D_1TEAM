@@ -50,6 +50,7 @@
 #include "SceneChangeEvent.h"
 ArrowScript::ArrowScript()
 {
+	timerObj.SetEndTime(0.3f);
 }
 
 void ArrowScript::Initialize()
@@ -66,12 +67,104 @@ void ArrowScript::FixedUpdate()
 
 	Transform* pTr = GetTransform(); // 화살 트랜스폼
 	GameObject* pObj = GetGameObject(); // 화살 오브젝트
+	RigidBody* pRb = GetRigidBody();
+	pRb->SetMaxVelocity(100.f);
 
+	Vec3 Pos = pPlyer_Tr->GetPosition(); //플레이어 Pos
+	Vec3 Rot = pTr->GetRotation(); // 화살 회전 Rot
 
+	timerObj.Update(); //발사후 나타내는 시간 확인용
+
+#pragma region 플레이어 방향에따른 화살 위치
+	if (ArrowAtkCheck == false) //화살이 공격상태가 아닐때
+	{ 
+		timerObj.Stop();
+
+		if (eDir == DirectionEvasion::BACKWARD) {
+			Pos.x -= 0.15f;
+			Pos.z -= 0.25;
+			Pos.y += 0.25f;
+			pTr->SetPosition(Pos);
+			pTr->SetRotation(Vec3(0.f, 180.f, 0.f));
+
+		}
+		if (eDir == DirectionEvasion::FORWARD) {
+			Pos.x += 0.15f;
+			Pos.z += 0.25;
+			Pos.y += 0.25f;
+			pTr->SetPosition(Pos);
+			pTr->SetRotation(Vec3(0.f, 0.f, 0.f));
+		}
+		if (eDir == DirectionEvasion::LEFT) {
+			Pos.x -= 0.25f;
+			Pos.z += 0.15f;
+			Pos.y += 0.25f;
+
+			pTr->SetPosition(Pos);
+			pTr->SetRotation(Vec3(0.f, 270.f, 0.f));
+		}
+		if (eDir == DirectionEvasion::RIGHT) {
+			Pos.x += 0.25f;
+			Pos.z -= 0.15f;
+			Pos.y += 0.25f;
+
+			pTr->SetPosition(Pos);
+			pTr->SetRotation(Vec3(0.f, 90.f, 0.f));
+		}
+
+		if (eDir == DirectionEvasion::TOPLEFT) {
+			Pos.x += 0.00f;
+			Pos.z += 0.30f;
+			Pos.y += 0.25f;
+
+			pTr->SetPosition(Pos);
+			pTr->SetRotation(Vec3(0.f, 315.f, 0.f));
+		}
+
+		if (eDir == DirectionEvasion::TOPRIGHT) {
+			Pos.x += 0.30f;
+			Pos.z -= 0.00f;
+			Pos.y += 0.25f;
+
+			pTr->SetPosition(Pos);
+			pTr->SetRotation(Vec3(0.f, 45.f, 0.f));
+		}
+
+		if (eDir == DirectionEvasion::BOTTOMLEFT) {
+			Pos.x -= 0.30f;
+			Pos.z -= 0.00f;
+			Pos.y += 0.25f;
+
+			pTr->SetPosition(Pos);
+			pTr->SetRotation(Vec3(0.f, 225.f, 0.f));
+		}
+
+		if (eDir == DirectionEvasion::BOTTOMRIGHT) {
+			Pos.x -= 0.00f;
+			Pos.z -= 0.30f;
+			Pos.y += 0.25f;
+
+			pTr->SetPosition(Pos);
+			pTr->SetRotation(Vec3(0.f, 135.f, 0.f));
+		}
+	}
+#pragma endregion
+
+	if (ArrowAtkCheck == true) //화살이 공격 상태일때
+	{
+		pRb->SetVelocity(DirPos * 40);
+		timerObj.Start();
+		if (timerObj.IsFinished() == true)
+		{
+			timerObj.Stop();
+			pObj->Disable();
+		}
+	}
 }
 
 void ArrowScript::SetPlayerState(PlayerState _eStateNum)
 {
+	mPlayerStateNum = _eStateNum;
 }
 
 Component* ArrowScript::Clone(GameObject* _pGameObject)
