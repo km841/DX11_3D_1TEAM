@@ -267,6 +267,15 @@
     </ClInclude>
     <ClInclude Include="CinematicCamMove.h">
       <Filter>소스 파일\Script</Filter>
+=======
+    <ClInclude Include="BowState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrowScript.h">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="BowScript.h">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -533,6 +542,15 @@
     </ClCompile>
     <ClCompile Include="CinematicCamMove.cpp">
       <Filter>소스 파일\Script</Filter>
+=======
+    <ClCompile Include="BowState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrowScript.cpp">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="BowScript.cpp">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

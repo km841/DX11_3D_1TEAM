@@ -247,6 +247,33 @@
     <ClInclude Include="AI.h">
       <Filter>Object\GameObject\Component\AI</Filter>
     </ClInclude>
+    <ClInclude Include="Navigation.h">
+      <Filter>Object\GameObject\Component\AI\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="NavMesh.h">
+      <Filter>Object\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="NavigationManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadBase.h">
+      <Filter>Object\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="NavigationThread.h">
+      <Filter>Object\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="NavAgent.h">
+      <Filter>Object\GameObject\Component\AI\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="NavSceneComponent.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadQueue.h">
+      <Filter>Object\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="SemaphoreSync.h">
+      <Filter>Object\Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EnginePch.cpp">
@@ -471,6 +498,33 @@
     <ClCompile Include="AI.cpp">
       <Filter>Object\GameObject\Component\AI</Filter>
     </ClCompile>
+    <ClCompile Include="Navigation.cpp">
+      <Filter>Object\GameObject\Component\AI\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="NavMesh.cpp">
+      <Filter>Object\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="NavigationManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadBase.cpp">
+      <Filter>Object\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="NavigationThread.cpp">
+      <Filter>Object\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="NavAgent.cpp">
+      <Filter>Object\GameObject\Component\AI\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="NavSceneComponent.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadQueue.cpp">
+      <Filter>Object\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="SemaphoreSync.cpp">
+      <Filter>Object\Thread</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -529,6 +583,12 @@
     </Filter>
     <Filter Include="Object\GameObject\Effect">
       <UniqueIdentifier>{66548ec0-bd97-4d33-9f06-3fbc4ea9dec6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\GameObject\Component\AI\Navigation">
+      <UniqueIdentifier>{85f6c5f4-e16c-4108-9149-6a9ba7143b5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Thread">
+      <UniqueIdentifier>{9128dbbd-d4b7-4c52-893a-52f5657824e4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

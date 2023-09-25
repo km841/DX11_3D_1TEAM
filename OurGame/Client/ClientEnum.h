@@ -20,6 +20,7 @@ enum class PlayerState
 	ClimingUpState,
 	ClimingDownState,
 	ClimingEndState,
+	BowState,
 
 	End
 };

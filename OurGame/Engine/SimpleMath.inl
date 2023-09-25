@@ -920,6 +920,20 @@ inline float Vector3::LengthSquared() const noexcept
     return XMVectorGetX(X);
 }
 
+inline float DirectX::SimpleMath::Vector3::Angle(const Vector3& V) const noexcept
+{
+    Vector3 v1 = *this;
+    Vector3 v2 = V;
+
+    v1.Normalize();
+    v2.Normalize();
+
+    float angle = v1.Dot(v2);
+    angle = acosf(angle);
+
+    return angle * 180.f / XM_PI;
+}
+
 inline float Vector3::Dot(const Vector3& V) const noexcept
 {
     using namespace DirectX;
@@ -984,6 +998,16 @@ inline void Vector3::Clamp(const Vector3& vmin, const Vector3& vmax, Vector3& re
     const XMVECTOR v3 = XMLoadFloat3(&vmax);
     const XMVECTOR X = XMVectorClamp(v1, v2, v3);
     XMStoreFloat3(&result, X);
+}
+
+inline XMVECTOR DirectX::SimpleMath::Vector3::Convert() const noexcept
+{
+    return XMLoadFloat3((XMFLOAT3*)this);
+}
+
+inline Vector3 DirectX::SimpleMath::Vector3::TransformCoord(const Matrix& m) const noexcept
+{
+    return Vector3(XMVector3TransformCoord(Convert(), m));
 }
 
 //------------------------------------------------------------------------------
@@ -2394,6 +2418,18 @@ inline Vector3 Matrix::ToEuler() const noexcept
     {
         return Vector3(cx, 0.f, atan2f(-_21, _11));
     }
+}
+
+inline void DirectX::SimpleMath::Matrix::Rotation(const Vector3& v) const noexcept
+{
+    Vector3 angles = Vector3(
+        v.x * 180.f / XM_PI,
+        v.y * 180.f / XM_PI,
+        v.z * 180.f / XM_PI
+    );
+
+    XMVECTOR qut = XMQuaternionRotationRollPitchYaw(angles.x, angles.y, angles.z);
+    XMMatrixRotationQuaternion(qut);
 }
 
 //------------------------------------------------------------------------------
