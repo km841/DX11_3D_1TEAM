@@ -12,7 +12,7 @@ public:
     virtual void Initialize() override;
     virtual void FixedUpdate() override;
 
-    void SetPlayerState(PlayerState _eStateNum); // ÇÃ·¹ÀÌ¾î »óÅÂ¸¦ °¡Á®¿À´Â ÇÔ¼ö
+    void SetPlayerState(PlayerState _eStateNum); // í”Œë ˆì´ì–´ ìƒíƒœë¥¼ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
     virtual Component* Clone(GameObject* _pGameObject);
 
 public:

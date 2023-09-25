@@ -30,12 +30,12 @@ namespace yj
 		}
 		if (!isBreak)
 		{
-				if (this->GetRigidBody()->GetCollider()->CheckIsCollisionObject(LayerType::Item))
-				{
-					pReceiver->GetScript<JarDoor>()->AddKey();
-					mBreakSequence = 0;
-					isBreak = true;
-				}
+			if (this->GetRigidBody()->GetCollider()->CheckIsCollisionObject(LayerType::Item))
+			{
+				pReceiver->GetScript<JarDoor>()->AddKey();
+				mBreakSequence = 0;
+				isBreak = true;
+			}
 		}
 		if (mBreakSequence > 0)
 		{
@@ -68,7 +68,6 @@ namespace yj
 	}
 	void KeyPot::Break()
 	{
-
 		//애니메이션 재생 후
 		//mBreakSequence = 0;
 	}

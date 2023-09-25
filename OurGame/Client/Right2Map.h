@@ -20,6 +20,14 @@ namespace hm
 
 		virtual void Enter();
 		virtual void Exit();
+
+	public:
+
+		void InitObjectAdd();
+		void InitCollidertAdd();
+
+	private:
+
 	};
 }
 

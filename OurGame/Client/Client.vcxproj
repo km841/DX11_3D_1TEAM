@@ -188,6 +188,7 @@
     <ClInclude Include="JarDoor.h" />
     <ClInclude Include="KeyDoor.h" />
     <ClInclude Include="KeyPot.h" />
+    <ClInclude Include="Ladder.h" />
     <ClInclude Include="LeftSecretFightMap.h" />
     <ClInclude Include="LeftSecretTrialMap.h" />
     <ClInclude Include="MagicAttackState.h" />
@@ -282,6 +283,7 @@
     <ClCompile Include="JarDoor.cpp" />
     <ClCompile Include="KeyDoor.cpp" />
     <ClCompile Include="KeyPot.cpp" />
+    <ClCompile Include="Ladder.cpp" />
     <ClCompile Include="LeftSecretFightMap.cpp" />
     <ClCompile Include="LeftSecretTrialMap.cpp" />
     <ClCompile Include="MagicAttackState.cpp" />
