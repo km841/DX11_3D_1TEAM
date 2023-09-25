@@ -26,6 +26,9 @@ namespace hm
 			PxFilterObjectAttributes _attributes1, PxFilterData _filterData1,
 			PxPairFlags& _pairFlags, const void* _pConstantBlock, PxU32 _constantBlockSize);
 
+		PxControllerManager* GetControllerManager() { return mpControllerMgr; }
+		class ContactCallback* GetCallback() { return mpCallback; }
+
 	private:
 		PxDefaultAllocator		mAllocCallback;
 		PxDefaultErrorCallback  mErrorCallback;

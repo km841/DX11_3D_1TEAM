@@ -20,6 +20,10 @@ namespace sy
 	public:
 		virtual void Enter();
 		virtual void Exit();
+
+	private:
+		PxCapsuleController* mpCharacterController;
+		PxControllerFilters filter;
 	};
 }
 

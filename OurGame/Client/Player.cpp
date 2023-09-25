@@ -388,11 +388,11 @@ void Player::OnCollisionExit(Collider* _pOtherCollider)
 
 void Player::OnTriggerEnter(Collider* _pOtherCollider)
 {
-	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
+	/*if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		GetRigidBody()->RemoveGravity();
 		GetRigidBody()->SetVelocity(Vec3::Zero);
-	}
+	}*/
 
 	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
@@ -409,10 +409,10 @@ void Player::OnTriggerStay(Collider* _pOtherCollider)
 
 void Player::OnTriggerExit(Collider* _pOtherCollider)
 {
-	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
+	/*if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		GetRigidBody()->ApplyGravity();
-	}
+	}*/
 }
 
 void Player::StateChange(PlayerState _eState)

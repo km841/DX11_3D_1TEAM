@@ -8,6 +8,7 @@
 #include "Mesh.h"
 #include "MeshRenderer.h"
 #include "Resources.h"
+#include "ContactCallback.h"
 
 namespace hm
 {
@@ -21,6 +22,7 @@ namespace hm
 		, mpShape(nullptr)
 		, mbIsActorInScene(false)
 		, mZeroAxisV{}
+		, mpCharacterController(nullptr)
 	{
 	}
 	RigidBody::~RigidBody()
@@ -37,16 +39,17 @@ namespace hm
 
 	void RigidBody::FinalUpdate()
 	{
-		if (true == mbAppliedGravity && 
-		   (false == mbAppliedPhysics || 
-			ActorType::Kinematic == mPhysicsInfo.eActorType))
+		if (true == mbAppliedGravity &&
+			(false == mbAppliedPhysics ||
+				ActorType::Kinematic == mPhysicsInfo.eActorType ||
+				ActorType::Character == mPhysicsInfo.eActorType))
 		{
 			AddGravity();
 		}
 
 		if (true == mbAppliedPhysics && ActorType::Static == mPhysicsInfo.eActorType)
 			return;
-		
+
 		else
 		{
 			GetTransform()->Move(mVelocity);
@@ -88,7 +91,7 @@ namespace hm
 			info.eActorType = mPhysicsInfo.eActorType;
 			info.eGeometryType = mPhysicsInfo.eGeometryType;
 			info.massProperties = mPhysicsInfo.massProperties;
-			
+
 			pRigidBody->SetPhysical(info);
 			_pGameObject->GetTransform()->SetPosition(GetTransform()->GetPosition());
 			_pGameObject->GetTransform()->SetRotation(GetTransform()->GetRotation());
@@ -111,7 +114,16 @@ namespace hm
 		CreateMaterial();
 		CreateGeometry();
 		CreateActor();
-		CreateShape();
+		if (ActorType::Character == _physicsInfo.eActorType)
+		{
+			PxShape* pShape;
+			mpCharacterController->getActor()->getShapes(&pShape, sizeof(pShape), 0);
+			mpShape = pShape;
+		}
+		else
+		{
+			CreateShape();
+		}
 
 		mbAppliedPhysics = true;
 		InitializeActor();
@@ -142,7 +154,7 @@ namespace hm
 		//_transform.p.z = -_transform.p.z;
 		AssertEx(mbAppliedPhysics, L"RigidBody::SetPhysicsTransform() - 물리가 들어가지 않은 오브젝트에 대한 SetPhysicsTransform 호출");
 		GetActor<PxRigidActor>()->setGlobalPose(_transform);
-		
+
 	}
 
 	void RigidBody::SetGeometrySize(const Vec3& _geomSize)
@@ -217,7 +229,7 @@ namespace hm
 				break;
 			}
 		}
-		
+
 		CheckMaxVelocity();
 	}
 
@@ -405,7 +417,7 @@ namespace hm
 	void RigidBody::CreateMeshGeometry()
 	{
 		TriangleMeshInfo info = GetMeshRenderer()->GetMesh()->GetTriangleMeshInfo();
-		
+
 		wstring name = GetMeshRenderer()->GetMesh()->GetName();
 		shared_ptr<Mesh> pMesh = GET_SINGLE(Resources)->CreateTriangleMesh(name + L"Col", info);
 		PxTriangleMesh* _pTriMesh = CreateTriangleMesh(info);
@@ -541,6 +553,10 @@ namespace hm
 			mpActor = PHYSICS->createRigidDynamic(PxTransform(GetTransform()->GetPosition()));
 			mpActor->is<PxRigidDynamic>()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
 			break;
+		case ActorType::Character:
+			mpCharacterController = CreateCharacterController();
+			mpActor = mpCharacterController->getActor();
+			break;
 		}
 
 		AssertEx(mpActor, L"RigidBody::CreateActor() - Actor 생성 실패");
@@ -580,9 +596,28 @@ namespace hm
 			ApplyGravity();
 			break;
 		case ActorType::Kinematic:
+		case ActorType::Character:
 			SetSimulationShapeFlag(false);
 			SetTriggerShapeFlag(true);
 			break;
 		}
+	}
+
+	PxCapsuleController* RigidBody::CreateCharacterController()
+	{
+		PxCapsuleControllerDesc desc;
+		desc.climbingMode = PxCapsuleClimbingMode::eEASY;
+		desc.height = 2.f;
+		desc.radius = 1.5f;
+		desc.slopeLimit = 1.f;
+		desc.stepOffset = 3.f;
+		desc.contactOffset = 0.1f;
+		desc.material = mpMaterial;
+		desc.behaviorCallback = gpEngine->GetPhysics()->GetCallback();
+		desc.reportCallback = gpEngine->GetPhysics()->GetCallback();
+
+		desc.isValid();
+
+		return static_cast<PxCapsuleController*>(gpEngine->GetPhysics()->GetControllerManager()->createController(desc));
 	}
 }

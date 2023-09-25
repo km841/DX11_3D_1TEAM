@@ -70,6 +70,8 @@ namespace hm
 		void AddForceAndTorque(const Vec3& _force);
 		void RemoveAxisSpeedAtUpdate(Axis _eAxis, bool _bFlag);
 
+		PxMaterial* GetMaterial() { return mpMaterial; }
+
 	private:
 		void CreateBoxGeometry();
 		void CreateCapsuleGeometry();
@@ -88,6 +90,11 @@ namespace hm
 		void InitializeActor();
 
 	private:
+		PxCapsuleController* CreateCharacterController();
+	public:
+		PxCapsuleController* GetCharacterController() { return mpCharacterController; }
+
+	private:
 		bool mbAppliedPhysics;
 		bool mbAppliedGravity;
 		bool mbIsActorInScene;
@@ -100,6 +107,8 @@ namespace hm
 		Vec3 mVelocity;
 		float mMaxVelocity;
 		bool mZeroAxisV[AXIS_MAX];
+
+		PxCapsuleController* mpCharacterController;
 	};
 }
 

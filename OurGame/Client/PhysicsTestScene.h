@@ -20,5 +20,14 @@ namespace jh
 
 		virtual void Enter();
 		virtual void Exit();
+
+	private:
+		void CreateCharacterController();
+
+		PxCapsuleController* mpCharacterController;
+
+		const PxFilterData* mFilterData;		// User-defined filter data for 'move' function
+		PxQueryFilterCallback* mFilterCallback;	// User-defined filter data for 'move' function
+		PxControllerFilterCallback* mCCTFilterCallback;	// User-defined filter data for 'move' function
     };
 }
