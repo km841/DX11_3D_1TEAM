@@ -74,8 +74,11 @@ void BowState::Enter()
 	GameObject* pObj01 = pPlayer->GetBow(); //활 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
 	pObj01->Enable();
 
-	GameObject* pObj02 = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
-	pObj02->Disable();
+	GameObject* pObj02 = pPlayer->GetArrow(); //화살 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
+	pObj02->Enable();
+
+	GameObject* pObj03 = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
+	pObj03->Disable();
 }
 
 void BowState::Exit()
@@ -85,8 +88,11 @@ void BowState::Exit()
 	GameObject* pObj01 = pPlayer->GetBow(); //활 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
 	pObj01->Disable();
 
-	GameObject* pObj02 = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
-	pObj02->Enable();
+	GameObject* pObj02 = pPlayer->GetArrow(); //화살 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
+	pObj02->Disable();
+
+	GameObject* pObj03 = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
+	pObj03->Enable();
 }
 
 void BowState::PlayAnimation()

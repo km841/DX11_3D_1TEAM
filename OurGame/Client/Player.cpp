@@ -201,7 +201,7 @@ Player::Player()
 		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(0.05f, 0.05f, 1.0f);
 
-		pArrow = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.f, 0.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Arrow.fbx", false, LayerType::PlayerCol);
+		pArrow = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.f, 0.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Arrow.fbx", false, LayerType::ArrowCol);
 		pArrow->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
 		pArrow->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 
@@ -210,6 +210,7 @@ Player::Player()
 		pArrow->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.f, 0.f, 0.f));
 		pArrow->GetMeshRenderer()->GetMaterial()->SetBloomFilter(Vec4(1.f, 0.f, 0.f, 0.f), 0);
 
+		pArrow->Disable();
 		//auto pFollowSc = pBow->AddComponent(new OwnerFollowScript(this));
 
 		pArrowSc = pArrow->AddComponent(new ArrowScript);

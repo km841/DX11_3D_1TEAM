@@ -71,31 +71,31 @@ void BowScript::FixedUpdate()
 	Vec3 Rot = pTr->GetRotation(); // È° È¸Àü Rot
 
 	if (eDir == DirectionEvasion::BACKWARD) {
-		Pos.x -= 0.15;
-		Pos.z -= 0.35;
+		Pos.x -= 0.10;
+		Pos.z -= 0.37;
 		Pos.y += 0.25f;
 		pTr->SetPosition(Pos);
 		pTr->SetRotation(Vec3(0.f, 270.f, 0.f));
 
 	}
 	if (eDir == DirectionEvasion::FORWARD) {
-		Pos.x += 0.15;
-		Pos.z += 0.35;
+		Pos.x += 0.10;
+		Pos.z += 0.37;
 		Pos.y += 0.25f;
 		pTr->SetPosition(Pos);
 		pTr->SetRotation(Vec3(0.f, 90.f, 0.f));
 	}
 	if (eDir == DirectionEvasion::LEFT) {
-		Pos.x -= 0.35;
-		Pos.z += 0.15;
+		Pos.x -= 0.37;
+		Pos.z += 0.10;
 		Pos.y += 0.25f;
 
 		pTr->SetPosition(Pos);
 		pTr->SetRotation(Vec3(0.f, 0.f, 0.f));
 	}
 	if (eDir == DirectionEvasion::RIGHT) {
-		Pos.x += 0.35;
-		Pos.z -= 0.15;
+		Pos.x += 0.37;
+		Pos.z -= 0.10;
 		Pos.y += 0.25f;
 
 		pTr->SetPosition(Pos);
@@ -103,8 +103,8 @@ void BowScript::FixedUpdate()
 	}
 
 	if (eDir == DirectionEvasion::TOPLEFT) {
-		Pos.x -= 0.15;
-		Pos.z += 0.35;
+		Pos.x -= 0.10;
+		Pos.z += 0.37;
 		Pos.y += 0.25f;
 
 		pTr->SetPosition(Pos);
@@ -112,8 +112,8 @@ void BowScript::FixedUpdate()
 	}
 
 	if (eDir == DirectionEvasion::TOPRIGHT) {
-		Pos.x += 0.35;
-		Pos.z += 0.15;
+		Pos.x += 0.37;
+		Pos.z += 0.10;
 		Pos.y += 0.25f;
 
 		pTr->SetPosition(Pos);
@@ -121,8 +121,8 @@ void BowScript::FixedUpdate()
 	}
 
 	if (eDir == DirectionEvasion::BOTTOMLEFT) {
-		Pos.x -= 0.35;
-		Pos.z -= 0.15;
+		Pos.x -= 0.37;
+		Pos.z -= 0.10;
 		Pos.y += 0.25f;
 
 		pTr->SetPosition(Pos);
@@ -130,8 +130,8 @@ void BowScript::FixedUpdate()
 	}
 
 	if (eDir == DirectionEvasion::BOTTOMRIGHT) {
-		Pos.x += 0.15;
-		Pos.z -= 0.35;
+		Pos.x += 0.10;
+		Pos.z -= 0.37;
 		Pos.y += 0.25f;
 
 		pTr->SetPosition(Pos);
