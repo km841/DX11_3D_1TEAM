@@ -94,6 +94,10 @@ namespace hm
 	{
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Item, LayerType::ArrowCol);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Ladder, LayerType::Player);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PlayerCol, LayerType::Monster);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::ArrowCol, LayerType::Monster);
 
 		InitObjectAdd();
 		InitCollidertAdd();
@@ -280,7 +284,7 @@ namespace hm
 
 				DecoObject* pEnterPoint = Factory::CreateObject<DecoObject>(Vec3(5.0f, 0.33f, -0.9f), L"Deferred", L"");
 				AddGameObject(pEnterPoint);
-				SetGizmoTarget(pEnterPoint);
+				//SetGizmoTarget(pEnterPoint);
 				
 				DecoObject* pExitPoint = Factory::CreateObject<DecoObject>(Vec3(5.0f, 6.13f, 1.3f), L"Deferred", L"");
 				AddGameObject(pExitPoint);
@@ -727,7 +731,7 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(35.57f, 11.28f, 3.7f);
 
-			DecoObject* pCol1 = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(3.5f,0.1f,16.3f), physicsInfo, L"Deferred", L"");
+			Ground* pCol1 = Factory::CreateObjectHasPhysical<Ground>(Vec3(3.5f,0.1f,16.3f), physicsInfo, L"Deferred", L"");
 
 			AddGameObject(pCol1);
 		}
@@ -738,7 +742,7 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(3.78f, 11.28f, 23.27f);
 
-			DecoObject* pCol2= Factory::CreateObjectHasPhysical<DecoObject>(Vec3(21.7f,3.4f,6.5f), physicsInfo, L"Deferred", L"");
+			Ground* pCol2= Factory::CreateObjectHasPhysical<Ground>(Vec3(21.7f,3.4f,6.5f), physicsInfo, L"Deferred", L"");
 
 			AddGameObject(pCol2);
 
@@ -749,7 +753,7 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(20.88f, 11.28f, 3.35f);
 
-			DecoObject* pCol3 = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(13.7f, 0.0f, -2.7f), physicsInfo, L"Deferred", L"");
+			Ground* pCol3 = Factory::CreateObjectHasPhysical<Ground>(Vec3(13.7f, 0.0f, -2.7f), physicsInfo, L"Deferred", L"");
 
 			AddGameObject(pCol3);
 		}
@@ -760,7 +764,7 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(11.68f, 0.341f, 3.35f);
 
-			DecoObject* pCol4 = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(14.9f, 6.8f, -2.7f), physicsInfo, L"Deferred", L"");
+			Ground* pCol4 = Factory::CreateObjectHasPhysical<Ground>(Vec3(14.9f, 6.8f, -2.7f), physicsInfo, L"Deferred", L"");
 			pCol4->GetTransform()->SetRotation(Vec3(0.0f,0.0f,201.0f));
 			AddGameObject(pCol4);
 		}
@@ -771,7 +775,7 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(3.4f, 6.0f, 8.84f);
 
-			DecoObject* pCol5 = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(-5.7f, 2.7f, 10.2f), physicsInfo, L"Deferred", L"");
+			Ground* pCol5 = Factory::CreateObjectHasPhysical<Ground>(Vec3(-5.7f, 2.7f, 10.2f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pCol5);
 		}
 		{
@@ -780,7 +784,7 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(12.24f, 6.0f, 3.18f);
 
-			DecoObject* pCol6 = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(-10.1f, 2.7f, -16.3f), physicsInfo, L"Deferred", L"");
+			Ground* pCol6 = Factory::CreateObjectHasPhysical<Ground>(Vec3(-10.1f, 2.7f, -16.3f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pCol6);
 		}
 		{
@@ -789,7 +793,7 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(17.5f, 6.0f, 3.18f);
 
-			DecoObject* pCol7 = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(17.5f, 2.7f, -16.3f), physicsInfo, L"Deferred", L"");
+			Ground* pCol7 = Factory::CreateObjectHasPhysical<Ground>(Vec3(17.5f, 2.7f, -16.3f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pCol7);
 		}
 		{
@@ -798,7 +802,7 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(3.78f, 6.41f, 3.43f);
 
-			DecoObject* pCol8 = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(-5.9f, 2.7f, -2.8f), physicsInfo, L"Deferred", L"");
+			Ground* pCol8 = Factory::CreateObjectHasPhysical<Ground>(Vec3(-5.9f, 2.7f, -2.8f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pCol8);
 		}
 
@@ -830,7 +834,7 @@ namespace hm
 			PhysicsInfo info = {};
 			info.eActorType = ActorType::Kinematic;
 			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(3.5f, 3.5f, 3.0f);
+			info.size = Vec3(0.5f, 0.5f, 1.0f);
 
 			Bat* p_E_BAT_White = Factory::CreateObjectHasPhysical<Bat>(Vec3(-9.f, 5.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
 			p_E_BAT_White->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));

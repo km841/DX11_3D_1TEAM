@@ -48,7 +48,7 @@ namespace yj
 
 	void FireLamp::OnCollisionEnter(Collider* pOtherCollider)
 	{
-		if (pOtherCollider->GetGameObject()->GetLayerType() == LayerType::ArrowCols)
+		if (pOtherCollider->GetGameObject()->GetLayerType() == LayerType::ArrowCol)
 		{
 
 		}

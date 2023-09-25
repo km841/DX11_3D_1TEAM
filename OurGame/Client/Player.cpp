@@ -25,6 +25,7 @@
 #include "Npc.h"
 #include "Monster.h"
 #include "SwordHeavyEffect.h"
+#include "Ladder.h"
 
 /* Component */
 #include "Collider.h"
@@ -197,7 +198,7 @@ Player::Player()
 	//화살 오브젝트 - Arrow
 	{
 		PhysicsInfo physicsInfo;
-		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eActorType = ActorType::Dynamic;
 		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(0.05f, 0.05f, 0.7f);
 
@@ -373,6 +374,7 @@ void Player::Destroy()
 void Player::OnCollisionEnter(Collider* _pOtherCollider)
 {
 	
+	
 }
 
 void Player::OnCollisionStay(Collider* _pOtherCollider)
@@ -397,7 +399,18 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 		
 		StateChange(PlayerState::HitStartState);
 	}
+
+	if (LayerType::Ladder == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		lastLadderName = _pOtherCollider->GetGameObject()->GetName();
+		isClimb = true;
+
+		pLadderEnter = static_cast<yj::Ladder*>(_pOtherCollider->GetGameObject())->GetEnterPoint();
+		pLadderExit = static_cast<yj::Ladder*>(_pOtherCollider->GetGameObject())->GetExitPoint();
+	}
+
 	
+
 }
 
 void Player::OnTriggerStay(Collider* _pOtherCollider)
@@ -411,6 +424,12 @@ void Player::OnTriggerExit(Collider* _pOtherCollider)
 	{
 		GetRigidBody()->ApplyGravity();
 	}
+
+	if (LayerType::Ladder == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		isClimb = false;
+	}
+
 }
 
 void Player::StateChange(PlayerState _eState)
