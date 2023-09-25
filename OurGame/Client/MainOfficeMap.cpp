@@ -103,13 +103,14 @@ namespace yj
 
 		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1,
 			nullptr , std::bind(&MainOfficeMap::InitBusStart, this));
-
-		
 	}
 	
 	void MainOfficeMap::Exit()
 	{
-
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Unknown);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Ground);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::DecoObject);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::WallObject);   
 	}
 
 
@@ -133,6 +134,8 @@ namespace yj
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
 			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 			AddGameObject(pPlayer);
+			
+			PLAYER->SetDontDestroyObject(L"Player");
 		}
 
 		{
@@ -177,8 +180,8 @@ namespace yj
 		}
 
 		{
-			Ground* pColliders = Factory::CreateObject<Ground>(Vec3(9.5f, 3.0f, -5.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Colliders.fbx");
-			pColliders->GetTransform()->SetScale(Vec3(35.f, 35.f, 35.f));
+			/*Ground* pColliders = Factory::CreateObject<Ground>(Vec3(9.5f, 3.0f, -5.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Colliders.fbx");
+			pColliders->GetTransform()->SetScale(Vec3(35.f, 35.f, 35.f));*/
 
 			//AddGameObject(pColliders);
 		}
@@ -201,14 +204,11 @@ namespace yj
 			pBusStop->GetTransform()->SetScale(Vec3(25.0f, 25.0f, 25.0f));
 			pBusStop->GetTransform()->SetRotation(Vec3(0.0f, -160.0f, 0.0f));
 			pBusStop->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.04f, 0.04f));
-
-
+			//x65444eedccdew
 			AddGameObject(pBusStop);
 		}
 
 #pragma region 사무실 책상 리스트
-
-
 		{
 			std::vector<GameObject*> deskList;
 			for (int i = 0; i < 9; i++)
@@ -634,14 +634,6 @@ namespace yj
 		}
 
 
-		{
-			DecoObject* pIslandRight = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\IslandRight.fbx");
-			AddGameObject(pIslandRight);
-			pIslandRight->GetTransform()->SetPosition(Vec3(-19.2f, -12.1f, -31.6f));
-			pIslandRight->GetTransform()->SetRotation(Vec3(0.0f, -140.0f, 0.0f));
-			pIslandRight->GetTransform()->SetScale(Vec3(41.0f, 41.0f, 41.0f));
-		}
-
 		//5개 정도?
 		{
 			/*DecoObject* pShortcutDoorStatic = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\ShortcutDoorStatic.fbx");
@@ -651,62 +643,50 @@ namespace yj
 			pShortcutDoorStatic->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));*/
 		}
 
-		PhysicsInfo physicsInfo;
-		physicsInfo.eActorType = ActorType::Static;
-		physicsInfo.eGeometryType = GeometryType::Box;
-		physicsInfo.size = Vec3::One;
-
-		DecoObject* pColobject = Factory::CreateObjectHasPhysical<DecoObject>(Vec3::Zero, physicsInfo, L"Deferred", L"");
-
-		AddGameObject(pColobject);
-
-		{
-			SoulDoor* pSoulDoor = Factory::CreateObjectHasPhysical<SoulDoor>(Vec3::Zero, physicsInfo, L"Deferred", L"", false ,pColobject, pColobject);
-		}
-
 
 #pragma endregion
+
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Static;
 			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3::One;
+			physicsInfo.size = Vec3(37.08f, 0.5f, 30.1f);
 
-			TeleportZone* pTeleportZone = Factory::CreateObjectHasPhysical<TeleportZone>(Vec3(0, 0, 0), physicsInfo, L"Deferred", L"", false, MapType::EntranceHallMap);
-			AddGameObject(pTeleportZone);
-			pTeleportZone->GetTransform()->SetPosition(Vec3(-19.2f, -12.1f, -31.6f));
-			pTeleportZone->GetTransform()->SetRotation(Vec3(0.0f, -140.0f, 0.0f));
-			pTeleportZone->GetTransform()->SetScale(Vec3(41.0f, 41.0f, 41.0f));
-			//SetGizmoTarget(pTeleportZone);
+			Ground* pHallCollider = Factory::CreateObjectHasPhysical<Ground>(Vec3(5.6f, -9.2f, -1.8f), physicsInfo, L"Deferred", L"");
+			AddGameObject(pHallCollider);
+			SetGizmoTarget(pHallCollider);
 		}
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 
 #pragma region SoulDoor
 		{
-
-			
 			//LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
-
+		
 			DecoObject* pDoor = Factory::CreateObject<DecoObject>(Vec3(19.1f, 6.7f, -12.8f), L"Deferred", LARGE_RESOURCE(L"ShortcutDoor\\ShortcutDoor_Fix.fbx"));
 			
-			pDoor->GetTransform()->SetPosition(Vec3(19.1f, 6.7f, -12.8f));
+			pDoor->GetTransform()->SetPosition(Vec3(19.1f, 7.7f, -12.8f));
 			pDoor->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
 			pDoor->GetTransform()->SetScale(Vec3(7.82f, 7.82f, 7.82f));
 
-			DecoObject* pBackUv = Factory::CreateObject<DecoObject>(Vec3(19.8f, 5.7f, -15.2f), L"Deferred", LARGE_RESOURCE(L"DoorBackGlow\\DoorBackGlow.fbx"));
-			pBackUv->GetTransform()->SetPosition(Vec3(19.8f, 5.7f, -15.2f));
+			DecoObject* pBackUv = Factory::CreateObject<DecoObject>(Vec3(19.8f, 4.8f, -15.2f), L"Deferred", LARGE_RESOURCE(L"DoorBackGlow\\DoorBackGlow.fbx"));
+			pBackUv->GetTransform()->SetPosition(Vec3(19.8f, 4.7f, -15.2f));
 			pBackUv->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
 			pBackUv->GetTransform()->SetScale(Vec3(5.48f, 5.48f, 5.48f));
 
+			PhysicsInfo mEntrancePInfo;
+			mEntrancePInfo.eActorType = ActorType::Static;
+			mEntrancePInfo.eGeometryType = GeometryType::Box;
+			mEntrancePInfo.size = Vec3(3.33f, 5.7f, 2.65f);
 
-			SoulDoor* pSoulDoor = Factory::CreateObject<SoulDoor>(Vec3(0, 0, 0), L"Deferred", L"", false , pDoor, pBackUv);
+			DecoObject* pEntranceColObj = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(19.1f, 4.9f, -15.2f), mEntrancePInfo, L"Deferred", L"");
+
+			SoulDoor* pSoulDoor = Factory::CreateObject<SoulDoor>(Vec3(0, 0, 0), L"Deferred", L"", false , pDoor, pBackUv, pEntranceColObj,MapType::EntranceHallMap);
 			
 			AddGameObject(pDoor);
 			AddGameObject(pBackUv);
-			//SetGizmoTarget(pDoor);
+			AddGameObject(pEntranceColObj);
 			AddGameObject(pSoulDoor);
-
 		}
 #pragma endregion
 

@@ -1,5 +1,10 @@
 #pragma once
 #include "Map.h"
+
+#include "DecoObject.h"
+#include "KeyPot.h"
+
+
 class EntranceHallMap :
     public Map
 {
@@ -17,5 +22,16 @@ public:
 
 	virtual void Enter();
 	virtual void Exit();
+
+public:
+
+		void InitObjectAdd();
+		void InitColliderAdd();
+
+private:
+	DecoObject* pJarLDoor;
+	DecoObject* pJarRDoor;
+	yj::KeyPot* pPot1;
+	yj::KeyPot* pPot2;
 };
 

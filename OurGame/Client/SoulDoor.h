@@ -9,54 +9,67 @@ namespace yj
 	{
 	public:
 
-		SoulDoor(GameObject* _frameObj,GameObject* _doorObj);
+		SoulDoor(GameObject* _frameObj,GameObject* _doorObj ,GameObject* _EntranceCol, MapType _MapType);
 		virtual ~SoulDoor();
 
 		virtual void Initialize();
 		virtual void Update();
-		void Drop();
+		virtual void FixedUpdate();
+		
 
+	public:
+
+		void Drop();
+		void Open();
+
+		bool GetIsMove() { return isMove; }
+		void SetMove() { state = DoorMoveUp;	mFlowSpeed = 3.0f; isMove = true; }
+		bool GetIsRot() { return isRot; }
+		void SetRot() { isRot = true; }
+		void ChangeScene();
 
 	public:
 
 		enum State
 		{
 			Standby = 1,
-			Apear,
-			MoveUp,
-			MoveDown,
-			CloseStandby,
-			Open,
+			DoorApear,
+			DoorMoveUp,
+			DoorMoveDown,
+			DoorCloseStandby,
+			DoorOpen,
 			End
 		};
 		State state;
 
-		bool GetIsMove() { return isMove; }
-		void SetMove() {state = MoveUp;	mCurrSpeed = 3.0f;isMove = true; }
+	
 
 	private:
 
-		bool isMove;
-
+		GameObject* pDoorObj;
+		GameObject* pBackUVObj;
+		GameObject* pEntranceColObj;
+		
 		Vec3 mApearPos;
 		Vec3 mBargePos;
 
-		float mCurrSpeed;
-		float mCurrAddSpeed = 0.0f;
-		float mInitAddSpeed;
-		float mDropSpeed;
-		float mLimitSpeed;
-		float mLimitDropSpeed;                                                 
+		MapType mMapType;
 
-		GameObject* pFrame;
-		GameObject* pDoor;
-		
+		float mFlowSpeed;
+		float mDropSpeed;
+		float mLimitDropSpeed;                                                 
+		float mRotSpeed;
+
+		bool isMove;
+		bool isRot;
+
 		float mDeceleration;
 
 		float mUpLimit;
 		float mDownLimit;
+		float mRotLimit;
 
+		int mOpenSequnce = -1;
 		int mSequence;
-
 	};
 }

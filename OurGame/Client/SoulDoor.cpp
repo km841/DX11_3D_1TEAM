@@ -1,23 +1,33 @@
 #include "pch.h"
 #include "SoulDoor.h"
 
+#include "RenderManager.h"
+#include "EventManager.h"
+
 #include "Transform.h"
+#include "Rigidbody.h"
+#include "Collider.h"
+#include "MeshRenderer.h"
+#include "Material.h"
 
 #include "Input.h"
 #include "Timer.h"
+
 #include "PaperBurnScript.h"
 
 namespace yj
 {
-	SoulDoor::SoulDoor(GameObject* _frameObj, GameObject* _doorObj)
+	SoulDoor::SoulDoor(GameObject* _DoorObj, GameObject* _BackUVObj,GameObject* _EntranceCol,MapType _MapType)
 		:GameObject(LayerType::DecoObject),
-		pFrame(_frameObj),
-		pDoor(_doorObj),
+		pDoorObj(_DoorObj),
+		pBackUVObj(_BackUVObj),
+		pEntranceColObj(_EntranceCol),
 		state(Standby),
 		mDeceleration(3.0f),
 		isMove(false),
 		mDropSpeed(30.0f),
-		mDownLimit(5.1f)
+		mDownLimit(5.1f),
+		mMapType(_MapType)
 	{
 		
 	}
@@ -28,53 +38,94 @@ namespace yj
 	
 	void SoulDoor::Initialize()
 	{
-		pFrame->AddComponent<PaperBurnScript>();
+		pDoorObj->AddComponent<PaperBurnScript>();
+		pEntranceColObj->SetName(L"SoulDoorCollider");
+		pBackUVObj->Disable();
+		//pEntranceColObj->GetRigidBody()->GetCollider()->OnTriggerEnter (true);
 	}
 
 	void SoulDoor::Update()
 	{
-
 		if (IS_DOWN(KeyType::D))
 		{
-			pFrame->GetScript<PaperBurnScript>()->SetReverse(true);
-			pFrame->GetScript<PaperBurnScript>()->SetPaperBurn();
-			pFrame->GetScript<PaperBurnScript>()->SetFinishedCallback(std::bind(&SoulDoor::SetMove,this));
+			pDoorObj->GetScript<PaperBurnScript>()->SetReverse(true);
+			pDoorObj->GetScript<PaperBurnScript>()->SetPaperBurn();
+			pDoorObj->GetScript<PaperBurnScript>()->SetFinishedCallback(std::bind(&SoulDoor::SetMove,this));
+		}
+		if (IS_DOWN(KeyType::F))
+		{
+			pDoorObj->GetRigidBody()->GetCollider()->CheckIsCollisionObject(LayerType::Player);
 		}
 
+		if (pEntranceColObj->GetRigidBody()->GetCollider()->CheckIsCollisionObject(LayerType::Player))
+		{
+			if(IS_DOWN(KeyType::E))
+			{
+				mOpenSequnce = 1;
+			}
+		}
+	}
+	void SoulDoor::FixedUpdate()
+	{
 		if (GetIsMove())
 		{
 			Drop();
 		}
+		if (mOpenSequnce >= 1)
+		{
+			Open();
+		}
 	}
 	void SoulDoor::Drop()
 	{
-		Vec3 mFramePos = pFrame->GetTransform()->GetPosition();
+		Vec3 mFramePos = pDoorObj->GetTransform()->GetPosition();
 		Vec3 mFixedPos;
 		switch (state)
 		{
-		case MoveUp:
-			mFixedPos = Vec3(mFramePos.x, mFramePos.y + mCurrSpeed * DELTA_TIME, mFramePos.z);
-			mCurrSpeed = mCurrSpeed - mDeceleration * DELTA_TIME;
-			pFrame->GetTransform()->SetPosition(mFixedPos);
+		case DoorMoveUp:
+			mFixedPos = Vec3(mFramePos.x, mFramePos.y + mFlowSpeed * DELTA_TIME, mFramePos.z);
+			mFlowSpeed = mFlowSpeed - mDeceleration * DELTA_TIME;
+			pDoorObj->GetTransform()->SetPosition(mFixedPos);
 
-			if (mCurrSpeed <= 0.0f)
+			if (mFlowSpeed <= 0.0f)
 			{
-				mCurrSpeed = mInitAddSpeed;
-				state = MoveDown;
+				mFlowSpeed = 0.0f;
+				state = DoorMoveDown;
 			}
 			break;
-		case MoveDown:
+		case DoorMoveDown:
 			mFixedPos = Vec3(mFramePos.x, mFramePos.y - mDropSpeed * DELTA_TIME, mFramePos.z);
-			pFrame->GetTransform()->SetPosition(mFixedPos);
+			pDoorObj->GetTransform()->SetPosition(mFixedPos);
 			if (mFixedPos.y <= mDownLimit)
 			{
-				pFrame->GetTransform()->SetPosition(mFixedPos);
+				pDoorObj->GetTransform()->SetPosition(mFixedPos);
 				isMove = false;
-				state = CloseStandby;
+				state = DoorCloseStandby;
 			}
 			break;
 		}
-		pFrame->GetTransform()->SetPosition(mFixedPos);
+		pDoorObj->GetTransform()->SetPosition(mFixedPos);
 		//내가 원한곳 y
+	}
+	void SoulDoor::Open()
+	{
+		pBackUVObj->Enable();
+		pBackUVObj->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		pBackUVObj->GetMeshRenderer()->GetMaterial()->SetBloom(true);
+		Vec3 mFrameRot = pDoorObj->GetTransform()->GetRotation();
+
+		pDoorObj->GetTransform()->SetRotation(Vec3(mFrameRot.x, mFrameRot.y - 20 * DELTA_TIME , mFrameRot.z));
+		if (mFrameRot.y <= 160)
+		{
+			pDoorObj->GetTransform()->SetRotation(Vec3(mFrameRot.x, 160.0f, mFrameRot.z));
+			mOpenSequnce = 0;
+
+			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 1,
+				nullptr, std::bind(&SoulDoor::ChangeScene, this));
+		}
+	}
+	void SoulDoor::ChangeScene()
+	{
+		GET_SINGLE(EventManager)->PushSceneChangeEvent(mMapType);
 	}
 }	 

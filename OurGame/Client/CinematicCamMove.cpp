@@ -38,19 +38,14 @@ namespace yj
 
 	void CinematicCamMove::Update()
 	{
-		if (GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetCamera() == nullptr)
+		if (GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetCamera() == nullptr || PLAYER->GetPlayer() == nullptr)
 		{
 			return;
 		}
 
 		this->GetTransform()->SetPosition(GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetCamera()->GetTransform()->GetPosition());
-		//평소에는 플레이어의 어디 위치에서 따라 오게
 			
-		if (PLAYER->GetPlayer() == nullptr)
-		{
-			return;
-		}
-		if (!isEventOn)
+		if (!isEventOn || isPlayerFollow)
 		{ 
 			Vec3 mPlayerPos = PLAYER->GetTransform()->GetPosition();
 			Transform* mCamTr = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetCamera()->GetTransform();
@@ -113,6 +108,8 @@ namespace yj
 
 	void CinematicCamMove::RotateTo()
 	{
+		//Vec3 angle = Vec3::Cross();
+
 	}
 
 
