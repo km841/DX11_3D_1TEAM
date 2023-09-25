@@ -413,6 +413,17 @@ namespace hm
 		mPhysicsInfo.pGeometries = new Geometries(mPhysicsInfo.eGeometryType, _pTriMesh, mPhysicsInfo.size * 2.f);
 	}
 
+	void RigidBody::CreateConvexGeometry()
+	{
+		TriangleMeshInfo info = GetMeshRenderer()->GetMesh()->GetTriangleMeshInfo();
+
+		wstring name = GetMeshRenderer()->GetMesh()->GetName();
+		shared_ptr<Mesh> pMesh = GET_SINGLE(Resources)->CreateTriangleMesh(name + L"Col", info);
+		PxConvexMesh* _pConvexMesh = CreateConvexMesh(info);
+
+		mPhysicsInfo.pGeometries = new Geometries(mPhysicsInfo.eGeometryType, _pConvexMesh, mPhysicsInfo.size * 2.f);
+	}
+
 	PxTriangleMesh* RigidBody::CreateTriangleMesh(const TriangleMeshInfo& _meshInfo)
 	{
 		const std::vector<PxVec3>& vertices = _meshInfo.vertices;
@@ -432,6 +443,24 @@ namespace hm
 		AssertEx(bRes, L"RigidBody::CreateTriangleMesh() - 메쉬콜라이더 생성 실패");
 
 		PxTriangleMesh* _pMesh = gpEngine->GetPhysics()->GetCooking()->createTriangleMesh(meshDesc, PHYSICS->getPhysicsInsertionCallback());
+		return _pMesh;
+	}
+
+	PxConvexMesh* RigidBody::CreateConvexMesh(const TriangleMeshInfo& _meshInfo)
+	{
+		const std::vector<PxVec3>& vertices = _meshInfo.vertices;
+
+		PxConvexMeshDesc meshDesc;
+		meshDesc.points.count = static_cast<PxU32>(vertices.size());
+		meshDesc.points.stride = sizeof(PxVec3);
+		meshDesc.points.data = &vertices[0];
+		meshDesc.flags = PxConvexFlag::eCOMPUTE_CONVEX;
+
+		PxDefaultMemoryOutputStream stream;
+		bool bRes = gpEngine->GetPhysics()->GetCooking()->cookConvexMesh(meshDesc, stream);
+		AssertEx(bRes, L"RigidBody::CreateTriangleMesh() - 메쉬콜라이더 생성 실패");
+
+		PxConvexMesh* _pMesh = gpEngine->GetPhysics()->GetCooking()->createConvexMesh(meshDesc, PHYSICS->getPhysicsInsertionCallback());
 		return _pMesh;
 	}
 
@@ -459,6 +488,10 @@ namespace hm
 		case GeometryType::Mesh:
 			CreateMeshGeometry();
 			break;
+
+		case GeometryType::Convex:
+			CreateConvexGeometry();
+			break;
 		}
 
 		AssertEx(mPhysicsInfo.pGeometries, L"RigidBody::CreateGeometry() - Geometry 생성 실패");
@@ -482,6 +515,10 @@ namespace hm
 			break;
 		case GeometryType::Mesh:
 			mpShape = PxRigidActorExt::createExclusiveShape(*mpActor->is<PxRigidActor>(), mPhysicsInfo.pGeometries->triangleGeom, *mpMaterial);
+			break;
+		case GeometryType::Convex:
+			mpShape = PxRigidActorExt::createExclusiveShape(*mpActor->is<PxRigidActor>(), mPhysicsInfo.pGeometries->convexGeom, *mpMaterial);
+			break;
 		}
 
 		AssertEx(mpShape, L"RigidBody::CreateShape() - Shape 생성 실패");

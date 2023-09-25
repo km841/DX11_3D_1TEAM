@@ -184,6 +184,7 @@ namespace hm
 		Capsule,
 		Plane,
 		Mesh,
+		Convex,
 	};
 
 	enum class ModelType

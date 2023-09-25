@@ -76,7 +76,9 @@ namespace hm
 		void CreatePlaneGeometry();
 		void CreateSphereGeometry();
 		void CreateMeshGeometry();
+		void CreateConvexGeometry();
 		PxTriangleMesh* CreateTriangleMesh(const struct TriangleMeshInfo& _meshInfo);
+		PxConvexMesh* CreateConvexMesh(const struct TriangleMeshInfo& _meshInfo);
 
 	private:
 		void CreateGeometry();
