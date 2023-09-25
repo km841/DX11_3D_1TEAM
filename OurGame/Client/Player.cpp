@@ -176,7 +176,7 @@ Player::Player()
 	{
 
 		pBow = Factory::CreateObject<GameObject>(Vec3(0.f, 0.f, 0.f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Bow.fbx", false, LayerType::Item);
-		pBow->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+		pBow->GetTransform()->SetScale(Vec3(2.f, 1.5f, 2.f));
 		pBow->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 
 		pBow->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
@@ -197,23 +197,26 @@ Player::Player()
 	//화살 오브젝트 - Arrow
 	{
 		PhysicsInfo physicsInfo;
-		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eActorType = ActorType::Kinematic;
 		physicsInfo.eGeometryType = GeometryType::Box;
-		physicsInfo.size = Vec3(0.05f, 0.05f, 1.0f);
+		physicsInfo.size = Vec3(0.05f, 0.05f, 0.7f);
 
-		pArrow = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.f, 0.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Arrow.fbx", false, LayerType::PlayerCol);
-		pArrow->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+		pArrow = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.f, 0.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Arrow.fbx", false, LayerType::ArrowCol);
+		pArrow->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 0.8f));
 		pArrow->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 
 		pArrow->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
-		pArrow->GetMeshRenderer()->GetMaterial()->SetBloomPower(2.f, 0);
+		pArrow->GetMeshRenderer()->GetMaterial()->SetBloomPower(3.f, 0);
 		pArrow->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.f, 0.f, 0.f));
 		pArrow->GetMeshRenderer()->GetMaterial()->SetBloomFilter(Vec4(1.f, 0.f, 0.f, 0.f), 0);
 
+		pArrow->Disable();
 		//auto pFollowSc = pBow->AddComponent(new OwnerFollowScript(this));
 
 		pArrowSc = pArrow->AddComponent(new ArrowScript);
 
+		pArrow->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+		pArrow->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 		//gpEngine->GetTool()->UseGizmo();
 		//gpEngine->GetTool()->SetGameObject(pArrow);
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pArrow);
@@ -369,11 +372,7 @@ void Player::Destroy()
 
 void Player::OnCollisionEnter(Collider* _pOtherCollider)
 {
-	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
-	{
-		//작동을 안하네
-		StateChange(PlayerState::HitStartState);
-	}
+	
 }
 
 void Player::OnCollisionStay(Collider* _pOtherCollider)
@@ -395,7 +394,7 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 
 	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		//작동을 안하네
+		
 		StateChange(PlayerState::HitStartState);
 	}
 	
@@ -403,7 +402,7 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 
 void Player::OnTriggerStay(Collider* _pOtherCollider)
 {
-	int a = 0;
+
 }
 
 void Player::OnTriggerExit(Collider* _pOtherCollider)

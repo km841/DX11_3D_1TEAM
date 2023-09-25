@@ -220,6 +220,7 @@ void Bat::SetBehaviorTree()
 
 				Vec3 dir = playerPos - myPos;
 				dir.Normalize();
+				dir.y = 0;
 				// 몬스터의 이동속도가 들어가야 함
 				// 방향을 변경해주는 Task도 필요
 				GetRigidBody()->SetVelocity(dir * mSpeed);
@@ -434,6 +435,7 @@ void Bat::Destroy()
 
 void Bat::OnCollisionEnter(Collider* _pOtherCollider)
 {
+	int a = 0;
 	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		GetRigidBody()->RemoveGravity();
@@ -463,7 +465,8 @@ void Bat::OnTriggerEnter(Collider* _pOtherCollider)
 		GetRigidBody()->SetVelocity(Vec3::Zero);
 	}
 
-	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType())
+	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
+		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		TakeDamage(attackDamage);
 		float hp = mHP;

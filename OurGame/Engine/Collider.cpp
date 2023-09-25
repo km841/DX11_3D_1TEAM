@@ -40,6 +40,7 @@ namespace hm
 			mpMesh = GET_SINGLE(Resources)->CreateCapsuleMesh(geomSize.x / 2.f, geomSize.y);
 		}
 		break;
+		case GeometryType::Convex:
 		case GeometryType::Mesh:
 		{
 			wstring name = GetMeshRenderer()->GetMesh()->GetName();

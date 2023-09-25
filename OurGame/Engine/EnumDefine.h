@@ -17,7 +17,8 @@ namespace hm
 		Unknown,
 		Player,
 		PlayerCol,
-		Grandma_Boss,
+		ArrowCol,
+		Grandma_Boss,  //이거 더미 목록
 		Monster,
 		Item,
 		Arrow,
@@ -185,6 +186,7 @@ namespace hm
 		Capsule,
 		Plane,
 		Mesh,
+		Convex,
 	};
 
 	enum class ModelType
