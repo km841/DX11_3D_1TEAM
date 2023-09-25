@@ -232,6 +232,11 @@
     <ClInclude Include="Bat.h">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="SoulDoor.h" />
+    <ClInclude Include="Bus.h" />
+    <ClInclude Include="CinematicCamMove.h" />
+    <ClInclude Include="TeleportZone.h" />
+    <ClInclude Include="EtranceHallDoor.h" />
     <ClInclude Include="PlayerColScript.h">
       <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClInclude>
@@ -241,32 +246,14 @@
     <ClInclude Include="ChangeStateTask.h">
       <Filter>소스 파일\GameObject\Monster\Node</Filter>
     </ClInclude>
-    <ClInclude Include="KeyPot.h">
-      <Filter>소스 파일\GameObject\Objects</Filter>
+    <ClInclude Include="BowState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="KeyDoor.h">
-      <Filter>소스 파일\GameObject\Objects</Filter>
+    <ClInclude Include="ArrowScript.h">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClInclude>
-    <ClInclude Include="JarDoor.h">
-      <Filter>소스 파일\GameObject\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="SoulDoor.h">
-      <Filter>소스 파일\GameObject\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="TeleportZone.h">
-      <Filter>소스 파일\GameObject\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="EtranceHallDoor.h">
-      <Filter>소스 파일\GameObject\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Bus.h">
-      <Filter>소스 파일\GameObject\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="FireLamp.h">
-      <Filter>소스 파일\GameObject\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="CinematicCamMove.h">
-      <Filter>소스 파일\Script</Filter>
+    <ClInclude Include="BowScript.h">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -498,41 +485,28 @@
     <ClCompile Include="Bat.cpp">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="SoulDoor.cpp" />
+    <ClCompile Include="Bus.cpp" />
+    <ClCompile Include="CinematicCamMove.cpp" />
+    <ClCompile Include="TeleportZone.cpp" />
     <ClCompile Include="SwordScript.cpp">
       <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClCompile>
+    <ClCompile Include="EtranceHallDoor.cpp" />
     <ClCompile Include="PlayerColScript.cpp">
       <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClCompile>
     <ClCompile Include="ChangeStateTask.cpp">
       <Filter>소스 파일\GameObject\Monster\Node</Filter>
     </ClCompile>
-    <ClCompile Include="KeyPot.cpp">
-      <Filter>소스 파일\GameObject\Objects</Filter>
+    <ClCompile Include="BowState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="KeyDoor.cpp">
-      <Filter>소스 파일\GameObject\Objects</Filter>
+    <ClCompile Include="ArrowScript.cpp">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClCompile>
-    <ClCompile Include="JarDoor.cpp">
-      <Filter>소스 파일\GameObject\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="SoulDoor.cpp">
-      <Filter>소스 파일\GameObject\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="TeleportZone.cpp">
-      <Filter>소스 파일\GameObject\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="EtranceHallDoor.cpp">
-      <Filter>소스 파일\GameObject\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Bus.cpp">
-      <Filter>소스 파일\GameObject\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="FireLamp.cpp">
-      <Filter>소스 파일\GameObject\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="CinematicCamMove.cpp">
-      <Filter>소스 파일\Script</Filter>
+    <ClCompile Include="BowScript.cpp">
+      <Filter>소스 파일\GameObject\Player\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -597,9 +571,6 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Monster\Node">
       <UniqueIdentifier>{b52b02d9-ae3a-42be-b5b9-b4885039a9b1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\GameObject\Objects">
-      <UniqueIdentifier>{4ab2683f-1870-4d70-ae36-60f123eaccb4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

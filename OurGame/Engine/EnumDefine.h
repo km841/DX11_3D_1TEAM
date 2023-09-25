@@ -196,6 +196,8 @@ namespace hm
 		None,
 		FadeIn,
 		FadeOut,
+		WhiteIn,
+		WhiteOut,
 	};
 
 	enum
@@ -208,6 +210,13 @@ namespace hm
 		Success,
 		Running,
 		Failure,
+	};
+
+	enum class NaviMeshCellType
+	{
+		None,
+		Open,
+		Close,
 	};
 }
 

@@ -285,6 +285,7 @@ namespace DirectX
             float Length() const noexcept;
             float LengthSquared() const noexcept;
 
+            float Angle(const Vector3& V) const noexcept;
             float Dot(const Vector3& V) const noexcept;
             void Cross(const Vector3& V, Vector3& result) const noexcept;
             Vector3 Cross(const Vector3& V) const noexcept;
@@ -294,6 +295,9 @@ namespace DirectX
 
             void Clamp(const Vector3& vmin, const Vector3& vmax) noexcept;
             void Clamp(const Vector3& vmin, const Vector3& vmax, Vector3& result) const noexcept;
+
+            XMVECTOR Convert() const noexcept;
+            Vector3 TransformCoord(const Matrix& m) const noexcept;
 
             // Static functions
             static float Distance(const Vector3& v1, const Vector3& v2) noexcept;
@@ -590,6 +594,7 @@ namespace DirectX
 
             // Computes rotation about y-axis (y), then x-axis (x), then z-axis (z)
             Vector3 ToEuler() const noexcept;
+            void Rotation(const Vector3& v) const noexcept;
 
             // Static functions
             static Matrix CreateBillboard(
@@ -652,6 +657,8 @@ namespace DirectX
         Matrix operator/ (const Matrix& M1, const Matrix& M2) noexcept;
             // Element-wise divide
         Matrix operator* (float S, const Matrix& M) noexcept;
+
+        
 
 
         //-----------------------------------------------------------------------------

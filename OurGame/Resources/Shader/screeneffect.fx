@@ -52,6 +52,8 @@ g_int_2 : ScreenEffect2_type
 #define NONE 0
 #define FADE_IN 1
 #define FADE_OUT 2
+#define WHITE_IN 3
+#define WHITE_OUT 4
 
 void ComputeEffectColor(inout float4 _color, int _effectType, float _ratio)
 {
@@ -65,7 +67,26 @@ void ComputeEffectColor(inout float4 _color, int _effectType, float _ratio)
     
     else if (FADE_OUT == _effectType)
     {
-        _color *= 1.f - _ratio;
+        _color *= (1.f - _ratio);
+    }
+    
+    // 하얀 배경에서 원래 색으로 돌아오는 것
+    else if (WHITE_IN == _effectType)
+    {
+        // 맨 처음 1, 1, 1, 1에서 원래 색의 차이만큼 덜어내는 것
+        float4 white = float4(1.f, 1.f, 1.f, 1.f);
+        float4 diff = white - _color;
+        
+        _color = white - diff * _ratio;
+    }
+    
+    // 점점 하얘지는 것
+    else if (WHITE_OUT == _effectType)
+    {
+        float4 white = float4(1.f, 1.f, 1.f, 1.f);
+        float4 diff = white - _color;
+        
+        _color += diff * _ratio;
     }
 }
 

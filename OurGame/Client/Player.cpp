@@ -45,6 +45,8 @@
 #include "OwnerFollowScript.h"
 #include "SwordScript.h"
 #include "PlayerColScript.h"
+#include "BowScript.h"
+#include "ArrowScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -65,6 +67,7 @@
 #include "ClimingDownState.h"
 #include "ClimingEndState.h"
 #include "ClimingUpState.h"
+#include "BowState.h"
 
 Player* Player::spPlayer;
 
@@ -98,6 +101,7 @@ Player::Player()
 	mState[int(PlayerState::ClimingDownState)] = new ClimingDownState;
 	mState[int(PlayerState::ClimingEndState)] = new ClimingEndState;
 	mState[int(PlayerState::ClimingUpState)] = new ClimingUpState;
+	mState[int(PlayerState::BowState)] = new BowState;
 
 	// Sword_Heavy
 	{
@@ -149,7 +153,7 @@ Player::Player()
 		//SetMeshTarget(pGreatSword);
 	}
 
-	//pAttackCol
+	//검 공격범위 콜라이더 - pAttackCol
 	{
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Kinematic;
@@ -166,6 +170,54 @@ Player::Player()
 		pFollowSc2->SetOffset(Vec3(0.f, 0.f, 0.f));
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pAttackCol);
 		
+	}
+
+	//활 오브젝트 - Bow
+	{
+
+		pBow = Factory::CreateObject<GameObject>(Vec3(0.f, 0.f, 0.f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Bow.fbx", false, LayerType::Item);
+		pBow->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+		pBow->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+
+		pBow->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
+		pBow->GetMeshRenderer()->GetMaterial()->SetBloomPower(2.f, 0);
+		pBow->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.f, 0.f, 0.f));
+		pBow->GetMeshRenderer()->GetMaterial()->SetBloomFilter(Vec4(1.f, 0.f, 0.f, 0.f), 0);
+
+		pBow->Disable();
+		//auto pFollowSc = pBow->AddComponent(new OwnerFollowScript(this));
+
+		pBowSc = pBow->AddComponent(new BowScript);
+		//gpEngine->GetTool()->UseGizmo();
+		//gpEngine->GetTool()->SetGameObject(pBow);
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pBow);
+		//SetMeshTarget(pBow);
+	}
+
+	//화살 오브젝트 - Arrow
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(0.05f, 0.05f, 1.0f);
+
+		pArrow = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.f, 0.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Arrow.fbx", false, LayerType::PlayerCol);
+		pArrow->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+		pArrow->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+
+		pArrow->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
+		pArrow->GetMeshRenderer()->GetMaterial()->SetBloomPower(2.f, 0);
+		pArrow->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.f, 0.f, 0.f));
+		pArrow->GetMeshRenderer()->GetMaterial()->SetBloomFilter(Vec4(1.f, 0.f, 0.f, 0.f), 0);
+
+		//auto pFollowSc = pBow->AddComponent(new OwnerFollowScript(this));
+
+		pArrowSc = pArrow->AddComponent(new ArrowScript);
+
+		//gpEngine->GetTool()->UseGizmo();
+		//gpEngine->GetTool()->SetGameObject(pArrow);
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pArrow);
+		//SetMeshTarget(pArrow);
 	}
 }
 
@@ -233,6 +285,10 @@ void Player::Initialize()
 	GetAnimator()->SetLoop(22, true);
 	GetAnimator()->SetHasExitFlag(22, true);
 
+	//활모션
+	GetAnimator()->RenameAnimation(0, L"_Player_Bow");
+	GetAnimator()->SetLoop(0, true);
+	GetAnimator()->SetHasExitFlag(0, true);
 
 
 
@@ -279,6 +335,8 @@ void Player::Update()
 	mActiveState->Update();
 	
 	pSwordSc->SetPlayerState(mActiveState->GetStateEnum());
+	pBowSc->SetPlayerState(mActiveState->GetStateEnum());
+	pArrowSc->SetPlayerState(mActiveState->GetStateEnum());
 }
 
 void Player::FixedUpdate()
@@ -309,6 +367,24 @@ void Player::Destroy()
 
 }
 
+void Player::OnCollisionEnter(Collider* _pOtherCollider)
+{
+	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		//작동을 안하네
+		StateChange(PlayerState::HitStartState);
+	}
+}
+
+void Player::OnCollisionStay(Collider* _pOtherCollider)
+{
+}
+
+void Player::OnCollisionExit(Collider* _pOtherCollider)
+{
+}
+
+
 void Player::OnTriggerEnter(Collider* _pOtherCollider)
 {
 	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
@@ -319,12 +395,15 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 
 	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		
+		//작동을 안하네
+		StateChange(PlayerState::HitStartState);
 	}
+	
 }
 
 void Player::OnTriggerStay(Collider* _pOtherCollider)
 {
+	int a = 0;
 }
 
 void Player::OnTriggerExit(Collider* _pOtherCollider)

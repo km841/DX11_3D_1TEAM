@@ -1161,6 +1161,8 @@ namespace sy
 		}
 
 
+		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::WhiteOut, 1.f);
+		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::WhiteIn, 1.f);
 
 
 		// Table // 그냥 하는거 예시
