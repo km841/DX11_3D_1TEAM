@@ -52,22 +52,53 @@ g_int_2 : ScreenEffect2_type
 #define NONE 0
 #define FADE_IN 1
 #define FADE_OUT 2
-#define WHITE_IN 3
-#define WHITE_OUT 4
+#define HOLD 3
+#define WHITE_IN 4
+#define WHITE_OUT 5
 
-void ComputeEffectColor(inout float4 _color, int _effectType, float _ratio)
+#define FLOAT4_ZERO float4(0.f, 0.f, 0.f, 0.f)
+
+bool IsZero(float4 _param)
+{
+    if (_param.r != 0 || _param.g != 0 || _param.b != 0 || _param.a != 0)
+        return false;
+    
+    return true;
+}
+
+void ComputeEffectColor(inout float4 _color, int _effectType, float _ratio, float4 _param1, float4 _param2)
 {
     if (_effectType == NONE)
         return;
     
     if (FADE_IN == _effectType)
     {
-        _color *= _ratio;
+        if (false == IsZero(_param1))
+        {
+            float4 startColor = _param1;
+            float4 diff = startColor - _color;
+            _color = startColor - diff * _ratio;
+        }
+        else
+        {
+            _color *= _ratio;
+        }
     }
     
     else if (FADE_OUT == _effectType)
     {
-        _color *= (1.f - _ratio);
+        if (false == IsZero(_param1))
+        {
+            float4 endColor = _param1;
+            float4 diff = endColor - _color;
+            _color += diff * _ratio;
+        }
+        else
+        {
+            _color *= (1.f - _ratio);
+        }
+
+        
     }
     
     // 하얀 배경에서 원래 색으로 돌아오는 것
@@ -88,6 +119,12 @@ void ComputeEffectColor(inout float4 _color, int _effectType, float _ratio)
         
         _color += diff * _ratio;
     }
+    
+    else if (HOLD == _effectType)
+    {
+        float4 holdColor = _param1;
+        _color = holdColor;
+    }
 }
 
 float4 PS_Main(VS_OUT _in) : SV_Target
@@ -100,10 +137,16 @@ float4 PS_Main(VS_OUT _in) : SV_Target
     int effectType_1 = g_int_1;
     int effectType_2 = g_int_2;
     
+    float4 startColor_1 = g_vec4_0;
+    float4 endColor_1 = g_vec4_2;
+    
+    float4 startColor_2 = g_vec4_1;
+    float4 endColor_2 = g_vec4_3;
+    
     float4 color = g_tex_on_0 == 1 ? g_tex_0.Sample(g_sam_0, _in.uv) : float4(g_vec4_0.xyz, 1.f);
     
-    ComputeEffectColor(color, effectType_1, ratio_1);
-    ComputeEffectColor(color, effectType_2, ratio_2);
+    ComputeEffectColor(color, effectType_1, ratio_1, startColor_1, endColor_1);
+    ComputeEffectColor(color, effectType_2, ratio_2, startColor_2, endColor_2);
     
     return color;
 }

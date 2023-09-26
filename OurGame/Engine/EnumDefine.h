@@ -199,6 +199,7 @@ namespace hm
 		None,
 		FadeIn,
 		FadeOut,
+		Hold,
 		WhiteIn,
 		WhiteOut,
 	};

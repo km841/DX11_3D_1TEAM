@@ -15,6 +15,7 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "Resources.h"
+#include "RenderManager.h"
 
 /* GameObject */
 #include "GameObject.h"
@@ -91,7 +92,9 @@ namespace hm {
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::ArrowCol);
 		
 
-		
+		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
+		GET_SINGLE(RenderManager)->AddHoldEffect(3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
+		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
 		
 
 		//배경맵 하얀색으로 만들어주는 코드
