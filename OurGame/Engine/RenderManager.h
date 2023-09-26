@@ -64,7 +64,8 @@ namespace hm
 		bool IsDebugMode()			   { return mbDebugMode; }
 
 		void AddScreenEffect(ScreenEffectInfo* _effectInfo, int _groupIndex = 0);
-		void AddFadeEffect(ScreenEffectType _eType, float _endTime, std::function<void()> _startCallback = nullptr, std::function<void()> _endCallback = nullptr, int _groupIndex = 0);
+		void AddFadeEffect(ScreenEffectType _eType, float _endTime, std::function<void()> _startCallback = nullptr, std::function<void()> _endCallback = nullptr, const Vec4& _color = Vec4::Zero, int _groupIndex = 0);
+		void AddHoldEffect(float _endTime, std::function<void()> _startCallback = nullptr, std::function<void()> _endCallback = nullptr, const Vec4& _color = Vec4::Zero, int _groupIndex = 0);
 		void RemoveCurrentEffect(int _groupIndex = 0);
 		void RemoveGroupEffect(int _groupIndex = 0);
 		void RemoveAllEffect();

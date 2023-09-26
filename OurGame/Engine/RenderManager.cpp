@@ -340,13 +340,26 @@ namespace hm
 		}
 	}
 
-	void RenderManager::AddFadeEffect(ScreenEffectType _eType, float _endTime, std::function<void()> _startCallback, std::function<void()> _endCallback, int _groupIndex)
+	void RenderManager::AddFadeEffect(ScreenEffectType _eType, float _endTime, std::function<void()> _startCallback, std::function<void()> _endCallback, const Vec4& _color, int _groupIndex)
 	{
 		ScreenEffectInfo* pInfo = new ScreenEffectInfo;
 		pInfo->eEffectType = _eType;
 		pInfo->endTime = _endTime;
 		pInfo->startCallback = _startCallback;
 		pInfo->endCallback = _endCallback;
+		pInfo->param1 = _color;
+
+		AddScreenEffect(pInfo, _groupIndex);
+	}
+
+	void RenderManager::AddHoldEffect(float _endTime, std::function<void()> _startCallback, std::function<void()> _endCallback, const Vec4& _color, int _groupIndex)
+	{
+		ScreenEffectInfo* pInfo = new ScreenEffectInfo;
+		pInfo->eEffectType = ScreenEffectType::Hold;
+		pInfo->endTime = _endTime;
+		pInfo->startCallback = _startCallback;
+		pInfo->endCallback = _endCallback;
+		pInfo->param1 = _color;
 
 		AddScreenEffect(pInfo, _groupIndex);
 	}
@@ -450,13 +463,13 @@ namespace hm
 	{
 		ScreenEffectType eType = _effectInfo->eEffectType;
 		float ratio = _effectInfo->curTime / _effectInfo->endTime;
-		Vec4 startColor = _effectInfo->param1;
-		Vec4 endColor = _effectInfo->param2;
+		Vec4 param1 = _effectInfo->param1;
+		Vec4 param2 = _effectInfo->param2;
 
 		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetFloat(0 + _groupIndex, ratio);
 		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetInt(1 + _groupIndex, static_cast<int>(eType));
-		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetVec4(0 + _groupIndex, startColor);
-		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetVec4(1 + _groupIndex, endColor);
+		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetVec4(0 + _groupIndex, param1);
+		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetVec4(2 + _groupIndex, param2);
 	}
 
 

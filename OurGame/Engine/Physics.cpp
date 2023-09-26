@@ -117,19 +117,6 @@ namespace hm
 
 		return PxFilterFlag::eKILL;
 	}
-	bool Physics::IsOverlapped(GameObject* _pFirstObject, GameObject* _pSecondObject)
-	{
-		if (false == _pFirstObject->IsPhysicsObject() || 
-			false ==  _pSecondObject->IsPhysicsObject())
-			return false;
-
-		if (ActorType::Kinematic != _pFirstObject->GetRigidBody()->GetActorType() ||
-			ActorType::Kinematic != _pSecondObject->GetRigidBody()->GetActorType())
-			return false;
-
-
-
-	}
 }
 
 
