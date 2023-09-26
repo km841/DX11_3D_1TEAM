@@ -435,7 +435,6 @@ void Bat::Destroy()
 
 void Bat::OnCollisionEnter(Collider* _pOtherCollider)
 {
-	int a = 0;
 	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		GetRigidBody()->RemoveGravity();

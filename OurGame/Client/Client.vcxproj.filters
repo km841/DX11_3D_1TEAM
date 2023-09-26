@@ -260,6 +260,12 @@
     <ClInclude Include="KeyDoor.h" />
     <ClInclude Include="KeyPot.h" />
     <ClInclude Include="Ladder.h" />
+    <ClInclude Include="Lurker.h">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Mage.h">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -518,6 +524,12 @@
     <ClCompile Include="KeyDoor.cpp" />
     <ClCompile Include="KeyPot.cpp" />
     <ClCompile Include="Ladder.cpp" />
+    <ClCompile Include="Lurker.cpp">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Mage.cpp">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

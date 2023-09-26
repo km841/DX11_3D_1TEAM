@@ -191,6 +191,8 @@
     <ClInclude Include="Ladder.h" />
     <ClInclude Include="LeftSecretFightMap.h" />
     <ClInclude Include="LeftSecretTrialMap.h" />
+    <ClInclude Include="Lurker.h" />
+    <ClInclude Include="Mage.h" />
     <ClInclude Include="MagicAttackState.h" />
     <ClInclude Include="MainOfficeMap.h" />
     <ClInclude Include="Map.h" />
@@ -286,6 +288,8 @@
     <ClCompile Include="Ladder.cpp" />
     <ClCompile Include="LeftSecretFightMap.cpp" />
     <ClCompile Include="LeftSecretTrialMap.cpp" />
+    <ClCompile Include="Lurker.cpp" />
+    <ClCompile Include="Mage.cpp" />
     <ClCompile Include="MagicAttackState.cpp" />
     <ClCompile Include="MainOfficeMap.cpp" />
     <ClCompile Include="Map.cpp" />
