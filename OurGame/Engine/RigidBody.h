@@ -28,6 +28,29 @@ namespace hm
 			return pActor;
 		}
 
+		template<typename T>
+		inline T* GetGeometry() const
+		{
+			GeometryType geomType = mPhysicsInfo.eGeometryType;
+			switch (geomType)
+			{
+			case GeometryType::Sphere:
+				return reinterpret_cast<T*>(&mPhysicsInfo.pGeometries->sphereGeom);
+			case GeometryType::Box:
+				return reinterpret_cast<T*>(&mPhysicsInfo.pGeometries->boxGeom);
+			case GeometryType::Capsule:
+				return reinterpret_cast<T*>(&mPhysicsInfo.pGeometries->capsuleGeom);
+			case GeometryType::Plane:
+				return reinterpret_cast<T*>(&mPhysicsInfo.pGeometries->planeGeom);
+			case GeometryType::Mesh:
+				return reinterpret_cast<T*>(&mPhysicsInfo.pGeometries->triangleGeom);
+			case GeometryType::Convex:
+				return reinterpret_cast<T*>(&mPhysicsInfo.pGeometries->convexGeom);
+			}
+
+			return nullptr;
+		}
+
 		void AddActorToScene();
 
 		PxRigidDynamic* GetDynamicActor() { return GetActor<PxRigidDynamic>(); }
@@ -38,6 +61,7 @@ namespace hm
 		ActorType GetActorType() { return mPhysicsInfo.eActorType; }
 		GeometryType GetGeometryType() { return mPhysicsInfo.eGeometryType; }
 		Geometries* GetGeometries() { return mPhysicsInfo.pGeometries; }
+		
 		Vec3 GetGeometrySize() { return mPhysicsInfo.size * 2.f; }
 		void SetGeometrySize(const Vec3& _geomSize);
 		const PxFilterData& GetFilterData() { return mPhysicsInfo.filterData; }

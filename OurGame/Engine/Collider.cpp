@@ -125,6 +125,36 @@ namespace hm
 		return false;
 	}
 
+	bool Collider::Overlap(Collider* _pOther)
+	{
+		GeometryType eGeometryType = _pOther->GetRigidBody()->GetGeometryType();
+		if (GeometryType::Mesh == eGeometryType || GeometryType::Mesh == GetRigidBody()->GetGeometryType())
+			return false;
+
+		switch (eGeometryType)
+		{
+		case GeometryType::Sphere:
+			return Overlap<PxSphereGeometry>(_pOther->GetRigidBody()->GetGeometries()->sphereGeom, _pOther);
+
+		case GeometryType::Box:
+			return Overlap<PxBoxGeometry>(_pOther->GetRigidBody()->GetGeometries()->boxGeom, _pOther);
+
+		case GeometryType::Capsule:
+			return Overlap<PxCapsuleGeometry>(_pOther->GetRigidBody()->GetGeometries()->capsuleGeom, _pOther);
+
+		case GeometryType::Mesh:
+			return Overlap<PxTriangleMeshGeometry>(_pOther->GetRigidBody()->GetGeometries()->triangleGeom, _pOther);
+
+		case GeometryType::Convex:
+			return Overlap<PxConvexMeshGeometry>(_pOther->GetRigidBody()->GetGeometries()->convexGeom, _pOther);
+
+		default:
+			return false;
+
+		}
+		return false;
+	}
+
 	void Collider::OnCollisionEnter(Collider* _pOtherCollider)
 	{
 		mpGameObject->OnCollisionEnter(_pOtherCollider);
@@ -165,7 +195,7 @@ namespace hm
 		if (0 > mCollisionCount)
 			mCollisionCount = 0;
 
-		for (int i = 0; collLayerTypeList.size(); i++)
+		for (int i = 0; i < collLayerTypeList.size(); i++)
 		{
 			if (collLayerTypeList[i] == _pOtherCollider->myLayerType)
 			{

@@ -51,6 +51,7 @@ namespace hm
 		sceneDesc.gravity = mGravity;
 		sceneDesc.cpuDispatcher = mpCpuDispatcher;
 		sceneDesc.filterShader = PlayerFilterShader;
+		sceneDesc.broadPhaseType = PxBroadPhaseType::eABP;
 		sceneDesc.simulationEventCallback = mpCallback;
 
 		mpScene = mpPhysics->createScene(sceneDesc);
@@ -96,12 +97,12 @@ namespace hm
 		// 트리거와 트리거 또는 트리거와 충돌하는 물체를 구분하여 처리합니다.
 		if (PxFilterObjectIsTrigger(_attributes0) || PxFilterObjectIsTrigger(_attributes1))
 		{
-			if ((_filterData1.word1 & _filterData0.word0) || (_filterData0.word1 & _filterData1.word0))
-			{
+			//if ((_filterData1.word1 & _filterData0.word0) || (_filterData0.word1 & _filterData1.word0))
+			//{
 				// 트리거와 충돌하는 물체 모두 OnTrigger 이벤트를 처리하도록 합니다.
 				_pairFlags = PxPairFlag::eTRIGGER_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_LOST;
 				return PxFilterFlag::eDEFAULT;
-			}
+			//}
 		}
 
 		// 충돌하는 물체의 경우 충돌 플래그만 생성합니다.
@@ -115,6 +116,19 @@ namespace hm
 		}
 
 		return PxFilterFlag::eKILL;
+	}
+	bool Physics::IsOverlapped(GameObject* _pFirstObject, GameObject* _pSecondObject)
+	{
+		if (false == _pFirstObject->IsPhysicsObject() || 
+			false ==  _pSecondObject->IsPhysicsObject())
+			return false;
+
+		if (ActorType::Kinematic != _pFirstObject->GetRigidBody()->GetActorType() ||
+			ActorType::Kinematic != _pSecondObject->GetRigidBody()->GetActorType())
+			return false;
+
+
+
 	}
 }
 

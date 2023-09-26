@@ -24,6 +24,7 @@ namespace hm
 
     public:
         bool Raycast(const Vec3& _origin, const Vec3& _dir, Collider* _pOther, float _maxDist);
+        bool Overlap(Collider* _pOther);
         const PxRaycastHit& GetRayHitInfo() { return mRaycastHit; }
 
     private:
@@ -40,6 +41,16 @@ namespace hm
                 5,
                 &mRaycastHit);
 
+            return bResult;
+        }
+
+        template<typename T>
+        bool Overlap(T _geom, Collider* _pOther)
+        {
+            PxTransform otherTr = _pOther->GetRigidBody()->GetPhysicsTransform();
+            PxTransform myTr = GetRigidBody()->GetPhysicsTransform();
+            T myGeom = *GetRigidBody()->GetGeometry<T>();
+            bool bResult = PxGeometryQuery::overlap(_geom, otherTr, myGeom, myTr);
             return bResult;
         }
 
@@ -77,6 +88,7 @@ namespace hm
 
         int mCollisionCount;
         PxRaycastHit mRaycastHit;
+        PxOverlapBuffer mOverlapBuffer;
         
         LayerType myLayerType;
         std::vector<LayerType> collLayerTypeList;
