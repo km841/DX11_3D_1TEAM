@@ -29,6 +29,8 @@ namespace hm
 		PxControllerManager* GetControllerManager() { return mpControllerMgr; }
 		class ContactCallback* GetCallback() { return mpCallback; }
 
+		bool IsOverlapped(GameObject* _pFirstObject, GameObject* _pSecondObject);
+
 	private:
 		PxDefaultAllocator		mAllocCallback;
 		PxDefaultErrorCallback  mErrorCallback;
@@ -44,6 +46,8 @@ namespace hm
 
 		PxDefaultCpuDispatcher* mpCpuDispatcher;
 		class ContactCallback* mpCallback;
+
+		PxOverlapBuffer mOverlapBuffer;
 
 		Vec3 mGravity;
 	};

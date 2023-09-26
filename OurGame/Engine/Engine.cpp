@@ -9,6 +9,7 @@
 #include "EventManager.h"
 #include "RenderManager.h"
 #include "FontManager.h"
+#include "CollisionManager.h"
 #include "Tool.h"
 
 namespace hm
@@ -255,6 +256,7 @@ namespace hm
 		GET_SINGLE(SceneManager)->Update();
 		GET_SINGLE(SceneManager)->FixedUpdate();
 		GET_SINGLE(SceneManager)->FinalUpdate();
+		GET_SINGLE(CollisionManager)->Update();
 		mpPhysics->Update();
 
 		mpTool->Update();
