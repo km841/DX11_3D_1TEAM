@@ -16,6 +16,11 @@ namespace hm
 {
 	HeadRoller::HeadRoller()
 	{
+		mHP = 3.f; // 피통
+		mSpeed = 2.f; //이동속도
+		mAttackDamage = 1; // 공격력
+		mAttackRange = 2.5f; // 공격 감지 거리
+		mRecogRange = 7.f; //감지거리
 	}
 
 	HeadRoller::~HeadRoller()
@@ -92,9 +97,6 @@ namespace hm
 			pStateSelector->AddChild(pIdleSequence);
 
 #pragma endregion
-
-
-
 
 #pragma region Trace Sequence
 			Sequence* pTraceSequence = new Sequence;
@@ -192,6 +194,8 @@ namespace hm
 	}
 	void HeadRoller::OnTriggerEnter(Collider* _pOtherCollider)
 	{
+		Player* pPlayer = PLAYER;
+		float attackDamage = pPlayer->GetAttackDamage();
 		if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 		{
 			GetRigidBody()->RemoveGravity();
