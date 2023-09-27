@@ -53,6 +53,7 @@ namespace hm
 		float mAttackRange; // 공격 감지 거리
 		float mRecogRange; //감지거리
 
+		int mGroundCount;
 
 		
 	};

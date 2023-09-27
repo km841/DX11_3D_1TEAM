@@ -20,6 +20,8 @@ namespace hm
 		ArrowCol,
 		Grandma_Boss,  //이거 더미 목록
 		Monster,
+		MonsterCol,
+		MonsterHeavyCol,
 		Item,
 		Ladder,
 		Npc,

@@ -217,13 +217,81 @@ void Bat::SetBehaviorTree()
 				Transform* pTr = GetTransform();
 				Vec3 myPos = GetTransform()->GetPosition();
 				Vec3 myRot = GetTransform()->GetRotation();
+				Vec3 scale = GetRigidBody()->GetGeometrySize();
 
 				Vec3 dir = playerPos - myPos;
+				Vec3 Num = scale * dir;
+				float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
+
 				dir.Normalize();
 				dir.y = 0;
 				// 몬스터의 이동속도가 들어가야 함
 				// 방향을 변경해주는 Task도 필요
-				GetRigidBody()->SetVelocity(dir * mSpeed);
+				Vec3 Ve = dir * mSpeed;
+
+				const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+				
+				for (int i = 0; i < gameObjects.size(); ++i)
+				{
+					if (gameObjects[i]->GetCollider())
+					{
+						for (size_t j = 1; j <= 8; j++)
+						{
+							if (GetCollider()->Raycast(myPos, ConvertDir(static_cast<DirectionEvasion>(j)), gameObjects[i]->GetCollider(), offset + 0.5f))
+							{
+								if (static_cast<DirectionEvasion>(j) == DirectionEvasion::FORWARD) 
+								{
+									Ve.z = 0;
+								}
+								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BACKWARD)
+								{
+									Ve.z = 0;
+								}
+								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::LEFT)
+								{
+									Ve.x = 0;
+								}
+								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::RIGHT)
+								{
+									Ve.x = 0;
+								}
+								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPLEFT)
+								{
+									if (Ve.x > Ve.z)
+										Ve.z = 0;
+									else
+										Ve.x = 0;
+								}
+								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPRIGHT)
+								{
+									if (Ve.x > Ve.z)
+										Ve.z = 0;
+									else
+										Ve.x = 0;
+								}
+								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMLEFT)
+								{
+									if (Ve.x > Ve.z)
+										Ve.z = 0;
+									else
+										Ve.x = 0;
+								}
+								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMRIGHT)
+								{
+									if (Ve.x > Ve.z)
+										Ve.z = 0;
+									else
+										Ve.x = 0;
+								}
+
+							}
+						}
+					}
+				}	
+
+
+
+				GetRigidBody()->SetVelocity(Ve);
 
 				Vec3 rot = Vec3(0, 0, -1);
 				double angleRadian = atan2(dir.x, dir.z) - atan2(rot.x, rot.z);
@@ -437,8 +505,14 @@ void Bat::OnCollisionEnter(Collider* _pOtherCollider)
 {
 	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		GetRigidBody()->RemoveGravity();
-		GetRigidBody()->SetVelocity(Vec3::Zero);
+		// 임시 코드
+		if (mGroundCount == 0)
+		{
+			GetRigidBody()->RemoveGravity();
+			GetRigidBody()->SetVelocity(Vec3::Zero);
+		}
+
+		mGroundCount++;
 	}
 }
 
@@ -450,7 +524,12 @@ void Bat::OnCollisionExit(Collider* _pOtherCollider)
 {
 	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		GetRigidBody()->ApplyGravity();
+
+		// 임시 코드
+		--mGroundCount;
+
+		if (0 == mGroundCount)
+			GetRigidBody()->ApplyGravity();
 	}
 }
 
