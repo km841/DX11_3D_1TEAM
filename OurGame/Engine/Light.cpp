@@ -52,9 +52,13 @@ namespace hm
 	{
 		if (nullptr != mpShadowCamera)
 		{
+			Vec3 camPos = GetTransform()->GetPosition();
+			if (LightType::PointLight == static_cast<LightType>(mLightInfo.eLightType))
+				camPos.y += 30.f;
+			
 
 			mpShadowCamera->GetTransform()->SetRotation(GetTransform()->GetRotation());
-			mpShadowCamera->GetTransform()->SetPosition(GetTransform()->GetPosition());
+			mpShadowCamera->GetTransform()->SetPosition(camPos);
 			mpShadowCamera->GetTransform()->SetScale(GetTransform()->GetScale());
 			mpShadowCamera->FinalUpdate();
 		}

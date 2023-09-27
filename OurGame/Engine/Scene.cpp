@@ -25,6 +25,7 @@ namespace hm
 		, mpUICamera(nullptr)
 		, mpDirLight(nullptr)
 		, mbIsBakedStaticShadow(false)
+		, mbEnableDirLight(true)
 	{
 	}
 	Scene::~Scene()

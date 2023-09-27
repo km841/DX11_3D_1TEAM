@@ -148,7 +148,7 @@ PS_OUT PS_PointLight(VS_OUT _in)
         float2 uv = shadowClipPos.xy / shadowClipPos.w;
         uv.y = -uv.y;
         uv = uv * 0.5 + 0.5;
-        float bias = 0.05f;
+        float bias = 0.005f;
         if (0 < uv.x && uv.x < 1 && 0 < uv.y && uv.y < 1)
         {
             float shadowFactor = g_tex_2.SampleCmpLevelZero(g_sam_2, uv, depth - bias).r;

@@ -88,6 +88,8 @@ namespace hm
 		bool IsPhysicsObject();
 
 		void SetShader(const wstring& _shaderName);
+		void DrawShadow(bool _bFlag) { mbShadow = _bFlag; }
+		bool IsDrawShadow() { return mbShadow; }
 
 		/*
 		* AddComponent(Component* _pComponent)
@@ -146,6 +148,7 @@ namespace hm
 		bool mbDontDestroy;
 		bool mbEnable;
 		bool mbCheckFrustum;
+		bool mbShadow;
 	};
 }
 
