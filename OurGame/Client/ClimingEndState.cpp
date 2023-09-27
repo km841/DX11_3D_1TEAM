@@ -67,11 +67,20 @@ void ClimingEndState::Update()
 
 void ClimingEndState::Enter()
 {
+	Player* pPlayer = Player::GetPlayer();
+	Animator* pAni = pPlayer->GetAnimator();
+	Transform* pTr = pPlayer->GetTransform();
+	RigidBody* pRb = pPlayer->GetRigidBody();
+
+	pTr->SetPosition(pPlayer->GetToMovePos());
+
 	PlayAnimation();
 }
 
 void ClimingEndState::Exit()
 {
+	Player* pPlayer = Player::GetPlayer();
+	pPlayer->SetDirectionChange(pPlayer->GetToRotPos());
 }
 
 void ClimingEndState::PlayAnimation()

@@ -58,12 +58,17 @@ void ClimingDownState::Update()
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 	RigidBody* pRb = pPlayer->GetRigidBody();
+	Transform* pTr = pPlayer->GetTransform();
+
+	wstring name = pPlayer->GetLadderName();
+
 
 	pRb->SetVelocity(AXIS_Y, -2.f);
 
-	if (mCount_Ani > 4) {
-		mCount_Ani = 0;
-		pPlayer->StateChange(PlayerState::ClimingEndState);
+	if (name == L"LadderEnterCol")
+	{
+		pPlayer->StateChange(PlayerState::IdleState);
+		pRb->SetVelocity(AXIS_Y, 0.f);
 	}
 
 	if (pAni->GetFrameRatio() > 0.3) {
@@ -75,11 +80,22 @@ void ClimingDownState::Update()
 
 void ClimingDownState::Enter()
 {
+	Player* pPlayer = Player::GetPlayer();
+	Transform* pTr = pPlayer->GetTransform();
+
+
+	pTr->SetPosition(pPlayer->GetToDownPos());
+	Vec3 Rot = ConvertRot(pPlayer->GetToRotPos());
+	pTr->SetRotation(Rot);
+
 	PlayAnimation();
+
 }
 
 void ClimingDownState::Exit()
 {
+	Player* pPlayer = Player::GetPlayer();
+	pPlayer->SetDirectionChange(pPlayer->GetToRotPos());
 }
 
 void ClimingDownState::PlayAnimation()

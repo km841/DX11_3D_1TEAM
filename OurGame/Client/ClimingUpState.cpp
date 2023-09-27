@@ -61,15 +61,15 @@ void ClimingUpState::Update()
 	Transform* pTr = pPlayer->GetTransform();
 	RigidBody* pRb = pPlayer->GetRigidBody();
 
-	GameObject* pLadder = pPlayer->GetLadderExit();
-	Transform* pLadder_Tr = pLadder->GetTransform();
-	pRb->SetVelocity(AXIS_Y, 2.f);
-
+	wstring name = pPlayer->GetLadderName();
 	
 
-	if (pLadder_Tr->GetPosition().y < pTr->GetPosition().y) {
+	pRb->SetVelocity(AXIS_Y, 2.f);
+
+	if (name == L"LadderExitCol")
 		pPlayer->StateChange(PlayerState::ClimingEndState);
-	}
+
+	
 
 	if (pAni->GetFrameRatio() > 0.3) {
 		PlayAnimation();
@@ -86,6 +86,9 @@ void ClimingUpState::Enter()
 	Transform* pTr = pPlayer->GetTransform();
 	RigidBody* pRb = pPlayer->GetRigidBody();
 
+	pTr->SetPosition(pPlayer->GetToMovePos());
+	Vec3 Rot = ConvertRot(pPlayer->GetToRotPos());
+	pTr->SetRotation(Rot);
 
 	PlayAnimation();
 }

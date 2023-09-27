@@ -189,6 +189,7 @@
     <ClInclude Include="KeyDoor.h" />
     <ClInclude Include="KeyPot.h" />
     <ClInclude Include="Ladder.h" />
+    <ClInclude Include="LadderCollider.h" />
     <ClInclude Include="LeftSecretFightMap.h" />
     <ClInclude Include="LeftSecretTrialMap.h" />
     <ClInclude Include="Lurker.h" />
@@ -286,6 +287,7 @@
     <ClCompile Include="KeyDoor.cpp" />
     <ClCompile Include="KeyPot.cpp" />
     <ClCompile Include="Ladder.cpp" />
+    <ClCompile Include="LadderCollider.cpp" />
     <ClCompile Include="LeftSecretFightMap.cpp" />
     <ClCompile Include="LeftSecretTrialMap.cpp" />
     <ClCompile Include="Lurker.cpp" />
