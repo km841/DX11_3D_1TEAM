@@ -403,7 +403,6 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 
 	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		
 		StateChange(PlayerState::HitStartState);
 	}
 

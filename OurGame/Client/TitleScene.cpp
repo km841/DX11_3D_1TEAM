@@ -85,7 +85,7 @@ namespace hm
 		// - Monster_Player_TestScene
 		if (IS_DOWN(KeyType::L))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Monster_Player_Test);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
 		}
 
 		// ¿µÁø
