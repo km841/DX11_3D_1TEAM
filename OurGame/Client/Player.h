@@ -60,6 +60,15 @@ public:
 	bool GetisClimb() { return isClimb; }
 	void SetisClimb(bool _isClimb) { isClimb = _isClimb; }
 
+	Vec3 GetToMovePos() { return ToMovePos; }
+	void SetToMovePos(Vec3 _Pos) { ToMovePos = _Pos; }
+
+	Vec3 GetToDownPos() { return ToDownPos; }
+	void SetToDownPos(Vec3 _Pos) { ToDownPos = _Pos; }
+
+	DirectionEvasion GetToRotPos() { return ToRotPos; }
+	void SetToRotPos(DirectionEvasion _dir) { ToRotPos = _dir; }
+
 	wstring GetLadderName() { return lastLadderName; }
 
 	GameObject* GetGreatSword() { return pGreatSword; }
@@ -67,8 +76,7 @@ public:
 	GameObject* GetBow() { return pBow; }
 	GameObject* GetArrow() { return pArrow; }
 	
-	GameObject* GetLadderEnter() { return pLadderEnter; }
-	GameObject* GetLadderExit() { return pLadderExit; }
+	
 
 	SwordHeavyEffect* GetSwordEffect() { return mpSlashEffect; }
 public:
@@ -101,9 +109,11 @@ private:
 
 	bool isClimb=false;
 	wstring lastLadderName;
+	Vec3 ToMovePos;
+	Vec3 ToDownPos;
+	DirectionEvasion ToRotPos;
 
-	GameObject* pLadderEnter;
-	GameObject* pLadderExit;
+
 
 	SwordHeavyEffect* mpSlashEffect;
 	DirectionEvasion meDirectionEvasion; // 이동 상태 FSM

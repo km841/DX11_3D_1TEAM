@@ -26,6 +26,7 @@
 #include "FireLamp.h"
 #include "Ladder.h"
 #include "Bat.h"
+#include "LadderCollider.h"
 
 /* Component */
 #include "Collider.h"
@@ -282,29 +283,61 @@ namespace hm
 				pLadderObj->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
 				AddGameObject(pLadderObj);
 
-				DecoObject* pEnterPoint = Factory::CreateObject<DecoObject>(Vec3(5.0f, 0.33f, -0.9f), L"Deferred", L"");
-				AddGameObject(pEnterPoint);
-				//SetGizmoTarget(pEnterPoint);
-				
-				DecoObject* pExitPoint = Factory::CreateObject<DecoObject>(Vec3(5.0f, 6.13f, 1.3f), L"Deferred", L"");
-				AddGameObject(pExitPoint);
+				//GameObject* pEnterPoint = Factory::CreateObject<GameObject>(Vec3(5.0f, 0.33f, -0.9f), L"Deferred", L"",false, LayerType::DecoObject);
+				//AddGameObject(pEnterPoint);
+				////SetGizmoTarget(pEnterPoint);
+				//
+				//GameObject* pExitPoint = Factory::CreateObject<GameObject>(Vec3(5.0f, 6.13f, 1.3f), L"Deferred", L"",false, LayerType::DecoObject);
+				//AddGameObject(pExitPoint);
 
-				PhysicsInfo mEnterInfo;
-				mEnterInfo.eActorType = ActorType::Static;
-				mEnterInfo.eGeometryType = GeometryType::Box;
-				mEnterInfo.size = Vec3(0.95f, 1.9f, 0.45f);
-				GameObject* pEnterCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(5.0f, 1.0f, -0.8f), mEnterInfo, L"Deferred", L"",false, LayerType::Ladder);
-				AddGameObject(pEnterCol);
+				//PhysicsInfo mEnterInfo;
+				//mEnterInfo.eActorType = ActorType::Static;
+				//mEnterInfo.eGeometryType = GeometryType::Box;
+				//mEnterInfo.size = Vec3(0.95f, 1.9f, 0.45f);
+				//GameObject* pEnterCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(5.0f, 1.0f, -0.8f), mEnterInfo, L"Deferred", L"",false, LayerType::Ladder);
+				//AddGameObject(pEnterCol);
 
-				PhysicsInfo mExitInfo;
-				mExitInfo.eActorType = ActorType::Static;
-				mExitInfo.eGeometryType = GeometryType::Box;
-				mExitInfo.size = Vec3(0.95f, 1.9f, 0.45f);
-				GameObject* pExitCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(5.0f, 6.63f, -1.3f), mExitInfo, L"Deferred", L"",false,LayerType::Ladder);
-				AddGameObject(pExitCol);
+				//PhysicsInfo mExitInfo;
+				//mExitInfo.eActorType = ActorType::Static;
+				//mExitInfo.eGeometryType = GeometryType::Box;
+				//mExitInfo.size = Vec3(0.95f, 1.9f, 0.45f);
+				//GameObject* pExitCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(5.0f, 6.63f, -1.3f), mExitInfo, L"Deferred", L"",false,LayerType::Ladder);
+				//AddGameObject(pExitCol);
 
-				yj::Ladder* pLadder = Factory::CreateObject<yj::Ladder>(Vec3(5.f, 2.43f, -1.1f), L"Deferred", L"",false, pEnterPoint,pExitCol,pEnterCol,pExitCol);
-				AddGameObject(pLadder);
+				//yj::Ladder* pLadder = Factory::CreateObject<yj::Ladder>(Vec3(5.f, 2.43f, -1.1f), L"Deferred", L"",false, pEnterPoint, pExitPoint,pEnterCol,pExitCol);
+				//AddGameObject(pLadder);
+
+				{
+					PhysicsInfo mEnterInfo;
+					mEnterInfo.eActorType = ActorType::Static;
+					mEnterInfo.eGeometryType = GeometryType::Box;
+					mEnterInfo.size = Vec3(1.f, 0.5f, 0.5f);
+
+					LadderCollider* pEnterLadderCol = Factory::CreateObjectHasPhysical<LadderCollider>(Vec3(5.0f, 0.3f, -0.9f), mEnterInfo, L"Deferred", L"");
+					pEnterLadderCol->SetPlayerToMovePos(Vec3(5.0f, 0.33f, -0.9f));
+					pEnterLadderCol->SetDir(DirectionEvasion::BACKWARD);
+					pEnterLadderCol->SetName(L"LadderEnterCol");
+
+					AddGameObject(pEnterLadderCol);
+					
+				}
+
+				{
+					PhysicsInfo mExitInfo;
+					mExitInfo.eActorType = ActorType::Static;
+					mExitInfo.eGeometryType = GeometryType::Box;
+					mExitInfo.size = Vec3(1.f, 0.5f, 0.5f);
+
+					LadderCollider* pExitLadderCol = Factory::CreateObjectHasPhysical<LadderCollider>(Vec3(5.0f, 6.7f, -1.1f), mExitInfo, L"Deferred", L"");
+					pExitLadderCol->SetPlayerToMovePos(Vec3(5.0f, 5.7f, -1.1f));
+					pExitLadderCol->SetPlayerToDownPos(Vec3(5.0f, 5.5f, -0.9f));
+					pExitLadderCol->SetDir(DirectionEvasion::BACKWARD);
+					pExitLadderCol->SetName(L"LadderExitCol");
+
+					AddGameObject(pExitLadderCol);
+					//SetGizmoTarget(pExitLadderCol);
+					
+				}
 			}
 		}
 

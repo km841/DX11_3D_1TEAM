@@ -61,3 +61,44 @@ static Vec3 ConvertDir(DirectionEvasion _dir)
 	}
 	return totalDir;
 }
+
+static Vec3 ConvertRot(DirectionEvasion _dir)
+{
+
+	Vec3 totalRot = {};
+
+	if (_dir == DirectionEvasion::FORWARD)
+	{
+		totalRot = Vec3(0.f, 180.f, 90.f);
+	}
+	if (_dir == DirectionEvasion::BACKWARD)
+	{
+		totalRot = Vec3(0.f, 0.f, 90.f);
+	}
+	if (_dir == DirectionEvasion::LEFT)
+	{
+		totalRot = Vec3(0.f, 90.f, 90.f);
+	}
+	if (_dir == DirectionEvasion::RIGHT)
+	{
+		totalRot = Vec3(0.f, -90.f, 90.f);
+	}
+	if (_dir == DirectionEvasion::TOPLEFT)
+	{
+		totalRot = Vec3(0.f, 135.f, 90.f);
+	}
+	if (_dir == DirectionEvasion::TOPRIGHT)
+	{
+		totalRot = Vec3(0.f, 225.f, 90.f);
+	}
+	if (_dir == DirectionEvasion::BOTTOMLEFT)
+	{
+		totalRot = Vec3(0.f, 45.f, 90.f);
+	}
+	if (_dir == DirectionEvasion::BOTTOMRIGHT)
+	{
+		totalRot = Vec3(0.f, 315.f, 90.f);
+	}
+	return totalRot;
+
+}

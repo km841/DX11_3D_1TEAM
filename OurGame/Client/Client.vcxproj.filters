@@ -266,6 +266,7 @@
     <ClInclude Include="Mage.h">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="LadderCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -530,6 +531,7 @@
     <ClCompile Include="Mage.cpp">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="LadderCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

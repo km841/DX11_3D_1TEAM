@@ -26,6 +26,7 @@
 #include "Monster.h"
 #include "SwordHeavyEffect.h"
 #include "Ladder.h"
+#include "LadderCollider.h"
 
 /* Component */
 #include "Collider.h"
@@ -409,10 +410,13 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 	if (LayerType::Ladder == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		lastLadderName = _pOtherCollider->GetGameObject()->GetName();
+		ToMovePos = static_cast<LadderCollider*>(_pOtherCollider->GetGameObject())->GetPlayerToMovePos(); //사다리 올라갈때 필요한 위치값
+		ToDownPos = static_cast<LadderCollider*>(_pOtherCollider->GetGameObject())->GetPlayerToDownPos(); // 사다리 내려갈때 필요한 위치값
+		ToRotPos = static_cast<LadderCollider*>(_pOtherCollider->GetGameObject())->GetDir();
 		isClimb = true;
-
-		pLadderEnter = static_cast<yj::Ladder*>(_pOtherCollider->GetGameObject())->GetEnterPoint();
-		pLadderExit = static_cast<yj::Ladder*>(_pOtherCollider->GetGameObject())->GetExitPoint();
+		
+		int a = 0;
+	
 	}
 
 	
