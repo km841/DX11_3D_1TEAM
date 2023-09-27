@@ -96,6 +96,9 @@ private:
 	float mAttack_Speed;
 	bool mbAttackDir;
 
+
+	int mGroundCount;
+
 	bool isClimb=false;
 	wstring lastLadderName;
 
