@@ -74,6 +74,8 @@ namespace hm
 		Light* GetDirLight();
 
 		SceneType GetSceneType() { return meSceneType; }
+		void DisableDirLight() { mbEnableDirLight = false; }
+		void EnableDirLight() { mbEnableDirLight = true; }
 
 		bool IsBakedStaticShadow() { return mbIsBakedStaticShadow; }
 		void SetDirLightPosition(const Vec3& _position);
@@ -98,6 +100,7 @@ namespace hm
 		std::vector<GameObject*> mLightObjects;
 
 		bool mbIsBakedStaticShadow;
+		bool mbEnableDirLight;
 
 	protected:
 		static std::vector<wstring> mDontDestroyObjectNames;

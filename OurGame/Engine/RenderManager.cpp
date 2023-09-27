@@ -191,6 +191,9 @@ namespace hm
 
 		for (GameObject* pLightObject : _pScene->mLightObjects)
 		{
+			if (false == _pScene->mbEnableDirLight && L"DirLight" == pLightObject->GetName())
+				continue;
+
 			pLightObject->GetLight()->Render(_pScene->mpMainCamera->GetCamera());
 		}
 	}
@@ -410,6 +413,9 @@ namespace hm
 
 		for (GameObject* pLightObject : _pScene->mLightObjects)
 		{
+			if (false == _pScene->mbEnableDirLight && L"DirLight" == pLightObject->GetName())
+				continue;
+			
 			const LightInfo& lightInfo = pLightObject->GetLight()->GetLightInfo();
 
 			pLightObject->GetLight()->SetLightIndex(lightParams.lightCount);

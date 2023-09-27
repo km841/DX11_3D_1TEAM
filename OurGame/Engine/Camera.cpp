@@ -156,6 +156,9 @@ namespace hm
 				if (nullptr == pGameObject->GetMeshRenderer())
 					continue;
 
+				if (false == pGameObject->IsDrawShadow())
+					continue;
+
 				//if (true == pGameObject->IsFrustumCheck())
 				//{
 				//	if (false == mFrustumCulling.ContainsSphere(
@@ -188,6 +191,9 @@ namespace hm
 			for (auto& pGameObject : gameObjects)
 			{
 				if (nullptr == pGameObject->GetMeshRenderer())
+					continue;
+
+				if (false == pGameObject->IsDrawShadow())
 					continue;
 
 				if (true == pGameObject->IsFrustumCheck())
