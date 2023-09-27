@@ -115,7 +115,9 @@ void PlayerMoveScript::CheckPenetration(RigidBody* _rigidBody, LayerType _eLayer
 			
 			if (true == isPenetrating && depth > 0.1f)
 			{
-				_rigidBody->SetVelocity(dir * depth);
+				Vec3 offset = dir * (depth - 0.05f);
+				Vec3 fixedPos = PLAYER->GetTransform()->GetPosition();
+				PLAYER->GetTransform()->SetPosition(fixedPos + offset);
 			}
 		}
 	}

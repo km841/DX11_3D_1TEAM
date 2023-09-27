@@ -388,11 +388,17 @@ void Player::OnCollisionExit(Collider* _pOtherCollider)
 
 void Player::OnTriggerEnter(Collider* _pOtherCollider)
 {
-	/*if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
+	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		GetRigidBody()->RemoveGravity();
-		GetRigidBody()->SetVelocity(Vec3::Zero);
-	}*/
+		// 임시 코드
+		if (mGroundCount == 0)
+		{
+			GetRigidBody()->RemoveGravity();
+			GetRigidBody()->SetVelocity(Vec3::Zero);
+		}
+
+		mGroundCount++;
+	}
 
 	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
@@ -422,7 +428,11 @@ void Player::OnTriggerExit(Collider* _pOtherCollider)
 {
 	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		GetRigidBody()->ApplyGravity();
+		// 임시 코드
+		--mGroundCount;
+
+		if (0 == mGroundCount)
+			GetRigidBody()->ApplyGravity();
 	}
 
 	if (LayerType::Ladder == _pOtherCollider->GetGameObject()->GetLayerType())
