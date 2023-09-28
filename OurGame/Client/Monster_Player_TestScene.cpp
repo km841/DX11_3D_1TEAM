@@ -29,6 +29,8 @@
 #include "Grandma.h"
 #include "Bat.h"
 #include "SwordHeavyEffect.h"
+#include "Mage.h"
+
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -97,8 +99,8 @@ namespace hm {
 		//GET_SINGLE(RenderManager)->AddHoldEffect(3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
 		//GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
 		//
-//		shared_ptr<Video> pVideo = GET_SINGLE(Resources)->Load<Video>(L"Loding", L"..\\Resources\\Video\\Test.avi");
-//		pVideo->Play();
+		//shared_ptr<Video> pVideo = GET_SINGLE(Resources)->Load<Video>(L"Loding", L"..\\Resources\\Video\\Test.avi");
+		//pVideo->Play();
 		//배경맵 하얀색으로 만들어주는 코드
 		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
@@ -200,21 +202,30 @@ namespace hm {
 		//}
 		
 	
-		//// 마법사
-		//{
-		//	PhysicsInfo info = {};
-		//	info.eActorType = ActorType::Kinematic;
-		//	info.eGeometryType = GeometryType::Box;
-		//	info.size = Vec3(2.f, 2.f, 2.f);
+		// 마법사
+		{
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Kinematic;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(0.5f, 0.5f, 2.f);
 
-		//	Monster* p_E_MAGE = Factory::CreateObjectHasPhysical<Monster>(Vec3(-3.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_MAGE.fbx");
-		//	p_E_MAGE->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
-		//	p_E_MAGE->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			Mage* p_E_MAGE = Factory::CreateObjectHasPhysical<Mage>(Vec3(0.f, 0.f, 9.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_MAGE.fbx");
+			p_E_MAGE->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+			p_E_MAGE->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			p_E_MAGE->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
+			p_E_MAGE->SetFrustumCheckFlag(false);
 
-		//	//SetGizmoTarget(p_E_MAGE);
-		//	AddGameObject(p_E_MAGE);
-		//	//SetAnimTarget(p_E_MAGE);
-		//}
+			p_E_MAGE->AddComponent<PaperBurnScript>();
+
+
+			p_E_MAGE->GetRigidBody()->ApplyGravity();
+			p_E_MAGE->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			p_E_MAGE->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+
+			
+			AddGameObject(p_E_MAGE);
+			//SetMeshTarget(p_E_MAGE);
+		}
 
 		// 중간보스 내루미
 		//{
@@ -237,7 +248,7 @@ namespace hm {
 			PhysicsInfo info = {};
 			info.eActorType = ActorType::Kinematic;
 			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(3.5f, 3.5f, 3.0f);
+			info.size = Vec3(0.5f, 0.5f, 1.0f);
 
 			Bat* p_E_BAT_White = Factory::CreateObjectHasPhysical<Bat>(Vec3(-9.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
 			p_E_BAT_White->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));

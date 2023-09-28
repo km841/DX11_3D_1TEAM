@@ -61,7 +61,6 @@ void Bat::SetBehaviorTree()
 			// Hit 발생시 작동하는 스테이터스
 			BehaviorTask* pAttackTask = new BehaviorTask([&]()
 				{
-				
 					if (mHP <= 0) {
 						isDead = true;
 						meBasicState = MonsterBasicState::Dead;
@@ -69,7 +68,7 @@ void Bat::SetBehaviorTree()
 					}
 					
 					Animator* pAnimator = GetAnimator();
-					if(pAnimator->GetFrameRatio()>0.3)
+					if(pAnimator->GetFrameRatio() > 0.3)
 						return BehaviorResult::Success;
 
 					return BehaviorResult::Failure;
@@ -214,7 +213,6 @@ void Bat::SetBehaviorTree()
 			// 플레이어 목표 좌표로 몬스터가 이동+회전 하는 실행(Task)
 			BehaviorTask* pTraceMoveTask = new BehaviorTask([&]() {
 				Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
-				Transform* pTr = GetTransform();
 				Vec3 myPos = GetTransform()->GetPosition();
 				Vec3 myRot = GetTransform()->GetRotation();
 				Vec3 scale = GetRigidBody()->GetGeometrySize();
@@ -291,8 +289,9 @@ void Bat::SetBehaviorTree()
 
 
 
-				GetRigidBody()->SetVelocity(Ve);
+				GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
 
+				Transform* pTr = GetTransform();
 				Vec3 rot = Vec3(0, 0, -1);
 				double angleRadian = atan2(dir.x, dir.z) - atan2(rot.x, rot.z);
 				float angleDegree = static_cast<float>(angleRadian) * 180.f / XM_PI;
@@ -537,10 +536,17 @@ void Bat::OnTriggerEnter(Collider* _pOtherCollider)
 {
 	Player* pPlayer = PLAYER;
 	float attackDamage = pPlayer->GetAttackDamage();
+	
 	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		GetRigidBody()->RemoveGravity();
-		GetRigidBody()->SetVelocity(Vec3::Zero);
+		// 임시 코드
+		if (mGroundCount == 0)
+		{
+			GetRigidBody()->RemoveGravity();
+			GetRigidBody()->SetVelocity(Vec3::Zero);
+		}
+
+		mGroundCount++;
 	}
 
 	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
@@ -561,6 +567,11 @@ void Bat::OnTriggerExit(Collider* _pOtherCollider)
 {
 	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		GetRigidBody()->ApplyGravity();
+
+		// 임시 코드
+		--mGroundCount;
+
+		if (0 == mGroundCount)
+			GetRigidBody()->ApplyGravity();
 	}
 }
