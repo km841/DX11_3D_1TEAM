@@ -56,6 +56,7 @@ namespace hm
 		Texture,
 		Sound,
 		MeshData,
+		Video,
 		End,
 	};
 
@@ -223,6 +224,12 @@ namespace hm
 		None,
 		Open,
 		Close,
+	};
+
+	enum class InterfaceType
+	{
+		UI,
+		HUD,
 	};
 }
 

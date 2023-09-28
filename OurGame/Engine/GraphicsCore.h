@@ -22,6 +22,10 @@ namespace hm
 		ComPtr<IDXGIFactory> GetDxgi() { return mpDxgi; }
 		ComPtr<ID2D1RenderTarget> GetRenderTarget2D() { return mpRenderTarget2D; }
 		ComPtr<ID2D1Factory> GetFactory2D() { return mpFactory2D; }
+		ComPtr<IGraphBuilder> GetGraphBuilder() { return mpGraphBuilder; }
+		ComPtr<IMediaControl> GetMediaControl() { return mpMediaControl; }
+		ComPtr<IMediaEvent> GetMediaEvent() { return mpMediaEvent; }
+		ComPtr<IVideoWindow> GetVideoWindow() { return mpVideoWindow; }
 
 	private:
 		// 디바이스와 컨텍스트를 생성한다
@@ -30,6 +34,8 @@ namespace hm
 		// DxgiFactory를 생성한다. (DxgiFactory는 SwapChain을 만들 때 사용한다)
 		void CreateDxgiFactory();
 
+		void CreateVideoLibrary();
+
 	private:
 		ComPtr<ID3D11DeviceContext> mpContext;
 		ComPtr<ID3D11Device> mpDevice;
@@ -37,6 +43,11 @@ namespace hm
 
 		ComPtr<ID2D1RenderTarget> mpRenderTarget2D;
 		ComPtr<ID2D1Factory> mpFactory2D;
+
+		ComPtr<IGraphBuilder> mpGraphBuilder;
+		ComPtr<IMediaControl> mpMediaControl;
+		ComPtr<IMediaEvent> mpMediaEvent;
+		ComPtr<IVideoWindow> mpVideoWindow;
 	};
 }
 

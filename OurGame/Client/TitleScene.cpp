@@ -15,6 +15,7 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "Resources.h"
+#include "InterfaceManager.h"
 
 /* GameObject */
 #include "GameObject.h"
@@ -22,6 +23,9 @@
 #include "Ground.h"
 #include "DecoObject.h"
 #include "UI.h"
+
+/* Interface */
+#include "ButtonUI.h"
 
 /* Component */
 #include "Collider.h"
@@ -196,6 +200,30 @@ namespace hm
 
 			AddGameObject(pUI);
 		}
+
+		// Interface
+
+		{
+			InterfaceInfo info = {};
+			info.eType = InterfaceType::UI;
+			info.importance = 1;
+			info.name = "Logo";
+
+			Interface* newUI = new Interface(info);
+
+			newUI->SetScale(Vec2(500.f, 500.f));
+			newUI->SetPosition(Vec2(100.f, 100.f));
+
+			// Child
+			{
+				ButtonUI* pButton = new ButtonUI("KoreanFont", 1, Vec2(100.f, 100.f), Vec2(100.f, 100.f));
+				pButton->SetColor(Vec4(0.f, 0.f, 0.f, 1.f));
+				pButton->SetCallback([]() { MessageBoxA(NULL, NULL, NULL, NULL); });
+				newUI->AddChild(pButton);
+			}
+			GET_SINGLE(InterfaceManager)->AddInterface(newUI);
+		}
+
 	}
 
 	void TitleScene::Exit()

@@ -6,6 +6,7 @@
 #include "MeshData.h"
 #include "Material.h"
 #include "Mesh.h"
+#include "Video.h"
 
 /* Manager */
 #include "PrefabManager.h"
@@ -92,11 +93,12 @@ namespace hm {
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::ArrowCol);
 		
 
-		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
-		GET_SINGLE(RenderManager)->AddHoldEffect(3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
-		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
-		
-
+		//GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
+		//GET_SINGLE(RenderManager)->AddHoldEffect(3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
+		//GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
+		//
+//		shared_ptr<Video> pVideo = GET_SINGLE(Resources)->Load<Video>(L"Loding", L"..\\Resources\\Video\\Test.avi");
+//		pVideo->Play();
 		//배경맵 하얀색으로 만들어주는 코드
 		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
