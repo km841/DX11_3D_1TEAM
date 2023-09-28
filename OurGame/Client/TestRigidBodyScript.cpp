@@ -17,7 +17,7 @@ namespace hm
 	{
 		RigidBody* rb = GetRigidBody();
 
-		if (IS_DOWN(KeyType::L))
+		if (IS_DOWN(KeyType::P)) //Å×½ºÆ® À§Ä¡ ¹Ù²ã³ð
 		{
 			//rb->AddForce(Vec3(1.f, 1.f, 0.f));
 			//rb->AddTorque(Vec3(1.f, 1.f, 0.f));

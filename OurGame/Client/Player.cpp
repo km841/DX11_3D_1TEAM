@@ -401,7 +401,7 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 		mGroundCount++;
 	}
 
-	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
+	if (LayerType::MonsterCol == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		StateChange(PlayerState::HitStartState);
 	}
