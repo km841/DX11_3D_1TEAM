@@ -32,6 +32,7 @@
 #pragma clang diagnostic ignored "-Wfloat-equal"
 #endif
 #include <PhysX/PxPhysicsAPI.h>
+#include "imgui.h"
 
 namespace DirectX
 {
@@ -127,6 +128,8 @@ namespace DirectX
             Vector2& operator=(Vector2&&) = default;
 
             operator XMVECTOR() const noexcept { return XMLoadFloat2(this); }
+
+            operator ImVec2() const noexcept { return ImVec2(x, y); }
 
             // Comparison operators
             bool operator == (const Vector2& V) const noexcept;
@@ -390,6 +393,7 @@ namespace DirectX
             Vector4& operator=(Vector4&&) = default;
 
             operator XMVECTOR() const  noexcept { return XMLoadFloat4(this); }
+            operator ImVec4() const noexcept { return ImVec4(x, y, z, w); }
 
             // Comparison operators
             bool operator == (const Vector4& V) const noexcept;

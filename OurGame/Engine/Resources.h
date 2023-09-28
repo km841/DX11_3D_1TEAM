@@ -4,6 +4,7 @@
 #include "Mesh.h"
 #include "Material.h"
 #include "MeshData.h"
+#include "Video.h"
 #include "GameObject.h"
 
 namespace hm
@@ -148,6 +149,8 @@ namespace hm
 			return ObjectType::Mesh;
 		else if (std::is_same_v<T, MeshData>)
 			return ObjectType::MeshData;
+		else if (std::is_same_v<T, Video>)
+			return ObjectType::Video;
 		else
 		{
 			AssertEx(false, L"잘못된 리소스 타입 전달");

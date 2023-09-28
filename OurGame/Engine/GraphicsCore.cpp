@@ -8,7 +8,7 @@ namespace hm
 	{
 		CreateDeviceAndContext();
 		CreateDxgiFactory();
-
+		CreateVideoLibrary();
 
 	}
 	void GraphicsCore::Create2DRenderTarget()
@@ -64,6 +64,21 @@ namespace hm
 		// Create DXGI
 		HRESULT hResult = CreateDXGIFactory(IID_PPV_ARGS(&mpDxgi));
 		AssertEx(SUCCEEDED(hResult), L"GraphicsCore::CreateDxgiFactory() - DxgiFactory 积己 角菩");
+	}
+	void GraphicsCore::CreateVideoLibrary()
+	{
+		HRESULT hr = CoInitialize(NULL);
+		hr = CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_SERVER, IID_IGraphBuilder, reinterpret_cast<void**>(mpGraphBuilder.GetAddressOf()));
+		AssertEx(SUCCEEDED(hr), L"GraphicsCore::CreateVideoLibrary() - GraphBuilder 积己 角菩");
+
+		hr = mpGraphBuilder->QueryInterface(IID_IMediaControl, reinterpret_cast<void**>(mpMediaControl.GetAddressOf()));
+		AssertEx(SUCCEEDED(hr), L"GraphicsCore::CreateVideoLibrary() - MediaControl 积己 角菩");
+
+		hr = mpGraphBuilder->QueryInterface(IID_IMediaEvent, reinterpret_cast<void**>(mpMediaEvent.GetAddressOf()));
+		AssertEx(SUCCEEDED(hr), L"GraphicsCore::CreateVideoLibrary() - MediaEvent 积己 角菩");
+
+		hr = mpGraphBuilder->QueryInterface(IID_IVideoWindow, reinterpret_cast<void**>(mpVideoWindow.GetAddressOf()));
+		AssertEx(SUCCEEDED(hr), L"GraphicsCore::CreateVideoLibrary() - VideoControl 积己 角菩");
 	}
 }
 

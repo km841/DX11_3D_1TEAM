@@ -43,6 +43,7 @@
 #include <DirectXTex/DirectXTex.inl>
 #include <dwrite.h>
 #include <d2d1.h>
+#include <dshow.h>
 
 
 
@@ -100,6 +101,7 @@
 #pragma comment(lib, "d3dcompiler")
 #pragma comment(lib, "d2d1")
 #pragma comment(lib, "dwrite")
+#pragma comment(lib, "strmiids.lib")
 #pragma comment(lib, "FW1FontWrapper\\FW1FontWrapper.lib")
 
 namespace fs = std::filesystem;
@@ -156,6 +158,11 @@ public:						  \
 #define RESOLUTION gpEngine->GetResolution()
 #define RENDERTARGET_2D gpEngine->GetGraphicsCore()->GetRenderTarget2D()
 #define LARGE_RESOURCE(path) wstring(L"..\\..\\..\\LargeResource\\") + path
+
+#define VBUILDER gpEngine->GetGraphicsCore()->GetGraphBuilder()
+#define VWINDOW gpEngine->GetGraphicsCore()->GetVideoWindow()
+#define VCONTROL gpEngine->GetGraphicsCore()->GetMediaControl()
+#define VEVENT gpEngine->GetGraphicsCore()->GetMediaEvent()
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 /*

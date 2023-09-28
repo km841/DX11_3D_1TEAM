@@ -51,15 +51,7 @@ namespace hm
 			SAFE_DELETE(buffer);
 		}
 
-		for (int i = 0; i < SCREEN_EFFECT_GROUP_COUNT; ++i)
-		{
-			while (!mScreenEffectGroup[i].empty())
-			{
-				auto p = mScreenEffectGroup[i].front();
-				SAFE_DELETE(p);
-				mScreenEffectGroup[i].pop();
-			}
-		}
+		RemoveAllEffect();
 	}
 
 	void RenderManager::Initialize()
