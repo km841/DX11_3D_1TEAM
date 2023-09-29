@@ -10,7 +10,7 @@
 namespace hm
 {
 	UIText::UIText()
-		: Component(ComponentType::UI)
+		: Component(ComponentType::UIText)
 		, mbShadow(false)
 		, mSize(20.f)
 		, meAlignH(TextAlignH::Center)

@@ -14,6 +14,7 @@ namespace hm
 	class RigidBody;
 	class Animator;
 	class AI;
+	class UIText;
 
 	enum class ComponentType
 	{
@@ -31,7 +32,7 @@ namespace hm
 		ParticleSystem,
 		SoundListener,
 		SoundSource,
-		UI,
+		UIText,
 		// ...
 		MonoBehavior,
 		End,
@@ -69,6 +70,7 @@ namespace hm
 		RigidBody* GetRigidBody();
 		Animator* GetAnimator();
 		AI* GetAI();
+		UIText* GetUIText();
 
 		bool IsPhysicsObject();
 

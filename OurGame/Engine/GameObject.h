@@ -15,6 +15,7 @@ namespace hm
 	class Collider;
 	class RigidBody;
 	class Animator;
+	class UIText;
 	class AI;
 
 	class GameObject :
@@ -68,6 +69,7 @@ namespace hm
 		Collider* GetCollider();
 		RigidBody* GetRigidBody();
 		Animator* GetAnimator();
+		UIText* GetUIText();
 		AI* GetAI();
 
 		LayerType GetLayerType() { return meLayerType; }

@@ -12,6 +12,7 @@
 #include "Engine.h"
 #include "Resources.h"
 #include "AI.h"
+#include "UIText.h"
 
 namespace hm
 {
@@ -174,6 +175,11 @@ namespace hm
 	Animator* GameObject::GetAnimator()
 	{
 		return static_cast<Animator*>(GetFixedComponent(ComponentType::Animator));
+	}
+
+	UIText* GameObject::GetUIText()
+	{
+		return static_cast<UIText*>(GetFixedComponent(ComponentType::UIText));
 	}
 
 	AI* GameObject::GetAI()

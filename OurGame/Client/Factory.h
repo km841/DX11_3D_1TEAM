@@ -5,6 +5,10 @@
 #include "MeshRenderer.h"
 #include "Resources.h"
 #include "Collider.h"
+#include "Interface.h"
+
+#include "InterfaceAlphaScript.h"
+#include "InterfaceButtonScript.h"
 
 namespace hm
 {
@@ -27,6 +31,13 @@ namespace hm
 			const wstring& _fbxPath = L"",
 			bool _bInvNormal = false,
 			Types ... _args);
+
+
+		template<typename T, typename ... Types>
+		static T* CreateInterface(const Vec3& _pos, const Vec2& _scale, const wstring& _imgPath = L"", Types ... _args);
+
+		template<typename T, typename ... Types>
+		static T* CreateButtonInterface(const Vec3& _pos, const Vec2& _scale, const ButtonInfo& _info, const wstring& _imgPath = L"", Types ... _args);
 
 	private:
 
@@ -70,6 +81,44 @@ namespace hm
 		pObject->AddComponent(new Collider);
 
 		return pObject;
+	}
+	template<typename T, typename ...Types>
+	inline T* Factory::CreateInterface(const Vec3& _pos, const Vec2& _scale, const wstring& _imgPath, Types ..._args)
+	{
+		if constexpr (!std::is_base_of_v<Interface, T>)
+			AssertEx(false, L"Factory::CreateButtonInterface() - Interface 타입이 아닌 오브젝트를 생성하려는 시도");
+
+		T* pInterface = CreateObject<T>(_pos, L"Interface", L"", false, _args...);
+		pInterface->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+
+		if (false == _imgPath.empty())
+		{
+			shared_ptr<Texture> pDefaultTexture = GET_SINGLE(Resources)->Load<Texture>(_imgPath, _imgPath);
+			pInterface->GetMeshRenderer()->GetMaterial()->SetTexture(0, pDefaultTexture);
+		}
+
+		pInterface->GetTransform()->SetScale(Vec3(_scale.x, _scale.y, 1.f));
+
+		InterfaceAlphaScript* pAlphaScript = pInterface->AddComponent(new InterfaceAlphaScript);
+		pInterface->SetAlphaFunction([=](float _alpha) { pAlphaScript->SetAlpha(_alpha); });
+
+		return pInterface;
+	}
+	template<typename T, typename ...Types>
+	inline T* Factory::CreateButtonInterface(const Vec3& _pos, const Vec2& _scale, const ButtonInfo& _info, const wstring& _imgPath, Types ..._args)
+	{
+		T* pInterface = CreateInterface<T>(_pos, _scale, _imgPath, _args...);
+
+		InterfaceButtonScript* pButtonScript = pInterface->AddComponent(new InterfaceButtonScript);
+		pButtonScript->SetNonHoveredTexture(_info.pNonHoveredTexture);
+		pButtonScript->SetHoveredTexture(_info.pHoveredTexture);
+		pButtonScript->SetClickedTexture(_info.pClickedTexture);
+
+		pButtonScript->SetNonHoveredCallback(_info.nonHoveredCallback);
+		pButtonScript->SetHoveredCallback(_info.hoveredCallback);
+		pButtonScript->SetClickedCallback(_info.clickedCallback);
+
+		return pInterface;
 	}
 }
 
