@@ -162,6 +162,7 @@ public:						  \
 #define VBUILDER gpEngine->GetGraphicsCore()->GetGraphBuilder()
 #define VWINDOW gpEngine->GetGraphicsCore()->GetVideoWindow()
 #define VCONTROL gpEngine->GetGraphicsCore()->GetMediaControl()
+#define VPOSITION gpEngine->GetGraphicsCore()->GetMediaPosition()
 #define VEVENT gpEngine->GetGraphicsCore()->GetMediaEvent()
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

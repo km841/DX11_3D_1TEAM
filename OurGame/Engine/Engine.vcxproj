@@ -177,7 +177,6 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClInclude Include="BehaviorNode.h" />
     <ClInclude Include="BehaviorTask.h" />
     <ClInclude Include="BlurFilter.h" />
-    <ClInclude Include="ButtonUI.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ChangeMaterialEvent.h" />
     <ClInclude Include="Collider.h" />
@@ -223,8 +222,6 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClInclude Include="Input.h" />
     <ClInclude Include="InstancingBuffer.h" />
     <ClInclude Include="Interface.h" />
-    <ClInclude Include="InterfaceFont.h" />
-    <ClInclude Include="InterfaceManager.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
@@ -277,7 +274,6 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClCompile Include="BehaviorNode.cpp" />
     <ClCompile Include="BehaviorTask.cpp" />
     <ClCompile Include="BlurFilter.cpp" />
-    <ClCompile Include="ButtonUI.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChangeMaterialEvent.cpp" />
     <ClCompile Include="Collider.cpp" />
@@ -316,8 +312,6 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InstancingBuffer.cpp" />
     <ClCompile Include="Interface.cpp" />
-    <ClCompile Include="InterfaceFont.cpp" />
-    <ClCompile Include="InterfaceManager.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -541,6 +535,12 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="..\Resources\Shader\shadow.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\interface.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>

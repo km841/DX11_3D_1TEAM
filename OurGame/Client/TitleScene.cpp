@@ -15,7 +15,6 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "Resources.h"
-#include "InterfaceManager.h"
 
 /* GameObject */
 #include "GameObject.h"
@@ -25,7 +24,7 @@
 #include "UI.h"
 
 /* Interface */
-#include "ButtonUI.h"
+#include "Interface.h"
 
 /* Component */
 #include "Collider.h"
@@ -35,11 +34,14 @@
 #include "Camera.h"
 #include "Light.h"
 #include "ParticleSystem.h"
+#include "UIText.h"
 
 /* Script */
 #include "PaperBurnScript.h"
 #include "CameraMoveScript.h"
 #include "CinematicCamMove.h"
+#include "InterfaceAlphaScript.h"
+#include "InterfaceButtonScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -69,7 +71,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::DiningColliderCheckMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Right2Map);
 		}
 
 		// 지형
@@ -137,7 +139,7 @@ namespace hm
 			pGameObject->AddComponent(new CameraMoveScript);
 			//pGameObject->AddComponent(new yj::CinematicCamMove);
 
-			pCamera->SetCullingMask(LayerType::UI, true);
+			pCamera->SetCullingMask(LayerType::Interface, true);
 
 			pTransform->SetPosition(Vec3(0.f, 0.f, 0.f));
 			AddGameObject(pGameObject);
@@ -152,7 +154,7 @@ namespace hm
 			Camera* pCamera = pGameObject->AddComponent(new Camera);
 			pCamera->SetProjectionType(ProjectionType::Orthographic);
 			pCamera->EnableAllCullingMask();
-			pCamera->SetCullingMask(LayerType::UI, false);
+			pCamera->SetCullingMask(LayerType::Interface, false);
 
 			pTransform->SetPosition(Vec3(0.f, 0.f, 0.f));
 			AddGameObject(pGameObject);
@@ -188,41 +190,55 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
-
 		// Title
 		{
 			UI* pUI = Factory::CreateObject<UI>(Vec3(0.f, 0.f, 0.f), L"Forward", L"");
 
-			pUI->GetTransform()->SetScale(Vec3(1600.f, 900.f, 1.f));
+			pUI->GetTransform()->SetScale(Vec3(RESOLUTION.x / 2.f, RESOLUTION.y / 2.f, 1.f));
 			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"TitleLogo", L"..\\Resources\\Texture\\Title_Temp.png");
 			pUI->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
-			pUI->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadCubeMesh());
+			pUI->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
 
 			AddGameObject(pUI);
 		}
 
-		// Interface
-
+		// Text
 		{
-			InterfaceInfo info = {};
-			info.eType = InterfaceType::UI;
-			info.importance = 1;
-			info.name = "Logo";
+			Interface* pInterface = Factory::CreateObject<Interface>(Vec3(-500.f, 200.f, -1.f), L"Interface", L"");
+			InterfaceAlphaScript* pScript = pInterface->AddComponent(new InterfaceAlphaScript);
+			InterfaceButtonScript* pButton = pInterface->AddComponent(new InterfaceButtonScript);
 
-			Interface* newUI = new Interface(info);
+			//pButton->SetClickedCallback([]() { MessageBoxA(NULL, NULL, NULL, NULL); });
 
-			newUI->SetScale(Vec2(500.f, 500.f));
-			newUI->SetPosition(Vec2(100.f, 100.f));
+			shared_ptr<Texture> pHoveredTexture = GET_SINGLE(Resources)->Load<Texture>(L"TitleLogo", L"..\\Resources\\Texture\\Title_Temp.png");
+			shared_ptr<Texture> pClickedTexture = GET_SINGLE(Resources)->Load<Texture>(L"clicked", L"..\\Resources\\Texture\\blender_uv_grid_2k.png");
+			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"good", L"..\\Resources\\Texture\\goodjob.png");
+			pButton->SetHoveredTexture(pHoveredTexture);
+			pButton->SetClickedTexture(pClickedTexture);
+			pButton->SetNonHoveredTexture(pTexture);
 
-			// Child
-			{
-				ButtonUI* pButton = new ButtonUI("KoreanFont", 1, Vec2(100.f, 100.f), Vec2(100.f, 100.f));
-				pButton->SetColor(Vec4(0.f, 0.f, 0.f, 1.f));
-				pButton->SetCallback([]() { MessageBoxA(NULL, NULL, NULL, NULL); });
-				newUI->AddChild(pButton);
-			}
-			GET_SINGLE(InterfaceManager)->AddInterface(newUI);
+			pScript->SetAlpha(0.5f);
+			pInterface->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+
+			pInterface->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
+			pInterface->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+			UIText* pText = pInterface->AddComponent(new UIText);
+
+			//pInterface->GetRigidBody()->SetVelocity(Vec3(10.f, 0.f, 0.f));
+
+			pText->SetText(L"즐거운추석");
+			pText->SetSize(25.f);
+			pText->SetRenderArea(0.f, 0.f, RESOLUTION.x, RESOLUTION.y);
+			pText->SetAlignH(TextAlignH::Center);
+			pText->SetAlignV(TextAlignV::Top);
+			pText->SetShadowOffset(Vec3(1.5f, -1.5f, 0.f));
+			pText->Shadow(true);
+			pText->SetShadowColor(0.f, 0.f, 0.f, 1.f);
+			pText->SetColor(1.f, 0.f, 0.f, 1.f);
+
+			AddGameObject(pInterface);
 		}
+
 
 	}
 

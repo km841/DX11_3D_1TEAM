@@ -121,15 +121,35 @@ namespace hm
 	void MeshRenderer::RenderShadow(Camera* _pCamera)
 	{
 		GetTransform()->PushData(_pCamera);
-		GET_SINGLE(Resources)->Get<Material>(L"Shadow")->PushGraphicData();
-
 		CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
-		CONST_BUFFER(ConstantBufferType::Material)->Mapping();
+
+		if (nullptr != GetAnimator())
+			GetAnimator()->PushData();
+
+		shared_ptr<Material> pShadowMaterial = GET_SINGLE(Resources)->Get<Material>(L"Shadow");
+
+		if (nullptr != GetAnimator())
+		{
+			UINT32 materialCount = mpMaterial->GetMaterialContainerCount();
+			while (materialCount > pShadowMaterial->GetMaterialContainerCount())
+			{
+				MaterialContainer* pMatContainer = new MaterialContainer;
+				pMatContainer->AddSubset(new MaterialSubset);
+				pShadowMaterial->AddMaterialContainer(pMatContainer);
+			}
+		}
 
 		UINT32 containerCount = mpMesh->GetMeshContainerCount();
 		for (UINT32 i = 0; i < containerCount; ++i)
 		{
-			mpMesh->RenderInstancing(1, i);
+			if (nullptr != GetAnimator())
+			{
+				pShadowMaterial->SetInt(1, 1, i, 0);
+				pShadowMaterial->PushGraphicData(i, 0);
+			}
+
+			CONST_BUFFER(ConstantBufferType::Material)->Mapping();
+			mpMesh->Render(i);
 		}
 	}
 	void MeshRenderer::SetMaterial(shared_ptr<Material> _pMaterial)

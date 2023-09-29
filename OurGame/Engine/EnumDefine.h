@@ -30,7 +30,7 @@ namespace hm
 		Obstacle,
 		DecoObject,
 		WallObject,
-		UI,
+		Interface,
 		Portal,
 		End,
 	};
@@ -224,12 +224,6 @@ namespace hm
 		None,
 		Open,
 		Close,
-	};
-
-	enum class InterfaceType
-	{
-		UI,
-		HUD,
 	};
 }
 

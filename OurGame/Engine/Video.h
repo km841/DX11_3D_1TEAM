@@ -15,8 +15,11 @@ namespace hm
 	public:
 		void Play();
 		
-
 	private:
+		ComPtr<IBaseFilter> mpBaseFilter;
+		ComPtr<IBaseFilter> mpRenderer;
+		ComPtr<IPin> mpSourceOutputPin;
+		ComPtr<IPin> mpRendererInputPin;
 		wstring mPath;
 	};
 }

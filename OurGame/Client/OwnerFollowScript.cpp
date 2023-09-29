@@ -2,6 +2,7 @@
 #include "OwnerFollowScript.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include "SceneManager.h"
 
 namespace hm
 {
@@ -14,9 +15,22 @@ namespace hm
     {
         if (nullptr != mpOwner)
         {
-            Vec3 fixedPos = mpOwner->GetTransform()->GetPosition();
-            GetTransform()->SetPosition(fixedPos + mOffset);
+            LayerType eLayerType = GetGameObject()->GetLayerType();
+            if (LayerType::Interface == eLayerType)
+            {
+                Vec3 fixedPos = mpOwner->GetTransform()->GetPosition();
+                Camera* pCamera = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera();
+                fixedPos = GET_SINGLE(SceneManager)->WorldToScreenPosition(fixedPos, pCamera);
+                GetTransform()->SetPosition(fixedPos + mOffset);
+            }
+            else
+            {
+                Vec3 fixedPos = mpOwner->GetTransform()->GetPosition();
+                GetTransform()->SetPosition(fixedPos + mOffset);
+            }
         }
+
+
     }
 
     Component* OwnerFollowScript::Clone(GameObject* _pGameObject)

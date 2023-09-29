@@ -83,6 +83,7 @@ namespace hm
         * _instanceCount : 인스턴싱할 개수
         */
         void Render();
+        void Render(int _index);
         void RenderInstancing(int _instanceCount = 1, int _index = 0);
         void RenderInstancing(InstancingBuffer* _pBuffer, int _index = 0);
 

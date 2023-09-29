@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Interface.h"
 #include "Engine.h"
+#include "Timer.h"
 
 namespace hm
 {
-	Interface::Interface(const InterfaceInfo& _info)
-		: mInfo(_info)
-		, mbEnable(true)
+	Interface::Interface()
+		: GameObject(LayerType::Interface)
 	{
 	}
 
@@ -21,37 +21,30 @@ namespace hm
 
 	void Interface::Initialize()
 	{
+		GameObject::Initialize();
 	}
 	void Interface::Update()
 	{
-		ImGui::SetNextWindowPos(mPos);
-		ImGui::SetNextWindowSize(mScale);
-
-		if (ImGui::Begin((mInfo.name + "Framework").c_str(), nullptr,
-			ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
-			ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar))
-		{
-			ChildUpdate();
-		}
-		ImGui::End();
+		GameObject::Update();
 	}
 	void Interface::FixedUpdate()
 	{
+		GameObject::FixedUpdate();
+	}
+	void Interface::FinalUpdate()
+	{
+		GameObject::FinalUpdate();
 	}
 	void Interface::Render()
 	{
+		GameObject::Render();
 	}
 	void Interface::Destroy()
 	{
+		GameObject::Destroy();
 	}
-	void Interface::AddChild(Interface* _pChild)
-	{
-		int importance = _pChild->GetInterfaceInfo().importance;
-		
-		auto pair = mChildren.insert(std::make_pair(importance, _pChild));
-		AssertEx(pair.second, L"Interface::AddChild() - 중복되는 Importance가 존재");
-	}
-	Interface* Interface::GetChild(const string& _name)
+
+	Interface* Interface::GetChild(const wstring& _name)
 	{
 		for (auto& pChild : mChildren)
 		{
@@ -61,7 +54,7 @@ namespace hm
 
 		return nullptr;
 	}
-	void Interface::ChildUpdate()
+	void Interface::UpdateChild()
 	{
 		for (auto& pChild : mChildren)
 		{

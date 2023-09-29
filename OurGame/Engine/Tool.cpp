@@ -81,7 +81,7 @@ namespace hm
 	void Tool::InitGizmoGui()
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		io.DisplaySize = ImVec2(1600, 900);
+		io.DisplaySize = ImVec2(1920, 1080);
 
 		ImGuiStyle& style = ImGui::GetStyle();
 		style.WindowPadding = ImVec2(0, 0);

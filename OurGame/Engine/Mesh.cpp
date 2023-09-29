@@ -44,6 +44,19 @@ namespace hm
 			CONTEXT->DrawIndexed(mMeshContainerVec[0]->indexBufferGroup[i].count, 0, 0);
 		}
 	}
+	void Mesh::Render(int _index)
+	{
+		UINT stride = sizeof(Vertex);
+		UINT offset = 0;
+
+		CONTEXT->IASetVertexBuffers(0, 1, mMeshContainerVec[_index]->vertexBufferInfo.pBuffer.GetAddressOf(), &stride, &offset);
+
+		for (int i = 0; i < mMeshContainerVec[_index]->indexBufferGroup.size(); ++i)
+		{
+			CONTEXT->IASetIndexBuffer(mMeshContainerVec[_index]->indexBufferGroup[i].pBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+			CONTEXT->DrawIndexed(mMeshContainerVec[_index]->indexBufferGroup[i].count, 0, 0);
+		}
+	}
 	void Mesh::RenderInstancing(int _instanceCount, int _index)
 	{
 		UINT stride = sizeof(Vertex);

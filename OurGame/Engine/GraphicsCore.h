@@ -22,8 +22,9 @@ namespace hm
 		ComPtr<IDXGIFactory> GetDxgi() { return mpDxgi; }
 		ComPtr<ID2D1RenderTarget> GetRenderTarget2D() { return mpRenderTarget2D; }
 		ComPtr<ID2D1Factory> GetFactory2D() { return mpFactory2D; }
-		ComPtr<IGraphBuilder> GetGraphBuilder() { return mpGraphBuilder; }
+		ComPtr<IFilterGraph2> GetGraphBuilder() { return mpGraphBuilder; }
 		ComPtr<IMediaControl> GetMediaControl() { return mpMediaControl; }
+		ComPtr<IMediaPosition> GetMediaPosition() { return mpMediaPosition; }
 		ComPtr<IMediaEvent> GetMediaEvent() { return mpMediaEvent; }
 		ComPtr<IVideoWindow> GetVideoWindow() { return mpVideoWindow; }
 
@@ -44,10 +45,12 @@ namespace hm
 		ComPtr<ID2D1RenderTarget> mpRenderTarget2D;
 		ComPtr<ID2D1Factory> mpFactory2D;
 
-		ComPtr<IGraphBuilder> mpGraphBuilder;
+		ComPtr<IFilterGraph2> mpGraphBuilder;
 		ComPtr<IMediaControl> mpMediaControl;
+		ComPtr<IMediaPosition> mpMediaPosition;
 		ComPtr<IMediaEvent> mpMediaEvent;
 		ComPtr<IVideoWindow> mpVideoWindow;
+		
 	};
 }
 
