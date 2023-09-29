@@ -10,7 +10,6 @@
 #include "RenderManager.h"
 #include "FontManager.h"
 #include "CollisionManager.h"
-#include "InterfaceManager.h"
 #include "Tool.h"
 
 namespace hm
@@ -70,7 +69,6 @@ namespace hm
 		GET_SINGLE(Resources)->Initialize();
 		GET_SINGLE(Input)->Initialize();
 		GET_SINGLE(SceneManager)->Initialize();
-		//GET_SINGLE(InterfaceManager)->Initialize();
 		GET_SINGLE(Timer)->Initialize();
 		GET_SINGLE(RenderManager)->Initialize();
 	}
@@ -218,7 +216,7 @@ namespace hm
 
 		// Screen Effect
 		{
-			float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+			float clearColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 			std::vector<RenderTarget> renderTargets(EFFECT_GROUP_COUNT);
 
 			renderTargets[0].pTarget = GET_SINGLE(Resources)->CreateTexture(
@@ -259,7 +257,6 @@ namespace hm
 		GET_SINGLE(SceneManager)->FixedUpdate();
 		GET_SINGLE(SceneManager)->FinalUpdate();
 		GET_SINGLE(CollisionManager)->Update();
-		//GET_SINGLE(InterfaceManager)->Update();
 		mpPhysics->Update();
 
 		mpTool->Update();
@@ -269,7 +266,6 @@ namespace hm
 		RenderBegin();
 		// Scene Rendering
 		GET_SINGLE(SceneManager)->Render();
-		//GET_SINGLE(InterfaceManager)->Render();
 		mpTool->Render();
 		RenderEnd();
 

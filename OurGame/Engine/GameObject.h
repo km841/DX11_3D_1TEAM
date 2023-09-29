@@ -76,8 +76,8 @@ namespace hm
 		void SetDontDestroyObject(const wstring& _name);
 		bool IsDontDestroy() { return mbDontDestroy; }
 
-		void Enable();
-		void Disable();
+		virtual void Enable();
+		virtual void Disable();
 		bool IsEnable() { return mbEnable; }
 
 		/* Frustum Culling을 적용받을 것인지를 세팅 */

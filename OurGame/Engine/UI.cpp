@@ -4,7 +4,7 @@
 namespace hm
 {
 	UI::UI()
-		: GameObject(LayerType::UI)
+		: GameObject(LayerType::Interface)
 	{
 	}
 

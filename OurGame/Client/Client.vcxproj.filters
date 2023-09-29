@@ -267,6 +267,12 @@
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
     <ClInclude Include="LadderCollider.h" />
+    <ClInclude Include="InterfaceButtonScript.h">
+      <Filter>소스 파일\GameObject\Interface\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceAlphaScript.h">
+      <Filter>소스 파일\GameObject\Interface\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -532,6 +538,12 @@
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
     <ClCompile Include="LadderCollider.cpp" />
+    <ClCompile Include="InterfaceAlphaScript.cpp">
+      <Filter>소스 파일\GameObject\Interface\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="InterfaceButtonScript.cpp">
+      <Filter>소스 파일\GameObject\Interface\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -595,6 +607,12 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Monster\Node">
       <UniqueIdentifier>{b52b02d9-ae3a-42be-b5b9-b4885039a9b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Interface">
+      <UniqueIdentifier>{3bf55c99-64a6-42a7-8df6-7854a2bcff85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Interface\Script">
+      <UniqueIdentifier>{adc1e21d-edf8-492f-9bae-3005ca1a9c1f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

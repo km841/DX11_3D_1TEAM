@@ -64,6 +64,9 @@ namespace hm
 
 	void RenderManager::Render(Scene* _pScene)
 	{
+		if (true == mbNoRenderMode)
+			return;
+
 		ClearInstancingBuffer();
 
 		PushLightData(_pScene);
@@ -139,14 +142,23 @@ namespace hm
 		RenderInstancing(_pScene->mpMainCamera->GetCamera(), _pScene->mpMainCamera->GetCamera()->GetForwardObjects());
 		_pScene->mpMainCamera->GetCamera()->RenderParticle();
 
+		std::vector<GameObject*>& uiGroup = _pScene->mpUICamera->GetCamera()->GetForwardObjectsRef();
+		_pScene->mpUICamera->GetCamera()->ZSortGroup(uiGroup);
+		_pScene->mpUICamera->GetCamera()->RenderForward();
+
 		for (GameObject* pCameraObject : _pScene->mCameraObjects)
 		{
 			if (pCameraObject == _pScene->mpMainCamera)
 				continue;
 
+			if (pCameraObject == _pScene->mpUICamera)
+				continue;
+
 			RenderInstancing(pCameraObject->GetCamera(), pCameraObject->GetCamera()->GetForwardObjects());
 			pCameraObject->GetCamera()->RenderParticle();
 		}
+
+
 	}
 
 	void RenderManager::RenderDeferred(Scene* _pScene)

@@ -18,7 +18,7 @@ namespace hm
 		mpShadowCamera = new GameObject(LayerType::Unknown);
 		Transform* pTransform = mpShadowCamera->AddComponent(new Transform);
 		Camera* pCamera = mpShadowCamera->AddComponent(new Camera);
-		pCamera->SetCullingMask(LayerType::UI, true);
+		pCamera->SetCullingMask(LayerType::Interface, true);
 
 		mpStaticShadowMap = GET_SINGLE(Resources)->CreateTexture(
 			std::to_wstring((UINT64)this) + L"S",

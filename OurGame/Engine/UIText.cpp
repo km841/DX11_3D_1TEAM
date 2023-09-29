@@ -13,21 +13,21 @@ namespace hm
 		: Component(ComponentType::UI)
 		, mbShadow(false)
 		, mSize(20.f)
-		, meAlignH(TextAlignH::Left)
-		, meAlignV(TextAlignV::Mid)
+		, meAlignH(TextAlignH::Center)
+		, meAlignV(TextAlignV::Top)
 		, meRenderType(TextRenderType::TextUI)
 		, mbAlpha(false)
 		, mbAlphaShadow(false)
 		, mOpacity(1.f)
 		, mShadowOpacity(1.f)
 	{
-		mFont = L"궁서체";
+		mFont = L"맑은 고딕";
 		mFont.resize(64);
 
 		mColor = Vec4(1.f, 1.f, 1.f, 1.f);
 		mShadowColor = Vec4(0.f, 0.f, 0.f, 1.f);
 
-		mpTextFormat = GET_SINGLE(FontManager)->FindTextFormat("Gungseo");
+		mpTextFormat = GET_SINGLE(FontManager)->FindTextFormat("FreshGothic");
 		mpTextLayout = GET_SINGLE(FontManager)->CreateTextLayout(L"", mpTextFormat, 100.f, 100.f);
 
 		mpColor = GET_SINGLE(FontManager)->CreateColor(mColor);
@@ -92,7 +92,7 @@ namespace hm
 
 			// 그림자가 현재 폰트보다 위로 가도록
 			// 해당 구문이 없으면 현재 폰트보다 아래로 갈 것이다.
-			shadowPos.y = RESOLUTION.y - shadowPos.y - height;
+			shadowPos.y = RESOLUTION.y - shadowPos.y - height + RESOLUTION.y / 2.f - 20.f;
 			// 그림자를 그린다.
 			// 1. 그림자 출력 위치
 			// 2. 그림자 레이아웃
@@ -112,7 +112,7 @@ namespace hm
 			// 불투명
 			mpColor->SetOpacity(1.f);
 		}
-		pos.y = RESOLUTION.y - pos.y - height;
+		pos.y = RESOLUTION.y - pos.y - height + RESOLUTION.y / 2.f - 20.f;
 
 		// 텍스트를 그린다.
 		// 1. 텍스트 출력 위치
@@ -280,10 +280,10 @@ namespace hm
 
 		mpColor = GET_SINGLE(FontManager)->CreateColor(_color);
 	}
-	void UIText::SetRenderArea(float _l, float _t, float _r, float _b)
+	void UIText::SetRenderArea(float _left, float _top, float _right, float _bottom)
 	{
-		mRenderArea = D2D1::RectF(_l, RESOLUTION.y - _b,
-			_r, RESOLUTION.y - _t);
+		mRenderArea = D2D1::RectF(_left, RESOLUTION.y - _bottom,
+			_right, RESOLUTION.y - _top);
 
 		CreateTextLayout();
 	}

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Video.h"
 #include "Engine.h"
+#include "RenderManager.h"
 namespace hm
 {
 	Video::Video()
@@ -15,30 +16,30 @@ namespace hm
 		mPath = _path;
 		bool bExists = fs::exists(_path);
 		AssertEx(bExists, L"Video::Load() - 존재하지 않는 경로");
+
+
+
 	}
 	void Video::Play()
 	{
-		HRESULT hr = VBUILDER->RenderFile(mPath.c_str(), NULL);
+		//HRESULT hr = VBUILDER->RenderFile(mPath.c_str(), NULL);
+		VBUILDER->AddSourceFilter(mPath.c_str(), mPath.c_str(), &mpBaseFilter);
+		CoCreateInstance(CLSID_VideoMixingRenderer9, NULL, CLSCTX_INPROC, IID_IBaseFilter, reinterpret_cast<void**>(mpRenderer.GetAddressOf()));
+		VBUILDER->AddFilter(mpRenderer.Get(), L"Video Renderer");
 
-		if (SUCCEEDED(hr))
-		{
-			VWINDOW->put_Left(0);
-			VWINDOW->put_Top(0);
+		HRESULT hr = mpBaseFilter->FindPin(L"Output", reinterpret_cast<IPin**>(mpSourceOutputPin.GetAddressOf()));
+		AssertEx(SUCCEEDED(hr), L"Video::Load() - Output Pin 생성 실패");
 
-			VWINDOW->put_FullScreenMode(OATRUE);
+		hr = mpRenderer->FindPin(L"VMR Input0", reinterpret_cast<IPin**>(mpRendererInputPin.GetAddressOf()));
+		VBUILDER->ConnectDirect(mpSourceOutputPin.Get(), mpRendererInputPin.Get(), NULL);
 
-			hr = VCONTROL->Run();
-			if (SUCCEEDED(hr))
-			{
-				long ev;
-				VEVENT->WaitForCompletion(INFINITE, &ev);
-			}
-		}
+		hr = VCONTROL->Run();
+		// Wait for the video to finish (replace with your game loop)
+		Sleep(5000); // Sleep for 5 seconds
 
-		else
-		{
-			AssertEx(false, L"Video::Play() - 비디오를 실행할 수 없음 (경로 문제일 가능성 높음)");
-		}
+		// Stop the graph
+		VCONTROL->Stop();
+
 
 	}
 }

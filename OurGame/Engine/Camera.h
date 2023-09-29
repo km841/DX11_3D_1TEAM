@@ -56,9 +56,13 @@ namespace hm
 
         void RenderEffect();
 
+        std::vector<GameObject*>&       GetForwardObjectsRef() { return mForwardObjects; }
         const std::vector<GameObject*>& GetForwardObjects() { return mForwardObjects; }
         const std::vector<GameObject*>& GetDeferredObjects() { return mDeferredObjects; }
         const std::vector<GameObject*>& GetEffectObjects() { return mEffectObjects; }
+
+        void ZSortGroup(std::vector<GameObject*>& _gameObjects) { std::sort(_gameObjects.begin(), _gameObjects.end(), ZSort); }
+        static bool ZSort(GameObject* _pFirst, GameObject* _pSecond);
 
 	private:
         ProjectionType meProjectionType;

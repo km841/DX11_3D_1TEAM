@@ -1102,6 +1102,22 @@ namespace hm
             pShader->SetName(L"NoDraw");
             Add<Shader>(L"NoDraw", pShader);
         }
+
+        // Interface Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::NoDepthTest,
+                RasterizerType::CullNone,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\interface.fx", shaderInfo);
+            pShader->SetName(L"Interface");
+            Add<Shader>(L"Interface", pShader);
+        }
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -1427,6 +1443,16 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"NoDraw", pMaterial);
+        }
+
+        // UI Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"Interface");
+            pMaterial->ClearMaterialContainers();
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"Interface", pMaterial);
         }
     }
 }

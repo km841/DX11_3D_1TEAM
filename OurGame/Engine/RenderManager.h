@@ -63,6 +63,8 @@ namespace hm
 		void SetDebugMode(bool _bFlag) { mbDebugMode = _bFlag; }
 		bool IsDebugMode()			   { return mbDebugMode; }
 
+		void SetNoRenderMode(bool _bFlag) { mbNoRenderMode = _bFlag; }
+
 		void AddScreenEffect(ScreenEffectInfo* _effectInfo, int _groupIndex = 0);
 		void AddFadeEffect(ScreenEffectType _eType, float _endTime, std::function<void()> _startCallback = nullptr, std::function<void()> _endCallback = nullptr, const Vec4& _color = Vec4::Zero, int _groupIndex = 0);
 		void AddHoldEffect(float _endTime, std::function<void()> _startCallback = nullptr, std::function<void()> _endCallback = nullptr, const Vec4& _color = Vec4::Zero, int _groupIndex = 0);
@@ -137,6 +139,7 @@ namespace hm
 		bool mbEnableHDR;
 		bool mbEnableRim;
 		bool mbDebugMode;
+		bool mbNoRenderMode;
 
 		std::map<UINT64, InstancingBuffer*> mBuffers;
 		

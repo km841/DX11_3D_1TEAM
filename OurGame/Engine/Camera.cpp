@@ -159,14 +159,6 @@ namespace hm
 				if (false == pGameObject->IsDrawShadow())
 					continue;
 
-				//if (true == pGameObject->IsFrustumCheck())
-				//{
-				//	if (false == mFrustumCulling.ContainsSphere(
-				//		pGameObject->GetTransform()->GetWorldPosition(),
-				//		pGameObject->GetTransform()->GetBoundingSphereRadius()))
-				//		continue;
-				//}
-
 				mShadowObjects.push_back(pGameObject);
 			}
 		}
@@ -195,14 +187,6 @@ namespace hm
 
 				if (false == pGameObject->IsDrawShadow())
 					continue;
-
-				if (true == pGameObject->IsFrustumCheck())
-				{
-					if (false == mFrustumCulling.ContainsSphere(
-						pGameObject->GetTransform()->GetWorldPosition(),
-						pGameObject->GetTransform()->GetBoundingSphereRadius()))
-						continue;
-				}
 
 				mShadowObjects.push_back(pGameObject);
 			}
@@ -245,5 +229,17 @@ namespace hm
 			pEffect->PushBloomData();
 			pEffect->GetMeshRenderer()->RenderEffect(this);
 		}
+	}
+
+
+	bool Camera::ZSort(GameObject* _pFirst, GameObject* _pSecond)
+	{
+		Transform* pTrFirst = _pFirst->GetTransform();
+		Transform* pTrSecond = _pSecond->GetTransform();
+
+		if (nullptr == pTrFirst || nullptr == pTrSecond)
+			return false;
+
+		return pTrFirst->GetPosition().z > pTrSecond->GetPosition().z;
 	}
 }

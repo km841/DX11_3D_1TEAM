@@ -68,17 +68,21 @@ namespace hm
 	void GraphicsCore::CreateVideoLibrary()
 	{
 		HRESULT hr = CoInitialize(NULL);
-		hr = CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_SERVER, IID_IGraphBuilder, reinterpret_cast<void**>(mpGraphBuilder.GetAddressOf()));
+		hr = CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER, IID_IFilterGraph2, reinterpret_cast<void**>(mpGraphBuilder.GetAddressOf()));
 		AssertEx(SUCCEEDED(hr), L"GraphicsCore::CreateVideoLibrary() - GraphBuilder 积己 角菩");
 
 		hr = mpGraphBuilder->QueryInterface(IID_IMediaControl, reinterpret_cast<void**>(mpMediaControl.GetAddressOf()));
 		AssertEx(SUCCEEDED(hr), L"GraphicsCore::CreateVideoLibrary() - MediaControl 积己 角菩");
+
+		hr = mpGraphBuilder->QueryInterface(IID_IMediaPosition, reinterpret_cast<void**>(mpMediaPosition.GetAddressOf()));
+		AssertEx(SUCCEEDED(hr), L"GraphicsCore::CreateVideoLibrary() - MediaPosition 积己 角菩");
 
 		hr = mpGraphBuilder->QueryInterface(IID_IMediaEvent, reinterpret_cast<void**>(mpMediaEvent.GetAddressOf()));
 		AssertEx(SUCCEEDED(hr), L"GraphicsCore::CreateVideoLibrary() - MediaEvent 积己 角菩");
 
 		hr = mpGraphBuilder->QueryInterface(IID_IVideoWindow, reinterpret_cast<void**>(mpVideoWindow.GetAddressOf()));
 		AssertEx(SUCCEEDED(hr), L"GraphicsCore::CreateVideoLibrary() - VideoControl 积己 角菩");
+
 	}
 }
 
