@@ -21,6 +21,9 @@ namespace hm
 		virtual void Enter();
 		virtual void Exit();
 
+	private:
+		class Interface* mpActiveInterface;
+		class Interface* mpSelectedInterface;
 	};
 }
 

@@ -273,6 +273,12 @@
     <ClInclude Include="InterfaceAlphaScript.h">
       <Filter>소스 파일\GameObject\Interface\Script</Filter>
     </ClInclude>
+    <ClInclude Include="StartButtonScript.h">
+      <Filter>소스 파일\GameObject\Interface\Script\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="LogoBlinkScript.h">
+      <Filter>소스 파일\GameObject\Interface\Script\Title</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -544,6 +550,12 @@
     <ClCompile Include="InterfaceButtonScript.cpp">
       <Filter>소스 파일\GameObject\Interface\Script</Filter>
     </ClCompile>
+    <ClCompile Include="StartButtonScript.cpp">
+      <Filter>소스 파일\GameObject\Interface\Script\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="LogoBlinkScript.cpp">
+      <Filter>소스 파일\GameObject\Interface\Script\Title</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -613,6 +625,9 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Interface\Script">
       <UniqueIdentifier>{adc1e21d-edf8-492f-9bae-3005ca1a9c1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Interface\Script\Title">
+      <UniqueIdentifier>{67031677-41ab-4b5c-ac5d-888e83c1d9c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

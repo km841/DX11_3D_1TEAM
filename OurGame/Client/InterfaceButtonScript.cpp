@@ -64,6 +64,9 @@ namespace hm
 		}
 		else
 		{
+			if (nullptr != mNonHoveredCallback)
+				mNonHoveredCallback();
+
 			mbHovered = false;
 
 			if (nullptr != mpNonHoveredTexture)

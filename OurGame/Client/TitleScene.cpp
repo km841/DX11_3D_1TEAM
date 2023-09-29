@@ -42,6 +42,8 @@
 #include "CinematicCamMove.h"
 #include "InterfaceAlphaScript.h"
 #include "InterfaceButtonScript.h"
+#include "StartButtonScript.h"
+#include "LogoBlinkScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -65,6 +67,15 @@ namespace hm
 	void TitleScene::Update()
 	{
 		Scene::Update();
+
+		if (nullptr != mpActiveInterface)
+		{
+			Vec3 pos = mpActiveInterface->GetTransform()->GetPosition();
+			pos.x -= 80.f;
+			pos.y += 15.f;
+
+			mpSelectedInterface->GetTransform()->SetPosition(pos);
+		}
 		
 		// 현모
 		// - GrandmaBossMap
@@ -159,22 +170,6 @@ namespace hm
 			pTransform->SetPosition(Vec3(0.f, 0.f, 0.f));
 			AddGameObject(pGameObject);
 		}
-
-		// Create Shadow Camera
-		//GameObject* pShadowCamera = nullptr;
-		//{
-		//	pShadowCamera = new GameObject(LayerType::Unknown);
-		//	pShadowCamera->SetDontDestroyObject(L"ShadowCamera");
-		//	Transform* pTransform = pShadowCamera->AddComponent(new Transform);
-
-		//	Camera* pCamera = pShadowCamera->AddComponent(new Camera);
-
-		//	pCamera->SetCullingMask(LayerType::UI, true);
-
-		//	pTransform->SetPosition(Vec3(63.f, 63.f, 61.5f));
-		//	pTransform->SetRotation(Vec3(37.2f, 242.f, 180.f));
-		//	AddGameObject(pShadowCamera);
-		//}
 		
 		// Create DirLight
 		{
@@ -192,52 +187,124 @@ namespace hm
 
 		// Title
 		{
-			UI* pUI = Factory::CreateObject<UI>(Vec3(0.f, 0.f, 0.f), L"Forward", L"");
-
-			pUI->GetTransform()->SetScale(Vec3(RESOLUTION.x / 2.f, RESOLUTION.y / 2.f, 1.f));
-			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"TitleLogo", L"..\\Resources\\Texture\\Title_Temp.png");
-			pUI->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
-			pUI->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
-
-			AddGameObject(pUI);
+			Interface* pLogoInterface = Factory::CreateInterface<Interface>(Vec3(0.f, 180.f, 0.f), Vec2(300.f, 200.f), L"..\\Resources\\Texture\\DD_Logo_Smooth_Dropshadow.png");
+			pLogoInterface->AddComponent(new LogoBlinkScript);
+			AddGameObject(pLogoInterface);
 		}
 
-		// Text
+		// Select Interface
 		{
-			Interface* pInterface = Factory::CreateObject<Interface>(Vec3(-500.f, 200.f, -1.f), L"Interface", L"");
-			InterfaceAlphaScript* pScript = pInterface->AddComponent(new InterfaceAlphaScript);
-			InterfaceButtonScript* pButton = pInterface->AddComponent(new InterfaceButtonScript);
-
-			//pButton->SetClickedCallback([]() { MessageBoxA(NULL, NULL, NULL, NULL); });
-
-			shared_ptr<Texture> pHoveredTexture = GET_SINGLE(Resources)->Load<Texture>(L"TitleLogo", L"..\\Resources\\Texture\\Title_Temp.png");
-			shared_ptr<Texture> pClickedTexture = GET_SINGLE(Resources)->Load<Texture>(L"clicked", L"..\\Resources\\Texture\\blender_uv_grid_2k.png");
-			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"good", L"..\\Resources\\Texture\\goodjob.png");
-			pButton->SetHoveredTexture(pHoveredTexture);
-			pButton->SetClickedTexture(pClickedTexture);
-			pButton->SetNonHoveredTexture(pTexture);
-
-			pScript->SetAlpha(0.5f);
-			pInterface->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
-
-			pInterface->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
-			pInterface->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
-			UIText* pText = pInterface->AddComponent(new UIText);
-
-			//pInterface->GetRigidBody()->SetVelocity(Vec3(10.f, 0.f, 0.f));
-
-			pText->SetText(L"즐거운추석");
-			pText->SetSize(25.f);
-			pText->SetRenderArea(0.f, 0.f, RESOLUTION.x, RESOLUTION.y);
-			pText->SetAlignH(TextAlignH::Center);
-			pText->SetAlignV(TextAlignV::Top);
-			pText->SetShadowOffset(Vec3(1.5f, -1.5f, 0.f));
-			pText->Shadow(true);
-			pText->SetShadowColor(0.f, 0.f, 0.f, 1.f);
-			pText->SetColor(1.f, 0.f, 0.f, 1.f);
-
-			AddGameObject(pInterface);
+			mpSelectedInterface = Factory::CreateInterface<Interface>(Vec3(0.f, 180.f, -3.f), Vec2(40.f, 39.f), L"..\\Resources\\Texture\\icon_crowfoot.png");
+			mpSelectedInterface->SetAlpha(0.8f);
+			AddGameObject(mpSelectedInterface);
 		}
+
+		// Buttons
+		{		
+			// 현모
+			{
+				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(-450.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
+				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"현모", MapType::Right2Map));
+
+				// 클릭 기능을 스크립트로 구현
+				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
+
+				// 클릭했을 때 콜백
+				pButtonScript->SetClickedCallback([=]() { pScript->Start(); });
+
+				// 마우스가 버튼에서 벗어났을 때
+				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"현모", 35.f, true); }); 
+
+				// 마우스가 버튼에 올라갔을 때
+				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"현모", 40.f, true); mpActiveInterface = pInterface; }); 
+
+				// 텍스쳐 알파값 지정
+				pInterface->SetAlpha(0.f);
+
+				// 텍스트 지정
+				pInterface->SetText(L"시작", 25.f, true);
+
+				// 텍스트 컬러 지정
+				pInterface->SetTextColor(Vec4(1.f, 1.f, 1.f, 1.f));
+				AddGameObject(pInterface);
+
+				// 임시로 설정
+				mpActiveInterface = pInterface;
+			}
+
+			// 상연
+			{
+				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(-150.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
+				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"상연", MapType::Monster_Player_Test));
+
+				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
+				pButtonScript->SetClickedCallback([=]() { pScript->Start(); });
+				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"상연", 35.f, true); });
+				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"상연", 40.f, true); mpActiveInterface = pInterface; });
+
+				pInterface->SetAlpha(0.f);
+
+				pInterface->SetText(L"시작", 25.f, true);
+				pInterface->SetTextColor(Vec4(1.f, 1.f, 1.f, 1.f));
+
+				AddGameObject(pInterface);
+			}
+
+			// 지형
+			{
+				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(150.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
+				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"지형", MapType::PhysicsTest));
+
+				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
+				pButtonScript->SetClickedCallback([=]() { pScript->Start(); });
+				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"지형", 35.f, true); });
+				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"지형", 40.f, true); mpActiveInterface = pInterface; });
+
+				pInterface->SetAlpha(0.f);
+
+				pInterface->SetText(L"시작", 25.f, true);
+				pInterface->SetTextColor(Vec4(1.f, 1.f, 1.f, 1.f));
+
+				AddGameObject(pInterface);
+			}
+
+			// 영진
+			{
+				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(450.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
+				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"영진", MapType::Right2Map));
+
+				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
+				pButtonScript->SetClickedCallback([=]() { pScript->Start(); });
+				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"영진", 35.f, true); });
+				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"영진", 40.f, true); mpActiveInterface = pInterface; });
+
+				pInterface->SetAlpha(0.f);
+
+				pInterface->SetText(L"시작", 25.f, true);
+				pInterface->SetTextColor(Vec4(1.f, 1.f, 1.f, 1.f));
+
+				AddGameObject(pInterface);
+			}
+
+			// Exit Button
+			{
+				ButtonInfo info = {};
+				info.clickedCallback = []() { PostQuitMessage(0); };
+
+				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(0.f, -300.f, -1.f), Vec2(50.f, 50.f), info);
+
+				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
+				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"종료", 35.f, true); });
+				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"종료", 40.f, true); mpActiveInterface = pInterface; });
+
+				pInterface->SetText(L"종료", 25.f, true);
+				pInterface->SetTextColor(Vec4(1.f, 1.f, 1.f, 1.f));
+
+				AddGameObject(pInterface);
+			}
+
+		}
+
 
 
 	}

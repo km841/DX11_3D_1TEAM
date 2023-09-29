@@ -269,6 +269,16 @@ struct NavigationCell
 	float h;
 	float f;
 	bool bEnable;
+};
 
+#include "Texture.h"
+struct ButtonInfo
+{
+	shared_ptr<hm::Texture> pNonHoveredTexture;
+	shared_ptr<hm::Texture> pHoveredTexture;
+	shared_ptr<hm::Texture> pClickedTexture;
 
+	std::function<void()> nonHoveredCallback;
+	std::function<void()> hoveredCallback;
+	std::function<void()> clickedCallback;
 };

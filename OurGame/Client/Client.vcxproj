@@ -194,6 +194,7 @@
     <ClInclude Include="LadderCollider.h" />
     <ClInclude Include="LeftSecretFightMap.h" />
     <ClInclude Include="LeftSecretTrialMap.h" />
+    <ClInclude Include="LogoBlinkScript.h" />
     <ClInclude Include="Lurker.h" />
     <ClInclude Include="Mage.h" />
     <ClInclude Include="MagicAttackState.h" />
@@ -230,6 +231,7 @@
     <ClInclude Include="SpinEndState_Gm.h" />
     <ClInclude Include="SpinningState_Gm.h" />
     <ClInclude Include="SpinStartState_Gm.h" />
+    <ClInclude Include="StartButtonScript.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="State_Grandma.h" />
     <ClInclude Include="SwordHeavyEffect.h" />
@@ -294,6 +296,7 @@
     <ClCompile Include="LadderCollider.cpp" />
     <ClCompile Include="LeftSecretFightMap.cpp" />
     <ClCompile Include="LeftSecretTrialMap.cpp" />
+    <ClCompile Include="LogoBlinkScript.cpp" />
     <ClCompile Include="Lurker.cpp" />
     <ClCompile Include="Mage.cpp" />
     <ClCompile Include="MagicAttackState.cpp" />
@@ -332,6 +335,7 @@
     <ClCompile Include="SpinEndState_Gm.cpp" />
     <ClCompile Include="SpinningState_Gm.cpp" />
     <ClCompile Include="SpinStartState_Gm.cpp" />
+    <ClCompile Include="StartButtonScript.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="State_Grandma.cpp" />
     <ClCompile Include="SwordHeavyEffect.cpp" />

@@ -69,10 +69,10 @@ float4 PS_Main(VS_OUT _in) : SV_Target
     
     float4 color = g_tex_on_0 == 1 ? g_tex_0.Sample(g_sam_0, _in.uv) : float4(g_vec4_0.xyz, 1.f);
     
-    color.a = g_float_3;
-    if (color.a == 0)
+    if (color.a < 0.1f)
         discard;
     
+    color.a = g_float_3;
     return color;
 }
 #endif

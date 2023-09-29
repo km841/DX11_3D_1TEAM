@@ -11,6 +11,7 @@
 #include "Animator.h"
 #include "GameObject.h"
 #include "AI.h"
+#include "UIText.h"
 
 namespace hm
 {
@@ -59,6 +60,10 @@ namespace hm
 	AI* Component::GetAI()
 	{
 		return mpGameObject->GetAI();
+	}
+	UIText* Component::GetUIText()
+	{
+		return mpGameObject->GetUIText();
 	}
 	bool Component::IsPhysicsObject()
 	{
