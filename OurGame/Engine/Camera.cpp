@@ -196,6 +196,7 @@ namespace hm
 	{
 		for (GameObject* pGameObject : mForwardObjects)
 		{
+
 			pGameObject->GetMeshRenderer()->Render(this);
 		}
 	}

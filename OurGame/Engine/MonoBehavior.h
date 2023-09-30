@@ -11,6 +11,7 @@ namespace hm
 		virtual ~MonoBehavior();
 
 		virtual Component* Clone(class GameObject* _pGameObject) = 0;
+		virtual void PushData() { }
 
 	private:
 

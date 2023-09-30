@@ -10,11 +10,16 @@
 
 namespace yj
 {
-	FireLamp::FireLamp(GameObject* _UpperPart, GameObject* _BelowPart)
+	FireLamp::FireLamp(GameObject* _UpperPart, GameObject* _BelowPart, GameObject* _Fire, GameObject* _Light)
 		:GameObject(LayerType::Item)
 	{
 		pUpperPart = _UpperPart;
 		pBelowPart = _BelowPart;
+		pFire = _Fire;
+		pLight = _Light;
+		pFire->Disable();
+		pLight->Disable();
+
 		this->SetName(L"FireLamp");
 	}
 	FireLamp::~FireLamp()
@@ -37,6 +42,12 @@ namespace yj
 		if (mLampSequence > 0)
 		{
 			Active();
+		}
+
+		if (true == isBurn)
+		{
+			pFire->Enable();
+			pLight->Enable();
 		}
 
 	}

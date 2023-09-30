@@ -221,6 +221,14 @@ namespace hm
 				CONTEXT->PSSetSamplers(1, 1, mpPointClampSamplerState.GetAddressOf());
 				CONTEXT->GSSetSamplers(1, 1, mpPointClampSamplerState.GetAddressOf());
 				break;
+			case hm::SamplerType::WrapClamp:
+				CONTEXT->VSSetSamplers(0, 1, mpLinearWrapSamplerState.GetAddressOf());
+				CONTEXT->PSSetSamplers(0, 1, mpLinearWrapSamplerState.GetAddressOf());
+				CONTEXT->GSSetSamplers(0, 1, mpLinearWrapSamplerState.GetAddressOf());
+				CONTEXT->VSSetSamplers(1, 1, mpLinearClampSamplerState.GetAddressOf());
+				CONTEXT->PSSetSamplers(1, 1, mpLinearClampSamplerState.GetAddressOf());
+				CONTEXT->GSSetSamplers(1, 1, mpLinearClampSamplerState.GetAddressOf());
+				break;
 			}
 
 			CONTEXT->VSSetSamplers(2, 1, mpShadowSamplerState.GetAddressOf());

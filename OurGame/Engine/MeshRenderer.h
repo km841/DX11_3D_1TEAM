@@ -33,6 +33,8 @@ namespace hm
         shared_ptr<Mesh>     GetMesh()     const { return mpMesh; }
         void                 SetMeshData(shared_ptr<MeshData> _pMeshData);
 
+        void                 PushData();
+
         UINT64 GetInstanceID();
 
         void SetSubsetRenderFlag(UINT32 _index, bool _flag);

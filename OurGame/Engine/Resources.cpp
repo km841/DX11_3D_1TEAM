@@ -1118,6 +1118,30 @@ namespace hm
             pShader->SetName(L"Interface");
             Add<Shader>(L"Interface", pShader);
         }
+
+        // Fire Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::Less,
+                RasterizerType::CullNone,
+                BlendType::AlphaBlend,
+                D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST
+            };
+
+            ShaderArg shaderArg =
+            {
+                "VS_Main",
+                "GS_Main",
+                "PS_Main"
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\fire.fx", shaderInfo, shaderArg);
+            pShader->SetName(L"Fire");
+            Add<Shader>(L"Fire", pShader);
+        }
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -1453,6 +1477,16 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"Interface", pMaterial);
+        }
+
+        // Fire Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"Fire");
+            pMaterial->ClearMaterialContainers();
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"Fire", pMaterial);
         }
     }
 }

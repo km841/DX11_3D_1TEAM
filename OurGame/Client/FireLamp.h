@@ -7,7 +7,7 @@ namespace yj
 	class FireLamp : public GameObject
 	{
 	public:
-		FireLamp(GameObject* _UpperPart, GameObject* _BelowPart);
+		FireLamp(GameObject* _UpperPart, GameObject* _BelowPart, GameObject* _Fire, GameObject* _Light);
 		virtual ~FireLamp();
 		virtual void Initialize();
 		virtual void Update();
@@ -28,6 +28,8 @@ namespace yj
 		GameObject* pUpperPart;
 		GameObject* pBelowPart;
 		GameObject* pColObj;
+		GameObject* pFire;
+		GameObject* pLight;
 		float mFlowLimit = 0.5f;
 		float mCurrFlowDist = 0.0f;
 		float mFlowSpeed = 1.0f;

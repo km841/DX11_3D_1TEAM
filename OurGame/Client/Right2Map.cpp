@@ -15,6 +15,7 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "Resources.h"
+#include "RenderManager.h"
 
 /* GameObject */
 #include "GameObject.h"
@@ -27,6 +28,7 @@
 #include "Ladder.h"
 #include "Bat.h"
 #include "LadderCollider.h"
+#include "Effect.h"
 
 /* Component */
 #include "Collider.h"
@@ -46,6 +48,7 @@
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
 #include "RotateKeyScript.h"
+#include "BonFireScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -217,13 +220,13 @@ namespace hm
 				}
 			}
 
-			// 식탁보
-			{
-				DecoObject* pTableCloth = Factory::CreateObject<DecoObject>(Vec3(21.7f, 8.6f, 6.5f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\tableCloth.fbx");
-				pTableCloth->GetTransform()->SetScale(Vec3(15.4f, 10.f, 23.3f));
-				pTableCloth->GetTransform()->SetRotation(Vec3(-180.f, 0.f, 180.f));
-				AddGameObject(pTableCloth);
-			}
+			//// 식탁보
+			//{
+			//	DecoObject* pTableCloth = Factory::CreateObject<DecoObject>(Vec3(21.7f, 8.6f, 6.5f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\tableCloth.fbx");
+			//	pTableCloth->GetTransform()->SetScale(Vec3(15.4f, 10.f, 23.3f));
+			//	pTableCloth->GetTransform()->SetRotation(Vec3(-180.f, 0.f, 180.f));
+			//	AddGameObject(pTableCloth);
+			//}
 		}
 
 		// 벽쪽 3단 선반
@@ -341,15 +344,15 @@ namespace hm
 			}
 		}
 
-		// 식탁보
-		{
-			DecoObject* pTableCloth = Factory::CreateObject<DecoObject>(Vec3(-5.6f, 5.3f, 11.9f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\tableCloth.fbx");
-			pTableCloth->GetTransform()->SetScale(Vec3(13.4f, 10.f, 12.4f));
-			pTableCloth->GetTransform()->SetRotation(Vec3(-180.f, 0.f, 180.f));
+		//// 식탁보
+		//{
+		//	DecoObject* pTableCloth = Factory::CreateObject<DecoObject>(Vec3(-5.6f, 5.3f, 11.9f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\tableCloth.fbx");
+		//	pTableCloth->GetTransform()->SetScale(Vec3(13.4f, 10.f, 12.4f));
+		//	pTableCloth->GetTransform()->SetRotation(Vec3(-180.f, 0.f, 180.f));
 
-			//pKey->AddComponent(new RotateKeyScript);
-			AddGameObject(pTableCloth);
-		}
+		//	//pKey->AddComponent(new RotateKeyScript);
+		//	AddGameObject(pTableCloth);
+		//}
 
 		// 꼭대기 나무판자
 		{
@@ -537,7 +540,29 @@ namespace hm
 				pLampBelow->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
 				AddGameObject(pLampBelow);
 
-				yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(-5.8f, 7.4f, -16.5f),physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow);
+				DecoObject* pBonFire = Factory::CreateObject<DecoObject>(Vec3(-5.8f, 8.4f, -16.5f), L"Fire", L"");
+				pBonFire->GetMeshRenderer()->SetMaterial(pBonFire->GetMeshRenderer()->GetMaterial()->Clone());
+				pBonFire->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::WrapClamp);
+				pBonFire->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+				pBonFire->AddComponent(new BonFireScript);
+				AddGameObject(pBonFire);
+
+				DecoObject* pLightObject = nullptr;
+				{
+					pLightObject = new DecoObject;
+					Transform* pTransform = pLightObject->AddComponent(new Transform);
+					pTransform->SetPosition(Vec3(-5.8f, 7.4f, -16.5f));
+					pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+					pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+					Light* pLight = pLightObject->AddComponent(new Light);
+					pLight->SetDiffuse(Vec3(0.8f, 0.5f, 0.2f));
+					pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+					pLight->SetLightRange(10.f);
+					pLight->SetLightType(LightType::PointLight);
+					AddGameObject(pLightObject);
+				}
+
+				yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(-5.8f, 7.4f, -16.5f),physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow, pBonFire, pLightObject);
 				AddGameObject(pFireLamp);
 			}
 
@@ -566,7 +591,30 @@ namespace hm
 				pLampBelow->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
 				AddGameObject(pLampBelow);
 
-				yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(11.1f, 7.4f, -16.5f), physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow);
+
+				DecoObject* pBonFire = Factory::CreateObject<DecoObject>(Vec3(11.1f, 8.4f, -16.5f), L"Fire", L"");
+				pBonFire->GetMeshRenderer()->SetMaterial(pBonFire->GetMeshRenderer()->GetMaterial()->Clone());
+				pBonFire->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::WrapClamp);
+				pBonFire->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+				pBonFire->AddComponent(new BonFireScript);
+				AddGameObject(pBonFire);
+
+				DecoObject* pLightObject = nullptr;
+				{
+					pLightObject = new DecoObject;
+					Transform* pTransform = pLightObject->AddComponent(new Transform);
+					pTransform->SetPosition(Vec3(11.1f, 7.4f, -16.5f));
+					pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+					pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+					Light* pLight = pLightObject->AddComponent(new Light);
+					pLight->SetDiffuse(Vec3(0.8f, 0.5f, 0.2f));
+					pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+					pLight->SetLightRange(10.f);
+					pLight->SetLightType(LightType::PointLight);
+					AddGameObject(pLightObject);
+				}
+				
+				yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(11.1f, 7.4f, -16.5f), physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow, pBonFire, pLightObject);
 				AddGameObject(pFireLamp);
 			}
 		}
@@ -607,7 +655,29 @@ namespace hm
 				pLampBelow->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
 				AddGameObject(pLampBelow);
 
-				yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(-5.9f, 7.4f, -2.8f), physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow);
+				DecoObject* pBonFire = Factory::CreateObject<DecoObject>(Vec3(-5.9f, 8.4f, -2.8f), L"Fire", L"");
+				pBonFire->GetMeshRenderer()->SetMaterial(pBonFire->GetMeshRenderer()->GetMaterial()->Clone());
+				pBonFire->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::WrapClamp);
+				pBonFire->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+				pBonFire->AddComponent(new BonFireScript);
+				AddGameObject(pBonFire);
+
+				DecoObject* pLightObject = nullptr;
+				{
+					pLightObject = new DecoObject;
+					Transform* pTransform = pLightObject->AddComponent(new Transform);
+					pTransform->SetPosition(Vec3(-5.9f, 7.4f, -2.8f));
+					pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+					pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+					Light* pLight = pLightObject->AddComponent(new Light);
+					pLight->SetDiffuse(Vec3(0.8f, 0.5f, 0.2f));
+					pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+					pLight->SetLightRange(10.f);
+					pLight->SetLightType(LightType::PointLight);
+					AddGameObject(pLightObject);
+				}
+
+				yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(-5.9f, 7.4f, -2.8f), physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow, pBonFire, pLightObject);
 				AddGameObject(pFireLamp);
 			}
 		}
@@ -752,6 +822,7 @@ namespace hm
 			pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 20, 0);
 			pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 20, 0);
 
+			pChandelier->DrawShadow(false);
 			AddGameObject(pChandelier);
 		}
 	}
@@ -884,5 +955,22 @@ namespace hm
 			AddGameObject(p_E_BAT_White);
 			//SetMeshTarget(p_E_BAT_White);
 		}
+
+		// 샹들리에 라이트
+		{
+			GameObject* pGameObject = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pGameObject->AddComponent(new Transform);
+			pTransform->SetPosition(Vec3(10.7f, 45.7f, 9.8f));
+			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+			Light* pLight = pGameObject->AddComponent(new Light);
+			pLight->SetDiffuse(Vec3(0.5f, 0.5f, 0.2f));
+			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+			pLight->SetLightRange(55.f);
+			pLight->SetLightType(LightType::PointLight);
+			AddGameObject(pGameObject);
+		}
+
+		DisableDirLight();
 	}
 }

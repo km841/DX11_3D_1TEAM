@@ -93,6 +93,8 @@ namespace hm
 		void DrawShadow(bool _bFlag) { mbShadow = _bFlag; }
 		bool IsDrawShadow() { return mbShadow; }
 
+		const std::vector<MonoBehavior*>& GetScripts() { return mScripts; }
+
 		/*
 		* AddComponent(Component* _pComponent)
 		* 게임 오브젝트에 컴포넌트를 추가하는 함수

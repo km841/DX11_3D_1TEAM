@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "DecoObject.h"
+#include "MeshRenderer.h"
+#include "Material.h"
+#include "Timer.h"
 
 namespace hm
 {
