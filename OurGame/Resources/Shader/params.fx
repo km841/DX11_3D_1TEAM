@@ -121,4 +121,21 @@ cbuffer BLOOM_PARAMS : register(b3)
    float4 g_bloomFilter;
 }
 
+cbuffer NOISE_PARAMS : register(b4)
+{
+    float g_frameTime;
+    float3 g_scrollSpeeds;
+    float3 g_scales;
+    float g_padding;
+};
+
+cbuffer DISTORTION_PARAMS : register(b5)
+{
+    float2 g_distortion1;
+    float2 g_distortion2;
+    float2 g_distortion3;
+    float g_distortionScale;
+    float g_distortionBias;
+};
+
 #endif

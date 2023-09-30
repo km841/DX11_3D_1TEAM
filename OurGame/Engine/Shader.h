@@ -44,6 +44,7 @@ namespace hm
     {
         Wrap,
         Clamp,
+        WrapClamp,
         End,
     };
 

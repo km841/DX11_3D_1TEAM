@@ -199,6 +199,24 @@ struct alignas(16) InstancingParams
 	Matrix matWVP;
 };
 
+struct alignas(16) DistortionParams
+{
+	Vec2 distortion1;
+	Vec2 distortion2;
+	Vec2 distortion3;
+	float distortionScale;
+	float distortionBias;
+};
+
+struct alignas(16) NoiseParams
+{
+	float frameTime;
+	Vec3 scrollSpeeds;
+	Vec3 scales;
+	float padding;
+};
+
+
 struct ScreenEffectInfo
 {
 	ScreenEffectType eEffectType;

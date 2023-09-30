@@ -48,6 +48,7 @@
 #include "PaperBurnScript.h"
 #include "OwnerFollowScript.h"
 #include "PlayerSlashScript.h"
+#include "BonFireScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -266,8 +267,6 @@ namespace hm {
 			//SetMeshTarget(p_E_BAT_White);
 		}
 
-		
-
 		//최종보스 할머니 - _E_Grandma
 		//{
 		//	PhysicsInfo info = {};
@@ -284,6 +283,14 @@ namespace hm {
 		//	AddGameObject(p_E_Grandma);
 		//	//SetMeshTarget(p_E_Grandma);
 		//}
+
+		{
+			DecoObject* pBonFire = Factory::CreateObject<DecoObject>(Vec3(11.1f, 7.4f, -16.5f), L"Fire", L"");
+			pBonFire->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::WrapClamp);
+			pBonFire->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			pBonFire->AddComponent(new BonFireScript);
+			AddGameObject(pBonFire);
+		}
 
 		
 	}

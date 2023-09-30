@@ -150,6 +150,7 @@
     <ClInclude Include="AttackState.h" />
     <ClInclude Include="BigTransEndState_Gm.h" />
     <ClInclude Include="BigTransStartState_Gm.h" />
+    <ClInclude Include="BonFireScript.h" />
     <ClInclude Include="BowScript.h" />
     <ClInclude Include="BowState.h" />
     <ClInclude Include="Bus.h" />
@@ -252,6 +253,7 @@
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="BigTransEndState_Gm.cpp" />
     <ClCompile Include="BigTransStartState_Gm.cpp" />
+    <ClCompile Include="BonFireScript.cpp" />
     <ClCompile Include="BowScript.cpp" />
     <ClCompile Include="BowState.cpp" />
     <ClCompile Include="Bus.cpp" />

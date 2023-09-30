@@ -279,6 +279,9 @@
     <ClInclude Include="LogoBlinkScript.h">
       <Filter>소스 파일\GameObject\Interface\Script\Title</Filter>
     </ClInclude>
+    <ClInclude Include="BonFireScript.h">
+      <Filter>소스 파일\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -555,6 +558,9 @@
     </ClCompile>
     <ClCompile Include="LogoBlinkScript.cpp">
       <Filter>소스 파일\GameObject\Interface\Script\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="BonFireScript.cpp">
+      <Filter>소스 파일\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

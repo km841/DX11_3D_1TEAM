@@ -74,6 +74,9 @@ namespace hm
 	void Light::Render(Camera* _pCamera)
 	{
 		AssertEx(mLightIndex >= 0, L"Light::Render() - LightIndex가 지정되지 않음");
+		if (false == GetGameObject()->IsEnable())
+			return;
+
 		GetTransform()->PushData(_pCamera);
 
 		Matrix matVP = mpShadowCamera->GetCamera()->GetViewMatrix() * mpShadowCamera->GetCamera()->GetProjectionMatrix();
