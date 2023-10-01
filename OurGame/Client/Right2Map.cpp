@@ -49,6 +49,7 @@
 #include "TestAnimationScript.h"
 #include "RotateKeyScript.h"
 #include "BonFireScript.h"
+#include "MonsterCrackScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -103,6 +104,7 @@ namespace hm
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PlayerCol, LayerType::Monster);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::ArrowCol, LayerType::Monster);
 
+		PLAYER->GetTransform()->SetPosition(Vec3(0.f, 5.f, 0.f));
 		InitObjectAdd();
 		InitCollidertAdd();
 	}
@@ -910,29 +912,6 @@ namespace hm
 			AddGameObject(pCol8);
 		}
 
-		//Player
-		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Kinematic;
-			physicsInfo.eGeometryType = GeometryType::Capsule;
-			physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
-
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 5.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
-			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
-			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
-			pPlayer->AddComponent(new PaperBurnScript);
-			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
-			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
-			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
-			pPlayer->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.6f, 0.f));
-
-			pPlayer->GetRigidBody()->ApplyGravity();
-			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-			AddGameObject(pPlayer);
-			//SetMeshTarget(pPlayer);
-		}
-
 		// ¹ÚÁã
 		{
 			PhysicsInfo info = {};
@@ -940,18 +919,9 @@ namespace hm
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(0.5f, 0.5f, 1.0f);
 
-			Bat* p_E_BAT_White = Factory::CreateObjectHasPhysical<Bat>(Vec3(-9.f, 5.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
+			Bat* p_E_BAT_White = Factory::CreateMonster<Bat>(Vec3(-9.f, 5.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
 			p_E_BAT_White->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 			p_E_BAT_White->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-			p_E_BAT_White->SetFrustumCheckFlag(false);
-
-			p_E_BAT_White->AddComponent<PaperBurnScript>();
-
-			p_E_BAT_White->GetRigidBody()->ApplyGravity();
-
-			p_E_BAT_White->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-			p_E_BAT_White->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-			//SetGizmoTarget(p_E_BAT_White);
 			AddGameObject(p_E_BAT_White);
 			//SetMeshTarget(p_E_BAT_White);
 		}

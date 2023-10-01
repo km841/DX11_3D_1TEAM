@@ -51,7 +51,10 @@ namespace hm
 
             pMeshData = Get<MeshData>(key);
             if (nullptr != pMeshData)
+            {
+                pMeshData->GetMaterial()->SetShader(Get<Shader>(_shaderName));
                 return pMeshData;
+            }
 
             else
             {
@@ -72,7 +75,10 @@ namespace hm
         {
             pMeshData = Get<MeshData>(key);
             if (nullptr != pMeshData)
+            {
+                pMeshData->GetMaterial()->SetShader(Get<Shader>(_shaderName));
                 return pMeshData;
+            }
 
             else
             {
@@ -85,7 +91,8 @@ namespace hm
         {
             AssertEx(false, L"Resources::LoadFBX() - 잘못된 확장자");
         }
-        
+
+        pMeshData->GetMaterial()->SetShader(Get<Shader>(_shaderName));
         Add(key, pMeshData);
         return pMeshData;
     }

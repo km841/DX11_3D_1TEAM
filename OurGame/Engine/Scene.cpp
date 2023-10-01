@@ -26,6 +26,7 @@ namespace hm
 		, mpDirLight(nullptr)
 		, mbIsBakedStaticShadow(false)
 		, mbEnableDirLight(true)
+		, mBakedStaticShadowCount(0)
 	{
 	}
 	Scene::~Scene()

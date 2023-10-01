@@ -108,6 +108,7 @@ Player::Player()
 	// Sword_Heavy
 	{
 		mpSlashEffect = Factory::CreateObject<SwordHeavyEffect>(Vec3(0.f, 8.f, 0.f), L"PlayerSlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbx");
+		mpSlashEffect->SetDontDestroyObject(L"PlayerSlashEffect");
 		mpSlashEffect->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 		mpSlashEffect->AddComponent(new PlayerSlashScript);
 		auto pFollowScript = mpSlashEffect->AddComponent(new OwnerFollowScript(this));
@@ -131,7 +132,8 @@ Player::Player()
 		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(1.f, 0.2f, 0.2f);
 		
-		pGreatSword = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, -5.f, 0.f), physicsInfo, L"Forward_CullNone", L"..\\Resources\\FBX\\Weapon\\Sword.fbx",false, LayerType::Item);
+		pGreatSword = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, -5.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Sword.fbx",false, LayerType::Item);
+		pGreatSword->SetDontDestroyObject(L"PlayerGreatSword");
 		pGreatSword->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
 		pGreatSword->GetTransform()->SetRotation(Vec3(330.f, 100.f, 50.f));
 
@@ -163,6 +165,7 @@ Player::Player()
 		physicsInfo.size = Vec3(3.f , 3.f, 3.f);
 
 		pAttackCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"NoDraw", L"..\\Resources\\FBX\\Player\\Slash_Heavy_Col.fbx", false, LayerType::PlayerCol);
+		pAttackCol->SetDontDestroyObject(L"PlayerAttackCollider");
 		pAttackCol->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 		pAttackCol->GetTransform()->SetRotation(Vec3(00.f, 00.f, 0.f));
 		pAttackCol->AddComponent(new PlayerColScript);
@@ -178,6 +181,7 @@ Player::Player()
 	{
 
 		pBow = Factory::CreateObject<GameObject>(Vec3(0.f, 0.f, 0.f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Bow.fbx", false, LayerType::Item);
+		pBow->SetDontDestroyObject(L"PlayerBow");
 		pBow->GetTransform()->SetScale(Vec3(2.f, 1.5f, 2.f));
 		pBow->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 
@@ -204,6 +208,8 @@ Player::Player()
 		physicsInfo.size = Vec3(0.05f, 0.05f, 0.7f);
 
 		pArrow = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.f, 0.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Arrow.fbx", false, LayerType::ArrowCol);
+		pArrow->SetDontDestroyObject(L"PlayerArrow");
+		
 		pArrow->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 0.8f));
 		pArrow->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 

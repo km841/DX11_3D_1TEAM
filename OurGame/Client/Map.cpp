@@ -28,7 +28,6 @@ namespace hm
 
 		if (IS_DOWN(KeyType::N))
 			GET_SINGLE(RenderManager)->BakeStaticShadow(this);
-
 	}
 	void Map::FixedUpdate()
 	{
