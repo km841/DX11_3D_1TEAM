@@ -345,6 +345,11 @@ namespace hm
 						Vec3 myPos = GetTransform()->GetPosition();
 						Animator* pAni = GetAnimator();
 
+						Vec3 dir = playerPos - myPos;
+						dir.Normalize();
+
+						GetRigidBody()->SetVelocityExcludingColliders(-dir * 14.0f);
+						GetRigidBody()->SetVelocity(dir * 14.f);
 
 						if (pAni->GetFrameRatio() > 0.15)
 							return BehaviorResult::Success;
@@ -385,7 +390,11 @@ namespace hm
 					Animator* pAnimator = GetAnimator();
 					int animIndex = pAnimator->GetCurrentClipIndex();
 					if (4 != animIndex)
+					{
+						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+						GetTransform()->SetRelativePosition(Vec3::Zero);
 						pAnimator->Play(4, true);
+					}
 
 					return BehaviorResult::Success;
 					});
@@ -479,6 +488,11 @@ namespace hm
 		{
 			GetRigidBody()->RemoveGravity();
 			GetRigidBody()->SetVelocity(Vec3::Zero);
+		}
+
+		if (LayerType::Player == _pOtherCollider->GetGameObject()->GetLayerType())
+		{
+			meBasicState = MonsterBasicState::Stun;
 		}
 	}
 	void HeadRoller::OnTriggerStay(Collider* _pOtherCollider)
