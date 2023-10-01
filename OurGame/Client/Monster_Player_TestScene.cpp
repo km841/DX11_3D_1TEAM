@@ -30,6 +30,7 @@
 #include "Bat.h"
 #include "SwordHeavyEffect.h"
 #include "Mage.h"
+#include "Lurker.h"
 
 /* Component */
 #include "Collider.h"
@@ -185,21 +186,30 @@ namespace hm {
 		//	//SetAnimTarget(p_E_HEADROLLER);
 		//}
 
-		//// 초록거미
-		//{
-		//	PhysicsInfo info = {};
-		//	info.eActorType = ActorType::Dynamic;
-		//	info.eGeometryType = GeometryType::Box;
-		//	info.size = Vec3(2.f, 2.f, 2.f);
+		// 초록거미
+		{
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Kinematic;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(0.5f, 0.5f, 0.5f);
 
-		//	Monster* p_E_LURKER = Factory::CreateObjectHasPhysical<Monster>(Vec3(1.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_LURKER.fbx");
-		//	p_E_LURKER->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
-		//	p_E_LURKER->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-		//	p_E_LURKER->GetRigidBody()->ApplyGravity();
-		//	//SetGizmoTarget(p_E_LURKER);
-		//	AddGameObject(p_E_LURKER);
-		//	SetMeshTarget(p_E_LURKER);
-		//}
+			Lurker* p_E_LURKER = Factory::CreateObjectHasPhysical<Lurker>(Vec3(0.f, 0.f, -9.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_LURKER.fbx");
+			p_E_LURKER->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+			p_E_LURKER->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			p_E_LURKER->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.2f, 0.f));
+
+			p_E_LURKER->SetFrustumCheckFlag(false);
+
+			p_E_LURKER->AddComponent<PaperBurnScript>();
+
+
+			p_E_LURKER->GetRigidBody()->ApplyGravity();
+			p_E_LURKER->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			p_E_LURKER->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+
+			AddGameObject(p_E_LURKER);
+			SetMeshTarget(p_E_LURKER);
+		}
 		
 	
 		// 마법사
