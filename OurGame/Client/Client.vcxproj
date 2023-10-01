@@ -202,6 +202,7 @@
     <ClInclude Include="MainOfficeMap.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="MonsterCrackScript.h" />
     <ClInclude Include="Monster_Player_TestScene.h" />
     <ClInclude Include="MoveState.h" />
     <ClInclude Include="Npc.h" />
@@ -305,6 +306,7 @@
     <ClCompile Include="MainOfficeMap.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="MonsterCrackScript.cpp" />
     <ClCompile Include="Monster_Player_TestScene.cpp" />
     <ClCompile Include="MoveState.cpp" />
     <ClCompile Include="Npc.cpp" />

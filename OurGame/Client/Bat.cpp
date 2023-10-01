@@ -14,7 +14,8 @@
 #include "ChangeStateTask.h"
 Bat::Bat()
 {
-	mHP=3.f; // 피통
+	mMaxHP = 10.f;
+	mHP= mMaxHP; // 피통
 	mSpeed=2.f; //이동속도
 	mAttackDamage = 1; // 공격력
 	mAttackRange = 2.5f; // 공격 감지 거리

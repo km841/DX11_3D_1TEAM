@@ -102,6 +102,8 @@ namespace hm
 		bool mbIsBakedStaticShadow;
 		bool mbEnableDirLight;
 
+		int mBakedStaticShadowCount;
+
 	protected:
 		static std::vector<wstring> mDontDestroyObjectNames;
 	};

@@ -20,14 +20,15 @@ namespace hm
 	RenderManager::RenderManager()
 		: mWidth(0)
 		, mHeight(0)
-		, mbEnablePostProcessing(false)
-		, mbEnableHDR(false)
+		, mbEnablePostProcessing(true)
+		, mbEnableHDR(true)
 		, mbEnableRim(false)
 		, mpDownScaleBuffer(nullptr)
 		, mpAvgLumBuffer(nullptr)
 		, mpPrevAdaptionBuffer(nullptr)
 		, mActiveEffect{}
 		, mbDebugMode(true)
+		, mbNoRenderMode(false)
 	{
 		mDOFFarStart = 0.f;
 		mDOFFarRange = 0.f;
@@ -308,7 +309,13 @@ namespace hm
 	void RenderManager::BakeStaticShadow(Scene* _pScene)
 	{
 		RenderStaticShadow(_pScene);
-		_pScene->mbIsBakedStaticShadow = true;
+		_pScene->mBakedStaticShadowCount++;
+
+		if (10 < _pScene->mBakedStaticShadowCount)
+		{
+			_pScene->mbIsBakedStaticShadow = true;
+		}
+		
 	}
 
 	void RenderManager::SetPostProcessing(bool _bFlag)

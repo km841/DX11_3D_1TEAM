@@ -41,12 +41,17 @@ namespace hm
 		bool GetIsDead() { return isDead; }
 		void SetIsDead(bool _isDead) { isDead = _isDead; }
 
+		float GetMaxHP() { return mMaxHP; }
+		float GetHP() { return mHP; }
+		float GetHPRatio() { return mHP / mMaxHP; }
+
 	protected:
 		MonsterBasicState meBasicState;
 
 		bool mHitCheck = false;
 		bool isDead = false;
 
+		float mMaxHP; // 피통
 		float mHP; // 피통
 		float mSpeed; //이동속도
 		int mAttackDamage; // 공격력

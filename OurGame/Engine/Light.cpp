@@ -7,6 +7,7 @@
 #include "Resources.h"
 #include "Camera.h"
 #include "Engine.h"
+#include "SceneManager.h"
 
 namespace hm
 {
@@ -73,9 +74,10 @@ namespace hm
 	}
 	void Light::Render(Camera* _pCamera)
 	{
-		AssertEx(mLightIndex >= 0, L"Light::Render() - LightIndex가 지정되지 않음");
 		if (false == GetGameObject()->IsEnable())
 			return;
+
+		AssertEx(mLightIndex >= 0, L"Light::Render() - LightIndex가 지정되지 않음");
 
 		GetTransform()->PushData(_pCamera);
 
@@ -169,7 +171,6 @@ namespace hm
 		mpShadowCamera->GetCamera()->SetFar(10000.f);
 		mpShadowCamera->GetCamera()->SetWidth(4096.f);
 		mpShadowCamera->GetCamera()->SetHeight(4096.f);
-		//mpShadowCamera->GetCamera()->SetFov(XM_PI / 2.f);
 	}
 
 	void Light::SetShadowCamera(GameObject* _pShadowCamera)

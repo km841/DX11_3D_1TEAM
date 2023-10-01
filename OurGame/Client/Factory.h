@@ -9,6 +9,8 @@
 
 #include "InterfaceAlphaScript.h"
 #include "InterfaceButtonScript.h"
+#include "PaperBurnScript.h"
+#include "MonsterCrackScript.h"
 
 namespace hm
 {
@@ -28,6 +30,15 @@ namespace hm
 			const Vec3& _pos,
 			PhysicsInfo _physicsInfo = PhysicsInfo(),
 			const wstring& _materialName = L"Deferred",
+			const wstring& _fbxPath = L"",
+			bool _bInvNormal = false,
+			Types ... _args);
+
+		template<typename T, typename ... Types>
+		static T* CreateMonster(
+			const Vec3& _pos,
+			PhysicsInfo _physicsInfo = PhysicsInfo(),
+			const wstring& _materialName = L"MonsterDeferred",
 			const wstring& _fbxPath = L"",
 			bool _bInvNormal = false,
 			Types ... _args);
@@ -79,6 +90,19 @@ namespace hm
 		RigidBody* pRigidBody = pObject->GetRigidBody();
 		pRigidBody->SetPhysical(_physicsInfo);
 		pObject->AddComponent(new Collider);
+
+		return pObject;
+	}
+	template<typename T, typename ...Types>
+	inline T* Factory::CreateMonster(const Vec3& _pos, PhysicsInfo _physicsInfo, const wstring& _materialName, const wstring& _fbxPath, bool _bInvNormal, Types ..._args)
+	{
+		T* pObject = CreateObjectHasPhysical<T>(_pos, _physicsInfo, _materialName, _fbxPath, _bInvNormal, _args...);
+		pObject->SetFrustumCheckFlag(false);
+		pObject->AddComponent<PaperBurnScript>();
+		pObject->AddComponent<MonsterCrackScript>();
+		pObject->GetRigidBody()->ApplyGravity();
+		pObject->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+		pObject->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 
 		return pObject;
 	}
