@@ -205,6 +205,7 @@
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MonsterCrackScript.h" />
     <ClInclude Include="Monster_Player_TestScene.h" />
+    <ClInclude Include="Monster_ProjectTile.h" />
     <ClInclude Include="MoveState.h" />
     <ClInclude Include="Npc.h" />
     <ClInclude Include="ObstacleObject.h" />
@@ -310,6 +311,7 @@
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MonsterCrackScript.cpp" />
     <ClCompile Include="Monster_Player_TestScene.cpp" />
+    <ClCompile Include="Monster_ProjectTile.cpp" />
     <ClCompile Include="MoveState.cpp" />
     <ClCompile Include="Npc.cpp" />
     <ClCompile Include="ObstacleObject.cpp" />
