@@ -46,6 +46,8 @@ namespace hm
 		mRecogRange = 7.f; //감지거리
 
 		meBasicState = MonsterBasicState::Idle;
+
+		SetName(L"HeadRoller");
 	}
 
 	HeadRoller::~HeadRoller()
@@ -71,6 +73,62 @@ namespace hm
 
 		Selector* pStateSelector = new Selector;
 		{
+
+#pragma region Hit Sequence
+			Sequence* pHitSequence = new Sequence;
+			{
+				// 상태 확인(Condition) : 현재 상태가 Attack인지 확인
+				BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+					{
+						if (MonsterBasicState::Hit == meBasicState)
+							return BehaviorResult::Success;
+						else
+							return BehaviorResult::Failure;
+					});
+
+				// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+				BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+					Animator* pAnimator = GetAnimator();
+					int animIndex = pAnimator->GetCurrentClipIndex();
+					if (8 != animIndex)
+						pAnimator->Play(8, true);
+
+					return BehaviorResult::Success;
+					});
+
+				// Hit 발생시 작동하는 스테이터스
+				BehaviorTask* pAttackTask = new BehaviorTask([&]()
+					{
+						if (mHP <= 0) {
+							isDead = true;
+							meBasicState = MonsterBasicState::Dead;
+							return BehaviorResult::Failure;
+						}
+
+						Animator* pAnimator = GetAnimator();
+						if (pAnimator->GetFrameRatio() > 0.1)
+							return BehaviorResult::Success;
+
+						return BehaviorResult::Failure;
+					});
+
+				// 상태 변경(Task) : 상태 변경
+				BehaviorTask* pChangeState = new BehaviorTask([&]()
+					{
+						SetHitCheck(false);
+						meBasicState = MonsterBasicState::Trace_to_Attack;
+						return BehaviorResult::Success;
+					});
+
+				pHitSequence->AddChild(pStateChecker);
+				pHitSequence->AddChild(pRunAnimationTask);
+				pHitSequence->AddChild(pAttackTask);
+				pHitSequence->AddChild(pChangeState);
+			}
+			pStateSelector->AddChild(pHitSequence);
+
+#pragma endregion
+
 #pragma region Idle Sequence
 			Sequence* pIdleSequence = new Sequence;
 			{
@@ -139,8 +197,9 @@ namespace hm
 				BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 					Animator* pAnimator = GetAnimator();
 					int animIndex = pAnimator->GetCurrentClipIndex();
-					if (3 != animIndex)
+					if (3 != animIndex) {
 						pAnimator->Play(3, false);
+					}
 
 					return BehaviorResult::Success;
 					});
@@ -189,8 +248,12 @@ namespace hm
 				BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 					Animator* pAnimator = GetAnimator();
 					int animIndex = pAnimator->GetCurrentClipIndex();
-					if (1 != animIndex)
+					if (1 != animIndex) {
+						//초기화 중요
+						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+						GetTransform()->SetRelativePosition(Vec3(0.f, -1.f, 0.f));
 						pAnimator->Play(1, false);
+					}
 
 					return BehaviorResult::Success;
 					});
@@ -201,6 +264,7 @@ namespace hm
 					Vec3 myPos = GetTransform()->GetPosition();
 					Vec3 myRot = GetTransform()->GetRotation();
 					Vec3 scale = GetRigidBody()->GetGeometrySize();
+					Animator* pAni = GetAnimator();
 
 					Vec3 dir = playerPos - myPos;
 					Vec3 Num = scale * dir;
@@ -285,19 +349,38 @@ namespace hm
 					//몬스터의 고개를 돌리는 코드
 					pTr->SetRotation(Vec3(0.f, angleDegree, 0.f));
 
+
+
+					{
+						if (pAni->GetFrameRatio() > 0.05) {
+							GetRigidBody()->SetVelocityExcludingColliders(-dir * 8.0f);
+							GetRigidBody()->SetVelocity(dir * 8.f);
+						}
+					}
+
+					{
+						//dir 따로 저장해야댐 Trace_to_attack쪽에서
+						attackDir = playerPos - myPos;
+						attackDir.y = 0;
+						attackDir.Normalize();
+					}
+
 					return BehaviorResult::Success;
 					});
 
-				//애니메이션 한번 출력후 다음 상태로 넘어가기
-				BehaviorCondition* pCheckNearbyPlayer = new BehaviorCondition([&]()
+			
+				// 콜라이더 이동 설정
+				BehaviorTask* pAttackMoveTask = new BehaviorTask([&]()
 					{
+						Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+						Vec3 myPos = GetTransform()->GetPosition();
 						Animator* pAni = GetAnimator();
 
-						if (pAni->GetFrameRatio() > 0.1)
-						{
+						if (pAni->GetFrameRatio() > 0.1) {
 							return BehaviorResult::Success;
 						}
 						return BehaviorResult::Failure;
+
 					});
 
 				//// 상태 변경(Task) : 상태 변경
@@ -310,7 +393,7 @@ namespace hm
 				Trace_to_AttackSequence->AddChild(pStateChecker);
 				Trace_to_AttackSequence->AddChild(pRunAnimationTask);
 				Trace_to_AttackSequence->AddChild(pTraceLookTask);
-				Trace_to_AttackSequence->AddChild(pCheckNearbyPlayer);
+				Trace_to_AttackSequence->AddChild(pAttackMoveTask);
 				Trace_to_AttackSequence->AddChild(new ChangeStateTask(MonsterBasicState::Attack));
 			}
 			pStateSelector->AddChild(Trace_to_AttackSequence);
@@ -333,8 +416,12 @@ namespace hm
 				BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 					Animator* pAnimator = GetAnimator();
 					int animIndex = pAnimator->GetCurrentClipIndex();
-					if (2 != animIndex)
+					if (2 != animIndex) {
+						//초기화 중요
+						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+						GetTransform()->SetRelativePosition(Vec3(0.f, 0.f, 0.f));
 						pAnimator->Play(2, true);
+					}
 
 					return BehaviorResult::Success;
 					});
@@ -346,16 +433,13 @@ namespace hm
 						Vec3 myPos = GetTransform()->GetPosition();
 						Animator* pAni = GetAnimator();
 
-						//dir 따로 저장해야댐 Trace_to_attack쪽에서
-						Vec3 dir = playerPos - myPos;
-						dir.Normalize();
-
 						//이부분 중요
-						GetRigidBody()->SetVelocityExcludingColliders(-dir * 14.0f);
-						GetRigidBody()->SetVelocity(dir * 14.f);
+						GetRigidBody()->SetVelocityExcludingColliders(-attackDir * 14.0f);
+						GetRigidBody()->SetVelocity(attackDir * 14.f);
 
-						if (pAni->GetFrameRatio() > 0.15)
+						if (pAni->GetFrameRatio() > 0.15) {
 							return BehaviorResult::Success;
+						}
 						return BehaviorResult::Failure;
 
 					});
@@ -396,7 +480,7 @@ namespace hm
 					{
 						//초기화 중요
 						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
-						GetTransform()->SetRelativePosition(Vec3::Zero);
+						GetTransform()->SetRelativePosition(Vec3(0.f, -1.f, 0.f));
 						pAnimator->Play(4, true);
 					}
 
@@ -430,6 +514,67 @@ namespace hm
 				pStunSequence->AddChild(new ChangeStateTask(MonsterBasicState::Idle_to_Trace));
 			}
 			pStateSelector->AddChild(pStunSequence);
+
+#pragma endregion
+
+#pragma region Dead Sequence
+			Sequence* pDeadSequence = new Sequence;
+			{
+				// 상태 확인(Condition) : 현재 상태가 Attack인지 확인
+				BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+					{
+						if (MonsterBasicState::Dead == meBasicState)
+							return BehaviorResult::Success;
+						else
+							return BehaviorResult::Failure;
+					});
+
+				// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+				BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+					Animator* pAnimator = GetAnimator();
+					GameObject* pObj = GetGameObject(); //이거 확인도 필요함
+					int animIndex = pAnimator->GetCurrentClipIndex();
+					if (isDead == true)
+					{
+						//pObj->GetRigidBody()->SetSimulationShapeFlag(false);
+						//pObj->Disable();
+						isDead = false;
+						GetScript<PaperBurnScript>()->SetPaperBurn();
+						pAnimator->Play(8, false);
+					}
+
+					//pObj->GetRigidBody()->SetSimulationShapeFlag(false); // 콜라이더 끄기
+					//pObj->GetRigidBody()->SetSimulationShapeFlag(true); // 콜라이더 켜기
+
+
+					return BehaviorResult::Success;
+					});
+
+				// 페이퍼번 실행 조건
+				BehaviorTask* pAttackTask = new BehaviorTask([&]()
+					{
+						Animator* pAni = GetAnimator();
+						int animIndex = pAni->GetCurrentClipIndex();
+
+
+
+						if (GetScript<PaperBurnScript>()->IsFinished())
+						{
+							MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
+							GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
+						}
+
+
+						return BehaviorResult::Success;
+
+					});
+
+				pDeadSequence->AddChild(pStateChecker);
+				pDeadSequence->AddChild(pRunAnimationTask);
+				pDeadSequence->AddChild(pAttackTask);
+
+			}
+			pStateSelector->AddChild(pDeadSequence);
 
 #pragma endregion
 
@@ -470,8 +615,13 @@ namespace hm
 	{
 		if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 		{
-			GetRigidBody()->RemoveGravity();
-			GetRigidBody()->SetVelocity(Vec3::Zero);
+			if (mGroundCount == 0)
+			{
+				GetRigidBody()->RemoveGravity();
+				GetRigidBody()->SetVelocity(Vec3::Zero);
+			}
+
+			mGroundCount++;
 		}
 	}
 	void HeadRoller::OnCollisionStay(Collider* _pOtherCollider)
@@ -481,7 +631,10 @@ namespace hm
 	{
 		if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 		{
-			GetRigidBody()->ApplyGravity();
+			--mGroundCount;
+
+			if (0 == mGroundCount)
+				GetRigidBody()->ApplyGravity();
 		}
 	}
 	void HeadRoller::OnTriggerEnter(Collider* _pOtherCollider)
@@ -490,13 +643,27 @@ namespace hm
 		float attackDamage = pPlayer->GetAttackDamage();
 		if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 		{
-			GetRigidBody()->RemoveGravity();
-			GetRigidBody()->SetVelocity(Vec3::Zero);
+			if (mGroundCount == 0)
+			{
+				GetRigidBody()->RemoveGravity();
+				GetRigidBody()->SetVelocity(Vec3::Zero);
+			}
+
+			mGroundCount++;
 		}
 
 		if (LayerType::Player == _pOtherCollider->GetGameObject()->GetLayerType())
 		{
 			meBasicState = MonsterBasicState::Stun;
+		}
+
+		if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
+			|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
+		{
+			TakeDamage(attackDamage);
+			float hp = mHP;
+			meBasicState = MonsterBasicState::Hit;
+			SetHitCheck(true);
 		}
 	}
 	void HeadRoller::OnTriggerStay(Collider* _pOtherCollider)
@@ -506,7 +673,10 @@ namespace hm
 	{
 		if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 		{
-			GetRigidBody()->ApplyGravity();
+			--mGroundCount;
+
+			if (0 == mGroundCount)
+				GetRigidBody()->ApplyGravity();
 		}
 	}
 }

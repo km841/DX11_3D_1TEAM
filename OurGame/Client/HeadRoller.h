@@ -34,7 +34,10 @@ namespace hm
 		virtual void OnTriggerStay(Collider* _pOtherCollider);
 		virtual void OnTriggerExit(Collider* _pOtherCollider);
 
-	protected:
+	private:
+		Vec3 attackDir = Vec3::Zero;
+		Vec3 traceDir = Vec3::Zero;
+		Vec3 stunDir = Vec3::Zero;
 		
 	};
 }
