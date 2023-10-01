@@ -198,6 +198,7 @@
     <ClInclude Include="LogoBlinkScript.h" />
     <ClInclude Include="Lurker.h" />
     <ClInclude Include="Mage.h" />
+    <ClInclude Include="MageColScript.h" />
     <ClInclude Include="MagicAttackState.h" />
     <ClInclude Include="MainOfficeMap.h" />
     <ClInclude Include="Map.h" />
@@ -302,6 +303,7 @@
     <ClCompile Include="LogoBlinkScript.cpp" />
     <ClCompile Include="Lurker.cpp" />
     <ClCompile Include="Mage.cpp" />
+    <ClCompile Include="MageColScript.cpp" />
     <ClCompile Include="MagicAttackState.cpp" />
     <ClCompile Include="MainOfficeMap.cpp" />
     <ClCompile Include="Map.cpp" />

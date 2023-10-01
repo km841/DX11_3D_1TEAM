@@ -1,5 +1,6 @@
 #pragma once
 #include "Monster.h"
+class MageColScript;
 class Mage :
 	public Monster
 {
@@ -32,4 +33,7 @@ public:
 	virtual void OnTriggerExit(Collider* _pOtherCollider);
 
 
+private:
+	GameObject* pMageCol;
+	MageColScript* pMageColSc;
 };

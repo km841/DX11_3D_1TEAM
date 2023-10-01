@@ -1,27 +1,122 @@
 #include "pch.h"
 #include "Mage.h"
+#include "Engine.h"
 #include "AI.h"
-#include "Player.h"
-#include "Transform.h"
-#include "Animator.h"
-#include "RigidBody.h"
-#include "Collider.h"
-#include "Input.h"
-#include "ChangeStateCondition.h"
-#include "PaperBurnScript.h"
-#include "EventManager.h"
-#include "SceneManager.h"
 #include "ChangeStateTask.h"
+/* Resource */
+#include "MeshData.h"
+#include "Material.h"
+#include "Mesh.h"
+
+/* Manager */
+#include "PrefabManager.h"
+#include "EventManager.h"
+#include "Factory.h"
+#include "CollisionManager.h"
+#include "Input.h"
+#include "SceneManager.h"
+#include "Resources.h"
+
+/* GameObject */
+#include "GameObject.h"
+#include "Player.h"
+#include "Ground.h"
+#include "DecoObject.h"
+#include "WallObject.h"
+#include "Npc.h"
+#include "Monster.h"
+#include "SwordHeavyEffect.h"
+#include "Ladder.h"
+#include "LadderCollider.h"
+
+/* Component */
+#include "Collider.h"
+#include "RigidBody.h"
+#include "MeshRenderer.h"
+#include "Transform.h"
+#include "Camera.h"
+#include "Light.h"
+#include "ParticleSystem.h"
+#include "Animator.h"
+
+/* Script */
+#include "PlayerMoveScript.h"
+#include "PlacementScript.h"
+#include "TestAnimationScript.h"
+#include "PaperBurnScript.h"
+#include "PlayerSlashScript.h"
+#include "OwnerFollowScript.h"
+#include "SwordScript.h"
+#include "PlayerColScript.h"
+#include "BowScript.h"
+#include "ArrowScript.h"
+#include "MageColScript.h"
+
+/* Event */
+#include "SceneChangeEvent.h"
+ /*State 모음*/
+#include "State.h"
+#include "PauseState.h"
+#include "IdleState.h"
+#include "MoveState.h"
+#include "AttackState.h"
+#include "MagicAttackState.h"
+#include "EvasionState.h"
+#include "FallState.h"
+#include "HitStartState.h"
+#include "HittingState.h"
+#include "HitEndState.h"
+#include "FallDownState.h"
+#include "DeadState.h"
+#include "ClimingDownState.h"
+#include "ClimingEndState.h"
+#include "ClimingUpState.h"
+#include "BowState.h"
+
 
 Mage::Mage()
 {
 	mHP = 3.f; // 피통
 	mSpeed = 2.f; //이동속도
 	mAttackDamage = 1; // 공격력
-	mAttackRange = 10.f; // 공격 감지 거리
+	mAttackRange = 10.f;
 	mRecogRange = 5.f; //감지거리
 
 	meBasicState = MonsterBasicState::Idle;
+
+	//마법사 공격구슬 오브젝트 - MageCol
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Dynamic;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(0.3f, 0.3f, 0.3f);
+
+		pMageCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.f, 0.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Monster\\_DROP_SOUL50.fbx", false, LayerType::MonsterCol);
+
+		pMageCol->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+		pMageCol->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		
+
+		pMageCol->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
+		pMageCol->GetMeshRenderer()->GetMaterial()->SetBloomPower(5.f, 0);
+		pMageCol->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(0.f, 1.f, 0.f, 1.f));
+		pMageCol->GetMeshRenderer()->GetMaterial()->SetBloomFilter(Vec4(0.f, 1.f, 0.f, 1.f), 0);
+
+		//pMageCol->Disable();
+		//auto pFollowSc = pMageCol->AddComponent(new OwnerFollowScript(this));
+		//pFollowSc->SetOffset(Vec3(3.f, 0.f, 0.f));
+
+		pMageColSc = pMageCol->AddComponent(new MageColScript);
+
+		pMageCol->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+		pMageCol->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+		//gpEngine->GetTool()->UseGizmo();
+		//gpEngine->GetTool()->SetGameObject(pArrow);
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pMageCol);
+	
+	}
+
+
 }
 
 Mage::~Mage()

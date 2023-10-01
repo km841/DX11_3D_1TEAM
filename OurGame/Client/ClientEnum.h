@@ -88,11 +88,39 @@ enum class MonsterBasicState
 	Dead, //죽는거
 
 
-	Idle_to_Trace, //마법사
+	//idle    //박쥐
+	Idle_to_Trace, 
+	//trace
+	//attack
+	//hit
+	//dead
+
+
+	//idle    //마법사
 	Teleport_Out,
 	Teleport_In,
+	//attack
+	//hit
+	//dead
 
-	Trace_to_Attack, // 초록거미
-	Birth,
+
+	Birth,    // 초록거미
 	Hop_dojge,
+	//idle
+	//Trace
+	Trace_to_Attack,
+	//attack
+	//hit
+	//dead
+
+
+	//Idle    // 콩벌레
+	//Idle_to_Trace 
+	//Trace_to_Attack
+	//Attack
+	Stun,
+	//hit
+	//dead
+	
+
 };

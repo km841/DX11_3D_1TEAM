@@ -50,7 +50,7 @@
 #include "SceneChangeEvent.h"
 ArrowScript::ArrowScript()
 {
-	timerObj.SetEndTime(0.3f);
+	timerObj.SetEndTime(0.6f); //화살 잔여 시간 설정
 }
 
 void ArrowScript::Initialize()

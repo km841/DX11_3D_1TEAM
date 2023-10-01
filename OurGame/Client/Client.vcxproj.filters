@@ -285,6 +285,9 @@
     <ClInclude Include="MonsterCrackScript.h">
       <Filter>소스 파일\GameObject\Monster\Script</Filter>
     </ClInclude>
+    <ClInclude Include="MageColScript.h">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -567,6 +570,9 @@
     </ClCompile>
     <ClCompile Include="MonsterCrackScript.cpp">
       <Filter>소스 파일\GameObject\Monster\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="MageColScript.cpp">
+      <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
