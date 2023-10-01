@@ -45,6 +45,8 @@ namespace hm
 
 		float GetBoundingSphereRadius() { return max(max(mScale.x, mScale.y), mScale.z); }
 
+		const Vec3& GetRelativePosition() { return mRelativePosition; }
+		void SetRelativePosition(const Vec3& _position) { mRelativePosition = _position; }
 		Vec3 GetWorldPosition();
 		const Vec3& GetPosition();
 		const Vec3& GetRotation();

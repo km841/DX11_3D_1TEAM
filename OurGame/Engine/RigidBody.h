@@ -67,6 +67,9 @@ namespace hm
 		const PxFilterData& GetFilterData() { return mPhysicsInfo.filterData; }
 		void SetOtherLayerInFilterData(LayerType _eOtherLayer) { mPhysicsInfo.filterData.word1 |= 1 << static_cast<int>(_eOtherLayer); }
 
+		void SetVelocityExcludingColliders(const Vec3& _velocity);
+		const Vec3& GetGraphicVelocity() { return mGraphicVelocity; }
+
 		void SetVelocity(const Vec3& _velocity);
 		void SetVelocity(Axis _eAxis, float _velocity);
 		void AddVelocity(const Vec3& _velocity);
@@ -128,7 +131,8 @@ namespace hm
 		PxShape* mpShape;
 		PxMaterial* mpMaterial;
 
-		Vec3 mVelocity;
+		Vec3 mGraphicVelocity; //
+		Vec3 mVelocity; // x, z
 		float mMaxVelocity;
 		bool mZeroAxisV[AXIS_MAX];
 

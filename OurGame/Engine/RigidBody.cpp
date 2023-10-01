@@ -177,6 +177,11 @@ namespace hm
 		}
 	}
 
+	void RigidBody::SetVelocityExcludingColliders(const Vec3& _velocity)
+	{
+		mGraphicVelocity = _velocity;
+	}
+
 	void RigidBody::SetVelocity(const Vec3& _velocity)
 	{
 		if (true == mbAppliedPhysics)
