@@ -15,7 +15,8 @@
 
 Lurker::Lurker()
 {
-	mHP = 3.f; // 피통
+	mMaxHP = 3.f;
+	mHP = mMaxHP; // 피통
 	mSpeed = 1.5f; //이동속도
 	mAttackDamage = 1; // 공격력
 	mAttackRange = 4.f; // 공격 감지 거리

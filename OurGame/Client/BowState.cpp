@@ -73,6 +73,7 @@ void BowState::Update()
 		pArrowSc->SetArrowAtkCheck(true); //화살 발사 부분 시작
 		pArrowSc->BurnReset(); //불화살 초기화 부분
 		pArrowSc->SetDirPos(Dir); // 화살 발사 방향 Set
+		pArrowSc->SetmSpeed(); // 화살 발사 방향 Set
 	}
 	if (pAni->GetFrameRatio() > 0.9)
 	{

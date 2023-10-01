@@ -35,7 +35,7 @@
 Bat::Bat()
 {
 	mMaxHP = 3.f;
-	mHP= mMaxHP; // 피통
+	mHP = mMaxHP; // 피통
 	mSpeed=2.f; //이동속도
 	mAttackDamage = 1; // 공격력
 	mAttackRange = 2.5f; // 공격 감지 거리

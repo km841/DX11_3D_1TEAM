@@ -3,6 +3,9 @@
 
 hm::Monster_ProjectTile::Monster_ProjectTile()
 	: GameObject(LayerType::Monster_ProjectTile)
+	, mHP(1.f)
+	, mSpeed(2.f)
+	, mAttackDamage(1)
 {
 }
 

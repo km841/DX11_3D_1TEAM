@@ -22,6 +22,7 @@ public:
     bool GetIsBurn() { return ArrowAtkCheck; }
     void SetBurn() { isBurn = true; }   
     void BurnReset() { isBurn = false; }
+    void SetmSpeed() { mSpeed = 40; }
 
     void SetDirPos(Vec3 _dir) { DirPos = _dir; }
 private:
@@ -33,5 +34,7 @@ private:
     TimerObject timerObj;
 
     bool isBurn = false;
+
+    int mSpeed;
 };
 

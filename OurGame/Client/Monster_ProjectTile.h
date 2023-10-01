@@ -22,5 +22,11 @@ namespace hm
 		virtual void Render();
 		virtual void Destroy();
 
+
+	protected:
+		float mHP; // 피통
+		float mSpeed; //이동속도
+		int mAttackDamage; // 공격력
+	
 	};
 }

@@ -412,6 +412,11 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 		StateChange(PlayerState::HitStartState);
 	}
 
+	if (LayerType::Monster_ProjectTile == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		StateChange(PlayerState::HitStartState);
+	}
+
 	if (LayerType::Ladder == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		lastLadderName = _pOtherCollider->GetGameObject()->GetName();
