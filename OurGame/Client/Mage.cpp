@@ -28,6 +28,7 @@
 #include "SwordHeavyEffect.h"
 #include "Ladder.h"
 #include "LadderCollider.h"
+#include "Mage_ProjectTile.h"
 
 /* Component */
 #include "Collider.h"
@@ -76,7 +77,8 @@
 
 Mage::Mage()
 {
-	mHP = 3.f; // 피통
+	mMaxHP = 3.f;
+	mHP = mMaxHP; // 피통
 	mSpeed = 2.f; //이동속도
 	mAttackDamage = 1; // 공격력
 	mAttackRange = 10.f;
@@ -84,37 +86,6 @@ Mage::Mage()
 
 	meBasicState = MonsterBasicState::Idle;
 
-	//마법사 공격구슬 오브젝트 - MageCol
-	//{
-	//	PhysicsInfo physicsInfo;
-	//	physicsInfo.eActorType = ActorType::Dynamic;
-	//	physicsInfo.eGeometryType = GeometryType::Box;
-	//	physicsInfo.size = Vec3(0.3f, 0.3f, 0.3f);
-
-	//	pMageCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.f, 0.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Monster\\_DROP_SOUL50.fbx", false, LayerType::MonsterCol);
-
-	//	pMageCol->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
-	//	pMageCol->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
-	//	
-
-	//	pMageCol->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
-	//	pMageCol->GetMeshRenderer()->GetMaterial()->SetBloomPower(5.f, 0);
-	//	pMageCol->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(0.f, 1.f, 0.f, 1.f));
-	//	pMageCol->GetMeshRenderer()->GetMaterial()->SetBloomFilter(Vec4(0.f, 1.f, 0.f, 1.f), 0);
-
-	//	//pMageCol->Disable();
-	//	//auto pFollowSc = pMageCol->AddComponent(new OwnerFollowScript(this));
-	//	//pFollowSc->SetOffset(Vec3(3.f, 0.f, 0.f));
-
-	//	pMageColSc = pMageCol->AddComponent(new MageColScript);
-
-	//	pMageCol->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-	//	pMageCol->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-	//	//gpEngine->GetTool()->UseGizmo();
-	//	//gpEngine->GetTool()->SetGameObject(pArrow);
-	//	GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pMageCol);
-	//
-	//}
 
 
 }
@@ -166,7 +137,7 @@ void Mage::SetBehaviorTree()
 					}
 
 					Animator* pAnimator = GetAnimator();
-					if (pAnimator->GetFrameRatio() > 0.05)
+					if (pAnimator->GetFrameRatio() > 0.1)
 						return BehaviorResult::Success;
 
 					return BehaviorResult::Failure;
@@ -350,14 +321,41 @@ void Mage::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (5 != animIndex)
-					pAnimator->Play(5, true);
+				if (1 != animIndex)
+					pAnimator->Play(1, true);
 
 				return BehaviorResult::Success;
 				});
 
-			//task
-			//mage_projecttile 생성 new
+			//공격 구슬 생성
+			BehaviorTask* pAttack_ProjectTileTask = new BehaviorTask([&]() {
+				Animator* pAni = GetAnimator();
+
+				/*if (pAni->GetFrameRatio() > 0.2) {
+					if (true != isTrigger01) {
+						isTrigger01 = true;
+						CreateProjectTile();
+					}
+				}*/
+
+				if (pAni->GetFrameRatio() > 0.7) {
+					if (true != isTrigger02) {
+						isTrigger02 = true;
+						CreateProjectTile();
+					}
+				}
+
+				/*if (pAni->GetFrameRatio() > 0.6) {
+					if (true != isTrigger03) {
+						isTrigger03 = true;
+						CreateProjectTile();
+					}
+				}*/
+
+				
+
+				return BehaviorResult::Success;
+				});
 
 			// 플레이어 목표 좌표로 몬스터가 이동+회전 하는 실행(Task)
 			BehaviorTask* pAttackMoveTask = new BehaviorTask([&]() {
@@ -462,8 +460,12 @@ void Mage::SetBehaviorTree()
 					Animator* pAni = GetAnimator();
 
 
-					if (pAni->GetFrameRatio() > 0.99)
+					if (pAni->GetFrameRatio() > 0.99) {
+						isTrigger01 = false;
+						isTrigger02 = false;
+						isTrigger03 = false;
 						return BehaviorResult::Success;
+					}
 					return BehaviorResult::Failure;
 
 				});
@@ -477,6 +479,7 @@ void Mage::SetBehaviorTree()
 
 			pAttackSequence->AddChild(pStateChecker);
 			pAttackSequence->AddChild(pRunAnimationTask);
+			pAttackSequence->AddChild(pAttack_ProjectTileTask);
 			pAttackSequence->AddChild(pAttackMoveTask);
 			pAttackSequence->AddChild(pAttackTask);
 			pAttackSequence->AddChild(new ChangeStateTask(MonsterBasicState::Idle));
@@ -678,4 +681,28 @@ void Mage::OnTriggerExit(Collider* _pOtherCollider)
 		if (0 == mGroundCount)
 			GetRigidBody()->ApplyGravity();
 	}
+}
+
+void Mage::CreateProjectTile()
+{
+	PhysicsInfo physicsInfo;
+	physicsInfo.eActorType = ActorType::Kinematic;
+	physicsInfo.eGeometryType = GeometryType::Box;
+	physicsInfo.size = Vec3(0.3f, 0.3f, 0.3f);
+
+	Mage_ProjectTile* pProjectTile = Factory::CreateObjectHasPhysical<Mage_ProjectTile>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Monster\\_DROP_SOUL50.fbx");
+	pProjectTile->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+	pProjectTile->GetTransform()->SetPosition(GetTransform()->GetPosition());
+	pProjectTile->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+
+	pProjectTile->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
+	pProjectTile->GetMeshRenderer()->GetMaterial()->SetBloomPower(3.f, 0);
+	pProjectTile->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(0.f, 1.f, 0.f, 1.f));
+
+	pProjectTile->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+	pProjectTile->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+
+	pProjectTile->Initialize();
+	
+	GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pProjectTile);
 }

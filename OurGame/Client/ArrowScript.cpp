@@ -50,7 +50,8 @@
 #include "SceneChangeEvent.h"
 ArrowScript::ArrowScript()
 {
-	timerObj.SetEndTime(0.6f); //화살 잔여 시간 설정
+	timerObj.SetEndTime(0.9f); //화살 잔여 시간 설정
+	mSpeed = 40;
 }
 
 void ArrowScript::Initialize()
@@ -152,7 +153,7 @@ void ArrowScript::FixedUpdate()
 
 	if (ArrowAtkCheck == true) //화살이 공격 상태일때
 	{
-		pRb->SetVelocity(DirPos * 40);
+		pRb->SetVelocity(DirPos * mSpeed);
 		timerObj.Start();
 		if (timerObj.IsFinished() == true)
 		{
@@ -160,6 +161,11 @@ void ArrowScript::FixedUpdate()
 			pObj->Disable();
 		}
 	}
+
+	if (isBurn == true) {
+		mSpeed = 20;
+	}
+	
 }
 
 void ArrowScript::SetPlayerState(PlayerState _eStateNum)

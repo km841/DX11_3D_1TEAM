@@ -96,6 +96,7 @@ namespace hm {
 		
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::PlayerCol);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::ArrowCol);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Monster_ProjectTile);
 
 		//GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
 		//GET_SINGLE(RenderManager)->AddHoldEffect(3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
@@ -158,7 +159,7 @@ namespace hm {
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(1.f, 2.0f, 1.f);
 
-			HeadRoller* p_E_HEADROLLER = Factory::CreateMonster<HeadRoller>(Vec3(11.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_HEADROLLER.fbx");
+			HeadRoller* p_E_HEADROLLER = Factory::CreateMonster<HeadRoller>(Vec3(11.f, 0.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_HEADROLLER.fbx");
 			p_E_HEADROLLER->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 			p_E_HEADROLLER->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 			p_E_HEADROLLER->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
@@ -177,7 +178,7 @@ namespace hm {
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(0.5f, 0.5f, 1.f);
 
-			Lurker* p_E_LURKER = Factory::CreateMonster<Lurker>(Vec3(0.f, 5.f, -11.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_LURKER.fbx");
+			Lurker* p_E_LURKER = Factory::CreateMonster<Lurker>(Vec3(0.f, 5.f, -11.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_LURKER.fbx");
 			p_E_LURKER->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 			p_E_LURKER->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 			p_E_LURKER->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.4f, 0.f));
@@ -194,7 +195,7 @@ namespace hm {
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(0.5f, 0.5f, 2.f);
 
-			Mage* p_E_MAGE = Factory::CreateMonster<Mage>(Vec3(0.f, 0.f, 9.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_MAGE.fbx");
+			Mage* p_E_MAGE = Factory::CreateMonster<Mage>(Vec3(0.f, 0.f, 9.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_MAGE.fbx");
 			p_E_MAGE->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 			p_E_MAGE->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 			p_E_MAGE->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
@@ -227,7 +228,7 @@ namespace hm {
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(0.5f, 0.5f, 1.0f);
 
-			Bat* p_E_BAT_White = Factory::CreateMonster<Bat>(Vec3(-9.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
+			Bat* p_E_BAT_White = Factory::CreateMonster<Bat>(Vec3(-9.f, 0.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
 			p_E_BAT_White->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 			p_E_BAT_White->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 	

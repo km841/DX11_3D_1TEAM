@@ -291,6 +291,9 @@
     <ClInclude Include="Monster_ProjectTile.h">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="Mage_ProjectTile.h">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -578,6 +581,9 @@
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
     <ClCompile Include="Monster_ProjectTile.cpp">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Mage_ProjectTile.cpp">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
   </ItemGroup>

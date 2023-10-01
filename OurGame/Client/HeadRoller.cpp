@@ -38,7 +38,8 @@ namespace hm
 {
 	HeadRoller::HeadRoller()
 	{
-		mHP = 3.f; // 피통
+		mMaxHP = 3.f;
+		mHP = mMaxHP; // 피통
 		mSpeed = 2.f; //이동속도
 		mAttackDamage = 1; // 공격력
 		mAttackRange = 2.5f; // 공격 감지 거리
@@ -345,9 +346,11 @@ namespace hm
 						Vec3 myPos = GetTransform()->GetPosition();
 						Animator* pAni = GetAnimator();
 
+						//dir 따로 저장해야댐 Trace_to_attack쪽에서
 						Vec3 dir = playerPos - myPos;
 						dir.Normalize();
 
+						//이부분 중요
 						GetRigidBody()->SetVelocityExcludingColliders(-dir * 14.0f);
 						GetRigidBody()->SetVelocity(dir * 14.f);
 
@@ -391,6 +394,7 @@ namespace hm
 					int animIndex = pAnimator->GetCurrentClipIndex();
 					if (4 != animIndex)
 					{
+						//초기화 중요
 						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 						GetTransform()->SetRelativePosition(Vec3::Zero);
 						pAnimator->Play(4, true);
