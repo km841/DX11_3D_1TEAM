@@ -20,6 +20,8 @@ Mage::Mage()
 	mAttackDamage = 1; // 공격력
 	mAttackRange = 10.f; // 공격 감지 거리
 	mRecogRange = 5.f; //감지거리
+
+	meBasicState = MonsterBasicState::Idle;
 }
 
 Mage::~Mage()

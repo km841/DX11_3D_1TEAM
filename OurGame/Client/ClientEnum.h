@@ -81,12 +81,18 @@ enum
 enum class MonsterBasicState
 {
 	Idle, // 기본 상태
-	Idle_to_Trace,
-	Teleport_Out,
-	Teleport_In,
 	Patrol, //정찰 상태
 	Trace, // 추적 상태
 	Attack, // 공격
 	Hit, // 맞는거
-	Dead //죽는거
+	Dead, //죽는거
+
+
+	Idle_to_Trace, //마법사
+	Teleport_Out,
+	Teleport_In,
+
+	Trace_to_Attack, // 초록거미
+	Birth,
+	Hop_dojge,
 };
