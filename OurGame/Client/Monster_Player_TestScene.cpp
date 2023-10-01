@@ -31,6 +31,7 @@
 #include "SwordHeavyEffect.h"
 #include "Mage.h"
 #include "Lurker.h"
+#include "HeadRoller.h"
 
 /* Component */
 #include "Collider.h"
@@ -95,7 +96,6 @@ namespace hm {
 		
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::PlayerCol);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::ArrowCol);
-		
 
 		//GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
 		//GET_SINGLE(RenderManager)->AddHoldEffect(3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
@@ -111,105 +111,79 @@ namespace hm {
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
 			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(30.f, 0.1f, 37.f);
+			info.size = Vec3(50.f, 0.1f, 50.f);
 
-			Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\RoughLowerFloor.fbx");
+			Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\RoughLowerFloor.fbx");
 
-			pFloor->GetTransform()->SetScale(Vec3(37.f, 37.f, 37.f));
+			pFloor->GetTransform()->SetScale(Vec3(50.f, 1.f, 50.f));
 			pFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
-			pFloor->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(164, 164, 145));
+			pFloor->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(114, 114, 115));
 
 			AddGameObject(pFloor);
 			
 		}
 
-		//Player
+		PLAYER->GetTransform()->SetPosition(Vec3(0.f, -7.f, 0.f));
+
+		////Player
+		//{
+		//	PhysicsInfo physicsInfo;
+		//	physicsInfo.eActorType = ActorType::Kinematic;
+		//	physicsInfo.eGeometryType = GeometryType::Capsule;
+		//	physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
+
+		//	Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, -7.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
+		//	//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
+		//	PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
+		//	pPlayer->AddComponent(new PaperBurnScript);
+		//	pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
+		//	pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
+		//	pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
+		//	pPlayer->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.6f, 0.f));
+
+		//	pPlayer->GetRigidBody()->ApplyGravity();
+		//	pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+		//	pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+		//	AddGameObject(pPlayer);
+		//	//SetMeshTarget(pPlayer);
+		//}
+
+
+		
+
+		 //콩벌레
 		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Kinematic;
-			physicsInfo.eGeometryType = GeometryType::Capsule;
-			physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Kinematic;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(1.f, 2.0f, 1.f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, -7.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
-			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
-			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
-			pPlayer->AddComponent(new PaperBurnScript);
-			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
-			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
-			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
-			pPlayer->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.6f, 0.f));
+			HeadRoller* p_E_HEADROLLER = Factory::CreateMonster<HeadRoller>(Vec3(11.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_HEADROLLER.fbx");
+			p_E_HEADROLLER->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+			p_E_HEADROLLER->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+			p_E_HEADROLLER->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
 
-			pPlayer->GetRigidBody()->ApplyGravity();
-			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-			AddGameObject(pPlayer);
-			//SetMeshTarget(pPlayer);
+
+
+			//SetGizmoTarget(p_E_HEADROLLER);
+			AddGameObject(p_E_HEADROLLER);
+			//SetMeshTarget(p_E_HEADROLLER);
 		}
-
-		////무기 테스트
-		//{
-		//	PhysicsInfo info = {};
-		//	info.eActorType = ActorType::Kinematic;
-		//	info.eGeometryType = GeometryType::Box;
-		//	info.size = Vec3(2.f, 0.2f, 0.2f);
-
-		//	DecoObject* pGreatSword = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(0.f, 3.f, 0.f), info, L"Forward_CullNone", L"..\\Resources\\FBX\\Weapon\\Sword.fbx");
-		//	pGreatSword->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
-		//	pGreatSword->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
-
-		//	//pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloom(true);
-		//	//pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.0f);
-		//	//pGreatSword->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 0.f, 0.f, 1.f));
-
-
-		//	SetGizmoTarget(pGreatSword);
-		//	AddGameObject(pGreatSword);
-		//	//SetMeshTarget(pGreatSword);
-		//}
-		
-
-		
-		
-
-		// 콩벌레
-		//{
-		//	PhysicsInfo info = {};
-		//	info.eActorType = ActorType::Kinematic;
-		//	info.eGeometryType = GeometryType::Box;
-		//	info.size = Vec3(2.f, 2.f, 2.f);
-
-		//	Monster* p_E_HEADROLLER = Factory::CreateObjectHasPhysical<Monster>(Vec3(0.f, 3.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_HEADROLLER.fbx");
-		//	p_E_HEADROLLER->GetTransform()->SetScale(Vec3(50.5f, 50.5f, 50.5f));
-		//	p_E_HEADROLLER->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
-
-		//	//SetGizmoTarget(p_E_HEADROLLER);
-		//	AddGameObject(p_E_HEADROLLER);
-		//	//SetAnimTarget(p_E_HEADROLLER);
-		//}
 
 		// 초록거미
 		{
 			PhysicsInfo info = {};
 			info.eActorType = ActorType::Kinematic;
 			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(0.5f, 0.5f, 0.5f);
+			info.size = Vec3(0.5f, 0.5f, 1.f);
 
-			Lurker* p_E_LURKER = Factory::CreateObjectHasPhysical<Lurker>(Vec3(0.f, 0.f, -9.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_LURKER.fbx");
+			Lurker* p_E_LURKER = Factory::CreateMonster<Lurker>(Vec3(0.f, 5.f, -11.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_LURKER.fbx");
 			p_E_LURKER->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 			p_E_LURKER->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-			p_E_LURKER->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.2f, 0.f));
-
-			p_E_LURKER->SetFrustumCheckFlag(false);
-
-			p_E_LURKER->AddComponent<PaperBurnScript>();
-
-
-			p_E_LURKER->GetRigidBody()->ApplyGravity();
-			p_E_LURKER->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-			p_E_LURKER->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+			p_E_LURKER->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.4f, 0.f));
 
 			AddGameObject(p_E_LURKER);
-			SetMeshTarget(p_E_LURKER);
+			//SetMeshTarget(p_E_LURKER);
 		}
 		
 	
@@ -220,19 +194,11 @@ namespace hm {
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(0.5f, 0.5f, 2.f);
 
-			Mage* p_E_MAGE = Factory::CreateObjectHasPhysical<Mage>(Vec3(0.f, 0.f, 9.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_MAGE.fbx");
+			Mage* p_E_MAGE = Factory::CreateMonster<Mage>(Vec3(0.f, 0.f, 9.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_MAGE.fbx");
 			p_E_MAGE->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 			p_E_MAGE->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 			p_E_MAGE->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
-			p_E_MAGE->SetFrustumCheckFlag(false);
-
-			p_E_MAGE->AddComponent<PaperBurnScript>();
-
-
-			p_E_MAGE->GetRigidBody()->ApplyGravity();
-			p_E_MAGE->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-			p_E_MAGE->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-
+		
 			
 			AddGameObject(p_E_MAGE);
 			//SetMeshTarget(p_E_MAGE);
@@ -261,46 +227,23 @@ namespace hm {
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(0.5f, 0.5f, 1.0f);
 
-			Bat* p_E_BAT_White = Factory::CreateObjectHasPhysical<Bat>(Vec3(-9.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
+			Bat* p_E_BAT_White = Factory::CreateMonster<Bat>(Vec3(-9.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
 			p_E_BAT_White->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 			p_E_BAT_White->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-			p_E_BAT_White->SetFrustumCheckFlag(false);
-
-			p_E_BAT_White->AddComponent<PaperBurnScript>();
-
-			p_E_BAT_White->GetRigidBody()->ApplyGravity();
-
-			p_E_BAT_White->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-			p_E_BAT_White->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-			//SetGizmoTarget(p_E_BAT_White);
+	
 			AddGameObject(p_E_BAT_White);
 			//SetMeshTarget(p_E_BAT_White);
 		}
 
-		//최종보스 할머니 - _E_Grandma
-		//{
-		//	PhysicsInfo info = {};
-		//	info.eActorType = ActorType::Kinematic;
-		//	info.eGeometryType = GeometryType::Box;
-		//	info.size = Vec3(5.f, 5.f, 5.f);
+		
 
-		//	Grandma* p_E_Grandma = Factory::CreateObjectHasPhysical<Grandma>(Vec3(-11.f, 0.f, 5.f), info, L"Deferred_CullNone", LARGE_RESOURCE(L"Monster\\_E_Grandma.fbx"));
-		//	p_E_Grandma->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
-		//	p_E_Grandma->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-		//	p_E_Grandma->SetFrustumCheckFlag(false);
-		//	//p_E_Grandma->GetRigidBody()->ApplyGravity();
-		//	//SetGizmoTarget(p_E_Grandma);
-		//	AddGameObject(p_E_Grandma);
-		//	//SetMeshTarget(p_E_Grandma);
-		//}
-
-		{
+		/*{
 			DecoObject* pBonFire = Factory::CreateObject<DecoObject>(Vec3(11.1f, 7.4f, -16.5f), L"Fire", L"");
 			pBonFire->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::WrapClamp);
 			pBonFire->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
 			pBonFire->AddComponent(new BonFireScript);
 			AddGameObject(pBonFire);
-		}
+		}*/
 
 		
 	}

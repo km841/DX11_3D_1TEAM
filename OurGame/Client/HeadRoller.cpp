@@ -8,9 +8,31 @@
 #include "Collider.h"
 #include "Input.h"
 #include "ChangeStateCondition.h"
+#include "PaperBurnScript.h"
+#include "EventManager.h"
+#include "SceneManager.h"
+#include "ChangeStateTask.h"
+/* GameObject */
+#include "GameObject.h"
+#include "Player.h"
+#include "Ground.h"
+#include "DecoObject.h"
+#include "WallObject.h"
+#include "Npc.h"
+#include "Monster.h"
+#include "Grandma.h"
 
-#define IDLE_ANIM_INDEX 0
-#define TRACE_ANIM_INDEX 3
+/* Component */
+#include "Collider.h"
+#include "RigidBody.h"
+#include "MeshRenderer.h"
+#include "Transform.h"
+#include "Camera.h"
+#include "Light.h"
+#include "ParticleSystem.h"
+#include "Animator.h"
+
+
 
 namespace hm
 {
@@ -21,6 +43,8 @@ namespace hm
 		mAttackDamage = 1; // 공격력
 		mAttackRange = 2.5f; // 공격 감지 거리
 		mRecogRange = 7.f; //감지거리
+
+		meBasicState = MonsterBasicState::Idle;
 	}
 
 	HeadRoller::~HeadRoller()
@@ -62,8 +86,8 @@ namespace hm
 				BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 					Animator* pAnimator = GetAnimator();
 					int animIndex = pAnimator->GetCurrentClipIndex();
-					if (IDLE_ANIM_INDEX != animIndex)
-						pAnimator->Play(IDLE_ANIM_INDEX, true);
+					if (0 != animIndex)
+						pAnimator->Play(0, true);
 
 					return BehaviorResult::Success;
 					});
@@ -82,29 +106,29 @@ namespace hm
 						return BehaviorResult::Failure;
 					});
 
-				// 상태 변경(Task) : 상태 변경
-				BehaviorTask* pChangeState = new BehaviorTask([&]()
-					{
-						meBasicState = MonsterBasicState::Trace;
-						return BehaviorResult::Success;
-					});
+				//// 상태 변경(Task) : 상태 변경
+				//BehaviorTask* pChangeState = new BehaviorTask([&]()
+				//	{
+				//		meBasicState = MonsterBasicState::Trace;
+				//		return BehaviorResult::Success;
+				//	});
 
-				pIdleSequence->AddChild(new ChangeStateCondition(MonsterBasicState::Idle));
+				pIdleSequence->AddChild(pStateChecker);
 				pIdleSequence->AddChild(pRunAnimationTask);
 				pIdleSequence->AddChild(pCheckNearbyPlayer);
-				pIdleSequence->AddChild(pChangeState);
+				pIdleSequence->AddChild(new ChangeStateTask(MonsterBasicState::Idle_to_Trace));
 			}
 			pStateSelector->AddChild(pIdleSequence);
 
 #pragma endregion
 
-#pragma region Trace Sequence
-			Sequence* pTraceSequence = new Sequence;
+#pragma region Idle_To_Trace Sequence
+			Sequence* pIdle_To_TraceSequence = new Sequence;
 			{
-				// 상태 확인(Condition) : 현재 상태가 Trace인지 확인
+				// 상태 확인(Condition) : 현재 상태가 Idle_To_Trace인지 확인
 				BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 					{
-						if (MonsterBasicState::Trace == meBasicState)
+						if (MonsterBasicState::Idle_to_Trace == meBasicState)
 							return BehaviorResult::Success;
 						else
 							return BehaviorResult::Failure;
@@ -114,33 +138,288 @@ namespace hm
 				BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 					Animator* pAnimator = GetAnimator();
 					int animIndex = pAnimator->GetCurrentClipIndex();
-					if (TRACE_ANIM_INDEX != animIndex)
-						pAnimator->Play(TRACE_ANIM_INDEX, true);
+					if (3 != animIndex)
+						pAnimator->Play(3, false);
 
 					return BehaviorResult::Success;
 					});
 
-				// 추적 실행(Task) : 플레이어의 방향을 확인하여 추적
-				BehaviorTask* pTraceTask = new BehaviorTask([&]() {
+				//애니메이션 한번 출력후 다음 상태로 넘어가기
+				BehaviorCondition* pCheckNearbyPlayer = new BehaviorCondition([&]()
+					{
+						Animator* pAni = GetAnimator();
+
+						if (pAni->GetFrameRatio() > 0.15)
+						{
+							return BehaviorResult::Success;
+						}
+						return BehaviorResult::Failure;
+					});
+
+				//// 상태 변경(Task) : 상태 변경
+				//BehaviorTask* pChangeState = new BehaviorTask([&]()
+				//	{
+				//		meBasicState = MonsterBasicState::Trace;
+				//		return BehaviorResult::Success;
+				//	});
+
+				pIdle_To_TraceSequence->AddChild(pStateChecker);
+				pIdle_To_TraceSequence->AddChild(pRunAnimationTask);
+				pIdle_To_TraceSequence->AddChild(pCheckNearbyPlayer);
+				pIdle_To_TraceSequence->AddChild(new ChangeStateTask(MonsterBasicState::Trace_to_Attack));
+			}
+			pStateSelector->AddChild(pIdle_To_TraceSequence);
+
+#pragma endregion
+
+#pragma region Trace_to_Attack Sequence
+			Sequence* Trace_to_AttackSequence = new Sequence;
+			{
+				// 상태 확인(Condition) : 현재 상태가 Hop_dojge인지 확인
+				BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+					{
+						if (MonsterBasicState::Trace_to_Attack == meBasicState)
+							return BehaviorResult::Success;
+						else
+							return BehaviorResult::Failure;
+					});
+
+				// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+				BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+					Animator* pAnimator = GetAnimator();
+					int animIndex = pAnimator->GetCurrentClipIndex();
+					if (1 != animIndex)
+						pAnimator->Play(1, false);
+
+					return BehaviorResult::Success;
+					});
+
+				// 플레이어 목표 좌표로 몬스터가 이동+회전 하는 실행(Task)
+				BehaviorTask* pTraceLookTask = new BehaviorTask([&]() {
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 					Vec3 myPos = GetTransform()->GetPosition();
-					
-					Vec3 dir = playerPos - myPos;
-					dir.Normalize();
+					Vec3 myRot = GetTransform()->GetRotation();
+					Vec3 scale = GetRigidBody()->GetGeometrySize();
 
+					Vec3 dir = playerPos - myPos;
+					Vec3 Num = scale * dir;
+					float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
+
+					dir.Normalize();
+					dir.y = 0;
 					// 몬스터의 이동속도가 들어가야 함
 					// 방향을 변경해주는 Task도 필요
-					GetRigidBody()->SetVelocity(dir * 1.f);
+					Vec3 Ve = dir * mSpeed;
+
+					const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+
+					for (int i = 0; i < gameObjects.size(); ++i)
+					{
+						if (gameObjects[i]->GetCollider())
+						{
+							for (size_t j = 1; j <= 8; j++)
+							{
+								if (GetCollider()->Raycast(myPos, ConvertDir(static_cast<DirectionEvasion>(j)), gameObjects[i]->GetCollider(), offset + 0.5f))
+								{
+									if (static_cast<DirectionEvasion>(j) == DirectionEvasion::FORWARD)
+									{
+										Ve.z = 0;
+									}
+									else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BACKWARD)
+									{
+										Ve.z = 0;
+									}
+									else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::LEFT)
+									{
+										Ve.x = 0;
+									}
+									else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::RIGHT)
+									{
+										Ve.x = 0;
+									}
+									else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPLEFT)
+									{
+										if (Ve.x > Ve.z)
+											Ve.z = 0;
+										else
+											Ve.x = 0;
+									}
+									else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPRIGHT)
+									{
+										if (Ve.x > Ve.z)
+											Ve.z = 0;
+										else
+											Ve.x = 0;
+									}
+									else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMLEFT)
+									{
+										if (Ve.x > Ve.z)
+											Ve.z = 0;
+										else
+											Ve.x = 0;
+									}
+									else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMRIGHT)
+									{
+										if (Ve.x > Ve.z)
+											Ve.z = 0;
+										else
+											Ve.x = 0;
+									}
+
+								}
+							}
+						}
+					}
+
+					//GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
+
+					Transform* pTr = GetTransform();
+					Vec3 rot = Vec3(0, 0, -1);
+					double angleRadian = atan2(dir.x, dir.z) - atan2(rot.x, rot.z);
+					float angleDegree = static_cast<float>(angleRadian) * 180.f / XM_PI;
+
+					if (angleDegree < 0.f)
+						angleDegree += 360.f;
+
+					//몬스터의 고개를 돌리는 코드
+					pTr->SetRotation(Vec3(0.f, angleDegree, 0.f));
 
 					return BehaviorResult::Success;
 					});
 
-				pTraceSequence->AddChild(new ChangeStateCondition(MonsterBasicState::Trace));
-				pTraceSequence->AddChild(pRunAnimationTask);
-				pTraceSequence->AddChild(pTraceTask);
+				//애니메이션 한번 출력후 다음 상태로 넘어가기
+				BehaviorCondition* pCheckNearbyPlayer = new BehaviorCondition([&]()
+					{
+						Animator* pAni = GetAnimator();
+
+						if (pAni->GetFrameRatio() > 0.1)
+						{
+							return BehaviorResult::Success;
+						}
+						return BehaviorResult::Failure;
+					});
+
+				//// 상태 변경(Task) : 상태 변경
+				//BehaviorTask* pChangeState = new BehaviorTask([&]()
+				//	{
+				//		meBasicState = MonsterBasicState::Trace;
+				//		return BehaviorResult::Success;
+				//	});
+
+				Trace_to_AttackSequence->AddChild(pStateChecker);
+				Trace_to_AttackSequence->AddChild(pRunAnimationTask);
+				Trace_to_AttackSequence->AddChild(pTraceLookTask);
+				Trace_to_AttackSequence->AddChild(pCheckNearbyPlayer);
+				Trace_to_AttackSequence->AddChild(new ChangeStateTask(MonsterBasicState::Attack));
 			}
-			pStateSelector->AddChild(pTraceSequence);
+			pStateSelector->AddChild(Trace_to_AttackSequence);
+
 #pragma endregion
+
+#pragma region Attack Sequence
+			Sequence* pAttackSequence = new Sequence;
+			{
+				// 상태 확인(Condition) : 현재 상태가 Attack인지 확인
+				BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+					{
+						if (MonsterBasicState::Attack == meBasicState)
+							return BehaviorResult::Success;
+						else
+							return BehaviorResult::Failure;
+					});
+
+				// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+				BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+					Animator* pAnimator = GetAnimator();
+					int animIndex = pAnimator->GetCurrentClipIndex();
+					if (2 != animIndex)
+						pAnimator->Play(2, true);
+
+					return BehaviorResult::Success;
+					});
+
+				// 공격 딜레이
+				BehaviorTask* pAttackTask = new BehaviorTask([&]()
+					{
+						Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+						Vec3 myPos = GetTransform()->GetPosition();
+						Animator* pAni = GetAnimator();
+
+
+						if (pAni->GetFrameRatio() > 0.15)
+							return BehaviorResult::Success;
+						return BehaviorResult::Failure;
+
+					});
+
+				// 상태 변경(Task) : 상태 변경
+				/*BehaviorTask* pChangeState = new BehaviorTask([&]()
+					{
+						meBasicState = MonsterBasicState::Trace;
+						return BehaviorResult::Success;
+					});*/
+
+				pAttackSequence->AddChild(pStateChecker);
+				pAttackSequence->AddChild(pRunAnimationTask);
+				pAttackSequence->AddChild(pAttackTask);
+				pAttackSequence->AddChild(new ChangeStateTask(MonsterBasicState::Stun));
+			}
+			pStateSelector->AddChild(pAttackSequence);
+
+#pragma endregion
+
+#pragma region Stun Sequence
+			Sequence* pStunSequence = new Sequence;
+			{
+				// 상태 확인(Condition) : 현재 상태가 Stun인지 확인
+				BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+					{
+						if (MonsterBasicState::Stun == meBasicState)
+							return BehaviorResult::Success;
+						else
+							return BehaviorResult::Failure;
+					});
+
+				// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+				BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+					Animator* pAnimator = GetAnimator();
+					int animIndex = pAnimator->GetCurrentClipIndex();
+					if (4 != animIndex)
+						pAnimator->Play(4, true);
+
+					return BehaviorResult::Success;
+					});
+
+				// 애니메이션 실행 시간
+				BehaviorTask* pAttackTask = new BehaviorTask([&]()
+					{
+						Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+						Vec3 myPos = GetTransform()->GetPosition();
+						Animator* pAni = GetAnimator();
+
+
+						if (pAni->GetFrameRatio() > 0.21)
+							return BehaviorResult::Success;
+						return BehaviorResult::Failure;
+
+					});
+
+				// 상태 변경(Task) : 상태 변경
+				/*BehaviorTask* pChangeState = new BehaviorTask([&]()
+					{
+						meBasicState = MonsterBasicState::Trace;
+						return BehaviorResult::Success;
+					});*/
+
+				pStunSequence->AddChild(pStateChecker);
+				pStunSequence->AddChild(pRunAnimationTask);
+				pStunSequence->AddChild(pAttackTask);
+				pStunSequence->AddChild(new ChangeStateTask(MonsterBasicState::Idle_to_Trace));
+			}
+			pStateSelector->AddChild(pStunSequence);
+
+#pragma endregion
+
 		}
 		pRootNode->AddChild(pStateSelector);
 	}

@@ -330,6 +330,8 @@ namespace hm
 			//SetMeshTarget(pPlayer);
 		}
 
+
+
 	}
 
 	void TitleScene::Exit()

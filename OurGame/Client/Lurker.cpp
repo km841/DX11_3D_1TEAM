@@ -16,10 +16,10 @@
 Lurker::Lurker()
 {
 	mHP = 3.f; // 피통
-	mSpeed = 2.f; //이동속도
+	mSpeed = 1.5f; //이동속도
 	mAttackDamage = 1; // 공격력
-	mAttackRange = 2.5f; // 공격 감지 거리
-	mRecogRange = 7.f; //감지거리
+	mAttackRange = 4.f; // 공격 감지 거리
+	mRecogRange = 9.f; //감지거리
 
 	meBasicState = MonsterBasicState::Birth;
 }
@@ -38,6 +38,60 @@ void Lurker::SetBehaviorTree()
 
 	Selector* pStateSelector = new Selector;
 	{
+#pragma region Hit Sequence
+		Sequence* pHitSequence = new Sequence;
+		{
+			// 상태 확인(Condition) : 현재 상태가 Attack인지 확인
+			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+				{
+					if (MonsterBasicState::Hit == meBasicState)
+						return BehaviorResult::Success;
+					else
+						return BehaviorResult::Failure;
+				});
+
+			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				Animator* pAnimator = GetAnimator();
+				int animIndex = pAnimator->GetCurrentClipIndex();
+				if (8 != animIndex)
+					pAnimator->Play(8, true);
+
+				return BehaviorResult::Success;
+				});
+
+			// Hit 발생시 작동하는 스테이터스
+			BehaviorTask* pAttackTask = new BehaviorTask([&]()
+				{
+					if (mHP <= 0) {
+						isDead = true;
+						meBasicState = MonsterBasicState::Dead;
+						return BehaviorResult::Failure;
+					}
+
+					Animator* pAnimator = GetAnimator();
+					if (pAnimator->GetFrameRatio() > 0.99)
+						return BehaviorResult::Success;
+
+					return BehaviorResult::Failure;
+				});
+
+			// 상태 변경(Task) : 상태 변경
+			BehaviorTask* pChangeState = new BehaviorTask([&]()
+				{
+					SetHitCheck(false);
+					meBasicState = MonsterBasicState::Trace;
+					return BehaviorResult::Success;
+				});
+
+			pHitSequence->AddChild(pStateChecker);
+			pHitSequence->AddChild(pRunAnimationTask);
+			pHitSequence->AddChild(pAttackTask);
+			pHitSequence->AddChild(pChangeState);
+		}
+		pStateSelector->AddChild(pHitSequence);
+
+#pragma endregion
 
 #pragma region Birth Sequence
 		Sequence* pBirthSequence = new Sequence;
@@ -113,7 +167,7 @@ void Lurker::SetBehaviorTree()
 				{
 					Animator* pAni = GetAnimator();
 
-					if (pAni->GetFrameRatio() > 0.8)
+					if (pAni->GetFrameRatio() > 0.99)
 					{
 						return BehaviorResult::Success;
 					}
@@ -281,6 +335,7 @@ void Lurker::SetBehaviorTree()
 
 
 				GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
+				//GetTransform()->SetPositionExcludingColliders(-Ve * 0.5f);
 
 				Transform* pTr = GetTransform();
 				Vec3 rot = Vec3(0, 0, -1);
@@ -307,7 +362,7 @@ void Lurker::SetBehaviorTree()
 
 
 
-					if (distance < mAttackRange && pAni->GetFrameRatio()>0.7f)
+					if (distance < mAttackRange && pAni->GetFrameRatio()>0.99f)
 					{
 						return BehaviorResult::Success;
 					}
@@ -332,6 +387,168 @@ void Lurker::SetBehaviorTree()
 
 #pragma endregion
 
+#pragma region Trace_to_Attack Sequence
+		Sequence* Trace_to_AttackSequence = new Sequence;
+		{
+			// 상태 확인(Condition) : 현재 상태가 Hop_dojge인지 확인
+			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+				{
+					if (MonsterBasicState::Trace_to_Attack == meBasicState)
+						return BehaviorResult::Success;
+					else
+						return BehaviorResult::Failure;
+				});
+
+			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				Animator* pAnimator = GetAnimator();
+				int animIndex = pAnimator->GetCurrentClipIndex();
+				if (1 != animIndex)
+					pAnimator->Play(1, false);
+
+				return BehaviorResult::Success;
+				});
+
+			//애니메이션 한번 출력후 다음 상태로 넘어가기
+			BehaviorCondition* pCheckNearbyPlayer = new BehaviorCondition([&]()
+				{
+					Animator* pAni = GetAnimator();
+
+					if (pAni->GetFrameRatio() > 0.99)
+					{
+						return BehaviorResult::Success;
+					}
+					return BehaviorResult::Failure;
+				});
+
+			//// 상태 변경(Task) : 상태 변경
+			//BehaviorTask* pChangeState = new BehaviorTask([&]()
+			//	{
+			//		meBasicState = MonsterBasicState::Trace;
+			//		return BehaviorResult::Success;
+			//	});
+
+			Trace_to_AttackSequence->AddChild(pStateChecker);
+			Trace_to_AttackSequence->AddChild(pRunAnimationTask);
+			Trace_to_AttackSequence->AddChild(pCheckNearbyPlayer);
+			Trace_to_AttackSequence->AddChild(new ChangeStateTask(MonsterBasicState::Attack));
+		}
+		pStateSelector->AddChild(Trace_to_AttackSequence);
+
+#pragma endregion
+
+#pragma region Attack Sequence
+		Sequence* pAttackSequence = new Sequence;
+		{
+			// 상태 확인(Condition) : 현재 상태가 Attack인지 확인
+			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+				{
+					if (MonsterBasicState::Attack == meBasicState)
+						return BehaviorResult::Success;
+					else
+						return BehaviorResult::Failure;
+				});
+
+			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				Animator* pAnimator = GetAnimator();
+				int animIndex = pAnimator->GetCurrentClipIndex();
+				if (2 != animIndex)
+					pAnimator->Play(2, true);
+
+				return BehaviorResult::Success;
+				});
+
+			// 공격 딜레이
+			BehaviorTask* pAttackTask = new BehaviorTask([&]()
+				{
+					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+					Vec3 myPos = GetTransform()->GetPosition();
+					Animator* pAni = GetAnimator();
+
+
+					if (pAni->GetFrameRatio() > 0.9)
+						return BehaviorResult::Success;
+					return BehaviorResult::Failure;
+
+				});
+
+			// 상태 변경(Task) : 상태 변경
+			/*BehaviorTask* pChangeState = new BehaviorTask([&]()
+				{
+					meBasicState = MonsterBasicState::Trace;
+					return BehaviorResult::Success;
+				});*/
+
+			pAttackSequence->AddChild(pStateChecker);
+			pAttackSequence->AddChild(pRunAnimationTask);
+			pAttackSequence->AddChild(pAttackTask);
+			pAttackSequence->AddChild(new ChangeStateTask(MonsterBasicState::Trace));
+		}
+		pStateSelector->AddChild(pAttackSequence);
+
+#pragma endregion
+
+#pragma region Dead Sequence
+		Sequence* pDeadSequence = new Sequence;
+		{
+			// 상태 확인(Condition) : 현재 상태가 Attack인지 확인
+			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+				{
+					if (MonsterBasicState::Dead == meBasicState)
+						return BehaviorResult::Success;
+					else
+						return BehaviorResult::Failure;
+				});
+
+			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				Animator* pAnimator = GetAnimator();
+				GameObject* pObj = GetGameObject(); //이거 확인도 필요함
+				int animIndex = pAnimator->GetCurrentClipIndex();
+				if (isDead == true)
+				{
+					//pObj->GetRigidBody()->SetSimulationShapeFlag(false);
+					//pObj->Disable();
+					isDead = false;
+					GetScript<PaperBurnScript>()->SetPaperBurn();
+					pAnimator->Play(9, false);
+				}
+
+				//pObj->GetRigidBody()->SetSimulationShapeFlag(false); // 콜라이더 끄기
+				//pObj->GetRigidBody()->SetSimulationShapeFlag(true); // 콜라이더 켜기
+
+
+				return BehaviorResult::Success;
+				});
+
+			// 페이퍼번 실행 조건
+			BehaviorTask* pAttackTask = new BehaviorTask([&]()
+				{
+					Animator* pAni = GetAnimator();
+					int animIndex = pAni->GetCurrentClipIndex();
+
+
+
+					if (GetScript<PaperBurnScript>()->IsFinished())
+					{
+						MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
+						GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
+					}
+
+
+					return BehaviorResult::Success;
+
+				});
+
+			pDeadSequence->AddChild(pStateChecker);
+			pDeadSequence->AddChild(pRunAnimationTask);
+			pDeadSequence->AddChild(pAttackTask);
+
+		}
+		pStateSelector->AddChild(pDeadSequence);
+
+#pragma endregion
 	}
 	pRootNode->AddChild(pStateSelector);
 }
@@ -406,10 +623,10 @@ void Lurker::OnTriggerEnter(Collider* _pOtherCollider)
 	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
 		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		/*TakeDamage(attackDamage);
+		TakeDamage(attackDamage);
 		float hp = mHP;
 		meBasicState = MonsterBasicState::Hit;
-		SetHitCheck(true);*/
+		SetHitCheck(true);
 	}
 
 	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
