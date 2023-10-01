@@ -22,6 +22,7 @@ namespace hm
 		Monster,
 		MonsterCol,
 		MonsterHeavyCol,
+		Monster_ProjectTile,
 		Item,
 		Ladder,
 		Npc,

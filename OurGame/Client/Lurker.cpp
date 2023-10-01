@@ -38,6 +38,7 @@ void Lurker::SetBehaviorTree()
 
 	Selector* pStateSelector = new Selector;
 	{
+
 #pragma region Hit Sequence
 		Sequence* pHitSequence = new Sequence;
 		{
@@ -549,6 +550,7 @@ void Lurker::SetBehaviorTree()
 		pStateSelector->AddChild(pDeadSequence);
 
 #pragma endregion
+
 	}
 	pRootNode->AddChild(pStateSelector);
 }

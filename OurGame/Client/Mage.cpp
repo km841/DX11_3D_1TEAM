@@ -85,36 +85,36 @@ Mage::Mage()
 	meBasicState = MonsterBasicState::Idle;
 
 	//마법사 공격구슬 오브젝트 - MageCol
-	{
-		PhysicsInfo physicsInfo;
-		physicsInfo.eActorType = ActorType::Dynamic;
-		physicsInfo.eGeometryType = GeometryType::Box;
-		physicsInfo.size = Vec3(0.3f, 0.3f, 0.3f);
+	//{
+	//	PhysicsInfo physicsInfo;
+	//	physicsInfo.eActorType = ActorType::Dynamic;
+	//	physicsInfo.eGeometryType = GeometryType::Box;
+	//	physicsInfo.size = Vec3(0.3f, 0.3f, 0.3f);
 
-		pMageCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.f, 0.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Monster\\_DROP_SOUL50.fbx", false, LayerType::MonsterCol);
+	//	pMageCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.f, 0.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Monster\\_DROP_SOUL50.fbx", false, LayerType::MonsterCol);
 
-		pMageCol->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
-		pMageCol->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
-		
+	//	pMageCol->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+	//	pMageCol->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+	//	
 
-		pMageCol->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
-		pMageCol->GetMeshRenderer()->GetMaterial()->SetBloomPower(5.f, 0);
-		pMageCol->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(0.f, 1.f, 0.f, 1.f));
-		pMageCol->GetMeshRenderer()->GetMaterial()->SetBloomFilter(Vec4(0.f, 1.f, 0.f, 1.f), 0);
+	//	pMageCol->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
+	//	pMageCol->GetMeshRenderer()->GetMaterial()->SetBloomPower(5.f, 0);
+	//	pMageCol->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(0.f, 1.f, 0.f, 1.f));
+	//	pMageCol->GetMeshRenderer()->GetMaterial()->SetBloomFilter(Vec4(0.f, 1.f, 0.f, 1.f), 0);
 
-		//pMageCol->Disable();
-		//auto pFollowSc = pMageCol->AddComponent(new OwnerFollowScript(this));
-		//pFollowSc->SetOffset(Vec3(3.f, 0.f, 0.f));
+	//	//pMageCol->Disable();
+	//	//auto pFollowSc = pMageCol->AddComponent(new OwnerFollowScript(this));
+	//	//pFollowSc->SetOffset(Vec3(3.f, 0.f, 0.f));
 
-		pMageColSc = pMageCol->AddComponent(new MageColScript);
+	//	pMageColSc = pMageCol->AddComponent(new MageColScript);
 
-		pMageCol->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-		pMageCol->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-		//gpEngine->GetTool()->UseGizmo();
-		//gpEngine->GetTool()->SetGameObject(pArrow);
-		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pMageCol);
-	
-	}
+	//	pMageCol->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+	//	pMageCol->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+	//	//gpEngine->GetTool()->UseGizmo();
+	//	//gpEngine->GetTool()->SetGameObject(pArrow);
+	//	GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pMageCol);
+	//
+	//}
 
 
 }
@@ -355,6 +355,9 @@ void Mage::SetBehaviorTree()
 
 				return BehaviorResult::Success;
 				});
+
+			//task
+			//mage_projecttile 생성 new
 
 			// 플레이어 목표 좌표로 몬스터가 이동+회전 하는 실행(Task)
 			BehaviorTask* pAttackMoveTask = new BehaviorTask([&]() {
