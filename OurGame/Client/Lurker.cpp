@@ -350,6 +350,10 @@ void Lurker::SetBehaviorTree()
 				//몬스터의 고개를 돌리는 코드
 				pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
 
+				//이부분 중요
+				GetRigidBody()->SetVelocityExcludingColliders(-dir * 2.0f);
+				GetRigidBody()->SetVelocity(dir * 2.f);
+
 				return BehaviorResult::Success;
 				});
 
@@ -362,6 +366,11 @@ void Lurker::SetBehaviorTree()
 					float distance = (playerPos - myPos).Length();
 					Animator* pAni = GetAnimator();
 
+					if (pAni->GetFrameRatio() > 0.99f)
+					{
+						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+						GetTransform()->SetRelativePosition(Vec3(0.f, -0.4f, 0.f));
+					}
 
 
 					if (distance < mAttackRange && pAni->GetFrameRatio()>0.99f)
@@ -405,8 +414,10 @@ void Lurker::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (1 != animIndex)
+				if (1 != animIndex) {
+					
 					pAnimator->Play(1, false);
+				}
 
 				return BehaviorResult::Success;
 				});

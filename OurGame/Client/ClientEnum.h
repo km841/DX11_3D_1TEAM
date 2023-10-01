@@ -122,5 +122,4 @@ enum class MonsterBasicState
 	//hit
 	//dead
 	
-
 };
