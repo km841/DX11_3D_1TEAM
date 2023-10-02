@@ -1,15 +1,15 @@
 #pragma once
 #include "Monster.h"
-class Lurker :
+class Grimace :
 	public Monster
 {
 public:
-	Lurker();
-	virtual ~Lurker();
-	Lurker* Clone()
+	Grimace();
+	virtual ~Grimace();
+	Grimace* Clone()
 	{
-		Lurker* pLurker = GameObject::Clone<Lurker>();
-		return pLurker;
+		Grimace* pGrimace = GameObject::Clone<Grimace>();
+		return pGrimace;
 	}
 
 	virtual void SetBehaviorTree();
@@ -33,4 +33,5 @@ public:
 
 private:
 	Vec3 dir;
+
 };

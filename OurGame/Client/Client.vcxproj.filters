@@ -229,9 +229,6 @@
     <ClInclude Include="HittingState.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="Bat.h">
-      <Filter>소스 파일\GameObject\Monster</Filter>
-    </ClInclude>
     <ClInclude Include="SoulDoor.h" />
     <ClInclude Include="Bus.h" />
     <ClInclude Include="CinematicCamMove.h" />
@@ -292,6 +289,12 @@
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
     <ClInclude Include="Mage_ProjectTile.h">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Grimace.h">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
   </ItemGroup>
@@ -584,6 +587,9 @@
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
     <ClCompile Include="Mage_ProjectTile.cpp">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Grimace.cpp">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
   </ItemGroup>

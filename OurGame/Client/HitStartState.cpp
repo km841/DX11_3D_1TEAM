@@ -59,7 +59,7 @@ void HitStartState::Update()
 
 	if (pAni->GetFrameRatio() > 0.6)
 	{
-		pPlayer->StateChange(PlayerState::HittingState);
+		pPlayer->StateChange(PlayerState::HitEndState);
 	}
 	//pPlayer->StateChange(PlayerState::AttackState);
 }
