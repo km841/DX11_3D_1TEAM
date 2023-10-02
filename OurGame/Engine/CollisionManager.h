@@ -2,7 +2,7 @@
 #include "GameObject.h"
 namespace hm
 {
-	struct ColID
+	union ColID
 	{
 		bool operator> (const ColID& _other) const
 		{
@@ -19,13 +19,12 @@ namespace hm
 			return !(*this > _other);
 		}
 
-		union 
-		{
+		struct {
 			UINT32 first;
 			UINT32 second;
 		};
+		
 		UINT64 id;
-		bool bIsSort = false;
 	};
 	class CollisionManager
 	{
