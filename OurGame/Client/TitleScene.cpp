@@ -112,7 +112,7 @@ namespace hm
 		// - RightMap
 		if (IS_DOWN(KeyType::K))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Right2Map);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::DiningColliderCheckMap);
 		}
 	}
 

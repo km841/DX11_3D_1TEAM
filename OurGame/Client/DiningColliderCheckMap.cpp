@@ -24,6 +24,7 @@
 #include "DecoObject.h"
 #include "WallObject.h"
 #include "HeadRoller.h"
+#include "JarDoor.h"
 
 /* Component */
 #include "Collider.h"
@@ -70,37 +71,6 @@ namespace sy
 	void DiningColliderCheckMap::Update()
 	{
 		Map::Update();
-
-		//if (mTarget != nullptr)
-		//{
-		//	if (IS_UP(KeyType::LEFT))
-		//	{
-		//		Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-		//		Vec3 fixed_pos = Vec3(target_pos.x -= 0.1f, target_pos.y, target_pos.z);
-		//		mTarget->GetTransform()->SetPosition(fixed_pos);
-		//	}
-		//	if (IS_UP(KeyType::RIGHT))
-		//	{
-		//		Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-		//		Vec3 fixed_pos = Vec3(target_pos.x += 0.1f, target_pos.y, target_pos.z);
-		//		mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
-		//	}
-		//	if (IS_UP(KeyType::UP))
-		//	{
-		//		Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-		//		Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y, target_pos.z += 0.1f);
-		//		mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
-		//	}
-		//	if (IS_UP(KeyType::DOWN))
-		//	{
-		//		Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-		//		Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y, target_pos.z -= 0.1f);
-		//		mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
-		//	}
-		//	if (IS_UP(KeyType::Z))
-		//	{
-		//		Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-		//		Vec3 fixed_pos = Vec3
 	}
 
 	void DiningColliderCheckMap::FixedUpdate()
@@ -112,7 +82,7 @@ namespace sy
 	{
 		PxVec3 disp = PLAYER->GetRigidBody()->GetVelocity();
 		disp.y = -9.8f;
-		mpCharacterController->move(disp * DELTA_TIME, 0.f, DELTA_TIME, filter);
+		//mpCharacterController->move(disp * DELTA_TIME, 0.f, DELTA_TIME, filter);
 
 		Map::FinalUpdate();
 	}
@@ -130,11 +100,15 @@ namespace sy
 
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
+		DisableDirLight();
 
-		
+		InitObjectAdd();
+		InitColliderAdd();
+		FuncObjectAdd();
+	}
 
-	
-
+	void DiningColliderCheckMap::InitObjectAdd()
+	{
 
 #pragma region 어드민
 #pragma endregion
@@ -152,12 +126,12 @@ namespace sy
 
 		// 전체맵 가이드라인 벽
 		{
-			DecoObject* pNormalBase = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Diningroom.fbx",true);
+			DecoObject* pNormalBase = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Diningroom.fbx", true);
 
 			pNormalBase->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 			pNormalBase->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
-			pNormalBase->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr,2,0); //3번째인자 == 텍스처 첫번째 png 인지 두번째 png인지 구별하게 해주는거
-			pNormalBase->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(115, 118, 128),2,0); //3번째인자 == 텍스처 첫번째 png 인지 두번째 png인지 구별하게 해주는거
+			pNormalBase->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr, 2, 0); //3번째인자 == 텍스처 첫번째 png 인지 두번째 png인지 구별하게 해주는거
+			pNormalBase->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(115, 118, 128), 2, 0); //3번째인자 == 텍스처 첫번째 png 인지 두번째 png인지 구별하게 해주는거
 			AddGameObject(pNormalBase);
 		}
 
@@ -201,7 +175,7 @@ namespace sy
 
 				pColumnFull->GetTransform()->SetScale(Vec3(15.f, 4.0f, 15.f));
 				pColumnFull->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
-			
+
 				AddGameObject(pColumnFull);
 			}
 
@@ -257,11 +231,38 @@ namespace sy
 				info.eActorType = ActorType::Static;
 				info.size = Vec3(3.8f, 5.f, 0.4f);
 
-				WallObject* pPOT_Door = Factory::CreateObjectHasPhysical<WallObject>(Vec3(8.75f, -5.5f, -5.8f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\POT_Door_4_Variant.fbx");
-				pPOT_Door->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
-				pPOT_Door->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.5f, 4.7f));
+				WallObject* pPotLeft = Factory::CreateObjectHasPhysical<WallObject>(Vec3(8.75f, -5.5f, -5.8f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\POT_Door_4_Variant.fbx");
+				pPotLeft->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+				pPotLeft->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.5f, 4.7f));
 
-				AddGameObject(pPOT_Door);
+
+				pPotLeft->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
+				pPotLeft->GetMeshRenderer()->SetSubsetRenderFlag(0, false);
+				pPotLeft->GetMeshRenderer()->SetSubsetRenderFlag(2, false);
+				pPotLeft->GetMeshRenderer()->SetSubsetRenderFlag(3, false);
+				pPotLeft->GetMeshRenderer()->SetSubsetRenderFlag(4, false);
+				pDoorLeft = pPotLeft;
+
+				AddGameObject(pPotLeft);
+
+				{
+						PhysicsInfo info = {};
+						info.eActorType = ActorType::Static;
+						info.size = Vec3(3.8f, 5.f, 0.4f);
+
+						WallObject* pPotRight = Factory::CreateObjectHasPhysical<WallObject>(Vec3(8.75f, -5.5f, -5.8f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\POT_Door_4_Variant.fbx");
+						pPotRight->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+						pPotRight->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.5f, 4.7f));
+
+						AddGameObject(pPotRight);
+
+						pPotRight->GetMeshRenderer()->SetSubsetRenderFlag(5, false);
+						pPotRight->GetMeshRenderer()->SetSubsetRenderFlag(6, false);
+						pPotRight->GetMeshRenderer()->SetSubsetRenderFlag(7, false);
+						pPotRight->GetMeshRenderer()->SetSubsetRenderFlag(8, false);
+						pPotRight->GetMeshRenderer()->SetSubsetRenderFlag(9, false);
+						pDoorRight = pPotRight;
+				}
 			}
 
 			// 핑크색 문 프레임 나무 - DoorFrame
@@ -299,7 +300,7 @@ namespace sy
 
 				pWallPanel->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
 				pWallPanel->GetTransform()->SetRotation(Vec3(0.0f, 90.f, 0.f));
-			
+
 				AddGameObject(pWallPanel);
 			}
 
@@ -309,7 +310,7 @@ namespace sy
 
 				pWallPanel->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
 				pWallPanel->GetTransform()->SetRotation(Vec3(0.0f, 90.f, 0.f));
-			
+
 
 				AddGameObject(pWallPanel);
 			}
@@ -320,7 +321,7 @@ namespace sy
 
 				pWallPanel->GetTransform()->SetScale(Vec3(5.f, 5.f, 6.f));
 				pWallPanel->GetTransform()->SetRotation(Vec3(0.0f, 90.f, 0.f));
-				
+
 
 				AddGameObject(pWallPanel);
 			}
@@ -331,7 +332,7 @@ namespace sy
 
 				pWallPanel->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
 				pWallPanel->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
-			
+
 
 				AddGameObject(pWallPanel);
 			}
@@ -342,7 +343,7 @@ namespace sy
 
 				pWallPanel->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
 				pWallPanel->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
-				
+
 
 				AddGameObject(pWallPanel);
 			}
@@ -384,7 +385,7 @@ namespace sy
 
 				pWallPanel->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
 				pWallPanel->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
-				
+
 
 				AddGameObject(pWallPanel);
 			}
@@ -395,7 +396,7 @@ namespace sy
 
 				pChandelierWithChain->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
 				pChandelierWithChain->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
-
+				pChandelierWithChain->DrawShadow(false);
 				AddGameObject(pChandelierWithChain);
 			}
 
@@ -406,11 +407,11 @@ namespace sy
 				Info.eGeometryType = GeometryType::Box;
 				Info.size = Vec3(4.5f, 2.f, 6.5f);
 
-				WallObject* pCofeeTableWithCloth = Factory::CreateObjectHasPhysical<WallObject>(Vec3(5.67f, -7.4f, 16.1f), Info, L"Deferred",  L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CofeeTableWithCloth.fbx");
+				WallObject* pCofeeTableWithCloth = Factory::CreateObjectHasPhysical<WallObject>(Vec3(5.67f, -7.4f, 16.1f), Info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CofeeTableWithCloth.fbx");
 
 				pCofeeTableWithCloth->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 				pCofeeTableWithCloth->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
-				
+
 				AddGameObject(pCofeeTableWithCloth);
 			}
 
@@ -425,7 +426,7 @@ namespace sy
 
 				pCofeeTableWithCloth->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 				pCofeeTableWithCloth->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
-				
+
 				AddGameObject(pCofeeTableWithCloth);
 			}
 
@@ -451,7 +452,7 @@ namespace sy
 				pChair->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
 				pChair->GetTransform()->SetRotationExcludingColliders(Vec3(0.0f, 20.f, 0.f));
 				pChair->GetTransform()->SetPositionExcludingColliders(Vec3(0.0f, 1.6f, 0.f));
-				
+
 				AddGameObject(pChair);
 			}
 
@@ -468,7 +469,7 @@ namespace sy
 				pChair->GetTransform()->SetRotation(Vec3(0.0f, -120.f, 0.f));
 				pChair->GetTransform()->SetRotationExcludingColliders(Vec3(0.0f, 20.f, 0.f));
 				pChair->GetTransform()->SetPositionExcludingColliders(Vec3(0.0f, 1.6f, 0.f));
-				
+
 				AddGameObject(pChair);
 			}
 
@@ -501,7 +502,7 @@ namespace sy
 				pChair->GetTransform()->SetRotation(Vec3(0.0f, -60.f, 0.f));
 				pChair->GetTransform()->SetRotationExcludingColliders(Vec3(0.0f, 20.f, 0.f));
 				pChair->GetTransform()->SetPositionExcludingColliders(Vec3(0.0f, 1.6f, 0.f));
-				
+
 				AddGameObject(pChair);
 			}
 
@@ -518,7 +519,7 @@ namespace sy
 				pChair->GetTransform()->SetRotation(Vec3(0.0f, -150.f, 0.f));
 				pChair->GetTransform()->SetRotationExcludingColliders(Vec3(0.0f, 20.f, 0.f));
 				pChair->GetTransform()->SetPositionExcludingColliders(Vec3(0.0f, 1.6f, 0.f));
-			
+
 				AddGameObject(pChair);
 			}
 
@@ -535,11 +536,11 @@ namespace sy
 				pChair->GetTransform()->SetRotation(Vec3(0.0f, 60.f, 0.f));
 				pChair->GetTransform()->SetRotationExcludingColliders(Vec3(0.0f, 20.f, 0.f));
 				pChair->GetTransform()->SetPositionExcludingColliders(Vec3(0.0f, 1.6f, 0.f));
-				
+
 				AddGameObject(pChair);
 			}
 
-			
+
 		}
 #pragma endregion
 
@@ -580,7 +581,7 @@ namespace sy
 				pStairs_2floor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, 0.1f, 0.f));
 				pStairs_2floor->GetTransform()->SetRotationExcludingColliders(Vec3(-28.f, 0.f, 0.f));
 
-				
+
 				AddGameObject(pStairs_2floor);
 			}
 
@@ -590,7 +591,7 @@ namespace sy
 
 				pWallRim->GetTransform()->SetScale(Vec3(29.5f, 51.f, 21.5f));
 				pWallRim->GetTransform()->SetRotation(Vec3(0.f, 90.0f, 0.f));
-			
+
 				AddGameObject(pWallRim);
 
 			}
@@ -601,7 +602,7 @@ namespace sy
 
 				pWallRim->GetTransform()->SetScale(Vec3(29.5f, 51.f, 21.5f));
 				pWallRim->GetTransform()->SetRotation(Vec3(0.f, 90.0f, 0.f));
-				
+
 				AddGameObject(pWallRim);
 
 			}
@@ -644,7 +645,7 @@ namespace sy
 
 				pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 27.5f));
 				pWallRim->GetTransform()->SetRotation(Vec3(0.f, 90.0f, 0.f));
-				
+
 				AddGameObject(pWallRim);
 
 			}
@@ -654,7 +655,7 @@ namespace sy
 
 				pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 27.5f));
 				pWallRim->GetTransform()->SetRotation(Vec3(0.f, 90.0f, 0.f));
-				
+
 				AddGameObject(pWallRim);
 
 			}
@@ -756,7 +757,7 @@ namespace sy
 
 				pAssortedPaintings->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
 				pAssortedPaintings->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
-				
+
 				AddGameObject(pAssortedPaintings);
 			}
 
@@ -771,7 +772,7 @@ namespace sy
 
 				pCofeeTableWithCloth->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 				pCofeeTableWithCloth->GetTransform()->SetRotation(Vec3(0.0f, -90.f, 0.f));
-				
+
 				AddGameObject(pCofeeTableWithCloth);
 			}
 
@@ -781,7 +782,7 @@ namespace sy
 
 				pRug_Mark->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 				pRug_Mark->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
-				
+
 				AddGameObject(pRug_Mark);
 			}
 
@@ -798,7 +799,7 @@ namespace sy
 				pfancyChairSit->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
 				pfancyChairSit->GetTransform()->SetRotationExcludingColliders(Vec3(0.0f, 0.f, 0.f));
 				pfancyChairSit->GetTransform()->SetPositionExcludingColliders(Vec3(.0f, 3.6f, 11.f));
-				
+
 				AddGameObject(pfancyChairSit);
 			}
 
@@ -836,7 +837,7 @@ namespace sy
 
 			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
 			pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
-			
+
 			AddGameObject(pCurtainHorizontal);
 		}
 
@@ -846,7 +847,7 @@ namespace sy
 
 			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
 			pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
-			
+
 			AddGameObject(pCurtainHorizontal);
 		}
 
@@ -867,7 +868,7 @@ namespace sy
 
 			pCurtainHorizontal->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
 			pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
-			
+
 			AddGameObject(pCurtainHorizontal);
 		}
 
@@ -933,7 +934,7 @@ namespace sy
 
 		}
 
-		
+
 		{
 			//3층 난간 맨왼쪽 두번째 기둥
 			DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(1.3f, 6.2f, 18.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\ColumnFull.fbx");
@@ -960,7 +961,7 @@ namespace sy
 			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 49.5f));
 			pWallRim->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
 			AddGameObject(pWallRim);
-			
+
 		}
 
 		{
@@ -970,7 +971,7 @@ namespace sy
 			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 49.5f));
 			pWallRim->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
 			AddGameObject(pWallRim);
-			
+
 		}
 
 		{
@@ -979,7 +980,7 @@ namespace sy
 
 			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 11.f, 72.f));
 			pWallRim->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
-			
+
 			AddGameObject(pWallRim);
 		}
 
@@ -989,7 +990,7 @@ namespace sy
 
 			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 20.f, 73.f));
 			pWallRim->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
-		
+
 
 			AddGameObject(pWallRim);
 		}
@@ -1000,7 +1001,7 @@ namespace sy
 
 			pWallRim->GetTransform()->SetScale(Vec3(29.5f, 20.f, 40.f));
 			pWallRim->GetTransform()->SetRotation(Vec3(0.f, -90.0f, 0.f));
-			
+
 
 			AddGameObject(pWallRim);
 		}
@@ -1069,8 +1070,8 @@ namespace sy
 			//난간 막대기 - BannisterStick
 			for (float i = 0; i < 9; i++)
 			{
-				DecoObject* pBannisterStick = Factory::CreateObject<DecoObject>(Vec3(9.f, 5.8f, 11.7f-(i*2)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
-				
+				DecoObject* pBannisterStick = Factory::CreateObject<DecoObject>(Vec3(9.f, 5.8f, 11.7f - (i * 2)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
+
 				pBannisterStick->GetTransform()->SetScale(Vec3(2.f, 1.3f, 2.f));
 				pBannisterStick->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
 				AddGameObject(pBannisterStick);
@@ -1105,96 +1106,47 @@ namespace sy
 		}
 
 
-		
+
 
 
 #pragma endregion
+	}
 
+	void DiningColliderCheckMap::InitColliderAdd()
+	{
 
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Mesh;
+		physicsInfo.size = Vec3(49.f, 49.f, 49.f);
 
+		pDoorCol = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(9.f, 5.8f, -14.7f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
 
-
-
-		
-		
-
-		
-
-
-
-
-
-
-
-
-
-		//Player
+		pDoorCol->GetTransform()->SetScale(Vec3(2.f, 1.3f, 2.f));
+		pDoorCol->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+		AddGameObject(pDoorCol);
+	}
+	void DiningColliderCheckMap::FuncObjectAdd()
+	{
 		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Character;
-			physicsInfo.eGeometryType = GeometryType::Capsule;
-			//physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
-
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
-			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
-			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
-			pPlayer->AddComponent(new PaperBurnScript);
-			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
-			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
-			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
-			pPlayer->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.6f, 0.f));
-
-			pPlayer->GetRigidBody()->ApplyGravity();
-			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-
-			mpCharacterController = pPlayer->GetRigidBody()->GetCharacterController();
-
-			AddGameObject(pPlayer);
+			GameObject* pLightObject = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pLightObject->AddComponent(new Transform);
+			pTransform->SetPosition(Vec3(0.3f, 15.6f, 16.3f));
+			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+			Light* pLight = pLightObject->AddComponent(new Light);
+			pLight->SetDiffuse(Vec3(0.5f, 0.5f, 0.2f));
+			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+			pLight->SetLightRange(50.f);
+			pLight->SetLightType(LightType::PointLight);
+			AddGameObject(pLightObject);
+			SetGizmoTarget(pLightObject);
 		}
 
-		// HeadRoller
-		/*{
-			PhysicsInfo info;
-			info.eActorType = ActorType::Kinematic;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(5.f, 5.f, 5.f);
-
-			Monster* pMonster =
-				Factory::CreateObjectHasPhysical<Monster>(Vec3(10.f, 0.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor_Roller.fbx");
-
-			pMonster->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
-			pMonster->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-
-			AddGameObject(pMonster);
-			SetMeshTarget(pMonster);
+		{
+			yj::JarDoor* pJarDoor = Factory::CreateObject<yj::JarDoor>(Vec3::Zero, L"Deferred", L"", false, 4, pDoorLeft, pDoorRight, pDoorCol);
+			AddGameObject(pJarDoor);
 		}
-
-
-		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::WhiteOut, 1.f);
-		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::WhiteIn, 1.f);
-
-
-		// Table // 그냥 하는거 예시
-		/*{
-			DecoObject* pDecoObject = Factory::CreateObject<DecoObject>(Vec3(5.f, 10.f, 20.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\GrandmaBossMap\\GrandmaBossTable.fbx");
-			pDecoObject->GetRigidBody()->RemoveGravity();
-
-			pDecoObject->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
-			pDecoObject->GetTransform()->SetRotation(Vec3(-90.f, 20.f, 0.f));
-			AddGameObject(pDecoObject);
-		}*/
-
-		// Left Collider // 그래픽 안가져오고 콜라이더만 설정하는거
-		/*{
-			PhysicsInfo info;
-			info.eActorType = ActorType::Static;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(13.f, 5.f, 17.f);
-
-			WallObject* pWallObject = Factory::CreateObjectHasPhysical<WallObject>(Vec3(9.f, 2.5f, -36.f), info, L"Forward", L"");
-			AddGameObject(pWallObject);
-		}*/
 	}
 
 	void DiningColliderCheckMap::Exit()

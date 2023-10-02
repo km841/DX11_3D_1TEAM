@@ -285,6 +285,7 @@
     <ClInclude Include="MonsterCrackScript.h">
       <Filter>소스 파일\GameObject\Monster\Script</Filter>
     </ClInclude>
+    <ClInclude Include="SpikeDoor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -568,6 +569,7 @@
     <ClCompile Include="MonsterCrackScript.cpp">
       <Filter>소스 파일\GameObject\Monster\Script</Filter>
     </ClCompile>
+    <ClCompile Include="SpikeDoor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

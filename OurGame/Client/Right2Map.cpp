@@ -105,6 +105,9 @@ namespace hm
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::ArrowCol, LayerType::Monster);
 
 		PLAYER->GetTransform()->SetPosition(Vec3(0.f, 5.f, 0.f));
+		DisableDirLight();
+
+
 		InitObjectAdd();
 		InitCollidertAdd();
 	}
@@ -144,20 +147,6 @@ namespace hm
 			AddGameObject(pSideWall);
 		}
 
-		// Toy
-		{
-			/*	PhysicsInfo physicsInfo;
-				physicsInfo.eActorType = ActorType::Static;
-				physicsInfo.eGeometryType = GeometryType::Box;
-				physicsInfo.size = Vec3(2.f, 2.f, 2.f);
-
-				Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
-				pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
-
-				SetGizmoTarget(pPlayer);
-
-				AddGameObject(pPlayer);*/
-		}
 
 		// 좌측 벽쪽 2단 선반
 		{
@@ -277,7 +266,6 @@ namespace hm
 				{
 					DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(9.7f, 3.5f, -2.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\EmptyBox.fbx");
 					pEmptyBox->GetTransform()->SetScale(Vec3(3.5f, 3.5f, 3.5f));
-					//SetGizmoTarget(pEmptyBox);
 					AddGameObject(pEmptyBox);
 				}
 			}
@@ -827,6 +815,37 @@ namespace hm
 			pChandelier->DrawShadow(false);
 			AddGameObject(pChandelier);
 		}
+
+
+		// 박쥐
+		{
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Kinematic;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(0.5f, 0.5f, 1.0f);
+
+			Bat* p_E_BAT_White = Factory::CreateMonster<Bat>(Vec3(-9.f, 5.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
+			p_E_BAT_White->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+			p_E_BAT_White->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			AddGameObject(p_E_BAT_White);
+			//SetMeshTarget(p_E_BAT_White);
+		}
+
+		// 샹들리에 라이트
+		{
+			GameObject* pGameObject = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pGameObject->AddComponent(new Transform);
+			pTransform->SetPosition(Vec3(10.7f, 45.7f, 9.8f));
+			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+			Light* pLight = pGameObject->AddComponent(new Light);
+			pLight->SetDiffuse(Vec3(0.5f, 0.5f, 0.2f));
+			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+			pLight->SetLightRange(55.f);
+			pLight->SetLightType(LightType::PointLight);
+			AddGameObject(pGameObject);
+		}
+
 	}
 
 	void Right2Map::InitCollidertAdd()
@@ -912,35 +931,6 @@ namespace hm
 			AddGameObject(pCol8);
 		}
 
-		// 박쥐
-		{
-			PhysicsInfo info = {};
-			info.eActorType = ActorType::Kinematic;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(0.5f, 0.5f, 1.0f);
-
-			Bat* p_E_BAT_White = Factory::CreateMonster<Bat>(Vec3(-9.f, 5.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
-			p_E_BAT_White->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
-			p_E_BAT_White->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-			AddGameObject(p_E_BAT_White);
-			//SetMeshTarget(p_E_BAT_White);
-		}
-
-		// 샹들리에 라이트
-		{
-			GameObject* pGameObject = new GameObject(LayerType::Unknown);
-			Transform* pTransform = pGameObject->AddComponent(new Transform);
-			pTransform->SetPosition(Vec3(10.7f, 45.7f, 9.8f));
-			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
-			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
-			Light* pLight = pGameObject->AddComponent(new Light);
-			pLight->SetDiffuse(Vec3(0.5f, 0.5f, 0.2f));
-			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
-			pLight->SetLightRange(55.f);
-			pLight->SetLightType(LightType::PointLight);
-			AddGameObject(pGameObject);
-		}
-
-		DisableDirLight();
+		
 	}
 }
