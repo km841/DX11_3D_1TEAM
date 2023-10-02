@@ -299,19 +299,19 @@ void Mage::SetBehaviorTree()
 			pTeleport_inSequence->AddChild(pStateChecker);
 			pTeleport_inSequence->AddChild(pRunAnimationTask);
 			pTeleport_inSequence->AddChild(pCheckNearbyPlayer);
-			pTeleport_inSequence->AddChild(new ChangeStateTask(MonsterBasicState::Attack)); //여기 다음으로 넘어가는 State 지정해줘야됨
+			pTeleport_inSequence->AddChild(new ChangeStateTask(MonsterBasicState::Attack01)); //여기 다음으로 넘어가는 State 지정해줘야됨
 		}
 		pStateSelector->AddChild(pTeleport_inSequence);
 
 #pragma endregion
 
-#pragma region Attack Sequence
+#pragma region Attack01 Sequence
 		Sequence* pAttackSequence = new Sequence;
 		{
 			// 상태 확인(Condition) : 현재 상태가 Attack인지 확인
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
-					if (MonsterBasicState::Attack == meBasicState)
+					if (MonsterBasicState::Attack01 == meBasicState)
 						return BehaviorResult::Success;
 					else
 						return BehaviorResult::Failure;
@@ -338,7 +338,7 @@ void Mage::SetBehaviorTree()
 					}
 				}*/
 
-				if (pAni->GetFrameRatio() > 0.7) {
+				if (pAni->GetFrameRatio() > 0.6) {
 					if (true != isTrigger02) {
 						isTrigger02 = true;
 						CreateProjectTile();

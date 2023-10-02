@@ -251,8 +251,11 @@ void Lurker::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (3 != animIndex) 
+				if (3 != animIndex) {
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, -0.4f, 0.f));
 					pAnimator->Play(3, true);
+				}
 
 				return BehaviorResult::Success;
 				});
@@ -264,7 +267,7 @@ void Lurker::SetBehaviorTree()
 				Vec3 myRot = GetTransform()->GetRotation();
 				Vec3 scale = GetRigidBody()->GetGeometrySize();
 
-				Vec3 dir = playerPos - myPos;
+				dir = playerPos - myPos;
 				Vec3 Num = scale * dir;
 				float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
 
@@ -444,19 +447,19 @@ void Lurker::SetBehaviorTree()
 			Trace_to_AttackSequence->AddChild(pStateChecker);
 			Trace_to_AttackSequence->AddChild(pRunAnimationTask);
 			Trace_to_AttackSequence->AddChild(pCheckNearbyPlayer);
-			Trace_to_AttackSequence->AddChild(new ChangeStateTask(MonsterBasicState::Attack));
+			Trace_to_AttackSequence->AddChild(new ChangeStateTask(MonsterBasicState::Attack01));
 		}
 		pStateSelector->AddChild(Trace_to_AttackSequence);
 
 #pragma endregion
 
-#pragma region Attack Sequence
+#pragma region Attack01 Sequence
 		Sequence* pAttackSequence = new Sequence;
 		{
 			// 상태 확인(Condition) : 현재 상태가 Attack인지 확인
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
-					if (MonsterBasicState::Attack == meBasicState)
+					if (MonsterBasicState::Attack01 == meBasicState)
 						return BehaviorResult::Success;
 					else
 						return BehaviorResult::Failure;
@@ -479,8 +482,11 @@ void Lurker::SetBehaviorTree()
 					Vec3 myPos = GetTransform()->GetPosition();
 					Animator* pAni = GetAnimator();
 
+					//이부분 중요
+					GetRigidBody()->SetVelocityExcludingColliders(-dir * 6.8f);
+					GetRigidBody()->SetVelocity(dir * 6.8f);
 
-					if (pAni->GetFrameRatio() > 0.9)
+					if (pAni->GetFrameRatio() > 0.7)
 						return BehaviorResult::Success;
 					return BehaviorResult::Failure;
 

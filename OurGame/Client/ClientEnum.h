@@ -83,7 +83,7 @@ enum class MonsterBasicState
 	Idle, // 기본 상태
 	Patrol, //정찰 상태
 	Trace, // 추적 상태
-	Attack, // 공격
+	Attack01, // 공격
 	Hit, // 맞는거
 	Dead, //죽는거
 
@@ -120,6 +120,17 @@ enum class MonsterBasicState
 	//Attack
 	Stun,
 	//hit
+	//dead
+
+	//Idle //내루미 중간보스
+	//trace
+	Trace_BackStep,
+	//attack
+	Attack02,
+	Attack03,
+	Defend_Start,
+	Defend,
+	Defend_Break,
 	//dead
 	
 };

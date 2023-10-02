@@ -394,19 +394,19 @@ namespace hm
 				Trace_to_AttackSequence->AddChild(pRunAnimationTask);
 				Trace_to_AttackSequence->AddChild(pTraceLookTask);
 				Trace_to_AttackSequence->AddChild(pAttackMoveTask);
-				Trace_to_AttackSequence->AddChild(new ChangeStateTask(MonsterBasicState::Attack));
+				Trace_to_AttackSequence->AddChild(new ChangeStateTask(MonsterBasicState::Attack01));
 			}
 			pStateSelector->AddChild(Trace_to_AttackSequence);
 
 #pragma endregion
 
-#pragma region Attack Sequence
+#pragma region Attack01 Sequence
 			Sequence* pAttackSequence = new Sequence;
 			{
 				// 상태 확인(Condition) : 현재 상태가 Attack인지 확인
 				BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 					{
-						if (MonsterBasicState::Attack == meBasicState)
+						if (MonsterBasicState::Attack01 == meBasicState)
 							return BehaviorResult::Success;
 						else
 							return BehaviorResult::Failure;
