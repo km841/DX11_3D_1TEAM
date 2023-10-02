@@ -111,7 +111,6 @@ namespace hm
 							{
 								others[k]->GetCollider()->OnTriggerExit(gameObjects[l]->GetCollider());
 								gameObjects[l]->GetCollider()->OnTriggerExit(others[k]->GetCollider());
-
 							}
 							mColMap[id.id] = false;
 						}
