@@ -180,6 +180,7 @@
     <ClInclude Include="FireLamp.h" />
     <ClInclude Include="Grandma.h" />
     <ClInclude Include="GrandmaBossMap.h" />
+    <ClInclude Include="Grimace.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="HallColliderCheckMap.h" />
     <ClInclude Include="HitEndState.h" />
@@ -290,6 +291,7 @@
     <ClCompile Include="FireLamp.cpp" />
     <ClCompile Include="Grandma.cpp" />
     <ClCompile Include="GrandmaBossMap.cpp" />
+    <ClCompile Include="Grimace.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="HallColliderCheckMap.cpp" />
     <ClCompile Include="HitEndState.cpp" />
