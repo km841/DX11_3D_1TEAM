@@ -68,31 +68,31 @@ namespace yj
 			{
 				Vec3 target_pos = Vec3(Target->GetTransform()->GetPosition());
 				Vec3 fixed_pos = Vec3(target_pos.x -= 0.1f, target_pos.y, target_pos.z);
-				Target->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+				Target->GetTransform()->SetPosition(fixed_pos);
 			}
 			if (IS_UP(KeyType::UP))
 			{
 				Vec3 target_pos = Vec3(Target->GetTransform()->GetPosition());
 				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y, target_pos.z += 0.1f);
-				Target->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+				Target->GetTransform()->SetPosition(fixed_pos);
 			}
 			if (IS_UP(KeyType::DOWN))
 			{
 				Vec3 target_pos = Vec3(Target->GetTransform()->GetPosition());
 				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y, target_pos.z -= 0.1f);
-				Target->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+				Target->GetTransform()->SetPosition(fixed_pos);
 			}
 			if (IS_UP(KeyType::RIGHT))
 			{
 				Vec3 target_pos = Vec3(Target->GetTransform()->GetPosition());
 				Vec3 fixed_pos = Vec3(target_pos.x += 0.1f, target_pos.y, target_pos.z);
-				Target->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+				Target->GetTransform()->SetPosition(fixed_pos);
 			}
 			if (IS_UP(KeyType::Z))
 			{
 				Vec3 target_pos = Vec3(Target->GetTransform()->GetPosition());
 				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y += 0.1f, target_pos.z);
-				Target->GetTransform()->GetTransform()->SetPosition(fixed_pos);
+				Target->GetTransform()->SetPosition(fixed_pos);
 			}
 			if (IS_UP(KeyType::X))
 			{
@@ -105,39 +105,39 @@ namespace yj
 			{
 				Vec3 target_rot = Vec3(Target->GetTransform()->GetRotation());
 				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 10.0f, target_rot.z);
-				Target->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+				Target->GetTransform()->SetRotation(fixed_rot);
 			}
 			if (IS_UP(KeyType::Q))
 			{
 				Vec3 target_rot = Vec3(Target->GetTransform()->GetRotation());
 				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 10.0f, target_rot.z);
-				Target->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+				Target->GetTransform()->SetRotation(fixed_rot);
 			}
 
 			if (IS_UP(KeyType::R))
 			{
 				Vec3 target_rot = Vec3(Target->GetTransform()->GetRotation());
 				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 1.0f, target_rot.z);
-				Target->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+				Target->GetTransform()->SetRotation(fixed_rot);
 			}
 			if (IS_UP(KeyType::T))
 			{
 				Vec3 target_rot = Vec3(Target->GetTransform()->GetRotation());
 				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 1.0f, target_rot.z);
-				Target->GetTransform()->GetTransform()->SetRotation(fixed_rot);
+				Target->GetTransform()->SetRotation(fixed_rot);
 			}
 
 			if (IS_UP(KeyType::O))
 			{
 				Vec3 target_scale = Vec3(Target->GetTransform()->GetScale());
 				Vec3 fixed_scale = Vec3(target_scale.x += 0.5f, target_scale.y += 0.5f, target_scale.z += 0.5f);
-				Target->GetTransform()->GetTransform()->SetScale(fixed_scale);
+				Target->GetTransform()->SetScale(fixed_scale);
 			}
 			if (IS_UP(KeyType::P))
 			{
 				Vec3 target_scale = Vec3(Target->GetTransform()->GetScale());
 				Vec3 fixed_scale = Vec3(target_scale.x -= 0.5f, target_scale.y -= 0.5f, target_scale.z -= 0.5f);
-				Target->GetTransform()->GetTransform()->SetScale(fixed_scale);
+				Target->GetTransform()->SetScale(fixed_scale);
 			}
 			if (IS_UP(KeyType::ENTER))
 			{
@@ -145,8 +145,6 @@ namespace yj
 				Vec3 b = Target->GetTransform()->GetRotation();
 				Vec3 c = Target->GetTransform()->GetScale();
 				int d = 0;
-				
-
 			}
 		}
 	}
@@ -169,8 +167,6 @@ namespace yj
 	void RightMap::Enter()
 	{
 			gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
-
-
 			{
 
 				Player* pPlayer = Factory::CreateObject<Player>(Vec3(0.f, 1.5f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
@@ -321,8 +317,6 @@ namespace yj
 
 
 #pragma region "2Ãþ ¼±¹Ý ´Ù¸®"
-
-
 		std::vector<GameObject*> mTwoTierShelf_LegList;
 		for (int i = 0; i < 8; i++)
 		{
@@ -493,11 +487,6 @@ namespace yj
 		mPOTHEALGenericVariantList[2]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
 		mPOTHEALGenericVariantList[2]->GetTransform()->SetScale(Vec3(35.0f, 35.0f, 35.0f));
 
-
-
-
-
-
 		{
 			DecoObject* pFancyChairSit = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\FancyChairSit.fbx");
 
@@ -548,8 +537,6 @@ namespace yj
 		mMansionSpicePotList[1]->GetTransform()->SetPosition(Vec3(8.9f, 5.1f, -1.5f));
 		mMansionSpicePotList[1]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
 		mMansionSpicePotList[1]->GetTransform()->SetScale(Vec3(32.0f, 32.0f, 32.0f));
-
-
 
 
 		{

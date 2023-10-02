@@ -94,9 +94,16 @@ namespace jh
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 
+		DisableDirLight();
+		InitObjectAdd();
+		InitColliderAdd();
+		FuncObjectAdd();
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
+	}
 
+	void HallColliderCheckMap::InitObjectAdd()
+	{
 		// Ground
 		{
 			PhysicsInfo physicsInfo;
@@ -140,23 +147,23 @@ namespace jh
 
 		//Player
 		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Kinematic;
-			physicsInfo.eGeometryType = GeometryType::Capsule;
-			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+			//PhysicsInfo physicsInfo;
+			//physicsInfo.eActorType = ActorType::Kinematic;
+			//physicsInfo.eGeometryType = GeometryType::Capsule;
+			//physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
-			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
-			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
-			pPlayer->AddComponent(new PaperBurnScript);
-			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
-			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
-			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
+			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
+			////Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
+			//PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
+			//pPlayer->AddComponent(new PaperBurnScript);
+			//pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
+			//pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
+			//pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
 
-			pPlayer->GetRigidBody()->ApplyGravity();
-			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-			AddGameObject(pPlayer);
+			//pPlayer->GetRigidBody()->ApplyGravity();
+			//pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			//pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+			//AddGameObject(pPlayer);
 		}
 
 		// Sword_Heavy
@@ -202,9 +209,9 @@ namespace jh
 				pTotalFrame->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
 				pTotalFrame->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(148.f, 147.f, 150.f));
 
-				
+
 				AddGameObject(pTotalFrame);
-				
+
 			}
 
 			// 숨은통로
@@ -435,7 +442,7 @@ namespace jh
 				DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-2.7f, 0.75f, -29.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\PaintingFrame1.fbx");
 				pPaintingFrame->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
 				pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
-				
+
 				AddGameObject(pPaintingFrame);
 			}
 
@@ -1613,8 +1620,8 @@ namespace jh
 			// 선반 안 항아리들
 			for (int i = 0; i < 3; ++i)
 			{
-				DecoObject* pMansionSpicePot = Factory::CreateObject<DecoObject>(Vec3(-20.9f , 19.6f, 25.9f + i * 2.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\MansionSpicePot.fbx");
-				pMansionSpicePot->GetTransform()->SetScale( i == 0 ? Vec3(2.3f, 2.3f, 2.3f) : Vec3(1.5f, 1.5f, 1.5f));
+				DecoObject* pMansionSpicePot = Factory::CreateObject<DecoObject>(Vec3(-20.9f, 19.6f, 25.9f + i * 2.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\MansionSpicePot.fbx");
+				pMansionSpicePot->GetTransform()->SetScale(i == 0 ? Vec3(2.3f, 2.3f, 2.3f) : Vec3(1.5f, 1.5f, 1.5f));
 				AddGameObject(pMansionSpicePot);
 			}
 		}
@@ -1806,7 +1813,7 @@ namespace jh
 
 			// 반복 여부를 설정하는 함수 (Finished 플래그를 사용할 수 없음)
 			pPotHead->GetAnimator()->SetLoop(L"PotHead_Idle", true);
-			
+
 			// 인덱스 번호로도 사용 가능
 			pPotHead->GetAnimator()->SetLoop(9, true);
 
@@ -1818,7 +1825,30 @@ namespace jh
 			pPotHead->GetAnimator()->Play(L"PotHead_Idle", true);
 
 			AddGameObject(pPotHead);
-			
+
+		}
+	}
+
+	void HallColliderCheckMap::InitColliderAdd()
+	{
+
+	}
+
+	void HallColliderCheckMap::FuncObjectAdd()
+	{
+		{
+			GameObject* pLightObject = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pLightObject->AddComponent(new Transform);
+			pTransform->SetPosition(Vec3(3.4f, 7.7f, -3.5f));
+			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+			Light* pLight = pLightObject->AddComponent(new Light);
+			pLight->SetDiffuse(Vec3(0.5f, 0.5f, 0.2f));
+			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+			pLight->SetLightRange(22.f);
+			pLight->SetLightType(LightType::PointLight);
+			AddGameObject(pLightObject);
+			SetGizmoTarget(pLightObject);
 		}
 	}
 

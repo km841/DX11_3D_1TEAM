@@ -25,7 +25,7 @@ namespace hm
 
 		void InitObjectAdd();
 		void InitCollidertAdd();
-
+		
 	private:
 
 	};

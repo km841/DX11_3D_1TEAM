@@ -20,5 +20,9 @@ namespace jh
 
 		virtual void Enter();
 		virtual void Exit();
+	private:
+		void InitObjectAdd();
+		void InitColliderAdd();
+		void FuncObjectAdd();
 	};
 }
