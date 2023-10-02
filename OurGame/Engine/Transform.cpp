@@ -577,6 +577,10 @@ namespace hm
 				pRigidBody->GetDynamicActor()->setGlobalPose(transform);
 			else
 				AssertEx(false, L"Transform::Move() - Static Actor에 대한 Move 호출");
+
+
+			const Vec3& graphicV = pRigidBody->GetGraphicVelocity();
+			mRelativePosition += graphicV * DELTA_TIME;
 		}
 
 		else

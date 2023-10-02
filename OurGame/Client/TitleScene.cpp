@@ -206,7 +206,7 @@ namespace hm
 			// 현모
 			{
 				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(-450.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
-				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"현모", MapType::Right2Map));
+				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"현모", MapType::Monster_Player_Test));
 
 				// 클릭 기능을 스크립트로 구현
 				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
@@ -329,6 +329,8 @@ namespace hm
 			AddGameObject(pPlayer);
 			//SetMeshTarget(pPlayer);
 		}
+
+
 
 	}
 

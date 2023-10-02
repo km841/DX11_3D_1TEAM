@@ -1,5 +1,6 @@
 #pragma once
 #include "Monster.h"
+class MageColScript;
 class Mage :
 	public Monster
 {
@@ -31,5 +32,14 @@ public:
 	virtual void OnTriggerStay(Collider* _pOtherCollider);
 	virtual void OnTriggerExit(Collider* _pOtherCollider);
 
+private:
+	void CreateProjectTile();
 
+private:
+	GameObject* pMageCol;
+	MageColScript* pMageColSc;
+
+	bool isTrigger01 = false;
+	bool isTrigger02 = false;
+	bool isTrigger03 = false;
 };

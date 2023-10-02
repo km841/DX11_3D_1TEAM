@@ -71,6 +71,7 @@ namespace hm
 		Animator* GetAnimator();
 		UIText* GetUIText();
 		AI* GetAI();
+		GameObject* GetGameObject() { return this; }
 
 		LayerType GetLayerType() { return meLayerType; }
 

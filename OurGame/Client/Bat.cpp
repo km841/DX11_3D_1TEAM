@@ -12,10 +12,30 @@
 #include "EventManager.h"
 #include "SceneManager.h"
 #include "ChangeStateTask.h"
+/* GameObject */
+#include "GameObject.h"
+#include "Player.h"
+#include "Ground.h"
+#include "DecoObject.h"
+#include "WallObject.h"
+#include "Npc.h"
+#include "Monster.h"
+#include "Grandma.h"
+
+/* Component */
+#include "Collider.h"
+#include "RigidBody.h"
+#include "MeshRenderer.h"
+#include "Transform.h"
+#include "Camera.h"
+#include "Light.h"
+#include "ParticleSystem.h"
+#include "Animator.h"
+
 Bat::Bat()
 {
-	mMaxHP = 10.f;
-	mHP= mMaxHP; // 피통
+	mMaxHP = 3.f;
+	mHP = mMaxHP; // 피통
 	mSpeed=2.f; //이동속도
 	mAttackDamage = 1; // 공격력
 	mAttackRange = 2.5f; // 공격 감지 거리
@@ -411,13 +431,20 @@ void Bat::SetBehaviorTree()
 			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
+				GameObject* pObj = GetGameObject(); //이거 확인도 필요함
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (isDead == true)
 				{
+					//pObj->GetRigidBody()->SetSimulationShapeFlag(false);
+					//pObj->Disable();
 					isDead = false;
 					GetScript<PaperBurnScript>()->SetPaperBurn();
 					pAnimator->Play(4, false);
 				}
+
+				//pObj->GetRigidBody()->SetSimulationShapeFlag(false); // 콜라이더 끄기
+				//pObj->GetRigidBody()->SetSimulationShapeFlag(true); // 콜라이더 켜기
+
 
 				return BehaviorResult::Success;
 				});

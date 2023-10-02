@@ -1,27 +1,93 @@
 #include "pch.h"
 #include "Mage.h"
+#include "Engine.h"
 #include "AI.h"
-#include "Player.h"
-#include "Transform.h"
-#include "Animator.h"
-#include "RigidBody.h"
-#include "Collider.h"
-#include "Input.h"
-#include "ChangeStateCondition.h"
-#include "PaperBurnScript.h"
-#include "EventManager.h"
-#include "SceneManager.h"
 #include "ChangeStateTask.h"
+/* Resource */
+#include "MeshData.h"
+#include "Material.h"
+#include "Mesh.h"
+
+/* Manager */
+#include "PrefabManager.h"
+#include "EventManager.h"
+#include "Factory.h"
+#include "CollisionManager.h"
+#include "Input.h"
+#include "SceneManager.h"
+#include "Resources.h"
+
+/* GameObject */
+#include "GameObject.h"
+#include "Player.h"
+#include "Ground.h"
+#include "DecoObject.h"
+#include "WallObject.h"
+#include "Npc.h"
+#include "Monster.h"
+#include "SwordHeavyEffect.h"
+#include "Ladder.h"
+#include "LadderCollider.h"
+#include "Mage_ProjectTile.h"
+
+/* Component */
+#include "Collider.h"
+#include "RigidBody.h"
+#include "MeshRenderer.h"
+#include "Transform.h"
+#include "Camera.h"
+#include "Light.h"
+#include "ParticleSystem.h"
+#include "Animator.h"
+
+/* Script */
+#include "PlayerMoveScript.h"
+#include "PlacementScript.h"
+#include "TestAnimationScript.h"
+#include "PaperBurnScript.h"
+#include "PlayerSlashScript.h"
+#include "OwnerFollowScript.h"
+#include "SwordScript.h"
+#include "PlayerColScript.h"
+#include "BowScript.h"
+#include "ArrowScript.h"
+#include "MageColScript.h"
+
+/* Event */
+#include "SceneChangeEvent.h"
+ /*State 모음*/
+#include "State.h"
+#include "PauseState.h"
+#include "IdleState.h"
+#include "MoveState.h"
+#include "AttackState.h"
+#include "MagicAttackState.h"
+#include "EvasionState.h"
+#include "FallState.h"
+#include "HitStartState.h"
+#include "HittingState.h"
+#include "HitEndState.h"
+#include "FallDownState.h"
+#include "DeadState.h"
+#include "ClimingDownState.h"
+#include "ClimingEndState.h"
+#include "ClimingUpState.h"
+#include "BowState.h"
+
 
 Mage::Mage()
 {
-	mHP = 3.f; // 피통
+	mMaxHP = 3.f;
+	mHP = mMaxHP; // 피통
 	mSpeed = 2.f; //이동속도
 	mAttackDamage = 1; // 공격력
-	mAttackRange = 10.f; // 공격 감지 거리
+	mAttackRange = 10.f;
 	mRecogRange = 5.f; //감지거리
 
 	meBasicState = MonsterBasicState::Idle;
+
+
+
 }
 
 Mage::~Mage()
@@ -71,7 +137,7 @@ void Mage::SetBehaviorTree()
 					}
 
 					Animator* pAnimator = GetAnimator();
-					if (pAnimator->GetFrameRatio() > 0.05)
+					if (pAnimator->GetFrameRatio() > 0.1)
 						return BehaviorResult::Success;
 
 					return BehaviorResult::Failure;
@@ -255,8 +321,38 @@ void Mage::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (5 != animIndex)
-					pAnimator->Play(5, true);
+				if (1 != animIndex)
+					pAnimator->Play(1, true);
+
+				return BehaviorResult::Success;
+				});
+
+			//공격 구슬 생성
+			BehaviorTask* pAttack_ProjectTileTask = new BehaviorTask([&]() {
+				Animator* pAni = GetAnimator();
+
+				/*if (pAni->GetFrameRatio() > 0.2) {
+					if (true != isTrigger01) {
+						isTrigger01 = true;
+						CreateProjectTile();
+					}
+				}*/
+
+				if (pAni->GetFrameRatio() > 0.7) {
+					if (true != isTrigger02) {
+						isTrigger02 = true;
+						CreateProjectTile();
+					}
+				}
+
+				/*if (pAni->GetFrameRatio() > 0.6) {
+					if (true != isTrigger03) {
+						isTrigger03 = true;
+						CreateProjectTile();
+					}
+				}*/
+
+				
 
 				return BehaviorResult::Success;
 				});
@@ -364,8 +460,12 @@ void Mage::SetBehaviorTree()
 					Animator* pAni = GetAnimator();
 
 
-					if (pAni->GetFrameRatio() > 0.99)
+					if (pAni->GetFrameRatio() > 0.99) {
+						isTrigger01 = false;
+						isTrigger02 = false;
+						isTrigger03 = false;
 						return BehaviorResult::Success;
+					}
 					return BehaviorResult::Failure;
 
 				});
@@ -379,6 +479,7 @@ void Mage::SetBehaviorTree()
 
 			pAttackSequence->AddChild(pStateChecker);
 			pAttackSequence->AddChild(pRunAnimationTask);
+			pAttackSequence->AddChild(pAttack_ProjectTileTask);
 			pAttackSequence->AddChild(pAttackMoveTask);
 			pAttackSequence->AddChild(pAttackTask);
 			pAttackSequence->AddChild(new ChangeStateTask(MonsterBasicState::Idle));
@@ -580,4 +681,28 @@ void Mage::OnTriggerExit(Collider* _pOtherCollider)
 		if (0 == mGroundCount)
 			GetRigidBody()->ApplyGravity();
 	}
+}
+
+void Mage::CreateProjectTile()
+{
+	PhysicsInfo physicsInfo;
+	physicsInfo.eActorType = ActorType::Kinematic;
+	physicsInfo.eGeometryType = GeometryType::Box;
+	physicsInfo.size = Vec3(0.3f, 0.3f, 0.3f);
+
+	Mage_ProjectTile* pProjectTile = Factory::CreateObjectHasPhysical<Mage_ProjectTile>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Monster\\_DROP_SOUL50.fbx");
+	pProjectTile->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+	pProjectTile->GetTransform()->SetPosition(GetTransform()->GetPosition());
+	pProjectTile->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+
+	pProjectTile->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
+	pProjectTile->GetMeshRenderer()->GetMaterial()->SetBloomPower(3.f, 0);
+	pProjectTile->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(0.f, 1.f, 0.f, 1.f));
+
+	pProjectTile->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+	pProjectTile->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+
+	pProjectTile->Initialize();
+	
+	GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pProjectTile);
 }
