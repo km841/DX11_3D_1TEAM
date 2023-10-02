@@ -295,6 +295,8 @@
     <ClInclude Include="Mage_ProjectTile.h">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="BreakablePot.h" />
+    <ClInclude Include="BreakablePotCell.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -588,6 +590,8 @@
     <ClCompile Include="Mage_ProjectTile.cpp">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="BreakablePot.cpp" />
+    <ClCompile Include="BreakablePotCell.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
