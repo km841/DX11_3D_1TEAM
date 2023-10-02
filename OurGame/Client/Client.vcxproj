@@ -153,6 +153,8 @@
     <ClInclude Include="BonFireScript.h" />
     <ClInclude Include="BowScript.h" />
     <ClInclude Include="BowState.h" />
+    <ClInclude Include="BreakablePot.h" />
+    <ClInclude Include="BreakablePotCell.h" />
     <ClInclude Include="Bus.h" />
     <ClInclude Include="CameraMoveScript.h" />
     <ClInclude Include="ChangeStateCondition.h" />
@@ -262,6 +264,8 @@
     <ClCompile Include="BonFireScript.cpp" />
     <ClCompile Include="BowScript.cpp" />
     <ClCompile Include="BowState.cpp" />
+    <ClCompile Include="BreakablePot.cpp" />
+    <ClCompile Include="BreakablePotCell.cpp" />
     <ClCompile Include="Bus.cpp" />
     <ClCompile Include="CameraMoveScript.cpp" />
     <ClCompile Include="ChangeStateCondition.cpp" />
