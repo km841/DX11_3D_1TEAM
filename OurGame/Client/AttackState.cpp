@@ -145,6 +145,8 @@ void AttackState::Enter()
 
 void AttackState::Exit()
 {
+	GameObject* pAttackCol_Obj = PLAYER->GetAttackCol();
+	pAttackCol_Obj->Disable();
 }
 
 void AttackState::PlayAnimation()

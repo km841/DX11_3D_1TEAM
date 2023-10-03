@@ -56,9 +56,11 @@ void Lurker::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (8 != animIndex)
+				if (8 != animIndex) {
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, -0.4f, 0.f));
 					pAnimator->Play(8, true);
-
+				}
 				return BehaviorResult::Success;
 				});
 

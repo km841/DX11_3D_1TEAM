@@ -33,5 +33,6 @@ public:
 
 private:
 	Vec3 dir;
+	MonsterBasicState mState;
 
 };

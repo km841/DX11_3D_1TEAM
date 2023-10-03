@@ -27,6 +27,7 @@
 #include "SwordHeavyEffect.h"
 #include "Ladder.h"
 #include "LadderCollider.h"
+#include "HeadRoller.h"
 
 /* Component */
 #include "Collider.h"
@@ -419,8 +420,12 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 
 	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		if(_pOtherCollider->GetGameObject()->GetName() == L"HeadRoller")
-		StateChange(PlayerState::HitStartState);
+		if (_pOtherCollider->GetGameObject()->GetName() == L"HeadRoller" && 
+			static_cast<HeadRoller*>(_pOtherCollider->GetGameObject())->GetisRoll() == true ) {
+			mActiveState->Exit();
+			StateChange(PlayerState::HitStartState);
+		}
+		
 	}
 
 
@@ -442,6 +447,17 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 
 void Player::OnTriggerStay(Collider* _pOtherCollider)
 {
+	
+	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		if (_pOtherCollider->GetGameObject()->GetName() == L"HeadRoller" &&
+			static_cast<HeadRoller*>(_pOtherCollider->GetGameObject())->GetisRollStay() == true) {
+			mActiveState->Exit();
+			StateChange(PlayerState::HitStartState);
+			static_cast<HeadRoller*>(_pOtherCollider->GetGameObject())->SetisRollStay(false);
+		}
+
+	}
 
 }
 

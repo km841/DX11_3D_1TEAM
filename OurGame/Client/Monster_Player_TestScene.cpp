@@ -189,14 +189,14 @@ namespace hm {
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(3.f, 8.f, 3.f);
 
-			Grimace* p_E_GRIMACE_KNIGHT = Factory::CreateMonster<Grimace>(Vec3(-5.f, 0.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_GRIMACE_KNIGHT.fbx");
+			Grimace* p_E_GRIMACE_KNIGHT = Factory::CreateMonster<Grimace>(Vec3(-16.f, 0.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_GRIMACE_KNIGHT.fbx");
 			p_E_GRIMACE_KNIGHT->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
 			p_E_GRIMACE_KNIGHT->GetTransform()->SetRotation(Vec3(180.f, 0.f, 0.f));
 			p_E_GRIMACE_KNIGHT->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -4.f, 0.f));
 
 			//SetGizmoTarget(p_E_GRIMACE_KNIGHT);
 			AddGameObject(p_E_GRIMACE_KNIGHT);
-			SetMeshTarget(p_E_GRIMACE_KNIGHT);
+			//SetMeshTarget(p_E_GRIMACE_KNIGHT);
 		}
 
 		// ¹ÚÁã
