@@ -90,9 +90,11 @@ namespace hm
 				BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 					Animator* pAnimator = GetAnimator();
 					int animIndex = pAnimator->GetCurrentClipIndex();
-					if (8 != animIndex)
+					if (8 != animIndex) {
+						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+						GetTransform()->SetRelativePosition(Vec3(0.f, -1.f, 0.f));
 						pAnimator->Play(8, true);
-
+					}
 					return BehaviorResult::Success;
 					});
 
@@ -420,6 +422,8 @@ namespace hm
 						//초기화 중요
 						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 						GetTransform()->SetRelativePosition(Vec3(0.f, 0.f, 0.f));
+						isRoll = true;
+						isRollStay = true;
 						pAnimator->Play(2, true);
 					}
 
@@ -495,8 +499,11 @@ namespace hm
 						Animator* pAni = GetAnimator();
 
 
-						if (pAni->GetFrameRatio() > 0.21)
+						if (pAni->GetFrameRatio() > 0.21) {
+							isRoll = false;
+							isRollStay = false;
 							return BehaviorResult::Success;
+						}
 						return BehaviorResult::Failure;
 
 					});
@@ -652,7 +659,7 @@ namespace hm
 			mGroundCount++;
 		}
 
-		if (LayerType::Player == _pOtherCollider->GetGameObject()->GetLayerType())
+		if (LayerType::Player == _pOtherCollider->GetGameObject()->GetLayerType() && isRoll == true)
 		{
 			meBasicState = MonsterBasicState::Stun;
 		}

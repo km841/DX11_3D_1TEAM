@@ -34,10 +34,20 @@ namespace hm
 		virtual void OnTriggerStay(Collider* _pOtherCollider);
 		virtual void OnTriggerExit(Collider* _pOtherCollider);
 
+
+	public:
+		bool GetisRoll() { return isRoll; }
+		void SetisRoll(bool _is) { isRoll = _is; }
+
+		bool GetisRollStay() { return isRollStay; }
+		void SetisRollStay(bool _is) { isRollStay = _is; }
 	private:
 		Vec3 attackDir = Vec3::Zero;
 		Vec3 traceDir = Vec3::Zero;
 		Vec3 stunDir = Vec3::Zero;
+
+		bool isRoll = false;
+		bool isRollStay = false;
 		
 	};
 }
