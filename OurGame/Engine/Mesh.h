@@ -60,6 +60,7 @@ namespace hm
         std::vector<std::vector<KeyFrameInfo>>	keyFrames;
         bool            bLoop = false;
         bool            bHasExit = true;
+        float           playSpeed = 1.f;
     };
 
     struct FbxMeshInfo;
