@@ -428,8 +428,8 @@ void Grimace::SetBehaviorTree()
 				//GetRigidBody()->SetVelocity(-Ve); //따라오게 만드는 코드
 
 				//이부분 중요
-				GetRigidBody()->SetVelocityExcludingColliders(dir_backstep * 15.0f);
-				GetRigidBody()->SetVelocity(-dir_backstep * 15.f);
+				GetRigidBody()->SetVelocityExcludingColliders(dir_backstep * 10.0f);
+				GetRigidBody()->SetVelocity(-dir_backstep * 10.f);
 
 				Transform* pTr = GetTransform();
 				Vec3 rot = Vec3(0, 0, -1);
