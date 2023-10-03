@@ -199,6 +199,26 @@ static wstring ChangeFileExt(const wstring& _srcPath, const wstring& _dstExt)
 	return parentPath.wstring() + L"\\" + fileName;
 }
 
+static float Lerp(float _f1, float _f2, float _t) {
+	return (1 - _t) * _f1 + _t * _f2;
+}
+
+
+static Vec2 Lerp(const Vec2& _v1, const Vec2& _v2, float _t) {
+	Vec2 ret = {};
+	ret.x = Lerp(_v1.x, _v2.x, _t);
+	ret.y = Lerp(_v1.y, _v2.y, _t);
+	return ret;
+}
+
+static Vec3 Lerp(const Vec3& _v1, const Vec3& _v2, float _t) {
+	Vec3 ret = {};
+	ret.x = Lerp(_v1.x, _v2.x, _t);
+	ret.y = Lerp(_v1.y, _v2.y, _t);
+	ret.z = Lerp(_v1.z, _v2.z, _t);
+	return ret;
+}
+
 namespace hm { 
 	class Engine;
 }
