@@ -1149,6 +1149,38 @@ namespace hm
             pShader->SetName(L"Fire");
             Add<Shader>(L"Fire", pShader);
         }
+
+        // Masking Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Masking,
+                DepthStencilType::MaskStencil,
+                RasterizerType::CullNone,
+                BlendType::CustumBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\forward.fx", shaderInfo);
+            pShader->SetName(L"Masking");
+            Add<Shader>(L"Masking", pShader);
+        }
+
+        // Mirror Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Mirror,
+                DepthStencilType::LessEqualStencil,
+                RasterizerType::CullBackCCW,
+                BlendType::CustumBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\forward.fx", shaderInfo);
+            pShader->SetName(L"Mirror");
+            Add<Shader>(L"Mirror", pShader);
+        }
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -1494,6 +1526,24 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"Fire", pMaterial);
+        }
+
+        // Masking Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"Masking");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"Masking", pMaterial);
+        }
+
+        // Mirror Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"Mirror");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"Mirror", pMaterial);
         }
     }
 }

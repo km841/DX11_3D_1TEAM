@@ -67,6 +67,8 @@ namespace hm
 		void SetClearColor(Vec4 _color);
 		void SetClearColor(int _index, Vec4 _color);
 
+		shared_ptr<Texture> GetDSV() { return mpDepthStencilTexture; }
+
 	private:
 		MultiRenderTargetType	     meRenderTargetType;
 		std::vector<RenderTarget>	 mRenderTargets;

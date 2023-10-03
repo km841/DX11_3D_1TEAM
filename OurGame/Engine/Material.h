@@ -46,6 +46,7 @@ namespace hm
         void ClearGraphicData();
         void PushGraphicData(int _containerIndex = 0, int _subsetIndex = 0);
         void PushGraphicDataExceptForTextures(int _containerIndex = 0, int _subsetIndex = 0);
+        void PushGraphicDataExceptForShader(int _containerIndex = 0, int _subsetIndex = 0);
         void PushComputeData();
         void Dispatch(UINT32 _countX, UINT32 _countY, UINT32 _countZ);
         void SetSamplerType(SamplerType _eSamplerType) { mpShader->SetSamplerType(_eSamplerType); }
@@ -62,6 +63,7 @@ namespace hm
         void SetBloomColor(Vec4 _color, int _containerIndex = 0, int _subsetIndex = 0) { mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->bloomParams.bloomColor = _color; }
         void SetBloomFilter(Vec4 _color, int _containerIndex = 0, int _subsetIndex = 0) { mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->bloomParams.bloomFilter = _color; }
 
+        void PushInputLayout();
         MaterialSubset* GetMaterialSubset(int _containerIndex, int _subsetindex) { return mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetindex]; }
         MaterialContainer* GetMaterialContainer(int _containerIndex) { return mMaterialContainerVec[_containerIndex]; }
 

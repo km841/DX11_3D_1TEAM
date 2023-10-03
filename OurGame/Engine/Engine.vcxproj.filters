@@ -280,6 +280,7 @@
     <ClInclude Include="Interface.h">
       <Filter>Object\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="Mirror.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EnginePch.cpp">
@@ -537,6 +538,7 @@
     <ClCompile Include="Interface.cpp">
       <Filter>Object\Interface</Filter>
     </ClCompile>
+    <ClCompile Include="Mirror.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

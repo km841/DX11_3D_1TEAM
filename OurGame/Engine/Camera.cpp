@@ -81,6 +81,7 @@ namespace hm
 		mDeferredObjects.clear();
 		mParticleObjects.clear();
 		mEffectObjects.clear();
+		mReflectObjects.clear();
 
 		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 		{
@@ -105,6 +106,9 @@ namespace hm
 
 				if (nullptr != pGameObject->GetMeshRenderer())
 				{
+					if (true == pGameObject->IsReflect())
+						mReflectObjects.push_back(pGameObject);
+
 					if (LayerType::Effect == pGameObject->GetLayerType())
 						mEffectObjects.push_back(pGameObject);
 
@@ -229,6 +233,14 @@ namespace hm
 			Effect* pEffect = static_cast<Effect*>(pGameObject);
 			pEffect->PushBloomData();
 			pEffect->GetMeshRenderer()->RenderEffect(this);
+		}
+	}
+
+	void Camera::RenderReflect(shared_ptr<Shader> _pShader)
+	{
+		for (GameObject* pGameObject : mReflectObjects)
+		{
+			pGameObject->GetMeshRenderer()->RenderExceptForShader(this, _pShader, true);
 		}
 	}
 

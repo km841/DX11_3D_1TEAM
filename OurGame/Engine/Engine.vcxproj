@@ -227,6 +227,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshData.h" />
     <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="Mirror.h" />
     <ClInclude Include="MonoBehavior.h" />
     <ClInclude Include="MultiRenderTarget.h" />
     <ClInclude Include="NavAgent.h" />
@@ -317,6 +318,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshData.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="Mirror.cpp" />
     <ClCompile Include="MonoBehavior.cpp" />
     <ClCompile Include="MultiRenderTarget.cpp" />
     <ClCompile Include="NavAgent.cpp" />

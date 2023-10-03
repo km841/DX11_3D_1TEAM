@@ -213,6 +213,61 @@ namespace hm
 		mpShader->Update();
 	}
 
+	void Material::PushGraphicDataExceptForShader(int _containerIndex, int _subsetIndex)
+	{
+		CONST_BUFFER(ConstantBufferType::Material)->PushData(&mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams, sizeof(MaterialParams));
+		CONST_BUFFER(ConstantBufferType::Bloom)->PushData(&mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->bloomParams, sizeof(BloomParams));
+
+		CONST_BUFFER(ConstantBufferType::Material)->Mapping();
+		CONST_BUFFER(ConstantBufferType::Bloom)->Mapping();
+
+		for (int i = 0; i < TEXTURE_VALUE_COUNT; ++i)
+		{
+			if (nullptr == mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->textures[i])
+			{
+				CONTEXT->PSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+					reinterpret_cast<ID3D11ShaderResourceView**>(&mppNullptr));
+
+				CONTEXT->GSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+					reinterpret_cast<ID3D11ShaderResourceView**>(&mppNullptr));
+
+				CONTEXT->CSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+					reinterpret_cast<ID3D11ShaderResourceView**>(&mppNullptr));
+
+				CONTEXT->VSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+					reinterpret_cast<ID3D11ShaderResourceView**>(&mppNullptr));
+
+				CONTEXT->DSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+					reinterpret_cast<ID3D11ShaderResourceView**>(&mppNullptr));
+
+				CONTEXT->HSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+					reinterpret_cast<ID3D11ShaderResourceView**>(&mppNullptr));
+			}
+
+			else
+			{
+				CONTEXT->PSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+					mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->textures[i]->GetSRV().GetAddressOf());
+
+				CONTEXT->GSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+					mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->textures[i]->GetSRV().GetAddressOf());
+
+				CONTEXT->CSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+					mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->textures[i]->GetSRV().GetAddressOf());
+
+				CONTEXT->VSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+					mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->textures[i]->GetSRV().GetAddressOf());
+
+				CONTEXT->DSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+					mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->textures[i]->GetSRV().GetAddressOf());
+
+				CONTEXT->HSSetShaderResources(static_cast<int>(RegisterSRV::t0) + i, 1,
+					mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->textures[i]->GetSRV().GetAddressOf());
+			}
+
+		}
+	}
+
 
 	void Material::PushComputeData()
 	{
@@ -253,6 +308,11 @@ namespace hm
 				mMaterialContainerVec[i]->materialSubsetVec[j]->SetTexture(_index, _pTexture);
 			}
 		}
+	}
+
+	void Material::PushInputLayout()
+	{
+		mpShader->PushInputLayout();
 	}
 
 	void Material::SetInt(int _index, int _value, int _containerIndex, int _subsetIndex)

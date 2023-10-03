@@ -31,8 +31,9 @@ namespace hm
 		Obstacle,
 		DecoObject,
 		WallObject,
-		Interface,
 		Portal,
+		Mirror,
+		Interface,
 		End,
 	};
 
@@ -163,6 +164,7 @@ namespace hm
 		Bloom,
 		Noise,
 		Distortion,
+		Reflect,
 		End,
 	};
 
