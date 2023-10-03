@@ -18,7 +18,7 @@ namespace hm
 		Player,
 		PlayerCol,
 		ArrowCol,
-		Grandma_Boss,  //ÀÌ°Å ´õ¹Ì ¸ñ·Ï
+		Grandma_Boss,  //ì´ê±° ë”ë¯¸ ëª©ë¡
 		Monster,
 		MonsterCol,
 		MonsterHeavyCol,
@@ -33,6 +33,7 @@ namespace hm
 		WallObject,
 		Portal,
 		Mirror,
+    PotCell,
 		Interface,
 		End,
 	};
@@ -44,8 +45,8 @@ namespace hm
 
 	enum class GroundMaterial
 	{
-		Marble, // ´ë¸®¼® ¹Ù´Ú
-		Wood,   // ³ª¹« ¹Ù´Ú
+		Marble, // ëŒ€ë¦¬ì„ ë°”ë‹¥
+		Wood,   // ë‚˜ë¬´ ë°”ë‹¥
 	};
 
 	enum class ObjectType

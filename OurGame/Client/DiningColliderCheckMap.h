@@ -22,6 +22,16 @@ namespace sy
 		virtual void Exit();
 
 	private:
+		void InitObjectAdd();
+		void InitColliderAdd();
+		void FuncObjectAdd();
+
+		GameObject* pDoorRight;
+		GameObject* pDoorLeft;
+		GameObject* pDoorCol;
+
+
+	private:
 		PxCapsuleController* mpCharacterController;
 		PxControllerFilters filter;
 	};

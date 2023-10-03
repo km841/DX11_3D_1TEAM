@@ -21,7 +21,7 @@ namespace yj {
 
 		virtual void Enter();
 		virtual void Exit();
-
+	public:
 		void InitObjectAdd();
 		void InitBusStart();
 

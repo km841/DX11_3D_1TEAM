@@ -153,6 +153,8 @@
     <ClInclude Include="BonFireScript.h" />
     <ClInclude Include="BowScript.h" />
     <ClInclude Include="BowState.h" />
+    <ClInclude Include="BreakablePot.h" />
+    <ClInclude Include="BreakablePotCell.h" />
     <ClInclude Include="Bus.h" />
     <ClInclude Include="CameraMoveScript.h" />
     <ClInclude Include="ChangeStateCondition.h" />
@@ -178,6 +180,7 @@
     <ClInclude Include="FireLamp.h" />
     <ClInclude Include="Grandma.h" />
     <ClInclude Include="GrandmaBossMap.h" />
+    <ClInclude Include="Grimace.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="HallColliderCheckMap.h" />
     <ClInclude Include="HitEndState.h" />
@@ -233,6 +236,7 @@
     <ClInclude Include="SmallTransStartState_Gm.h" />
     <ClInclude Include="Small_IdleState_Gm.h" />
     <ClInclude Include="SoulDoor.h" />
+    <ClInclude Include="SpikeDoor.h" />
     <ClInclude Include="SpinEndState_Gm.h" />
     <ClInclude Include="SpinningState_Gm.h" />
     <ClInclude Include="SpinStartState_Gm.h" />
@@ -260,6 +264,8 @@
     <ClCompile Include="BonFireScript.cpp" />
     <ClCompile Include="BowScript.cpp" />
     <ClCompile Include="BowState.cpp" />
+    <ClCompile Include="BreakablePot.cpp" />
+    <ClCompile Include="BreakablePotCell.cpp" />
     <ClCompile Include="Bus.cpp" />
     <ClCompile Include="CameraMoveScript.cpp" />
     <ClCompile Include="ChangeStateCondition.cpp" />
@@ -285,6 +291,7 @@
     <ClCompile Include="FireLamp.cpp" />
     <ClCompile Include="Grandma.cpp" />
     <ClCompile Include="GrandmaBossMap.cpp" />
+    <ClCompile Include="Grimace.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="HallColliderCheckMap.cpp" />
     <ClCompile Include="HitEndState.cpp" />
@@ -342,6 +349,7 @@
     <ClCompile Include="SmallTransStartState_Gm.cpp" />
     <ClCompile Include="Small_IdleState_Gm.cpp" />
     <ClCompile Include="SoulDoor.cpp" />
+    <ClCompile Include="SpikeDoor.cpp" />
     <ClCompile Include="SpinEndState_Gm.cpp" />
     <ClCompile Include="SpinningState_Gm.cpp" />
     <ClCompile Include="SpinStartState_Gm.cpp" />

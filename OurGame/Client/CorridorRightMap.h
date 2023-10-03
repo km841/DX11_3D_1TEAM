@@ -20,5 +20,18 @@ namespace jh
 
 		virtual void Enter();
 		virtual void Exit();
+
+	public:
+
+		void InitObjectAdd();
+		void InitColliderAdd();
+		void FuncObjectAdd();
+
+
+	private:
+		GameObject* pSpikeDoor;
+		GameObject* pSpikeDoorCol;
+
 	};
+
 }

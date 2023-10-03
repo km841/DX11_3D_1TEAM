@@ -22,6 +22,8 @@
 #include "Ground.h"
 #include "DecoObject.h"
 #include "WallObject.h"
+#include "SpikeDoor.h"
+#include "TeleportZone.h"
 
 /* Component */
 #include "Collider.h"
@@ -86,6 +88,13 @@ namespace jh
 
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
+		InitObjectAdd();
+		InitColliderAdd();
+		FuncObjectAdd();
+	}
+
+	void CorridorRightMap::InitObjectAdd()
+	{
 
 #pragma region 벽
 		// 벽
@@ -266,7 +275,7 @@ namespace jh
 		}
 		// 철창
 		{
-			DecoObject* pSpikeDoor = Factory::CreateObject<DecoObject>(Vec3(-3.98f, -7.54f, -23.67f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\SpikeDoor.fbx");
+			pSpikeDoor = Factory::CreateObject<DecoObject>(Vec3(-3.98f, -7.54f, -23.67f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\SpikeDoor.fbx");
 
 			pSpikeDoor->GetTransform()->SetRotation(Vec3(0.00f, 180.00f, 0.00f));
 			pSpikeDoor->GetTransform()->SetScale(Vec3(6.17f, 6.37f, 6.30f));
@@ -337,7 +346,6 @@ namespace jh
 				pPotMimic->GetTransform()->SetRotation(Vec3(0.00f, 180.00f, 0.00f));
 				pPotMimic->GetTransform()->SetScale(Vec3(2.35f, 2.35f, 2.35f));
 
-				SetGizmoTarget(pPotMimic);
 				AddGameObject(pPotMimic);
 			}
 		}
@@ -435,19 +443,165 @@ namespace jh
 			AddGameObject(pWallRim2);
 		}
 #pragma endregion
+	}
 
-		// Toy
+	void CorridorRightMap::InitColliderAdd()
+	{
 		{
 			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Dynamic;
+			physicsInfo.eActorType = ActorType::Static;
 			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+			physicsInfo.size = Vec3(20.38f, 0.4f, 66.9f);
 
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
-			pPlayer->AddComponent(new PlayerMoveScript);
-			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			GameObject* pGround = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.2f, -9.37f, -0.9f), physicsInfo, L"Deferred", L"", false, LayerType::Ground);
+			AddGameObject(pGround);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.f, 14.88f, 60.71f);
 
-			AddGameObject(pPlayer);
+			GameObject* pWall1 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(9.7f, -2.27f, -2.5f), physicsInfo, L"Deferred", L"", false, LayerType::WallObject);
+			AddGameObject(pWall1);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(13.75f, 14.88f, 1.f);
+
+			GameObject* pWall2 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.3f, -2.27f, -32.9f), physicsInfo, L"Deferred", L"", false, LayerType::WallObject);
+			AddGameObject(pWall2);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(13.75f, 14.88f, 1.f);
+
+			GameObject* pWall3 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.3f, -2.27f, 26.9f), physicsInfo, L"Deferred", L"", false, LayerType::WallObject);
+			AddGameObject(pWall3);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0f, 10.1f, 37.12f);
+
+			GameObject* pWall4 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(-3.9f, -4.57f, -2.3f), physicsInfo, L"Deferred", L"", false, LayerType::WallObject);
+			AddGameObject(pWall4);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0f, 10.1f, 6.3f);
+
+			GameObject* pWall4 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(-3.9f, -4.57f, -29.1f), physicsInfo, L"Deferred", L"", false, LayerType::WallObject);
+			AddGameObject(pWall4);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0f, 10.1f, 8.06f);
+
+			GameObject* pWall5 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(-3.9f, -4.57f, 25.7f), physicsInfo, L"Deferred", L"", false, LayerType::WallObject);
+			AddGameObject(pWall5);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0f, 10.1f, 5.54f);
+
+			pSpikeDoorCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(-3.9f, -4.57f, -23.7f), physicsInfo, L"Deferred", L"", false, LayerType::WallObject);
+			AddGameObject(pSpikeDoorCol);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0f, 10.09f, 2.21f);
+
+			GameObject* pWall6 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(-2.8f, -4.57f, -11.7f), physicsInfo, L"Deferred", L"", false, LayerType::WallObject);
+			AddGameObject(pWall6);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0f, 10.09f, 2.21f);
+
+			GameObject* pWall7 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(-2.8f, -4.57f, 8.5f), physicsInfo, L"Deferred", L"", false, LayerType::WallObject);
+			AddGameObject(pWall7);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0f, 10.09f, 2.21f);
+
+			GameObject* pWall8 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(-2.8f, -4.57f, -32.2f), physicsInfo, L"Deferred", L"", false, LayerType::WallObject);
+			AddGameObject(pWall8);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0f, 10.09f, 2.21f);
+
+			GameObject* pWall9 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(-2.8f, -4.57f, 26.6f), physicsInfo, L"Deferred", L"", false, LayerType::WallObject);
+			AddGameObject(pWall9);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.0f, 10.09f, 2.21f);
+
+			GameObject* pWall10 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(8.7f, -4.57f, 26.6f), physicsInfo, L"Deferred", L"", false, LayerType::WallObject);
+			AddGameObject(pWall10);
+		}
+	}
+
+	void CorridorRightMap::FuncObjectAdd()
+	{
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(3.4f, 10.1f, 4.82f);
+
+			yj::TeleportZone* pLeftZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-6.9f, -4.57f, -23.7f), physicsInfo, L"Deferred", L"", false, MapType::LeftSecretTrialMap);
+			AddGameObject(pLeftZone);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(3.4f, 10.1f, 4.82f);
+
+			yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-7.4f, -4.57f, 19.2f), physicsInfo, L"Deferred", L"", false, MapType::LeftSecretTrialMap);
+			AddGameObject(pRightZone);
+		}
+		{
+			yj::SpikeDoor* pDoor = Factory::CreateObject<yj::SpikeDoor>(Vec3(-7.4f, -4.57f, 19.2f), L"Deferred", L"", false, pSpikeDoor,pSpikeDoorCol);
+			AddGameObject(pDoor);
+		}
+		{
+			GameObject* pLightObject = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pLightObject->AddComponent(new Transform);
+			pTransform->SetPosition(Vec3(3.4f, 7.7f, -3.5f));
+			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+			Light* pLight = pLightObject->AddComponent(new Light);
+			pLight->SetDiffuse(Vec3(0.5f, 0.5f, 0.2f));
+			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+			pLight->SetLightRange(22.f);
+			pLight->SetLightType(LightType::PointLight);
+			AddGameObject(pLightObject);
 		}
 	}
 
