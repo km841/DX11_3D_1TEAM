@@ -113,6 +113,7 @@ namespace jh
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Obstacle);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Obstacle, LayerType::Ground);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PlayerCol, LayerType::DecoObject);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::PotCell);
 
@@ -356,28 +357,9 @@ namespace jh
 		}
 
 		// Toy
-		/*{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Character;
-			physicsInfo.eGeometryType = GeometryType::Capsule;
-			physicsInfo.size = Vec3(1.5f, 0.4f, 1.5f);
-
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
-			pPlayer->AddComponent(new PlayerMoveScript);
-			pPlayer->AddComponent(new PaperBurnScript);
-			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
-			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
-			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
-			pPlayer->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.6f, 0.f));
-
-			pPlayer->GetRigidBody()->ApplyGravity();
-			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-
-			mpCharacterController = pPlayer->GetRigidBody()->GetCharacterController();
-
-			AddGameObject(pPlayer);
-		}*/
+		{
+			PLAYER->GetTransform()->SetPosition(Vec3::Zero);
+		}
 
 		// CharacterController
 		/*{

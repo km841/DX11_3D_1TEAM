@@ -17,9 +17,16 @@ namespace hm
 		void AddActor(GameObject* _pGameObject);
 		void RemoveActor(GameObject* _pGameObject);
 
+		void SetGravity(Vec3 _g)
+		{ 
+			mGravity = _g;
+			mpScene->setGravity(mGravity);
+		}
+
 		const Vec3& GetGravity() { return mGravity; }
 		PxPhysics* GetPhysics() { return mpPhysics; }
 		PxCooking* GetCooking() { return mpCooking; }
+		PxScene* GetScene() { return mpScene; }
 
 		static PxFilterFlags PlayerFilterShader(
 			PxFilterObjectAttributes _attributes0, PxFilterData _filterData0,

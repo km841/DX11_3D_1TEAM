@@ -15,6 +15,10 @@ namespace jh
 		virtual void FixedUpdate();
 		virtual void Render();
 
+		virtual void OnTriggerEnter(Collider* _pOther);
+		virtual void OnTriggerStay(Collider* _pOther);
+		virtual void OnTriggerExit(Collider* _pOther);
+
 	public:
 		void BreakPots();
 		void RestorePots();
@@ -25,5 +29,8 @@ namespace jh
 
 		bool mbIsRestroing;
 		TimerObject mTimer;
+
+		bool mbIsWaiting;
+		float mWaitTime;
 	};
 }

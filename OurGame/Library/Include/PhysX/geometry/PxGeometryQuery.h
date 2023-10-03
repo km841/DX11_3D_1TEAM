@@ -95,7 +95,7 @@ public:
 							const PxGeometry& geom1,
 							const PxTransform& pose1,
 							PxSweepHit& sweepHit,
-							PxHitFlags hitFlags = PxHitFlag::eDEFAULT,
+							PxHitFlags hitFlags = PxHitFlag::eDEFAULT | PxHitFlag::eMTD,
 							const PxReal inflation = 0.f);
 
 

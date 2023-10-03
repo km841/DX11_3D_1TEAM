@@ -105,6 +105,26 @@ namespace hm
 		return pCollider;
 	}
 
+	bool Collider::Sweep(const PxVec3& _dir, float _maxDist, Collider* _pOther, PxSweepHit& _pHit)
+	{
+		GeometryType eGeometryType = GetRigidBody()->GetGeometryType();
+		switch (eGeometryType)
+		{
+		case GeometryType::Sphere:
+			return Sweep<PxSphereGeometry>(GetRigidBody()->GetGeometries()->sphereGeom, _dir, _maxDist, _pOther, _pHit);
+
+		case GeometryType::Box:
+			return Sweep<PxBoxGeometry>(GetRigidBody()->GetGeometries()->boxGeom, _dir, _maxDist, _pOther, _pHit);
+
+		case GeometryType::Capsule:
+			return Sweep<PxCapsuleGeometry>(GetRigidBody()->GetGeometries()->capsuleGeom, _dir, _maxDist, _pOther, _pHit);
+
+		case GeometryType::Convex:
+			return Sweep<PxConvexMeshGeometry>(GetRigidBody()->GetGeometries()->convexGeom, _dir, _maxDist, _pOther, _pHit);
+		}
+		return false;
+	}
+
 	bool Collider::Raycast(const Vec3& _origin, const Vec3& _dir, Collider* _pOther, float _maxDist)
 	{
 		GeometryType eGeometryType = _pOther->GetRigidBody()->GetGeometryType();
