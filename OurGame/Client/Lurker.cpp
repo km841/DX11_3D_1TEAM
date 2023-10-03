@@ -259,6 +259,8 @@ void Lurker::SetBehaviorTree()
 					pAnimator->Play(3, true);
 				}
 
+			
+
 				return BehaviorResult::Success;
 				});
 
