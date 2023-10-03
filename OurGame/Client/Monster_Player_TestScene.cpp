@@ -194,7 +194,10 @@ namespace hm {
 			p_E_GRIMACE_KNIGHT->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
 			p_E_GRIMACE_KNIGHT->GetTransform()->SetRotation(Vec3(180.f, 0.f, 0.f));
 			p_E_GRIMACE_KNIGHT->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -4.f, 0.f));
-
+			for (size_t i = 0; i < 13; i++)
+			{
+				p_E_GRIMACE_KNIGHT->GetAnimator()->SetPlaySpeed(i, 0.8f);
+			}
 			//SetGizmoTarget(p_E_GRIMACE_KNIGHT);
 			AddGameObject(p_E_GRIMACE_KNIGHT);
 			//SetMeshTarget(p_E_GRIMACE_KNIGHT);
