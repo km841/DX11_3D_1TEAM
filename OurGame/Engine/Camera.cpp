@@ -163,6 +163,9 @@ namespace hm
 				if (false == pGameObject->IsDrawShadow())
 					continue;
 
+				if (false == pGameObject->IsEnable())
+					continue;
+
 				mShadowObjects.push_back(pGameObject);
 			}
 		}
@@ -190,6 +193,9 @@ namespace hm
 					continue;
 
 				if (false == pGameObject->IsDrawShadow())
+					continue;
+
+				if (false == pGameObject->IsEnable())
 					continue;
 
 				mShadowObjects.push_back(pGameObject);
