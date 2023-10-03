@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "TimerObject.h"
 #include "BreakablePotCell.h"
 
 namespace jh
@@ -19,10 +20,10 @@ namespace jh
 		void RestorePots();
 
 	private:
-		void CreateCells();
-
-	private:
 		GameObject* mpBasePot;
 		std::vector<BreakablePotCell*> mpPotCells;
+
+		bool mbIsRestroing;
+		TimerObject mTimer;
 	};
 }
