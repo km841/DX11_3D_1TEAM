@@ -26,9 +26,9 @@ namespace hm
 	}
 	void Animator::FinalUpdate()
 	{
-		mUpdateTime += DELTA_TIME;
 
 		const AnimClipInfo& animClip = mAnimClips->at(mClipIndex);
+		mUpdateTime += DELTA_TIME * animClip.playSpeed;
 		
 		if (mUpdateTime >= animClip.duration)
 		{
