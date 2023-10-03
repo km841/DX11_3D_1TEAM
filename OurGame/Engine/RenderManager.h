@@ -37,6 +37,7 @@ namespace hm
 		void RenderShadow(Scene* _pScene);
 		void RenderStaticShadow(Scene* _pScene);
 		void RenderDynamicShadow(Scene* _pScene);
+		void RenderMirror(Scene* _pScene);
 		void RenderRimLighting();
 		void RenderLightBlend();
 		void RenderBloom();
@@ -89,6 +90,7 @@ namespace hm
 		void RenderInstancing(Camera* _pCamera, const std::vector<GameObject*> _gameObjects);
 
 		void PostProcessInit();
+		void MirrorInit();
 
 	private:
 		// Bloom
@@ -142,6 +144,17 @@ namespace hm
 		bool mbNoRenderMode;
 
 		std::map<UINT64, InstancingBuffer*> mBuffers;
+
+		ComPtr<ID3D11RasterizerState> m_solidRS;
+		ComPtr<ID3D11RasterizerState> m_solidCCWRS; // Counter-ClockWise
+		ComPtr<ID3D11RasterizerState> m_wireRS;
+		ComPtr<ID3D11RasterizerState> m_wireCCWRS;
+
+		// 거울 관련 (반사는 한 물체, 보통 바닥에만 사용한다고 가정)
+		ComPtr<ID3D11DepthStencilState> m_drawDSS; // 일반적으로 그리기
+		ComPtr<ID3D11DepthStencilState> m_maskDSS; // 스텐실버퍼에 표시
+		ComPtr<ID3D11DepthStencilState> m_drawMaskedDSS; // 스텐실 표시된 곳만
+		ComPtr<ID3D11BlendState> m_mirrorBS;
 		
 	};
 

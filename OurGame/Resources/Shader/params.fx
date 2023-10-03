@@ -138,4 +138,9 @@ cbuffer DISTORTION_PARAMS : register(b5)
     float g_distortionBias;
 };
 
+cbuffer REFLECT_PARAMS : register(b6)
+{
+    row_major matrix g_reflect_mat;
+};
+
 #endif

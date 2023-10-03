@@ -60,9 +60,22 @@ namespace hm
 			switch (_shaderInfo.eDepthStencilType)
 			{
 			case DepthStencilType::Less:
-				dsd.DepthEnable = TRUE;
+				dsd.DepthEnable = true;
+				dsd.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 				dsd.DepthFunc = D3D11_COMPARISON_LESS;
-				dsd.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
+				dsd.StencilEnable = false; // Stencil 불필요
+				dsd.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+				dsd.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+				// 앞면에 대해서 어떻게 작동할지 설정
+				dsd.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+				dsd.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+				dsd.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+				dsd.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+				// 뒷면에 대해 어떻게 작동할지 설정 (뒷면도 그릴 경우)
+				dsd.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+				dsd.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+				dsd.BackFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+				dsd.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 				break;
 
 			case DepthStencilType::LessEqual:
@@ -100,6 +113,42 @@ namespace hm
 				dsd.DepthFunc = D3D11_COMPARISON_LESS;
 				dsd.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ZERO;
 				break;
+
+			case DepthStencilType::MaskStencil:
+				// Stencil에 1로 표기해주는 DSS
+				dsd.DepthEnable = true; // 이미 그려진 물체 유지
+				dsd.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+				dsd.DepthFunc = D3D11_COMPARISON_LESS;
+				dsd.StencilEnable = true;    // Stencil 필수
+				dsd.StencilReadMask = 0xFF;  // 모든 비트 다 사용
+				dsd.StencilWriteMask = 0xFF; // 모든 비트 다 사용
+				// 앞면에 대해서 어떻게 작동할지 설정
+				dsd.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+				dsd.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+				dsd.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+				dsd.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+				// 뒷면에 대해 어떻게 작동할지 설정 (뒷면도 그릴 경우)
+				dsd.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+				dsd.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+				dsd.BackFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+				dsd.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+				break;
+
+			case DepthStencilType::LessEqualStencil:
+				dsd.DepthEnable = true;   // 거울 속을 다시 그릴때 필요
+				dsd.StencilEnable = true; // Stencil 사용
+				dsd.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+				dsd.DepthFunc = D3D11_COMPARISON_LESS_EQUAL; // <- 주의
+				dsd.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+				dsd.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+				dsd.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+				dsd.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+				// 뒷면에 대해 어떻게 작동할지 설정 (뒷면도 그릴 경우)
+				dsd.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+				dsd.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+				dsd.BackFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+				dsd.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+				break;
 			}
 
 			hr = DEVICE->CreateDepthStencilState(&dsd, mpDepthStencilState.GetAddressOf());
@@ -134,10 +183,23 @@ namespace hm
 				rd.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
 				rd.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
 				break;
+
+			case RasterizerType::CullBackCCW:
+				rd.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
+				rd.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
+				rd.FrontCounterClockwise = true;
+				break;
+
+			case RasterizerType::CullFrontCCW:
+				rd.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
+				rd.CullMode = D3D11_CULL_MODE::D3D11_CULL_FRONT;
+				rd.FrontCounterClockwise = true;
+				break;
+
 			}
 
 			hr = DEVICE->CreateRasterizerState(&rd, mpRasterizerState.GetAddressOf());
-			AssertEx(SUCCEEDED(hr), L"CreateRasterizerState Failed");
+			AssertEx(SUCCEEDED(hr), L"Shader::CreateRasterizerState() - 생성 실패");
 		}
 #pragma endregion
 
@@ -175,10 +237,27 @@ namespace hm
 				bs.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 				bs.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 				break;
+
+			case BlendType::CustumBlend:
+				bs.AlphaToCoverageEnable = false; // MSAA
+				bs.IndependentBlendEnable = false;
+				// 개별 RenderTarget에 대해서 설정 (최대 8개)
+				bs.RenderTarget[0].BlendEnable = true;
+				bs.RenderTarget[0].SrcBlend = D3D11_BLEND_BLEND_FACTOR;
+				bs.RenderTarget[0].DestBlend = D3D11_BLEND_INV_BLEND_FACTOR;
+				bs.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+
+				bs.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+				bs.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+				bs.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+
+				// 필요하면 RGBA 각각에 대해서도 조절 가능
+				bs.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+				break;
 			}
 			
 			hr = DEVICE->CreateBlendState(&bs, mpBlendState.GetAddressOf());
-			AssertEx(SUCCEEDED(hr), L"CreateBlendState Failed");
+			AssertEx(SUCCEEDED(hr), L"Shader::CreateBlendState() - Failed");
 		}
 #pragma endregion
 
@@ -244,8 +323,11 @@ namespace hm
 		CONTEXT->IASetInputLayout(mpInputLayout.Get());
 		CONTEXT->RSSetState(mpRasterizerState.Get());
 
-		CONTEXT->OMSetDepthStencilState(mpDepthStencilState.Get(), 0);
-		CONTEXT->OMSetBlendState(mpBlendState.Get(), nullptr, 0xffffffff);
+		CONTEXT->OMSetDepthStencilState(mpDepthStencilState.Get(), 1 );
+
+		bool bIsMirror = ShaderType::Masking == mShaderInfo.eShaderType;
+		const float blendColor[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+		CONTEXT->OMSetBlendState(mpBlendState.Get(), bIsMirror ? blendColor : nullptr, 0xffffffff);
 	}
 	void Shader::CreateComputeShader(const wstring& _path, const string& _name, const string& _version)
 	{
@@ -292,6 +374,11 @@ namespace hm
 
 		HRESULT hr = DEVICE->CreateRasterizerState(&rd, mpRasterizerState.GetAddressOf());
 		AssertEx(SUCCEEDED(hr), L"Shader::SetBackfaceCulling() - CreateRasterizerState Failed");
+	}
+
+	void Shader::PushInputLayout()
+	{
+		CONTEXT->IASetInputLayout(mpInputLayout.Get());
 	}
 
 	void Shader::CreateShader(const wstring& _path, const string& _name, const string& _version, ComPtr<ID3DBlob>& _pBlob)

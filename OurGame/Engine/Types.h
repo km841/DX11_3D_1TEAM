@@ -216,6 +216,10 @@ struct alignas(16) NoiseParams
 	float padding;
 };
 
+struct alignas(16) ReflectParams
+{
+	Matrix reflectMatrix;
+};
 
 struct ScreenEffectInfo
 {
@@ -300,3 +304,4 @@ struct ButtonInfo
 	std::function<void()> hoveredCallback;
 	std::function<void()> clickedCallback;
 };
+

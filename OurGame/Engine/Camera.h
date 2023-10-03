@@ -4,6 +4,7 @@
 
 namespace hm
 {
+    class Shader;
     enum class ProjectionType
     {
         Orthographic,
@@ -56,6 +57,8 @@ namespace hm
 
         void RenderEffect();
 
+        void RenderReflect(shared_ptr<Shader> _pShader);
+
         std::vector<GameObject*>&       GetForwardObjectsRef() { return mForwardObjects; }
         const std::vector<GameObject*>& GetForwardObjects() { return mForwardObjects; }
         const std::vector<GameObject*>& GetDeferredObjects() { return mDeferredObjects; }
@@ -83,6 +86,7 @@ namespace hm
         std::vector<GameObject*> mParticleObjects;
         std::vector<GameObject*> mShadowObjects;
         std::vector<GameObject*> mEffectObjects;
+        std::vector<GameObject*> mReflectObjects;
 
         Frustum         mFrustumCulling;
 	};

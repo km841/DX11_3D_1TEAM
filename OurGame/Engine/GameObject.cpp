@@ -13,6 +13,7 @@
 #include "Resources.h"
 #include "AI.h"
 #include "UIText.h"
+#include "Mirror.h"
 
 namespace hm
 {
@@ -24,6 +25,7 @@ namespace hm
 		, mbEnable(true)
 		, mbCheckFrustum(true)
 		, mbShadow(true)
+		, mbReflect(false)
 	{
 	}
 
@@ -185,6 +187,11 @@ namespace hm
 	AI* GameObject::GetAI()
 	{
 		return static_cast<AI*>(GetFixedComponent(ComponentType::Ai));
+	}
+
+	Mirror* GameObject::GetMirror()
+	{
+		return static_cast<Mirror*>(GetFixedComponent(ComponentType::Mirror));
 	}
 
 	void GameObject::Enable()

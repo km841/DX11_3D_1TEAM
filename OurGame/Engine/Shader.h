@@ -11,6 +11,8 @@ namespace hm
         Light,
         Particle,
         Compute,
+        Masking,
+        Mirror,
     };
 
     enum class DepthStencilType
@@ -22,6 +24,12 @@ namespace hm
         LessNoWrite, // ±Ì¿Ã ≈◊Ω∫∆Æ O + ±Ì¿Ã ±‚∑œ X
         NoDepthTest, // ±Ì¿Ã ≈◊Ω∫∆Æ X + ±Ì¿Ã ±‚∑œ O
         NoDepthTestNoWrite, // ±Ì¿Ã ≈◊Ω∫∆Æ X + ±Ì¿Ã ±‚∑œ X
+        MaskStencil,
+        LessStencil,
+        LessEqualStencil,
+        GreaterStencil,
+        GreaterEqualStencil,
+        NoDepthTestStencil,
     };
 
     enum class RasterizerType
@@ -30,6 +38,10 @@ namespace hm
         CullFront,
         CullBack,
         WireFrame,
+        CullNoneCCW,
+        CullFrontCCW,
+        CullBackCCW,
+        WireFrameCCW,
     };
 
     enum class BlendType
@@ -37,6 +49,7 @@ namespace hm
         Default,
         AlphaBlend,
         OneToOneBlend,
+        CustumBlend,
         End,
     };
     
@@ -109,6 +122,7 @@ namespace hm
 
         void SetSamplerType(SamplerType _eSamplerType);
         void SetBackfaceCulling(bool _bBackfaceCulling);
+        void PushInputLayout();
 
     public:
         ShaderType GetShaderType() const { return mShaderInfo.eShaderType; }

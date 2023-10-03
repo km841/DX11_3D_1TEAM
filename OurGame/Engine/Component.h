@@ -15,6 +15,7 @@ namespace hm
 	class Animator;
 	class AI;
 	class UIText;
+	class Mirror;
 
 	enum class ComponentType
 	{
@@ -29,6 +30,7 @@ namespace hm
 		Collider,
 		NavAgent,
 		Ai,
+		Mirror,
 		ParticleSystem,
 		SoundListener,
 		SoundSource,
@@ -71,6 +73,7 @@ namespace hm
 		Animator* GetAnimator();
 		AI* GetAI();
 		UIText* GetUIText();
+		Mirror* GetMirror();
 
 		bool IsPhysicsObject();
 

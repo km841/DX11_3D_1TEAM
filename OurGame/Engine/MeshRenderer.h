@@ -7,6 +7,7 @@ namespace hm
     class Camera;
     class InstancingBuffer;
     class MeshData;
+    class Shader;
 
     class MeshRenderer :
         public Component
@@ -23,6 +24,7 @@ namespace hm
         */
         void                 Render(Camera* _pCamera);
         void                 Render(Camera* _pCamera, InstancingBuffer* _pBuffer);
+        void                 RenderExceptForShader(Camera* _pCamera, shared_ptr<Shader> _pShader, bool _bIsReflect = false);
         void                 RenderEffect(Camera* _pCamera);
         void                 RenderShadow(Camera* _pCamera);
 
@@ -33,7 +35,7 @@ namespace hm
         shared_ptr<Mesh>     GetMesh()     const { return mpMesh; }
         void                 SetMeshData(shared_ptr<MeshData> _pMeshData);
 
-        void                 PushData();
+        void                 PushScriptData();
 
         UINT64 GetInstanceID();
 
