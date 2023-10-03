@@ -86,7 +86,7 @@ namespace yj
 		{
 			if (pOtherCollider->GetGameObject()->GetLayerType() == LayerType::ArrowCol)
 			{
-				if (pOtherCollider->GetGameObject()->GetScript<ArrowScript>()->GetIsBurn());
+				if (pOtherCollider->GetGameObject()->GetScript<ArrowScript>()->GetIsBurn())
 				{
 					isBurn = true;
 					if (mLampSequence == -1)
