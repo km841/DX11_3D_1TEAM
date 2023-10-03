@@ -33,6 +33,7 @@ public:
 
 private:
 	Vec3 dir;
-	MonsterBasicState mState;
+	Vec3 dir_backstep;
+	Vec3 dir_desh;
 
 };

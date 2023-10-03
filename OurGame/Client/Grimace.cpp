@@ -75,8 +75,11 @@ void Grimace::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (0 != animIndex)
+				if (0 != animIndex) {
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
 					pAnimator->Play(0, true);
+				}
 
 				return BehaviorResult::Success;
 				});
@@ -122,8 +125,17 @@ void Grimace::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (1 != animIndex) 
+				if (1 != animIndex) {
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
 					pAnimator->Play(1, true);
+				}
+
+				if (pAnimator->GetFrameRatio() > 0.73) {
+					//GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
+					pAnimator->Play(1, true);
+				}
 
 				return BehaviorResult::Success;
 				});
@@ -131,6 +143,7 @@ void Grimace::SetBehaviorTree()
 			// 플레이어 목표 좌표로 몬스터가 이동+회전 하는 실행(Task)
 			BehaviorTask* pTraceMoveTask = new BehaviorTask([&]() {
 				Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+				Animator* pAni = GetAnimator();
 				Vec3 myPos = GetTransform()->GetPosition();
 				Vec3 myRot = GetTransform()->GetRotation();
 				Vec3 scale = GetRigidBody()->GetGeometrySize();
@@ -209,6 +222,12 @@ void Grimace::SetBehaviorTree()
 
 				GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
 
+				//pAni
+
+				//이부분 중요
+				GetRigidBody()->SetVelocityExcludingColliders(-dir * 8.0f);
+				GetRigidBody()->SetVelocity(dir * 8.f);
+
 				Transform* pTr = GetTransform();
 				Vec3 rot = Vec3(0, 0, -1);
 				double angleRadian = atan2(dir.x, dir.z) - atan2(rot.x, rot.z);
@@ -245,28 +264,39 @@ void Grimace::SetBehaviorTree()
 				{
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 					Vec3 myPos = GetTransform()->GetPosition();
-					float distance = (playerPos - myPos).Length();
+					Vec3 myRot = GetTransform()->GetRotation();
+					Vec3 scale = GetRigidBody()->GetGeometrySize();
 					Animator* pAni = GetAnimator();
+
+					float distance = (playerPos - myPos).Length();
 
 					MonsterBasicState eState = MonsterBasicState::Trace;
 
-					if (distance > 10 && distance < 12 && pAni->GetFrameRatio()>0.7)
+					/*if (distance > 10 && distance < 12 && pAni->GetFrameRatio()>0.7)
 					{
 						eState = MonsterBasicState::Attack02;
-					}
+					}*/
 
-					else if (distance > 6 && distance < 8 && pAni->GetFrameRatio()>0.7)
+					if (distance > 6 && distance < 10 && pAni->GetFrameRatio()>0.7)
 					{
+						dir_desh = playerPos - myPos;
+						dir_desh.Normalize();
+						dir_desh.y = 0;
+
 						eState = MonsterBasicState::Attack03;
 					}
 
-					else if (distance > 4 && distance < 6 && pAni->GetFrameRatio()>0.7)
+					else if (distance > 4.5f && distance < 5.5f )
 					{
 						eState = MonsterBasicState::Attack01;
 					}
 
-					else if (distance < 4 && pAni->GetFrameRatio()>0.7)
+					else if (distance < 4.5f )
 					{
+						dir_backstep = playerPos - myPos;
+						dir_backstep.Normalize();
+						dir_backstep.y = 0;
+
 						eState = MonsterBasicState::Trace_BackStep;
 					}
 
@@ -306,8 +336,12 @@ void Grimace::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (3 != animIndex)
+				if (3 != animIndex) {
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
 					pAnimator->Play(3, true);
+				}
+
 
 				return BehaviorResult::Success;
 				});
@@ -319,15 +353,15 @@ void Grimace::SetBehaviorTree()
 				Vec3 myRot = GetTransform()->GetRotation();
 				Vec3 scale = GetRigidBody()->GetGeometrySize();
 
-				dir = playerPos - myPos;
-				Vec3 Num = scale * dir;
+				//dir_backstep = playerPos - myPos;
+				Vec3 Num = scale * dir_backstep;
 				float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
 
-				dir.Normalize();
-				dir.y = 0;
+				//dir_backstep.Normalize();
+				//dir_backstep.y = 0;
 				// 몬스터의 이동속도가 들어가야 함
 				// 방향을 변경해주는 Task도 필요
-				Vec3 Ve = dir * mSpeed;
+				Vec3 Ve = dir_backstep * mSpeed;
 
 				const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
 
@@ -391,7 +425,11 @@ void Grimace::SetBehaviorTree()
 
 
 
-				GetRigidBody()->SetVelocity(-Ve); //따라오게 만드는 코드
+				//GetRigidBody()->SetVelocity(-Ve); //따라오게 만드는 코드
+
+				//이부분 중요
+				GetRigidBody()->SetVelocityExcludingColliders(dir_backstep * 15.0f);
+				GetRigidBody()->SetVelocity(-dir_backstep * 15.f);
 
 				Transform* pTr = GetTransform();
 				Vec3 rot = Vec3(0, 0, -1);
@@ -437,7 +475,7 @@ void Grimace::SetBehaviorTree()
 			pTrace_BackstepSequence->AddChild(pRunAnimationTask);
 			pTrace_BackstepSequence->AddChild(pTraceMoveTask);
 			pTrace_BackstepSequence->AddChild(pCheckNearbyPlayer);
-			pTrace_BackstepSequence->AddChild(new ChangeStateTask(MonsterBasicState::Idle));
+			pTrace_BackstepSequence->AddChild(new ChangeStateTask(MonsterBasicState::Attack02));
 		}
 		pStateSelector->AddChild(pTrace_BackstepSequence);
 
@@ -459,8 +497,11 @@ void Grimace::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (2 != animIndex)
+				if (2 != animIndex) {
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
 					pAnimator->Play(2, true);
+				}
 
 				return BehaviorResult::Success;
 				});
@@ -489,7 +530,7 @@ void Grimace::SetBehaviorTree()
 			pAttack01Sequence->AddChild(pStateChecker);
 			pAttack01Sequence->AddChild(pRunAnimationTask);
 			pAttack01Sequence->AddChild(pAttackTask);
-			pAttack01Sequence->AddChild(new ChangeStateTask(MonsterBasicState::Idle));
+			pAttack01Sequence->AddChild(new ChangeStateTask(MonsterBasicState::Trace));
 		}
 		pStateSelector->AddChild(pAttack01Sequence);
 
@@ -511,8 +552,11 @@ void Grimace::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (4 != animIndex)
+				if (4 != animIndex) {
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
 					pAnimator->Play(4, true);
+				}
 
 				return BehaviorResult::Success;
 				});
@@ -563,8 +607,11 @@ void Grimace::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (13 != animIndex)
+				if (13 != animIndex) {
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
 					pAnimator->Play(13, true);
+				}
 
 				return BehaviorResult::Success;
 				});
@@ -577,7 +624,13 @@ void Grimace::SetBehaviorTree()
 					Animator* pAni = GetAnimator();
 
 
-					if (pAni->GetFrameRatio() > 0.98)
+					//이부분 중요
+					GetRigidBody()->SetVelocityExcludingColliders(-dir_desh * 3.0f);
+
+					if (pAni->GetFrameRatio() > 0.38)
+						GetRigidBody()->SetVelocity(dir_desh * 8.f);
+
+					if (pAni->GetFrameRatio() > 0.90)
 						return BehaviorResult::Success;
 					return BehaviorResult::Failure;
 
@@ -593,7 +646,7 @@ void Grimace::SetBehaviorTree()
 			pAttack03Sequence->AddChild(pStateChecker);
 			pAttack03Sequence->AddChild(pRunAnimationTask);
 			pAttack03Sequence->AddChild(pAttackTask);
-			pAttack03Sequence->AddChild(new ChangeStateTask(MonsterBasicState::Idle));
+			pAttack03Sequence->AddChild(new ChangeStateTask(MonsterBasicState::Trace));
 		}
 		pStateSelector->AddChild(pAttack03Sequence);
 
