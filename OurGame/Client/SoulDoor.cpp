@@ -4,24 +4,27 @@
 #include "RenderManager.h"
 #include "EventManager.h"
 
+#include "Player.h"
+
 #include "Transform.h"
 #include "Rigidbody.h"
 #include "Collider.h"
 #include "MeshRenderer.h"
 #include "Material.h"
-
 #include "Input.h"
 #include "Timer.h"
 
 #include "PaperBurnScript.h"
+#include "PlayerMoveOverMapScript.h"
 
 namespace yj
 {
-	SoulDoor::SoulDoor(GameObject* _DoorObj, GameObject* _BackUVObj,GameObject* _EntranceCol,MapType _MapType)
+	SoulDoor::SoulDoor(GameObject* _DoorObj, GameObject* _BackUVObj,GameObject* _EntranceCol,MapType _MapType, int _SpawnPoint)
 		:GameObject(LayerType::DecoObject),
 		pDoorObj(_DoorObj),
 		pBackUVObj(_BackUVObj),
 		pEntranceColObj(_EntranceCol),
+		mSpawnPoint(_SpawnPoint),
 		state(Standby),
 		mDeceleration(3.0f),
 		isMove(false),
@@ -120,6 +123,7 @@ namespace yj
 			pDoorObj->GetTransform()->SetRotation(Vec3(mFrameRot.x, 160.0f, mFrameRot.z));
 			mOpenSequnce = 0;
 
+			PLAYER->GetScript<PlayerMoveOverMapScript>()->SetMoveOverNum(mSpawnPoint);
 			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 1,
 				nullptr, std::bind(&SoulDoor::ChangeScene, this));
 		}

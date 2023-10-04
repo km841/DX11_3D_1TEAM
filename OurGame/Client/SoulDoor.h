@@ -9,7 +9,7 @@ namespace yj
 	{
 	public:
 
-		SoulDoor(GameObject* _frameObj,GameObject* _doorObj ,GameObject* _EntranceCol, MapType _MapType);
+		SoulDoor(GameObject* _frameObj,GameObject* _doorObj ,GameObject* _EntranceCol, MapType _MapType, int _SpawnPoint);
 		virtual ~SoulDoor();
 
 		virtual void Initialize();
@@ -41,9 +41,7 @@ namespace yj
 			End
 		};
 		State state;
-
 	
-
 	private:
 
 		GameObject* pDoorObj;
@@ -61,13 +59,15 @@ namespace yj
 		float mRotSpeed;
 
 		bool isMove;
-		bool isRot;
+		bool isRot;		
 
 		float mDeceleration;
 
 		float mUpLimit;
 		float mDownLimit;
 		float mRotLimit;
+
+		int mSpawnPoint = -1;
 
 		int mOpenSequnce = -1;
 		int mSequence;
