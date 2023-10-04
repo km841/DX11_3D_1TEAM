@@ -930,7 +930,5 @@ namespace hm
 			Ground* pCol8 = Factory::CreateObjectHasPhysical<Ground>(Vec3(-5.9f, 2.7f, -2.8f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pCol8);
 		}
-
-		
 	}
 }

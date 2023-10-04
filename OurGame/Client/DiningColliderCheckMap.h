@@ -22,6 +22,8 @@ namespace sy
 		virtual void Exit();
 
 	private:
+
+		void LightDirSet();
 		void InitObjectAdd();
 		void InitColliderAdd();
 		void FuncObjectAdd();
