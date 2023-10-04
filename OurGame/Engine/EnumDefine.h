@@ -215,6 +215,7 @@ namespace hm
 		WhiteIn,
 		WhiteOut,
 		CameraShake,
+		ChromaticAbberation, // 색수차
 	};
 
 	enum

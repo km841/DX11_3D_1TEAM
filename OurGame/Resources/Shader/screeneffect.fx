@@ -56,9 +56,12 @@ g_int_2 : ScreenEffect2_type
 #define WHITE_IN 4
 #define WHITE_OUT 5
 #define CAMERA_SHAKE 6
+#define CHROMATIC_ABERRATION 7
 
 #define FLOAT2_ZERO float2(0.f, 0.f)
 #define FLOAT4_ZERO float4(0.f, 0.f, 0.f, 0.f)
+
+#define DISTORTION_AMOUNT (sin(_accTime * 0.8) + 1.0) / 2.0
 
 bool IsZero(float4 _param)
 {
@@ -66,6 +69,22 @@ bool IsZero(float4 _param)
         return false;
     
     return true;
+}
+
+float2 PincushionDistortion(float2 _uv, float _strength)
+{
+    float2 center = _uv - 0.5;
+    float angle = atan2(center.x, center.y);
+    float dotRes = dot(center, center);
+    return 0.5 + float2(sin(angle), cos(angle)) * sqrt(dotRes) * (1.0 - _strength * dotRes);
+}
+
+float3 ChromaticAberration(float2 _uv, float _accTime)
+{
+    float redChannel = g_tex_0.Sample(g_sam_0, PincushionDistortion(_uv, 0.3 * DISTORTION_AMOUNT)).r;
+    float greenChannel = g_tex_0.Sample(g_sam_0, PincushionDistortion(_uv, 0.15 * DISTORTION_AMOUNT)).g;
+    float blueChannel = g_tex_0.Sample(g_sam_0, PincushionDistortion(_uv, 0.075 * DISTORTION_AMOUNT)).b;
+    return float3(redChannel, greenChannel, blueChannel);
 }
 
 void ComputeEffectUV(inout float2 _uv, int _effectType, float _ratio, float4 _param1, float4 _param2)
@@ -146,6 +165,11 @@ void ComputeEffectColor(inout float4 _color, int _effectType, float _ratio, floa
         float4 holdColor = _param1;
         _color = holdColor;
     }
+    
+    else if (CHROMATIC_ABERRATION == _effectType)
+    {
+        _color.rgb = ChromaticAberration(_param1.rg, _param1.a);
+    }
 
 }
 
@@ -170,6 +194,11 @@ float4 PS_Main(VS_OUT _in) : SV_Target
     ComputeEffectUV(uv, effectType_2 ,ratio_2, startColor_2, endColor_2);
     
     float4 color = g_tex_on_0 == 1 ? g_tex_0.Sample(g_sam_0, uv) : float4(g_vec4_0.xyz, 1.f);
+    
+    if (CHROMATIC_ABERRATION == effectType_1)
+        startColor_1.rg = uv;
+    if (CHROMATIC_ABERRATION == effectType_2)
+        startColor_2.rg = uv;
     
     ComputeEffectColor(color, effectType_1, ratio_1, startColor_1, endColor_1);
     ComputeEffectColor(color, effectType_2, ratio_2, startColor_2, endColor_2);
