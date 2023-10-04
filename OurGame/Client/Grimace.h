@@ -36,4 +36,6 @@ private:
 	Vec3 dir_backstep;
 	Vec3 dir_desh;
 
+	int Health;
+
 };
