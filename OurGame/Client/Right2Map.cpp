@@ -30,6 +30,7 @@
 #include "LadderCollider.h"
 #include "Effect.h"
 #include "SwordGlareEffect.h"
+#include "SpiderWeb.h"
 
 /* Component */
 #include "Collider.h"
@@ -74,14 +75,7 @@ namespace hm
 
 	void Right2Map::Update()
 	{
-		Map::Update();
-
-
-		if (IS_DOWN(KeyType::K))
-		{
-			SwordGlareEffect::Create(Vec3(16.1f, 2.2f, -9.8f));
-		}
-		
+		Map::Update();	
 	}
 
 	void Right2Map::Start()
@@ -846,6 +840,18 @@ namespace hm
 			pLight->SetLightRange(55.f);
 			pLight->SetLightType(LightType::PointLight);
 			AddGameObject(pGameObject);
+		}
+
+		{
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Kinematic;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(2.f, 2.f, 2.f);
+
+			SpiderWeb* pWeb = Factory::CreateObjectHasPhysical<SpiderWeb>(Vec3(0.f, 2.f, 0.f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Cobweb_Flat.fbx");
+			pWeb->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+			pWeb->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+			AddGameObject(pWeb);
 		}
 	}
 

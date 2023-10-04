@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <typeinfo>
 #include <typeindex>
+#include <random>
 
 #include "imgui_internal.h"
 #include "imgui.h"

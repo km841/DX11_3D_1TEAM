@@ -6,14 +6,15 @@
 #include "Material.h"
 #include "Resources.h"
 #include "Input.h"
+#include "Player.h"
 
 namespace hm
 {
 	SlashGlareScript::SlashGlareScript()
 		: meState(SlashGlareState::None)
 	{
-		mBeginTimer.SetEndTime(0.3f);
-		mEndTimer.SetEndTime(0.3f);
+		mBeginTimer.SetEndTime(0.15f);
+		mEndTimer.SetEndTime(0.15f);
 	}
 
 	void SlashGlareScript::FixedUpdate()
@@ -47,9 +48,9 @@ namespace hm
 		GetMeshRenderer()->GetMaterial()->SetTextureAllSubset(0, pTexture);
 
 		if (SlashGlareState::Begin == meState)
-			GetMeshRenderer()->GetMaterial()->SetFloatAllSubset(0, mBeginTimer.GetProgress() * 3.f);
+			GetMeshRenderer()->GetMaterial()->SetFloatAllSubset(0, mBeginTimer.GetProgress() * 5.f);
 		else if (SlashGlareState::End == meState)
-			GetMeshRenderer()->GetMaterial()->SetFloatAllSubset(0, mEndTimer.GetProgress() * 3.f);
+			GetMeshRenderer()->GetMaterial()->SetFloatAllSubset(0, mEndTimer.GetProgress() * 5.f);
 
 		GetMeshRenderer()->GetMaterial()->SetIntAllSubset(2, static_cast<int>(meState));
 	}
