@@ -34,10 +34,9 @@ namespace hm
 		void Update();
 		void SetCollisionGroup(LayerType _eLayerType_1, LayerType _eLayerType_2);
 		std::bitset<LAYER_TYPE_COUNT> GetCollisionGroup(LayerType _eLayerType);
-
+		
 	public:
-		void ApplyForceInLayerAtLocation(LayerType _eLayerType, const Vec3& _location, const Vec3& _volume, const Vec3& _force);
-		void ApplyForceInLayerFromDot(LayerType _eLayerType, const Vec3& _location, const Vec3& _force);
+		void ClearAllCollisionForObject(GameObject* _pGameObject);
 
 	private:
 		void KinematicOverlapCheck();
