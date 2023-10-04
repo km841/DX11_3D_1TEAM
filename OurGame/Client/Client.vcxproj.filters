@@ -303,6 +303,13 @@
     <ClInclude Include="MonsterHitScript.h">
       <Filter>소스 파일\GameObject\Monster\Script</Filter>
     </ClInclude>
+    <ClInclude Include="MonsterKeyScript.h" />
+    <ClInclude Include="PlayerMoveOverMapScript.h" />
+    <ClInclude Include="SlashGlareScript.h" />
+    <ClInclude Include="SwordGlareEffect.h" />
+    <ClInclude Include="SpiderWeb.h">
+      <Filter>소스 파일\GameObject\Dungeon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -604,6 +611,13 @@
     <ClCompile Include="MonsterHitScript.cpp">
       <Filter>소스 파일\GameObject\Monster\Script</Filter>
     </ClCompile>
+    <ClCompile Include="MonsterKeyScript.cpp" />
+    <ClCompile Include="PlayerMoveOverMapScript.cpp" />
+    <ClCompile Include="SlashGlareScript.cpp" />
+    <ClCompile Include="SwordGlareEffect.cpp" />
+    <ClCompile Include="SpiderWeb.cpp">
+      <Filter>소스 파일\GameObject\Dungeon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -679,6 +693,9 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Monster\Script">
       <UniqueIdentifier>{b8fda16b-a6d9-4582-96ab-53aa5cd0e10e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Dungeon">
+      <UniqueIdentifier>{36258a79-c51a-47e3-9400-3c0d568788aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

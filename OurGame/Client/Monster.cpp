@@ -2,6 +2,7 @@
 #include "Monster.h"
 #include "MonsterHitScript.h"
 #include "RenderManager.h"
+#include "SwordGlareEffect.h"
 
 namespace hm
 {
@@ -19,7 +20,8 @@ namespace hm
 		mHP -= _float;
 		MonsterHitScript* pScript = GetScript<MonsterHitScript>();
 		AssertEx(nullptr != pScript, L"Factory::CreateMonster() 함수로 몬스터를 생성된 몬스터가 아님");
-
+		
+		SwordGlareEffect::Create(GetTransform()->GetPosition());
 		pScript->HitBegin();
 		GET_SINGLE(RenderManager)->AddCameraShakeEffect(0.1f, 0.02f);
 	}
