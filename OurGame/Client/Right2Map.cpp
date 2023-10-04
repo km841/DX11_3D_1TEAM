@@ -29,6 +29,7 @@
 #include "Bat.h"
 #include "LadderCollider.h"
 #include "Effect.h"
+#include "SwordGlareEffect.h"
 
 /* Component */
 #include "Collider.h"
@@ -50,6 +51,7 @@
 #include "RotateKeyScript.h"
 #include "BonFireScript.h"
 #include "MonsterCrackScript.h"
+#include "SlashGlareScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -73,6 +75,14 @@ namespace hm
 	void Right2Map::Update()
 	{
 		Map::Update();
+
+		if (nullptr != mpTestScript)
+		{
+			if (IS_DOWN(KeyType::K))
+			{
+				mpTestScript->Start();
+			}
+		}
 	}
 
 	void Right2Map::Start()
@@ -846,6 +856,16 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
+		// Slash Glare
+		{
+			SwordGlareEffect* pGlare = Factory::CreateObject<SwordGlareEffect>(Vec3(16.1f, 2.2f, -9.8f), L"SlashGlare", L"..\\Resources\\FBX\\Player\\Slash_Glare.fbx");
+			pGlare->GetTransform()->SetScale(Vec3(2.5f, 1.f, 5.f));
+			mpTestScript = pGlare->AddComponent(new SlashGlareScript);
+
+			auto t = pGlare->GetMeshRenderer()->GetMaterial()->GetTexture(0);
+
+			AddGameObject(pGlare);
+		}
 	}
 
 	void Right2Map::InitCollidertAdd()

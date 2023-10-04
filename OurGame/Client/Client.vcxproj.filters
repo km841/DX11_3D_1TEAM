@@ -208,9 +208,6 @@
     <ClInclude Include="ClimingEndState.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="OwnerFollowScript.h">
-      <Filter>소스 파일\GameObject\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="SwordHeavyEffect.h">
       <Filter>소스 파일\GameObject\Effect</Filter>
     </ClInclude>
@@ -302,6 +299,15 @@
     </ClInclude>
     <ClInclude Include="MonsterHitScript.h">
       <Filter>소스 파일\GameObject\Monster\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="OwnerFollowScript.h">
+      <Filter>소스 파일\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="SlashGlareScript.h">
+      <Filter>소스 파일\GameObject\Effect\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="SwordGlareEffect.h">
+      <Filter>소스 파일\GameObject\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -509,9 +515,6 @@
     <ClCompile Include="ClimingUpState.cpp">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="OwnerFollowScript.cpp">
-      <Filter>소스 파일\GameObject\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="SwordHeavyEffect.cpp">
       <Filter>소스 파일\GameObject\Effect</Filter>
     </ClCompile>
@@ -604,6 +607,15 @@
     <ClCompile Include="MonsterHitScript.cpp">
       <Filter>소스 파일\GameObject\Monster\Script</Filter>
     </ClCompile>
+    <ClCompile Include="OwnerFollowScript.cpp">
+      <Filter>소스 파일\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="SlashGlareScript.cpp">
+      <Filter>소스 파일\GameObject\Effect\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="SwordGlareEffect.cpp">
+      <Filter>소스 파일\GameObject\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -679,6 +691,9 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Monster\Script">
       <UniqueIdentifier>{b8fda16b-a6d9-4582-96ab-53aa5cd0e10e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Effect\Script">
+      <UniqueIdentifier>{92ee5651-02f8-46dc-b44e-08050784a909}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

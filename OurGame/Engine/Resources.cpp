@@ -1181,6 +1181,23 @@ namespace hm
             pShader->SetName(L"Mirror");
             Add<Shader>(L"Mirror", pShader);
         }
+
+        // PlayerSlash Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::Less,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"SlashGlare");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\slash_glare.fx", shaderInfo);
+
+            Add<Shader>(L"SlashGlare", pShader);
+        }
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -1544,6 +1561,15 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"Mirror", pMaterial);
+        }
+
+        // SlashGlare Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"SlashGlare");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"SlashGlare", pMaterial);
         }
     }
 }
