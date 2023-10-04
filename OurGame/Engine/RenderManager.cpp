@@ -445,6 +445,17 @@ namespace hm
 		}
 	}
 
+	void RenderManager::AddChromaticEffect(float _endTime, std::function<void()> _startCallback, std::function<void()> _endCallback, int _groupIndex)
+	{
+		ScreenEffectInfo* pInfo = new ScreenEffectInfo;
+		pInfo->eEffectType = ScreenEffectType::ChromaticAbberation;
+		pInfo->endTime = _endTime;
+		pInfo->startCallback = _startCallback;
+		pInfo->endCallback = _endCallback;
+
+		AddScreenEffect(pInfo, _groupIndex);
+	}
+
 	void RenderManager::PushLightData(Scene* _pScene)
 	{
 		LightParams lightParams = {};
@@ -509,6 +520,9 @@ namespace hm
 		float ratio = _effectInfo->curTime / _effectInfo->endTime;
 		Vec4 param1 = _effectInfo->param1;
 		Vec4 param2 = _effectInfo->param2;
+
+		if (ScreenEffectType::ChromaticAbberation == eType)
+			param1.w = _effectInfo->curTime;
 
 		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetFloat(0 + _groupIndex, ratio);
 		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetInt(1 + _groupIndex, static_cast<int>(eType));

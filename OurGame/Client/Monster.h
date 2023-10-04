@@ -21,7 +21,7 @@ namespace hm
 
 		virtual void SetBehaviorTree() { }
 
-		void TakeDamage(float _float) { mHP -= _float; }
+		void TakeDamage(float _float);
 
 	public:
 		virtual void Initialize();

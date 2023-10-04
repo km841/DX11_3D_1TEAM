@@ -13,14 +13,22 @@ namespace hm
 
 	void MonsterHitScript::FixedUpdate()
 	{
-		mTimer.Update();
 
 		// Hit °¨Áö
-		if (mTimer.GetIsRun())
+		if (true == mTimer.GetIsRun())
+		{
+			mTimer.Update();
+			GetMeshRenderer()->GetMaterial()->SetIntAllSubset(3, 1);
 			GetMeshRenderer()->GetMaterial()->SetFloatAllSubset(2, (1.f - mTimer.GetProgress()));
+		}
+
 		
-		else
+		if (true == mTimer.IsFinished())
+		{
+			GetMeshRenderer()->GetMaterial()->SetIntAllSubset(3, 0);
 			GetMeshRenderer()->GetMaterial()->SetFloatAllSubset(2, 0.f);
+			mTimer.Stop();
+		}
 	}
 
 	Component* MonsterHitScript::Clone(GameObject* _pGameObject)

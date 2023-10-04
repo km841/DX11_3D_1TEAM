@@ -74,6 +74,7 @@ namespace hm
 		void RemoveAllEffect();
 
 		void AddCameraShakeEffect(float _endTime, float _amplitude, int _groupIndex = 0);
+		void AddChromaticEffect(float _endTime, std::function<void()> _startCallback= nullptr, std::function<void()> _endCallback = nullptr, int _groupIndex = 0);
 
 	private:
 		void DownScale();
