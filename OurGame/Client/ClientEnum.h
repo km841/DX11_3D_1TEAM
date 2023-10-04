@@ -131,6 +131,7 @@ enum class MonsterBasicState
 	Defend_Start,
 	Defend,
 	Defend_Break,
+	Dazed,
 	//dead
 	
 };
