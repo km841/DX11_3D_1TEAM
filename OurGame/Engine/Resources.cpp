@@ -1182,7 +1182,7 @@ namespace hm
             Add<Shader>(L"Mirror", pShader);
         }
 
-        // PlayerSlash Shader
+        // SlashGlare Shader
         {
             ShaderInfo shaderInfo =
             {
@@ -1197,6 +1197,23 @@ namespace hm
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\slash_glare.fx", shaderInfo);
 
             Add<Shader>(L"SlashGlare", pShader);
+        }
+
+        // SpiderWeb Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::Less,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"SpiderWeb");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\spider_web.fx", shaderInfo);
+
+            Add<Shader>(L"SpiderWeb", pShader);
         }
     }
     void Resources::CreateDefaultMaterial()

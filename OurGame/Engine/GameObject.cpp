@@ -14,6 +14,7 @@
 #include "AI.h"
 #include "UIText.h"
 #include "Mirror.h"
+#include "CollisionManager.h"
 
 namespace hm
 {
@@ -209,6 +210,12 @@ namespace hm
 		if (true == IsPhysicsObject())
 		{
 			GetRigidBody()->SetSimulationShapeFlag(mbEnable);
+
+			ActorType eActorType = GetRigidBody()->GetActorType();
+			if (ActorType::Kinematic == eActorType)
+			{
+				GET_SINGLE(CollisionManager)->ClearAllCollisionForObject(this);
+			}
 		}
 	}
 
