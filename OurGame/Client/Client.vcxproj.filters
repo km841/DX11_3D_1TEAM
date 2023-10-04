@@ -300,6 +300,9 @@
     <ClInclude Include="Grimace.h">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="MonsterHitScript.h">
+      <Filter>소스 파일\GameObject\Monster\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -597,6 +600,9 @@
     <ClCompile Include="BreakablePotCell.cpp" />
     <ClCompile Include="Grimace.cpp">
       <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterHitScript.cpp">
+      <Filter>소스 파일\GameObject\Monster\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

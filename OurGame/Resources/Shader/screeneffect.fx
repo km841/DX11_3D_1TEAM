@@ -55,7 +55,9 @@ g_int_2 : ScreenEffect2_type
 #define HOLD 3
 #define WHITE_IN 4
 #define WHITE_OUT 5
+#define CAMERA_SHAKE 6
 
+#define FLOAT2_ZERO float2(0.f, 0.f)
 #define FLOAT4_ZERO float4(0.f, 0.f, 0.f, 0.f)
 
 bool IsZero(float4 _param)
@@ -64,6 +66,25 @@ bool IsZero(float4 _param)
         return false;
     
     return true;
+}
+
+void ComputeEffectUV(inout float2 _uv, int _effectType, float _ratio, float4 _param1, float4 _param2)
+{
+    if (_ratio >= 1.f)
+        return;
+    
+    if (CAMERA_SHAKE == _effectType)
+    {
+        float ratio = saturate(_ratio); // ratio는 0에서 1 사이 값으로 클램핑됨
+        float amplitude = _param1.x * ratio;
+        float2 dir = _param1.yz;
+        
+        float fix = 1.f - ratio * 2.f; // -1 ~ 1
+        float2 offsetBegin = float2(amplitude * (fix - dir)); 
+        float2 offset = lerp(offsetBegin, FLOAT2_ZERO, ratio);
+
+        _uv += offset;
+    }
 }
 
 void ComputeEffectColor(inout float4 _color, int _effectType, float _ratio, float4 _param1, float4 _param2)
@@ -125,6 +146,7 @@ void ComputeEffectColor(inout float4 _color, int _effectType, float _ratio, floa
         float4 holdColor = _param1;
         _color = holdColor;
     }
+
 }
 
 float4 PS_Main(VS_OUT _in) : SV_Target
@@ -143,7 +165,11 @@ float4 PS_Main(VS_OUT _in) : SV_Target
     float4 startColor_2 = g_vec4_1;
     float4 endColor_2 = g_vec4_3;
     
-    float4 color = g_tex_on_0 == 1 ? g_tex_0.Sample(g_sam_0, _in.uv) : float4(g_vec4_0.xyz, 1.f);
+    float2 uv = _in.uv;
+    ComputeEffectUV(uv, effectType_1 ,ratio_1, startColor_1, endColor_1);
+    ComputeEffectUV(uv, effectType_2 ,ratio_2, startColor_2, endColor_2);
+    
+    float4 color = g_tex_on_0 == 1 ? g_tex_0.Sample(g_sam_0, uv) : float4(g_vec4_0.xyz, 1.f);
     
     ComputeEffectColor(color, effectType_1, ratio_1, startColor_1, endColor_1);
     ComputeEffectColor(color, effectType_2, ratio_2, startColor_2, endColor_2);

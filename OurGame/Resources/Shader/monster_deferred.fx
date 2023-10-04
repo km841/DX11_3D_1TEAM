@@ -80,6 +80,7 @@ PS_OUT PS_Main(VS_OUT _in)
     PS_OUT output = (PS_OUT) 0;
    
     float hpRatio = g_float_3;
+    float hitRatio = g_float_2;
     float4 bloomColor = g_bloomColor;
     float4 color = float4(g_vec4_0.xyz, 1.f);
     float4 crackColor = float4(0.f, 0.f, 0.f, 0.f);
@@ -102,6 +103,8 @@ PS_OUT PS_Main(VS_OUT _in)
     output.depth.xyz = (float3) (_in.projPos.z / _in.projPos.w);
     output.depth.w = _in.projPos.w;
     output.depth.yzw = _in.viewPos;
+    
+    
     
     return output;
 }

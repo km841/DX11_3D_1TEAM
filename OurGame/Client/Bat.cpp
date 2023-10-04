@@ -32,6 +32,9 @@
 #include "ParticleSystem.h"
 #include "Animator.h"
 
+/* Manager */
+#include "RenderManager.h"
+
 Bat::Bat()
 {
 	mMaxHP = 3.f;
@@ -582,6 +585,7 @@ void Bat::OnTriggerEnter(Collider* _pOtherCollider)
 	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
 		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
+		GET_SINGLE(RenderManager)->AddCameraShakeEffect(0.1f, 0.02f);
 		TakeDamage(attackDamage);
 		float hp = mHP;
 		meBasicState = MonsterBasicState::Hit;
