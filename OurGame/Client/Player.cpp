@@ -476,6 +476,11 @@ void Player::OnTriggerExit(Collider* _pOtherCollider)
 	{
 		 isClimb = false;
 	}
+
+	if (LayerType::MonsterCol == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		int a = 0;
+	}
 }
 
 void Player::StateChange(PlayerState _eState)

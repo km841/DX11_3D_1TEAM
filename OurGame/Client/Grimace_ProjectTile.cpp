@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Mage_ProjectTile.h"
+#include "Grimace_ProjectTile.h"
 #include "Engine.h"
 #include "AI.h"
 #include "ChangeStateTask.h"
@@ -28,6 +28,7 @@
 #include "SwordHeavyEffect.h"
 #include "Ladder.h"
 #include "LadderCollider.h"
+#include "Mirror_ProjectTile.h"
 
 /* Component */
 #include "Collider.h"
@@ -75,81 +76,87 @@
 #include "BowState.h"
 
 
-Mage_ProjectTile::Mage_ProjectTile()
+Grimace_ProjectTile::Grimace_ProjectTile()
 {
-	mHP = 1.f; 
-	mSpeed = 2.f;
+	mHP = 1.f;
+	mSpeed = 8.f;
 	mAttackDamage = 1;
 }
 
-Mage_ProjectTile::~Mage_ProjectTile()
+Grimace_ProjectTile::~Grimace_ProjectTile()
 {
 }
 
-void Mage_ProjectTile::Initialize()
+void Grimace_ProjectTile::Initialize()
 {
-	
 	Monster_ProjectTile::Initialize();
 }
 
-void Mage_ProjectTile::Update()
+void Grimace_ProjectTile::Update()
 {
 	Monster_ProjectTile::Update();
 }
 
-void Mage_ProjectTile::FixedUpdate()
+void Grimace_ProjectTile::FixedUpdate()
 {
-	FollowPos(); //몬스터가 플레이어 따라가는 함수
-
-	
+	if(isbool == false)
+		FollowPos(); //몬스터가 플레이어 따라가는 함수
 	Monster_ProjectTile::FixedUpdate();
 }
 
-void Mage_ProjectTile::FinalUpdate()
+void Grimace_ProjectTile::FinalUpdate()
 {
 	Monster_ProjectTile::FinalUpdate();
 }
 
-void Mage_ProjectTile::Render()
+void Grimace_ProjectTile::Render()
 {
 	Monster_ProjectTile::Render();
 }
 
-void Mage_ProjectTile::Destroy()
+void Grimace_ProjectTile::Destroy()
 {
 	Monster_ProjectTile::Destroy();
 }
 
-void Mage_ProjectTile::OnCollisionEnter(Collider* _pOtherCollider)
+void Grimace_ProjectTile::OnCollisionEnter(Collider* _pOtherCollider)
+{
+	
+}
+
+void Grimace_ProjectTile::OnCollisionStay(Collider* _pOtherCollider)
 {
 }
 
-void Mage_ProjectTile::OnCollisionStay(Collider* _pOtherCollider)
+void Grimace_ProjectTile::OnCollisionExit(Collider* _pOtherCollider)
 {
 }
 
-void Mage_ProjectTile::OnCollisionExit(Collider* _pOtherCollider)
-{
-}
-
-void Mage_ProjectTile::OnTriggerEnter(Collider* _pOtherCollider)
+void Grimace_ProjectTile::OnTriggerEnter(Collider* _pOtherCollider)
 {
 	if (LayerType::Player == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		SceneType eSceneType = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 		GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(eSceneType, this);
 	}
+	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		isbool = true;
+		Mirror();
+	}
+	
 }
 
-void Mage_ProjectTile::OnTriggerStay(Collider* _pOtherCollider)
+void Grimace_ProjectTile::OnTriggerStay(Collider* _pOtherCollider)
+{
+
+}
+
+void Grimace_ProjectTile::OnTriggerExit(Collider* _pOtherCollider)
 {
 }
 
-void Mage_ProjectTile::OnTriggerExit(Collider* _pOtherCollider)
-{
-}
-
-void Mage_ProjectTile::FollowPos()
+void Grimace_ProjectTile::FollowPos()
 {
 	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 	Vec3 myPos = GetTransform()->GetPosition();
@@ -159,13 +166,54 @@ void Mage_ProjectTile::FollowPos()
 	Vec3 dir = playerPos - myPos;
 
 	dir.Normalize();
-	//dir.y = 0;
 	Vec3 Ve = dir * mSpeed;
 
 	GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
 }
 
-void Mage_ProjectTile::FollowRot()
+void Grimace_ProjectTile::Mirror()
+{
+	
+
+	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	Vec3 myPos = GetTransform()->GetPosition();
+	Vec3 myRot = GetTransform()->GetRotation();
+	Vec3 scale = GetRigidBody()->GetGeometrySize();
+
+	Vec3 dir = playerPos - myPos;
+
+	dir.Normalize();
+	Vec3 Ve = dir * mSpeed;
+
+
+
+	PhysicsInfo physicsInfo;
+	physicsInfo.eActorType = ActorType::Kinematic;
+	physicsInfo.eGeometryType = GeometryType::Box;
+	physicsInfo.size = Vec3(0.3f, 4.3f, 0.3f);
+
+	Mirror_ProjectTile* pProjectTile = Factory::CreateObjectHasPhysical<Mirror_ProjectTile>(myPos, physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Monster\\_DROP_SOUL50.fbx");
+	pProjectTile->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+	pProjectTile->GetTransform()->SetPosition(GetTransform()->GetPosition());
+	pProjectTile->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+
+	pProjectTile->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
+	pProjectTile->GetMeshRenderer()->GetMaterial()->SetBloomPower(3.f, 0);
+	pProjectTile->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(0.f, 1.f, 0.f, 1.f));
+
+	pProjectTile->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, false);
+	pProjectTile->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, false);
+	pProjectTile->GetRigidBody()->SetVelocity(-Ve);
+	pProjectTile->Initialize();
+
+	GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pProjectTile);
+
+	MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
+	GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
+	
+}
+
+void Grimace_ProjectTile::FollowRot()
 {
 	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 	Vec3 myPos = GetTransform()->GetPosition();
@@ -185,8 +233,4 @@ void Mage_ProjectTile::FollowRot()
 		angleDegree += 360.f;
 
 	pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
-}
-
-void Mage_ProjectTile::Mirror()
-{
 }

@@ -1,18 +1,17 @@
+
 #pragma once
-#include "Monster.h"
-class Grimace :
-	public Monster
+#include "Monster_ProjectTile.h"
+class Grimace_ProjectTile :
+	public Monster_ProjectTile
 {
 public:
-	Grimace();
-	virtual ~Grimace();
-	Grimace* Clone()
+	Grimace_ProjectTile();
+	virtual ~Grimace_ProjectTile();
+	Grimace_ProjectTile* Clone()
 	{
-		Grimace* pGrimace = GameObject::Clone<Grimace>();
-		return pGrimace;
+		Grimace_ProjectTile* pGrimace_projecttile = GameObject::Clone<Grimace_ProjectTile>();
+		return pGrimace_projecttile;
 	}
-
-	virtual void SetBehaviorTree();
 
 public:
 	virtual void Initialize();
@@ -31,17 +30,11 @@ public:
 	virtual void OnTriggerStay(Collider* _pOtherCollider);
 	virtual void OnTriggerExit(Collider* _pOtherCollider);
 
+
 private:
-	void CreateProjectTile();
-	void MonsterAttackCol();
-private:
-	Vec3 dir;
-	Vec3 dir_backstep;
-	Vec3 dir_desh;
+	void FollowPos();
+	void Mirror();
+	void FollowRot();
 
-	GameObject* pMonsterAttackCol;
-	int Health;
-
-	bool isTrigger = false;
-
+	bool isbool = false;
 };
