@@ -148,18 +148,18 @@ void Mirror_ProjectTile::OnTriggerExit(Collider* _pOtherCollider)
 
 void Mirror_ProjectTile::MirrorPos()
 {
-	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
-	Vec3 myPos = GetTransform()->GetPosition();
-	Vec3 myRot = GetTransform()->GetRotation();
-	Vec3 scale = GetRigidBody()->GetGeometrySize();
+	//Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	//Vec3 myPos = GetTransform()->GetPosition();
+	//Vec3 myRot = GetTransform()->GetRotation();
+	//Vec3 scale = GetRigidBody()->GetGeometrySize();
 
-	Vec3 dir = playerPos - myPos;
+	//Vec3 dir = playerPos - myPos;
 
-	dir.Normalize();
-	//dir.y = 0;
-	Vec3 Ve = dir * mSpeed;
+	//dir.Normalize();
+	////dir.y = 0;
+	//Vec3 Ve = dir * mSpeed;
 
-	GetRigidBody()->SetVelocity(-Ve); //따라오게 만드는 코드
-	GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, false);
-	GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, false);
+	//GetRigidBody()->SetVelocity(-Ve); //따라오게 만드는 코드
+	//GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, false);
+	//GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, false);
 }

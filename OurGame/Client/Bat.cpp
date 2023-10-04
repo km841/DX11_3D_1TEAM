@@ -41,8 +41,8 @@ Bat::Bat()
 	mHP = mMaxHP; // 피통
 	mSpeed=2.f; //이동속도
 	mAttackDamage = 1; // 공격력
-	mAttackRange = 2.5f; // 공격 감지 거리
-	mRecogRange = 7.f; //감지거리
+	mAttackRange = 3.f; // 공격 감지 거리
+	mRecogRange = 8.f; //감지거리
 
 	meBasicState = MonsterBasicState::Idle;
 }
@@ -133,9 +133,11 @@ void Bat::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (3 != animIndex)
+				if (3 != animIndex) {
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, 0.f, 0.f));
 					pAnimator->Play(3, true);
-
+				}
 				return BehaviorResult::Success;
 				});
 
@@ -144,9 +146,9 @@ void Bat::SetBehaviorTree()
 				{
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 					Vec3 myPos = GetTransform()->GetPosition();
-
+					Animator* pAnimator = GetAnimator();
 					float distance = (playerPos - myPos).Length();
-					if (distance < mRecogRange)
+					if (distance < mRecogRange && pAnimator->GetFrameRatio()>0.2)
 					{
 						return BehaviorResult::Success;
 					}
@@ -231,7 +233,11 @@ void Bat::SetBehaviorTree()
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (2 != animIndex) //L"Move"
+				{
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, 0.f, 0.f));
 					pAnimator->Play(2, true);
+				}
 
 				return BehaviorResult::Success;
 				});
@@ -243,7 +249,7 @@ void Bat::SetBehaviorTree()
 				Vec3 myRot = GetTransform()->GetRotation();
 				Vec3 scale = GetRigidBody()->GetGeometrySize();
 
-				Vec3 dir = playerPos - myPos;
+				dir = playerPos - myPos;
 				Vec3 Num = scale * dir;
 				float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
 
@@ -392,12 +398,31 @@ void Bat::SetBehaviorTree()
 			// 공격 딜레이
 			BehaviorTask* pAttackTask = new BehaviorTask([&]()
 				{
+					
+
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 					Vec3 myPos = GetTransform()->GetPosition();
 					Animator* pAni = GetAnimator();
 
+					//이부분 중요
+					if(pAni->GetFrameRatio()>0.2)
+						GetRigidBody()->SetVelocityExcludingColliders(-dir * 3.f);
+					if(pAni->GetFrameRatio()>0.4 && pAni->GetFrameRatio() < 0.6)
+						GetRigidBody()->SetVelocity(dir * 4.f);
 
-					if(pAni->GetFrameRatio()>0.7)
+					const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+					for (int i = 0; i < gameObjects.size(); ++i)
+					{
+						if (gameObjects[i]->GetCollider())
+						{
+							if (GetCollider()->Raycast(myPos, dir, gameObjects[i]->GetCollider(), 0.5f))
+							{
+								GetRigidBody()->SetVelocity(dir * 0.f);
+							}
+						}
+					}
+
+					if(pAni->GetFrameRatio()>0.8)
 						return BehaviorResult::Success;
 					return BehaviorResult::Failure;
 				

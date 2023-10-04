@@ -1130,6 +1130,7 @@ void Grimace::SetBehaviorTree()
 					if (GetScript<PaperBurnScript>()->IsFinished())
 					{
 						MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
+						GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(pMonsterAttackCol));
 						GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
 					}
 
