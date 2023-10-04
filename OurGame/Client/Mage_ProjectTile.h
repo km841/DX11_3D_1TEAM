@@ -33,4 +33,5 @@ public:
 private:
 	void FollowPos();
 	void FollowRot();
+	void Mirror();
 };

@@ -443,6 +443,7 @@ void Bat::SetBehaviorTree()
 					isDead = false;
 					GetScript<PaperBurnScript>()->SetPaperBurn();
 					pAnimator->Play(4, false);
+					//
 				}
 
 				//pObj->GetRigidBody()->SetSimulationShapeFlag(false); // 콜라이더 끄기

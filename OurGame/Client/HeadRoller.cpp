@@ -356,7 +356,7 @@ namespace hm
 					{
 						if (pAni->GetFrameRatio() > 0.05) {
 							GetRigidBody()->SetVelocityExcludingColliders(-dir * 8.0f);
-							GetRigidBody()->SetVelocity(dir * 8.f);
+							GetRigidBody()->SetVelocity(Ve * 4.f);
 						}
 					}
 
@@ -433,13 +433,26 @@ namespace hm
 				// 공격 딜레이
 				BehaviorTask* pAttackTask = new BehaviorTask([&]()
 					{
+						Animator* pAni = GetAnimator();
 						Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 						Vec3 myPos = GetTransform()->GetPosition();
-						Animator* pAni = GetAnimator();
+						
 
 						//이부분 중요
 						GetRigidBody()->SetVelocityExcludingColliders(-attackDir * 14.0f);
-						GetRigidBody()->SetVelocity(attackDir * 14.f);
+						GetRigidBody()->SetVelocity(attackDir * 7.f);
+
+						const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+						for (int i = 0; i < gameObjects.size(); ++i)
+						{
+							if (gameObjects[i]->GetCollider())
+							{
+								if (GetCollider()->Raycast(myPos, attackDir, gameObjects[i]->GetCollider(), 0.5f))
+								{
+									GetRigidBody()->SetVelocity(attackDir * 0.f);
+								}
+							}
+						}	
 
 						if (pAni->GetFrameRatio() > 0.15) {
 							return BehaviorResult::Success;

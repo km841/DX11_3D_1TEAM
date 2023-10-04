@@ -85,7 +85,7 @@ void AttackState::Update()
 
 		pAttackCol_Obj->Enable();
 	}
-	if (pAni->GetFrameRatio() > 0.02f ) {
+	if (pAni->GetFrameRatio() > 0.03f ) {
 
 		pAttackCol_Obj->Disable();
 	}

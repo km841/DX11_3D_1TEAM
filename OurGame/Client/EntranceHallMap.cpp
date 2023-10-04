@@ -42,6 +42,7 @@
 #include "CameraMoveScript.h"
 #include "PlayerMoveScript.h"
 #include "PlayerSlashScript.h"
+#include "PlayerMoveOverMapScript.h"
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
 
@@ -66,6 +67,16 @@ void EntranceHallMap::Initialize()
 void EntranceHallMap::Start()
 {
 	Map::Start();
+	if (PLAYER != nullptr)
+	{
+		mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
+		switch (mSpawnPoint)
+		{
+		case 1:
+			PLAYER->GetTransform()->SetPosition(Vec3(0.0f, -9.0f, 30.2f));
+			break;
+		}
+	}
 }
 
 void EntranceHallMap::Update()
@@ -600,9 +611,11 @@ void EntranceHallMap::InitColliderAdd()
 		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(49.0f, 0.98f, 78.4f);
 
-		Ground* pGroundCol = Factory::CreateObjectHasPhysical<Ground>(Vec3(-6.1f, -10.1f, -0.5f), physicsInfo, L"Deferred", L"");
+		Ground* pGroundCol = Factory::CreateObjectHasPhysical<Ground>(Vec3(-6.1f, -10.1f, -0.5f), physicsInfo, L"Forward", L"");
 		AddGameObject(pGroundCol);
 	}
+
+	
 
 	{
 		PhysicsInfo physicsInfo;
@@ -610,7 +623,7 @@ void EntranceHallMap::InitColliderAdd()
 		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(0.98f, 49.74f, 78.4f);
 
-		WallObject* pLWallCol = Factory::CreateObjectHasPhysical<WallObject>(Vec3(11.7f, -10.1f, -0.5f), physicsInfo, L"Deferred", L"");
+		WallObject* pLWallCol = Factory::CreateObjectHasPhysical<WallObject>(Vec3(11.7f, -10.1f, -0.5f), physicsInfo, L"Forward", L"");
 		AddGameObject(pLWallCol);
 	}
 	{
@@ -619,7 +632,7 @@ void EntranceHallMap::InitColliderAdd()
 		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(0.98f, 49.74f, 78.4f);
 
-		WallObject* pRWallCol = Factory::CreateObjectHasPhysical<WallObject>(Vec3(11.7f, -10.1f, -0.5f), physicsInfo, L"Deferred", L"");
+		WallObject* pRWallCol = Factory::CreateObjectHasPhysical<WallObject>(Vec3(11.7f, -10.1f, -0.5f), physicsInfo, L"Forward", L"");
 		AddGameObject(pRWallCol);
 	}
 }

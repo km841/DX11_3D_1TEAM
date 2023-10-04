@@ -33,5 +33,6 @@ private:
 	DecoObject* pJarRDoor;
 	yj::KeyPot* pPot1;
 	yj::KeyPot* pPot2;
+	int mSpawnPoint = -1;
 };
 

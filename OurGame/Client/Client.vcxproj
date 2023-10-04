@@ -181,6 +181,7 @@
     <ClInclude Include="Grandma.h" />
     <ClInclude Include="GrandmaBossMap.h" />
     <ClInclude Include="Grimace.h" />
+    <ClInclude Include="Grimace_ProjectTile.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="HallColliderCheckMap.h" />
     <ClInclude Include="HitEndState.h" />
@@ -206,7 +207,9 @@
     <ClInclude Include="MagicAttackState.h" />
     <ClInclude Include="MainOfficeMap.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Mirror_ProjectTile.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="MonsterColScript.h" />
     <ClInclude Include="MonsterCrackScript.h" />
     <ClInclude Include="MonsterKeyScript.h" />
     <ClInclude Include="MonsterHitScript.h" />
@@ -298,6 +301,7 @@
     <ClCompile Include="Grandma.cpp" />
     <ClCompile Include="GrandmaBossMap.cpp" />
     <ClCompile Include="Grimace.cpp" />
+    <ClCompile Include="Grimace_ProjectTile.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="HallColliderCheckMap.cpp" />
     <ClCompile Include="HitEndState.cpp" />
@@ -323,7 +327,9 @@
     <ClCompile Include="MagicAttackState.cpp" />
     <ClCompile Include="MainOfficeMap.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Mirror_ProjectTile.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="MonsterColScript.cpp" />
     <ClCompile Include="MonsterCrackScript.cpp" />
     <ClCompile Include="MonsterKeyScript.cpp" />
     <ClCompile Include="MonsterHitScript.cpp" />
