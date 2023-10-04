@@ -19,7 +19,9 @@
 /* GameObject */
 #include "GameObject.h"
 #include "Player.h"
+#include "TeleportZone.h"
 #include "Ground.h"
+#include "WallObject.h"
 #include "DecoObject.h"
 #include "Monster.h"
 
@@ -92,10 +94,34 @@ void LeftSecretFightMap::Enter()
 	//배경맵 하얀색으로 만들어주는 코드
 	//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
-
+	InitObjectAdd();
+	InitColliderAdd();
+	FuncObjectAdd();
 #pragma region "어드민"
 #pragma endregion
 
+	//펭귄 뼈다귀 - skelecrow
+	{
+		DecoObject* pskelecrow = Factory::CreateObject<DecoObject>(Vec3(10.3f, -1.5f, -17.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\skelecrow.fbx");
+		pskelecrow->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+		pskelecrow->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.5f));
+
+		AddGameObject(pskelecrow);
+	}
+}
+
+void LeftSecretFightMap::Exit()
+{
+	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Unknown);
+	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Ground);
+	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Monster);
+	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::DecoObject);
+	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::WallObject);
+	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Player);
+}
+
+void LeftSecretFightMap::InitObjectAdd()
+{
 	//DecoObject == 콜라이더 없는 오브젝트
 	//WallObject == 콜라이더 있는 오브젝트
 
@@ -135,7 +161,7 @@ void LeftSecretFightMap::Enter()
 		//shared_ptr<Texture> pTexture2 = GET_SINGLE(Resources)->Load<Texture>(L"Grimace_Decay_FloorTexture", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\Grimace_Decay_Floor.fbm\\floormark_tiling_broken.png");
 		//pGrimace_Decay_Floor->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture2 ,1); // 텍스쳐 강제로 적용시키는법
 
-		pGrimace_Decay_Floor->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.01f, 0.01f),1);
+		pGrimace_Decay_Floor->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.01f, 0.01f), 1);
 
 		AddGameObject(pGrimace_Decay_Floor);
 	}
@@ -167,7 +193,7 @@ void LeftSecretFightMap::Enter()
 		pWallRim->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pWallRim->GetTransform()->SetScale(Vec3(33.5f, 30.f, 30.f));
 
-		
+
 
 		AddGameObject(pWallRim);
 	}
@@ -188,7 +214,7 @@ void LeftSecretFightMap::Enter()
 		pWallRim->GetTransform()->SetScale(Vec3(18.5f, 30.f, 30.f));
 
 
-		
+
 		AddGameObject(pWallRim);
 	}
 
@@ -235,7 +261,7 @@ void LeftSecretFightMap::Enter()
 #pragma region "난간"
 	//난간 1 - CeilingBeamLow
 	{
-		DecoObject* pCeilingBeamLow = Factory::CreateObject<DecoObject>(Vec3(10.4f , -1.62f , 17.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\CeilingBeamLow.fbx");
+		DecoObject* pCeilingBeamLow = Factory::CreateObject<DecoObject>(Vec3(10.4f, -1.62f, 17.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\CeilingBeamLow.fbx");
 		pCeilingBeamLow->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pCeilingBeamLow->GetTransform()->SetScale(Vec3(14.f, 8.f, 8.f));
 
@@ -277,7 +303,7 @@ void LeftSecretFightMap::Enter()
 		pBannisterStickX5->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 		pBannisterStickX5->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
 
-		
+
 		AddGameObject(pBannisterStickX5);
 	}
 
@@ -287,7 +313,7 @@ void LeftSecretFightMap::Enter()
 		pBannisterStickX5->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pBannisterStickX5->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
 
-	
+
 		AddGameObject(pBannisterStickX5);
 	}
 
@@ -297,7 +323,7 @@ void LeftSecretFightMap::Enter()
 		pBannisterStickX5->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pBannisterStickX5->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
 
-		
+
 		AddGameObject(pBannisterStickX5);
 	}
 
@@ -322,7 +348,7 @@ void LeftSecretFightMap::Enter()
 		pColumnFull->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 		pColumnFull->GetTransform()->SetScale(Vec3(10.f, 15.f, 10.f));
 
-		
+
 		AddGameObject(pColumnFull);
 	}
 
@@ -332,7 +358,7 @@ void LeftSecretFightMap::Enter()
 		pColumnFull->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 		pColumnFull->GetTransform()->SetScale(Vec3(10.f, 12.f, 10.f));
 
-		
+
 		AddGameObject(pColumnFull);
 	}
 
@@ -342,7 +368,7 @@ void LeftSecretFightMap::Enter()
 		pColumnFull->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 		pColumnFull->GetTransform()->SetScale(Vec3(10.f, 12.f, 10.f));
 
-		
+
 		AddGameObject(pColumnFull);
 	}
 
@@ -352,7 +378,7 @@ void LeftSecretFightMap::Enter()
 		pColumnFull->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pColumnFull->GetTransform()->SetScale(Vec3(10.f, 12.f, 10.f));
 
-	
+
 		AddGameObject(pColumnFull);
 	}
 
@@ -362,7 +388,7 @@ void LeftSecretFightMap::Enter()
 		pColumnFull->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pColumnFull->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
 
-		
+
 		AddGameObject(pColumnFull);
 	}
 
@@ -372,7 +398,7 @@ void LeftSecretFightMap::Enter()
 		pColumnFull->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pColumnFull->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
 
-		
+
 		AddGameObject(pColumnFull);
 	}
 
@@ -382,7 +408,7 @@ void LeftSecretFightMap::Enter()
 		pColumnFull->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pColumnFull->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
 
-		
+
 		AddGameObject(pColumnFull);
 	}
 
@@ -392,7 +418,7 @@ void LeftSecretFightMap::Enter()
 		pColumnFull->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pColumnFull->GetTransform()->SetScale(Vec3(10.f, 3.f, 10.f));
 
-		
+
 		AddGameObject(pColumnFull);
 	}
 #pragma endregion
@@ -413,7 +439,7 @@ void LeftSecretFightMap::Enter()
 		pWallPanel->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pWallPanel->GetTransform()->SetScale(Vec3(12.f, 12.f, 12.f));
 
-		
+
 		AddGameObject(pWallPanel);
 	}
 
@@ -423,7 +449,7 @@ void LeftSecretFightMap::Enter()
 		pWallPanel->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pWallPanel->GetTransform()->SetScale(Vec3(12.f, 12.f, 12.f));
 
-		
+
 		AddGameObject(pWallPanel);
 	}
 
@@ -433,7 +459,7 @@ void LeftSecretFightMap::Enter()
 		pWallPanel->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pWallPanel->GetTransform()->SetScale(Vec3(13.f, 12.f, 12.f));
 
-		
+
 		AddGameObject(pWallPanel);
 	}
 
@@ -443,7 +469,7 @@ void LeftSecretFightMap::Enter()
 		pWallPanel->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
 		pWallPanel->GetTransform()->SetScale(Vec3(12.f, 12.f, 12.f));
 
-	
+
 		AddGameObject(pWallPanel);
 	}
 
@@ -453,7 +479,7 @@ void LeftSecretFightMap::Enter()
 		pWallPanel->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
 		pWallPanel->GetTransform()->SetScale(Vec3(12.f, 12.f, 12.f));
 
-		
+
 		AddGameObject(pWallPanel);
 	}
 #pragma endregion
@@ -465,7 +491,7 @@ void LeftSecretFightMap::Enter()
 		pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
 		pCurtainHorizontal->GetTransform()->SetScale(Vec3(19.f, 15.f, 15.f));
 
-		
+
 		AddGameObject(pCurtainHorizontal);
 	}
 
@@ -475,7 +501,7 @@ void LeftSecretFightMap::Enter()
 		pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pCurtainHorizontal->GetTransform()->SetScale(Vec3(19.f, 15.f, 15.f));
 
-		
+
 		AddGameObject(pCurtainHorizontal);
 	}
 
@@ -490,11 +516,11 @@ void LeftSecretFightMap::Enter()
 
 	//커튼 가로줄4 - CurtainHorizontal
 	{
-		DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(19.5f, 6.3f,19.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\CurtainHorizontal.fbx");
+		DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(19.5f, 6.3f, 19.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\CurtainHorizontal.fbx");
 		pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pCurtainHorizontal->GetTransform()->SetScale(Vec3(12.f, 15.f, 15.f));
 
-		
+
 		AddGameObject(pCurtainHorizontal);
 	}
 
@@ -512,11 +538,11 @@ void LeftSecretFightMap::Enter()
 #pragma region "커튼 세로줄 모음"
 	//커튼 세로줄 1 - CurtainVertical1
 	{
-		DecoObject* pCurtainVertical1 = Factory::CreateObject<DecoObject>(Vec3(11.f , 1.8f , -23.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\CurtainVertical1.fbx");
+		DecoObject* pCurtainVertical1 = Factory::CreateObject<DecoObject>(Vec3(11.f, 1.8f, -23.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\CurtainVertical1.fbx");
 		pCurtainVertical1->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
 		pCurtainVertical1->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 
-		
+
 		AddGameObject(pCurtainVertical1);
 	}
 
@@ -536,7 +562,7 @@ void LeftSecretFightMap::Enter()
 		pCurtainVertical1->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
 		pCurtainVertical1->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 
-		
+
 		AddGameObject(pCurtainVertical1);
 	}
 
@@ -546,7 +572,7 @@ void LeftSecretFightMap::Enter()
 		pCurtainVertical1->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pCurtainVertical1->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 
-		
+
 		AddGameObject(pCurtainVertical1);
 	}
 
@@ -556,7 +582,7 @@ void LeftSecretFightMap::Enter()
 		pCurtainVertical1->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pCurtainVertical1->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 
-		
+
 		AddGameObject(pCurtainVertical1);
 	}
 
@@ -575,7 +601,7 @@ void LeftSecretFightMap::Enter()
 
 	//그림 액자 - paintingFrame3 
 	{
-		DecoObject* pPaintingFrame3 = Factory::CreateObject<DecoObject>(Vec3(-9.8f , -3.6f , -8.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\paintingFrame3.fbx");
+		DecoObject* pPaintingFrame3 = Factory::CreateObject<DecoObject>(Vec3(-9.8f, -3.6f, -8.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\paintingFrame3.fbx");
 		pPaintingFrame3->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
 		pPaintingFrame3->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
 
@@ -594,28 +620,16 @@ void LeftSecretFightMap::Enter()
 
 	//사다리 - Ladder
 	{
-		DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(10.3f,-5.8f,7.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\Ladder.fbx");
+		DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(10.3f, -5.8f, 7.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\Ladder.fbx");
 		pLadder->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pLadder->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 
 
 		AddGameObject(pLadder);
 	}
-
-
-	//펭귄 뼈다귀 - skelecrow
-	{
-		DecoObject* pskelecrow = Factory::CreateObject<DecoObject>(Vec3(10.3f, -1.5f, -17.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\skelecrow.fbx");
-		pskelecrow->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
-		pskelecrow->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.5f));
-
-		AddGameObject(pskelecrow);
-	}
-
-
 	//항아리 1 - POT_HEAL_Generic_Variant
 	{
-		DecoObject* pPOT_HEAL_Generic_Variant = Factory::CreateObject<DecoObject>(Vec3(15.4f , -1.1f , 21.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\POT_HEAL_Generic_Variant.fbx");
+		DecoObject* pPOT_HEAL_Generic_Variant = Factory::CreateObject<DecoObject>(Vec3(15.4f, -1.1f, 21.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_LeftSecret_FightMap\\POT_HEAL_Generic_Variant.fbx");
 		pPOT_HEAL_Generic_Variant->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
 		pPOT_HEAL_Generic_Variant->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
 
@@ -630,15 +644,112 @@ void LeftSecretFightMap::Enter()
 
 		AddGameObject(pPOT_HEAL_Generic_Variant);
 	}
-
 }
 
-void LeftSecretFightMap::Exit()
+void LeftSecretFightMap::InitColliderAdd()
 {
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Unknown);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Ground);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Monster);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::DecoObject);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::WallObject);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Player);
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(31.85f, 1.f, 40.84f);
+
+		Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-5.f, -8.7f, 9.3f), physicsInfo, L"Forward",L"");
+
+		AddGameObject(pGround);
+		SetGizmoTarget(pGround);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(11.7f, 8.68f, 51.5f);
+
+		Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(15.8f, -6.2f, 0.6f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pGround);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(23.16f, 11.8f, 18.54f);
+
+		WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-10.6f, -2.7f, -17.6f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pWall);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(30.1158f, 11.8f, 1.85f);
+
+		WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(7.1f, -3.2f, 25.9f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pWall);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(1.44f, 7.08f, 55.14f);
+
+		WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(21.2f, 1.0f, -1.6f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pWall);
+
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(9.71f, 7.08f, 16.54f);
+
+		Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(5.1f, -5.4f, -17.0f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pGround);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(22.54f, 5.61f, 1.0f);
+
+		WallObject* pGround = Factory::CreateObjectHasPhysical<WallObject>(Vec3(11.3f, 1.1f, -24.9f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pGround);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(6.84f, 10.0f, 1.5f);
+
+		WallObject* pGround = Factory::CreateObjectHasPhysical<WallObject>(Vec3(17.1f, -4.0f, 25.7f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pGround);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(0.56f, 6.5f, 33.85f);
+
+		WallObject* pGround = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-20.7f, -5.2f, 8.1f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pGround);
+	}
+}
+
+void LeftSecretFightMap::FuncObjectAdd()
+{
+	PhysicsInfo physicsInfo;
+	physicsInfo.eActorType = ActorType::Static;
+	physicsInfo.eGeometryType = GeometryType::Box;
+	physicsInfo.size = Vec3(5.52, 3.8f, 2.18f);
+
+	yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-11.0f, -7.7f, 27.7f), physicsInfo, L"Forward", L"", false, MapType::Right2Map);
+	AddGameObject(pTelZone);
+	SetGizmoTarget(pTelZone);
 }

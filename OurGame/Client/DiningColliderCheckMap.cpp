@@ -25,6 +25,7 @@
 #include "WallObject.h"
 #include "HeadRoller.h"
 #include "JarDoor.h"
+#include "TeleportZone.h"
 
 /* Component */
 #include "Collider.h"
@@ -1125,6 +1126,19 @@ namespace sy
 		pDoorCol->GetTransform()->SetScale(Vec3(2.f, 1.3f, 2.f));
 		pDoorCol->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
 		AddGameObject(pDoorCol);
+
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Mesh;
+			physicsInfo.size = Vec3(49.f, 49.f, 49.f);
+
+			pDoorCol = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(9.f, 5.8f, -14.7f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
+
+			pDoorCol->GetTransform()->SetScale(Vec3(2.f, 1.3f, 2.f));
+			pDoorCol->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
+			AddGameObject(pDoorCol);
+		}
 	}
 	void DiningColliderCheckMap::FuncObjectAdd()
 	{
@@ -1140,13 +1154,26 @@ namespace sy
 			pLight->SetLightRange(50.f);
 			pLight->SetLightType(LightType::PointLight);
 			AddGameObject(pLightObject);
-			SetGizmoTarget(pLightObject);
 		}
 
 		{
 			yj::JarDoor* pJarDoor = Factory::CreateObject<yj::JarDoor>(Vec3::Zero, L"Deferred", L"", false, 4, pDoorLeft, pDoorRight, pDoorCol);
 			AddGameObject(pJarDoor);
 		}
+
+		{
+			{
+				PhysicsInfo physicsInfo;
+				physicsInfo.eActorType = ActorType::Static;
+				physicsInfo.eGeometryType = GeometryType::Box;
+				physicsInfo.size = Vec3(3.8, 3.8f, 4.9f);
+
+				yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(8.8f, -6.5f, -9.0f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map);
+				AddGameObject(pTelZone);
+				SetGizmoTarget(pTelZone);
+			}
+		}
+
 	}
 
 	void DiningColliderCheckMap::Exit()

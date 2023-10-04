@@ -587,7 +587,7 @@ namespace jh
 			AddGameObject(pRightZone);
 		}
 		{
-			yj::SpikeDoor* pDoor = Factory::CreateObject<yj::SpikeDoor>(Vec3(-7.4f, -4.57f, 19.2f), L"Deferred", L"", false, pSpikeDoor,pSpikeDoorCol);
+			yj::SpikeDoor* pDoor = Factory::CreateObject<yj::SpikeDoor>(Vec3(-7.4f, -4.57f, 19.2f), L"Deferred", L"", false, pSpikeDoor,pSpikeDoorCol,4);
 			AddGameObject(pDoor);
 		}
 		{

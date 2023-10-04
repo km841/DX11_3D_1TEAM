@@ -19,6 +19,7 @@
 /* GameObject */
 #include "GameObject.h"
 #include "Player.h"
+#include "TeleportZone.h"
 #include "Ground.h"
 #include "DecoObject.h"
 #include "Monster.h"
@@ -94,6 +95,23 @@ void LeftSecretTrialMap::Enter()
 
 #pragma region "어드민"
 #pragma endregion
+	InitObjectAdd();
+	InitColliderAdd();
+	FuncObjectAdd();
+}
+
+void LeftSecretTrialMap::Exit()
+{
+	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Unknown);
+	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Ground);
+	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Monster);
+	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::DecoObject);
+	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::WallObject);
+	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Player);
+}
+
+void LeftSecretTrialMap::InitObjectAdd()
+{
 
 	//DecoObject == 콜라이더 없는 오브젝트
 	//WallObject == 콜라이더 있는 오브젝트
@@ -113,6 +131,23 @@ void LeftSecretTrialMap::Enter()
 
 
 	//전체적인 가이드 라인 - Cube
+
+
+
+	//// Toy
+	//{
+	//	PhysicsInfo physicsInfo;
+	//	physicsInfo.eActorType = ActorType::Static;
+	//	physicsInfo.eGeometryType = GeometryType::Box;
+	//	physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+
+	//	Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(-6.3f, -2.1f, -7.1f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+	//	//pPlayer->AddComponent(new TestAnimationScript);
+	//	//pPlayer->AddComponent(new PlayerMoveScript);
+	//	pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+	//	AddGameObject(pPlayer);
+	//}
+
 	{
 		DecoObject* pCube = Factory::CreateObject<DecoObject>(Vec3(0.0f, 0.0f, 0.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\Cube.fbx");
 		pCube->GetTransform()->SetScale(Vec3(100.f, 100.f, 100.f));
@@ -241,7 +276,7 @@ void LeftSecretTrialMap::Enter()
 		{
 			DecoObject* pbannisterTop = Factory::CreateObject<DecoObject>(Vec3(10.8f, 8.f, 22.7f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\bannisterTop.fbx");
 			pbannisterTop->GetTransform()->SetScale(Vec3(100.f, 100.f, 100.f));
-			
+
 			AddGameObject(pbannisterTop);
 		}
 
@@ -387,7 +422,7 @@ void LeftSecretTrialMap::Enter()
 			DecoObject* pPainting4Frame01 = Factory::CreateObject<DecoObject>(Vec3(10.6f, 4.8f, 25.2f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\painting4Frame01.fbx");
 			pPainting4Frame01->GetTransform()->SetScale(Vec3(40.f, 40.f, 40.f));
 			pPainting4Frame01->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
-			
+
 			AddGameObject(pPainting4Frame01);
 		}
 
@@ -608,6 +643,404 @@ void LeftSecretTrialMap::Enter()
 #pragma endregion
 
 
+
+#pragma region "나무선반안에있는 담는 박스 모음"
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -4.8f, -0.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 70.0f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-14.4f, -4.6f, 1.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(60.0f, 70.0f, 70.0f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 10.0f));
+
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -4.8f, 3.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 70.0f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -4.8f, 7.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 70.0f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-14.4f, -4.8f, 9.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 70.0f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -4.8f, 11.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 70.0f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -4.8f, 14.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 70.0f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -4.8f, 16.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 70.0f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -4.8f, 17.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 68.0f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -2.0f, 17.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 68.0f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -2.0f, 15.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 68.0f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-6.8f, -4.8f, 23.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 68.0f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-6.8f, -4.8f, 16.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 68.0f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+
+		AddGameObject(pEmptyBox);
+	}
+
+	{
+		//박스- EmptyBox
+		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(24.4f, -4.8f, -28.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
+		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 68.0f));
+		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 90.0f, 0.0f));
+
+		AddGameObject(pEmptyBox);
+	}
+#pragma endregion
+
+	//박스안 접시 1 - SilverwareShelfFiller_Plates
+	{
+		DecoObject* pSilverwareShelfFiller_Plates = Factory::CreateObject<DecoObject>(Vec3(-12.8f, -1.6f, 13.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\SilverwareShelfFiller_Plates.fbx");
+		pSilverwareShelfFiller_Plates->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
+
+		AddGameObject(pSilverwareShelfFiller_Plates);
+	}
+
+	//박스안 접시 2- SilverwareShelfFiller_Plates
+	{
+		DecoObject* pSilverwareShelfFiller_Plates = Factory::CreateObject<DecoObject>(Vec3(-15.2f, -4.4f, 5.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\SilverwareShelfFiller_Plates.fbx");
+		pSilverwareShelfFiller_Plates->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
+
+		AddGameObject(pSilverwareShelfFiller_Plates);
+	}
+
+	//박스안 찻잔 - SilverwareShelfFiller_Goblets
+	{
+		DecoObject* pSilverwareShelfFiller_Goblets = Factory::CreateObject<DecoObject>(Vec3(-14.0f, -1.6f, 12.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\SilverwareShelfFiller_Goblets.fbx");
+		pSilverwareShelfFiller_Goblets->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
+
+		AddGameObject(pSilverwareShelfFiller_Goblets);
+	}
+
+
+
+	// 커튼 - CurtainHorizontal
+	{
+		DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(0.6f, 7.0f, 6.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\CurtainHorizontal.fbx");
+		pCurtainHorizontal->GetTransform()->SetScale(Vec3(84.0f, 84.0f, 84.0f));
+
+		AddGameObject(pCurtainHorizontal);
+	}
+
+	//커튼 아랫줄 - CurtainVertical
+	{
+		DecoObject* pCurtainVertical = Factory::CreateObject<DecoObject>(Vec3(1.2f, -0.4f, 9.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\CurtainVertical.fbx");
+		pCurtainVertical->GetTransform()->SetScale(Vec3(84.0f, 84.0f, 84.0f));
+
+		AddGameObject(pCurtainVertical);
+	}
+
+	// 커튼 2 - CurtainHorizontal
+	{
+		DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(34.4f, 7.0f, -35.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\CurtainHorizontal.fbx");
+		pCurtainHorizontal->GetTransform()->SetScale(Vec3(84.0f, 84.0f, 84.0f));
+		pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.0f, 90.0f, 0.0f));
+		AddGameObject(pCurtainHorizontal);
+	}
+
+	//커튼 2 아랫줄 - CurtainVertical
+	{
+		DecoObject* pCurtainVertical = Factory::CreateObject<DecoObject>(Vec3(37.0f, -0.4f, -35.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\CurtainVertical.fbx");
+		pCurtainVertical->GetTransform()->SetScale(Vec3(84.0f, 84.0f, 84.0f));
+		pCurtainVertical->GetTransform()->SetRotation(Vec3(0.0f, 90.0f, 0.0f));
+
+		AddGameObject(pCurtainVertical);
+	}
+
+
+	//샹드리에 - ChandelierWithChain
+	{
+		DecoObject* pChandelier = Factory::CreateObject<DecoObject>(Vec3(-8.2f, 18.0f, 1.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\ChandelierWithChain.fbx");
+		pChandelier->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
+		pChandelier->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 13, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 13, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 13, 0);
+
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 14, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 14, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 14, 0);
+
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 15, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 15, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 15, 0);
+
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 16, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 16, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 16, 0);
+
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 17, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 17, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 17, 0);
+
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 18, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 18, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 18, 0);
+
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 19, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 19, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 19, 0);
+
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 20, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 20, 0);
+		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 20, 0);
+
+		AddGameObject(pChandelier);
+	}
+
+	//사다리 - Ladder
+	{
+		DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(-14.8f, -5.6f, 15.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\Ladder.fbx");
+		pLadder->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
+		pLadder->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+
+		AddGameObject(pLadder);
+	}
+}
+
+void LeftSecretTrialMap::InitColliderAdd()
+{
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(31.85f, 1.f, 40.84f);
+
+		Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-3.9f, -8.5f, -16.7f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pGround);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(31.85f, 1.0f, 12.252f);
+
+		Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-8.3f, -3.7f, 9.5f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pGround);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(12.08f, 1.0f, 46.478f);
+
+		Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(7.3f, -3.7f, -10.2f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pGround);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(2.61f, 3.9f, 23.9f);
+
+		Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-13.6f, -5.1f, -24.4f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pGround);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(2.61f, 3.9f, 23.9f);
+
+		Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-6.4f, -5.1f, -17.8f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pGround);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(15.795f, 3.9f, 2.64f);
+
+		Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-7.0f, -5.1f, -19.8f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pGround);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(15.795f, 3.9f, 2.64f);
+
+		Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-7.0f, -5.1f, -7.2f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pGround);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(9.46f, 4.0f, 2.64f);
+
+		Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-10.0f, -5.1f, -13.7f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pGround);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(12.3f, 4.0f, 2.64f);
+
+		Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-9.4f, -5.1f, -28.5f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pGround);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(23.99f, 5.2f, 2.64f);
+
+		WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-8.6f, -5.9f, -37.6f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pWall);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(12.00f, 11.23f, 10.29f);
+
+		WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-2.8f, -2.5f, -41.1f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pWall);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(12.00f, 11.23f, 10.29f);
+
+		WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(6.8f, 3.1f, -31.8f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pWall);
+	}
+
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(0.96f, 12.07f, 61.74f);
+
+		WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-18.7f, -2.5f, -17.7f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pWall);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(0.96f, 12.07f, 26.48f);
+
+		WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(10.9f, 2.5f, 0.4f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pWall);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(0.96f, 12.07f, 10.6f);
+
+		WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(10.9f, 2.5f, -21.4f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pWall);
+	}
+}
+
+void LeftSecretTrialMap::FuncObjectAdd()
+{
+
 #pragma region "화톳불 시리즈"
 	// 화톳불 1
 	{
@@ -750,266 +1183,25 @@ void LeftSecretTrialMap::Enter()
 	}
 #pragma endregion
 
-#pragma region "나무선반안에있는 담는 박스 모음"
-	{
-		//박스- EmptyBox
-		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -4.8f, -0.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
-		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 70.0f));
-		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
 
-		AddGameObject(pEmptyBox);
-	}
-
-	{
-		//박스- EmptyBox
-		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-14.4f, -4.6f, 1.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
-		pEmptyBox->GetTransform()->SetScale(Vec3(60.0f, 70.0f, 70.0f));
-		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 10.0f));
-
-		AddGameObject(pEmptyBox);
-	}
-
-	{
-		//박스- EmptyBox
-		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -4.8f, 3.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
-		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 70.0f));
-		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-
-		AddGameObject(pEmptyBox);
-	}
-
-	{
-		//박스- EmptyBox
-		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -4.8f, 7.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
-		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 70.0f));
-		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-
-		AddGameObject(pEmptyBox);
-	}
-
-	{
-		//박스- EmptyBox
-		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-14.4f, -4.8f, 9.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
-		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 70.0f));
-		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-
-		AddGameObject(pEmptyBox);
-	}
-
-	{
-		//박스- EmptyBox
-		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -4.8f, 11.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
-		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 70.0f));
-		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-
-		AddGameObject(pEmptyBox);
-	}
-
-	{
-		//박스- EmptyBox
-		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -4.8f, 14.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
-		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 70.0f));
-		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-
-		AddGameObject(pEmptyBox);
-	}
-
-	{
-		//박스- EmptyBox
-		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -4.8f, 16.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
-		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 70.0f));
-		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-
-		AddGameObject(pEmptyBox);
-	}
-
-	{
-		//박스- EmptyBox
-		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -4.8f, 17.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
-		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 68.0f));
-		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-
-		AddGameObject(pEmptyBox);
-	}
-
-	{
-		//박스- EmptyBox
-		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -2.0f, 17.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
-		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 68.0f));
-		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-
-		AddGameObject(pEmptyBox);
-	}
-
-	{
-		//박스- EmptyBox
-		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-13.8f, -2.0f, 15.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
-		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 68.0f));
-		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-
-		AddGameObject(pEmptyBox);
-	}
-
-	{
-		//박스- EmptyBox
-		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-6.8f, -4.8f, 23.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
-		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 68.0f));
-		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-
-		AddGameObject(pEmptyBox);
-	}
-
-	{
-		//박스- EmptyBox
-		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-6.8f, -4.8f, 16.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
-		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 68.0f));
-		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-
-		AddGameObject(pEmptyBox);
-	}
-
-	{
-		//박스- EmptyBox
-		DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(24.4f, -4.8f, -28.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\EmptyBox.fbx");
-		pEmptyBox->GetTransform()->SetScale(Vec3(70.0f, 70.0f, 68.0f));
-		pEmptyBox->GetTransform()->SetRotation(Vec3(0.0f, 90.0f, 0.0f));
-
-		AddGameObject(pEmptyBox);
-	}
-#pragma endregion
-
-		//박스안 접시 1 - SilverwareShelfFiller_Plates
-	{
-		DecoObject * pSilverwareShelfFiller_Plates = Factory::CreateObject<DecoObject>(Vec3(-12.8f, -1.6f, 13.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\SilverwareShelfFiller_Plates.fbx");
-		pSilverwareShelfFiller_Plates->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
-
-		AddGameObject(pSilverwareShelfFiller_Plates);
-	}
-
-		//박스안 접시 2- SilverwareShelfFiller_Plates
-	{
-		DecoObject* pSilverwareShelfFiller_Plates = Factory::CreateObject<DecoObject>(Vec3(-15.2f, -4.4f, 5.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\SilverwareShelfFiller_Plates.fbx");
-		pSilverwareShelfFiller_Plates->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
-
-		AddGameObject(pSilverwareShelfFiller_Plates);
-	}
-
-	//박스안 찻잔 - SilverwareShelfFiller_Goblets
-	{
-		DecoObject* pSilverwareShelfFiller_Goblets = Factory::CreateObject<DecoObject>(Vec3(-14.0f, -1.6f, 12.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\SilverwareShelfFiller_Goblets.fbx");
-		pSilverwareShelfFiller_Goblets->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
-
-		AddGameObject(pSilverwareShelfFiller_Goblets);
-	}
-
-
-
-	// 커튼 - CurtainHorizontal
-	{
-		DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(0.6f, 7.0f, 6.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\CurtainHorizontal.fbx");
-		pCurtainHorizontal->GetTransform()->SetScale(Vec3(84.0f, 84.0f, 84.0f));
-
-		AddGameObject(pCurtainHorizontal);
-	}
-
-	//커튼 아랫줄 - CurtainVertical
-	{
-		DecoObject* pCurtainVertical = Factory::CreateObject<DecoObject>(Vec3(1.2f, -0.4f, 9.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\CurtainVertical.fbx");
-		pCurtainVertical->GetTransform()->SetScale(Vec3(84.0f, 84.0f, 84.0f));
-
-		AddGameObject(pCurtainVertical);
-	}
-
-	// 커튼 2 - CurtainHorizontal
-	{
-		DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(34.4f, 7.0f, -35.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\CurtainHorizontal.fbx");
-		pCurtainHorizontal->GetTransform()->SetScale(Vec3(84.0f, 84.0f, 84.0f));
-		pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.0f, 90.0f, 0.0f));
-		AddGameObject(pCurtainHorizontal);
-	}
-
-	//커튼 2 아랫줄 - CurtainVertical
-	{
-		DecoObject* pCurtainVertical = Factory::CreateObject<DecoObject>(Vec3(37.0f, -0.4f, -35.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\CurtainVertical.fbx");
-		pCurtainVertical->GetTransform()->SetScale(Vec3(84.0f, 84.0f, 84.0f));
-		pCurtainVertical->GetTransform()->SetRotation(Vec3(0.0f, 90.0f, 0.0f));
-
-		AddGameObject(pCurtainVertical);
-	}
-
-
-	//샹드리에 - ChandelierWithChain
-	{
-		DecoObject* pChandelier = Factory::CreateObject<DecoObject>(Vec3(-8.2f, 18.0f, 1.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\ChandelierWithChain.fbx");
-		pChandelier->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
-		pChandelier->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 13, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 13, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 13, 0);
-
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 14, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 14, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 14, 0);
-
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 15, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 15, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 15, 0);
-
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 16, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 16, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 16, 0);
-
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 17, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 17, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 17, 0);
-
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 18, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 18, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 18, 0);
-
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 19, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 19, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 19, 0);
-
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 20, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 20, 0);
-		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 20, 0);
-
-		AddGameObject(pChandelier);
-	}
-
-	//사다리 - Ladder
-	{
-		DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(-14.8f, -5.6f, 15.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\Ladder.fbx");
-		pLadder->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
-		pLadder->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-
-		AddGameObject(pLadder);
-	}
-
-
-	// Toy
 	{
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Static;
 		physicsInfo.eGeometryType = GeometryType::Box;
-		physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+		physicsInfo.size = Vec3(4.7f, 3.8f, 3.5f);
 
-		Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(-6.3f, -2.1f, -7.1f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
-		//pPlayer->AddComponent(new TestAnimationScript);
-		//pPlayer->AddComponent(new PlayerMoveScript);
-		pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
-		AddGameObject(pPlayer);
+		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(0.6f, -1.7f, 16.7f), physicsInfo, L"Forward", L"", false, MapType::Right2Map);
+		AddGameObject(pTelZone);
+		SetGizmoTarget(pTelZone);
 	}
-}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(4.13f, 3.8f, 3.5f);
 
-void LeftSecretTrialMap::Exit()
-{
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Unknown);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Ground);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Monster);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::DecoObject);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::WallObject);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Player);
+		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-13.3f, -1.7f, -50.8f), physicsInfo, L"Forward", L"", false, MapType::Right2Map);
+		AddGameObject(pTelZone);
+		SetGizmoTarget(pTelZone);
+	}
 }
