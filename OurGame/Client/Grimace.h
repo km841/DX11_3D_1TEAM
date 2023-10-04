@@ -1,0 +1,39 @@
+#pragma once
+#include "Monster.h"
+class Grimace :
+	public Monster
+{
+public:
+	Grimace();
+	virtual ~Grimace();
+	Grimace* Clone()
+	{
+		Grimace* pGrimace = GameObject::Clone<Grimace>();
+		return pGrimace;
+	}
+
+	virtual void SetBehaviorTree();
+
+public:
+	virtual void Initialize();
+	virtual void Update();
+	virtual void FixedUpdate();
+	virtual void FinalUpdate();
+	virtual void Render();
+	virtual void Destroy();
+
+public:
+	virtual void OnCollisionEnter(Collider* _pOtherCollider); //다이나믹,스태틱이 충돌 일어났을떄 이함수로
+	virtual void OnCollisionStay(Collider* _pOtherCollider);
+	virtual void OnCollisionExit(Collider* _pOtherCollider);
+
+	virtual void OnTriggerEnter(Collider* _pOtherCollider); //키네틱이 충돌이일어났을때 이함수로
+	virtual void OnTriggerStay(Collider* _pOtherCollider);
+	virtual void OnTriggerExit(Collider* _pOtherCollider);
+
+private:
+	Vec3 dir;
+	Vec3 dir_backstep;
+	Vec3 dir_desh;
+
+};

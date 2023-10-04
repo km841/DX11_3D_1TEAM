@@ -42,6 +42,11 @@ namespace hm
 
 		bool IsFinished() { return mbIsFinished; }
 
+		void SetPlaySpeed(const wstring& _animName, float _playSpeed);
+		void SetPlaySpeed(int _index, float _playSpeed);
+
+		wstring GetCurrentClipName() { return (*mAnimClips)[mClipIndex].animName; }
+
 	private:
 		std::vector<BoneInfo>*			mBones;
 		std::vector<AnimClipInfo>*		mAnimClips;

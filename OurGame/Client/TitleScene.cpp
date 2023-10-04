@@ -104,7 +104,7 @@ namespace hm
 		// - Monster_Player_TestScene
 		if (IS_DOWN(KeyType::L))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Monster_Player_Test);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::EntranceHallMap);
 		}
 
 		// ¿µÁø
@@ -153,6 +153,7 @@ namespace hm
 			//pGameObject->AddComponent(new yj::CinematicCamMove);
 
 			pCamera->SetCullingMask(LayerType::Interface, true);
+			pCamera->SetCullingMask(LayerType::Mirror, true);
 
 			pTransform->SetPosition(Vec3(0.f, 0.f, 0.f));
 			AddGameObject(pGameObject);
@@ -329,6 +330,8 @@ namespace hm
 			AddGameObject(pPlayer);
 			//SetMeshTarget(pPlayer);
 		}
+
+
 
 	}
 

@@ -17,6 +17,7 @@ namespace hm
 	class Animator;
 	class UIText;
 	class AI;
+	class Mirror;
 
 	class GameObject :
 		public Object
@@ -71,6 +72,8 @@ namespace hm
 		Animator* GetAnimator();
 		UIText* GetUIText();
 		AI* GetAI();
+		Mirror* GetMirror();
+		GameObject* GetGameObject() { return this; }
 
 		LayerType GetLayerType() { return meLayerType; }
 
@@ -92,6 +95,8 @@ namespace hm
 		void SetShader(const wstring& _shaderName);
 		void DrawShadow(bool _bFlag) { mbShadow = _bFlag; }
 		bool IsDrawShadow() { return mbShadow; }
+		bool IsReflect() { return mbReflect; }
+		void SetReflect(bool _bFlag) { mbReflect = _bFlag; }
 
 		const std::vector<MonoBehavior*>& GetScripts() { return mScripts; }
 
@@ -153,6 +158,7 @@ namespace hm
 		bool mbEnable;
 		bool mbCheckFrustum;
 		bool mbShadow;
+		bool mbReflect;
 	};
 }
 

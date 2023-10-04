@@ -12,10 +12,33 @@
 #include "EventManager.h"
 #include "SceneManager.h"
 #include "ChangeStateTask.h"
+/* GameObject */
+#include "GameObject.h"
+#include "Player.h"
+#include "Ground.h"
+#include "DecoObject.h"
+#include "WallObject.h"
+#include "Npc.h"
+#include "Monster.h"
+#include "Grandma.h"
+
+/* Component */
+#include "Collider.h"
+#include "RigidBody.h"
+#include "MeshRenderer.h"
+#include "Transform.h"
+#include "Camera.h"
+#include "Light.h"
+#include "ParticleSystem.h"
+#include "Animator.h"
+
+/* Manager */
+#include "RenderManager.h"
+
 Bat::Bat()
 {
-	mMaxHP = 10.f;
-	mHP= mMaxHP; // 피통
+	mMaxHP = 3.f;
+	mHP = mMaxHP; // 피통
 	mSpeed=2.f; //이동속도
 	mAttackDamage = 1; // 공격력
 	mAttackRange = 2.5f; // 공격 감지 거리
@@ -338,19 +361,19 @@ void Bat::SetBehaviorTree()
 			pTraceSequence->AddChild(pRunAnimationTask);
 			pTraceSequence->AddChild(pTraceMoveTask);
 			pTraceSequence->AddChild(pCheckNearbyPlayer);
-			pTraceSequence->AddChild(new ChangeStateTask(MonsterBasicState::Attack));
+			pTraceSequence->AddChild(new ChangeStateTask(MonsterBasicState::Attack01));
 		}
 		pStateSelector->AddChild(pTraceSequence);
 
 #pragma endregion
 
-#pragma region Attack Sequence
+#pragma region Attack01 Sequence
 		Sequence* pAttackSequence = new Sequence;
 		{
 			// 상태 확인(Condition) : 현재 상태가 Attack인지 확인
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
-					if (MonsterBasicState::Attack == meBasicState)
+					if (MonsterBasicState::Attack01 == meBasicState)
 						return BehaviorResult::Success;
 					else
 						return BehaviorResult::Failure;
@@ -411,13 +434,20 @@ void Bat::SetBehaviorTree()
 			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
+				GameObject* pObj = GetGameObject(); //이거 확인도 필요함
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (isDead == true)
 				{
+					//pObj->GetRigidBody()->SetSimulationShapeFlag(false);
+					//pObj->Disable();
 					isDead = false;
 					GetScript<PaperBurnScript>()->SetPaperBurn();
 					pAnimator->Play(4, false);
 				}
+
+				//pObj->GetRigidBody()->SetSimulationShapeFlag(false); // 콜라이더 끄기
+				//pObj->GetRigidBody()->SetSimulationShapeFlag(true); // 콜라이더 켜기
+
 
 				return BehaviorResult::Success;
 				});

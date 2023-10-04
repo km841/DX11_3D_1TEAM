@@ -33,7 +33,7 @@ namespace hm
 		AssertEx(nullptr != mpMaterial->GetShader(), L"MeshRenderer::Render() - Shader is empty");
 		AssertEx(nullptr != mpMesh, L"MeshRenderer::Render() - Mesh is empty");
 
-		PushData();
+		PushScriptData();
 		GetTransform()->PushData(_pCamera);
 		CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
 
@@ -68,7 +68,7 @@ namespace hm
 		AssertEx(nullptr != mpMaterial, L"MeshRenderer::Render() - Material is empty");
 		AssertEx(nullptr != mpMesh, L"MeshRenderer::Render() - Mesh is empty");
 
-		PushData();
+		PushScriptData();
 		_pBuffer->PushData();
 		GetTransform()->PushData(_pCamera);
 		CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
@@ -98,13 +98,61 @@ namespace hm
 			}
 		}
 	}
+	void MeshRenderer::RenderExceptForShader(Camera* _pCamera, shared_ptr<Shader> _pShader, bool _bIsReflect)
+	{
+		AssertEx(nullptr != mpMaterial, L"MeshRenderer::Render() - Material is empty");
+		AssertEx(nullptr != mpMaterial->GetShader(), L"MeshRenderer::Render() - Shader is empty");
+		AssertEx(nullptr != mpMesh, L"MeshRenderer::Render() - Mesh is empty");
+
+		PushScriptData();
+		GetTransform()->PushData(_pCamera);
+		CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
+
+		UINT32 meshCount = mpMesh->GetMeshContainerCount();
+		for (UINT i = 0; i < meshCount; ++i)
+		{
+			if (false == mSubsetRenderFlags.empty() && false == mSubsetRenderFlags[i])
+				continue;
+
+			MaterialContainer* pContainer = mpMaterial->GetMaterialContainer(i);
+
+			if (nullptr != GetAnimator())
+				GetAnimator()->PushData();
+
+			for (UINT32 j = 0; j < pContainer->materialSubsetVec.size(); ++j)
+			{
+				// No Instancing
+				mpMaterial->SetInt(0, 0, i, j);
+
+				// Animation Flag
+				if (nullptr != GetAnimator())
+					mpMaterial->SetInt(1, 1, i, j);
+				else
+					mpMaterial->SetInt(1, 0, i, j);
+
+				// Reflection Flag
+				if (true == _bIsReflect)
+					mpMaterial->SetInt(2, 1, i, j);
+				else
+					mpMaterial->SetInt(2, 0, i, j);
+
+				mpMaterial->PushGraphicDataExceptForShader(i, j);
+				CONST_BUFFER(ConstantBufferType::Material)->Mapping();
+				CONST_BUFFER(ConstantBufferType::Bloom)->Mapping();
+
+				_pShader->Update();
+				mpMesh->RenderInstancing(1, i);
+				mpMaterial->ClearGraphicData();
+			}
+		}
+	}
 	void MeshRenderer::RenderEffect(Camera* _pCamera)
 	{
 		AssertEx(nullptr != mpMaterial, L"MeshRenderer::Render() - Material is empty");
 		AssertEx(nullptr != mpMaterial->GetShader(), L"MeshRenderer::Render() - Shader is empty");
 		AssertEx(nullptr != mpMesh, L"MeshRenderer::Render() - Mesh is empty");
 
-		PushData();
+		PushScriptData();
 		GetTransform()->PushData(_pCamera);
 		CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
 
@@ -123,7 +171,7 @@ namespace hm
 	}
 	void MeshRenderer::RenderShadow(Camera* _pCamera)
 	{
-		PushData();
+		PushScriptData();
 		GetTransform()->PushData(_pCamera);
 		CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
 
@@ -183,7 +231,7 @@ namespace hm
 		mSubsetRenderFlags.resize(mpMesh->GetMeshContainerCount(), true);
 	}
 
-	void MeshRenderer::PushData()
+	void MeshRenderer::PushScriptData()
 	{
 		const std::vector<MonoBehavior*>& scripts = GetGameObject()->GetScripts();
 

@@ -179,6 +179,11 @@ namespace hm
 				mpDirLight = _pGameObject;
 			mLightObjects.push_back(_pGameObject);
 		}
+
+		if (nullptr != _pGameObject->GetMirror())
+		{
+			mMirrorObjects.push_back(_pGameObject);
+		}
 	}
 	void Scene::PushGameObjects(const std::vector<GameObject*>& _gameObjects)
 	{

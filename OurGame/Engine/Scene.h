@@ -98,6 +98,7 @@ namespace hm
 
 		std::vector<GameObject*> mCameraObjects;
 		std::vector<GameObject*> mLightObjects;
+		std::vector<GameObject*> mMirrorObjects;
 
 		bool mbIsBakedStaticShadow;
 		bool mbEnableDirLight;

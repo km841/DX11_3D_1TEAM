@@ -12,6 +12,7 @@
 #include "GameObject.h"
 #include "AI.h"
 #include "UIText.h"
+#include "Mirror.h"
 
 namespace hm
 {
@@ -64,6 +65,10 @@ namespace hm
 	UIText* Component::GetUIText()
 	{
 		return mpGameObject->GetUIText();
+	}
+	Mirror* Component::GetMirror()
+	{
+		return mpGameObject->GetMirror();
 	}
 	bool Component::IsPhysicsObject()
 	{

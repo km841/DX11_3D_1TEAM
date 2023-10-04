@@ -66,6 +66,7 @@ namespace hm
 		CreateConstantBuffer(RegisterCBV::b3, sizeof(BloomParams));
 		CreateConstantBuffer(RegisterCBV::b4, sizeof(NoiseParams));
 		CreateConstantBuffer(RegisterCBV::b5, sizeof(DistortionParams));
+		CreateConstantBuffer(RegisterCBV::b6, sizeof(ReflectParams));
 
 		GET_SINGLE(FontManager)->Initialize();
 		GET_SINGLE(Resources)->Initialize();

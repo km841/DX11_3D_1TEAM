@@ -26,9 +26,9 @@ namespace hm
 	}
 	void Animator::FinalUpdate()
 	{
-		mUpdateTime += DELTA_TIME;
 
 		const AnimClipInfo& animClip = mAnimClips->at(mClipIndex);
+		mUpdateTime += DELTA_TIME * animClip.playSpeed;
 		
 		if (mUpdateTime >= animClip.duration)
 		{
@@ -146,5 +146,15 @@ namespace hm
 	{
 		AssertEx(-1 != _index, L"Animator::SetLoop() - 해당 이름을 가진 애니메이션을 찾을 수 없음");
 		(*mAnimClips)[_index].bHasExit = _bFlag;
+	}
+	void Animator::SetPlaySpeed(const wstring& _animName, float _playSpeed)
+	{
+		int idx = FindAnimationIndex(_animName);
+		SetPlaySpeed(idx, _playSpeed);
+	}
+	void Animator::SetPlaySpeed(int _index, float _playSpeed)
+	{
+		AssertEx(-1 != _index, L"Animator::SetPlaySpeed() - 해당 이름을 가진 애니메이션을 찾을 수 없음");
+		(*mAnimClips)[_index].playSpeed = _playSpeed;
 	}
 }
