@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Mage_ProjectTile.h"
+#include "Mirror_ProjectTile.h"
 #include "Engine.h"
 #include "AI.h"
 #include "ChangeStateTask.h"
@@ -74,82 +74,79 @@
 #include "ClimingUpState.h"
 #include "BowState.h"
 
-
-Mage_ProjectTile::Mage_ProjectTile()
+Mirror_ProjectTile::Mirror_ProjectTile()
+	:GameObject(LayerType::PlayerCol)
 {
-	mHP = 1.f; 
-	mSpeed = 2.f;
+	mHP = 1.f;
+	mSpeed = 8.f;
 	mAttackDamage = 1;
 }
 
-Mage_ProjectTile::~Mage_ProjectTile()
+Mirror_ProjectTile::~Mirror_ProjectTile()
 {
 }
 
-void Mage_ProjectTile::Initialize()
+void Mirror_ProjectTile::Initialize()
 {
-	
-	Monster_ProjectTile::Initialize();
+	GameObject::Initialize();
 }
 
-void Mage_ProjectTile::Update()
+void Mirror_ProjectTile::Update()
 {
-	Monster_ProjectTile::Update();
+	GameObject::Update();
 }
 
-void Mage_ProjectTile::FixedUpdate()
+void Mirror_ProjectTile::FixedUpdate()
 {
-	FollowPos(); //몬스터가 플레이어 따라가는 함수
-
-	
-	Monster_ProjectTile::FixedUpdate();
+	//MirrorPos();
+	GameObject::FixedUpdate();
 }
 
-void Mage_ProjectTile::FinalUpdate()
+void Mirror_ProjectTile::FinalUpdate()
 {
-	Monster_ProjectTile::FinalUpdate();
+	GameObject::FinalUpdate();
 }
 
-void Mage_ProjectTile::Render()
+void Mirror_ProjectTile::Render()
 {
-	Monster_ProjectTile::Render();
+	GameObject::Render();
 }
 
-void Mage_ProjectTile::Destroy()
+void Mirror_ProjectTile::Destroy()
 {
-	Monster_ProjectTile::Destroy();
+	GameObject::Destroy();
 }
 
-void Mage_ProjectTile::OnCollisionEnter(Collider* _pOtherCollider)
+void Mirror_ProjectTile::OnCollisionEnter(Collider* _pOtherCollider)
 {
 }
 
-void Mage_ProjectTile::OnCollisionStay(Collider* _pOtherCollider)
+void Mirror_ProjectTile::OnCollisionStay(Collider* _pOtherCollider)
 {
 }
 
-void Mage_ProjectTile::OnCollisionExit(Collider* _pOtherCollider)
+void Mirror_ProjectTile::OnCollisionExit(Collider* _pOtherCollider)
 {
 }
 
-void Mage_ProjectTile::OnTriggerEnter(Collider* _pOtherCollider)
+void Mirror_ProjectTile::OnTriggerEnter(Collider* _pOtherCollider)
 {
-	if (LayerType::Player == _pOtherCollider->GetGameObject()->GetLayerType())
+	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		SceneType eSceneType = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 		GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(eSceneType, this);
 	}
 }
 
-void Mage_ProjectTile::OnTriggerStay(Collider* _pOtherCollider)
+void Mirror_ProjectTile::OnTriggerStay(Collider* _pOtherCollider)
 {
 }
 
-void Mage_ProjectTile::OnTriggerExit(Collider* _pOtherCollider)
+void Mirror_ProjectTile::OnTriggerExit(Collider* _pOtherCollider)
 {
 }
 
-void Mage_ProjectTile::FollowPos()
+void Mirror_ProjectTile::MirrorPos()
 {
 	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 	Vec3 myPos = GetTransform()->GetPosition();
@@ -162,31 +159,7 @@ void Mage_ProjectTile::FollowPos()
 	//dir.y = 0;
 	Vec3 Ve = dir * mSpeed;
 
-	GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
-}
-
-void Mage_ProjectTile::FollowRot()
-{
-	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
-	Vec3 myPos = GetTransform()->GetPosition();
-	Vec3 myRot = GetTransform()->GetRotation();
-	Vec3 scale = GetRigidBody()->GetGeometrySize();
-	Transform* pTr = GetTransform();
-
-
-	Vec3 dir = playerPos - myPos;
-	dir.Normalize();
-
-	Vec3 rot = Vec3(0, 0, -1);
-	double angleRadian = atan2(dir.x, dir.z) - atan2(rot.x, rot.z);
-	float angleDegree = static_cast<float>(angleRadian) * 180.f / XM_PI;
-
-	if (angleDegree < 0.f)
-		angleDegree += 360.f;
-
-	pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
-}
-
-void Mage_ProjectTile::Mirror()
-{
+	GetRigidBody()->SetVelocity(-Ve); //따라오게 만드는 코드
+	GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, false);
+	GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, false);
 }

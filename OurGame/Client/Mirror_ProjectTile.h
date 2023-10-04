@@ -1,18 +1,16 @@
 #pragma once
-#include "Monster.h"
-class Grimace :
-	public Monster
+#include "GameObject.h"
+class Mirror_ProjectTile :
+    public GameObject
 {
 public:
-	Grimace();
-	virtual ~Grimace();
-	Grimace* Clone()
+	Mirror_ProjectTile();
+	virtual ~Mirror_ProjectTile();
+	Mirror_ProjectTile* Clone()
 	{
-		Grimace* pGrimace = GameObject::Clone<Grimace>();
-		return pGrimace;
+		Mirror_ProjectTile* pMirror_projecttile = GameObject::Clone<Mirror_ProjectTile>();
+		return pMirror_projecttile;
 	}
-
-	virtual void SetBehaviorTree();
 
 public:
 	virtual void Initialize();
@@ -31,17 +29,15 @@ public:
 	virtual void OnTriggerStay(Collider* _pOtherCollider);
 	virtual void OnTriggerExit(Collider* _pOtherCollider);
 
+
 private:
-	void CreateProjectTile();
-	void MonsterAttackCol();
-private:
-	Vec3 dir;
-	Vec3 dir_backstep;
-	Vec3 dir_desh;
 
-	GameObject* pMonsterAttackCol;
-	int Health;
+	void MirrorPos();
 
-	bool isTrigger = false;
+	float mHP; // 피통
+	float mSpeed; //이동속도
+	int mAttackDamage; // 공격력
 
+	
 };
+

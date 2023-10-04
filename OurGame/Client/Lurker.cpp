@@ -487,8 +487,20 @@ void Lurker::SetBehaviorTree()
 					Animator* pAni = GetAnimator();
 
 					//이부분 중요
-					GetRigidBody()->SetVelocityExcludingColliders(-dir * 6.8f);
+					GetRigidBody()->SetVelocityExcludingColliders(-dir * 5.f);
 					GetRigidBody()->SetVelocity(dir * 6.8f);
+
+					const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+					for (int i = 0; i < gameObjects.size(); ++i)
+					{
+						if (gameObjects[i]->GetCollider())
+						{
+							if (GetCollider()->Raycast(myPos, dir, gameObjects[i]->GetCollider(), 0.5f))
+							{
+								GetRigidBody()->SetVelocity(dir * 0.f);
+							}
+						}
+					}
 
 					if (pAni->GetFrameRatio() > 0.7)
 						return BehaviorResult::Success;
