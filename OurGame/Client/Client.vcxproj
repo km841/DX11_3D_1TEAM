@@ -234,6 +234,7 @@
     <ClInclude Include="RightMap.h" />
     <ClInclude Include="RightSecretPassageMap.h" />
     <ClInclude Include="RotateKeyScript.h" />
+    <ClInclude Include="SlashGlareScript.h" />
     <ClInclude Include="SmallAttack01State_Gm.h" />
     <ClInclude Include="SmallTransEndState_Gm.h" />
     <ClInclude Include="SmallTransStartState_Gm.h" />
@@ -246,6 +247,7 @@
     <ClInclude Include="StartButtonScript.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="State_Grandma.h" />
+    <ClInclude Include="SwordGlareEffect.h" />
     <ClInclude Include="SwordHeavyEffect.h" />
     <ClInclude Include="TeleportZone.h" />
     <ClInclude Include="SwordScript.h" />
@@ -350,6 +352,7 @@
     <ClCompile Include="RightMap.cpp" />
     <ClCompile Include="RightSecretPassageMap.cpp" />
     <ClCompile Include="RotateKeyScript.cpp" />
+    <ClCompile Include="SlashGlareScript.cpp" />
     <ClCompile Include="SmallAttack01State_Gm.cpp" />
     <ClCompile Include="SmallTransEndState_Gm.cpp" />
     <ClCompile Include="SmallTransStartState_Gm.cpp" />
@@ -362,6 +365,7 @@
     <ClCompile Include="StartButtonScript.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="State_Grandma.cpp" />
+    <ClCompile Include="SwordGlareEffect.cpp" />
     <ClCompile Include="SwordHeavyEffect.cpp" />
     <ClCompile Include="SwordScript.cpp" />
     <ClCompile Include="TeleportZone.cpp" />

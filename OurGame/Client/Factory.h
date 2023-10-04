@@ -51,6 +51,7 @@ namespace hm
 		template<typename T, typename ... Types>
 		static T* CreateButtonInterface(const Vec3& _pos, const Vec2& _scale, const ButtonInfo& _info, const wstring& _imgPath = L"", Types ... _args);
 
+		void CreateSwordGlareEffect(const Vec3& pos);
 	private:
 
 	};

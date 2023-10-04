@@ -27,7 +27,7 @@ namespace hm
 		void InitCollidertAdd();
 		
 	private:
-
+		class SlashGlareScript* mpTestScript;
 	};
 }
 
