@@ -21,6 +21,7 @@ namespace hm
 		virtual Component* Clone(GameObject* _pGameObject) override;
 
 		void Start();
+		void SetEndCallback(std::function<void()> _function);
 
 
 	private:
@@ -28,6 +29,8 @@ namespace hm
 
 		TimerObject mBeginTimer;
 		TimerObject mEndTimer;
+
+		std::function<void()> mEndCallback;
 	};
 }
 

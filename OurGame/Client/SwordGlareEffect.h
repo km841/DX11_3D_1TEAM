@@ -15,6 +15,9 @@ namespace hm
 			return pEffect;
 		}
 
+		static SwordGlareEffect* Create(const Vec3& _pos);
+	
+
 	public:
 		virtual void Initialize();
 		virtual void Update();

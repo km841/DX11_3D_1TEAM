@@ -35,6 +35,9 @@ namespace hm
 
 			if (mEndTimer.IsFinished())
 			{
+				if (nullptr != mEndCallback)
+					mEndCallback();
+
 				meState = SlashGlareState::None;
 				mEndTimer.Stop();
 			}
@@ -61,6 +64,10 @@ namespace hm
 		mBeginTimer.Stop();
 		mBeginTimer.Start();
 		mEndTimer.Stop();
+	}
+	void SlashGlareScript::SetEndCallback(std::function<void()> _function)
+	{
+		mEndCallback = _function;
 	}
 }
 

@@ -105,6 +105,8 @@ namespace hm
 
 		int mBakedStaticShadowCount;
 
+		bool mbIsInit;
+
 	protected:
 		static std::vector<wstring> mDontDestroyObjectNames;
 	};

@@ -27,6 +27,7 @@ namespace hm
 		, mbIsBakedStaticShadow(false)
 		, mbEnableDirLight(true)
 		, mBakedStaticShadowCount(0)
+		, mbIsInit(false)
 	{
 	}
 	Scene::~Scene()
@@ -42,12 +43,16 @@ namespace hm
 	}
 	void Scene::Initialize()
 	{
-		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
+		if (false == mbIsInit)
 		{
-			for (GameObject* pGameObject : mGameObjects[i])
+			mbIsInit = true;
+			for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 			{
-				AssertEx(pGameObject, L"This gameobject is nullptr");
-				pGameObject->Initialize();
+				for (GameObject* pGameObject : mGameObjects[i])
+				{
+					AssertEx(pGameObject, L"This gameobject is nullptr");
+					pGameObject->Initialize();
+				}
 			}
 		}
 	}
