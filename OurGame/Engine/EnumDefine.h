@@ -214,6 +214,7 @@ namespace hm
 		Hold,
 		WhiteIn,
 		WhiteOut,
+		CameraShake,
 	};
 
 	enum

@@ -11,6 +11,7 @@
 #include "InterfaceButtonScript.h"
 #include "PaperBurnScript.h"
 #include "MonsterCrackScript.h"
+#include "MonsterHitScript.h"
 
 namespace hm
 {
@@ -100,6 +101,7 @@ namespace hm
 		pObject->SetFrustumCheckFlag(false);
 		pObject->AddComponent<PaperBurnScript>();
 		pObject->AddComponent<MonsterCrackScript>();
+		pObject->AddComponent<MonsterHitScript>();
 		pObject->GetRigidBody()->ApplyGravity();
 		pObject->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
 		pObject->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);

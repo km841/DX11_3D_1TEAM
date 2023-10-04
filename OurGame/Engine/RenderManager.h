@@ -73,6 +73,8 @@ namespace hm
 		void RemoveGroupEffect(int _groupIndex = 0);
 		void RemoveAllEffect();
 
+		void AddCameraShakeEffect(float _endTime, float _amplitude, int _groupIndex = 0);
+
 	private:
 		void DownScale();
 		void Blur();

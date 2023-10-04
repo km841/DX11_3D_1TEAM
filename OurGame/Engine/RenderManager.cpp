@@ -433,6 +433,18 @@ namespace hm
 		}
 	}
 
+	void RenderManager::AddCameraShakeEffect(float _endTime, float _amplitude, int _groupIndex)
+	{
+		for (float i = 0.f; i < _endTime; i += 0.1f)
+		{
+			ScreenEffectInfo* pInfo = new ScreenEffectInfo;
+			pInfo->eEffectType = ScreenEffectType::CameraShake;
+			pInfo->endTime = 0.1f;
+			pInfo->param1 = Vec4(_amplitude, 0.f, 1.f, 0.f);
+			AddScreenEffect(pInfo, _groupIndex);
+		}
+	}
+
 	void RenderManager::PushLightData(Scene* _pScene)
 	{
 		LightParams lightParams = {};
