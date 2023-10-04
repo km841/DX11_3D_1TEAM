@@ -3,6 +3,7 @@
 #include "Engine.h"
 #include "AI.h"
 #include "ChangeStateTask.h"
+#include "random"
 /* Resource */
 #include "MeshData.h"
 #include "Material.h"
@@ -273,8 +274,10 @@ void Mage::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (3 != animIndex)
+				if (3 != animIndex) {
+					Teleport();
 					pAnimator->Play(3, true);
+				}
 
 				return BehaviorResult::Success;
 				});
@@ -482,7 +485,7 @@ void Mage::SetBehaviorTree()
 			pAttackSequence->AddChild(pAttack_ProjectTileTask);
 			pAttackSequence->AddChild(pAttackMoveTask);
 			pAttackSequence->AddChild(pAttackTask);
-			pAttackSequence->AddChild(new ChangeStateTask(MonsterBasicState::Idle));
+			pAttackSequence->AddChild(new ChangeStateTask(MonsterBasicState::Teleport_Out));
 		}
 		pStateSelector->AddChild(pAttackSequence);
 
@@ -688,7 +691,7 @@ void Mage::CreateProjectTile()
 	PhysicsInfo physicsInfo;
 	physicsInfo.eActorType = ActorType::Kinematic;
 	physicsInfo.eGeometryType = GeometryType::Box;
-	physicsInfo.size = Vec3(0.3f, 0.3f, 0.3f);
+	physicsInfo.size = Vec3(0.3f, 3.3f, 0.3f);
 
 	Mage_ProjectTile* pProjectTile = Factory::CreateObjectHasPhysical<Mage_ProjectTile>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Monster\\_DROP_SOUL50.fbx");
 	pProjectTile->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
@@ -705,4 +708,50 @@ void Mage::CreateProjectTile()
 	pProjectTile->Initialize();
 	
 	GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pProjectTile);
+}
+
+void Mage::Teleport()
+{
+	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	Vec3 myPos = GetTransform()->GetPosition();
+	Transform* pTr = GetTransform();
+	Vec3 myRot = GetTransform()->GetRotation();
+	Vec3 scale = GetRigidBody()->GetGeometrySize();
+
+	static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 난수 엔진
+	static std::uniform_int_distribution<int> distribution(-5, 5);          // 생성 범위
+	static auto generator = std::bind(distribution, engine);
+
+	while (true)
+	{
+		float randX = generator() *2;
+		float randZ = generator() *2;
+
+		Vec3 randPos = Vec3(playerPos.x + randX, myPos.y, playerPos.z + randZ);
+
+		float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
+
+		const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+		bool bEscape = false;
+
+		for (int i = 0; i < gameObjects.size(); ++i)
+		{
+			if (gameObjects[i]->GetCollider())
+			{
+				for (size_t j = 1; j <= 8; j++)
+				{
+					if (GetCollider()->Raycast(randPos, ConvertDir(static_cast<DirectionEvasion>(j)), gameObjects[i]->GetCollider(), offset + 0.1f))
+					{
+						bEscape = true;
+					}
+				}
+			}
+		}
+
+		if (false == bEscape) {
+			pTr->SetPosition(randPos);
+			break;
+		}
+	}
+
 }

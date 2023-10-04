@@ -31,5 +31,6 @@ public:
 	virtual void OnTriggerStay(Collider* _pOtherCollider);
 	virtual void OnTriggerExit(Collider* _pOtherCollider);
 
-
+private:
+	Vec3 dir;
 };
