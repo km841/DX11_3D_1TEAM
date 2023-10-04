@@ -109,6 +109,12 @@ namespace hm
 		return screenPos;
 	}
 
+	SceneType SceneManager::GetActiveSceneType()
+	{
+		AssertEx(nullptr != mpActiveScene, L"");
+		return mpActiveScene->GetSceneType();
+	}
+
 	void SceneManager::ChangeScene(SceneType _eSceneType)
 	{
 		std::vector<GameObject*> mGameObjects = mpActiveScene->TransportDontDestroyObjects();

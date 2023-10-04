@@ -76,13 +76,12 @@ namespace hm
 	{
 		Map::Update();
 
-		if (nullptr != mpTestScript)
+
+		if (IS_DOWN(KeyType::K))
 		{
-			if (IS_DOWN(KeyType::K))
-			{
-				mpTestScript->Start();
-			}
+			SwordGlareEffect::Create(Vec3(16.1f, 2.2f, -9.8f));
 		}
+		
 	}
 
 	void Right2Map::Start()
@@ -124,14 +123,7 @@ namespace hm
 
 	void Right2Map::Exit()
 	{
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Unknown);
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Ground);
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Monster);
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::DecoObject);
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::WallObject);
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Player);
 	}
-
 
 	void Right2Map::InitObjectAdd()
 	{
@@ -854,17 +846,6 @@ namespace hm
 			pLight->SetLightRange(55.f);
 			pLight->SetLightType(LightType::PointLight);
 			AddGameObject(pGameObject);
-		}
-
-		// Slash Glare
-		{
-			SwordGlareEffect* pGlare = Factory::CreateObject<SwordGlareEffect>(Vec3(16.1f, 2.2f, -9.8f), L"SlashGlare", L"..\\Resources\\FBX\\Player\\Slash_Glare.fbx");
-			pGlare->GetTransform()->SetScale(Vec3(2.5f, 1.f, 5.f));
-			mpTestScript = pGlare->AddComponent(new SlashGlareScript);
-
-			auto t = pGlare->GetMeshRenderer()->GetMaterial()->GetTexture(0);
-
-			AddGameObject(pGlare);
 		}
 	}
 
