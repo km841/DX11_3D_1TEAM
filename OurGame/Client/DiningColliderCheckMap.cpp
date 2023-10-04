@@ -146,7 +146,7 @@ namespace sy
 				info.eGeometryType = GeometryType::Box;
 				info.size = Vec3(30.f, 0.1f, 37.f);
 
-				Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Floor.fbx");
+				Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Floor.fbx");
 
 				pFloor->GetTransform()->SetScale(Vec3(37.f, 37.f, 37.f));
 				pFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
@@ -1117,11 +1117,11 @@ namespace sy
 	{
 
 		PhysicsInfo physicsInfo;
-		physicsInfo.eActorType = ActorType::Static;
-		physicsInfo.eGeometryType = GeometryType::Mesh;
+		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(49.f, 49.f, 49.f);
 
-		pDoorCol = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(9.f, 5.8f, -14.7f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
+		pDoorCol = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(9.f, 5.8f, -14.7f), physicsInfo, L"Forward", L"");
 
 		pDoorCol->GetTransform()->SetScale(Vec3(2.f, 1.3f, 2.f));
 		pDoorCol->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
@@ -1129,11 +1129,11 @@ namespace sy
 
 		{
 			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Static;
-			physicsInfo.eGeometryType = GeometryType::Mesh;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(49.f, 49.f, 49.f);
 
-			pDoorCol = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(9.f, 5.8f, -14.7f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\BannisterStick.fbx");
+			pDoorCol = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(9.f, 5.8f, -14.7f), physicsInfo, L"Forward", L"");
 
 			pDoorCol->GetTransform()->SetScale(Vec3(2.f, 1.3f, 2.f));
 			pDoorCol->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
@@ -1154,6 +1154,7 @@ namespace sy
 			pLight->SetLightRange(50.f);
 			pLight->SetLightType(LightType::PointLight);
 			AddGameObject(pLightObject);
+			SetGizmoTarget(pLightObject);
 		}
 
 		{
@@ -1170,7 +1171,6 @@ namespace sy
 
 				yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(8.8f, -6.5f, -9.0f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map);
 				AddGameObject(pTelZone);
-				SetGizmoTarget(pTelZone);
 			}
 		}
 

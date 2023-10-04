@@ -21,12 +21,20 @@ namespace yj {
 
 		virtual void Enter();
 		virtual void Exit();
-	public:
+	private:
 		void InitObjectAdd();
 		void InitBusStart();
 
+	private:
 		Bus* pBus;
 		Elevator* eTarget;
+
+		int mSpawnPoint = -1;
+		int mBusActive = -1;
+
+		int mIntroAcive = -1;
+		int mWorkerAcive = -1;
+		int mDirectorActive = -1;
 	};
 }
 

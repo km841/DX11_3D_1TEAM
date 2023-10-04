@@ -73,6 +73,20 @@ namespace yj
 	void MainOfficeMap::Start()
 	{
 		Map::Start();
+		//if (PLAYER != nullptr)
+		//{
+		//	switch (mSpawnPoint)
+		//	{
+		//	case 0:
+		//		//PLAYER->GetTransform()->SetPosition(Vec3(15.2f,1.6f,-7.2f));
+		//		//PLAYER->GetTransform()->SetRotation(Vec3());
+		//		break;
+		//	case 1:
+		//		//PLAYER->GetTransform()->SetPosition(Vec3(-17.0f, 1.6f,-2.1f));
+		//		//PLAYER->GetTransform()->SetRotation(Vec3());
+		//		break;
+		//	}
+		//}
 	}
 
 	void MainOfficeMap::FixedUpdate()
@@ -116,27 +130,7 @@ namespace yj
 
 	void MainOfficeMap::InitObjectAdd()
 	{
-		// Player
-		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Kinematic;
-			physicsInfo.eGeometryType = GeometryType::Capsule;
-			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
-
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.0f, 0.0f, 0.0f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
-			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
-			pPlayer->AddComponent(new PaperBurnScript);
-			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
-			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
-			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
-
-			pPlayer->GetRigidBody()->ApplyGravity();
-			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-			AddGameObject(pPlayer);
-			
-			PLAYER->SetDontDestroyObject(L"Player");
-		}
+		PLAYER->SetDontDestroyObject(L"Player");
 
 		{
 			/*	CinematicCamMove* pCinematicCam = Factory::CreateObject<CinematicCamMove>(Vec3::Zero, L"Deferred", L"");
@@ -672,13 +666,13 @@ namespace yj
 			pBackUv->GetTransform()->SetScale(Vec3(5.48f, 5.48f, 5.48f));
 
 			PhysicsInfo mEntrancePInfo;
-			mEntrancePInfo.eActorType = ActorType::Static;
+			mEntrancePInfo.eActorType = ActorType::Kinematic;
 			mEntrancePInfo.eGeometryType = GeometryType::Box;
 			mEntrancePInfo.size = Vec3(3.33f, 5.7f, 2.65f);
 
 			DecoObject* pEntranceColObj = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(19.1f, 4.9f, -15.2f), mEntrancePInfo, L"Deferred", L"");
 
-			SoulDoor* pSoulDoor = Factory::CreateObject<SoulDoor>(Vec3(0, 0, 0), L"Deferred", L"", false , pDoor, pBackUv, pEntranceColObj,MapType::EntranceHallMap);
+			SoulDoor* pSoulDoor = Factory::CreateObject<SoulDoor>(Vec3(0, 0, 0), L"Deferred", L"", false , pDoor, pBackUv, pEntranceColObj,MapType::EntranceHallMap,1);
 			
 			AddGameObject(pDoor);
 			AddGameObject(pBackUv);

@@ -46,6 +46,7 @@
 #include "StartButtonScript.h"
 #include "LogoBlinkScript.h"
 #include "PlayerMoveScript.h"
+#include "PlayerMoveOverMapScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -112,7 +113,7 @@ namespace hm
 		// - RightMap
 		if (IS_DOWN(KeyType::K))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::HallColliderCheckMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::LeftSecretTrialMap);
 		}
 	}
 
@@ -274,7 +275,7 @@ namespace hm
 			// 영진
 			{
 				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(450.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
-				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"영진", MapType::Right2Map));
+				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"영진", MapType::EntranceHallMap));
 
 				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
 				pButtonScript->SetClickedCallback([=]() { pScript->Start(); });
@@ -319,6 +320,7 @@ namespace hm
 			pPlayer->SetDontDestroyObject(L"Player");
 
 			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
+			yj::PlayerMoveOverMapScript* pMoveOverSc = pPlayer->AddComponent(new yj::PlayerMoveOverMapScript);
 			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
 			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
 			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
