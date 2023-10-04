@@ -6,10 +6,11 @@
 
 namespace yj
 {
-	SpikeDoor::SpikeDoor(GameObject* _frameObj, GameObject* _doorCol)
+	SpikeDoor::SpikeDoor(GameObject* _frameObj, GameObject* _doorCol,int _keyAmount)
 	{
 		pDoorObj = _frameObj;
 		pDoorColObj = _doorCol;
+		SetRequireKey(_keyAmount);
 	}
 
 	SpikeDoor::~SpikeDoor()

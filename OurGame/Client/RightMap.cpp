@@ -21,6 +21,8 @@
 #include "Player.h"
 #include "Ground.h"
 #include "DecoObject.h"
+#include "TeleportZone.h"
+#include "SpikeDoor.h"
 
 /* Component */
 #include "Collider.h"
@@ -55,8 +57,21 @@ namespace yj
 
 	void RightMap::Start()
 	{
-		
 		Map::Start();
+		if (PLAYER != nullptr)
+		{
+			switch (mSpawnPoint)
+			{
+			case 0:
+				//PLAYER->GetTransform()->SetPosition(Vec3(15.2f,1.6f,-7.2f));
+				//PLAYER->GetTransform()->SetRotation(Vec3());
+				break;
+			case 1:
+				//PLAYER->GetTransform()->SetPosition(Vec3(-17.0f, 1.6f,-2.1f));
+				//PLAYER->GetTransform()->SetRotation(Vec3());
+				break;
+			}
+		}
 	}
 
 	void RightMap::Update()
@@ -167,18 +182,21 @@ namespace yj
 	void RightMap::Enter()
 	{
 			gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
-			{
+			InitObjectAdd();
+			InitColliderAdd();
+			FuncObjectAdd();
+	}
 
-				Player* pPlayer = Factory::CreateObject<Player>(Vec3(0.f, 1.5f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
-				pPlayer->GetTransform()->SetScale(Vec3(2.0f, 2.0f, 2.0f));
-
-				AddGameObject(pPlayer);
-			}
+	void RightMap::Exit()
+	{
+	}
+	void RightMap::InitObjectAdd()
+	{
 		{
 
 			Ground* pGround = Factory::CreateObject<Ground>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\RightChairRoomFloor.fbx");
-			pGround->GetTransform()->SetPosition(Vec3(0.0f,0.2f,0.0f));
-			pGround->GetTransform()->SetScale(Vec3(20,20,20));
+			pGround->GetTransform()->SetPosition(Vec3(0.0f, 0.2f, 0.0f));
+			pGround->GetTransform()->SetScale(Vec3(20, 20, 20));
 
 			AddGameObject(pGround);
 		}
@@ -404,7 +422,7 @@ namespace yj
 
 		std::vector<GameObject*> mEmptyBoxList;
 
-		for(int i =0; i<3;i++)
+		for (int i = 0; i < 3; i++)
 		{
 			DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\EmptyBox.fbx");
 
@@ -417,7 +435,7 @@ namespace yj
 		mEmptyBoxList[0]->GetTransform()->SetScale(Vec3(35.0f, 35.0f, 35.0f));
 
 		mEmptyBoxList[1]->GetTransform()->SetPosition(Vec3(9.35f, 3.4f, -0.1f));
-		mEmptyBoxList[1]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f,0.0f));
+		mEmptyBoxList[1]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
 		mEmptyBoxList[1]->GetTransform()->SetScale(Vec3(35.0f, 35.0f, 35.0f));
 
 		mEmptyBoxList[2]->GetTransform()->SetPosition(Vec3(11.0f, 3.4f, -0.7f));
@@ -441,7 +459,7 @@ namespace yj
 		mTwoTierShelfTopList[1]->GetTransform()->SetRotation(Vec3(0.0f, 90.0f, 0.0f));
 		mTwoTierShelfTopList[1]->GetTransform()->SetScale(Vec3(5.8f, 6.5f, 6.5f));
 
-	
+
 
 		{
 			DecoObject* pJewellery = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\Jewellery.fbx");
@@ -465,13 +483,13 @@ namespace yj
 		}
 
 		std::vector<GameObject*> mPOTHEALGenericVariantList;
-		for(int i =0;i<3;i++)
+		for (int i = 0; i < 3; i++)
 		{
 			DecoObject* pPOTHEALGenericVariant = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\POT_HEAL_Generic_Variant.fbx");
 
 			AddGameObject(pPOTHEALGenericVariant);
 
-			
+
 			mPOTHEALGenericVariantList.push_back(pPOTHEALGenericVariant);
 		}
 
@@ -507,7 +525,6 @@ namespace yj
 			pBook3->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
 			pBook3->GetTransform()->SetScale(Vec3(32.0f, 32.0f, 32.0f));
 
-			SetGizmoTarget(pBook3);
 		}
 
 		{
@@ -547,34 +564,168 @@ namespace yj
 			pScrolls6->GetTransform()->SetPosition(Vec3(13.5f, 3.1f, -3.2f));
 			pScrolls6->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
 			pScrolls6->GetTransform()->SetScale(Vec3(25.0f, 25.0f, 25.0f));
-		
+
 		}
 
 		{
-			DecoObject* pSpikeDoor = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\SpikeDoor.fbx");
+			DecoObject* pSpike = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\SpikeDoor.fbx");
 
-			AddGameObject(pSpikeDoor);
+			AddGameObject(pSpike);
 
-			pSpikeDoor->GetTransform()->SetPosition(Vec3(-17.5f, 2.8f, 6.9f));
-			pSpikeDoor->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-			pSpikeDoor->GetTransform()->SetScale(Vec3(22.0f, 22.0f, 22.0f));
-
-			SetGizmoTarget(pSpikeDoor);
-		}
-
-		{
-		/*	DecoObject* pFireHolder = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\Holder.fbx");
-
-			AddGameObject(pFireHolder);
-
-			pFireHolder->GetTransform()->SetPosition(Vec3(-0.6f, 2.9f, 1.93715096e-07f));
-			pFireHolder->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-			pFireHolder->GetTransform()->SetScale(Vec3(19.0f, 19.0f, 19.0f));
-			Target = pFireHolder;*/
+			pSpike->GetTransform()->SetPosition(Vec3(-17.5f, 2.8f, 6.9f));
+			pSpike->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+			pSpike->GetTransform()->SetScale(Vec3(22.0f, 22.0f, 22.0f));
+			pSpikeDoor = pSpike;
 		}
 	}
-
-	void RightMap::Exit()
+	void RightMap::InitColliderAdd()
 	{
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(47.24f, 1.07f, 24.44f);
+
+			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-3.2f, 0.5f, -4.9f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pGround);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0f, 4.73f, 15.33f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-17.9f, 3.2f, -12.3f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pWall);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0f, 4.73f, 11.5f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(15.2f, 3.2f, 0.5f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pWall);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0f, 1.0f, 1.0f);
+
+			WallObject* pSpawnPoint = Factory::CreateObjectHasPhysical<WallObject>(Vec3(15.2f, 3.2f, 0.5f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pSpawnPoint);
+			SetGizmoTarget(pSpawnPoint);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0f, 4.73f, 10.35f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(15.2f, 3.2f, -14.6f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pWall);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(36.72f, 5.28f, 1.0f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-1.3f, 3.6f, -17.7f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pWall);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(36.72f, 5.28f, 1.0f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-1.3f, 3.6f, 7.3f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pWall);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.82f, 5.28f, 2.5f);
+
+			DecoObject* pWall = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(-1.2f, 3.6f, -7.0f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pWall);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(5.65f, 5.28f, 2.5f);
+
+			DecoObject* pWall = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(9.3f, 3.6f, -16.8f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pWall);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(5.65f, 5.28f, 3.5f);
+
+			DecoObject* pWall = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(11.9f, 3.6f, -14.2f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pWall);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(0.56f, 5.28f, 7.35f);
+
+			DecoObject* pWall = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(-17.7f, 3.6f, 3.7f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pWall);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(0.56f, 4.7f, 4.41f);
+
+			DecoObject* pSpikeCol = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(-17.7f, 3.3f, -2.3f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pSpikeCol);
+			pSpikeDoorCol = pSpikeCol;
+		}
+	}
+	void RightMap::FuncObjectAdd()
+	{
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0, 3.8f, 3.5f);
+
+			TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<TeleportZone>(Vec3(-19.1f, 2.8f, -2.1f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map);
+			AddGameObject(pTelZone);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0, 3.8f, 3.5f);
+
+			TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<TeleportZone>(Vec3(16.8f, 2.8f, -7.3f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map);
+			AddGameObject(pTelZone);
+		}
+		{
+			SpikeDoor* pDoor = Factory::CreateObject<yj::SpikeDoor>(Vec3(0.0f, 0.0f, 0.0f), L"Deferred", L"", false, pSpikeDoor, pSpikeDoorCol,2);
+			AddGameObject(pDoor);
+		}
 	}
 }

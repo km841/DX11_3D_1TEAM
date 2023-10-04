@@ -25,6 +25,7 @@
 #include "Npc.h"
 #include "Monster.h"
 #include "SwordHeavyEffect.h"
+#include "TeleportZone.h"
 
 /* Component */
 #include "Collider.h"
@@ -65,8 +66,7 @@ namespace jh
 
 	void HallColliderCheckMap::Start()
 	{
-		SetDirLightPosition(Vec3(20.7f, 53.4f, 69.3f));
-		SetDirLightRotation(Vec3(38.3f, 199.57f, 167.5f));
+		LightDirSet();
 	}
 
 	void HallColliderCheckMap::Update()
@@ -102,19 +102,15 @@ namespace jh
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 	}
 
+	void HallColliderCheckMap::LightDirSet()
+	{
+		SetDirLightPosition(Vec3(20.7f, 53.4f, 69.3f));
+		SetDirLightRotation(Vec3(38.3f, 199.57f, 167.5f));
+	}
+
 	void HallColliderCheckMap::InitObjectAdd()
 	{
-		// Ground
-		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Static;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(100.f, 1.f, 100.f);
-			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 4.f, 0.f), physicsInfo, L"Deferred", L"");
-			pGround->GetTransform()->SetScale(Vec3(50.f, 1.f, 50.f));
-
-			AddGameObject(pGround);
-		}
+	
 
 		// Door
 		{
@@ -1829,9 +1825,276 @@ namespace jh
 		}
 	}
 
+
+
 	void HallColliderCheckMap::InitColliderAdd()
 	{
+		// Ground
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(36.f, 1.f, 36.f);
+			Ground* pStGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(2.9f,-5.9f, -47.6f), physicsInfo, L"Forward", L"");
 
+			AddGameObject(pStGround);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(7.2f, 1.f, 21.6f);
+			Ground* pStairR = Factory::CreateObjectHasPhysical<Ground>(Vec3(16.7f, -1.2f, -20.4f), physicsInfo, L"Forward", L"");
+			pStairR->GetTransform()->SetRotation(Vec3(332.0f,0.0f, 0.0f));
+
+			AddGameObject(pStairR);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(7.2f, 1.f, 21.6f);
+			Ground* pStairL = Factory::CreateObjectHasPhysical<Ground>(Vec3(-10.2f, -1.2f, -20.4f), physicsInfo, L"Forward", L"");
+			pStairL->GetTransform()->SetRotation(Vec3(332.0f, 0.0f, 0.0f));
+
+			AddGameObject(pStairL);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(19.6f, 1.f, 23.f);
+			Ground* pNdFGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(2.9f, 3.8f, -19.9f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pNdFGround);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(53.0f, 1.f, 32.31f);
+			Ground* pNdFGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(2.9f, 3.8f, 5.1f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pNdFGround);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.9f, 1.f, 30.7f);
+			Ground* pNdFGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(2.9f, 3.8f, 5.1f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pNdFGround);
+			SetGizmoTarget(pNdFGround);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(7.2f, 1.f, 21.6f);
+			Ground* pNdStairR = Factory::CreateObjectHasPhysical<Ground>(Vec3(14.0f, 8.6f, 30.8f), physicsInfo, L"Forward", L"");
+			pNdStairR->GetTransform()->SetRotation(Vec3(333.0f, 0.0f, 0.0f));
+
+			AddGameObject(pNdStairR);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(7.2f, 1.f, 21.6f);
+			Ground* pNdStairL = Factory::CreateObjectHasPhysical<Ground>(Vec3(-8.1f, 8.6f, 30.8f), physicsInfo, L"Forward", L"");
+			pNdStairL->GetTransform()->SetRotation(Vec3(333.0f, 0.0f, 0.0f));
+
+			AddGameObject(pNdStairL);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(54.76f, 1.f, 19.05f);
+			Ground* pRdFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(2.9f, 13.5f, 50.2f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pRdFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(5.47f, 14.36f, 19.05f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-14.0f,1.0f, -54.0f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(10.24f, 22.982f, 51.43f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(24.5f, 3.4f, -35.8f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(7.168f, 22.982f, 12.4472f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(33.2f, 3.4f, -4.3f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(7.168f, 22.982f, 12.4472f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(33.2f, 3.4f, 13.6f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(7.168f, 22.982f, 44.81f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(33.2f, 9.1f, 38.6f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(5.6f, 22.982f, 22.51f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-15.1f, 6.1f, -20.2f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(5.6f, 22.982f, 22.51f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-18.9f, 6.1f, -36.4f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(11.76f, 19.3f, 23.7f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-16.5f, 4.4f, 31.7f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(16.3156f, 19.3f, 2.37f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(3.1f, 7.9f, 40.2f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.06, 19.3f, 19.72f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-4.5f, 7.9f, 30.8f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.06, 19.3f, 19.72f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(10.8f, 7.9f, 30.8f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.06, 19.3f, 19.72f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(17.8f, 7.9f, 30.8f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.06, 19.3f, 19.72f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(12.2f, -0.6f, -19.1f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.06, 19.3f, 19.72f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(12.2f, -0.6f, -19.1f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.06, 19.3f, 19.72f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-6.1f, -0.6f, -19.1f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.06, 24.1f, 66.16f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-22.8f, 16.2f, 23.5f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(15.26, 8.43f, 1.98f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-7.3f, -2.5f, -63.0f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(15.26, 8.43f, 1.98f);
+			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(13.7f, -2.5f, -63.0f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pStLFloor);
+			SetGizmoTarget(pStLFloor);
+		}
 	}
 
 	void HallColliderCheckMap::FuncObjectAdd()
@@ -1848,7 +2111,26 @@ namespace jh
 			pLight->SetLightRange(22.f);
 			pLight->SetLightType(LightType::PointLight);
 			AddGameObject(pLightObject);
-			SetGizmoTarget(pLightObject);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(5.53, 3.8f, 2.625f);
+
+			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(3.1f, -3.7f, -64.8f), physicsInfo, L"Forward", L"", false, MapType::Right2Map);
+			AddGameObject(pTelZone);
+			SetGizmoTarget(pTelZone);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.21f, 3.8f, 5.51f);
+
+			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(34.7f, 6.1f, 4.7f), physicsInfo, L"Forward", L"", false, MapType::Right2Map);
+			AddGameObject(pTelZone);
+			SetGizmoTarget(pTelZone);
 		}
 	}
 

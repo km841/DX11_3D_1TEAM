@@ -589,7 +589,6 @@ void EntranceHallMap::InitObjectAdd()
 			AddGameObject(pTelZone);
 			SetGizmoTarget(pTelZone);
 		}
-
 	}
 }
 

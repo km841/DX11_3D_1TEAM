@@ -10,7 +10,7 @@ namespace yj
 	{
 	public:
 
-		SpikeDoor(GameObject* _frameObj, GameObject* _doorCol);
+		SpikeDoor(GameObject* _frameObj, GameObject* _doorCol,int _keyAmount);
 		virtual ~SpikeDoor();
 
 		virtual void Initialize();

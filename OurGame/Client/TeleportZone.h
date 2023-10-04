@@ -14,12 +14,13 @@ namespace yj
 		virtual void Update();
 
 	private:
+		bool CheckPlayerIn();
+		void ChangeScene();
+	private:
 		MapType mMapType;
 		
 		bool isActive = false;
-		bool CheckPlayerIn();
-		void ChangeScene();
-
+		int mEnterNum = -1;
 	};
 }
 

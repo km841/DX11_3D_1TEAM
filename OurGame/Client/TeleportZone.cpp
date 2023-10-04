@@ -1,9 +1,15 @@
 #include "pch.h"
+
 #include "TeleportZone.h"
+
 #include "RigidBody.h"
 #include "Collider.h"
+
 #include "RenderManager.h"
 #include "EventManager.h"
+
+#include "Player.h"
+#include "PlayerMoveOverMapScript.h"
 
 namespace yj
 {
@@ -48,5 +54,6 @@ namespace yj
 	void TeleportZone::ChangeScene()
 	{
 		GET_SINGLE(EventManager)->PushSceneChangeEvent(mMapType);
+		//PLAYER->GetScript<PlayerMoveOverMapScript>()->SetMoveOverNum(0);
 	}
 }

@@ -22,6 +22,13 @@ namespace yj
 
 		GameObject* Target;
 
+	private:
+		void InitObjectAdd();
+		void InitColliderAdd();
+		void FuncObjectAdd();
+	private:
+		GameObject* pSpikeDoor;
+		GameObject* pSpikeDoorCol;
+		int mSpawnPoint = -1;
 	};
-
 }
