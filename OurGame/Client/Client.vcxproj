@@ -203,6 +203,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MonsterCrackScript.h" />
+    <ClInclude Include="MonsterKeyScript.h" />
     <ClInclude Include="Monster_Player_TestScene.h" />
     <ClInclude Include="MoveState.h" />
     <ClInclude Include="Npc.h" />
@@ -215,6 +216,7 @@
     <ClInclude Include="PlacementScript.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerColScript.h" />
+    <ClInclude Include="PlayerMoveOverMapScript.h" />
     <ClInclude Include="PlayerMoveScript.h" />
     <ClInclude Include="PlayerSlashScript.h" />
     <ClInclude Include="PrefabManager.h" />
@@ -308,6 +310,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MonsterCrackScript.cpp" />
+    <ClCompile Include="MonsterKeyScript.cpp" />
     <ClCompile Include="Monster_Player_TestScene.cpp" />
     <ClCompile Include="MoveState.cpp" />
     <ClCompile Include="Npc.cpp" />
@@ -323,6 +326,7 @@
     <ClCompile Include="PlacementScript.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerColScript.cpp" />
+    <ClCompile Include="PlayerMoveOverMapScript.cpp" />
     <ClCompile Include="PlayerMoveScript.cpp" />
     <ClCompile Include="PlayerSlashScript.cpp" />
     <ClCompile Include="PrefabManager.cpp" />
