@@ -45,7 +45,7 @@ namespace hm
 	void Mirror::CreateReflectPlane()
 	{
 		Vec3 pos = GetTransform()->GetPosition();
-		mReflectPlane = Plane(pos, Vec3(0.f, 0.f, 1.f));
+		mReflectPlane = Plane(pos, Vec3(-1.f, 0.f, 0.f));
 		//mReflectMatrix = Matrix::CreateReflection(mReflectPlane);
 		mReflectMatrix = Matrix::Identity;
 	}

@@ -63,6 +63,7 @@ namespace hm
 		* RenderTargetView 뿐만 아니라 DepthStencilView도 초기화한다.
 		*/
 		void ClearRenderTargetView();
+		void ClearDepthView();
 
 		void SetClearColor(Vec4 _color);
 		void SetClearColor(int _index, Vec4 _color);
