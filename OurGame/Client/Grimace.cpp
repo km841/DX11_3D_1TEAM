@@ -1178,7 +1178,7 @@ void Grimace::FinalUpdate()
 
 void Grimace::Render()
 {
-	FONT->DrawString(std::to_wstring(Health), 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
+	//FONT->DrawString(std::to_wstring(Health), 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
 
 
 	Monster::Render();

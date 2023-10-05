@@ -330,7 +330,7 @@ namespace hm
 
 		Vec2 Resolution = gpEngine->GetResolution();
 		ImGui::SetNextWindowPos(ImVec2(Resolution.x - 300.f, 0));
-		ImGui::SetNextWindowSize(ImVec2(300.f, 520.f));
+		ImGui::SetNextWindowSize(ImVec2(300.f, 1024.f));
 
 		static int selectItemIdx = 0;
 		static int selectMeshIdx = 0;
@@ -351,7 +351,7 @@ namespace hm
 				ImGui::Text("Animation Tool");
 				ImGui::Text("Items:");
 
-				ImGui::BeginChild("ListBox", ImVec2(250, 200), true);
+				ImGui::BeginChild("ListBox", ImVec2(250, 400), true);
 				for (int i = 0; i < animNames.size(); i++) {
 					if (ImGui::Selectable((std::to_string(i) + " : " + animNames[i]).c_str(), i == selectItemIdx)) {
 						selectItemIdx = i;

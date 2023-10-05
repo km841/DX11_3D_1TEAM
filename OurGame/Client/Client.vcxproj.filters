@@ -319,6 +319,12 @@
     <ClInclude Include="Monster_ProjectTile.h">
       <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
     </ClInclude>
+    <ClInclude Include="LORD_BOSS.h">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
+    </ClInclude>
+    <ClInclude Include="LORD_BOSS_ROLL.h">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -620,7 +626,7 @@
     <ClCompile Include="SwordGlareEffect.cpp" />
     <ClCompile Include="SpiderWeb.cpp">
       <Filter>소스 파일\GameObject\Dungeon</Filter>
-     </ClCompile>
+    </ClCompile>
     <ClCompile Include="MonsterColScript.cpp">
       <Filter>소스 파일\GameObject\Monster\Script</Filter>
     </ClCompile>
@@ -635,6 +641,12 @@
     </ClCompile>
     <ClCompile Include="Monster_ProjectTile.cpp">
       <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
+    </ClCompile>
+    <ClCompile Include="LORD_BOSS.cpp">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
+    </ClCompile>
+    <ClCompile Include="LORD_BOSS_ROLL.cpp">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -717,6 +729,9 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Monster\ProjectTile">
       <UniqueIdentifier>{1104afcb-6640-47cb-84bc-98be8ab571a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Monster\LOAD_BOSS">
+      <UniqueIdentifier>{5839635a-2e12-444c-bad2-f39b7cb653d8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -421,7 +421,7 @@ namespace hm
 					if (2 != animIndex) {
 						//초기화 중요
 						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
-						GetTransform()->SetRelativePosition(Vec3(0.f, 0.f, 0.f));
+						GetTransform()->SetRelativePosition(Vec3(0.f, -1.f, 0.f));
 						isRoll = true;
 						isRollStay = true;
 						pAnimator->Play(2, true);

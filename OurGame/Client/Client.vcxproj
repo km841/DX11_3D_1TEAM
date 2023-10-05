@@ -199,7 +199,9 @@
     <ClInclude Include="LadderCollider.h" />
     <ClInclude Include="LeftSecretFightMap.h" />
     <ClInclude Include="LeftSecretTrialMap.h" />
+    <ClInclude Include="LORD_BOSS.h" />
     <ClInclude Include="LogoBlinkScript.h" />
+    <ClInclude Include="LORD_BOSS_ROLL.h" />
     <ClInclude Include="Lurker.h" />
     <ClInclude Include="Mage.h" />
     <ClInclude Include="MageColScript.h" />
@@ -319,7 +321,9 @@
     <ClCompile Include="LadderCollider.cpp" />
     <ClCompile Include="LeftSecretFightMap.cpp" />
     <ClCompile Include="LeftSecretTrialMap.cpp" />
+    <ClCompile Include="LORD_BOSS.cpp" />
     <ClCompile Include="LogoBlinkScript.cpp" />
+    <ClCompile Include="LORD_BOSS_ROLL.cpp" />
     <ClCompile Include="Lurker.cpp" />
     <ClCompile Include="Mage.cpp" />
     <ClCompile Include="MageColScript.cpp" />
