@@ -324,6 +324,7 @@ void Bat::SetBehaviorTree()
 				GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
 
 				Transform* pTr = GetTransform();
+				Vec3 Rot = pTr->GetRotation();
 				Vec3 rot = Vec3(0, 0, -1);
 				double angleRadian = atan2(dir.x, dir.z) - atan2(rot.x, rot.z);
 				float angleDegree = static_cast<float>(angleRadian) * 180.f / XM_PI;
@@ -331,9 +332,23 @@ void Bat::SetBehaviorTree()
 				if (angleDegree < 0.f)
 					angleDegree += 360.f;
 
+				//int sum = 1;
+				//int miner = -1;
+				//
+				//if (Rot.z + 5 < angleDegree)
+				//	pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + sum));
+				//else if(Rot.z - 5 > angleDegree)
+				//	pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + miner));
+				//else if(Rot.z == angleDegree)
+				//	pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
+
+		
 				//몬스터의 고개를 돌리는 코드
 				pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
 				
+			    //FONT->DrawString(std::to_wstring(Rot.z), 30.f, Vec3(50.f, 860.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
+				//FONT->DrawString(std::to_wstring(angleDegree), 30.f, Vec3(50.f, 830.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
+
 				return BehaviorResult::Success;
 			});
 
@@ -551,6 +566,8 @@ void Bat::FinalUpdate()
 
 void Bat::Render()
 {
+	
+
 	Monster::Render();
 }
 

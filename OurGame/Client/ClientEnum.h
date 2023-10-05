@@ -133,5 +133,24 @@ enum class MonsterBasicState
 	Defend_Break,
 	Dazed,
 	//dead
+
+	//Idle //LOAD_BOSS
+	Melee_Chain,
+	Silent_Clap,
+	Snap_Once,
+	Mega_Aoe,
+	Backswing_Left,
+	Backswing_Right,
+	Roll_Start,
+	Roll_01,
+	Roll_02,
+	Roll_03,
+	Roll_End,
+	Laser_Start,
+	Laser,
+	Laser_End,
+	Fall_Loop,
+	Land_Slam,
+
 	
 };
