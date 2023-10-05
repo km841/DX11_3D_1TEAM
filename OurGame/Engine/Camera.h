@@ -63,6 +63,7 @@ namespace hm
         const std::vector<GameObject*>& GetForwardObjects() { return mForwardObjects; }
         const std::vector<GameObject*>& GetDeferredObjects() { return mDeferredObjects; }
         const std::vector<GameObject*>& GetEffectObjects() { return mEffectObjects; }
+        const std::vector<GameObject*>& GetReflectObject() { return mReflectObjects; }
 
         void ZSortGroup(std::vector<GameObject*>& _gameObjects) { std::sort(_gameObjects.begin(), _gameObjects.end(), ZSort); }
         static bool ZSort(GameObject* _pFirst, GameObject* _pSecond);

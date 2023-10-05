@@ -76,6 +76,7 @@ namespace hm
 		void AddCameraShakeEffect(float _endTime, float _amplitude, int _groupIndex = 0);
 		void AddChromaticEffect(float _endTime, std::function<void()> _startCallback= nullptr, std::function<void()> _endCallback = nullptr, int _groupIndex = 0);
 
+		void SetTestMirror(GameObject* _pGameObject) { mpTestMirror = _pGameObject; }
 	private:
 		void DownScale();
 		void Blur();
@@ -94,6 +95,7 @@ namespace hm
 
 		void PostProcessInit();
 		void MirrorInit();
+
 
 	private:
 		// Bloom
@@ -158,6 +160,11 @@ namespace hm
 		ComPtr<ID3D11DepthStencilState> m_maskDSS; // 스텐실버퍼에 표시
 		ComPtr<ID3D11DepthStencilState> m_drawMaskedDSS; // 스텐실 표시된 곳만
 		ComPtr<ID3D11BlendState> m_mirrorBS;
+		
+		SimpleMath::Plane mReflectPlane;
+		Matrix mReflectMatrix;
+
+		class GameObject* mpTestMirror;
 		
 	};
 

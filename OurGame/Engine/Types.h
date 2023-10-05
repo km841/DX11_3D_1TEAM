@@ -219,6 +219,8 @@ struct alignas(16) NoiseParams
 struct alignas(16) ReflectParams
 {
 	Matrix reflectMatrix;
+	int use;
+	Vec3 padding;
 };
 
 struct ScreenEffectInfo

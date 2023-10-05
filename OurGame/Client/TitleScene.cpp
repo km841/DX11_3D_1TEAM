@@ -85,7 +85,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::RightSecretPassageMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
 		}
 
 		// 지형
@@ -208,7 +208,7 @@ namespace hm
 			// 현모
 			{
 				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(-450.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
-				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"현모", MapType::Right2Map));
+				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"현모", MapType::Monster_Player_Test));
 
 				// 클릭 기능을 스크립트로 구현
 				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
@@ -333,7 +333,10 @@ namespace hm
 			//SetMeshTarget(pPlayer);
 		}
 
-
+		AddSceneChangeCallback(L"플레이어 충돌 초기화", []() 
+			{
+				GET_SINGLE(CollisionManager)->ClearAllCollisionForObject(PLAYER); 
+			});
 
 	}
 

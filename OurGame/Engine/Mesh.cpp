@@ -36,13 +36,20 @@ namespace hm
 		UINT stride = sizeof(Vertex);
 		UINT offset = 0;
 
-		CONTEXT->IASetVertexBuffers(0, 1, mMeshContainerVec[0]->vertexBufferInfo.pBuffer.GetAddressOf(), &stride, &offset);
+		UINT32 meshCount = mMeshContainerVec.size();
 
-		for (int i = 0; i < mMeshContainerVec[0]->indexBufferGroup.size(); ++i)
+		for (UINT32 c = 0; c < meshCount; ++c)
 		{
-			CONTEXT->IASetIndexBuffer(mMeshContainerVec[0]->indexBufferGroup[i].pBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-			CONTEXT->DrawIndexed(mMeshContainerVec[0]->indexBufferGroup[i].count, 0, 0);
+			CONTEXT->IASetVertexBuffers(0, 1, mMeshContainerVec[c]->vertexBufferInfo.pBuffer.GetAddressOf(), &stride, &offset);
+
+			for (int i = 0; i < mMeshContainerVec[c]->indexBufferGroup.size(); ++i)
+			{
+				CONTEXT->IASetIndexBuffer(mMeshContainerVec[c]->indexBufferGroup[i].pBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+				CONTEXT->DrawIndexed(mMeshContainerVec[c]->indexBufferGroup[i].count, 0, 0);
+			}
 		}
+
+
 	}
 	void Mesh::Render(int _index)
 	{

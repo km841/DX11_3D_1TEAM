@@ -18,6 +18,7 @@
 namespace hm
 {
 	std::vector<wstring> Scene::mDontDestroyObjectNames;
+	std::map<wstring, std::function<void()>> Scene::mSceneChangeCallbackMap;
 	
 	Scene::Scene(SceneType _eSceneType)
 		: meSceneType(_eSceneType)
@@ -268,6 +269,25 @@ namespace hm
 	{
 		DeleteGameObjects(GetGameObjectsRef(_eLayerType));
 	}
+	void Scene::AddSceneChangeCallback(const wstring& _name, std::function<void()> _function)
+	{
+		AssertEx(nullptr != _function, L"Scene::AddSceneChangeCallback() - 콜백이 nullptr임");
+
+		auto iter = mSceneChangeCallbackMap.find(_name);
+		auto endIter = mSceneChangeCallbackMap.end();
+		AssertEx(iter == endIter, L"Scene::AddSceneChangeCallback() - 이미 등록된 콜백 이름");
+
+		mSceneChangeCallbackMap.insert(std::make_pair(_name, _function));
+	}
+
+	void Scene::RemoveSceneChangeCallback(const wstring& _name)
+	{
+		auto iter = mSceneChangeCallbackMap.find(_name);
+		auto endIter = mSceneChangeCallbackMap.end();
+		if (iter == endIter)
+			mSceneChangeCallbackMap.erase(iter);
+	}
+
 	const std::vector<GameObject*>& Scene::GetGameObjects(LayerType _eLayerType) const
 	{
 		return mGameObjects[static_cast<int>(_eLayerType)];

@@ -14,6 +14,7 @@
 #include "StructuredBuffer.h"
 #include "Timer.h"
 #include "Mirror.h"
+#include "Animator.h"
 
 
 namespace hm
@@ -284,14 +285,58 @@ namespace hm
 
 	void RenderManager::RenderMirror(Scene* _pScene)
 	{
-		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::ScreenEffect)->OMSetRenderTarget();
+		if (nullptr == mpTestMirror)
+			return;
+		Camera* pMainCam = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera();
 
-		for (auto pMirror : _pScene->mMirrorObjects)
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::ScreenEffect)->OMSetRenderTarget();
+		CONTEXT->OMSetDepthStencilState(m_maskDSS.Get(), 1);
+		CONTEXT->RSSetState(m_solidRS.Get());
+
+		mpTestMirror->GetTransform()->PushData(pMainCam);
+		shared_ptr<Mesh> pMesh = mpTestMirror->GetMeshRenderer()->GetMesh();
+		shared_ptr<Material> pMaterial = mpTestMirror->GetMeshRenderer()->GetMaterial();
+		shared_ptr<Shader> pShader = pMaterial->GetShader();
+
+		pMaterial->PushTestData();
+		pShader->TestUpdate();
+		pMesh->Render();
+
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::ScreenEffect)->ClearDepthView();
+		CONTEXT->OMSetDepthStencilState(m_drawMaskedDSS.Get(), 1);
+		CONTEXT->RSSetState(m_solidCCWRS.Get());
+
+		//Vec3 pos = mpTestMirror->GetTransform()->GetPosition();
+		//SimpleMath::Plane p(pos, Vec3(0.f, 1.f, 0.f));
+		//ReflectParams params = {};
+		//params.reflectMatrix = Matrix::Identity;
+		//params.use = 1;
+		//CONST_BUFFER(ConstantBufferType::Reflect)->PushData(&params, sizeof(ReflectParams));
+		//CONST_BUFFER(ConstantBufferType::Reflect)->Mapping();
+
+		auto reflectObjects = pMainCam->GetReflectObject();
+		for (auto pObject : reflectObjects)
 		{
-			pMirror->GetMirror()->RenderMasking(_pScene->GetMainCamera()->GetCamera());
-			pMirror->GetMirror()->RenderReflect(_pScene->GetMainCamera()->GetCamera());
-			//pMirror->GetMeshRenderer()->Render(_pScene->GetMainCamera()->GetCamera());
+			pObject->GetTransform()->PushData(pMainCam);
+			shared_ptr<Mesh> pObjectMesh = pObject->GetMeshRenderer()->GetMesh();
+			shared_ptr<Material> pObjectMaterial = pObject->GetMeshRenderer()->GetMaterial();
+
+			if (pObject->GetAnimator())
+			{
+				pObject->GetAnimator()->PushData();
+				pObjectMaterial->SetIntAllSubset(1, 1);
+			}
+
+			pObjectMaterial->PushTestData();
+			GET_SINGLE(Resources)->Get<Shader>(L"Forward")->TestUpdate();
+			pObjectMesh->Render();
 		}
+
+		//params.reflectMatrix = Matrix::Identity;
+		//params.use = 0;
+		//CONST_BUFFER(ConstantBufferType::Reflect)->PushData(&params, sizeof(ReflectParams));
+		//CONST_BUFFER(ConstantBufferType::Reflect)->Mapping();
+
 	}
 
 	void RenderManager::RenderFinal()
@@ -889,7 +934,7 @@ namespace hm
 		rastDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
 		rastDesc.FrontCounterClockwise = false;
 		rastDesc.DepthClipEnable = true;
-		rastDesc.MultisampleEnable = true;
+		rastDesc.MultisampleEnable = false;
 
 		hr = DEVICE->CreateRasterizerState(&rastDesc, m_solidRS.GetAddressOf());
 		AssertEx(SUCCEEDED(hr), L"RenderManager::MirrorInit() - 초기화 실패");

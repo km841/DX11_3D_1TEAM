@@ -52,7 +52,7 @@ VS_OUT VS_Main(VS_IN _in)
         if (g_int_1 == 1)
             Skinning(_in.pos, _in.normal, _in.tangent, _in.weight, _in.indices);
         
-        if (g_int_2 == 1)
+        if (g_reflect_use == 1)
         {
             row_major matrix reflect_matWV = g_matWorld * g_reflect_mat * g_matView;
             row_major matrix reflect_matVP = g_reflect_mat * g_matView * g_matProjection;
