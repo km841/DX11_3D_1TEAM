@@ -115,6 +115,7 @@ namespace jh
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Obstacle, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PlayerCol, LayerType::DecoObject);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::Ground);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::WallObject);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::PotCell);
 
 		//배경맵 하얀색으로 만들어주는 코드
@@ -395,7 +396,7 @@ namespace jh
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Dynamic;
 		physicsInfo.eGeometryType = GeometryType::Convex;
-		//physicsInfo.massProperties.staticFriction = 1.f;
+		physicsInfo.massProperties.staticFriction = 1.f;
 		physicsInfo.massProperties.dynamicFriction = 0.f;
 		physicsInfo.massProperties.restitution = 0.f;
 

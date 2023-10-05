@@ -26,6 +26,8 @@ namespace jh
 
 		bool IsOriginPos() { return this->GetTransform()->GetPosition() == mOriginPos; }
 
+		void CalculateForce(const Vec3 _hitPos);
+
 	private:
 		Vec3 mRelativePos;
 		Vec3 mOriginPos;

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "BreakablePotCell.h"
 
+#include "RigidBody.h"
+
 namespace jh
 {
 	BreakablePotCell::BreakablePotCell() :
@@ -34,5 +36,25 @@ namespace jh
 	void BreakablePotCell::Render()
 	{
 		GameObject::Render();
+	}
+
+	void BreakablePotCell::CalculateForce(const Vec3 _hitPos)
+	{
+		float distance = Vec3::Distance(GetTransform()->GetPosition(), _hitPos);
+		Vec3 force = _hitPos - GetTransform()->GetPosition();
+		force.y = 0.f;
+
+		if (distance < 1.f)
+		{
+			GetRigidBody()->AddForce((force) * -5);
+		}
+		else if (1.f <= distance && distance < 2.f)
+		{
+			GetRigidBody()->AddForce((force) * -2.5);
+		}
+		else
+		{
+			GetRigidBody()->AddForce((force) * -1);
+		}
 	}
 }
