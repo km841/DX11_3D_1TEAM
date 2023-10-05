@@ -1297,7 +1297,7 @@ void Grimace::MonsterAttackCol()
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Kinematic;
 		physicsInfo.eGeometryType = GeometryType::Sphere;
-		physicsInfo.size = Vec3(8.f, 0.1f, 8.f);
+		physicsInfo.size = Vec3(7.f, 0.1f, 7.f);
 
 		pMonsterAttackCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"NoDraw", L"", false, LayerType::MonsterCol);
 		pMonsterAttackCol->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));

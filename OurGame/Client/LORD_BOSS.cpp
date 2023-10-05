@@ -61,6 +61,8 @@ LORD_BOSS::LORD_BOSS()
 {
 	mMaxHP = 50.f;
 	mHP = mMaxHP; // 피통
+	mSpeed = 8.f;
+	TurnSpeed = 2.f;
 	Health = (mHP / mMaxHP) * 100;
 	
 	mAttackDamage = 1; // 공격력
@@ -168,7 +170,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Roll_Start;
+					meBasicState = MonsterBasicState::Laser_Start;
 					return BehaviorResult::Success;
 				});
 
@@ -211,7 +213,6 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					
-
 
 					return BehaviorResult::Success;
 				});
@@ -579,7 +580,6 @@ void LORD_BOSS::SetBehaviorTree()
 				{
 
 
-
 					return BehaviorResult::Success;
 				});
 
@@ -641,9 +641,12 @@ void LORD_BOSS::SetBehaviorTree()
 			// 이동+Col 처리 하는곳
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
+					SlowTurnLive();
 					Transform* pObjTr = pObject->GetTransform();
 					Transform* pTr = GetTransform();
 					pObjTr->SetPosition(pTr->GetPosition());
+					pObjTr->SetRotation(pTr->GetRotation());
+
 
 					return BehaviorResult::Success;
 				});
@@ -695,7 +698,7 @@ void LORD_BOSS::SetBehaviorTree()
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (1 != animIndex)
 				{
-					pAnimator->Play(1, false);
+					pAnimator->Play(1, true);
 				}
 				return BehaviorResult::Success;
 				});
@@ -706,7 +709,7 @@ void LORD_BOSS::SetBehaviorTree()
 					Transform* pObjTr = pObject->GetTransform();
 					Transform* pTr = GetTransform();
 					pObjTr->SetPosition(pTr->GetPosition());
-
+					pObjTr->SetRotation(pTr->GetRotation());
 
 					return BehaviorResult::Success;
 				});
@@ -715,7 +718,10 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = pObject->GetAnimator();
 
-				if (pAni->GetFrameRatio() > 0.4) {
+				if(pAni->GetFrameRatio() > 0.4)
+					pAni->Play(1, true);
+
+				if (LookRay()) {
 					return BehaviorResult::Success;
 				}
 				return BehaviorResult::Failure;
@@ -725,7 +731,7 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					PrevState = meBasicState;
-					meBasicState = MonsterBasicState::Roll_03;
+					meBasicState = MonsterBasicState::Land_Slam;
 					return BehaviorResult::Success;
 				});
 
@@ -740,131 +746,131 @@ void LORD_BOSS::SetBehaviorTree()
 
 #pragma endregion
 
-#pragma region Attack Roll_03 Sequence
-		Sequence* pRoll_03Sequence = new Sequence;
-		{
-			// 상태 확인(Condition) : 현재 상태가 Idle인지 확인
-			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
-				{
-					if (MonsterBasicState::Roll_03 == meBasicState)
-						return BehaviorResult::Success;
-					else
-						return BehaviorResult::Failure;
-				});
+//#pragma region Attack Roll_03 Sequence
+//		Sequence* pRoll_03Sequence = new Sequence;
+//		{
+//			// 상태 확인(Condition) : 현재 상태가 Idle인지 확인
+//			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+//				{
+//					if (MonsterBasicState::Roll_03 == meBasicState)
+//						return BehaviorResult::Success;
+//					else
+//						return BehaviorResult::Failure;
+//				});
+//
+//			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+//			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+//				Animator* pAnimator = pObject->GetAnimator();
+//				int animIndex = pAnimator->GetCurrentClipIndex();
+//				if (2 != animIndex)
+//				{
+//					pAnimator->Play(2, true);
+//				}
+//				return BehaviorResult::Success;
+//				});
+//
+//			// 이동+Col 처리 하는곳
+//			BehaviorTask* pTask = new BehaviorTask([&]()
+//				{
+//					Transform* pObjTr = pObject->GetTransform();
+//					Transform* pTr = GetTransform();
+//					pObjTr->SetPosition(pTr->GetPosition());
+//
+//
+//					return BehaviorResult::Success;
+//				});
+//
+//			// 특별한 조건 실행할때
+//			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
+//				Animator* pAni = pObject->GetAnimator();
+//
+//				if (pAni->GetFrameRatio() > 0.98) {
+//					return BehaviorResult::Success;
+//				}
+//				return BehaviorResult::Failure;
+//				});
+//
+//			// 상태 변경(Task) : 상태 변경 조건
+//			BehaviorTask* pChangeState = new BehaviorTask([&]()
+//				{
+//					PrevState = meBasicState;
+//					meBasicState = MonsterBasicState::Roll_End;
+//					return BehaviorResult::Success;
+//				});
+//
+//
+//			pRoll_03Sequence->AddChild(pStateChecker);
+//			pRoll_03Sequence->AddChild(pRunAnimationTask);
+//			pRoll_03Sequence->AddChild(pTask);
+//			pRoll_03Sequence->AddChild(pCondition);
+//			pRoll_03Sequence->AddChild(pChangeState);
+//		}
+//		pStateSelector->AddChild(pRoll_03Sequence);
+//
+//#pragma endregion
 
-			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
-			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
-				Animator* pAnimator = pObject->GetAnimator();
-				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (2 != animIndex)
-				{
-					pAnimator->Play(2, true);
-				}
-				return BehaviorResult::Success;
-				});
-
-			// 이동+Col 처리 하는곳
-			BehaviorTask* pTask = new BehaviorTask([&]()
-				{
-					Transform* pObjTr = pObject->GetTransform();
-					Transform* pTr = GetTransform();
-					pObjTr->SetPosition(pTr->GetPosition());
-
-
-					return BehaviorResult::Success;
-				});
-
-			// 특별한 조건 실행할때
-			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
-				Animator* pAni = pObject->GetAnimator();
-
-				if (pAni->GetFrameRatio() > 0.98) {
-					return BehaviorResult::Success;
-				}
-				return BehaviorResult::Failure;
-				});
-
-			// 상태 변경(Task) : 상태 변경 조건
-			BehaviorTask* pChangeState = new BehaviorTask([&]()
-				{
-					PrevState = meBasicState;
-					meBasicState = MonsterBasicState::Roll_End;
-					return BehaviorResult::Success;
-				});
-
-
-			pRoll_03Sequence->AddChild(pStateChecker);
-			pRoll_03Sequence->AddChild(pRunAnimationTask);
-			pRoll_03Sequence->AddChild(pTask);
-			pRoll_03Sequence->AddChild(pCondition);
-			pRoll_03Sequence->AddChild(pChangeState);
-		}
-		pStateSelector->AddChild(pRoll_03Sequence);
-
-#pragma endregion
-
-#pragma region Attack Roll_End Sequence
-		Sequence* pRoll_EndSequence = new Sequence;
-		{
-			// 상태 확인(Condition) : 현재 상태가 Idle인지 확인
-			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
-				{
-					if (MonsterBasicState::Roll_End == meBasicState)
-						return BehaviorResult::Success;
-					else
-						return BehaviorResult::Failure;
-				});
-
-			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
-			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
-				Animator* pAnimator = GetAnimator();
-				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (3 != animIndex)
-				{
-					pObject->Disable();
-					Enable();
-					pAnimator->Play(3, true);
-				}
-				return BehaviorResult::Success;
-				});
-
-			// 이동+Col 처리 하는곳
-			BehaviorTask* pTask = new BehaviorTask([&]()
-				{
-
-
-
-					return BehaviorResult::Success;
-				});
-
-			// 특별한 조건 실행할때
-			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
-				Animator* pAni = GetAnimator();
-
-				if (pAni->GetFrameRatio() > 0.3) {
-					return BehaviorResult::Success;
-				}
-				return BehaviorResult::Failure;
-				});
-
-			// 상태 변경(Task) : 상태 변경 조건
-			BehaviorTask* pChangeState = new BehaviorTask([&]()
-				{
-					PrevState = meBasicState;
-					meBasicState = MonsterBasicState::Fall_Loop;
-					return BehaviorResult::Success;
-				});
-
-
-			pRoll_EndSequence->AddChild(pStateChecker);
-			pRoll_EndSequence->AddChild(pRunAnimationTask);
-			pRoll_EndSequence->AddChild(pTask);
-			pRoll_EndSequence->AddChild(pCondition);
-			pRoll_EndSequence->AddChild(pChangeState);
-		}
-		pStateSelector->AddChild(pRoll_EndSequence);
-
-#pragma endregion
+//#pragma region Attack Roll_End Sequence
+//		Sequence* pRoll_EndSequence = new Sequence;
+//		{
+//			// 상태 확인(Condition) : 현재 상태가 Idle인지 확인
+//			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+//				{
+//					if (MonsterBasicState::Roll_End == meBasicState)
+//						return BehaviorResult::Success;
+//					else
+//						return BehaviorResult::Failure;
+//				});
+//
+//			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+//			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+//				Animator* pAnimator = GetAnimator();
+//				int animIndex = pAnimator->GetCurrentClipIndex();
+//				if (3 != animIndex)
+//				{
+//					pObject->Disable();
+//					Enable();
+//					pAnimator->Play(3, true);
+//				}
+//				return BehaviorResult::Success;
+//				});
+//
+//			// 이동+Col 처리 하는곳
+//			BehaviorTask* pTask = new BehaviorTask([&]()
+//				{
+//
+//
+//
+//					return BehaviorResult::Success;
+//				});
+//
+//			// 특별한 조건 실행할때
+//			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
+//				Animator* pAni = GetAnimator();
+//
+//				if (pAni->GetFrameRatio() > 0.3) {
+//					return BehaviorResult::Success;
+//				}
+//				return BehaviorResult::Failure;
+//				});
+//
+//			// 상태 변경(Task) : 상태 변경 조건
+//			BehaviorTask* pChangeState = new BehaviorTask([&]()
+//				{
+//					PrevState = meBasicState;
+//					meBasicState = MonsterBasicState::Fall_Loop;
+//					return BehaviorResult::Success;
+//				});
+//
+//
+//			pRoll_EndSequence->AddChild(pStateChecker);
+//			pRoll_EndSequence->AddChild(pRunAnimationTask);
+//			pRoll_EndSequence->AddChild(pTask);
+//			pRoll_EndSequence->AddChild(pCondition);
+//			pRoll_EndSequence->AddChild(pChangeState);
+//		}
+//		pStateSelector->AddChild(pRoll_EndSequence);
+//
+//#pragma endregion
 
 #pragma region Attack Laser_Start Sequence
 		Sequence* pLaser_StartSequence = new Sequence;
@@ -1049,7 +1055,6 @@ void LORD_BOSS::SetBehaviorTree()
 
 #pragma endregion
 
-
 #pragma region Fall_Loop Sequence
 		Sequence* pFall_LoopSequence = new Sequence;
 		{
@@ -1076,8 +1081,9 @@ void LORD_BOSS::SetBehaviorTree()
 			// 이동+Col 처리 하는곳
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
-
-
+					TurnSpeed = 3.f;
+					SlowTurnLive();
+					Follow();
 
 					return BehaviorResult::Success;
 				});
@@ -1129,6 +1135,8 @@ void LORD_BOSS::SetBehaviorTree()
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (5 != animIndex)
 				{
+					pObject->Disable();
+					Enable();
 					pAnimator->Play(5, true);
 				}
 				return BehaviorResult::Success;
@@ -1265,4 +1273,157 @@ void LORD_BOSS::OnTriggerExit(Collider* _pOtherCollider)
 		if (0 == mGroundCount)
 			GetRigidBody()->ApplyGravity();
 	}
+}
+
+void LORD_BOSS::SlowTurnLive()
+{
+	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	Vec3 myPos = GetTransform()->GetPosition();
+	Vec3 scale = GetRigidBody()->GetGeometrySize();
+	Transform* pTr = GetTransform();
+
+	Dir = playerPos - myPos;
+	Dir.Normalize();
+	Dir.y = 0;
+
+	Vec3 Rot = pTr->GetRotation();
+	Vec3 rot = Vec3(0, 0, -1);
+	double angleRadian = atan2(Dir.x, Dir.z) - atan2(rot.x, rot.z);
+	float angleDegree = static_cast<float>(angleRadian) * 180.f / XM_PI;
+
+	if (angleDegree < 0.f)
+		angleDegree += 360.f;
+
+	int Right = TurnSpeed;
+	int Left = -TurnSpeed;
+	   // 0 -> 360                200
+	if (Rot.z  + 3 < angleDegree )
+		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Right));
+	else if(Rot.z - 3 > angleDegree )
+		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Left));
+	else if(Rot.z  == angleDegree )
+		pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
+
+	TurnSpeed = 2.f;
+}
+
+void LORD_BOSS::SlowTurn()
+{
+	//현모님이 봐주심
+}
+
+void LORD_BOSS::Follow()
+{
+	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	Vec3 myPos = GetTransform()->GetPosition();
+	Vec3 scale = GetRigidBody()->GetGeometrySize();
+	Transform* pTr = GetTransform();
+
+	Dir = playerPos - myPos;
+	Vec3 Num = scale * Dir;
+	float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
+
+	Dir.Normalize();
+	Dir.y = 0;
+	// 몬스터의 이동속도가 들어가야 함
+	// 방향을 변경해주는 Task도 필요
+	Vec3 Ve = Dir * mSpeed;
+
+	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+
+	for (int i = 0; i < gameObjects.size(); ++i)
+	{
+		if (gameObjects[i]->GetCollider())
+		{
+			for (size_t j = 1; j <= 8; j++)
+			{
+				if (GetCollider()->Raycast(myPos, ConvertDir(static_cast<DirectionEvasion>(j)), gameObjects[i]->GetCollider(), offset + 0.5f))
+				{
+					if (static_cast<DirectionEvasion>(j) == DirectionEvasion::FORWARD)
+					{
+						Ve.z = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BACKWARD)
+					{
+						Ve.z = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::LEFT)
+					{
+						Ve.x = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::RIGHT)
+					{
+						Ve.x = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPLEFT)
+					{
+						if (Ve.x > Ve.z)
+							Ve.z = 0;
+						else
+							Ve.x = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPRIGHT)
+					{
+						if (Ve.x > Ve.z)
+							Ve.z = 0;
+						else
+							Ve.x = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMLEFT)
+					{
+						if (Ve.x > Ve.z)
+							Ve.z = 0;
+						else
+							Ve.x = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMRIGHT)
+					{
+						if (Ve.x > Ve.z)
+							Ve.z = 0;
+						else
+							Ve.x = 0;
+					}
+
+				}
+			}
+		}
+	}
+
+	GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
+
+	for (int i = 0; i < gameObjects.size(); ++i)
+	{
+		if (gameObjects[i]->GetCollider())
+		{
+			if (GetCollider()->Raycast(myPos, Dir, gameObjects[i]->GetCollider(), 0.5f))
+			{
+				GetRigidBody()->SetVelocity(Dir * 0.f);
+			}
+		}
+	}
+}
+
+bool LORD_BOSS::LookRay()
+{
+	//현모님이 봐주심
+	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	Vec3 myPos = pObject->GetTransform()->GetPosition();
+
+	Dir = playerPos - myPos;
+	Dir.Normalize();
+	Dir.y = 0;
+
+	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Player);
+
+	for (int i = 0; i < gameObjects.size(); ++i)
+	{
+		if (gameObjects[i]->GetCollider())
+		{
+			if (pObject->GetCollider()->Raycast(myPos, Dir, gameObjects[i]->GetCollider(), 5.f))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
 }
