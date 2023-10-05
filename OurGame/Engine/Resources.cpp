@@ -1084,7 +1084,7 @@ namespace hm
                 ShaderType::Light,
                 DepthStencilType::NoDepthTestNoWrite,
                 RasterizerType::CullBack,
-                BlendType::AlphaBlend
+                BlendType::Default
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();

@@ -81,8 +81,43 @@ VS_OUT VS_Main(VS_IN _in)
 
 float4 PS_Main(VS_OUT _in) : SV_Target
 {
+    if (g_float_0 > 2.f)
+        discard;
+    int burnFlag = g_int_0;
+    
     float4 color = g_tex_on_0 == 1 ? g_tex_0.Sample(g_sam_0, _in.uv) : float4(g_vec4_0.xyz, 1.f);
     color.gb = color.rr;
+    color.rgb *= 1.5f;
+    color.a = color.r;
+    
+    if (g_int_3 == 1)
+    {
+        float2 uv = _in.uv;
+ 
+        float3 fireshape = g_tex_1.Sample(g_sam_0, uv).rrr;
+        float3 materialColor = color.rgb;
+
+        float time = frac(g_float_0 * -0.5f);
+        float erosion = smoothstep(time - 0.2, time, fireshape.r);
+        float border = smoothstep(0.0, 0.7, erosion) - smoothstep(0.5, 1.0, erosion);
+
+        float3 initialColor = float3(1.0, 0.4, 0.1);
+        float3 finalColor = float3(0.0, 0.0, 0.0);
+        float3 burningColor = lerp(initialColor, finalColor, smoothstep(0.7, 1.0, border)) * 3.0;
+    
+        float3 finalColorWithBurn = lerp(materialColor, float3(0.0, 0.0, 0.0), erosion) + border * burningColor * 1.5;
+    
+        if (length(finalColorWithBurn.rgb) < 0.1f)
+            discard;
+    
+        float diff = initialColor.r - finalColorWithBurn.r;
+    
+        float4 final = float4(finalColorWithBurn, 1.f - diff);
+
+        return final;
+    }
+    
     return color;
+
 }
 #endif

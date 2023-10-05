@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "TimerObject.h"
 
 namespace hm
 {
@@ -31,6 +32,10 @@ namespace hm
 		virtual void OnTriggerEnter(Collider* _pOtherCollider);
 		virtual void OnTriggerStay(Collider* _pOtherCollider);
 		virtual void OnTriggerExit(Collider* _pOtherCollider);
+
+	private:
+		TimerObject mTimer;
+		int mBurn;
 	};
 
 }
