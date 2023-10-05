@@ -37,11 +37,16 @@ public:
 
 private:
 	
+	void SlowTurnLive();
+	void SlowTurn();
+	void Follow();
+	bool LookRay();
 
 private:
 	Vec3 Dir;
 	Vec3 PrevDir;
 	int Health;
+	float TurnSpeed;
 
 	MonsterBasicState PrevState;
 
