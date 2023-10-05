@@ -24,6 +24,7 @@ namespace yj
 	public:
 		void Active();
 		bool GetIsBurn() { return isBurn; }
+		void SetIsBurn() { isBurn = true; }
 	private:
 		GameObject* pUpperPart;
 		GameObject* pBelowPart;

@@ -19,7 +19,7 @@ public:
     bool GetArrowAtkCheck() { return ArrowAtkCheck; }
     void SetArrowAtkCheck(bool _ArrowAtkCheck) { ArrowAtkCheck = _ArrowAtkCheck; }
 
-    bool GetIsBurn() { return ArrowAtkCheck; }
+    bool GetIsBurn() { return isBurn; }
     void SetBurn() { isBurn = true; }   
     void BurnReset() { isBurn = false; }
     void SetmSpeed() { mSpeed = 40; }

@@ -95,7 +95,7 @@ namespace hm
 
 		// Swap Chain
 		{
-			float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+			float clearColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 			std::vector<RenderTarget> renderTargets(SWAP_CHAIN_BUFFER_COUNT);
 			for (int i = 0; i < SWAP_CHAIN_BUFFER_COUNT; ++i)
 			{
