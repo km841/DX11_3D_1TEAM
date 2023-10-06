@@ -45,6 +45,7 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "Animator.h"
+#include "Mirror.h"
 
 /* Script */
 #include "PlayerMoveScript.h"
@@ -122,7 +123,7 @@ namespace hm {
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(50.f, 0.1f, 50.f);
 
-			Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\RoughLowerFloor.fbx");
+			Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Forward", L"");
 
 			pFloor->GetTransform()->SetScale(Vec3(50.f, 1.f, 50.f));
 			pFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
@@ -281,7 +282,17 @@ namespace hm {
 			AddGameObject(pBonFire);
 		}*/
 
-		
+		// ¹Ì·¯
+		{
+			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, -8.7f, 0.f), L"Forward", L"", false, LayerType::Mirror);
+
+			pMirror->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+			pMirror->AddComponent(new Mirror);
+			pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+			pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+
+			AddGameObject(pMirror);
+		}
 	}
 	void Monster_Player_TestScene::Exit()
 	{

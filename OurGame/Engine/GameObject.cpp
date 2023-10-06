@@ -26,7 +26,7 @@ namespace hm
 		, mbEnable(true)
 		, mbCheckFrustum(true)
 		, mbShadow(true)
-		, mbReflect(false)
+		, mbReflect(true)
 	{
 	}
 

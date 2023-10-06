@@ -141,6 +141,7 @@ cbuffer DISTORTION_PARAMS : register(b5)
 cbuffer REFLECT_PARAMS : register(b6)
 {
     row_major matrix g_reflect_mat;
+    row_major matrix g_reflect_matRVP;
     int g_reflect_use;
     float3 g_reflect_padding;
 };

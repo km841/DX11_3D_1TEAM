@@ -44,7 +44,6 @@ namespace hm
         * 멤버 변수인 Shader의 Update를 실행한다.
         */
 
-        void PushTestData();
         void ClearGraphicData();
         void PushGraphicData(int _containerIndex = 0, int _subsetIndex = 0);
         void PushGraphicDataExceptForTextures(int _containerIndex = 0, int _subsetIndex = 0);

@@ -219,6 +219,7 @@ struct alignas(16) NoiseParams
 struct alignas(16) ReflectParams
 {
 	Matrix reflectMatrix;
+	Matrix reflectRVPMatrix;
 	int use;
 	Vec3 padding;
 };
