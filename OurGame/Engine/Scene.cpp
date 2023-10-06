@@ -61,10 +61,10 @@ namespace hm
 	{
 		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 		{
-			for (GameObject* pGameObject : mGameObjects[i])
+			for (int j = 0; j < mGameObjects[i].size(); ++j)
 			{
-				AssertEx(pGameObject, L"This gameobject is nullptr");
-				pGameObject->Update();
+				AssertEx(mGameObjects[i][j], L"This gameobject is nullptr");
+				mGameObjects[i][j]->Update();
 			}
 		}
 
