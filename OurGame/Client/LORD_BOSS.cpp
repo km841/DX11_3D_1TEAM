@@ -1041,8 +1041,8 @@ void LORD_BOSS::SetBehaviorTree()
 					GetRigidBody()->SetVelocity(AXIS_Y, 0.f);
 					CreateCow(Vec3(10.f, -1.f, 0.f));
 					CreateCow(Vec3(-15.f, -1.f, 0.f));
-				//	CreateCow(Vec3(0.f, -1.f, 10.f));
-					//CreateCow(Vec3(0.f, -1.f, -10.f));
+					CreateCow(Vec3(0.f, -1.f, 10.f));
+					CreateCow(Vec3(0.f, -1.f, -10.f));
 					pAnimator->Play(7, true);
 				}
 				return BehaviorResult::Success;
