@@ -23,7 +23,6 @@
 #include "Ground.h"
 #include "DecoObject.h"
 #include "Elevator.h"
-#include "TeleportZone.h"
 #include "SoulDoor.h"
 
 /* Component */
@@ -40,6 +39,7 @@
 #include "CameraMoveScript.h"
 #include "PlayerMoveScript.h"
 #include "CinematicCamMove.h"
+#include "PlayerMoveOverMapScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -73,20 +73,16 @@ namespace yj
 	void MainOfficeMap::Start()
 	{
 		Map::Start();
-		//if (PLAYER != nullptr)
-		//{
-		//	switch (mSpawnPoint)
-		//	{
-		//	case 0:
-		//		//PLAYER->GetTransform()->SetPosition(Vec3(15.2f,1.6f,-7.2f));
-		//		//PLAYER->GetTransform()->SetRotation(Vec3());
-		//		break;
-		//	case 1:
-		//		//PLAYER->GetTransform()->SetPosition(Vec3(-17.0f, 1.6f,-2.1f));
-		//		//PLAYER->GetTransform()->SetRotation(Vec3());
-		//		break;
-		//	}
-		//}
+		if (PLAYER != nullptr)
+		{
+			mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
+			switch (mSpawnPoint)
+			{
+			case -1:
+				PLAYER->GetTransform()->SetPosition(Vec3(-15.6f, -1.0f, 23.4f));
+				break;
+			}
+		}
 	}
 
 	void MainOfficeMap::FixedUpdate()
@@ -110,7 +106,9 @@ namespace yj
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::DecoObject);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Portal);
-
+		
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::ArrowCol, LayerType::PotCell);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::ArrowCol);
 		gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
 		
 		InitObjectAdd();
@@ -121,10 +119,6 @@ namespace yj
 	
 	void MainOfficeMap::Exit()
 	{
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Unknown);
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Ground);
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::DecoObject);
-		GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::WallObject);   
 	}
 
 
@@ -133,16 +127,10 @@ namespace yj
 		PLAYER->SetDontDestroyObject(L"Player");
 
 		{
-			/*	CinematicCamMove* pCinematicCam = Factory::CreateObject<CinematicCamMove>(Vec3::Zero, L"Deferred", L"");
-				AddGameObject(pCinematicCam);*/
-				//원래는 모노비헤이비어로 Script로 붙여야하나 Cam에 붙이는거라 무슨 일이 일어날지를 모르니 잠시만 이런 형식으로
-
-		}
-
-		{
 			pBus = Factory::CreateObject<Bus>(Vec3(-17.0f, -8.0f, 33.0f), L"Deferred",
 				L"..\\Resources\\FBX\\Map\\MainOfficeMap\\CUTSCENE_Bus.fbx");
 			pBus->GetTransform()->SetScale(Vec3(50.0f, 50.0f, 50.0f));
+			pBus->GetTransform()->SetRotation(Vec3(0.0f, 135.0f, 0.0f));
 
 			AddGameObject(pBus);
 		}
@@ -624,17 +612,6 @@ namespace yj
 
 		}
 
-
-		//5개 정도?
-		{
-			/*DecoObject* pShortcutDoorStatic = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\ShortcutDoorStatic.fbx");
-			AddGameObject(pShortcutDoorStatic);
-			pShortcutDoorStatic->GetTransform()->SetPosition(Vec3(62.5f, -5.6f, 23.0f));
-			pShortcutDoorStatic->GetTransform()->SetRotation(Vec3(0.0f, 102.0f, 0.0f));
-			pShortcutDoorStatic->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));*/
-		}
-
-
 #pragma endregion
 
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
@@ -650,10 +627,20 @@ namespace yj
 			SetGizmoTarget(pHallCollider);
 		}
 
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Mesh;
+			physicsInfo.size = Vec3(49.0f, 49.0f, 49.0f);
+
+			Ground* pOfficeCollider = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.9f, -5.5f, -0.3f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\OfficeCollider.fbx");
+			AddGameObject(pOfficeCollider);
+		}
+
+
+
 #pragma region SoulDoor
 		{
-			//LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
-		
 			DecoObject* pDoor = Factory::CreateObject<DecoObject>(Vec3(19.1f, 6.7f, -12.8f), L"Deferred", LARGE_RESOURCE(L"ShortcutDoor\\ShortcutDoor_Fix.fbx"));
 			
 			pDoor->GetTransform()->SetPosition(Vec3(19.1f, 7.7f, -12.8f));
@@ -681,7 +668,30 @@ namespace yj
 		}
 #pragma endregion
 
+
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(25.5f, 1.0f, 25.5f);
+
+			Ground* pBusGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-7.2f, -13.1f, 24.0f), physicsInfo, L"Deferred", L"");
+			pBusGround->GetTransform()->SetRotation(Vec3(0.0f,15.0f,0.0f));
+			AddGameObject(pBusGround);
+			SetGizmoTarget(pBusGround);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(5.31f, 1.0f, 26.39f);
+
+			Ground* pBridgeGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(22.9f, -0.8f, -0.6f), physicsInfo, L"Deferred", L"");
+			AddGameObject(pBridgeGround);
+		}
 	}
+
+
 	void MainOfficeMap::InitBusStart()
 	{
 		pBus->BusActive();

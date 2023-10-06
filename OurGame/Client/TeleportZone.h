@@ -8,7 +8,7 @@ namespace yj
 	class TeleportZone : public GameObject
 	{
 	public:
-		TeleportZone(MapType _mSceneType);
+		TeleportZone(MapType _mSceneType, int _mSpawnPoint);
 		virtual ~TeleportZone();
 
 		virtual void Update();
@@ -20,7 +20,7 @@ namespace yj
 		MapType mMapType;
 		
 		bool isActive = false;
-		int mEnterNum = -1;
+		int mSpawnPoint = -1;
 	};
 }
 

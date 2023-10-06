@@ -44,6 +44,7 @@
 #include "PaperBurnScript.h"
 #include "PlayerSlashScript.h"
 #include "OwnerFollowScript.h"
+#include "PlayerMoveOverMapScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -67,6 +68,16 @@ namespace jh
 	void HallColliderCheckMap::Start()
 	{
 		LightDirSet();
+		if (PLAYER != nullptr)
+		{
+			mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
+			switch (mSpawnPoint)
+			{
+			case 3:
+				PLAYER->GetTransform()->SetPosition(Vec3(0.0f, -9.0f, 30.2f));
+				break;
+			}
+		}
 	}
 
 	void HallColliderCheckMap::Update()
@@ -1805,20 +1816,20 @@ namespace jh
 
 			// 애니메이션의 이름은 FBX에 저장되어 있는 것을 그대로 가져오므로 해당 FBX를 사용하는 클래스의 생성자와 같은 특정 부분에서
 			// 사용하기 편한 이름으로 일괄적으로 바꿔줄 필요가 있음
-			pPotHead->GetAnimator()->RenameAnimation(L"Sat_loop", L"PotHead_Idle");
+			//pPotHead->GetAnimator()->RenameAnimation(L"Sat_loop", L"PotHead_Idle");
 
-			// 반복 여부를 설정하는 함수 (Finished 플래그를 사용할 수 없음)
-			pPotHead->GetAnimator()->SetLoop(L"PotHead_Idle", true);
+			//// 반복 여부를 설정하는 함수 (Finished 플래그를 사용할 수 없음)
+			//pPotHead->GetAnimator()->SetLoop(L"PotHead_Idle", true);
 
-			// 인덱스 번호로도 사용 가능
-			pPotHead->GetAnimator()->SetLoop(9, true);
+			//// 인덱스 번호로도 사용 가능
+			//pPotHead->GetAnimator()->SetLoop(9, true);
 
-			// HasExit는 현재 애니메이션 실행중에 다른 애니메이션이 실행되었을 때 바로 넘길건지 여부를 결정 (기본적으로 true)
-			// 이 값이 false면 애니메이션 플레이 도중 다른 애니메이션 Play가 실행되었을 때 기존 애니메이션이 다 끝나고 실행됨
-			pPotHead->GetAnimator()->SetHasExitFlag(9, false);
+			//// HasExit는 현재 애니메이션 실행중에 다른 애니메이션이 실행되었을 때 바로 넘길건지 여부를 결정 (기본적으로 true)
+			//// 이 값이 false면 애니메이션 플레이 도중 다른 애니메이션 Play가 실행되었을 때 기존 애니메이션이 다 끝나고 실행됨
+			//pPotHead->GetAnimator()->SetHasExitFlag(9, false);
 
-			// 애니메이션 실행하는 방법은 2D와 비슷하게 애니메이션 이름, 반복할건지 여부를 넣어주면 됨
-			pPotHead->GetAnimator()->Play(L"PotHead_Idle", true);
+			//// 애니메이션 실행하는 방법은 2D와 비슷하게 애니메이션 이름, 반복할건지 여부를 넣어주면 됨
+			//pPotHead->GetAnimator()->Play(L"PotHead_Idle", true);
 
 			AddGameObject(pPotHead);
 
@@ -2118,7 +2129,7 @@ namespace jh
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(5.53, 3.8f, 2.625f);
 
-			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(3.1f, -3.7f, -64.8f), physicsInfo, L"Forward", L"", false, MapType::Right2Map);
+			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(3.1f, -3.7f, -64.8f), physicsInfo, L"Forward", L"", false, MapType::EntranceHallMap,3);
 			AddGameObject(pTelZone);
 			SetGizmoTarget(pTelZone);
 		}
@@ -2128,7 +2139,7 @@ namespace jh
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(2.21f, 3.8f, 5.51f);
 
-			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(34.7f, 6.1f, 4.7f), physicsInfo, L"Forward", L"", false, MapType::Right2Map);
+			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(34.7f, 6.1f, 4.7f), physicsInfo, L"Forward", L"", false, MapType::RightMap,4);
 			AddGameObject(pTelZone);
 			SetGizmoTarget(pTelZone);
 		}

@@ -749,7 +749,7 @@ void LeftSecretFightMap::FuncObjectAdd()
 	physicsInfo.eGeometryType = GeometryType::Box;
 	physicsInfo.size = Vec3(5.52, 3.8f, 2.18f);
 
-	yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-11.0f, -7.7f, 27.7f), physicsInfo, L"Forward", L"", false, MapType::Right2Map);
+	yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-11.0f, -7.7f, 27.7f), physicsInfo, L"Forward", L"", false, MapType::Right2Map,1);
 	AddGameObject(pTelZone);
 	SetGizmoTarget(pTelZone);
 }

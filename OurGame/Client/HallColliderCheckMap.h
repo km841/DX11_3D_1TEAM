@@ -29,7 +29,6 @@ namespace jh
 		
 
 	private:
-
-
+		int mSpawnPoint = -1;
 	};
 }

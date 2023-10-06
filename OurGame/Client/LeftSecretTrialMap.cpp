@@ -1190,7 +1190,7 @@ void LeftSecretTrialMap::FuncObjectAdd()
 		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(4.7f, 3.8f, 3.5f);
 
-		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(0.6f, -1.7f, 16.7f), physicsInfo, L"Forward", L"", false, MapType::Right2Map);
+		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(0.6f, -1.7f, 16.7f), physicsInfo, L"Forward", L"", false, MapType::Right2Map,1);
 		AddGameObject(pTelZone);
 		SetGizmoTarget(pTelZone);
 	}
@@ -1200,7 +1200,7 @@ void LeftSecretTrialMap::FuncObjectAdd()
 		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(4.13f, 3.8f, 3.5f);
 
-		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-13.3f, -1.7f, -50.8f), physicsInfo, L"Forward", L"", false, MapType::Right2Map);
+		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-13.3f, -1.7f, -50.8f), physicsInfo, L"Forward", L"", false, MapType::Right2Map,1);
 		AddGameObject(pTelZone);
 		SetGizmoTarget(pTelZone);
 	}

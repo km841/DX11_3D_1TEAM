@@ -18,10 +18,12 @@
 
 /* GameObject */
 #include "GameObject.h"
+#include "FireLamp.h"
 #include "Player.h"
 #include "Ground.h"
 #include "DecoObject.h"
 #include "WallObject.h"
+#include "TeleportZone.h"
 
 /* Component */
 #include "Collider.h"
@@ -34,6 +36,7 @@
 
 /* Script */
 #include "PlayerMoveScript.h"
+#include "BonFireScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -87,6 +90,16 @@ namespace jh
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
+		InitObjectAdd();
+		InitColliderAdd();
+		FuncObjectAdd();
+	}
+
+	void RightSecretPassageMap::Exit()
+	{
+	}
+	void RightSecretPassageMap::InitObjectAdd()
+	{
 #pragma region 벽
 		// 벽
 		{
@@ -267,33 +280,154 @@ namespace jh
 
 			AddGameObject(pPotGeneric2);
 		}
-		// 화톳불
-		{
-			DecoObject* pFireLamp = Factory::CreateObject<DecoObject>(Vec3(0.21f, -3.19f, -1.48f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\GRANDMA_FireLamp.fbx");
-
-			pFireLamp->GetTransform()->SetRotation(Vec3(0.f, 22.4f, 0.f));
-			pFireLamp->GetTransform()->SetScale(Vec3(2.61f, 2.89f, 2.57f));
-
-			AddGameObject(pFireLamp);
-		}
-#pragma endregion
-
-		// Toy
-		/*{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Dynamic;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(2.f, 2.f, 2.f);
-
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
-			pPlayer->AddComponent(new PlayerMoveScript);
-			pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
-
-			AddGameObject(pPlayer);
-		}*/
 	}
-
-	void RightSecretPassageMap::Exit()
+	void RightSecretPassageMap::InitColliderAdd()
 	{
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(33.15f, 1.0f, 30.6f);
+
+			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-0.2f, -4.3f, 0.2f), physicsInfo, L"Deferred", L"");
+			AddGameObject(pGround);
+		}
+
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(21.6f, 6.67f, 3.15f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(5.1f, -1.6f, -13.9f), physicsInfo, L"Deferred", L"");
+			AddGameObject(pWall);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(4.32f, 6.76f, 3.15f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-13.0f, -1.6f, -13.9f), physicsInfo, L"Deferred", L"");
+			AddGameObject(pWall);
+
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(4.32f, 6.76f, 3.15f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-13.0f, -1.6f, -13.9f), physicsInfo, L"Deferred", L"");
+			AddGameObject(pWall);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(13.3f, 6.76f, 3.15f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-8.0f, -1.6f, 10.3f), physicsInfo, L"Deferred", L"");
+			AddGameObject(pWall);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(13.3f, 6.76f, 3.15f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(9.4f, -1.6f, 10.3f), physicsInfo, L"Deferred", L"");
+			AddGameObject(pWall);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0f, 5.9f, 22.15f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(15.1f, -1.7f, -1.8f), physicsInfo, L"Deferred", L"");
+			AddGameObject(pWall);
+			SetGizmoTarget(pWall);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(1.0f, 5.9f, 22.15f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-15.1f, -1.7f, -1.8f), physicsInfo, L"Deferred", L"");
+			AddGameObject(pWall);
+			SetGizmoTarget(pWall);
+		}
+	}
+	void RightSecretPassageMap::FuncObjectAdd()
+	{
+		// 화롯불
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.94f, 2.94f, 2.94f);
+
+
+			DecoObject* pLampUpper = Factory::CreateObject<DecoObject>(Vec3(0.2f, -3.2f, -1.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+			pLampUpper->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pLampUpper->GetMeshRenderer()->SetSubsetRenderFlag(0, false);
+			AddGameObject(pLampUpper);
+
+
+			DecoObject* pLampBelow = Factory::CreateObject<DecoObject>(Vec3(0.2f, -3.2f, -1.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+			pLampBelow->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pLampBelow->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
+			AddGameObject(pLampBelow);
+
+			DecoObject* pBonFire = Factory::CreateObject<DecoObject>(Vec3(0.2f, -3.2f, -1.5f), L"Fire", L"");
+			pBonFire->GetMeshRenderer()->SetMaterial(pBonFire->GetMeshRenderer()->GetMaterial()->Clone());
+			pBonFire->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::WrapClamp);
+			pBonFire->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			pBonFire->AddComponent(new BonFireScript);
+			AddGameObject(pBonFire);
+
+			DecoObject* pLightObject = nullptr;
+			{
+				pLightObject = new DecoObject;
+				Transform* pTransform = pLightObject->AddComponent(new Transform);
+				pTransform->SetPosition(Vec3(-5.8f, 7.4f, -16.5f));
+				pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+				pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+				Light* pLight = pLightObject->AddComponent(new Light);
+				pLight->SetDiffuse(Vec3(0.8f, 0.5f, 0.2f));
+				pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+				pLight->SetLightRange(10.f);
+				pLight->SetLightType(LightType::PointLight);
+				AddGameObject(pLightObject);
+			}
+
+			yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(0.2f, -3.1f, -1.5f), physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow, pBonFire, pLightObject);
+			AddGameObject(pFireLamp);
+			SetGizmoTarget(pFireLamp);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(5.53, 3.8f, 2.625f);
+
+			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(0.6f, -3.7f, 13.1f), physicsInfo, L"Forward", L"", false, MapType::EntranceHallMap, 3);
+			AddGameObject(pTelZone);
+			SetGizmoTarget(pTelZone);
+		}
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(5.53, 3.8f, 2.625f);
+
+			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-8.3f, -3.7f, -14.0f), physicsInfo, L"Forward", L"", false, MapType::EntranceHallMap, 3);
+			AddGameObject(pTelZone);
+			SetGizmoTarget(pTelZone);
+		}
 	}
 }

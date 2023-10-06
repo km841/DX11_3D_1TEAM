@@ -27,6 +27,7 @@ public:
 
 		void InitObjectAdd();
 		void InitColliderAdd();
+		void InitFuncObjAdd();
 
 private:
 	DecoObject* pJarLDoor;
