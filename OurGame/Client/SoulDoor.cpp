@@ -26,10 +26,6 @@ namespace yj
 		pEntranceColObj(_EntranceCol),
 		mSpawnPoint(_SpawnPoint),
 		state(Standby),
-		mDeceleration(3.0f),
-		isMove(false),
-		mDropSpeed(30.0f),
-		mDownLimit(5.1f),
 		mMapType(_MapType)
 	{
 		
@@ -44,7 +40,17 @@ namespace yj
 		pDoorObj->AddComponent<PaperBurnScript>();
 		pEntranceColObj->SetName(L"SoulDoorCollider");
 		pBackUVObj->Disable();
-		//pEntranceColObj->GetRigidBody()->GetCollider()->OnTriggerEnter (true);
+	
+		if (mStartNum == 0)
+		{
+			pDoorObj->Disable();
+			pBackUVObj->Disable();
+			pEntranceColObj->Disable();
+		}
+		else if (mStartNum == 1)
+		{
+
+		}
 	}
 
 	void SoulDoor::Update()

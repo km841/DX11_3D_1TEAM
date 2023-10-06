@@ -11,7 +11,7 @@
 namespace yj
 {
 	KeyPot::KeyPot()
-		:GameObject(LayerType::DecoObject)
+		:GameObject(LayerType::PotCell)
 	{
 	}
 	KeyPot::~KeyPot()
@@ -30,12 +30,14 @@ namespace yj
 		}
 		if (!isBreak)
 		{
-			if (this->GetRigidBody()->GetCollider()->CheckIsCollisionObject(LayerType::Item))
+			if (this->GetRigidBody()->GetCollider()->CheckIsCollisionObject(LayerType::ArrowCol))
 			{
 				pReceiver->GetScript<JarDoor>()->AddKey();
 				mBreakSequence = 0;
 				isBreak = true;
+				this->Disable();
 			}
+
 		}
 		if (mBreakSequence > 0)
 		{

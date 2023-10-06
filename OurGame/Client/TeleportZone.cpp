@@ -13,9 +13,10 @@
 
 namespace yj
 {
-	TeleportZone::TeleportZone(MapType _mMapType)
+	TeleportZone::TeleportZone(MapType _mMapType, int _mSpawnPoint)
 		:GameObject(LayerType::Portal),
-		mMapType(_mMapType)
+		mMapType(_mMapType),
+		mSpawnPoint(_mSpawnPoint)
 	{
 
 	}
@@ -31,6 +32,7 @@ namespace yj
 		{
 			if (CheckPlayerIn())
 			{
+				PLAYER->GetScript<PlayerMoveOverMapScript>()->SetMoveOverNum(mSpawnPoint);
 				GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1,
 					nullptr, std::bind(&TeleportZone::ChangeScene, this));
 				isActive = true;

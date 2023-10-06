@@ -711,7 +711,7 @@ namespace yj
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(1.0, 3.8f, 3.5f);
 
-			TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<TeleportZone>(Vec3(-19.1f, 2.8f, -2.1f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map);
+			TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<TeleportZone>(Vec3(-19.1f, 2.8f, -2.1f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map,1);
 			AddGameObject(pTelZone);
 		}
 		{
@@ -720,7 +720,7 @@ namespace yj
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(1.0, 3.8f, 3.5f);
 
-			TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<TeleportZone>(Vec3(16.8f, 2.8f, -7.3f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map);
+			TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<TeleportZone>(Vec3(16.8f, 2.8f, -7.3f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map,1);
 			AddGameObject(pTelZone);
 		}
 		{

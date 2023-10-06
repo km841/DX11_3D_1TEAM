@@ -54,22 +54,23 @@ namespace yj
 		MapType mMapType;
 
 		float mFlowSpeed;
-		float mDropSpeed;
+		float mDropSpeed = 30.0f;
 		float mLimitDropSpeed;                                                 
 		float mRotSpeed;
 
-		bool isMove;
+		bool isMove = false;
 		bool isRot;		
 
-		float mDeceleration;
+		float mDeceleration = 3.0f;
 
 		float mUpLimit;
-		float mDownLimit;
+		float mDownLimit = 5.1f;
 		float mRotLimit;
 
 		int mSpawnPoint = -1;
 
 		int mOpenSequnce = -1;
 		int mSequence;
+		int mStartNum = -1;
 	};
 }

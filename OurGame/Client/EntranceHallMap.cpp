@@ -82,145 +82,7 @@ void EntranceHallMap::Start()
 void EntranceHallMap::Update()
 {
 	Map::Update();
-	if (mTarget != nullptr)
-		{
-			if (IS_UP(KeyType::LEFT))
-			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-				Vec3 fixed_pos = Vec3(target_pos.x -= 0.1f, target_pos.y, target_pos.z);
-				mTarget->GetTransform()->SetPosition(fixed_pos);
-			}
-			if (IS_UP(KeyType::RIGHT))
-			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-				Vec3 fixed_pos = Vec3(target_pos.x += 0.1f, target_pos.y, target_pos.z);
-				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
-			}
-			if (IS_UP(KeyType::UP))
-			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y, target_pos.z += 0.1f);
-				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
-			}
-			if (IS_UP(KeyType::DOWN))
-			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y, target_pos.z -= 0.1f);
-				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
-			}
-			if (IS_UP(KeyType::Z))
-			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y += 0.1f, target_pos.z);
-				mTarget->GetTransform()->GetTransform()->SetPosition(fixed_pos);
-			}
-			if (IS_UP(KeyType::X))
-			{
-				Vec3 target_pos = Vec3(mTarget->GetTransform()->GetPosition());
-				Vec3 fixed_pos = Vec3(target_pos.x, target_pos.y -= 0.1f, target_pos.z);
-				mTarget->GetTransform()->SetPosition(fixed_pos);
-
-			}
-			if (IS_UP(KeyType::R)) //회전
-			{
-				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
-				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 10.0f, target_rot.z);
-				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
-			}
-			if (IS_UP(KeyType::T)) //회전
-			{
-				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
-				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 10.0f, target_rot.z);
-				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
-			}
-
-			if (IS_UP(KeyType::Y)) //회전
-			{
-				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
-				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y += 1.0f, target_rot.z);
-				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
-			}
-			if (IS_UP(KeyType::U)) //회전
-			{
-				Vec3 target_rot = Vec3(mTarget->GetTransform()->GetRotation());
-				Vec3 fixed_rot = Vec3(target_rot.x, target_rot.y -= 1.0f, target_rot.z);
-				mTarget->GetTransform()->GetTransform()->SetRotation(fixed_rot);
-			}
-
-			if (IS_UP(KeyType::O)) //스케일 - 전체적 키우기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x += 0.5f, target_scale.y += 0.5f, target_scale.z += 0.5f);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-			if (IS_UP(KeyType::P)) //스케일 - 전체적 줄이기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x -= 0.5f, target_scale.y -= 0.5f, target_scale.z -= 0.5f);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-
-			if (IS_UP(KeyType::K)) //스케일 - y축제외 키우기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x += 0.5f, target_scale.y, target_scale.z += 0.5f);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-			if (IS_UP(KeyType::L)) //스케일 - y축 제외 줄이기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x -= 0.5f, target_scale.y, target_scale.z -= 0.5f);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-			if (IS_UP(KeyType::N)) //스케일 -y축만 키우기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y += 0.5, target_scale.z);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-			if (IS_UP(KeyType::M)) //스케일 -y축만 줄이기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y -= 0.5, target_scale.z);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-
-			if (IS_UP(KeyType::H)) //스케일 - x축만 키우기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x +=0.5, target_scale.y, target_scale.z);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-			if (IS_UP(KeyType::J)) //스케일 -x축만 줄이기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x -=0.5, target_scale.y, target_scale.z);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-
-			if (IS_UP(KeyType::F)) //스케일 -z축만 키우기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y, target_scale.z += 0.5);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-			if (IS_UP(KeyType::G)) //스케일 -z축만 줄이기
-			{
-				Vec3 target_scale = Vec3(mTarget->GetTransform()->GetScale());
-				Vec3 fixed_scale = Vec3(target_scale.x, target_scale.y, target_scale.z -= 0.5);
-				mTarget->GetTransform()->GetTransform()->SetScale(fixed_scale);
-			}
-
-			if (IS_UP(KeyType::ENTER))
-			{
-				Vec3 a = mTarget->GetTransform()->GetPosition();
-				Vec3 b = mTarget->GetTransform()->GetRotation();
-				Vec3 c = mTarget->GetTransform()->GetScale();
-				int d = 0;
-
-
-			}
-		}
+	
 }
 
 void EntranceHallMap::FixedUpdate()
@@ -248,6 +110,7 @@ void EntranceHallMap::Enter()
 
 	InitObjectAdd();
 	InitColliderAdd();
+	InitFuncObjAdd();
 	GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1);
 
 	if (PLAYER)
@@ -262,38 +125,10 @@ void EntranceHallMap::Enter()
 
 void EntranceHallMap::Exit()
 {
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Unknown);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Ground);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Monster);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::DecoObject);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::WallObject);
-	//GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Player);
 }
 
 void EntranceHallMap::InitObjectAdd()
 {
-#pragma region "어드민"
-#pragma endregion
-
-	//DecoObject == 콜라이더 없는 오브젝트
-	//WallObject == 콜라이더 있는 오브젝트
-
-	//Forward == 빛 계산이 없는 명령어
-	//Deferred == 빛 계산이 있는 명령어
-
-	//->GetTransform()->SetPositionExcludingColliders == 콜라이더를 제외하고 오브젝트만 [이동] 시키는 함수
-	//->GetTransform()->SetRotationExcludingColliders == 콜라이더를 제외하고 오브젝트만 [회전] 시키는 함수
-
-	//Deferred_CullNone == 머테리얼 카메라 시점 짤림 없애는 버전 _원본 그대로
-
-	//shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"ObjectTexture", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\EntranceHall.fbm\\grandmaWallPaperTexture.png");
-	//Object->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture); == 텍스쳐 번호 설정
-
-	//Object->AddComponent(new PlacementScript); == 키보드로 움직이는 오브젝트 이동 스크립트
-	//SetGizmoTarget(Object); == 유니티 방식으로 마우스로 움직이는 오브젝트 이동 함수
-
-
-	//전체적인 가이드 라인 - EntranceHall
 	{
 		DecoObject* pEntranceHall = Factory::CreateObject<DecoObject>(Vec3(0.0f, 0.0f, 0.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\EntranceHall.fbx");
 		pEntranceHall->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
@@ -590,16 +425,7 @@ void EntranceHallMap::InitObjectAdd()
 			AddGameObject(pPot2);
 		}
 
-		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Static;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(9.2, 3.8f, 8.75f);
-
-			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(0.1f, -7.7f, -21.6f), physicsInfo, L"Deferred", L"",false,MapType::Right2Map);
-			AddGameObject(pTelZone);
-			SetGizmoTarget(pTelZone);
-		}
+		
 	}
 }
 
@@ -634,5 +460,79 @@ void EntranceHallMap::InitColliderAdd()
 
 		WallObject* pRWallCol = Factory::CreateObjectHasPhysical<WallObject>(Vec3(11.7f, -10.1f, -0.5f), physicsInfo, L"Forward", L"");
 		AddGameObject(pRWallCol);
+	}
+
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(0.98f, 49.74f, 78.4f);
+
+		WallObject* pRWallCol = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-11.4f, -10.9f, -0.5f), physicsInfo, L"Forward", L"");
+		AddGameObject(pRWallCol);
+		SetGizmoTarget(pRWallCol);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(6.5f, 4.4f, 9.72f);
+
+		WallObject* pRWallCol = Factory::CreateObjectHasPhysical<WallObject>(Vec3(7.5f, -7.4f, 29.9f), physicsInfo, L"Forward", L"");
+		AddGameObject(pRWallCol);
+		SetGizmoTarget(pRWallCol);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(6.5f, 4.4f, 9.72f);
+
+		WallObject* pRWallCol = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-7.2f, -7.4f, 29.9f), physicsInfo, L"Forward", L"");
+		AddGameObject(pRWallCol);
+		SetGizmoTarget(pRWallCol);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(8.0f, 7.4f, 20.7f);
+
+		WallObject* pRWallCol = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-7.2f, -7.4f, 29.9f), physicsInfo, L"Forward", L"");
+		AddGameObject(pRWallCol);
+		SetGizmoTarget(pRWallCol);
+	}
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(8.0f, 7.4f, 20.7f);
+
+		WallObject* pRWallCol = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-7.2f, -7.4f, 29.9f), physicsInfo, L"Forward", L"");
+		AddGameObject(pRWallCol);
+		SetGizmoTarget(pRWallCol);
+	}
+}
+
+void EntranceHallMap::InitFuncObjAdd()
+{
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(9.2, 3.8f, 8.75f);
+
+		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(0.1f, -7.7f, -21.6f), physicsInfo, L"Forward", L"", false, MapType::HallColliderCheckMap, 3);
+		AddGameObject(pTelZone);
+	}
+
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(9.2, 3.8f, 8.75f);
+
+		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(0.1f, -7.7f, -21.6f), physicsInfo, L"Forward", L"", false, MapType::HallColliderCheckMap, 2);
+		AddGameObject(pTelZone);
 	}
 }

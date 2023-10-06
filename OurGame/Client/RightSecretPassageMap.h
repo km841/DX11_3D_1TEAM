@@ -10,7 +10,7 @@ namespace jh
 		RightSecretPassageMap();
 		virtual ~RightSecretPassageMap();
 
-	public:
+	private:
 		virtual void Initialize();
 		virtual void Start();
 		virtual void Update();
@@ -20,5 +20,13 @@ namespace jh
 
 		virtual void Enter();
 		virtual void Exit();
+
+	private:
+
+	private:
+		void InitObjectAdd();
+		void InitColliderAdd();
+		void FuncObjectAdd();
+
 	};
 }

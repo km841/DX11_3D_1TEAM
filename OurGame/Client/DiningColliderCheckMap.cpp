@@ -1169,7 +1169,7 @@ namespace sy
 				physicsInfo.eGeometryType = GeometryType::Box;
 				physicsInfo.size = Vec3(3.8, 3.8f, 4.9f);
 
-				yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(8.8f, -6.5f, -9.0f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map);
+				yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(8.8f, -6.5f, -9.0f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map,1);
 				AddGameObject(pTelZone);
 			}
 		}
