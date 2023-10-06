@@ -28,6 +28,8 @@ cbuffer TRANSFORM_PARAMS : register(b0)
     row_major matrix g_matWVP;
     row_major matrix g_matViewInv;
     row_major matrix g_matWVPInv;
+    row_major matrix g_matOldWorld;
+    row_major matrix g_matOldView;
 }
 
 cbuffer MATERIAL_PARAMS : register(b1)

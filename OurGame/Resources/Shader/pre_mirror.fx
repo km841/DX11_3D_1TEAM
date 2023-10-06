@@ -1,5 +1,5 @@
-#ifndef _FORWARD_FX_
-#define _FORWARD_FX_
+#ifndef _PRE_MIRROR_FX_
+#define _PRE_MIRROR_FX_
 
 #include "params.fx"
 #include "utils.fx"
@@ -23,6 +23,8 @@ struct VS_OUT
 {
     float4 pos : SV_Position;
     float2 uv : TEXCOORD;
+    float3 viewPos : POSITION;
+    float3 viewNormal : NORMAL;
 };
 
 VS_OUT VS_Main(VS_IN _in)
@@ -54,20 +56,24 @@ VS_OUT VS_Main(VS_IN _in)
             
             output.pos = mul(float4(_in.pos, 1.f), matWRVP);
             output.uv = _in.uv;
+            output.viewPos = mul(float4(_in.pos, 1.f), matWRV).xyz;
+            output.viewNormal = normalize(mul(float4(_in.normal, 0.f), matWRV)).xyz;
+            
         }
         else
         {
             output.pos = mul(float4(_in.pos, 1.f), g_matWVP);
             output.uv = _in.uv;
+            output.viewPos = mul(float4(_in.pos, 1.f), g_matWV).xyz;
+            output.viewNormal = normalize(mul(float4(_in.normal, 0.f), g_matWV)).xyz;
         }
     }
 
     return output;
 }
 
-float4 PS_Main(VS_OUT _in) : SV_Target
+float4 PS_Main(VS_OUT _in) : SV_Target0
 {
-    float4 color = g_tex_on_0 == 1 ? g_tex_0.Sample(g_sam_0, _in.uv) : float4(g_vec4_0.xyz, 1.f);
-    return color;
+    return mul(_in.pos, g_matWV);
 }
 #endif

@@ -1232,6 +1232,57 @@ namespace hm
 
             Add<Shader>(L"Alpha", pShader);
         }
+
+        // Mirror Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::Less,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"Mirror");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\mirror.fx", shaderInfo);
+
+            Add<Shader>(L"Mirror", pShader);
+        }
+
+        // Mirror Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Deferred,
+                DepthStencilType::Less,
+                RasterizerType::CullBack,
+                BlendType::Default
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"PreMirror");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\pre_mirror.fx", shaderInfo);
+
+            Add<Shader>(L"PreMirror", pShader);
+        }
+
+        // Motion Blur Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::MotionBlur,
+                DepthStencilType::Less,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"MotionBlur");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\motion_blur.fx", shaderInfo);
+
+            Add<Shader>(L"MotionBlur", pShader);
+        }
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -1613,6 +1664,34 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"Alpha", pMaterial);
+        }
+
+        // Mirror Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"Mirror");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"Mirror", pMaterial);
+        }
+
+        // PreMirror Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"PreMirror");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"PreMirror", pMaterial);
+        }
+
+        // Motion Blur Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"MotionBlur");
+            pMaterial->SetTexture(0, Get<Texture>(L"VelocityTarget"));
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"MotionBlur", pMaterial);
         }
     }
 }
