@@ -48,6 +48,8 @@ private:
 	void LaserFollow_Turn();
 	void LaserPrevFollowSet();
 	void LaserPrevFollowLive();
+
+	void CreateCow(Vec3 _pos);
 private:
 	Vec3 RotDir;
 	Vec3 PosDir;

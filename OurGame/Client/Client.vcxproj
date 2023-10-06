@@ -165,6 +165,7 @@
     <ClInclude Include="ClimingEndState.h" />
     <ClInclude Include="ClimingUpState.h" />
     <ClInclude Include="CorridorRightMap.h" />
+    <ClInclude Include="Cow.h" />
     <ClInclude Include="DeadState.h" />
     <ClInclude Include="DeathState_Gm.h" />
     <ClInclude Include="DecoObject.h" />
@@ -287,6 +288,7 @@
     <ClCompile Include="ClimingEndState.cpp" />
     <ClCompile Include="ClimingUpState.cpp" />
     <ClCompile Include="CorridorRightMap.cpp" />
+    <ClCompile Include="Cow.cpp" />
     <ClCompile Include="DeadState.cpp" />
     <ClCompile Include="DeathState_Gm.cpp" />
     <ClCompile Include="DecoObject.cpp" />

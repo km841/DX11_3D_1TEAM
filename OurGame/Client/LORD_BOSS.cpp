@@ -34,6 +34,7 @@
 #include "HeadRoller.h"
 #include "Grimace_ProjectTile.h"
 #include "LORD_BOSS_ROLL.h"
+#include "Cow.h"
 
 /* Component */
 #include "Collider.h"
@@ -172,7 +173,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Melee_Chain;
+					meBasicState = MonsterBasicState::Laser_Start;
 					return BehaviorResult::Success;
 				});
 
@@ -1038,7 +1039,10 @@ void LORD_BOSS::SetBehaviorTree()
 				{
 					GetRigidBody()->RemoveGravity();
 					GetRigidBody()->SetVelocity(AXIS_Y, 0.f);
-					
+					CreateCow(Vec3(10.f, -1.f, 0.f));
+					CreateCow(Vec3(-15.f, -1.f, 0.f));
+				//	CreateCow(Vec3(0.f, -1.f, 10.f));
+					//CreateCow(Vec3(0.f, -1.f, -10.f));
 					pAnimator->Play(7, true);
 				}
 				return BehaviorResult::Success;
@@ -1100,7 +1104,6 @@ void LORD_BOSS::SetBehaviorTree()
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (8 != animIndex)
 				{
-					Vec3 v = GetRigidBody()->GetVelocity();
 					GetRigidBody()->ApplyGravity();
 					LaserPrevFollowSet();
 					pAnimator->Play(8, true);
@@ -1111,9 +1114,9 @@ void LORD_BOSS::SetBehaviorTree()
 			// 이동+Col 처리 하는곳
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
-					mMagnScale = 4.f;
+					mMagnScale = 3.f;
 					LaserPrevFollowLive();
-
+					SlowTurnLive();
 					return BehaviorResult::Success;
 				});
 
@@ -1131,7 +1134,7 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					PrevState = meBasicState;
-					meBasicState = MonsterBasicState::Fall_Loop;
+					meBasicState = MonsterBasicState::Land_Slam;
 					return BehaviorResult::Success;
 				});
 
@@ -1227,6 +1230,7 @@ void LORD_BOSS::SetBehaviorTree()
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (5 != animIndex)
 				{
+					GetRigidBody()->SetVelocity(AXIS_Y, 0.f);
 					pObject->Disable();
 					Enable();
 					pAnimator->Play(5, true);
@@ -1410,8 +1414,8 @@ void LORD_BOSS::SlowTurnLive()
 		pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
 
 	TurnSpeed = 2.f;
-	FONT->DrawString(std::to_wstring(Rot.z), 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
-	FONT->DrawString(std::to_wstring(angleDegree), 30.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
+	/*FONT->DrawString(std::to_wstring(Rot.z), 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
+	FONT->DrawString(std::to_wstring(angleDegree), 30.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);*/
 }
 
 void LORD_BOSS::SlowTurn()
@@ -1671,7 +1675,7 @@ void LORD_BOSS::LaserFollow_Turn()
 	Vec3 Ve = PosDir * (mSpeed * mMagnScale);
 	GetRigidBody()->SetVelocity(Ve);
 
-	TurnSpeed = 2.f;
+	TurnSpeed = 6.f;
 }
 
 void LORD_BOSS::LaserPrevFollowSet()
@@ -1679,7 +1683,7 @@ void LORD_BOSS::LaserPrevFollowSet()
 	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 	Vec3 myPos = GetTransform()->GetPosition();
 	PosDir = playerPos - myPos;
-	PosDir.y += 2;
+	PosDir.y += 3;
 	PosDir.Normalize();
 }
 
@@ -1775,4 +1779,31 @@ void LORD_BOSS::LaserPrevFollowLive()
 
 	mSpeed = 8.f;
 	mMagnScale = 2.f;
+}
+
+void LORD_BOSS::CreateCow(Vec3 _pos)
+{
+	// 보스가 소환하는 소
+	{
+		PhysicsInfo info = {};
+		info.eActorType = ActorType::Kinematic;
+		info.eGeometryType = GeometryType::Box;
+		info.size = Vec3(1.5f, 1.0f, 2.f);
+
+		Cow* pBullKnocker = Factory::CreateMonster<Cow>(Vec3(_pos), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\BullKnocker.fbx");
+		pBullKnocker->GetMeshRenderer()->SetMaterial(pBullKnocker->GetMeshRenderer()->GetMaterial()->Clone());
+
+		pBullKnocker->GetTransform()->SetScale(Vec3(0.3f, 0.3f, 0.3f));
+		pBullKnocker->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+		pBullKnocker->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
+		pBullKnocker->GetAnimator()->SetPlaySpeed(0, 4.f);
+		pBullKnocker->GetAnimator()->SetPlaySpeed(1, 3.f);
+		pBullKnocker->GetAnimator()->SetPlaySpeed(2, 2.f);
+		//pBullKnocker->GetAnimator()->Play(0,true);
+		//SetGizmoTarget(p_E_HEADROLLER);
+		pBullKnocker->Initialize();
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pBullKnocker);
+
+		//SetMeshTarget(pBullKnocker);
+	}
 }
