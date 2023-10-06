@@ -45,6 +45,10 @@ float4 PS_Main(VS_OUT _in) : SV_Target
     float4 color= (float4) 0;
    
     float4 velocity = g_tex_0.Sample(g_sam_0, _in.uv);
+    
+    if (length(velocity.xy) == 0)
+        discard;
+    
     int numBlurSample = 5;
     
     velocity /= (float) numBlurSample;
