@@ -264,6 +264,13 @@ namespace hm
 	}
 	void Shader::Update()
 	{
+		UpdateShaderAndSampler();
+		UpdateTopology();
+		UpdateInputLayout();
+		UpdateRenderState();
+	}
+	void Shader::UpdateShaderAndSampler()
+	{
 		if (ShaderType::Compute == mShaderInfo.eShaderType)
 		{
 			switch (meSamplerType)
@@ -318,57 +325,24 @@ namespace hm
 			CONTEXT->PSSetShader(mpPixelShader.Get(), nullptr, 0);
 			CONTEXT->GSSetShader(mpGeometryShader.Get(), nullptr, 0);
 		}
-
+	}
+	void Shader::UpdateTopology()
+	{
 		CONTEXT->IASetPrimitiveTopology(mShaderInfo.eTopology);
+	}
+	void Shader::UpdateInputLayout()
+	{
 		CONTEXT->IASetInputLayout(mpInputLayout.Get());
+	}
+	void Shader::UpdateRenderState()
+	{
 		CONTEXT->RSSetState(mpRasterizerState.Get());
 
-		CONTEXT->OMSetDepthStencilState(mpDepthStencilState.Get(), 1 );
+		CONTEXT->OMSetDepthStencilState(mpDepthStencilState.Get(), 1);
 
 		bool bIsMirror = ShaderType::Masking == mShaderInfo.eShaderType;
 		const float blendColor[] = { 0.2f, 0.2f, 0.2f, 1.0f };
 		CONTEXT->OMSetBlendState(mpBlendState.Get(), bIsMirror ? blendColor : nullptr, 0xffffffff);
-	}
-	void Shader::TestUpdate()
-	{
-		switch (meSamplerType)
-		{
-		case hm::SamplerType::Wrap:
-			CONTEXT->VSSetSamplers(0, 1, mpLinearWrapSamplerState.GetAddressOf());
-			CONTEXT->PSSetSamplers(0, 1, mpLinearWrapSamplerState.GetAddressOf());
-			CONTEXT->GSSetSamplers(0, 1, mpLinearWrapSamplerState.GetAddressOf());
-			CONTEXT->VSSetSamplers(1, 1, mpPointWrapSamplerState.GetAddressOf());
-			CONTEXT->PSSetSamplers(1, 1, mpPointWrapSamplerState.GetAddressOf());
-			CONTEXT->GSSetSamplers(1, 1, mpPointWrapSamplerState.GetAddressOf());
-			break;
-		case hm::SamplerType::Clamp:
-			CONTEXT->VSSetSamplers(0, 1, mpLinearClampSamplerState.GetAddressOf());
-			CONTEXT->PSSetSamplers(0, 1, mpLinearClampSamplerState.GetAddressOf());
-			CONTEXT->GSSetSamplers(0, 1, mpLinearClampSamplerState.GetAddressOf());
-			CONTEXT->VSSetSamplers(1, 1, mpPointClampSamplerState.GetAddressOf());
-			CONTEXT->PSSetSamplers(1, 1, mpPointClampSamplerState.GetAddressOf());
-			CONTEXT->GSSetSamplers(1, 1, mpPointClampSamplerState.GetAddressOf());
-			break;
-		case hm::SamplerType::WrapClamp:
-			CONTEXT->VSSetSamplers(0, 1, mpLinearWrapSamplerState.GetAddressOf());
-			CONTEXT->PSSetSamplers(0, 1, mpLinearWrapSamplerState.GetAddressOf());
-			CONTEXT->GSSetSamplers(0, 1, mpLinearWrapSamplerState.GetAddressOf());
-			CONTEXT->VSSetSamplers(1, 1, mpLinearClampSamplerState.GetAddressOf());
-			CONTEXT->PSSetSamplers(1, 1, mpLinearClampSamplerState.GetAddressOf());
-			CONTEXT->GSSetSamplers(1, 1, mpLinearClampSamplerState.GetAddressOf());
-			break;
-		}
-
-		CONTEXT->VSSetSamplers(2, 1, mpShadowSamplerState.GetAddressOf());
-		CONTEXT->PSSetSamplers(2, 1, mpShadowSamplerState.GetAddressOf());
-		CONTEXT->GSSetSamplers(2, 1, mpShadowSamplerState.GetAddressOf());
-
-		CONTEXT->VSSetShader(mpVertexShader.Get(), nullptr, 0);
-		CONTEXT->PSSetShader(mpPixelShader.Get(), nullptr, 0);
-		CONTEXT->GSSetShader(mpGeometryShader.Get(), nullptr, 0);
-		
-		CONTEXT->IASetPrimitiveTopology(mShaderInfo.eTopology);
-		CONTEXT->IASetInputLayout(mpInputLayout.Get());
 	}
 	void Shader::CreateComputeShader(const wstring& _path, const string& _name, const string& _version)
 	{

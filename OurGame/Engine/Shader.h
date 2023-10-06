@@ -113,7 +113,11 @@ namespace hm
         * InputLayout
         */
         void Update();
-        void TestUpdate();
+
+        void UpdateShaderAndSampler();
+        void UpdateTopology();
+        void UpdateInputLayout();
+        void UpdateRenderState();
 
     public:
         void CreateComputeShader(const wstring& _path, const string& _name, const string& _version);
