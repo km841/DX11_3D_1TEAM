@@ -23,6 +23,8 @@
 #include "DecoObject.h"
 #include "TeleportZone.h"
 #include "SpikeDoor.h"
+#include "LORD_BOSS.h"
+#include "LORD_BOSS_ROLL.h"
 
 /* Component */
 #include "Collider.h"
@@ -32,6 +34,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include "ParticleSystem.h"
+#include "Animator.h"
 /* Script */
 #include "PaperBurnScript.h"
 #include "CameraMoveScript.h"
@@ -181,10 +184,43 @@ namespace yj
 
 	void RightMap::Enter()
 	{
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::WallObject);
+
+
 			gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
 			InitObjectAdd();
 			InitColliderAdd();
 			FuncObjectAdd();
+
+			PLAYER->GetTransform()->SetPosition(Vec3(0.f, 7.f, 0.f));
+
+			// 최종보스
+			{
+
+				PhysicsInfo info = {};
+				info.eActorType = ActorType::Kinematic;
+				info.eGeometryType = GeometryType::Box;
+				info.size = Vec3(2.f, 2.0f, 6.f);
+
+				LORD_BOSS_ROLL* pLordOfDoorRoll = Factory::CreateMonster<LORD_BOSS_ROLL>(Vec3(5.f, 7.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor_Roller.fbx");
+				pLordOfDoorRoll->GetTransform()->SetScale(Vec3(40.f, 40.f, 40.f));
+				pLordOfDoorRoll->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+				pLordOfDoorRoll->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -3.f, 0.f));
+				pLordOfDoorRoll->GetAnimator()->Play(1, true);
+				pLordOfDoorRoll->Disable();
+
+				LORD_BOSS* pLordOfDoor = Factory::CreateMonster<LORD_BOSS>(Vec3(5.f, 7.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor.fbx");
+				pLordOfDoor->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+				pLordOfDoor->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+				pLordOfDoor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -3.f, 0.f));
+
+				pLordOfDoor->SetObject(pLordOfDoorRoll);
+				pLordOfDoorRoll->SetLORD_BOSS(pLordOfDoor);
+
+				AddGameObject(pLordOfDoorRoll);
+				AddGameObject(pLordOfDoor);
+
+			}
 	}
 
 	void RightMap::Exit()

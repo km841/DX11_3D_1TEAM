@@ -1,5 +1,6 @@
 #pragma once
 #include "Monster.h"
+class LORD_BOSS;
 class LORD_BOSS_ROLL :
     public Monster
 {
@@ -31,6 +32,7 @@ public:
 	virtual void OnTriggerStay(Collider* _pOtherCollider);
 	virtual void OnTriggerExit(Collider* _pOtherCollider);
 
+	void SetLORD_BOSS(LORD_BOSS* _Boss) { pLord_Boss = _Boss; }
 private:
 
 
@@ -40,5 +42,7 @@ private:
 	int Health;
 
 	MonsterBasicState PrevState;
+
+	LORD_BOSS* pLord_Boss;
 };
 
