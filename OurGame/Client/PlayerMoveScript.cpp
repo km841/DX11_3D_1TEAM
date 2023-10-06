@@ -85,6 +85,9 @@ void PlayerMoveScript::CheckPenetration(RigidBody* _rigidBody, LayerType _eLayer
 
 	for (int i = 0; i < gameObjects.size(); ++i)
 	{
+		if (false == gameObjects[i]->IsEnable())
+			continue;
+
 		if (gameObjects[i]->GetCollider())
 		{
 			PxVec3 dir;

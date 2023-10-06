@@ -32,8 +32,16 @@ public:
 	virtual void OnTriggerExit(Collider* _pOtherCollider);
 
 private:
+	void CreateProjectTile();
+	void MonsterAttackCol();
+private:
 	Vec3 dir;
 	Vec3 dir_backstep;
 	Vec3 dir_desh;
+
+	GameObject* pMonsterAttackCol;
+	int Health;
+
+	bool isTrigger = false;
 
 };

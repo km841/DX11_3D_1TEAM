@@ -12,13 +12,14 @@ namespace jh
 {
 	BreakablePot::BreakablePot(GameObject* _pBase, std::vector<BreakablePotCell*> _vpCells) :
 		GameObject(LayerType::DecoObject),
-		mbIsRestroing(false),
+		mbIsRestoringTemp(false),
+		mbIsRestoring(false),
 		mbIsWaiting(false),
-		mWaitTime(1.f)
+		mWaitTime(4.f)
 	{
 		mpBasePot = _pBase;
 		mpPotCells = _vpCells;
-		mTimer.SetEndTime(3.f);
+		mWaitTimer.SetEndTime(mWaitTime);
 
 		for (int i = 0; i < mpPotCells.size(); i++)
 		{
@@ -48,42 +49,35 @@ namespace jh
 	{
 		GameObject::Update();
 
-		if (IS_DOWN(KeyType::B))
-		{
-			BreakPots();
-		}
-		if (IS_DOWN(KeyType::N))
-		{
-			for (int i = 0; i < mpPotCells.size(); i++)
-			{
-				mpPotCells[i]->SetCollapsePos(mpPotCells[i]->GetTransform()->GetPosition());
-				mpPotCells[i]->SetCollapseRot(mpPotCells[i]->GetTransform()->GetRotation());
-			}
-
-			mbIsWaiting = true;
-		}
-
 		if (true == mbIsWaiting)
 		{
-			mTimer.SetEndTime(3.f);
+			if (false == mWaitTimer.GetIsRun())
+				mWaitTimer.Start();
 
-			if (false == mTimer.GetIsRun())
-				mTimer.Start();
+			mWaitTimer.Update();
 
-			mTimer.Update();
-
-			if (mTimer.IsFinished())
+			if (true == mWaitTimer.IsFinished())
 			{
-				mTimer.Stop();
-				mbIsRestroing = true;
+				mWaitTimer.Stop();
+
+				for (int i = 0; i < mpPotCells.size(); i++)
+				{
+					mpPotCells[i]->SetCollapsePos(mpPotCells[i]->GetTransform()->GetPosition());
+					mpPotCells[i]->SetCollapseRot(mpPotCells[i]->GetTransform()->GetPhysicsRotation());
+				}
+
+				mbIsRestoringTemp = true;
 				mbIsWaiting = false;
 			}
 		}
 
-		if (true == mbIsRestroing)
+		if (true == mbIsRestoringTemp)
 		{
-			mTimer.SetEndTime(0.5f);
-			RestorePots();
+			RestorePots(true);
+		}
+		if (true == mbIsRestoring)
+		{
+			RestorePots(false);
 		}
 	}
 
@@ -103,12 +97,11 @@ namespace jh
 		{
 			PxSweepHit hit;
 			Vec3 dir = GetTransform()->GetPosition() - _pOther->GetGameObject()->GetTransform()->GetPosition();
-			//dir.y = 0.f;
 			dir.Normalize();
 			if (GetCollider()->Sweep(-dir, 5.f, _pOther, hit))
 			{
 				Vec3 pos = hit.position;
-				int a = 0;
+				BreakPots(pos);
 			}
 		}
 	}
@@ -121,9 +114,9 @@ namespace jh
 	{
 	}
 
-	void BreakablePot::BreakPots()
+	void BreakablePot::BreakPots(const Vec3 _hitPos)
 	{
-		if (true == mbIsRestroing)
+		if (true == mbIsRestoringTemp || true == mbIsRestoring || true == mbIsWaiting)
 			return;
 
 		mpBasePot->Disable();
@@ -131,40 +124,81 @@ namespace jh
 		for (int i = 0; i < mpPotCells.size(); i++)
 		{
 			mpPotCells[i]->GetRigidBody()->GetDynamicActor()->setMass(100.f);
-			mpPotCells[i]->Enable();
 			mpPotCells[i]->GetRigidBody()->GetDynamicActor()->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, false);
+			mpPotCells[i]->Enable();
+
+			mpPotCells[i]->CalculateForce(_hitPos);
 		}
+
+		mbIsWaiting = true;
 	}
 
-	void BreakablePot::RestorePots()
+	void BreakablePot::RestorePots(bool _isTemp)
 	{
-		if (false == mTimer.GetIsRun())
-			mTimer.Start();
+		float endTime = true == _isTemp ? 0.8f : 0.1f;
 
-		mTimer.Update();
-		float progress = mTimer.GetProgress();
+		mProgressTimer.SetEndTime(endTime);
+
+		if (false == mProgressTimer.GetIsRun())
+			mProgressTimer.Start();
+
+		mProgressTimer.Update();
+		float progress = mProgressTimer.GetProgress();
 
 		for (int i = 0; i < mpPotCells.size(); i++)
 		{
 			mpPotCells[i]->GetRigidBody()->GetDynamicActor()->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, true);
 
-			Vec3 pos = Lerp(mpPotCells[i]->GetCollapsePos(), mpPotCells[i]->GetOriginPos(), progress);
-			mpPotCells[i]->GetTransform()->SetPosition(pos);
-			Vec3 rot = Lerp(mpPotCells[i]->GetCollapseRot(), Vec3(-90.f, 0.f, 90.f), progress);
-			mpPotCells[i]->GetTransform()->SetRotation(rot);
+			Vec3 tempPos = GetTransform()->GetPosition() + mpPotCells[i]->GetRelativePos() * 2.f;
+			tempPos.y = mpPotCells[i]->GetOriginPos().y;
+
+			if (true == _isTemp)
+			{
+				Vec3 pos = Lerp(mpPotCells[i]->GetCollapsePos(), tempPos, progress);
+				mpPotCells[i]->GetTransform()->SetPosition(pos);
+				Vec3 rot = Lerp(mpPotCells[i]->GetCollapseRot(), Vec3(-90.f, 0.f, 90.f), progress);
+				mpPotCells[i]->GetTransform()->SetRotation(rot);
+			}
+			else
+			{
+				Vec3 pos = Lerp(tempPos, mpPotCells[i]->GetOriginPos(), progress);
+				mpPotCells[i]->GetTransform()->SetPosition(pos);
+			}
 		}
 
-		if (true == mTimer.IsFinished())
+		if (true == mProgressTimer.IsFinished())
 		{
-			mTimer.Stop();
-			mbIsRestroing = false;
-
-			for (int i = 0; i < mpPotCells.size(); i++)
+			if (true == _isTemp)
 			{
-				mpPotCells[i]->Disable();
-			}
+				mProgressTimer.Pause();
 
-			mpBasePot->Enable();
+				mTempTimer.SetEndTime(0.2f);
+
+				if (false == mTempTimer.GetIsRun())
+					mTempTimer.Start();
+
+				mTempTimer.Update();
+
+				if (true == mTempTimer.IsFinished())
+				{
+					mProgressTimer.Stop();
+					mTempTimer.Stop();
+					mbIsRestoringTemp = false;
+					mbIsRestoring = true;
+				}
+			}
+			else
+			{
+				mProgressTimer.Stop();
+
+				for (int i = 0; i < mpPotCells.size(); i++)
+				{
+					mpPotCells[i]->Disable();
+				}
+
+				mpBasePot->Enable();
+				mbIsRestoring = false;
+			}
 		}
 	}
 }

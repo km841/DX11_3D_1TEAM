@@ -1084,7 +1084,7 @@ namespace hm
                 ShaderType::Light,
                 DepthStencilType::NoDepthTestNoWrite,
                 RasterizerType::CullBack,
-                BlendType::AlphaBlend
+                BlendType::Default
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
@@ -1182,7 +1182,7 @@ namespace hm
             Add<Shader>(L"Mirror", pShader);
         }
 
-        // PlayerSlash Shader
+        // SlashGlare Shader
         {
             ShaderInfo shaderInfo =
             {
@@ -1197,6 +1197,40 @@ namespace hm
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\slash_glare.fx", shaderInfo);
 
             Add<Shader>(L"SlashGlare", pShader);
+        }
+
+        // SpiderWeb Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::Less,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"SpiderWeb");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\spider_web.fx", shaderInfo);
+
+            Add<Shader>(L"SpiderWeb", pShader);
+        }
+
+        // Alpha Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::Less,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"Alpha");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\alpha.fx", shaderInfo);
+
+            Add<Shader>(L"Alpha", pShader);
         }
     }
     void Resources::CreateDefaultMaterial()
@@ -1570,6 +1604,15 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"SlashGlare", pMaterial);
+        }
+
+        // Alpha Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"Alpha");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"Alpha", pMaterial);
         }
     }
 }

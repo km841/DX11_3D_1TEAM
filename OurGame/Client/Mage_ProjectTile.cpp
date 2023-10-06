@@ -28,6 +28,7 @@
 #include "SwordHeavyEffect.h"
 #include "Ladder.h"
 #include "LadderCollider.h"
+#include "Mirror_ProjectTile.h"	
 
 /* Component */
 #include "Collider.h"
@@ -78,7 +79,7 @@
 Mage_ProjectTile::Mage_ProjectTile()
 {
 	mHP = 1.f; 
-	mSpeed = 2.f;
+	mSpeed = 3.f;
 	mAttackDamage = 1;
 }
 
@@ -139,6 +140,11 @@ void Mage_ProjectTile::OnTriggerEnter(Collider* _pOtherCollider)
 		SceneType eSceneType = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 		GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(eSceneType, this);
 	}
+
+	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		Mirror();
+	}
 }
 
 void Mage_ProjectTile::OnTriggerStay(Collider* _pOtherCollider)
@@ -185,4 +191,43 @@ void Mage_ProjectTile::FollowRot()
 		angleDegree += 360.f;
 
 	pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
+}
+
+void Mage_ProjectTile::Mirror()
+{
+	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	Vec3 myPos = GetTransform()->GetPosition();
+	Vec3 myRot = GetTransform()->GetRotation();
+	Vec3 scale = GetRigidBody()->GetGeometrySize();
+
+	Vec3 dir = playerPos - myPos;
+
+	dir.Normalize();
+	Vec3 Ve = dir * mSpeed;
+
+
+
+	PhysicsInfo physicsInfo;
+	physicsInfo.eActorType = ActorType::Kinematic;
+	physicsInfo.eGeometryType = GeometryType::Box;
+	physicsInfo.size = Vec3(0.3f, 4.3f, 0.3f);
+
+	Mirror_ProjectTile* pProjectTile = Factory::CreateObjectHasPhysical<Mirror_ProjectTile>(myPos, physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Monster\\_DROP_SOUL50.fbx");
+	pProjectTile->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+	pProjectTile->GetTransform()->SetPosition(GetTransform()->GetPosition());
+	pProjectTile->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+
+	pProjectTile->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
+	pProjectTile->GetMeshRenderer()->GetMaterial()->SetBloomPower(3.f, 0);
+	pProjectTile->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(0.f, 1.f, 0.f, 1.f));
+
+	pProjectTile->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, false);
+	pProjectTile->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, false);
+	pProjectTile->GetRigidBody()->SetVelocity(-Ve);
+	pProjectTile->Initialize();
+
+	GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pProjectTile);
+
+	MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
+	GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
 }

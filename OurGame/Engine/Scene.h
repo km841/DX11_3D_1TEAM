@@ -51,6 +51,10 @@ namespace hm
 		void DeleteGameObjects(std::vector<GameObject*>& _gameObjects);
 		void DeleteGameObjects(LayerType _eLayerType);
 
+		static void AddSceneChangeCallback(const wstring& _name, std::function<void()> _function);
+		static void RemoveSceneChangeCallback(const wstring& _name);
+		static const std::map<wstring, std::function<void()>>& GetSceneChangeCallbackMap() { return mSceneChangeCallbackMap; }
+
 		/*
 		* 레이어에 속한 게임오브젝트들을 반환하는 함수
 		- 게임오브젝트의 값을 변경할 필요가 없는 경우
@@ -100,6 +104,7 @@ namespace hm
 		std::vector<GameObject*> mLightObjects;
 		std::vector<GameObject*> mMirrorObjects;
 
+
 		bool mbIsBakedStaticShadow;
 		bool mbEnableDirLight;
 
@@ -109,6 +114,7 @@ namespace hm
 
 	protected:
 		static std::vector<wstring> mDontDestroyObjectNames;
+		static std::map<wstring, std::function<void()>> mSceneChangeCallbackMap;
 	};
 }
 

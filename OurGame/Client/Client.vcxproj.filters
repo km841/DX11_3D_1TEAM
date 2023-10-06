@@ -286,12 +286,6 @@
     <ClInclude Include="MageColScript.h">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Monster_ProjectTile.h">
-      <Filter>소스 파일\GameObject\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="Mage_ProjectTile.h">
-      <Filter>소스 파일\GameObject\Monster</Filter>
-    </ClInclude>
     <ClInclude Include="BreakablePot.h" />
     <ClInclude Include="BreakablePotCell.h" />
     <ClInclude Include="Bat.h">
@@ -302,6 +296,34 @@
     </ClInclude>
     <ClInclude Include="MonsterHitScript.h">
       <Filter>소스 파일\GameObject\Monster\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterKeyScript.h" />
+    <ClInclude Include="PlayerMoveOverMapScript.h" />
+    <ClInclude Include="SlashGlareScript.h" />
+    <ClInclude Include="SwordGlareEffect.h" />
+    <ClInclude Include="SpiderWeb.h">
+      <Filter>소스 파일\GameObject\Dungeon</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterColScript.h">
+      <Filter>소스 파일\GameObject\Monster\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Mirror_ProjectTile.h">
+      <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
+    </ClInclude>
+    <ClInclude Include="Mage_ProjectTile.h">
+      <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
+    </ClInclude>
+    <ClInclude Include="Grimace_ProjectTile.h">
+      <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster_ProjectTile.h">
+      <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
+    </ClInclude>
+    <ClInclude Include="LORD_BOSS.h">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
+    </ClInclude>
+    <ClInclude Include="LORD_BOSS_ROLL.h">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -590,12 +612,6 @@
     <ClCompile Include="MageColScript.cpp">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="Monster_ProjectTile.cpp">
-      <Filter>소스 파일\GameObject\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="Mage_ProjectTile.cpp">
-      <Filter>소스 파일\GameObject\Monster</Filter>
-    </ClCompile>
     <ClCompile Include="BreakablePot.cpp" />
     <ClCompile Include="BreakablePotCell.cpp" />
     <ClCompile Include="Grimace.cpp">
@@ -603,6 +619,34 @@
     </ClCompile>
     <ClCompile Include="MonsterHitScript.cpp">
       <Filter>소스 파일\GameObject\Monster\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterKeyScript.cpp" />
+    <ClCompile Include="PlayerMoveOverMapScript.cpp" />
+    <ClCompile Include="SlashGlareScript.cpp" />
+    <ClCompile Include="SwordGlareEffect.cpp" />
+    <ClCompile Include="SpiderWeb.cpp">
+      <Filter>소스 파일\GameObject\Dungeon</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterColScript.cpp">
+      <Filter>소스 파일\GameObject\Monster\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Mirror_ProjectTile.cpp">
+      <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
+    </ClCompile>
+    <ClCompile Include="Mage_ProjectTile.cpp">
+      <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
+    </ClCompile>
+    <ClCompile Include="Grimace_ProjectTile.cpp">
+      <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster_ProjectTile.cpp">
+      <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
+    </ClCompile>
+    <ClCompile Include="LORD_BOSS.cpp">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
+    </ClCompile>
+    <ClCompile Include="LORD_BOSS_ROLL.cpp">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -679,6 +723,15 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Monster\Script">
       <UniqueIdentifier>{b8fda16b-a6d9-4582-96ab-53aa5cd0e10e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Dungeon">
+      <UniqueIdentifier>{36258a79-c51a-47e3-9400-3c0d568788aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Monster\ProjectTile">
+      <UniqueIdentifier>{1104afcb-6640-47cb-84bc-98be8ab571a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Monster\LOAD_BOSS">
+      <UniqueIdentifier>{5839635a-2e12-444c-bad2-f39b7cb653d8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -23,10 +23,6 @@ struct VS_OUT
 {
     float4 pos : SV_Position;
     float2 uv : TEXCOORD;
-    float3 viewPos : POSITION;
-    float3 viewNormal : NORMAL;
-    float3 viewTangent : TANGENT;
-    float3 viewBinormal : BINORMAL;
 };
 
 VS_OUT VS_Main(VS_IN _in)
@@ -42,37 +38,26 @@ VS_OUT VS_Main(VS_IN _in)
         
         output.pos = mul(float4(_in.pos, 1.f), _in.matWVP);
         output.uv = _in.uv;
-        output.viewPos = mul(float4(_in.pos, 1.f), _in.matWV).xyz;
-        output.viewNormal = normalize(mul(float4(_in.normal, 0.f), _in.matWV)).xyz;
-        output.viewTangent = normalize(mul(float4(_in.tangent, 0.f), _in.matWV)).xyz;
-        output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal));
     }
     else
     {
         if (g_int_1 == 1)
             Skinning(_in.pos, _in.normal, _in.tangent, _in.weight, _in.indices);
         
-        if (g_int_2 == 1)
+        if (g_reflect_use == 1)
         {
-            row_major matrix reflect_matWV = g_matWorld * g_reflect_mat * g_matView;
-            row_major matrix reflect_matVP = g_reflect_mat * g_matView * g_matProjection;
-            row_major matrix reflect_matWVP = g_matWorld * reflect_matVP;
+            row_major matrix matWRVP = g_matWorld;
+            matWRVP = mul(matWRVP, g_reflect_mat);
+            matWRVP = mul(matWRVP, g_matView);
+            matWRVP = mul(matWRVP, g_matProjection);
             
-            output.pos = mul(float4(_in.pos, 1.f), reflect_matWVP);
+            output.pos = mul(float4(_in.pos, 1.f), matWRVP);
             output.uv = _in.uv;
-            output.viewPos = mul(float4(_in.pos, 1.f), reflect_matWV).xyz;
-            output.viewNormal = normalize(mul(float4(_in.normal, 0.f), reflect_matWV)).xyz;
-            output.viewTangent = normalize(mul(float4(_in.tangent, 0.f), reflect_matWV)).xyz;
-            output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal));
         }
         else
         {
             output.pos = mul(float4(_in.pos, 1.f), g_matWVP);
             output.uv = _in.uv;
-            output.viewPos = mul(float4(_in.pos, 1.f), g_matWV).xyz;
-            output.viewNormal = normalize(mul(float4(_in.normal, 0.f), g_matWV)).xyz;
-            output.viewTangent = normalize(mul(float4(_in.tangent, 0.f), g_matWV)).xyz;
-            output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal));
         }
     }
 

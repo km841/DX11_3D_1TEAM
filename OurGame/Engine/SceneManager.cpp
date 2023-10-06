@@ -122,6 +122,10 @@ namespace hm
 		if (nullptr != mpActiveScene)
 			mpActiveScene->Exit();
 
+		auto callbackMap = mpActiveScene->GetSceneChangeCallbackMap();
+		for (const auto callback : callbackMap)
+			callback.second();
+
 		mpActiveScene->RemovePhysicsActors();
 		ActiveAndInitializeScene(_eSceneType);
 

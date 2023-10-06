@@ -14,6 +14,7 @@
 #include "StructuredBuffer.h"
 #include "Timer.h"
 #include "Mirror.h"
+#include "Animator.h"
 
 
 namespace hm
@@ -62,7 +63,6 @@ namespace hm
 		mHeight = gpEngine->GetWindowInfo().height;
 
 		PostProcessInit();
-		MirrorInit();
 	}
 
 	void RenderManager::Render(Scene* _pScene)
@@ -91,11 +91,10 @@ namespace hm
 			PostProcessing();
 
 		RenderForward(_pScene);
-		//RenderMirror(_pScene);
+		RenderReflect(_pScene);
 
 		UpdateScreenEffect();
 		RenderScreenEffect();
-
 	}
 
 	void RenderManager::ClearInstancingBuffer()
@@ -282,15 +281,16 @@ namespace hm
 		GET_SINGLE(Resources)->Get<Material>(L"LightBlend")->SetTexture(3, mpBlurYTexture);
 	}
 
-	void RenderManager::RenderMirror(Scene* _pScene)
+	void RenderManager::RenderReflect(Scene* _pScene)
 	{
 		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::ScreenEffect)->OMSetRenderTarget();
 
+		Camera* pMainCam = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera();
 		for (auto pMirror : _pScene->mMirrorObjects)
 		{
-			pMirror->GetMirror()->RenderMasking(_pScene->GetMainCamera()->GetCamera());
-			pMirror->GetMirror()->RenderReflect(_pScene->GetMainCamera()->GetCamera());
-			//pMirror->GetMeshRenderer()->Render(_pScene->GetMainCamera()->GetCamera());
+			pMirror->GetMirror()->RenderMasking(pMainCam);
+			pMirror->GetMirror()->RenderReflect(pMainCam);
+			pMirror->GetMirror()->RenderAlbedo(pMainCam);
 		}
 	}
 
@@ -827,108 +827,6 @@ namespace hm
 				L"BlurYTempTex", DXGI_FORMAT_R8G8B8A8_UNORM,
 				D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE,
 				mWidth / 4, mHeight / 4);
-	}
-	void RenderManager::MirrorInit()
-	{
-		D3D11_DEPTH_STENCIL_DESC dsDesc;
-		ZeroMemory(&dsDesc, sizeof(dsDesc));
-		dsDesc.DepthEnable = true;
-		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-		dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
-		dsDesc.StencilEnable = false; // Stencil 불필요
-		dsDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
-		dsDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
-		// 앞면에 대해서 어떻게 작동할지 설정
-		dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-		dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-		// 뒷면에 대해 어떻게 작동할지 설정 (뒷면도 그릴 경우)
-		dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-		dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
-		dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-		HRESULT hr = DEVICE->CreateDepthStencilState(&dsDesc, m_drawDSS.GetAddressOf());
-		AssertEx(SUCCEEDED(hr), L"RenderManager::MirrorInit() - 초기화 실패");
-
-		// Stencil에 1로 표기해주는 DSS
-		dsDesc.DepthEnable = true; // 이미 그려진 물체 유지
-		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-		dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
-		dsDesc.StencilEnable = true;    // Stencil 필수
-		dsDesc.StencilReadMask = 0xFF;  // 모든 비트 다 사용
-		dsDesc.StencilWriteMask = 0xFF; // 모든 비트 다 사용
-		// 앞면에 대해서 어떻게 작동할지 설정
-		dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-		dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
-		dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-		hr = DEVICE->CreateDepthStencilState(&dsDesc, m_maskDSS.GetAddressOf());
-		AssertEx(SUCCEEDED(hr), L"RenderManager::MirrorInit() - 초기화 실패");
-		// Stencil에 1로 표기된 경우에"만" 그리는 DSS
-		// DepthBuffer는 초기화된 상태로 가정
-		// D3D11_COMPARISON_EQUAL 이미 1로 표기된 경우에만 그리기
-		// OMSetDepthStencilState(..., 1); <- 여기의 1
-		dsDesc.DepthEnable = true;   // 거울 속을 다시 그릴때 필요
-		dsDesc.StencilEnable = true; // Stencil 사용
-		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-		dsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL; // <- 주의
-		dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-		dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
-
-		hr = DEVICE->CreateDepthStencilState(&dsDesc, m_drawMaskedDSS.GetAddressOf());
-		AssertEx(SUCCEEDED(hr), L"RenderManager::MirrorInit() - 초기화 실패");
-
-		D3D11_RASTERIZER_DESC rastDesc;
-		ZeroMemory(&rastDesc, sizeof(D3D11_RASTERIZER_DESC));
-		rastDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
-		rastDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
-		rastDesc.FrontCounterClockwise = false;
-		rastDesc.DepthClipEnable = true;
-		rastDesc.MultisampleEnable = true;
-
-		hr = DEVICE->CreateRasterizerState(&rastDesc, m_solidRS.GetAddressOf());
-		AssertEx(SUCCEEDED(hr), L"RenderManager::MirrorInit() - 초기화 실패");
-
-		// 거울에 반사되면 삼각형의 Winding이 바뀌기 때문에 CCW로 그려야함
-		rastDesc.FrontCounterClockwise = true;
-		hr = DEVICE->CreateRasterizerState(&rastDesc,m_solidCCWRS.GetAddressOf());
-		AssertEx(SUCCEEDED(hr), L"RenderManager::MirrorInit() - 초기화 실패");
-
-		rastDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
-		hr = DEVICE->CreateRasterizerState(&rastDesc, m_wireCCWRS.GetAddressOf());
-		AssertEx(SUCCEEDED(hr), L"RenderManager::MirrorInit() - 초기화 실패");
-
-		rastDesc.FrontCounterClockwise = false;
-		hr = DEVICE->CreateRasterizerState(&rastDesc, m_wireRS.GetAddressOf());
-		AssertEx(SUCCEEDED(hr), L"RenderManager::MirrorInit() - 초기화 실패");
-
-		D3D11_BLEND_DESC mirrorBlendDesc;
-		ZeroMemory(&mirrorBlendDesc, sizeof(mirrorBlendDesc));
-		mirrorBlendDesc.AlphaToCoverageEnable = true; // MSAA
-		mirrorBlendDesc.IndependentBlendEnable = false;
-		// 개별 RenderTarget에 대해서 설정 (최대 8개)
-		mirrorBlendDesc.RenderTarget[0].BlendEnable = true;
-		mirrorBlendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_BLEND_FACTOR;
-		mirrorBlendDesc.RenderTarget[0].DestBlend =
-			D3D11_BLEND_INV_BLEND_FACTOR;
-		mirrorBlendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-
-		mirrorBlendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-		mirrorBlendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
-		mirrorBlendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-
-		// 필요하면 RGBA 각각에 대해서도 조절 가능
-		mirrorBlendDesc.RenderTarget[0].RenderTargetWriteMask =
-			D3D11_COLOR_WRITE_ENABLE_ALL;
-
-		hr = DEVICE->CreateBlendState(&mirrorBlendDesc, m_mirrorBS.GetAddressOf());
-		AssertEx(SUCCEEDED(hr), L"RenderManager::MirrorInit() - 초기화 실패");
-
 	}
 }
 

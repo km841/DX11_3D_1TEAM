@@ -34,7 +34,7 @@ public:
 
 private:
 	void CreateProjectTile();
-
+	void Teleport();
 private:
 	GameObject* pMageCol;
 	MageColScript* pMageColSc;

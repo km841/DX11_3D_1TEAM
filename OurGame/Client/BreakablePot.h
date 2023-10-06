@@ -20,15 +20,18 @@ namespace jh
 		virtual void OnTriggerExit(Collider* _pOther);
 
 	public:
-		void BreakPots();
-		void RestorePots();
+		void BreakPots(const Vec3 _hitPos);
+		void RestorePots(bool _isTemp);
 
 	private:
 		GameObject* mpBasePot;
 		std::vector<BreakablePotCell*> mpPotCells;
 
-		bool mbIsRestroing;
-		TimerObject mTimer;
+		bool mbIsRestoringTemp;
+		bool mbIsRestoring;
+		TimerObject mWaitTimer;
+		TimerObject mProgressTimer;
+		TimerObject mTempTimer;
 
 		bool mbIsWaiting;
 		float mWaitTime;

@@ -33,6 +33,8 @@
 #include "Lurker.h"
 #include "HeadRoller.h"
 #include "Grimace.h"
+#include "LORD_BOSS.h"
+#include "LORD_BOSS_ROLL.h"
 
 /* Component */
 #include "Collider.h"
@@ -43,6 +45,7 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "Animator.h"
+#include "Mirror.h"
 
 /* Script */
 #include "PlayerMoveScript.h"
@@ -93,12 +96,16 @@ namespace hm {
 	void Monster_Player_TestScene::Enter()
 	{
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
-		
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::PlayerCol);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::ArrowCol);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Monster_ProjectTile);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Monster);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::MonsterCol);
+
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::PlayerCol);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::ArrowCol);
+
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PlayerCol, LayerType::Monster_ProjectTile);
+		
 
 		//GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
 		//GET_SINGLE(RenderManager)->AddHoldEffect(3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
@@ -116,7 +123,7 @@ namespace hm {
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(50.f, 0.1f, 50.f);
 
-			Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\RoughLowerFloor.fbx");
+			Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Forward", L"");
 
 			pFloor->GetTransform()->SetScale(Vec3(50.f, 1.f, 50.f));
 			pFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
@@ -128,7 +135,7 @@ namespace hm {
 
 		PLAYER->GetTransform()->SetPosition(Vec3(0.f, -7.f, 0.f));
 
-
+		//pLordOfDoor->GetMeshRenderer()->SetMaterial(pLordOfDoor->GetMeshRenderer()->GetMaterial()->Clone()); 복제품 만들때 노인스턴싱
 
 		 //콩벌레
 		{
@@ -147,6 +154,53 @@ namespace hm {
 			//SetGizmoTarget(p_E_HEADROLLER);
 			AddGameObject(p_E_HEADROLLER);
 			//SetMeshTarget(p_E_HEADROLLER);
+		}
+
+		
+		// 최종보스
+		{
+
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Kinematic;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(1.f, 1.0f, 1.f);
+
+			LORD_BOSS_ROLL* pLordOfDoorRoll = Factory::CreateMonster<LORD_BOSS_ROLL>(Vec3(8.f, 5.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor_Roller.fbx");
+			pLordOfDoorRoll->GetTransform()->SetScale(Vec3(40.f, 40.f, 40.f));
+			pLordOfDoorRoll->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			pLordOfDoorRoll->GetAnimator()->Play(1,true);
+			pLordOfDoorRoll->Disable();
+
+			LORD_BOSS* pLordOfDoor = Factory::CreateMonster<LORD_BOSS>(Vec3(5.f, -4.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor.fbx");
+			pLordOfDoor->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			pLordOfDoor->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			pLordOfDoor->SetObject(pLordOfDoorRoll);
+		
+			AddGameObject(pLordOfDoorRoll);
+			AddGameObject(pLordOfDoor);
+		
+		}
+
+		
+
+		// 보스가 소환하는 소
+		{
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Kinematic;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(1.f, 1.0f, 1.f);
+
+			Monster* pBullKnocker = Factory::CreateObjectHasPhysical<Monster>(Vec3(10.f, 0.f, -15.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\BullKnocker.fbx");
+			pBullKnocker->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+			pBullKnocker->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			pBullKnocker->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
+			pBullKnocker->GetAnimator()->SetPlaySpeed(0, 5.f);
+			pBullKnocker->GetAnimator()->SetPlaySpeed(1, 3.f);
+			pBullKnocker->GetAnimator()->SetPlaySpeed(2, 3.f);
+
+			//SetGizmoTarget(p_E_HEADROLLER);
+			AddGameObject(pBullKnocker);
+			//SetMeshTarget(pBullKnocker);
 		}
 
 		// 초록거미
@@ -188,10 +242,10 @@ namespace hm {
 			PhysicsInfo info = {};
 			info.eActorType = ActorType::Kinematic;
 			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(3.f, 8.f, 3.f);
+			info.size = Vec3(2.f, 8.f, 2.f);
 
-			Grimace* p_E_GRIMACE_KNIGHT = Factory::CreateMonster<Grimace>(Vec3(-16.f, 0.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_GRIMACE_KNIGHT.fbx");
-			p_E_GRIMACE_KNIGHT->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+			Grimace* p_E_GRIMACE_KNIGHT = Factory::CreateMonster<Grimace>(Vec3(-16.f, 0.f, -15.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_GRIMACE_KNIGHT.fbx");
+			p_E_GRIMACE_KNIGHT->GetTransform()->SetScale(Vec3(0.7f, 0.7f, 0.7f));
 			p_E_GRIMACE_KNIGHT->GetTransform()->SetRotation(Vec3(180.f, 0.f, 0.f));
 			p_E_GRIMACE_KNIGHT->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -4.f, 0.f));
 			for (size_t i = 0; i < 13; i++)
@@ -212,7 +266,7 @@ namespace hm {
 
 			Bat* p_E_BAT_White = Factory::CreateMonster<Bat>(Vec3(-20.f, 0.f, 20.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
 			p_E_BAT_White->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
-			p_E_BAT_White->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			p_E_BAT_White->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 360.f));
 	
 			AddGameObject(p_E_BAT_White);
 			//SetGizmoTarget(p_E_BAT_White);
@@ -228,7 +282,17 @@ namespace hm {
 			AddGameObject(pBonFire);
 		}*/
 
-		
+		// 미러
+		{
+			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, -8.7f, 0.f), L"Forward", L"", false, LayerType::Mirror);
+
+			pMirror->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+			pMirror->AddComponent(new Mirror);
+			pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+			pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+
+			AddGameObject(pMirror);
+		}
 	}
 	void Monster_Player_TestScene::Exit()
 	{

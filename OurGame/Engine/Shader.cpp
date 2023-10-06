@@ -264,6 +264,13 @@ namespace hm
 	}
 	void Shader::Update()
 	{
+		UpdateShaderAndSampler();
+		UpdateTopology();
+		UpdateInputLayout();
+		UpdateRenderState();
+	}
+	void Shader::UpdateShaderAndSampler()
+	{
 		if (ShaderType::Compute == mShaderInfo.eShaderType)
 		{
 			switch (meSamplerType)
@@ -318,12 +325,20 @@ namespace hm
 			CONTEXT->PSSetShader(mpPixelShader.Get(), nullptr, 0);
 			CONTEXT->GSSetShader(mpGeometryShader.Get(), nullptr, 0);
 		}
-
+	}
+	void Shader::UpdateTopology()
+	{
 		CONTEXT->IASetPrimitiveTopology(mShaderInfo.eTopology);
+	}
+	void Shader::UpdateInputLayout()
+	{
 		CONTEXT->IASetInputLayout(mpInputLayout.Get());
+	}
+	void Shader::UpdateRenderState()
+	{
 		CONTEXT->RSSetState(mpRasterizerState.Get());
 
-		CONTEXT->OMSetDepthStencilState(mpDepthStencilState.Get(), 1 );
+		CONTEXT->OMSetDepthStencilState(mpDepthStencilState.Get(), 1);
 
 		bool bIsMirror = ShaderType::Masking == mShaderInfo.eShaderType;
 		const float blendColor[] = { 0.2f, 0.2f, 0.2f, 1.0f };

@@ -49,7 +49,8 @@ namespace hm
 		void SetRelativePosition(const Vec3& _position) { mRelativePosition = _position; }
 		Vec3 GetWorldPosition();
 		const Vec3& GetPosition();
-		const Vec3& GetRotation();
+		Vec3 GetRotation();
+		Vec3 GetPhysicsRotation();
 		const Vec3& GetScale();
 		
 		Vec3 GetRight() { return mMatWorld.Right(); }

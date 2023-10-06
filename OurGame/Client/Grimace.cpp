@@ -12,6 +12,21 @@
 #include "EventManager.h"
 #include "SceneManager.h"
 #include "ChangeStateTask.h"
+#include "Factory.h"
+/* Resource */
+#include "MeshData.h"
+#include "Material.h"
+#include "Mesh.h"
+
+/* Manager */
+#include "PrefabManager.h"
+#include "EventManager.h"
+#include "Factory.h"
+#include "CollisionManager.h"
+#include "Input.h"
+#include "SceneManager.h"
+#include "Resources.h"
+
 /* GameObject */
 #include "GameObject.h"
 #include "Player.h"
@@ -20,7 +35,11 @@
 #include "WallObject.h"
 #include "Npc.h"
 #include "Monster.h"
-#include "Grandma.h"
+#include "SwordHeavyEffect.h"
+#include "Ladder.h"
+#include "LadderCollider.h"
+#include "HeadRoller.h"
+#include "Grimace_ProjectTile.h"
 
 /* Component */
 #include "Collider.h"
@@ -32,16 +51,51 @@
 #include "ParticleSystem.h"
 #include "Animator.h"
 
+/* Script */
+#include "PlayerMoveScript.h"
+#include "PlacementScript.h"
+#include "TestAnimationScript.h"
+#include "PaperBurnScript.h"
+#include "PlayerSlashScript.h"
+#include "OwnerFollowScript.h"
+#include "SwordScript.h"
+#include "PlayerColScript.h"
+#include "BowScript.h"
+#include "ArrowScript.h"
+#include "MonsterColScript.h"
+/* Event */
+#include "SceneChangeEvent.h"
+ /*State 모음*/
+#include "State.h"
+#include "PauseState.h"
+#include "IdleState.h"
+#include "MoveState.h"
+#include "AttackState.h"
+#include "MagicAttackState.h"
+#include "EvasionState.h"
+#include "FallState.h"
+#include "HitStartState.h"
+#include "HittingState.h"
+#include "HitEndState.h"
+#include "FallDownState.h"
+#include "DeadState.h"
+#include "ClimingDownState.h"
+#include "ClimingEndState.h"
+#include "ClimingUpState.h"
+#include "BowState.h"
+
 Grimace::Grimace()
 {
-	mMaxHP = 10.f;
+	mMaxHP = 20.f;
 	mHP = mMaxHP; // 피통
-	mSpeed = 2.f; //이동속도
+	Health = (mHP / mMaxHP) * 100;
+	mSpeed = 6.f; //이동속도
 	mAttackDamage = 1; // 공격력
 	mAttackRange = 9.f; // 공격 감지 거리
 	mRecogRange = 15.f; //감지거리
 
 	meBasicState = MonsterBasicState::Idle;
+	MonsterAttackCol();
 }
 
 Grimace::~Grimace()
@@ -128,6 +182,7 @@ void Grimace::SetBehaviorTree()
 				if (1 != animIndex) {
 					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
+					isTrigger = false;
 					pAnimator->Play(1, true);
 				}
 
@@ -220,13 +275,13 @@ void Grimace::SetBehaviorTree()
 
 
 
-				GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
+				//GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
 
 				//pAni
 
 				//이부분 중요
 				GetRigidBody()->SetVelocityExcludingColliders(-dir * 8.0f);
-				GetRigidBody()->SetVelocity(dir * 8.f);
+				GetRigidBody()->SetVelocity(Ve);
 
 				Transform* pTr = GetTransform();
 				Vec3 rot = Vec3(0, 0, -1);
@@ -272,10 +327,7 @@ void Grimace::SetBehaviorTree()
 
 					MonsterBasicState eState = MonsterBasicState::Trace;
 
-					/*if (distance > 10 && distance < 12 && pAni->GetFrameRatio()>0.7)
-					{
-						eState = MonsterBasicState::Attack02;
-					}*/
+					
 
 					if (distance > 6 && distance < 10 && pAni->GetFrameRatio()>0.7)
 					{
@@ -298,6 +350,11 @@ void Grimace::SetBehaviorTree()
 						dir_backstep.y = 0;
 
 						eState = MonsterBasicState::Trace_BackStep;
+					}
+
+					if (Health >= 41 && Health <= 51 && pAni->GetFrameRatio() > 0.7) //50% 미만일떄 디펜딩 자세 시작
+					{
+						eState = MonsterBasicState::Defend_Start;
 					}
 
 
@@ -429,7 +486,7 @@ void Grimace::SetBehaviorTree()
 
 				//이부분 중요
 				GetRigidBody()->SetVelocityExcludingColliders(dir_backstep * 10.0f);
-				GetRigidBody()->SetVelocity(-dir_backstep * 10.f);
+				GetRigidBody()->SetVelocity(-Ve * 2);
 
 				Transform* pTr = GetTransform();
 				Vec3 rot = Vec3(0, 0, -1);
@@ -513,9 +570,15 @@ void Grimace::SetBehaviorTree()
 					Vec3 myPos = GetTransform()->GetPosition();
 					Animator* pAni = GetAnimator();
 
+					if (pAni->GetFrameRatio() > 0.7)
+						pMonsterAttackCol->Enable();
 
-					if (pAni->GetFrameRatio() > 0.98)
+					if (pAni->GetFrameRatio() > 0.8)
+						pMonsterAttackCol->Disable();
+
+					if (pAni->GetFrameRatio() > 0.98) {
 						return BehaviorResult::Success;
+					}
 					return BehaviorResult::Failure;
 
 				});
@@ -568,6 +631,12 @@ void Grimace::SetBehaviorTree()
 					Vec3 myPos = GetTransform()->GetPosition();
 					Animator* pAni = GetAnimator();
 
+					if (pAni->GetFrameRatio() > 0.6) {
+						if (true != isTrigger) {
+							isTrigger = true;
+							CreateProjectTile();
+						}
+					}
 
 					if (pAni->GetFrameRatio() > 0.98)
 						return BehaviorResult::Success;
@@ -624,11 +693,25 @@ void Grimace::SetBehaviorTree()
 					Animator* pAni = GetAnimator();
 
 
+
 					//이부분 중요
 					GetRigidBody()->SetVelocityExcludingColliders(-dir_desh * 3.0f);
 
-					if (pAni->GetFrameRatio() > 0.38)
+					if (pAni->GetFrameRatio() > 0.38) {
 						GetRigidBody()->SetVelocity(dir_desh * 8.f);
+						const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+						for (int i = 0; i < gameObjects.size(); ++i)
+						{
+							if (gameObjects[i]->GetCollider())
+							{
+								if (GetCollider()->Raycast(myPos, dir_desh, gameObjects[i]->GetCollider(), 0.5f))
+								{
+									GetRigidBody()->SetVelocity(dir_desh * 0.f);
+								}
+							}
+						}
+					}
+
 
 					if (pAni->GetFrameRatio() > 0.90)
 						return BehaviorResult::Success;
@@ -668,9 +751,11 @@ void Grimace::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (0 != animIndex)
-					pAnimator->Play(0, true);
-
+				if (7 != animIndex) {
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
+					pAnimator->Play(7, true);
+				}
 				return BehaviorResult::Success;
 				});
 
@@ -678,8 +763,29 @@ void Grimace::SetBehaviorTree()
 			BehaviorCondition* pCheckNearbyPlayer = new BehaviorCondition([&]()
 				{
 					Animator* pAni = GetAnimator();
-					
-					if (pAni->GetFrameRatio()>0.99)
+					Transform* pTr = GetTransform();
+					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+					Vec3 myPos = GetTransform()->GetPosition();
+					Vec3 myRot = GetTransform()->GetRotation();
+					Vec3 scale = GetRigidBody()->GetGeometrySize();
+
+					dir = playerPos - myPos;
+					dir.Normalize();
+					dir.y = 0;
+
+					Vec3 rot = Vec3(0, 0, -1);
+					double angleRadian = atan2(dir.x, dir.z) - atan2(rot.x, rot.z);
+					float angleDegree = static_cast<float>(angleRadian) * 180.f / XM_PI;
+
+					if (angleDegree < 0.f)
+						angleDegree += 360.f;
+
+					//몬스터의 고개를 돌리는 코드
+					pTr->SetRotation(Vec3(180.f, angleDegree, 0.f));
+
+
+
+					if (pAni->GetFrameRatio() > 0.98)
 					{
 						return BehaviorResult::Success;
 					}
@@ -713,8 +819,9 @@ void Grimace::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (8 != animIndex) 
+				if (8 != animIndex) {
 					pAnimator->Play(8, true);
+				}
 
 				return BehaviorResult::Success;
 				});
@@ -798,7 +905,7 @@ void Grimace::SetBehaviorTree()
 
 
 
-				GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
+				//GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
 
 				Transform* pTr = GetTransform();
 				Vec3 rot = Vec3(0, 0, -1);
@@ -809,7 +916,7 @@ void Grimace::SetBehaviorTree()
 					angleDegree += 360.f;
 
 				//몬스터의 고개를 돌리는 코드
-				pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
+				pTr->SetRotation(Vec3(180.f, angleDegree, 0.f));
 
 				return BehaviorResult::Success;
 				});
@@ -825,7 +932,7 @@ void Grimace::SetBehaviorTree()
 
 					//여기 건들여야함
 
-					if (true)
+					if (Health < 30 )
 					{
 						return BehaviorResult::Success;
 					}
@@ -856,7 +963,7 @@ void Grimace::SetBehaviorTree()
 			// 상태 확인(Condition) : 현재 상태가 Idle인지 확인
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
-					if (MonsterBasicState::Defend_Start == meBasicState)
+					if (MonsterBasicState::Defend_Break == meBasicState)
 						return BehaviorResult::Success;
 					else
 						return BehaviorResult::Failure;
@@ -874,8 +981,22 @@ void Grimace::SetBehaviorTree()
 
 			// 이동 Move Task
 			BehaviorTask* pMoveTask = new BehaviorTask([&]() {
+				Vec3 myPos = GetTransform()->GetPosition();
 				
-				//여기도 작업
+				//이부분 중요
+				GetRigidBody()->SetVelocityExcludingColliders(+dir * 3.0f);
+				GetRigidBody()->SetVelocity(-dir * 3.f);
+				const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+				for (int i = 0; i < gameObjects.size(); ++i)
+				{
+					if (gameObjects[i]->GetCollider())
+					{
+						if (GetCollider()->Raycast(myPos, dir, gameObjects[i]->GetCollider(), 0.5f))
+						{
+							GetRigidBody()->SetVelocity(-dir * 0.f);
+						}
+					}
+				}
 
 				return BehaviorResult::Success;
 				});
@@ -885,7 +1006,7 @@ void Grimace::SetBehaviorTree()
 				{
 					Animator* pAni = GetAnimator();
 
-					if (pAni->GetFrameRatio() > 0.5)
+					if (pAni->GetFrameRatio() > 0.9)
 					{
 						return BehaviorResult::Success;
 					}
@@ -898,12 +1019,135 @@ void Grimace::SetBehaviorTree()
 			pDefend_BreakSequence->AddChild(pRunAnimationTask);
 			pDefend_BreakSequence->AddChild(pMoveTask);
 			pDefend_BreakSequence->AddChild(pCheckNearbyPlayer);
-			pDefend_BreakSequence->AddChild(new ChangeStateTask(MonsterBasicState::Idle));
+			pDefend_BreakSequence->AddChild(new ChangeStateTask(MonsterBasicState::Dazed));
 		}
 		pStateSelector->AddChild(pDefend_BreakSequence);
 
 #pragma endregion
 
+#pragma region Dazed Sequence
+		Sequence* pDazedSequence = new Sequence;
+		{
+			// 상태 확인(Condition) : 현재 상태가 Idle인지 확인
+			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+				{
+					if (MonsterBasicState::Dazed == meBasicState)
+						return BehaviorResult::Success;
+					else
+						return BehaviorResult::Failure;
+				});
+
+			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				Animator* pAnimator = GetAnimator();
+				int animIndex = pAnimator->GetCurrentClipIndex();
+				if (0 != animIndex) {
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
+					pAnimator->Play(0, true);
+				}
+				return BehaviorResult::Success;
+				});
+
+			//다음 시퀀스로 넘어가는 조건
+			BehaviorCondition* pCheckNearbyPlayer = new BehaviorCondition([&]()
+				{
+					Animator* pAni = GetAnimator();
+
+					if (pAni->GetFrameRatio() > 0.98)
+					{
+						return BehaviorResult::Success;
+					}
+					return BehaviorResult::Failure;
+				});
+
+
+
+			pDazedSequence->AddChild(pStateChecker);
+			pDazedSequence->AddChild(pRunAnimationTask);
+			pDazedSequence->AddChild(pCheckNearbyPlayer);
+			pDazedSequence->AddChild(new ChangeStateTask(MonsterBasicState::Idle));
+		}
+		pStateSelector->AddChild(pDazedSequence);
+
+#pragma endregion
+
+#pragma region Dead Sequence
+		Sequence* pDeadSequence = new Sequence;
+		{
+			// 상태 확인(Condition) : 현재 상태가 Attack인지 확인
+			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+				{
+					if (MonsterBasicState::Dead == meBasicState)
+						return BehaviorResult::Success;
+					else
+						return BehaviorResult::Failure;
+				});
+
+			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+			BehaviorTask* pAniIsrunningTask = new BehaviorTask([&]() {
+				Animator* pAnimator = GetAnimator();
+				
+				if (pAnimator->GetFrameRatio() > 0.9)
+					return BehaviorResult::Success;
+			
+				return BehaviorResult::Failure;
+				});
+
+			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				Animator* pAnimator = GetAnimator();
+				GameObject* pObj = GetGameObject(); //이거 확인도 필요함
+				int animIndex = pAnimator->GetCurrentClipIndex();
+				
+				if (isDead == true)
+				{
+					//pObj->GetRigidBody()->SetSimulationShapeFlag(false);
+					//pObj->Disable();
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
+					isDead = false;
+					GetScript<PaperBurnScript>()->SetPaperBurn();
+					pAnimator->Play(6, false);
+					
+				}
+
+				//pObj->GetRigidBody()->SetSimulationShapeFlag(false); // 콜라이더 끄기
+				//pObj->GetRigidBody()->SetSimulationShapeFlag(true); // 콜라이더 켜기
+
+
+				return BehaviorResult::Success;
+				});
+
+			// 페이퍼번 실행 조건
+			BehaviorTask* pAttackTask = new BehaviorTask([&]()
+				{
+					Animator* pAni = GetAnimator();
+					int animIndex = pAni->GetCurrentClipIndex();
+
+
+
+					if (GetScript<PaperBurnScript>()->IsFinished())
+					{
+						MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
+						GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(pMonsterAttackCol));
+						GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
+					}
+
+
+					return BehaviorResult::Success;
+
+				});
+
+			pDeadSequence->AddChild(pStateChecker);
+			pDeadSequence->AddChild(pAniIsrunningTask);
+			pDeadSequence->AddChild(pRunAnimationTask);
+			pDeadSequence->AddChild(pAttackTask);
+
+		}
+		pStateSelector->AddChild(pDeadSequence);
+
+#pragma endregion
 	}
 	pRootNode->AddChild(pStateSelector);
 }
@@ -918,6 +1162,7 @@ void Grimace::Initialize()
 
 void Grimace::Update()
 {
+	Health = (mHP / mMaxHP) * 100;
 	Monster::Update();
 }
 
@@ -933,6 +1178,9 @@ void Grimace::FinalUpdate()
 
 void Grimace::Render()
 {
+	//FONT->DrawString(std::to_wstring(Health), 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
+
+
 	Monster::Render();
 }
 
@@ -986,6 +1234,19 @@ void Grimace::OnTriggerEnter(Collider* _pOtherCollider)
 
 		mGroundCount++;
 	}
+
+	Player* pPlayer = PLAYER;
+	float attackDamage = pPlayer->GetAttackDamage();
+
+	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
+		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		TakeDamage(attackDamage);
+		if (mHP <= 0) {
+			isDead = true;
+			meBasicState = MonsterBasicState::Dead;
+		}
+	}
 }
 
 void Grimace::OnTriggerStay(Collider* _pOtherCollider)
@@ -1002,5 +1263,51 @@ void Grimace::OnTriggerExit(Collider* _pOtherCollider)
 
 		if (0 == mGroundCount)
 			GetRigidBody()->ApplyGravity();
+	}
+}
+
+void Grimace::CreateProjectTile()
+{
+	PhysicsInfo physicsInfo;
+	physicsInfo.eActorType = ActorType::Kinematic;
+	physicsInfo.eGeometryType = GeometryType::Box;
+	physicsInfo.size = Vec3(0.3f, 4.3f, 0.3f);
+
+	Grimace_ProjectTile* pProjectTile = Factory::CreateObjectHasPhysical<Grimace_ProjectTile>(Vec3(0.f, -7.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Monster\\_DROP_SOUL50.fbx");
+	pProjectTile->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+	pProjectTile->GetTransform()->SetPosition(GetTransform()->GetPosition());
+	pProjectTile->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+
+	pProjectTile->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
+	pProjectTile->GetMeshRenderer()->GetMaterial()->SetBloomPower(3.f, 0);
+	pProjectTile->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(0.f, 1.f, 0.f, 1.f));
+
+	pProjectTile->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+	pProjectTile->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+
+	pProjectTile->Initialize();
+
+	GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pProjectTile);
+}
+
+void Grimace::MonsterAttackCol()
+{
+	//몬스터 공격 콜라이더
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eGeometryType = GeometryType::Sphere;
+		physicsInfo.size = Vec3(7.f, 0.1f, 7.f);
+
+		pMonsterAttackCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"NoDraw", L"", false, LayerType::MonsterCol);
+		pMonsterAttackCol->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+		pMonsterAttackCol->GetTransform()->SetRotation(Vec3(00.f, 00.f, 0.f));
+		pMonsterAttackCol->AddComponent(new MonsterColScript);
+		pMonsterAttackCol->Disable();
+
+		auto pFollowSc2 = pMonsterAttackCol->AddComponent(new OwnerFollowScript(this));
+		
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pMonsterAttackCol);
+
 	}
 }

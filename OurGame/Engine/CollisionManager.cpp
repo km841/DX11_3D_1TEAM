@@ -42,6 +42,27 @@ namespace hm
 		return mArrColGroup[static_cast<int>(_eLayerType)];
 	}
 
+	void CollisionManager::ClearAllCollisionForObject(GameObject* _pGameObject)
+	{
+		auto iterBegin = mColMap.begin();
+		auto iterEnd = mColMap.end();
+
+		UINT32 id = _pGameObject->GetID();
+		
+		for ( ; iterBegin != iterEnd; iterBegin++)
+		{
+			UINT32 first = static_cast<UINT32>(iterBegin->first);
+			UINT32 second = (iterBegin->first >> 32);
+			if (id == first || id == second)
+			{
+				if (true == iterBegin->second)
+				{
+					iterBegin->second = false;
+				}
+			}
+		}
+	}
+
 	void CollisionManager::KinematicOverlapCheck()
 	{
 		Scene* pActiveScene = GET_SINGLE(SceneManager)->GetActiveScene();

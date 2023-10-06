@@ -114,6 +114,11 @@ namespace hm
         */
         void Update();
 
+        void UpdateShaderAndSampler();
+        void UpdateTopology();
+        void UpdateInputLayout();
+        void UpdateRenderState();
+
     public:
         void CreateComputeShader(const wstring& _path, const string& _name, const string& _version);
         void CreateVertexShader(const wstring& _path, const string& _name, const string& _version);
@@ -123,6 +128,10 @@ namespace hm
         void SetSamplerType(SamplerType _eSamplerType);
         void SetBackfaceCulling(bool _bBackfaceCulling);
         void PushInputLayout();
+
+        ComPtr<ID3D11VertexShader> GetVertexShader() { return mpVertexShader; }
+        ComPtr<ID3D11PixelShader> GetPixelShader() { return mpPixelShader; }
+
 
     public:
         ShaderType GetShaderType() const { return mShaderInfo.eShaderType; }
