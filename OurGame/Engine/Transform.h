@@ -50,6 +50,7 @@ namespace hm
 		Vec3 GetWorldPosition();
 		const Vec3& GetPosition();
 		Vec3 GetRotation();
+		Vec3 GetPhysicsRotation();
 		const Vec3& GetScale();
 		
 		Vec3 GetRight() { return mMatWorld.Right(); }

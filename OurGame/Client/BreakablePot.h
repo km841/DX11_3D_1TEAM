@@ -21,14 +21,17 @@ namespace jh
 
 	public:
 		void BreakPots(const Vec3 _hitPos);
-		void RestorePots();
+		void RestorePots(bool _isTemp);
 
 	private:
 		GameObject* mpBasePot;
 		std::vector<BreakablePotCell*> mpPotCells;
 
+		bool mbIsRestoringTemp;
 		bool mbIsRestoring;
-		TimerObject mTimer;
+		TimerObject mWaitTimer;
+		TimerObject mProgressTimer;
+		TimerObject mTempTimer;
 
 		bool mbIsWaiting;
 		float mWaitTime;
