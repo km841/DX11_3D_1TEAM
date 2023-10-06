@@ -20,6 +20,7 @@ namespace hm
 		Transform* pTransform = mpShadowCamera->AddComponent(new Transform);
 		Camera* pCamera = mpShadowCamera->AddComponent(new Camera);
 		pCamera->SetCullingMask(LayerType::Interface, true);
+		pCamera->SetCullingMask(LayerType::Mirror, true);
 
 		mpStaticShadowMap = GET_SINGLE(Resources)->CreateTexture(
 			std::to_wstring((UINT64)this) + L"S",
@@ -57,7 +58,6 @@ namespace hm
 			if (LightType::PointLight == static_cast<LightType>(mLightInfo.eLightType))
 				camPos.y += 30.f;
 			
-
 			mpShadowCamera->GetTransform()->SetRotation(GetTransform()->GetRotation());
 			mpShadowCamera->GetTransform()->SetPosition(camPos);
 			mpShadowCamera->GetTransform()->SetScale(GetTransform()->GetScale());

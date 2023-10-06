@@ -33,6 +33,8 @@ struct alignas(16) TransformParams
 	Matrix matWVP;
 	Matrix matViewInv;
 	Matrix matWVPInv;
+	Matrix matOldWorld;
+	Matrix matOldView;
 };
 
 enum

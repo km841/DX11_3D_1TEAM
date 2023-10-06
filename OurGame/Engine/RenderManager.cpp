@@ -77,8 +77,10 @@ namespace hm
 
 		RenderShadow(_pScene);
 		RenderDeferred(_pScene);
+		//RenderPreReflect(_pScene);
 		RenderEffect(_pScene);
 		RenderBloom();
+		RenderMotionBlur();
 		RenderLight(_pScene);
 
 		if (true == mbEnableRim)
@@ -309,6 +311,15 @@ namespace hm
 		shared_ptr<Texture> pScreenEffectTarget = GET_SINGLE(Resources)->Get<Texture>(L"ScreenEffectTarget");
 		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetTexture(0, pScreenEffectTarget);
 		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->PushGraphicData();
+		GET_SINGLE(Resources)->LoadRectMesh()->Render();
+	}
+
+	void RenderManager::RenderMotionBlur()
+	{
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::ScreenEffect)->OMSetRenderTarget();
+
+		GET_SINGLE(Resources)->Get<Material>(L"MotionBlur")->PushGraphicData();
+		GET_SINGLE(Resources)->Get<Material>(L"MotionBlur")->SetTexture(0, GET_SINGLE(Resources)->Get<Texture>(L"VelocityTarget"));
 		GET_SINGLE(Resources)->LoadRectMesh()->Render();
 	}
 

@@ -13,6 +13,7 @@ namespace hm
         Compute,
         Masking,
         Mirror,
+        MotionBlur,
     };
 
     enum class DepthStencilType

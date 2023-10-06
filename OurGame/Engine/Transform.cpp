@@ -51,6 +51,7 @@ namespace hm
 			matRotation *= Matrix::CreateFromQuaternion(transform.q);
 			Matrix matTranslation = Matrix::CreateTranslation(Vec3(transform.p) + mRelativePosition);
 
+			mMatOldWorld = mMatWorld;
 			mMatWorld = matScale * matRotation * matTranslation;
 		}
 
@@ -74,6 +75,8 @@ namespace hm
 			Matrix matTranslation = Matrix::CreateTranslation(mPosition);
 
 			mMatLocal = matScale * matRotation * matTranslation;
+
+			mMatOldWorld = mMatWorld;
 			mMatWorld = mMatLocal;
 		}
 
@@ -89,6 +92,7 @@ namespace hm
 
 		pTransform->mMatLocal = mMatLocal;
 		pTransform->mMatWorld = mMatWorld;
+		pTransform->mMatOldWorld = mMatOldWorld;
 		pTransform->mPosition = mPosition;
 		pTransform->mRotation = mRotation;
 		pTransform->mScale = mScale;
@@ -621,6 +625,8 @@ namespace hm
 		transformParams.matWVP = mMatWorld * transformParams.matView * transformParams.matProjection;
 		transformParams.matViewInv = transformParams.matView.Invert();
 		transformParams.matWVPInv = transformParams.matWVP.Invert();
+		transformParams.matOldWorld = mMatOldWorld;
+		transformParams.matOldView = _pCamera->GetOldViewMatrix();
 
 		CONST_BUFFER(ConstantBufferType::Transform)->PushData(&transformParams, sizeof(transformParams));
 	}
