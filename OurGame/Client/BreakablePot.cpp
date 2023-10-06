@@ -12,13 +12,14 @@ namespace jh
 {
 	BreakablePot::BreakablePot(GameObject* _pBase, std::vector<BreakablePotCell*> _vpCells) :
 		GameObject(LayerType::DecoObject),
+		mbIsRestoringTemp(false),
 		mbIsRestoring(false),
 		mbIsWaiting(false),
-		mWaitTime(1.f)
+		mWaitTime(4.f)
 	{
 		mpBasePot = _pBase;
 		mpPotCells = _vpCells;
-		mTimer.SetEndTime(3.f);
+		mWaitTimer.SetEndTime(mWaitTime);
 
 		for (int i = 0; i < mpPotCells.size(); i++)
 		{
@@ -50,31 +51,33 @@ namespace jh
 
 		if (true == mbIsWaiting)
 		{
-			for (int i = 0; i < mpPotCells.size(); i++)
+			if (false == mWaitTimer.GetIsRun())
+				mWaitTimer.Start();
+
+			mWaitTimer.Update();
+
+			if (true == mWaitTimer.IsFinished())
 			{
-				mpPotCells[i]->SetCollapsePos(mpPotCells[i]->GetTransform()->GetPosition());
-				mpPotCells[i]->SetCollapseRot(mpPotCells[i]->GetTransform()->GetRotation());
-			}
+				mWaitTimer.Stop();
 
-			mTimer.SetEndTime(4.f);
+				for (int i = 0; i < mpPotCells.size(); i++)
+				{
+					mpPotCells[i]->SetCollapsePos(mpPotCells[i]->GetTransform()->GetPosition());
+					mpPotCells[i]->SetCollapseRot(mpPotCells[i]->GetTransform()->GetPhysicsRotation());
+				}
 
-			if (false == mTimer.GetIsRun())
-				mTimer.Start();
-
-			mTimer.Update();
-
-			if (mTimer.IsFinished())
-			{
-				mTimer.Stop();
-				mbIsRestoring = true;
+				mbIsRestoringTemp = true;
 				mbIsWaiting = false;
 			}
 		}
 
+		if (true == mbIsRestoringTemp)
+		{
+			RestorePots(true);
+		}
 		if (true == mbIsRestoring)
 		{
-			mTimer.SetEndTime(0.5f);
-			RestorePots();
+			RestorePots(false);
 		}
 	}
 
@@ -113,14 +116,14 @@ namespace jh
 
 	void BreakablePot::BreakPots(const Vec3 _hitPos)
 	{
-		if (true == mbIsRestoring || true == mbIsWaiting)
+		if (true == mbIsRestoringTemp || true == mbIsRestoring || true == mbIsWaiting)
 			return;
 
 		mpBasePot->Disable();
 
 		for (int i = 0; i < mpPotCells.size(); i++)
 		{
-			//mpPotCells[i]->GetRigidBody()->GetDynamicActor()->setMass(100.f);
+			mpPotCells[i]->GetRigidBody()->GetDynamicActor()->setMass(100.f);
 			mpPotCells[i]->GetRigidBody()->GetDynamicActor()->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, false);
 			mpPotCells[i]->Enable();
 
@@ -130,35 +133,72 @@ namespace jh
 		mbIsWaiting = true;
 	}
 
-	void BreakablePot::RestorePots()
+	void BreakablePot::RestorePots(bool _isTemp)
 	{
-		if (false == mTimer.GetIsRun())
-			mTimer.Start();
+		float endTime = true == _isTemp ? 0.8f : 0.1f;
 
-		mTimer.Update();
-		float progress = mTimer.GetProgress();
+		mProgressTimer.SetEndTime(endTime);
+
+		if (false == mProgressTimer.GetIsRun())
+			mProgressTimer.Start();
+
+		mProgressTimer.Update();
+		float progress = mProgressTimer.GetProgress();
 
 		for (int i = 0; i < mpPotCells.size(); i++)
 		{
 			mpPotCells[i]->GetRigidBody()->GetDynamicActor()->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, true);
 
-			Vec3 pos = Lerp(mpPotCells[i]->GetCollapsePos(), mpPotCells[i]->GetOriginPos(), progress);
-			mpPotCells[i]->GetTransform()->SetPosition(pos);
-			Vec3 rot = Lerp(mpPotCells[i]->GetCollapseRot(), Vec3(-90.f, 0.f, 90.f), progress);
-			mpPotCells[i]->GetTransform()->SetRotation(rot);
+			Vec3 tempPos = GetTransform()->GetPosition() + mpPotCells[i]->GetRelativePos() * 2.f;
+			tempPos.y = mpPotCells[i]->GetOriginPos().y;
+
+			if (true == _isTemp)
+			{
+				Vec3 pos = Lerp(mpPotCells[i]->GetCollapsePos(), tempPos, progress);
+				mpPotCells[i]->GetTransform()->SetPosition(pos);
+				Vec3 rot = Lerp(mpPotCells[i]->GetCollapseRot(), Vec3(-90.f, 0.f, 90.f), progress);
+				mpPotCells[i]->GetTransform()->SetRotation(rot);
+			}
+			else
+			{
+				Vec3 pos = Lerp(tempPos, mpPotCells[i]->GetOriginPos(), progress);
+				mpPotCells[i]->GetTransform()->SetPosition(pos);
+			}
 		}
 
-		if (true == mTimer.IsFinished())
+		if (true == mProgressTimer.IsFinished())
 		{
-			mTimer.Stop();
-
-			for (int i = 0; i < mpPotCells.size(); i++)
+			if (true == _isTemp)
 			{
-				mpPotCells[i]->Disable();
-			}
+				mProgressTimer.Pause();
 
-			mpBasePot->Enable();
-			mbIsRestoring = false;
+				mTempTimer.SetEndTime(0.2f);
+
+				if (false == mTempTimer.GetIsRun())
+					mTempTimer.Start();
+
+				mTempTimer.Update();
+
+				if (true == mTempTimer.IsFinished())
+				{
+					mProgressTimer.Stop();
+					mTempTimer.Stop();
+					mbIsRestoringTemp = false;
+					mbIsRestoring = true;
+				}
+			}
+			else
+			{
+				mProgressTimer.Stop();
+
+				for (int i = 0; i < mpPotCells.size(); i++)
+				{
+					mpPotCells[i]->Disable();
+				}
+
+				mpBasePot->Enable();
+				mbIsRestoring = false;
+			}
 		}
 	}
 }

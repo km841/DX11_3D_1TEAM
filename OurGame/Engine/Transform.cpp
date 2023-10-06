@@ -449,6 +449,20 @@ namespace hm
 		return mRotation;
 	}
 
+	Vec3 Transform::GetPhysicsRotation()
+	{
+		if (true == IsPhysicsObject())
+		{
+			AssertEx(IsPhysicsObject(), L"Transform::GetPhysicsRotation() - 물리적 오브젝트만 사용할 수 있는 함수");
+			PxQuat q = GetRigidBody()->GetPhysicsTransform().q;
+			return QuaternionToEuler(q.x, q.y, q.z, q.w);
+		}
+		else
+		{
+			return Vec3(-1.f, -1.f, -1.f);
+		}
+	}
+
 	const Vec3& Transform::GetScale()
 	{
 		return mScale;
