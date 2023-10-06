@@ -121,7 +121,7 @@ namespace hm {
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
 			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(50.f, 0.1f, 50.f);
+			info.size = Vec3(100.f, 0.1f, 100.f);
 
 			Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Forward", L"");
 
@@ -163,21 +163,27 @@ namespace hm {
 			PhysicsInfo info = {};
 			info.eActorType = ActorType::Kinematic;
 			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(1.f, 1.0f, 1.f);
+			info.size = Vec3(2.f, 2.0f, 6.f);
 
 			LORD_BOSS_ROLL* pLordOfDoorRoll = Factory::CreateMonster<LORD_BOSS_ROLL>(Vec3(8.f, 5.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor_Roller.fbx");
-			pLordOfDoorRoll->GetTransform()->SetScale(Vec3(40.f, 40.f, 40.f));
-			pLordOfDoorRoll->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			pLordOfDoorRoll->GetTransform()->SetScale(Vec3(60.f, 60.f, 60.f));
+			pLordOfDoorRoll->GetTransform()->SetRotation(Vec3(-90.f, 360.f, 360.f));
+			pLordOfDoorRoll->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -3.f, 0.f));
 			pLordOfDoorRoll->GetAnimator()->Play(1,true);
 			pLordOfDoorRoll->Disable();
 
 			LORD_BOSS* pLordOfDoor = Factory::CreateMonster<LORD_BOSS>(Vec3(5.f, -4.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor.fbx");
-			pLordOfDoor->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
-			pLordOfDoor->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			pLordOfDoor->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pLordOfDoor->GetTransform()->SetRotation(Vec3(-90.f, 360.f, 360.f));
+			pLordOfDoor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -3.f, 0.f));
+
 			pLordOfDoor->SetObject(pLordOfDoorRoll);
-		
+			pLordOfDoorRoll->SetLORD_BOSS(pLordOfDoor);
+			
+
 			AddGameObject(pLordOfDoorRoll);
 			AddGameObject(pLordOfDoor);
+			SetMeshTarget(pLordOfDoor);
 		
 		}
 

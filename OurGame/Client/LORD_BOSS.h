@@ -38,15 +38,30 @@ public:
 private:
 	
 	void SlowTurnLive();
-	void SlowTurn();
-	void Follow();
-	bool LookRay();
+	void SlowTurn(); // ¾È¾¸
+	void Follow(); // ¾È¾¸ 
+	void PrevFollowSet();
+	void PrevFollowLive();
+	bool LookRay(); // ¾È¾¸
 
+
+	void LaserFollow_Turn();
+	void LaserPrevFollowSet();
+	void LaserPrevFollowLive();
 private:
-	Vec3 Dir;
+	Vec3 RotDir;
+	Vec3 PosDir;
 	Vec3 PrevDir;
+
+	Vec3 LaserPos = Vec3(0.f, 15.f, 20.f);
+	Vec3 LaserRot = Vec3(-90.f, 360.f, 360.f);
+
 	int Health;
 	float TurnSpeed;
+	float mMagnScale;
+	bool isGround = false;
+	bool isWall = false;
+	bool isCrash = true;
 
 	MonsterBasicState PrevState;
 
