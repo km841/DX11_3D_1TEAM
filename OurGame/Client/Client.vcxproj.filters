@@ -325,6 +325,7 @@
     <ClInclude Include="LORD_BOSS_ROLL.h">
       <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
     </ClInclude>
+    <ClInclude Include="TextBox.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -648,6 +649,7 @@
     <ClCompile Include="LORD_BOSS_ROLL.cpp">
       <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
     </ClCompile>
+    <ClCompile Include="TextBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

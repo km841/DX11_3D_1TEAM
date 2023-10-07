@@ -62,11 +62,10 @@ namespace yj
 		{
 			switch (mSpawnPoint)
 			{
-			case 0:
-				//PLAYER->GetTransform()->SetPosition(Vec3(15.2f,1.6f,-7.2f));
-				//PLAYER->GetTransform()->SetRotation(Vec3());
+			case 4:
+				PLAYER->GetTransform()->SetPosition(Vec3(14.5f,1.5f,-7.3f));
 				break;
-			case 1:
+			case 5:
 				//PLAYER->GetTransform()->SetPosition(Vec3(-17.0f, 1.6f,-2.1f));
 				//PLAYER->GetTransform()->SetRotation(Vec3());
 				break;
@@ -711,7 +710,7 @@ namespace yj
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(1.0, 3.8f, 3.5f);
 
-			TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<TeleportZone>(Vec3(-19.1f, 2.8f, -2.1f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map,1);
+			TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<TeleportZone>(Vec3(-19.1f, 2.8f, -2.1f), physicsInfo, L"Deferred", L"", false, MapType::CorridorRightMap,5);
 			AddGameObject(pTelZone);
 		}
 		{

@@ -31,6 +31,7 @@
 #include "Effect.h"
 #include "SwordGlareEffect.h"
 #include "SpiderWeb.h"
+#include "TeleportZone.h"
 
 /* Component */
 #include "Collider.h"
@@ -53,6 +54,7 @@
 #include "BonFireScript.h"
 #include "MonsterCrackScript.h"
 #include "SlashGlareScript.h"
+#include "PlayerMoveOverMapScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -107,12 +109,21 @@ namespace hm
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PlayerCol, LayerType::Monster);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::ArrowCol, LayerType::Monster);
 
-		PLAYER->GetTransform()->SetPosition(Vec3(0.f, 5.f, 0.f));
+		if (PLAYER != nullptr)
+		{
+			mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
+			switch (mSpawnPoint)
+			{
+			case 1:
+				PLAYER->GetTransform()->SetPosition(Vec3(-0.9f, -8.27f, 19.1f));
+				break;
+			}
+		}
 		DisableDirLight();
-
 
 		InitObjectAdd();
 		InitCollidertAdd();
+		InitFuncObjAdd();
 	}
 
 	void Right2Map::Exit()
@@ -940,6 +951,30 @@ namespace hm
 
 			Ground* pCol8 = Factory::CreateObjectHasPhysical<Ground>(Vec3(-5.9f, 2.7f, -2.8f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pCol8);
+		}
+	}
+	void Right2Map::InitFuncObjAdd()
+	{
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(3.4f, 10.1f, 4.82f);
+
+			yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-7.4f, -4.57f, 19.2f), physicsInfo, L"Deferred", L"", false, MapType::CorridorRightMap, 5);
+			AddGameObject(pRightZone);
+			SetGizmoTarget(pRightZone);
+		}
+
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(3.4f, 10.1f, 4.82f);
+
+			yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-7.4f, -4.57f, 19.2f), physicsInfo, L"Deferred", L"", false, MapType::DiningColliderCheckMap,6);
+			AddGameObject(pRightZone);
+			SetGizmoTarget(pRightZone);
 		}
 	}
 }

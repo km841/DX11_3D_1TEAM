@@ -24,6 +24,7 @@
 #include "DecoObject.h"
 #include "Elevator.h"
 #include "SoulDoor.h"
+#include "UI.h"
 
 /* Component */
 #include "Collider.h"
@@ -33,7 +34,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include "ParticleSystem.h"
-
+#include "UIText.h"
 /* Script */
 #include "PaperBurnScript.h"
 #include "CameraMoveScript.h"
@@ -159,13 +160,6 @@ namespace yj
 			pUpstair->GetTransform()->SetScale(Vec3(35.f, 35.f, 35.f));
 
 			AddGameObject(pUpstair);
-		}
-
-		{
-			/*Ground* pColliders = Factory::CreateObject<Ground>(Vec3(9.5f, 3.0f, -5.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Colliders.fbx");
-			pColliders->GetTransform()->SetScale(Vec3(35.f, 35.f, 35.f));*/
-
-			//AddGameObject(pColliders);
 		}
 
 		{
@@ -657,7 +651,7 @@ namespace yj
 			mEntrancePInfo.eGeometryType = GeometryType::Box;
 			mEntrancePInfo.size = Vec3(3.33f, 5.7f, 2.65f);
 
-			DecoObject* pEntranceColObj = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(19.1f, 4.9f, -15.2f), mEntrancePInfo, L"Deferred", L"");
+			DecoObject* pEntranceColObj = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(19.1f, 4.9f, -15.2f), mEntrancePInfo, L"Forward", L"");
 
 			SoulDoor* pSoulDoor = Factory::CreateObject<SoulDoor>(Vec3(0, 0, 0), L"Deferred", L"", false , pDoor, pBackUv, pEntranceColObj,MapType::EntranceHallMap,1);
 			

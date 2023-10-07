@@ -36,6 +36,7 @@
 
 /* Script */
 #include "PlayerMoveScript.h"
+#include "PlayerMoveOverMapScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -59,6 +60,16 @@ namespace jh
 	void CorridorRightMap::Start()
 	{
 		Map::Start();
+		if (PLAYER != nullptr)
+		{
+			mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
+			switch (mSpawnPoint)
+			{
+			case 1:
+				PLAYER->GetTransform()->SetPosition(Vec3(-0.9f, -8.27f, 19.1f));
+				break;
+			}
+		}
 	}
 
 	void CorridorRightMap::Update()
@@ -564,6 +575,7 @@ namespace jh
 			GameObject* pWall10 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(8.7f, -4.57f, 26.6f), physicsInfo, L"Deferred", L"", false, LayerType::WallObject);
 			AddGameObject(pWall10);
 		}
+		
 	}
 
 	void CorridorRightMap::FuncObjectAdd()
@@ -574,7 +586,7 @@ namespace jh
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(3.4f, 10.1f, 4.82f);
 
-			yj::TeleportZone* pLeftZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-6.9f, -4.57f, -23.7f), physicsInfo, L"Deferred", L"", false, MapType::LeftSecretTrialMap,1);
+			yj::TeleportZone* pLeftZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-6.9f, -4.57f, -23.7f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map,6);
 			AddGameObject(pLeftZone);
 		}
 		{
@@ -583,7 +595,7 @@ namespace jh
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(3.4f, 10.1f, 4.82f);
 
-			yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-7.4f, -4.57f, 19.2f), physicsInfo, L"Deferred", L"", false, MapType::LeftSecretTrialMap,1);
+			yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-7.4f, -4.57f, 19.2f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map,5);
 			AddGameObject(pRightZone);
 		}
 		{

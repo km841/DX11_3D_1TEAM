@@ -526,7 +526,7 @@ void EntranceHallMap::InitFuncObjAdd()
 		AddGameObject(pTelZone);
 	}
 
-	{
+	/*{
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Kinematic;
 		physicsInfo.eGeometryType = GeometryType::Box;
@@ -534,5 +534,5 @@ void EntranceHallMap::InitFuncObjAdd()
 
 		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(0.1f, -7.7f, -21.6f), physicsInfo, L"Forward", L"", false, MapType::HallColliderCheckMap, 2);
 		AddGameObject(pTelZone);
-	}
+	}*/
 }
