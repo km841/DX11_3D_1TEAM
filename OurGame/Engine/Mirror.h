@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "InstancingBuffer.h"
 
 namespace hm
 {
@@ -24,11 +25,14 @@ namespace hm
         const Matrix& GetReflectMatrix() { return mReflectMatrix; }
         void RenderMasking(Camera* _pCamera);
         void RenderReflect(Camera* _pCamera);
+        void RenderInstancing(Camera* _pCamera, const std::vector<GameObject*> _gameObjects);
         void RenderAlbedo(Camera* _pCamera);
-
-    private:
         void CreateReflectPlane();
+    private:
+        
+        void ClearInstancingBuffer();
         void InitRenderState();
+        void AddParam(UINT64 _instanceID, InstancingParams& _params);
 
     private:
         Plane mReflectPlane;
@@ -42,6 +46,8 @@ namespace hm
         static ComPtr<ID3D11DepthStencilState> spMaskDSS; 
         static ComPtr<ID3D11DepthStencilState> spDrawMaskedDSS;
         static ComPtr<ID3D11BlendState> spMirrorBS;
+
+        std::map<UINT64, class InstancingBuffer*> mBuffers;
 	};
 }
 

@@ -36,8 +36,22 @@ VS_OUT VS_Main(VS_IN _in)
         if (g_int_1 == 1)
             Skinning(_in.pos, _in.normal, _in.tangent, _in.weight, _in.indices);
         
-        output.pos = mul(float4(_in.pos, 1.f), _in.matWVP);
-        output.uv = _in.uv;
+        if (g_reflect_use == 1)
+        {
+            row_major matrix matWRV = _in.matWorld;
+            row_major matrix matWRVP = _in.matWorld;
+            matWRV = mul(matWRV, g_reflect_mat);
+            matWRV = mul(matWRV, g_matView);
+            matWRVP = mul(matWRV, g_matProjection);
+            
+            output.pos = mul(float4(_in.pos, 1.f), matWRVP);
+            output.uv = _in.uv;
+        }
+        else
+        {
+            output.pos = mul(float4(_in.pos, 1.f), _in.matWVP);
+            output.uv = _in.uv;
+        }
     }
     else
     {

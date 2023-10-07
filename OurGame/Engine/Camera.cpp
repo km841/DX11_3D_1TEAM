@@ -126,6 +126,9 @@ namespace hm
 					case hm::ShaderType::Deferred:
 						mDeferredObjects.push_back(pGameObject);
 						break;
+					case hm::ShaderType::Mirror:
+						mDeferredObjects.push_back(pGameObject);
+						break;
 					default:
 						AssertEx(false, L"잘못된 셰이더 타입");
 						break;
