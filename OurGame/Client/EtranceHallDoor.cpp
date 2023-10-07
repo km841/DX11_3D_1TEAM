@@ -31,7 +31,6 @@ namespace yj
 
 	void EtranceHallDoor::Open()
 	{
-
 		Vec3 mLPos = mLeftDoor->GetTransform()->GetPosition();
 		
 		mLeftDoor->GetTransform()->SetPosition(Vec3());

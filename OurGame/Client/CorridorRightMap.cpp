@@ -36,6 +36,7 @@
 
 /* Script */
 #include "PlayerMoveScript.h"
+#include "PlayerMoveOverMapScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -59,6 +60,16 @@ namespace jh
 	void CorridorRightMap::Start()
 	{
 		Map::Start();
+		if (PLAYER != nullptr)
+		{
+			mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
+			switch (mSpawnPoint)
+			{
+			case 1:
+				PLAYER->GetTransform()->SetPosition(Vec3(-0.9f, -8.27f, 19.1f));
+				break;
+			}
+		}
 	}
 
 	void CorridorRightMap::Update()
@@ -86,7 +97,7 @@ namespace jh
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 
-		//¹è°æ¸Ê ÇÏ¾á»öÀ¸·Î ¸¸µé¾îÁÖ´Â ÄÚµå
+		//ë°°ê²½ë§µ í•˜ì–€ìƒ‰ìœ¼ë¡œ ë§Œë“¤ì–´ì£¼ëŠ” ì½”ë“œ
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 		InitObjectAdd();
 		InitColliderAdd();
@@ -96,8 +107,8 @@ namespace jh
 	void CorridorRightMap::InitObjectAdd()
 	{
 
-#pragma region º®
-		// º®
+#pragma region ë²½
+		// ë²½
 		{
 			DecoObject* pWall = Factory::CreateObject<DecoObject>(Vec3(0.00f, 0.00f, 0.00f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\Corridor.fbx");
 
@@ -111,7 +122,7 @@ namespace jh
 
 			AddGameObject(pWall);
 		}
-		// ¼û°ÜÁø º®
+		// ìˆ¨ê²¨ì§„ ë²½
 		{
 			DecoObject* pWallSecret = Factory::CreateObject<DecoObject>(Vec3(2.60f, -2.86f, 26.59f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\SecretWoodDoor.fbx");
 
@@ -120,7 +131,7 @@ namespace jh
 
 			AddGameObject(pWallSecret);
 		}
-		// ¹®Æ²
+		// ë¬¸í‹€
 		{
 			DecoObject* pDoorFrame = Factory::CreateObject<DecoObject>(Vec3(-3.38f, -5.46f, 19.18f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\doorSideFrame.fbx");
 
@@ -129,7 +140,7 @@ namespace jh
 
 			AddGameObject(pDoorFrame);
 		}
-		// ¹®Æ²2
+		// ë¬¸í‹€2
 		{
 			DecoObject* pDoorFrame2 = Factory::CreateObject<DecoObject>(Vec3(-3.38f, -5.46f, -23.66f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\doorSideFrame.fbx");
 
@@ -140,8 +151,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region º® Àå½Ä
-		// Ä¿Æ°
+#pragma region ë²½ ì¥ì‹
+		// ì»¤íŠ¼
 		{
 			DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(2.60f, 0.14f, 25.48f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\CurtainHorizontal.fbx");
 
@@ -149,7 +160,7 @@ namespace jh
 
 			AddGameObject(pCurtainHorizontal);
 		}
-		// Ä¿Æ°2
+		// ì»¤íŠ¼2
 		{
 			DecoObject* pCurtainHorizontal2 = Factory::CreateObject<DecoObject>(Vec3(-2.34f, 0.14f, 17.68f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\CurtainHorizontal.fbx");
 
@@ -158,7 +169,7 @@ namespace jh
 
 			AddGameObject(pCurtainHorizontal2);
 		}
-		// Ä¿Æ°3
+		// ì»¤íŠ¼3
 		{
 			DecoObject* pCurtainHorizontal3 = Factory::CreateObject<DecoObject>(Vec3(-2.34f, 0.14f, -21.97f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\CurtainHorizontal.fbx");
 
@@ -167,7 +178,7 @@ namespace jh
 
 			AddGameObject(pCurtainHorizontal3);
 		}
-		// ±×¸²
+		// ê·¸ë¦¼
 		{
 			DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(-3.43f, -1.81f, -1.65f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\paintingFrame.fbx");
 
@@ -176,7 +187,7 @@ namespace jh
 
 			AddGameObject(pPaintingFrame);
 		}
-		// ±×¸²2(¿ŞÂÊ)
+		// ê·¸ë¦¼2(ì™¼ìª½)
 		{
 			DecoObject* pPaintingFrame2Left = Factory::CreateObject<DecoObject>(Vec3(-3.43f, -5.00f, -5.29f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\paintingFrame2.fbx");
 
@@ -185,7 +196,7 @@ namespace jh
 
 			AddGameObject(pPaintingFrame2Left);
 		}
-		// ±×¸²2(¿À¸¥ÂÊ)
+		// ê·¸ë¦¼2(ì˜¤ë¥¸ìª½)
 		{
 			DecoObject* pPaintingFrame2Right = Factory::CreateObject<DecoObject>(Vec3(-3.43f, -0.12f, 4.72f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\paintingFrame2.fbx");
 
@@ -194,7 +205,7 @@ namespace jh
 
 			AddGameObject(pPaintingFrame2Right);
 		}
-		// ±×¸²3
+		// ê·¸ë¦¼3
 		{
 			DecoObject* pPaintingFrame3 = Factory::CreateObject<DecoObject>(Vec3(-3.43f, -1.03f, -8.52f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\paintingFrame3.fbx");
 
@@ -203,7 +214,7 @@ namespace jh
 
 			AddGameObject(pPaintingFrame3);
 		}
-		// ±×¸²4
+		// ê·¸ë¦¼4
 		{
 			DecoObject* pPaintingFrame4 = Factory::CreateObject<DecoObject>(Vec3(-3.36f, -4.84f, 2.38f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\paintingFrame4.fbx");
 
@@ -214,8 +225,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region ¹Ù´Ú
-		// ¹Ù´Ú
+#pragma region ë°”ë‹¥
+		// ë°”ë‹¥
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
@@ -229,7 +240,7 @@ namespace jh
 
 			AddGameObject(pFloor);
 		}
-		// ¹Ù±ùÂÊ ¹Ù´ÚÆ²
+		// ë°”ê¹¥ìª½ ë°”ë‹¥í‹€
 		{
 			DecoObject* pFloorRimBig = Factory::CreateObject<DecoObject>(Vec3(2.91f, -9.75f, -3.46f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\wallPanel (3)-Merged (4).fbx");
 
@@ -238,7 +249,7 @@ namespace jh
 
 			AddGameObject(pFloorRimBig);
 		}
-		// ¾ÈÂÊ ¹Ù´ÚÆ²
+		// ì•ˆìª½ ë°”ë‹¥í‹€
 		{
 			DecoObject* pFloorRim = Factory::CreateObject<DecoObject>(Vec3(2.91f, -9.36f, 26.70f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\WallPanel (14).fbx");
 
@@ -246,7 +257,7 @@ namespace jh
 
 			AddGameObject(pFloorRim);
 		}
-		// ¾ÈÂÊ ¹Ù´ÚÆ²2
+		// ì•ˆìª½ ë°”ë‹¥í‹€2
 		{
 			DecoObject* pFloorRim2 = Factory::CreateObject<DecoObject>(Vec3(-3.59f, -9.36f, 27.87f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\WallPanel (14).fbx");
 
@@ -255,7 +266,7 @@ namespace jh
 
 			AddGameObject(pFloorRim2);
 		}
-		// ¾ÈÂÊ ¹Ù´ÚÆ²3
+		// ì•ˆìª½ ë°”ë‹¥í‹€3
 		{
 			DecoObject* pFloorRim3 = Factory::CreateObject<DecoObject>(Vec3(-3.59f, -9.36f, -2.16f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\WallPanel (14).fbx");
 
@@ -264,7 +275,7 @@ namespace jh
 
 			AddGameObject(pFloorRim3);
 		}
-		// ¾ÈÂÊ ¹Ù´ÚÆ²4
+		// ì•ˆìª½ ë°”ë‹¥í‹€4
 		{
 			DecoObject* pFloorRim4 = Factory::CreateObject<DecoObject>(Vec3(-3.59f, -9.36f, -29.20f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\WallPanel (14).fbx");
 
@@ -273,7 +284,7 @@ namespace jh
 
 			AddGameObject(pFloorRim4);
 		}
-		// Ã¶Ã¢
+		// ì² ì°½
 		{
 			pSpikeDoor = Factory::CreateObject<DecoObject>(Vec3(-3.98f, -7.54f, -23.67f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\SpikeDoor.fbx");
 
@@ -284,8 +295,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region ¹Ù´Ú ¼ÒÇ°
-		// È­ÅêºÒ
+#pragma region ë°”ë‹¥ ì†Œí’ˆ
+		// í™”í†³ë¶ˆ
 		{
 			DecoObject* pFireLamp = Factory::CreateObject<DecoObject>(Vec3(-2.19f, -7.79f, 12.39f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\GRANDMA_FireLamp.fbx");
 
@@ -294,9 +305,9 @@ namespace jh
 
 			AddGameObject(pFireLamp);
 		}
-		// Ç×¾Æ¸® ¼¼Æ®(ÀÔ±¸ ÂÊ)
+		// í•­ì•„ë¦¬ ì„¸íŠ¸(ì…êµ¬ ìª½)
 		{
-			// Ç×¾Æ¸®(ÀÏ¹İ)
+			// í•­ì•„ë¦¬(ì¼ë°˜)
 			{
 				DecoObject* pPotGeneric = Factory::CreateObject<DecoObject>(Vec3(7.88f, -7.75f, 19.93f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_HEAL_Generic Variant (3).fbx");
 
@@ -304,7 +315,7 @@ namespace jh
 
 				AddGameObject(pPotGeneric);
 			}
-			// Ç×¾Æ¸®(ÀÏ¹İ)
+			// í•­ì•„ë¦¬(ì¼ë°˜)
 			{
 				DecoObject* pPotGeneric2 = Factory::CreateObject<DecoObject>(Vec3(7.88f, -7.75f, 12.39f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_HEAL_Generic Variant (3).fbx");
 
@@ -312,7 +323,7 @@ namespace jh
 
 				AddGameObject(pPotGeneric2);
 			}
-			// Ç×¾Æ¸®(Æø¹ß)
+			// í•­ì•„ë¦¬(í­ë°œ)
 			{
 				DecoObject* pPotExplode = Factory::CreateObject<DecoObject>(Vec3(7.88f, -7.98f, 16.13f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_Explode_NoLid Variant.fbx");
 
@@ -321,9 +332,9 @@ namespace jh
 				AddGameObject(pPotExplode);
 			}
 		}
-		// Ç×¾Æ¸® ¼¼Æ®(°¡¿îµ¥)
+		// í•­ì•„ë¦¬ ì„¸íŠ¸(ê°€ìš´ë°)
 		{
-			// Ç×¾Æ¸®(ÀÏ¹İ)
+			// í•­ì•„ë¦¬(ì¼ë°˜)
 			{
 				DecoObject* pPotGeneric3 = Factory::CreateObject<DecoObject>(Vec3(-2.06f, -7.75f, 2.18f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_HEAL_Generic Variant (3).fbx");
 
@@ -331,7 +342,7 @@ namespace jh
 
 				AddGameObject(pPotGeneric3);
 			}
-			// Ç×¾Æ¸®(ÀÏ¹İ)
+			// í•­ì•„ë¦¬(ì¼ë°˜)
 			{
 				DecoObject* pPotGeneric4 = Factory::CreateObject<DecoObject>(Vec3(-2.06f, -7.75f, -5.36f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_HEAL_Generic Variant (3).fbx");
 
@@ -339,7 +350,7 @@ namespace jh
 
 				AddGameObject(pPotGeneric4);
 			}
-			// Ç×¾Æ¸®(¹Ì¹Í)
+			// í•­ì•„ë¦¬(ë¯¸ë¯¹)
 			{
 				DecoObject* pPotMimic = Factory::CreateObject<DecoObject>(Vec3(-2.06f, -8.05f, -1.61f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_Mimic_Magic.fbx");
 
@@ -349,9 +360,9 @@ namespace jh
 				AddGameObject(pPotMimic);
 			}
 		}
-		// Ç×¾Æ¸® ¼¼Æ®(Ã¶Ã¢ ÂÊ)
+		// í•­ì•„ë¦¬ ì„¸íŠ¸(ì² ì°½ ìª½)
 		{
-			// Ç×¾Æ¸®(ÀÏ¹İ)
+			// í•­ì•„ë¦¬(ì¼ë°˜)
 			{
 				DecoObject* pPotGeneric5 = Factory::CreateObject<DecoObject>(Vec3(7.88f, -7.75f, -17.51f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_HEAL_Generic Variant (3).fbx");
 
@@ -359,7 +370,7 @@ namespace jh
 
 				AddGameObject(pPotGeneric5);
 			}
-			// Ç×¾Æ¸®(ÀÏ¹İ)
+			// í•­ì•„ë¦¬(ì¼ë°˜)
 			{
 				DecoObject* pPotGeneric6 = Factory::CreateObject<DecoObject>(Vec3(7.88f, -7.75f, -25.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_HEAL_Generic Variant (3).fbx");
 
@@ -367,7 +378,7 @@ namespace jh
 
 				AddGameObject(pPotGeneric6);
 			}
-			// Ç×¾Æ¸®(Æø¹ß)
+			// í•­ì•„ë¦¬(í­ë°œ)
 			{
 				DecoObject* pPotExplode2 = Factory::CreateObject<DecoObject>(Vec3(7.88f, -7.98f, -21.31f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_Explode_NoLid Variant.fbx");
 
@@ -378,8 +389,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region ±âµÕ
-		// ¹Ù±ùÂÊ ±âµÕ
+#pragma region ê¸°ë‘¥
+		// ë°”ê¹¥ìª½ ê¸°ë‘¥
 		{
 			DecoObject* pColumn = Factory::CreateObject<DecoObject>(Vec3(8.58f, -3.84f, 26.52f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\ColumnFull (13).fbx");
 
@@ -387,7 +398,7 @@ namespace jh
 
 			AddGameObject(pColumn);
 		}
-		// ¾ÈÂÊ ±âµÕ
+		// ì•ˆìª½ ê¸°ë‘¥
 		{
 			DecoObject* pColumn2 = Factory::CreateObject<DecoObject>(Vec3(-3.51f, -3.84f, 26.65f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\ColumnFull (13).fbx");
 
@@ -395,7 +406,7 @@ namespace jh
 
 			AddGameObject(pColumn2);
 		}
-		// ¾ÈÂÊ ±âµÕ2
+		// ì•ˆìª½ ê¸°ë‘¥2
 		{
 			DecoObject* pColumn3 = Factory::CreateObject<DecoObject>(Vec3(-3.47f, -3.84f, 8.45f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\ColumnFull (13).fbx");
 
@@ -404,7 +415,7 @@ namespace jh
 
 			AddGameObject(pColumn3);
 		}
-		// ¾ÈÂÊ ±âµÕ3
+		// ì•ˆìª½ ê¸°ë‘¥3
 		{
 			DecoObject* pColumn4 = Factory::CreateObject<DecoObject>(Vec3(-3.47f, -3.84f, -11.70f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\ColumnFull (13).fbx");
 
@@ -413,7 +424,7 @@ namespace jh
 
 			AddGameObject(pColumn4);
 		}
-		// ¾ÈÂÊ ±âµÕ4
+		// ì•ˆìª½ ê¸°ë‘¥4
 		{
 			DecoObject* pColumn5 = Factory::CreateObject<DecoObject>(Vec3(-3.47f, -3.84f, -31.98f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\ColumnFull (13).fbx");
 
@@ -424,8 +435,8 @@ namespace jh
 		}
 #pragma endregion
 
-#pragma region ÃµÀå
-		// ÃµÀåÆ²
+#pragma region ì²œì¥
+		// ì²œì¥í‹€
 		{
 			DecoObject* pWallRim = Factory::CreateObject<DecoObject>(Vec3(2.65f, 2.82f, 26.66f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\WallRim.fbx");
 
@@ -433,7 +444,7 @@ namespace jh
 
 			AddGameObject(pWallRim);
 		}
-		// ÃµÀåÆ²2
+		// ì²œì¥í‹€2
 		{
 			DecoObject* pWallRim2 = Factory::CreateObject<DecoObject>(Vec3(-3.51f, 2.82f, -2.60f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\WallRim.fbx");
 
@@ -564,6 +575,7 @@ namespace jh
 			GameObject* pWall10 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(8.7f, -4.57f, 26.6f), physicsInfo, L"Deferred", L"", false, LayerType::WallObject);
 			AddGameObject(pWall10);
 		}
+		
 	}
 
 	void CorridorRightMap::FuncObjectAdd()
@@ -574,6 +586,7 @@ namespace jh
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(3.4f, 10.1f, 4.82f);
 
+			yj::TeleportZone* pLeftZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-6.9f, -4.57f, -23.7f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map,6);
 			yj::TeleportZone* pLeftZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-6.9f, -4.57f, -23.7f), physicsInfo, L"Deferred", L"", false, MapType::LeftSecretTrialMap,1);
 			AddGameObject(pLeftZone);
 		}
@@ -583,6 +596,7 @@ namespace jh
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(3.4f, 10.1f, 4.82f);
 
+			yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-7.4f, -4.57f, 19.2f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map,5);
 			yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-7.4f, -4.57f, 19.2f), physicsInfo, L"Deferred", L"", false, MapType::LeftSecretTrialMap,1);
 			AddGameObject(pRightZone);
 		}

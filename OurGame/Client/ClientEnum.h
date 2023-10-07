@@ -1,6 +1,7 @@
 #pragma once
 
 #define PLAYER Player::GetPlayer()
+#define DIALOUGEBOX DialogBox::GetDialogBox()
 #define GRANDMA Grandma::GetGrandma()
 
 enum class PlayerState

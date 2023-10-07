@@ -6,6 +6,7 @@ class ArrowScript;
 class SwordScript;
 class SwordHeavyEffect;
 class State;
+
 class Player :
     public GameObject
 {

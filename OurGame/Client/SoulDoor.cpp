@@ -59,18 +59,16 @@ namespace yj
 		{
 			pDoorObj->GetScript<PaperBurnScript>()->SetReverse(true);
 			pDoorObj->GetScript<PaperBurnScript>()->SetPaperBurn();
-			pDoorObj->GetScript<PaperBurnScript>()->SetFinishedCallback(std::bind(&SoulDoor::SetMove,this));
+			pDoorObj->GetScript<PaperBurnScript>()->SetFinishedCallback(std::bind(&SoulDoor::SetMove, this));
 		}
-		if (IS_DOWN(KeyType::F))
+		if (mOpenSequnce < 1)
 		{
-			pDoorObj->GetRigidBody()->GetCollider()->CheckIsCollisionObject(LayerType::Player);
-		}
-
-		if (pEntranceColObj->GetRigidBody()->GetCollider()->CheckIsCollisionObject(LayerType::Player))
-		{
-			if(IS_DOWN(KeyType::E))
+			if (pEntranceColObj->GetRigidBody()->GetCollider()->CheckIsCollisionObject(LayerType::Player))
 			{
-				mOpenSequnce = 1;
+				if (IS_DOWN(KeyType::E))
+				{
+					mOpenSequnce = 1;
+				}
 			}
 		}
 	}

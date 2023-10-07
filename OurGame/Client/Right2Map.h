@@ -25,9 +25,11 @@ namespace hm
 
 		void InitObjectAdd();
 		void InitCollidertAdd();
+		void InitFuncObjAdd();
 		
 	private:
 		class SlashGlareScript* mpTestScript;
+		int mSpawnPoint = -1;
 	};
 }
 

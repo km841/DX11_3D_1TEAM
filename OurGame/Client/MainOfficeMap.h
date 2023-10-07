@@ -37,4 +37,3 @@ namespace yj {
 		int mDirectorActive = -1;
 	};
 }
-

@@ -105,7 +105,7 @@ void EntranceHallMap::Enter()
 	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
 
-	//¹è°æ¸Ê ÇÏ¾á»öÀ¸·Î ¸¸µé¾îÁÖ´Â ÄÚµå
+	//ë°°ê²½ë§µ í•˜ì–€ìƒ‰ìœ¼ë¡œ ë§Œë“¤ì–´ì£¼ëŠ” ì½”ë“œ
 	//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
 	InitObjectAdd();
@@ -134,14 +134,14 @@ void EntranceHallMap::InitObjectAdd()
 		pEntranceHall->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 
 		shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"EntranceHallTexture", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\EntranceHall.fbm\\grandmaWallPaperTexture.png");
-		pEntranceHall->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture); // ÅØ½ºÃÄ °­Á¦·Î Àû¿ë½ÃÅ°´Â¹ı
+		pEntranceHall->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture); // í…ìŠ¤ì³ ê°•ì œë¡œ ì ìš©ì‹œí‚¤ëŠ”ë²•
 
 		pEntranceHall->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.03f, 0.03f));
 
 		AddGameObject(pEntranceHall);
 	}
 
-	//¹Ù´Ú - EntranceHallFloor
+	//ë°”ë‹¥ - EntranceHallFloor
 	{
 		DecoObject* pEntranceHallFloor = Factory::CreateObject<DecoObject>(Vec3(0.1f, -9.7f, 4.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\EntranceHallFloor.fbx");
 		pEntranceHallFloor->GetTransform()->SetScale(Vec3(58.5f, 1.f, 58.5f));
@@ -151,7 +151,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pEntranceHallFloor);
 	}
 
-	//¹Ù´Ú ÇÁ·¹ÀÓ - wallPanel_Merged
+	//ë°”ë‹¥ í”„ë ˆì„ - wallPanel_Merged
 	{
 		DecoObject* pwallPanel_Merged = Factory::CreateObject<DecoObject>(Vec3(-0.4f, -10.6f, 4.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\wallPanel_Merged.fbx");
 		pwallPanel_Merged->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
@@ -160,9 +160,9 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pwallPanel_Merged);
 	}
 
-#pragma region "±âµÕ"
+#pragma region "ê¸°ë‘¥"
 	{
-		//Ã¹¹øÂ° ±âµÕ - ColumnFull
+		//ì²«ë²ˆì§¸ ê¸°ë‘¥ - ColumnFull
 		DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(11.7f, 0.85f, 24.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\ColumnFull.fbx");
 		pColumnFull->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pColumnFull->GetTransform()->SetScale(Vec3(30.f, 21.f, 30.f));
@@ -170,7 +170,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pColumnFull);
 	}
 	{
-		//µÎ¹øÂ° ±âµÕ - ColumnFull
+		//ë‘ë²ˆì§¸ ê¸°ë‘¥ - ColumnFull
 		DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(11.7f, 0.85f, -14.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\ColumnFull.fbx");
 		pColumnFull->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pColumnFull->GetTransform()->SetScale(Vec3(30.f, 21.f, 30.f));
@@ -179,7 +179,7 @@ void EntranceHallMap::InitObjectAdd()
 	}
 
 	{
-		//¼¼¹øÂ° ±âµÕ - ColumnFull
+		//ì„¸ë²ˆì§¸ ê¸°ë‘¥ - ColumnFull
 		DecoObject* pColumnFull = Factory::CreateObject<DecoObject>(Vec3(-11.3f, 0.85f, -14.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\ColumnFull.fbx");
 		pColumnFull->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
 		pColumnFull->GetTransform()->SetScale(Vec3(30.f, 21.f, 30.f));
@@ -188,8 +188,8 @@ void EntranceHallMap::InitObjectAdd()
 	}
 #pragma endregion
 
-#pragma region "°¡·ÎÁÙ"
-	//°¡·ÎÁÙ - bannisterTop
+#pragma region "ê°€ë¡œì¤„"
+	//ê°€ë¡œì¤„ - bannisterTop
 	{
 		DecoObject* pbannisterTop = Factory::CreateObject<DecoObject>(Vec3(12.4f, 9.8f, 5.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\bannisterTop.fbx");
 		pbannisterTop->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
@@ -199,7 +199,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pbannisterTop);
 	}
 
-	//°¡·ÎÁÙ - bannisterTop
+	//ê°€ë¡œì¤„ - bannisterTop
 	{
 		DecoObject* pbannisterTop = Factory::CreateObject<DecoObject>(Vec3(0.4f, 9.8f, -14.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\bannisterTop.fbx");
 		pbannisterTop->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
@@ -210,8 +210,8 @@ void EntranceHallMap::InitObjectAdd()
 	}
 #pragma endregion
 
-#pragma region "º®ÆĞ³Î"
-	//º®ÆĞ³Î 1 - WallPanel	
+#pragma region "ë²½íŒ¨ë„"
+	//ë²½íŒ¨ë„ 1 - WallPanel	
 	{
 		DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(11.8f, -6.6f, 17.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\WallPanel.fbx");
 		pWallPanel->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
@@ -220,7 +220,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pWallPanel);
 	}
 
-	//º®ÆĞ³Î 2 - WallPanel	
+	//ë²½íŒ¨ë„ 2 - WallPanel	
 	{
 		DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(11.8f, -6.6f, 7.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\WallPanel.fbx");
 		pWallPanel->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
@@ -229,7 +229,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pWallPanel);
 	}
 
-	//º®ÆĞ³Î 3 - WallPanel	
+	//ë²½íŒ¨ë„ 3 - WallPanel	
 	{
 		DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(11.8f, -6.6f, -2.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\WallPanel.fbx");
 		pWallPanel->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
@@ -238,7 +238,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pWallPanel);
 	}
 
-	//º®ÆĞ³Î 4 - WallPanel	
+	//ë²½íŒ¨ë„ 4 - WallPanel	
 	{
 		DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(11.8f, -6.6f, -12.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\WallPanel.fbx");
 		pWallPanel->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
@@ -247,7 +247,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pWallPanel);
 	}
 
-	//º®ÆĞ³Î ¼¼·ÎÄ­ - WallPanel_shot
+	//ë²½íŒ¨ë„ ì„¸ë¡œì¹¸ - WallPanel_shot
 	{
 		DecoObject* pWallPanel_shot = Factory::CreateObject<DecoObject>(Vec3(9.3f, -8.5f, -15.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\WallPanel_shot.fbx");
 		pWallPanel_shot->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
@@ -256,7 +256,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pWallPanel_shot);
 	}
 
-	//º®ÆĞ³Î ¼¼·ÎÄ­ 2  - WallPanel_shot
+	//ë²½íŒ¨ë„ ì„¸ë¡œì¹¸ 2  - WallPanel_shot
 	{
 		DecoObject* pWallPanel_shot = Factory::CreateObject<DecoObject>(Vec3(-7.3f, -8.5f, -15.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\WallPanel_shot.fbx");
 		pWallPanel_shot->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
@@ -265,7 +265,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pWallPanel_shot);
 	}
 
-	//º®ÆĞ³Î ¹® Å×µÎ¸® - DoorFrameBig
+	//ë²½íŒ¨ë„ ë¬¸ í…Œë‘ë¦¬ - DoorFrameBig
 	{
 		DecoObject* pDoorFrameBig = Factory::CreateObject<DecoObject>(Vec3(0.f, -3.9f, -14.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\DoorFrameBig.fbx");
 		pDoorFrameBig->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
@@ -275,7 +275,7 @@ void EntranceHallMap::InitObjectAdd()
 	}
 #pragma endregion
 
-	//Ä¿Æ° - CurtainHorizontal
+	//ì»¤íŠ¼ - CurtainHorizontal
 	{
 		DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(0.f, 6.4f, -13.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\CurtainHorizontal.fbx");
 		pCurtainHorizontal->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
@@ -285,7 +285,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pCurtainHorizontal);
 	}
 
-	//º¸¶ó»ö ¹® - jarDoor
+	//ë³´ë¼ìƒ‰ ë¬¸ - jarDoor
 	{
 		pJarRDoor = Factory::CreateObject<DecoObject>(Vec3(0.f, -3.6f, -15.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\jarDoor.fbx");
 		pJarRDoor->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
@@ -309,7 +309,7 @@ void EntranceHallMap::InitObjectAdd()
 	}
 
 
-	//Å¹ÀÚ - MiddleShelf
+	//íƒì - MiddleShelf
 	{
 		DecoObject* pMiddleShelf = Factory::CreateObject<DecoObject>(Vec3(8.6f, -7.2f, 5.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\MiddleShelf.fbx");
 		pMiddleShelf->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
@@ -318,7 +318,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pMiddleShelf);
 	}
 
-	//Å¹ÀÚÀ§ ²É È­ºĞ - MansionPlantPot
+	//íƒììœ„ ê½ƒ í™”ë¶„ - MansionPlantPot
 	{
 		DecoObject* pMansionPlantPot = Factory::CreateObject<DecoObject>(Vec3(8.6f, -2.4f, 9.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\MansionPlantPot.fbx");
 		pMansionPlantPot->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
@@ -327,7 +327,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pMansionPlantPot);
 	}
 
-	//Å¹ÀÚÀ§ ÀÛÀº È­ºĞµé 1 - MansionSpicePot_small
+	//íƒììœ„ ì‘ì€ í™”ë¶„ë“¤ 1 - MansionSpicePot_small
 	{
 		DecoObject* pMansionSpicePot_small = Factory::CreateObject<DecoObject>(Vec3(7.9f, -3.9f, 3.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\MansionSpicePot_small.fbx");
 		pMansionSpicePot_small->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
@@ -336,7 +336,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pMansionSpicePot_small);
 	}
 
-	//Å¹ÀÚÀ§ ÀÛÀº È­ºĞµé 2 - MansionSpicePot_small
+	//íƒììœ„ ì‘ì€ í™”ë¶„ë“¤ 2 - MansionSpicePot_small
 	{
 		DecoObject* pMansionSpicePot_small = Factory::CreateObject<DecoObject>(Vec3(9.0f, -3.9f, 1.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\MansionSpicePot_small.fbx");
 		pMansionSpicePot_small->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
@@ -345,7 +345,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pMansionSpicePot_small);
 	}
 
-	//ÀÇÀÚ - Chair
+	//ì˜ì - Chair
 	{
 		DecoObject* pChair = Factory::CreateObject<DecoObject>(Vec3(6.3f, -5.1f, 21.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\Chair.fbx");
 		pChair->GetTransform()->SetRotation(Vec3(0.f, 75.f, 0.f));
@@ -354,7 +354,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pChair);
 	}
 
-	//±×¸²¾×ÀÚ 1 - paintingFrame
+	//ê·¸ë¦¼ì•¡ì 1 - paintingFrame
 	{
 		DecoObject* pPaintingFrame = Factory::CreateObject<DecoObject>(Vec3(12.f, 3.2f, 15.7f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\paintingFrame.fbx");
 		pPaintingFrame->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
@@ -363,7 +363,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pPaintingFrame);
 	}
 
-	//±×¸²¾×ÀÚ 2 - paintingFrame2
+	//ê·¸ë¦¼ì•¡ì 2 - paintingFrame2
 	{
 		DecoObject* pPaintingFrame2 = Factory::CreateObject<DecoObject>(Vec3(12.f, 3.1f, 4.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\paintingFrame2.fbx");
 		pPaintingFrame2->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
@@ -372,7 +372,7 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pPaintingFrame2);
 	}
 
-	//±×¸²¾×ÀÚ 3 - paintingFrame4
+	//ê·¸ë¦¼ì•¡ì 3 - paintingFrame4
 	{
 		DecoObject* pPaintingFrame4 = Factory::CreateObject<DecoObject>(Vec3(11.9f, 3.1f, -7.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\paintingFrame4.fbx");
 		pPaintingFrame4->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
@@ -397,7 +397,7 @@ void EntranceHallMap::InitObjectAdd()
 		yj::JarDoor* pJarDoor = Factory::CreateObject<yj::JarDoor>(Vec3::Zero, L"Deferred", L"", false, 2, pJarLDoor, pJarRDoor, pDoorCollider);
 		AddGameObject(pJarDoor);
 
-		//Å°+ÆÄ¶õ»ö Ç×¾Æ¸® - POT_Key
+		//í‚¤+íŒŒë€ìƒ‰ í•­ì•„ë¦¬ - POT_Key
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Static;
@@ -411,7 +411,7 @@ void EntranceHallMap::InitObjectAdd()
 			AddGameObject(pPot1);
 		}
 
-		//Å°+ÆÄ¶õ»ö Ç×¾Æ¸® µÎ¹øÂ° - POT_Key
+		//í‚¤+íŒŒë€ìƒ‰ í•­ì•„ë¦¬ ë‘ë²ˆì§¸ - POT_Key
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Static;
