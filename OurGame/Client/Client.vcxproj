@@ -263,6 +263,7 @@
     <ClInclude Include="TestAnimationScript.h" />
     <ClInclude Include="TestRigidBodyScript.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="TextBox.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="WallObject.h" />
   </ItemGroup>
@@ -388,6 +389,7 @@
     <ClCompile Include="TestAnimationScript.cpp" />
     <ClCompile Include="TestRigidBodyScript.cpp" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="WallObject.cpp" />
   </ItemGroup>

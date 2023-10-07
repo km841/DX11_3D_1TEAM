@@ -65,11 +65,10 @@ namespace yj
 		{
 			switch (mSpawnPoint)
 			{
-			case 0:
-				//PLAYER->GetTransform()->SetPosition(Vec3(15.2f,1.6f,-7.2f));
-				//PLAYER->GetTransform()->SetRotation(Vec3());
+			case 4:
+				PLAYER->GetTransform()->SetPosition(Vec3(14.5f,1.5f,-7.3f));
 				break;
-			case 1:
+			case 5:
 				//PLAYER->GetTransform()->SetPosition(Vec3(-17.0f, 1.6f,-2.1f));
 				//PLAYER->GetTransform()->SetRotation(Vec3());
 				break;
@@ -194,7 +193,7 @@ namespace yj
 
 			PLAYER->GetTransform()->SetPosition(Vec3(0.f, 7.f, 0.f));
 
-			// ÃÖÁ¾º¸½º
+			// ÃƒÃ–ÃÂ¾ÂºÂ¸Â½Âº
 			{
 
 				PhysicsInfo info = {};
@@ -370,7 +369,7 @@ namespace yj
 		mTwoTierShelf_BottomList[1]->GetTransform()->SetScale(Vec3(6.0f, 6.0f, 6.0f));
 
 
-#pragma region "2Ãş ¼±¹İ ´Ù¸®"
+#pragma region "2ÃƒÃ¾ Â¼Â±Â¹Ã Â´Ã™Â¸Â®"
 		std::vector<GameObject*> mTwoTierShelf_LegList;
 		for (int i = 0; i < 8; i++)
 		{
@@ -747,7 +746,7 @@ namespace yj
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(1.0, 3.8f, 3.5f);
 
-			TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<TeleportZone>(Vec3(-19.1f, 2.8f, -2.1f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map,1);
+			TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<TeleportZone>(Vec3(-19.1f, 2.8f, -2.1f), physicsInfo, L"Deferred", L"", false, MapType::CorridorRightMap,5);
 			AddGameObject(pTelZone);
 		}
 		{

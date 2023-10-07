@@ -31,7 +31,7 @@ namespace jh
 	private:
 		GameObject* pSpikeDoor;
 		GameObject* pSpikeDoorCol;
-
+		int mSpawnPoint = -1;
 	};
 
 }
