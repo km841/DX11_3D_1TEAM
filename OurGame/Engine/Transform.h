@@ -81,6 +81,7 @@ namespace hm
 
 		Matrix  mMatLocal;
 		Matrix  mMatWorld;
+		Matrix  mMatOldWorld;
 		
 		bool mbUpdateByMat;
 

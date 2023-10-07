@@ -1,5 +1,5 @@
-#ifndef _FORWARD_FX_
-#define _FORWARD_FX_
+#ifndef _MIRROR_FX_
+#define _MIRROR_FX_
 
 #include "params.fx"
 #include "utils.fx"
@@ -23,6 +23,8 @@ struct VS_OUT
 {
     float4 pos : SV_Position;
     float2 uv : TEXCOORD;
+    float3 viewPos : POSITION;
+    float3 viewNormal : NORMAL;
 };
 
 VS_OUT VS_Main(VS_IN _in)
@@ -54,11 +56,16 @@ VS_OUT VS_Main(VS_IN _in)
             
             output.pos = mul(float4(_in.pos, 1.f), matWRVP);
             output.uv = _in.uv;
+            output.viewPos = mul(float4(_in.pos, 1.f), matWRV).xyz;
+            output.viewNormal = normalize(mul(float4(_in.normal, 0.f), matWRV)).xyz;
+            
         }
         else
         {
             output.pos = mul(float4(_in.pos, 1.f), g_matWVP);
             output.uv = _in.uv;
+            output.viewPos = mul(float4(_in.pos, 1.f), g_matWV).xyz;
+            output.viewNormal = normalize(mul(float4(_in.normal, 0.f), g_matWV)).xyz;
         }
     }
 
@@ -67,7 +74,20 @@ VS_OUT VS_Main(VS_IN _in)
 
 float4 PS_Main(VS_OUT _in) : SV_Target
 {
+    float2 uv = _in.uv;
+    
     float4 color = g_tex_on_0 == 1 ? g_tex_0.Sample(g_sam_0, _in.uv) : float4(g_vec4_0.xyz, 1.f);
+    LightColor lightColor = (LightColor) 0.f;
+    for (int i = 0; i < g_lightCount; ++i)
+    {
+        LightColor color = CalculateLightColor(i, _in.viewNormal, _in.viewPos);
+        lightColor.diffuse += color.diffuse;
+        lightColor.ambient += color.ambient;
+    }
+    
+    color.xyz = (lightColor.diffuse.xyz * color.xyz)
+        + (lightColor.ambient.xyz * color.xyz);
+    
     return color;
 }
 #endif

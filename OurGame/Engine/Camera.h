@@ -33,6 +33,7 @@ namespace hm
         void            EnableAllCullingMask();
 
         const Matrix& GetViewMatrix()       const { return mMatView; }
+        const Matrix& GetOldViewMatrix()    const { return mMatOldView; }
         const Matrix& GetProjectionMatrix() const { return mMatProjection; }
 
         void SetWidth(float _width) { mWidth = _width; }
@@ -77,6 +78,7 @@ namespace hm
         float           mScale;
         UINT32          mCullingMask;
         Matrix          mMatView;
+        Matrix          mMatOldView;
         Matrix          mMatProjection;
 
         float           mWidth;

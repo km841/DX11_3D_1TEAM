@@ -33,7 +33,7 @@ namespace hm
 		WallObject,
 		Portal,
 		Mirror,
-    PotCell,
+		PotCell,
 		Interface,
 		End,
 	};

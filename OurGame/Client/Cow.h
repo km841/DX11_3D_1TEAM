@@ -1,16 +1,15 @@
 #pragma once
 #include "Monster.h"
-class LORD_BOSS;
-class LORD_BOSS_ROLL :
+class Cow :
     public Monster
 {
 public:
-	LORD_BOSS_ROLL();
-	virtual ~LORD_BOSS_ROLL();
-	LORD_BOSS_ROLL* Clone()
+	Cow();
+	virtual ~Cow();
+	Cow* Clone()
 	{
-		LORD_BOSS_ROLL* pLORD_BOSS_ROLL = GameObject::Clone<LORD_BOSS_ROLL>();
-		return pLORD_BOSS_ROLL;
+		Cow* pCow = GameObject::Clone<Cow>();
+		return pCow;
 	}
 
 	virtual void SetBehaviorTree();
@@ -32,17 +31,14 @@ public:
 	virtual void OnTriggerStay(Collider* _pOtherCollider);
 	virtual void OnTriggerExit(Collider* _pOtherCollider);
 
-	void SetLORD_BOSS(LORD_BOSS* _Boss) { pLord_Boss = _Boss; }
 private:
+	Vec3 RotDir;
+	Vec3 PosDir;
+	int Count = 0;
+	float TurnSpeed;
 
-
-private:
-	Vec3 Dir;
-	Vec3 PrevDir;
-	int Health;
-
-	MonsterBasicState PrevState;
-
-	LORD_BOSS* pLord_Boss;
+	void SlowTurnLive();
+	void PrevFollowSet();
+	void PrevFollowLive();
 };
 

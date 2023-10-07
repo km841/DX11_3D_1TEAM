@@ -80,7 +80,7 @@ namespace hm
 			mpSelectedInterface->GetTransform()->SetPosition(pos);
 		}
 		
-		// Çö¸ğ
+		// í˜„ëª¨
 		// - GrandmaBossMap
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
@@ -88,8 +88,8 @@ namespace hm
 			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
 		}
 
-		// ÁöÇü
-		// - HallColliderCheckMap - 2°³Ä¡ ºĞ·®
+		// ì§€í˜•
+		// - HallColliderCheckMap - 2ê°œì¹˜ ë¶„ëŸ‰
 		// - CorridorRightMap
 		// - RightSecretPassageMap
 		if (IS_DOWN(KeyType::O))
@@ -97,7 +97,7 @@ namespace hm
 			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::PhysicsTest);
 		}
 
-		// »ó¿¬
+		// ìƒì—°
 		// - DiningColliderCheckMap
 		// - EntranceHallMap
 		// - LeftSecretFightMap
@@ -108,8 +108,8 @@ namespace hm
 			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Monster_Player_Test);
 		}
 
-		// ¿µÁø
-		// - MainOfficeMap - 3°³Ä¡ ºĞ·®
+		// ì˜ì§„
+		// - MainOfficeMap - 3ê°œì¹˜ ë¶„ëŸ‰
 		// - RightMap
 		if (IS_DOWN(KeyType::K))
 		{
@@ -207,31 +207,31 @@ namespace hm
 		{		
 			{
 				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(0.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
-				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"½ÃÀÛ", MapType::MainOfficeMap));
+				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"ì‹œì‘", MapType::MainOfficeMap));
 
-				// Å¬¸¯ ±â´ÉÀ» ½ºÅ©¸³Æ®·Î ±¸Çö
+				// í´ë¦­ ê¸°ëŠ¥ì„ ìŠ¤í¬ë¦½íŠ¸ë¡œ êµ¬í˜„
 				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
 
-				// Å¬¸¯ÇßÀ» ¶§ Äİ¹é
+				// í´ë¦­í–ˆì„ ë•Œ ì½œë°±
 				pButtonScript->SetClickedCallback([=]() { pScript->Start(); });
 
-				// ¸¶¿ì½º°¡ ¹öÆ°¿¡¼­ ¹ş¾î³µÀ» ¶§
-				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"½ÃÀÛ", 35.f, true); }); 
+				// ë§ˆìš°ìŠ¤ê°€ ë²„íŠ¼ì—ì„œ ë²—ì–´ë‚¬ì„ ë•Œ
+				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"ì‹œì‘", 35.f, true); }); 
 
-				// ¸¶¿ì½º°¡ ¹öÆ°¿¡ ¿Ã¶ó°¬À» ¶§
-				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"½ÃÀÛ", 40.f, true); mpActiveInterface = pInterface; }); 
+				// ë§ˆìš°ìŠ¤ê°€ ë²„íŠ¼ì— ì˜¬ë¼ê°”ì„ ë•Œ
+				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"ì‹œì‘", 40.f, true); mpActiveInterface = pInterface; }); 
 
-				// ÅØ½ºÃÄ ¾ËÆÄ°ª ÁöÁ¤
+				// í…ìŠ¤ì³ ì•ŒíŒŒê°’ ì§€ì •
 				pInterface->SetAlpha(0.f);
 
-				// ÅØ½ºÆ® ÁöÁ¤
-				pInterface->SetText(L"½ÃÀÛ", 25.f, true);
+				// í…ìŠ¤íŠ¸ ì§€ì •
+				pInterface->SetText(L"ì‹œì‘", 25.f, true);
 
-				// ÅØ½ºÆ® ÄÃ·¯ ÁöÁ¤
+				// í…ìŠ¤íŠ¸ ì»¬ëŸ¬ ì§€ì •
 				pInterface->SetTextColor(Vec4(1.f, 1.f, 1.f, 1.f));
 				AddGameObject(pInterface);
 
-				// ÀÓ½Ã·Î ¼³Á¤
+				// ì„ì‹œë¡œ ì„¤ì •
 				mpActiveInterface = pInterface;
 			}
 
@@ -245,10 +245,10 @@ namespace hm
 				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(0.f, -300.f, -1.f), Vec2(50.f, 50.f), info);
 
 				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
-				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"Á¾·á", 35.f, true); });
-				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"Á¾·á", 40.f, true); mpActiveInterface = pInterface; });
+				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"ì¢…ë£Œ", 35.f, true); });
+				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"ì¢…ë£Œ", 40.f, true); mpActiveInterface = pInterface; });
 
-				pInterface->SetText(L"Á¾·á", 25.f, true);
+				pInterface->SetText(L"ì¢…ë£Œ", 25.f, true);
 				pInterface->SetTextColor(Vec4(1.f, 1.f, 1.f, 1.f));
 
 				AddGameObject(pInterface);
@@ -280,7 +280,7 @@ namespace hm
 			//SetMeshTarget(pPlayer);
 		}
 
-		AddSceneChangeCallback(L"ÇÃ·¹ÀÌ¾î Ãæµ¹ ÃÊ±âÈ­", []() 
+		AddSceneChangeCallback(L"í”Œë ˆì´ì–´ ì¶©ëŒ ì´ˆê¸°í™”", []() 
 			{
 				GET_SINGLE(CollisionManager)->ClearAllCollisionForObject(PLAYER); 
 			});

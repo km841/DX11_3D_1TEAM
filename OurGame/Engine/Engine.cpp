@@ -116,7 +116,7 @@ namespace hm
 		// G-Buffer
 		{
 			float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-			std::vector<RenderTarget> renderTargets(G_BUGGER_GROUP_COUNT);
+			std::vector<RenderTarget> renderTargets(G_BUFFER_GROUP_COUNT);
 
 			renderTargets[0].pTarget = GET_SINGLE(Resources)->CreateTexture(
 				L"PositionTarget",
@@ -148,11 +148,18 @@ namespace hm
 				D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE,
 				mWindowInfo.width, mWindowInfo.height);
 
+			renderTargets[5].pTarget = GET_SINGLE(Resources)->CreateTexture(
+				L"VelocityTarget",
+				DXGI_FORMAT_R32G32B32A32_FLOAT,
+				D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE,
+				mWindowInfo.width, mWindowInfo.height);
+
 			memcpy(renderTargets[0].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
 			memcpy(renderTargets[1].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
 			memcpy(renderTargets[2].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
 			memcpy(renderTargets[3].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
 			memcpy(renderTargets[4].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
+			memcpy(renderTargets[5].clearColors, clearColor, sizeof(float) * ARRAYSIZE(clearColor));
 
 			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::G_Buffer)] = new MultiRenderTarget;
 			mMultiRenderTargets[static_cast<int>(MultiRenderTargetType::G_Buffer)]->Create(MultiRenderTargetType::G_Buffer, renderTargets, pDepthStencilTexture);

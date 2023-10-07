@@ -43,6 +43,7 @@ namespace hm
 		void RenderBloom();
 		void RenderFinal();
 		void RenderScreenEffect();
+		void RenderMotionBlur();
 		void PushLightData(Scene* _pScene);
 
 		void UpdateScreenEffect();

@@ -442,6 +442,7 @@ namespace hm
 						GetRigidBody()->SetVelocityExcludingColliders(-attackDir * 14.0f);
 						GetRigidBody()->SetVelocity(attackDir * 7.f);
 
+						//이게 쓸모가잇나
 						const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
 						for (int i = 0; i < gameObjects.size(); ++i)
 						{
