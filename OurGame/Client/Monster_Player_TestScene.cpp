@@ -289,10 +289,24 @@ namespace hm {
 			AddGameObject(pBonFire);
 		}*/
 
+
 		// 미러
 		{
-			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, -8.7f, 0.f), L"Forward", L"", false, LayerType::Mirror);
+			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, -8.7f, 0.f), L"Deferred", L"", false, LayerType::Unknown);
+			pMirror->DrawShadow(false);
+			pMirror->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Test11", L"..\\Resources\\Texture\\White.png"));
+			pMirror->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+			pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+			pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
 
+			AddGameObject(pMirror);
+		}
+
+		// 미러
+		{
+			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, -8.6f, 0.f), L"Forward", L"", false, LayerType::Mirror);
+
+			pMirror->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Test11", L"..\\Resources\\Texture\\White.png"));
 			pMirror->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 			pMirror->AddComponent(new Mirror);
 			pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
@@ -300,6 +314,23 @@ namespace hm {
 
 			AddGameObject(pMirror);
 		}
+
+		// 샹들리에 라이트
+		{
+			GameObject* pGameObject = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pGameObject->AddComponent(new Transform);
+			pTransform->SetPosition(Vec3(0.f, 50.f, 0.f));
+			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+			Light* pLight = pGameObject->AddComponent(new Light);
+			pLight->SetDiffuse(Vec3(1.f, 1.f, 1.f));
+			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+			pLight->SetLightRange(100.f);
+			pLight->SetLightType(LightType::PointLight);
+			AddGameObject(pGameObject);
+		}
+
+		DisableDirLight();
 	}
 	void Monster_Player_TestScene::Exit()
 	{

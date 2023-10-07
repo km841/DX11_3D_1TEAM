@@ -31,6 +31,7 @@
 #include "Effect.h"
 #include "SwordGlareEffect.h"
 #include "SpiderWeb.h"
+#include "Mirror.h"
 
 /* Component */
 #include "Collider.h"
@@ -121,6 +122,8 @@ namespace hm
 
 	void Right2Map::InitObjectAdd()
 	{
+
+		shared_ptr<Texture> pTemp = nullptr;
 		// Ground
 		{
 			PhysicsInfo physicsInfo;
@@ -129,9 +132,23 @@ namespace hm
 			physicsInfo.size = Vec3(50.f, 1.f, 40.f);
 
 			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Right2_Ground.fbx");
+			pTemp = pGround->GetMeshRenderer()->GetMaterial()->GetTexture(0);
 			pGround->GetTransform()->SetScale(Vec3(50.f, 1.f, 50.f));
 
 			AddGameObject(pGround);
+		}
+
+		// 미러
+		{
+			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, 0.1f, 0.f), L"Forward", L"", false, LayerType::Mirror);
+
+			pMirror->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTemp);
+			pMirror->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+			pMirror->AddComponent(new Mirror);
+			pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+			pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+
+			AddGameObject(pMirror);
 		}
 
 		// Side
@@ -151,6 +168,7 @@ namespace hm
 				DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-9.9f + i * 8.5f, 2.8f, 16.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
 				pTwoTierShelf->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
 
+				
 				AddGameObject(pTwoTierShelf);
 			}
 
@@ -351,7 +369,7 @@ namespace hm
 
 		// 바닥 러그
 		{
-			DecoObject* pBottomRug = Factory::CreateObject<DecoObject>(Vec3(-5.8f, 0.f, -2.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Rug_Mark.fbx");
+			DecoObject* pBottomRug = Factory::CreateObject<DecoObject>(Vec3(-5.8f, 0.2f, -2.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Rug_Mark.fbx");
 			pBottomRug->GetTransform()->SetScale(Vec3(15.f, 8.f, 18.f));
 
 			AddGameObject(pBottomRug);
@@ -844,19 +862,18 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
-		// Spider Web
-		{
-			PhysicsInfo info = {};
-			info.eActorType = ActorType::Kinematic;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(2.f, 4.f, 4.f);
+		//// Spider Web
+		//{
+		//	PhysicsInfo info = {};
+		//	info.eActorType = ActorType::Kinematic;
+		//	info.eGeometryType = GeometryType::Box;
+		//	info.size = Vec3(2.f, 4.f, 4.f);
 
-			SpiderWeb* pWeb = Factory::CreateObjectHasPhysical<SpiderWeb>(Vec3(0.f, 2.f, 0.f), info, L"SpiderWeb", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Cobweb_Flat.fbx");
-			pWeb->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
-			pWeb->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
-			AddGameObject(pWeb);
-			SetGizmoTarget(pWeb);
-		}
+		//	SpiderWeb* pWeb = Factory::CreateObjectHasPhysical<SpiderWeb>(Vec3(0.f, 2.f, 0.f), info, L"SpiderWeb", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Cobweb_Flat.fbx");
+		//	pWeb->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+		//	pWeb->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+		//	AddGameObject(pWeb);
+		//}
 	}
 
 	void Right2Map::InitCollidertAdd()

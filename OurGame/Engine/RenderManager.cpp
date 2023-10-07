@@ -290,9 +290,10 @@ namespace hm
 		Camera* pMainCam = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera();
 		for (auto pMirror : _pScene->mMirrorObjects)
 		{
+			pMirror->GetMirror()->CreateReflectPlane();
 			pMirror->GetMirror()->RenderMasking(pMainCam);
 			pMirror->GetMirror()->RenderReflect(pMainCam);
-			pMirror->GetMirror()->RenderAlbedo(pMainCam);
+			//pMirror->GetMirror()->RenderAlbedo(pMainCam);
 		}
 	}
 
