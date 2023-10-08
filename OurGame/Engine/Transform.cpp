@@ -13,6 +13,7 @@ namespace hm
 		, mpParent(nullptr)
 		, mScale(Vec3(1.f, 1.f, 1.f))
 		, mbUpdateByMat(false)
+		, mbUpdateByRotMat(false)
 	{
 	}
 	Transform::~Transform()
@@ -74,7 +75,17 @@ namespace hm
 			Matrix matRotation = XMMatrixRotationQuaternion(rotateQuat.Convert());
 			Matrix matTranslation = Matrix::CreateTranslation(mPosition);
 
-			mMatLocal = matScale * matRotation * matTranslation;
+			if (true == mbUpdateByRotMat)
+			{
+				Matrix matRotation = Matrix::CreateRotationX(mRotation.x);
+				matRotation *= Matrix::CreateRotationZ(mRotation.z);
+				matRotation *= Matrix::CreateRotationY(mRotation.y);
+
+				mMatLocal = matScale * matRotation * matTranslation;
+			}
+			
+			else
+				mMatLocal = matScale * matRotation * matTranslation;
 
 			mMatOldWorld = mMatWorld;
 			mMatWorld = mMatLocal;
@@ -493,8 +504,39 @@ namespace hm
 		matrix.Backward(front);
 
 		mRotation = DecomposeRotationMatrix(matrix);
-		PxQuat q = EulerToQuaternion(mRotation);
-		mRotation = QuaternionToEuler(q.x, q.y, q.z, q.w);
+		mbUpdateByRotMat = true;
+	}
+
+	void Transform::SmoothRotateTo(const Vec3& _targetLook)
+	{
+		// 현재 회전값
+		Vec3 currentLook = GetLook();
+		currentLook.Normalize();
+
+		// 목표 회전값
+		Vec3 targetLookNormalized = _targetLook;
+		targetLookNormalized.Normalize();
+
+		// 보간된 회전값 계산
+		Vec3 interpolatedLook = currentLook + (targetLookNormalized - currentLook) * 0.1f;
+		interpolatedLook.Normalize();
+
+		Vec3 right = Vec3::Up.Cross(interpolatedLook);
+		if (right == Vec3::Zero)
+			right = Vec3::Forward.Cross(interpolatedLook);
+
+		right.Normalize();
+
+		Vec3 up = interpolatedLook.Cross(right);
+		up.Normalize();
+
+		Matrix matrix = XMMatrixIdentity();
+		matrix.Right(right);
+		matrix.Up(up);
+		matrix.Backward(interpolatedLook);
+
+		mRotation = DecomposeRotationMatrix(matrix);
+		mbUpdateByRotMat = true;
 	}
 
 	bool Transform::CloseEnough(const float& _a, const float& _b, const float& _epsilon)

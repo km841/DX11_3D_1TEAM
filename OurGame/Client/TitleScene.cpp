@@ -23,6 +23,7 @@
 #include "Ground.h"
 #include "DecoObject.h"
 #include "UI.h"
+#include "CameraHolder.h"
 
 /* Interface */
 #include "Interface.h"
@@ -47,6 +48,7 @@
 #include "LogoBlinkScript.h"
 #include "PlayerMoveScript.h"
 #include "PlayerMoveOverMapScript.h"
+#include "FocusingScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -148,9 +150,11 @@ namespace hm
 			GameObject* pGameObject = new GameObject(LayerType::Unknown);
 			pGameObject->SetDontDestroyObject(L"MainCamera");
 			Transform* pTransform = pGameObject->AddComponent(new Transform);
+			pGameObject->AddComponent(new RigidBody);
 
 			Camera* pCamera = pGameObject->AddComponent(new Camera);
 			pGameObject->AddComponent(new CameraMoveScript);
+			pGameObject->AddComponent(new FocusingScript);
 			//pGameObject->AddComponent(new yj::CinematicCamMove);
 
 			pCamera->SetCullingMask(LayerType::Interface, true);

@@ -156,6 +156,7 @@
     <ClInclude Include="BreakablePot.h" />
     <ClInclude Include="BreakablePotCell.h" />
     <ClInclude Include="Bus.h" />
+    <ClInclude Include="CameraHolder.h" />
     <ClInclude Include="CameraMoveScript.h" />
     <ClInclude Include="ChangeStateCondition.h" />
     <ClInclude Include="ChangeStateTask.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="FallDownState.h" />
     <ClInclude Include="FallState.h" />
     <ClInclude Include="FireLamp.h" />
+    <ClInclude Include="FocusingScript.h" />
     <ClInclude Include="Grandma.h" />
     <ClInclude Include="GrandmaBossMap.h" />
     <ClInclude Include="Grimace.h" />
@@ -281,6 +283,7 @@
     <ClCompile Include="BreakablePot.cpp" />
     <ClCompile Include="BreakablePotCell.cpp" />
     <ClCompile Include="Bus.cpp" />
+    <ClCompile Include="CameraHolder.cpp" />
     <ClCompile Include="CameraMoveScript.cpp" />
     <ClCompile Include="ChangeStateCondition.cpp" />
     <ClCompile Include="ChangeStateTask.cpp" />
@@ -304,6 +307,7 @@
     <ClCompile Include="FallDownState.cpp" />
     <ClCompile Include="FallState.cpp" />
     <ClCompile Include="FireLamp.cpp" />
+    <ClCompile Include="FocusingScript.cpp" />
     <ClCompile Include="Grandma.cpp" />
     <ClCompile Include="GrandmaBossMap.cpp" />
     <ClCompile Include="Grimace.cpp" />

@@ -81,8 +81,6 @@ void EntranceHallMap::Start()
 	}
 
 	DisableDirLight();
-	mpMainCamera->GetTransform()->SetPosition(Vec3(-19.8f, 15.6f, 12.f));
-	mpMainCamera->GetTransform()->SetRotation(Vec3(37.f, 113.3f, 0.f));
 }
 
 void EntranceHallMap::Update()
@@ -429,7 +427,7 @@ void EntranceHallMap::InitObjectAdd()
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Kinematic;
 			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(1.60f, 1.90f, 1.14f);
+			physicsInfo.size = Vec3(2.f, 3.1f, 2.f);
 
 			pPot1 = Factory::CreateObjectHasPhysical<yj::KeyPot>(Vec3(3.55f, -3.85f, -6.05f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\OrgPot.fbx");
 			pPot1->GetTransform()->SetRotation(Vec3(0.00f, 0.00f, 0.00f));
@@ -452,7 +450,7 @@ void EntranceHallMap::InitObjectAdd()
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Kinematic;
 			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(1.60f, 1.90f, 1.14f);
+			physicsInfo.size = Vec3(2.f, 3.1f, 2.f);
 
 			yj::KeyPot* pPot2 = Factory::CreateObjectHasPhysical<yj::KeyPot>(Vec3(-3.55f, -3.85f, -6.05f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\OrgPot.fbx");
 			pPot2->GetTransform()->SetRotation(Vec3(0.00f, 0.00f, 0.00f));
