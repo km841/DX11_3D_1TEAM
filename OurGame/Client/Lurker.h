@@ -31,6 +31,11 @@ public:
 	virtual void OnTriggerStay(Collider* _pOtherCollider);
 	virtual void OnTriggerExit(Collider* _pOtherCollider);
 
+	void SlowTurnLive();
+	void PrevFollowSet();
+	void PrevFollowLive();
 private:
 	Vec3 dir;
+	Vec3 PosDir;
+	Vec3 RotDir;
 };

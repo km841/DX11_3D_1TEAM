@@ -186,7 +186,7 @@ Player::Player()
 	//활 오브젝트 - Bow
 	{
 
-		pBow = Factory::CreateObject<GameObject>(Vec3(0.f, 0.f, 0.f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Bow.fbx", false, LayerType::Item);
+		pBow = Factory::CreateObject<GameObject>(Vec3(0.f, 100.f, 0.f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Bow.fbx", false, LayerType::Item);
 		pBow->SetDontDestroyObject(L"PlayerBow");
 		pBow->GetTransform()->SetScale(Vec3(2.f, 1.5f, 2.f));
 		pBow->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
@@ -213,7 +213,7 @@ Player::Player()
 		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(0.05f, 0.05f, 0.7f);
 
-		pArrow = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.f, 0.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Arrow.fbx", false, LayerType::ArrowCol);
+		pArrow = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.f, 100.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Arrow.fbx", false, LayerType::ArrowCol);
 		pArrow->SetDontDestroyObject(L"PlayerArrow");
 		
 		pArrow->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 0.8f));

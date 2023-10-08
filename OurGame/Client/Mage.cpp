@@ -83,7 +83,7 @@ Mage::Mage()
 	mSpeed = 2.f; //이동속도
 	mAttackDamage = 1; // 공격력
 	mAttackRange = 10.f;
-	mRecogRange = 5.f; //감지거리
+	mRecogRange = 10.f; //감지거리
 
 	meBasicState = MonsterBasicState::Idle;
 
@@ -724,8 +724,8 @@ void Mage::Teleport()
 
 	while (true)
 	{
-		float randX = generator() *2;
-		float randZ = generator() *2;
+		float randX = generator() *1.5;
+		float randZ = generator() *1.5;
 
 		Vec3 randPos = Vec3(playerPos.x + randX, myPos.y, playerPos.z + randZ);
 

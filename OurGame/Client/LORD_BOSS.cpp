@@ -173,7 +173,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Laser_Start;
+					//meBasicState = MonsterBasicState::Laser_Start;
 					return BehaviorResult::Success;
 				});
 
