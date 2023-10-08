@@ -35,6 +35,7 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "Mirror.h"
+#include "AudioSound.h"
 
 /* Script */
 #include "PaperBurnScript.h"
@@ -65,7 +66,9 @@ namespace yj
 	void MainOfficeMap::Initialize()
 	{
 		Map::Initialize();
-		
+
+		PLAYER->GetAudioSound()->SetSound(L"MainOfficeBGM", this, true, "..\\Resources\\Sound\\MainOfficeBGM.mp3");
+		PLAYER->GetAudioSound()->Play();
 #pragma endregion
 	}
 
@@ -128,6 +131,7 @@ namespace yj
 	
 	void MainOfficeMap::Exit()
 	{
+		PLAYER->GetAudioSound()->Stop();
 	}
 
 

@@ -18,6 +18,7 @@ namespace hm
 	class UIText;
 	class AI;
 	class Mirror;
+	class AudioSound;
 
 	class GameObject :
 		public Object
@@ -73,6 +74,7 @@ namespace hm
 		UIText* GetUIText();
 		AI* GetAI();
 		Mirror* GetMirror();
+		AudioSound* GetAudioSound();
 		GameObject* GetGameObject() { return this; }
 
 		LayerType GetLayerType() { return meLayerType; }

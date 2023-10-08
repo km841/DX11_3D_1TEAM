@@ -37,6 +37,7 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "UIText.h"
+#include "AudioSound.h"
 
 /* Script */
 #include "PaperBurnScript.h"
@@ -324,6 +325,10 @@ namespace hm
 			pPlayer->SetDontDestroyObject(L"Player");
 			pPlayer->SetReflect(true);
 
+			AudioSound* pSound = pPlayer->AddComponent(new AudioSound);
+			pSound->SetSound(L"BGM", this, true, "..\\Resources\\Sound\\TitleBGM.mp3");
+			pSound->Play();
+
 			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
 			yj::PlayerMoveOverMapScript* pMoveOverSc = pPlayer->AddComponent(new yj::PlayerMoveOverMapScript);
 			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
@@ -347,7 +352,7 @@ namespace hm
 
 	void TitleScene::Exit()
 	{
-		
+		PLAYER->GetAudioSound()->Stop();
 	}
 }
 

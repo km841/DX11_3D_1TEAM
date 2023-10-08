@@ -38,6 +38,7 @@
 #include "ParticleSystem.h"
 #include "UIText.h"
 #include "Mirror.h"
+#include "AudioSound.h"
 
 /* Script */
 #include "PaperBurnScript.h"
@@ -64,6 +65,9 @@ EntranceHallMap::~EntranceHallMap()
 void EntranceHallMap::Initialize()
 {
 	Map::Initialize();
+
+	PLAYER->GetAudioSound()->SetSound(L"GrandmaBGM", this, true, "..\\Resources\\Sound\\GrandmaBGM.mp3");
+	PLAYER->GetAudioSound()->Play();
 }
 
 void EntranceHallMap::Start()
