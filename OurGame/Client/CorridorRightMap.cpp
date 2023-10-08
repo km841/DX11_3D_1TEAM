@@ -587,7 +587,7 @@ namespace jh
 			physicsInfo.size = Vec3(3.4f, 10.1f, 4.82f);
 
 			yj::TeleportZone* pLeftZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-6.9f, -4.57f, -23.7f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map,6);
-			yj::TeleportZone* pLeftZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-6.9f, -4.57f, -23.7f), physicsInfo, L"Deferred", L"", false, MapType::LeftSecretTrialMap,1);
+			//yj::TeleportZone* pLeftZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-6.9f, -4.57f, -23.7f), physicsInfo, L"Deferred", L"", false, MapType::LeftSecretTrialMap,1);
 			AddGameObject(pLeftZone);
 		}
 		{
@@ -597,7 +597,7 @@ namespace jh
 			physicsInfo.size = Vec3(3.4f, 10.1f, 4.82f);
 
 			yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-7.4f, -4.57f, 19.2f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map,5);
-			yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-7.4f, -4.57f, 19.2f), physicsInfo, L"Deferred", L"", false, MapType::LeftSecretTrialMap,1);
+			//yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-7.4f, -4.57f, 19.2f), physicsInfo, L"Deferred", L"", false, MapType::LeftSecretTrialMap,1);
 			AddGameObject(pRightZone);
 		}
 		{
