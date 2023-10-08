@@ -89,6 +89,9 @@ Player::Player()
 	AssertEx(spPlayer == nullptr, L"이미 정적 플레이어 존재함");
 	spPlayer = this; //정적변수 선언
 
+	mKeyInfo.SetForwardKey(KeyType::DOWN);
+	mKeyInfo.SetLeftKey(KeyType::RIGHT);
+
 	mState[int(PlayerState::PauseState)] = new PauseState;
 	mState[int(PlayerState::IdleState)] = new IdleState;
 	mState[int(PlayerState::MoveState)] = new MoveState;
@@ -122,6 +125,7 @@ Player::Player()
 		mpSlashEffect->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
 		mpSlashEffect->GetMeshRenderer()->GetMaterial()->SetTexture(1, pTexture2);
 		mpSlashEffect->GetRigidBody()->RemoveGravity();
+		mpSlashEffect->DrawShadow(false);
 		
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(mpSlashEffect);
 	}
@@ -171,6 +175,7 @@ Player::Player()
 		pAttackCol->GetTransform()->SetRotation(Vec3(00.f, 00.f, 0.f));
 		pAttackCol->AddComponent(new PlayerColScript);
 		pAttackCol->Disable();
+		pAttackCol->DrawShadow(false);
 
 		auto pFollowSc2 = pAttackCol->AddComponent(new OwnerFollowScript(this));
 		pFollowSc2->SetOffset(Vec3(0.f, 0.f, 0.f));

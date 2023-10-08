@@ -193,6 +193,7 @@
     <ClInclude Include="IdleState_Gm.h" />
     <ClInclude Include="InterfaceAlphaScript.h" />
     <ClInclude Include="InterfaceButtonScript.h" />
+    <ClInclude Include="IrreparablePot.h" />
     <ClInclude Include="JarDoor.h" />
     <ClInclude Include="KeyDoor.h" />
     <ClInclude Include="KeyPot.h" />
@@ -317,6 +318,7 @@
     <ClCompile Include="IdleState_Gm.cpp" />
     <ClCompile Include="InterfaceAlphaScript.cpp" />
     <ClCompile Include="InterfaceButtonScript.cpp" />
+    <ClCompile Include="IrreparablePot.cpp" />
     <ClCompile Include="JarDoor.cpp" />
     <ClCompile Include="KeyDoor.cpp" />
     <ClCompile Include="KeyPot.cpp" />

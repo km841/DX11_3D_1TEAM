@@ -154,7 +154,8 @@ namespace hm
 
 			if (LayerType::Player == static_cast<LayerType>(i) ||
 				LayerType::Monster == static_cast<LayerType>(i) ||
-				LayerType::Npc == static_cast<LayerType>(i))
+				LayerType::Npc == static_cast<LayerType>(i) ||
+				LayerType::PotCell == static_cast<LayerType>(i))
 				continue;
 
 			const auto& gameObjects = pActiveScene->GetGameObjects(static_cast<LayerType>(i));
@@ -186,7 +187,8 @@ namespace hm
 
 			if (LayerType::Player != static_cast<LayerType>(i) &&
 				LayerType::Monster != static_cast<LayerType>(i) &&
-				LayerType::Npc != static_cast<LayerType>(i))
+				LayerType::Npc != static_cast<LayerType>(i) &&
+				LayerType::PotCell != static_cast<LayerType>(i))
 				continue;
 
 			const auto& gameObjects = pActiveScene->GetGameObjects(static_cast<LayerType>(i));

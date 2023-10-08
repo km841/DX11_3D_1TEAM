@@ -1,15 +1,15 @@
 #pragma once
 #include "GameObject.h"
-#include "TimerObject.h"
 #include "BreakablePotCell.h"
 
 namespace jh
 {
-	class BreakablePot : public GameObject
+	class IrreparablePot :
+		public GameObject
 	{
 	public:
-		BreakablePot(GameObject* _pBase);
-		virtual ~BreakablePot();
+		IrreparablePot(GameObject* _pBase);
+		virtual ~IrreparablePot();
 		virtual void Initialize();
 		virtual void Update();
 		virtual void FixedUpdate();
@@ -26,14 +26,7 @@ namespace jh
 	private:
 		GameObject* mpBasePot;
 		std::vector<BreakablePotCell*> mpPotCells;
-
-		bool mbIsRestoringTemp;
-		bool mbIsRestoring;
-		TimerObject mWaitTimer;
-		TimerObject mProgressTimer;
-		TimerObject mTempTimer;
-
-		bool mbIsWaiting;
-		float mWaitTime;
 	};
 }
+
+

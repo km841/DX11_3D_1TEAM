@@ -21,6 +21,7 @@ namespace hm
 
 	Mirror::Mirror()
 		: Component(ComponentType::Mirror)
+		, mAlpha(0.05f)
 	{
 	}
 
@@ -263,7 +264,7 @@ namespace hm
 					GET_SINGLE(Resources)->Get<Shader>(L"Forward")->UpdateInputLayout();
 					CONTEXT->OMSetDepthStencilState(spDrawMaskedDSS.Get(), 1);
 
-					const float t = 0.05f;
+					const float t = mAlpha;
 					const float blendColor[] = { t, t, t, 1.0f };
 					CONTEXT->OMSetBlendState(spMirrorBS.Get(), blendColor, 0xffffffff);
 					CONTEXT->RSSetState(spSolidCCWRS.Get());

@@ -1,6 +1,5 @@
 #include "pch.h"
-#include "BreakablePot.h"
-
+#include "IrreparablePot.h"
 /* Manager */
 #include "Input.h"
 #include "Factory.h"
@@ -10,28 +9,21 @@
 #include "Collider.h"
 #include "RigidBody.h"
 
-
-
 namespace jh
 {
-	BreakablePot::BreakablePot(GameObject* _pBase) :
-		GameObject(LayerType::DecoObject),
-		mbIsRestoringTemp(false),
-		mbIsRestoring(false),
-		mbIsWaiting(false),
-		mWaitTime(4.f)
+	IrreparablePot::IrreparablePot(GameObject* _pBase) :
+		GameObject(LayerType::DecoObject)
 	{
 		mpBasePot = _pBase;
-		mWaitTimer.SetEndTime(mWaitTime);
 
 		this->SetName(L"BreakablePot");
 	}
 
-	BreakablePot::~BreakablePot()
+	IrreparablePot::~IrreparablePot()
 	{
 	}
 
-	void BreakablePot::Initialize()
+	void IrreparablePot::Initialize()
 	{
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Dynamic;
@@ -232,53 +224,22 @@ namespace jh
 		GameObject::Initialize();
 	}
 
-	void BreakablePot::Update()
+	void IrreparablePot::Update()
 	{
 		GameObject::Update();
-
-		if (true == mbIsWaiting)
-		{
-			if (false == mWaitTimer.GetIsRun())
-				mWaitTimer.Start();
-
-			mWaitTimer.Update();
-
-			if (true == mWaitTimer.IsFinished())
-			{
-				mWaitTimer.Stop();
-
-				for (int i = 0; i < mpPotCells.size(); i++)
-				{
-					mpPotCells[i]->SetCollapsePos(mpPotCells[i]->GetTransform()->GetPosition());
-					mpPotCells[i]->SetCollapseRot(mpPotCells[i]->GetTransform()->GetPhysicsRotation());
-				}
-
-				mbIsRestoringTemp = true;
-				mbIsWaiting = false;
-			}
-		}
-
-		if (true == mbIsRestoringTemp)
-		{
-			RestorePots(true);
-		}
-		if (true == mbIsRestoring)
-		{
-			RestorePots(false);
-		}
 	}
 
-	void BreakablePot::FixedUpdate()
+	void IrreparablePot::FixedUpdate()
 	{
 		GameObject::FixedUpdate();
 	}
 
-	void BreakablePot::Render()
+	void IrreparablePot::Render()
 	{
 		GameObject::Render();
 	}
 
-	void BreakablePot::OnTriggerEnter(Collider* _pOther)
+	void IrreparablePot::OnTriggerEnter(Collider* _pOther)
 	{
 		if (LayerType::PlayerCol == _pOther->GetGameObject()->GetLayerType())
 		{
@@ -293,19 +254,16 @@ namespace jh
 		}
 	}
 
-	void BreakablePot::OnTriggerStay(Collider* _pOther)
+	void IrreparablePot::OnTriggerStay(Collider* _pOther)
 	{
 	}
 
-	void BreakablePot::OnTriggerExit(Collider* _pOther)
+	void IrreparablePot::OnTriggerExit(Collider* _pOther)
 	{
 	}
 
-	void BreakablePot::BreakPots(const Vec3 _hitPos)
+	void IrreparablePot::BreakPots(const Vec3 _hitPos)
 	{
-		if (true == mbIsRestoringTemp || true == mbIsRestoring || true == mbIsWaiting)
-			return;
-
 		mpBasePot->Disable();
 
 		for (int i = 0; i < mpPotCells.size(); i++)
@@ -316,76 +274,6 @@ namespace jh
 
 			mpPotCells[i]->CalculateForce(_hitPos);
 		}
-
-		mbIsWaiting = true;
 	}
 
-	void BreakablePot::RestorePots(bool _isTemp)
-	{
-		float endTime = true == _isTemp ? 0.8f : 0.1f;
-
-		mProgressTimer.SetEndTime(endTime);
-
-		if (false == mProgressTimer.GetIsRun())
-			mProgressTimer.Start();
-
-		mProgressTimer.Update();
-		float progress = mProgressTimer.GetProgress();
-
-		for (int i = 0; i < mpPotCells.size(); i++)
-		{
-			mpPotCells[i]->GetRigidBody()->GetDynamicActor()->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, true);
-
-			Vec3 tempPos = GetTransform()->GetPosition() + mpPotCells[i]->GetRelativePos() * 2.f;
-			tempPos.y = mpPotCells[i]->GetOriginPos().y;
-
-			if (true == _isTemp)
-			{
-				Vec3 pos = Lerp(mpPotCells[i]->GetCollapsePos(), tempPos, progress);
-				mpPotCells[i]->GetTransform()->SetPosition(pos);
-				Vec3 rot = Lerp(mpPotCells[i]->GetCollapseRot(), Vec3(-90.f, 0.f, 90.f), progress);
-				mpPotCells[i]->GetTransform()->SetRotation(rot);
-			}
-			else
-			{
-				Vec3 pos = Lerp(tempPos, mpPotCells[i]->GetOriginPos(), progress);
-				mpPotCells[i]->GetTransform()->SetPosition(pos);
-			}
-		}
-
-		if (true == mProgressTimer.IsFinished())
-		{
-			if (true == _isTemp)
-			{
-				mProgressTimer.Pause();
-
-				mTempTimer.SetEndTime(0.2f);
-
-				if (false == mTempTimer.GetIsRun())
-					mTempTimer.Start();
-
-				mTempTimer.Update();
-
-				if (true == mTempTimer.IsFinished())
-				{
-					mProgressTimer.Stop();
-					mTempTimer.Stop();
-					mbIsRestoringTemp = false;
-					mbIsRestoring = true;
-				}
-			}
-			else
-			{
-				mProgressTimer.Stop();
-
-				for (int i = 0; i < mpPotCells.size(); i++)
-				{
-					mpPotCells[i]->Disable();
-				}
-
-				mpBasePot->Enable();
-				mbIsRestoring = false;
-			}
-		}
-	}
 }

@@ -11,7 +11,7 @@
 namespace yj
 {
 	KeyPot::KeyPot()
-		:GameObject(LayerType::PotCell)
+		:GameObject(LayerType::DungeonObject)
 	{
 	}
 	KeyPot::~KeyPot()
@@ -28,17 +28,7 @@ namespace yj
 		{
 			return;
 		}
-		if (!isBreak)
-		{
-			if (this->GetRigidBody()->GetCollider()->CheckIsCollisionObject(LayerType::ArrowCol))
-			{
-				pReceiver->GetScript<JarDoor>()->AddKey();
-				mBreakSequence = 0;
-				isBreak = true;
-				this->Disable();
-			}
 
-		}
 		if (mBreakSequence > 0)
 		{
 			Break();
@@ -72,5 +62,25 @@ namespace yj
 	{
 		//애니메이션 재생 후
 		//mBreakSequence = 0;
+	}
+	void KeyPot::OnTriggerEnter(Collider* _pOther)
+	{
+		if (LayerType::PlayerCol == _pOther->GetGameObject()->GetLayerType() || 
+			LayerType::ArrowCol == _pOther->GetGameObject()->GetLayerType())
+		{
+			if (false == isBreak)
+			{
+				pReceiver->AddKey();
+				mBreakSequence = 0;
+				isBreak = true;
+				this->Disable();
+			}
+		}
+	}
+	void KeyPot::OnTriggerStay(Collider* _pOther)
+	{
+	}
+	void KeyPot::OnTriggerExit(Collider* _pOther)
+	{
 	}
 }
