@@ -6,6 +6,12 @@ class ArrowScript;
 class SwordScript;
 class SwordHeavyEffect;
 class State;
+
+#define P_UP PLAYER->GetKeyInfo().eForwardKey
+#define P_DOWN PLAYER->GetKeyInfo().eBackwardKey
+#define P_LEFT PLAYER->GetKeyInfo().eLeftKey
+#define P_RIGHT PLAYER->GetKeyInfo().eRightKey
+
 class Player :
     public GameObject
 {
@@ -76,7 +82,7 @@ public:
 	GameObject* GetBow() { return pBow; }
 	GameObject* GetArrow() { return pArrow; }
 	
-	
+	const PlayerKeyInfo& GetKeyInfo() { return mKeyInfo; }
 
 	SwordHeavyEffect* GetSwordEffect() { return mpSlashEffect; }
 public:
@@ -86,7 +92,7 @@ public:
 	State* mState[PLAYER_STATE_COUNT]; //조건 확인용
     State* mActiveState; //현재 상태 확인
 
-	
+	PlayerKeyInfo mKeyInfo;
 	
 
 	

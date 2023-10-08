@@ -310,3 +310,30 @@ struct ButtonInfo
 	std::function<void()> clickedCallback;
 };
 
+struct PlayerKeyInfo
+{
+	void SetLeftKey(KeyType _eKeyType) 
+	{ 
+		eLeftKey = _eKeyType; 
+		if (KeyType::LEFT == eLeftKey)
+			eRightKey = KeyType::RIGHT;
+
+		if (KeyType::RIGHT == eLeftKey)
+			eRightKey = KeyType::LEFT;
+	}
+	void SetForwardKey(KeyType _eKeyType) 
+	{ 
+		eForwardKey = _eKeyType; 
+
+		if (KeyType::UP == eForwardKey)
+			eBackwardKey = KeyType::DOWN;
+
+		if (KeyType::DOWN == eForwardKey)
+			eBackwardKey = KeyType::UP;
+	}
+
+	KeyType eLeftKey;
+	KeyType eForwardKey;
+	KeyType eRightKey;
+	KeyType eBackwardKey;
+};

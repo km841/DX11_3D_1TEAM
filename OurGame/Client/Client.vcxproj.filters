@@ -328,6 +328,9 @@
     <ClInclude Include="Cow.h">
       <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
     </ClInclude>
+    <ClInclude Include="IrreparablePot.h">
+      <Filter>소스 파일\GameObject\Dungeon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -653,6 +656,9 @@
     </ClCompile>
     <ClCompile Include="Cow.cpp">
       <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
+    </ClCompile>
+    <ClCompile Include="IrreparablePot.cpp">
+      <Filter>소스 파일\GameObject\Dungeon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -173,22 +173,6 @@ namespace jh
 			//AddGameObject(pPlayer);
 		}
 
-		// Sword_Heavy
-		{
-			SwordHeavyEffect* pSlashTest = Factory::CreateObject<SwordHeavyEffect>(Vec3(0.f, 8.f, 0.f), L"PlayerSlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbx");
-			pSlashTest->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
-			pSlashTest->AddComponent(new PlayerSlashScript);
-			auto pFollowScript = pSlashTest->AddComponent(new OwnerFollowScript(PLAYER));
-			pFollowScript->SetOffset(Vec3(0.f, 1.f, 0.f));
-
-			pSlashTest->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::Clamp);
-
-			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"HeavySlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbm\\sword_slash_texture_1.png");
-			pSlashTest->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
-			pSlashTest->GetRigidBody()->RemoveGravity();
-			AddGameObject(pSlashTest);
-		}
-
 		// Toy
 		//{
 		//	PhysicsInfo physicsInfo;
