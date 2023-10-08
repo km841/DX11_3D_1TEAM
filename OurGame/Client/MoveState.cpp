@@ -101,25 +101,25 @@ void MoveState::Update()
 
 	if (IS_PRESS(P_UP) && IS_PRESS(P_LEFT))
 	{
-		mMoveSpeed = mMoveSpeed / 1.5f;
+		//mMoveSpeed = mMoveSpeed / 1.5f;
 		rb->SetVelocity(Vec3(-mMoveSpeed, 0.f, mMoveSpeed));
 		tr->SetRotation(Vec3(0.f, 135.f, 90.f));
 	}
 	if (IS_PRESS(P_UP) && IS_PRESS(P_RIGHT))
 	{
-		mMoveSpeed = mMoveSpeed / 1.5f;
+		//mMoveSpeed = mMoveSpeed / 1.5f;
 		rb->SetVelocity(Vec3(mMoveSpeed, 0.f, mMoveSpeed));
 		tr->SetRotation(Vec3(0.f, 225.f, 90.f));
 	}
 	if (IS_PRESS(P_DOWN) && IS_PRESS(P_LEFT))
 	{
-		mMoveSpeed = mMoveSpeed / 1.5f;
+		//mMoveSpeed = mMoveSpeed / 1.5f;
 		rb->SetVelocity(Vec3(-mMoveSpeed, 0.f, -mMoveSpeed));
 		tr->SetRotation(Vec3(0.f, 45.f, 90.f));
 	}
 	if (IS_PRESS(P_DOWN) && IS_PRESS(P_RIGHT))
 	{
-		mMoveSpeed = mMoveSpeed / 1.5f;
+		//mMoveSpeed = mMoveSpeed / 1.5f;
 		rb->SetVelocity(Vec3(mMoveSpeed, 0.f, -mMoveSpeed));
 		tr->SetRotation(Vec3(0.f, 315.f, 90.f));
 	}

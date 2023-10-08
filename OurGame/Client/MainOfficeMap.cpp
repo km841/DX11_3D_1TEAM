@@ -24,6 +24,7 @@
 #include "DecoObject.h"
 #include "Elevator.h"
 #include "SoulDoor.h"
+#include "CameraHolder.h"
 
 /* Component */
 #include "Collider.h"
@@ -41,6 +42,8 @@
 #include "PlayerMoveScript.h"
 #include "CinematicCamMove.h"
 #include "PlayerMoveOverMapScript.h"
+#include "FocusingScript.h"
+#include "OwnerFollowScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -87,6 +90,8 @@ namespace yj
 
 		SetDirLightPosition(Vec3(-31.5f, 27.2f, 33.9f));
 		SetDirLightRotation(Vec3(41.7f, 136.54f, 294.54f));
+		mpMainCamera->GetScript<FocusingScript>()->SetFocusingTarget(spHolder);
+		SetGizmoTarget(spHolder);
 	}
 
 	void MainOfficeMap::FixedUpdate()
@@ -129,6 +134,16 @@ namespace yj
 	void MainOfficeMap::InitObjectAdd()
 	{
 		PLAYER->SetDontDestroyObject(L"Player");
+		{
+			spHolder = new CameraHolder;
+			spHolder->AddComponent(new Transform);
+			OwnerFollowScript* pFollowScript = spHolder->AddComponent(new OwnerFollowScript(PLAYER));
+			pFollowScript->SetOffset(Vec3(-10.f, 30.f, 20.f));
+			spHolder->SetDontDestroyObject(L"CameraHolder");
+
+			AddGameObject(spHolder);
+		}
+
 
 		{
 			pBus = Factory::CreateObject<Bus>(Vec3(-17.0f, -8.0f, 33.0f), L"Deferred",

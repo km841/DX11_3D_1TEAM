@@ -157,7 +157,7 @@ void PlayerMoveScript::AutoStepping(float _height)
 					{
 						Vec3 fixedPos = pos;
 						fixedPos.y += tempHeight;
-						GetTransform()->SetPosition(fixedPos + lookDir * 0.1f);
+						GetTransform()->SetPosition(fixedPos + lookDir * 0.15f);
 						return;
 					}
 
