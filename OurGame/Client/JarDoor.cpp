@@ -57,7 +57,7 @@ namespace yj
 
 		if (mCurrMoveDistance >= mLimitMoveDistance)
 		{
-			pDoorColObj->Disable();
+			pDoorColObj->GetTransform()->SetPosition(Vec3(10000.0f,10000.0f,10000.0f));
 			mOpenSquence = 0;
 		}
 	}
