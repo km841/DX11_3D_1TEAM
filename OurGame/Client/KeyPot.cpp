@@ -32,14 +32,20 @@ namespace yj
 		{
 			if (this->GetRigidBody()->GetCollider()->CheckIsCollisionObject(LayerType::ArrowCol))
 			{
-				pReceiver->GetScript<JarDoor>()->AddKey();
+				pReceiver->AddKey();
 				mBreakSequence = 0;
 				isBreak = true;
 				this->Disable();
 			}
-
+			if (this->GetRigidBody()->GetCollider()->CheckIsCollisionObject(LayerType::Item))
+			{
+				pReceiver->AddKey();
+				mBreakSequence = 0;
+				isBreak = true;
+				this->Disable();
+			}
 		}
-		if (mBreakSequence > 0)
+		if (mBreakSequence >= 0)
 		{
 			Break();
 		}

@@ -181,6 +181,7 @@ namespace hm
 	void Collider::OnCollisionEnter(Collider* _pOtherCollider)
 	{
 		mpGameObject->OnCollisionEnter(_pOtherCollider);
+		collLayerTypeList.push_back(_pOtherCollider->myLayerType);
 		mCollisionCount++;
 	}
 
@@ -196,6 +197,14 @@ namespace hm
 
 		if (0 > mCollisionCount)
 			mCollisionCount = 0;
+		for (int i = 0; i < collLayerTypeList.size(); i++)
+		{
+			if (collLayerTypeList[i] == _pOtherCollider->myLayerType)
+			{
+				collLayerTypeList.erase(collLayerTypeList.begin() + i);
+				return;
+			}
+		}
 	}
 
 	void Collider::OnTriggerEnter(Collider* _pOtherCollider)

@@ -76,6 +76,9 @@ namespace jh
 			case 3:
 				PLAYER->GetTransform()->SetPosition(Vec3(3.1f, -4.3f, -59.3f));
 				break;
+			case 4:
+				PLAYER->GetTransform()->SetPosition(Vec3(3.1f, -4.3f, -59.3f));
+				break;
 			}
 		}
 	}

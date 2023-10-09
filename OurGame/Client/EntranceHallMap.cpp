@@ -526,6 +526,7 @@ void EntranceHallMap::InitFuncObjAdd()
 		AddGameObject(pTelZone);
 	}
 
+
 	/*{
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Kinematic;
