@@ -58,7 +58,7 @@ namespace yj
 		{
 			if (isTextWriting)
 			{
-				if (!GetIsWriteDone)
+				if (!GetIsWriteDone())
 				{
 					if (IsTimerReach())
 					{
