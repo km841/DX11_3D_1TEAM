@@ -166,7 +166,7 @@ void Grimace_ProjectTile::FollowPos()
 	Vec3 dir = playerPos - myPos;
 
 	dir.Normalize();
-	Vec3 Ve = dir * mSpeed;
+	Vec3 Ve = dir * mSpeed ;
 
 	GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
 }
@@ -184,8 +184,8 @@ void Grimace_ProjectTile::Mirror()
 
 	dir.Normalize();
 	Vec3 Ve = dir * mSpeed;
-
-
+	Ve.y = Ve.y / 3;
+	Ve *= 2;
 
 	PhysicsInfo physicsInfo;
 	physicsInfo.eActorType = ActorType::Kinematic;

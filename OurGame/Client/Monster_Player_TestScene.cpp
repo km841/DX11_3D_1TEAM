@@ -35,6 +35,8 @@
 #include "Grimace.h"
 #include "LORD_BOSS.h"
 #include "LORD_BOSS_ROLL.h"
+#include "Cow.h"
+#include "CameraHolder.h"
 
 /* Component */
 #include "Collider.h"
@@ -55,6 +57,7 @@
 #include "OwnerFollowScript.h"
 #include "PlayerSlashScript.h"
 #include "BonFireScript.h"
+#include "FocusingScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -76,6 +79,7 @@ namespace hm {
 	void Monster_Player_TestScene::Start()
 	{
 		Map::Start();
+		mpMainCamera->GetScript<FocusingScript>()->SetFocusingTarget(spHolder);
 	}
 	void Monster_Player_TestScene::Update()
 	{
@@ -116,12 +120,22 @@ namespace hm {
 		//배경맵 하얀색으로 만들어주는 코드
 		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
+		{
+			spHolder = new CameraHolder;
+			spHolder->AddComponent(new Transform);
+			OwnerFollowScript* pFollowScript = spHolder->AddComponent(new OwnerFollowScript(PLAYER));
+			pFollowScript->SetOffset(Vec3(-10.f, 30.f, 20.f));
+			spHolder->SetDontDestroyObject(L"CameraHolder");
+
+			AddGameObject(spHolder);
+		}
+
 		// 1층 바닥 - Floor
 		{
 			PhysicsInfo info;
 			info.eActorType = ActorType::Static;
 			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(50.f, 0.1f, 50.f);
+			info.size = Vec3(100.f, 1.1f, 100.f);
 
 			Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Forward", L"");
 
@@ -163,45 +177,51 @@ namespace hm {
 			PhysicsInfo info = {};
 			info.eActorType = ActorType::Kinematic;
 			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(1.f, 1.0f, 1.f);
+			info.size = Vec3(2.f, 2.0f, 6.f);
 
 			LORD_BOSS_ROLL* pLordOfDoorRoll = Factory::CreateMonster<LORD_BOSS_ROLL>(Vec3(8.f, 5.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor_Roller.fbx");
-			pLordOfDoorRoll->GetTransform()->SetScale(Vec3(40.f, 40.f, 40.f));
+			pLordOfDoorRoll->GetTransform()->SetScale(Vec3(60.f, 60.f, 60.f));
 			pLordOfDoorRoll->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			pLordOfDoorRoll->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -3.f, 0.f));
 			pLordOfDoorRoll->GetAnimator()->Play(1,true);
 			pLordOfDoorRoll->Disable();
 
 			LORD_BOSS* pLordOfDoor = Factory::CreateMonster<LORD_BOSS>(Vec3(5.f, -4.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor.fbx");
-			pLordOfDoor->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			pLordOfDoor->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 			pLordOfDoor->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			pLordOfDoor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -3.f, 0.f));
+
 			pLordOfDoor->SetObject(pLordOfDoorRoll);
-		
-			AddGameObject(pLordOfDoorRoll);
-			AddGameObject(pLordOfDoor);
+			pLordOfDoorRoll->SetLORD_BOSS(pLordOfDoor);
+			
+
+			//AddGameObject(pLordOfDoorRoll);
+			//AddGameObject(pLordOfDoor);
+			//SetMeshTarget(pLordOfDoor);
 		
 		}
 
 		
 
-		// 보스가 소환하는 소
-		{
-			PhysicsInfo info = {};
-			info.eActorType = ActorType::Kinematic;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(1.f, 1.0f, 1.f);
+		//// 보스가 소환하는 소
+		//{
+		//	PhysicsInfo info = {};
+		//	info.eActorType = ActorType::Kinematic;
+		//	info.eGeometryType = GeometryType::Box;
+		//	info.size = Vec3(1.5f, 1.0f, 2.f);
 
-			Monster* pBullKnocker = Factory::CreateObjectHasPhysical<Monster>(Vec3(10.f, 0.f, -15.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\BullKnocker.fbx");
-			pBullKnocker->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
-			pBullKnocker->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-			pBullKnocker->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
-			pBullKnocker->GetAnimator()->SetPlaySpeed(0, 5.f);
-			pBullKnocker->GetAnimator()->SetPlaySpeed(1, 3.f);
-			pBullKnocker->GetAnimator()->SetPlaySpeed(2, 3.f);
-
-			//SetGizmoTarget(p_E_HEADROLLER);
-			AddGameObject(pBullKnocker);
-			//SetMeshTarget(pBullKnocker);
-		}
+		//	Cow* pBullKnocker = Factory::CreateMonster<Cow>(Vec3(10.f, 0.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\BullKnocker.fbx");
+		//	pBullKnocker->GetTransform()->SetScale(Vec3(0.3f, 0.3f, 0.3f));
+		//	pBullKnocker->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+		//	pBullKnocker->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
+		//	pBullKnocker->GetAnimator()->SetPlaySpeed(0, 4.f);
+		//	pBullKnocker->GetAnimator()->SetPlaySpeed(1, 3.f);
+		//	pBullKnocker->GetAnimator()->SetPlaySpeed(2, 2.f);
+		//	//pBullKnocker->GetAnimator()->Play(0,true);
+		//	//SetGizmoTarget(p_E_HEADROLLER);
+		//	AddGameObject(pBullKnocker);
+		//	//SetMeshTarget(pBullKnocker);
+		//}
 
 		// 초록거미
 		{
@@ -254,7 +274,7 @@ namespace hm {
 			}
 			//SetGizmoTarget(p_E_GRIMACE_KNIGHT);
 			AddGameObject(p_E_GRIMACE_KNIGHT);
-			//SetMeshTarget(p_E_GRIMACE_KNIGHT);
+			SetMeshTarget(p_E_GRIMACE_KNIGHT);
 		}
 
 		// 박쥐
@@ -282,10 +302,24 @@ namespace hm {
 			AddGameObject(pBonFire);
 		}*/
 
+
 		// 미러
 		{
-			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, -8.7f, 0.f), L"Forward", L"", false, LayerType::Mirror);
+			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, -8.7f, 0.f), L"Deferred", L"", false, LayerType::Unknown);
+			pMirror->DrawShadow(false);
+			pMirror->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Test11", L"..\\Resources\\Texture\\White.png"));
+			pMirror->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+			pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+			pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
 
+			AddGameObject(pMirror);
+		}
+
+		// 미러
+		{
+			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, -8.6f, 0.f), L"Forward", L"", false, LayerType::Mirror);
+
+			pMirror->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Test11", L"..\\Resources\\Texture\\White.png"));
 			pMirror->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 			pMirror->AddComponent(new Mirror);
 			pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
@@ -293,6 +327,23 @@ namespace hm {
 
 			AddGameObject(pMirror);
 		}
+
+		// 샹들리에 라이트
+		{
+			GameObject* pGameObject = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pGameObject->AddComponent(new Transform);
+			pTransform->SetPosition(Vec3(0.f, 50.f, 0.f));
+			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+			Light* pLight = pGameObject->AddComponent(new Light);
+			pLight->SetDiffuse(Vec3(1.f, 1.f, 1.f));
+			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+			pLight->SetLightRange(100.f);
+			pLight->SetLightType(LightType::PointLight);
+			AddGameObject(pGameObject);
+		}
+
+		DisableDirLight();
 	}
 	void Monster_Player_TestScene::Exit()
 	{

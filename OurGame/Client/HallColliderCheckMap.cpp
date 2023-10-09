@@ -74,7 +74,7 @@ namespace jh
 			switch (mSpawnPoint)
 			{
 			case 3:
-				PLAYER->GetTransform()->SetPosition(Vec3(3.1f, -4.3f, -59.3f));
+				PLAYER->GetTransform()->SetPosition(Vec3(0.0f, -9.0f, 30.2f));
 				break;
 			case 4:
 				PLAYER->GetTransform()->SetPosition(Vec3(3.1f, -4.3f, -59.3f));
@@ -155,24 +155,40 @@ namespace jh
 			AddGameObject(pDoor);
 		}
 
-
-		// Sword_Heavy
+		//Player
 		{
-			SwordHeavyEffect* pSlashTest = Factory::CreateObject<SwordHeavyEffect>(Vec3(0.f, 8.f, 0.f), L"PlayerSlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbx");
-			pSlashTest->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
-			pSlashTest->AddComponent(new PlayerSlashScript);
-			auto pFollowScript = pSlashTest->AddComponent(new OwnerFollowScript(PLAYER));
-			pFollowScript->SetOffset(Vec3(0.f, 1.f, 0.f));
+			//PhysicsInfo physicsInfo;
+			//physicsInfo.eActorType = ActorType::Kinematic;
+			//physicsInfo.eGeometryType = GeometryType::Capsule;
+			//physicsInfo.size = Vec3(2.f, 2.f, 2.f);
 
-			pSlashTest->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::Clamp);
+			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
+			////Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
+			//PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
+			//pPlayer->AddComponent(new PaperBurnScript);
+			//pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
+			//pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
+			//pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
 
-			shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"HeavySlash", L"..\\Resources\\FBX\\Player\\Slash_Heavy.fbm\\sword_slash_texture_1.png");
-			pSlashTest->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
-			pSlashTest->GetRigidBody()->RemoveGravity();
-			AddGameObject(pSlashTest);
+			//pPlayer->GetRigidBody()->ApplyGravity();
+			//pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			//pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+			//AddGameObject(pPlayer);
 		}
 
-	
+		// Toy
+		//{
+		//	PhysicsInfo physicsInfo;
+		//	physicsInfo.eActorType = ActorType::Static;
+		//	physicsInfo.eGeometryType = GeometryType::Box;
+		//	physicsInfo.size = Vec3(2.f, 2.f, 2.f);
+
+		//	Monster* pPlayer = Factory::CreateObjectHasPhysical<Monster>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
+		//	//pPlayer->AddComponent(new TestAnimationScript);
+		//	pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+
+		//	AddGameObject(pPlayer);
+		//}
 
 #pragma region 1층
 		// 1층 벽
@@ -1779,13 +1795,30 @@ namespace jh
 
 		// PotHead
 		{
-		/*	PhysicsInfo info = {};
+			PhysicsInfo info = {};
 
 			Npc* pPotHead = Factory::CreateObjectHasPhysical<Npc>(Vec3(2.9f, 14.5f, 43.2f), info, L"Deferred", L"..\\Resources\\FBX\\Npc\\Npc_PotHead.fbx");
 			pPotHead->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
 			pPotHead->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 
-			AddGameObject(pPotHead);*/
+			// 애니메이션의 이름은 FBX에 저장되어 있는 것을 그대로 가져오므로 해당 FBX를 사용하는 클래스의 생성자와 같은 특정 부분에서
+			// 사용하기 편한 이름으로 일괄적으로 바꿔줄 필요가 있음
+			//pPotHead->GetAnimator()->RenameAnimation(L"Sat_loop", L"PotHead_Idle");
+
+			//// 반복 여부를 설정하는 함수 (Finished 플래그를 사용할 수 없음)
+			//pPotHead->GetAnimator()->SetLoop(L"PotHead_Idle", true);
+
+			//// 인덱스 번호로도 사용 가능
+			//pPotHead->GetAnimator()->SetLoop(9, true);
+
+			//// HasExit는 현재 애니메이션 실행중에 다른 애니메이션이 실행되었을 때 바로 넘길건지 여부를 결정 (기본적으로 true)
+			//// 이 값이 false면 애니메이션 플레이 도중 다른 애니메이션 Play가 실행되었을 때 기존 애니메이션이 다 끝나고 실행됨
+			//pPotHead->GetAnimator()->SetHasExitFlag(9, false);
+
+			//// 애니메이션 실행하는 방법은 2D와 비슷하게 애니메이션 이름, 반복할건지 여부를 넣어주면 됨
+			//pPotHead->GetAnimator()->Play(L"PotHead_Idle", true);
+
+			AddGameObject(pPotHead);
 
 		}
 	}
@@ -2060,16 +2093,6 @@ namespace jh
 			AddGameObject(pStLFloor);
 			SetGizmoTarget(pStLFloor);
 		}
-		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Static;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(1., 1.f, 1.f);
-			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(10.8f, 7.9f, 30.8f), physicsInfo, L"Forward", L"");
-
-			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
-		}
 	}
 
 	void HallColliderCheckMap::FuncObjectAdd()
@@ -2095,6 +2118,7 @@ namespace jh
 
 			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(3.1f, -3.7f, -64.8f), physicsInfo, L"Forward", L"", false, MapType::EntranceHallMap,3);
 			AddGameObject(pTelZone);
+			SetGizmoTarget(pTelZone);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -2104,6 +2128,7 @@ namespace jh
 
 			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(34.7f, 6.1f, 4.7f), physicsInfo, L"Forward", L"", false, MapType::RightMap,4);
 			AddGameObject(pTelZone);
+			SetGizmoTarget(pTelZone);
 		}
 	}
 

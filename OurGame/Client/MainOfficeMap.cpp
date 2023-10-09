@@ -24,7 +24,7 @@
 #include "DecoObject.h"
 #include "Elevator.h"
 #include "SoulDoor.h"
-#include "UI.h"
+#include "CameraHolder.h"
 
 /* Component */
 #include "Collider.h"
@@ -34,13 +34,17 @@
 #include "Camera.h"
 #include "Light.h"
 #include "ParticleSystem.h"
-#include "UIText.h"
+#include "Mirror.h"
+#include "AudioSound.h"
+
 /* Script */
 #include "PaperBurnScript.h"
 #include "CameraMoveScript.h"
 #include "PlayerMoveScript.h"
 #include "CinematicCamMove.h"
 #include "PlayerMoveOverMapScript.h"
+#include "FocusingScript.h"
+#include "OwnerFollowScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -62,7 +66,9 @@ namespace yj
 	void MainOfficeMap::Initialize()
 	{
 		Map::Initialize();
-		
+
+		PLAYER->GetAudioSound()->SetSound(L"MainOfficeBGM", this, true, "..\\Resources\\Sound\\MainOfficeBGM.mp3");
+		PLAYER->GetAudioSound()->Play();
 #pragma endregion
 	}
 
@@ -84,6 +90,10 @@ namespace yj
 				break;
 			}
 		}
+
+		SetDirLightPosition(Vec3(-31.5f, 27.2f, 33.9f));
+		SetDirLightRotation(Vec3(41.7f, 136.54f, 294.54f));
+		mpMainCamera->GetScript<FocusingScript>()->SetFocusingTarget(spHolder);
 	}
 
 	void MainOfficeMap::FixedUpdate()
@@ -120,12 +130,23 @@ namespace yj
 	
 	void MainOfficeMap::Exit()
 	{
+		PLAYER->GetAudioSound()->Stop();
 	}
 
 
 	void MainOfficeMap::InitObjectAdd()
 	{
 		PLAYER->SetDontDestroyObject(L"Player");
+		{
+			spHolder = new CameraHolder;
+			spHolder->AddComponent(new Transform);
+			OwnerFollowScript* pFollowScript = spHolder->AddComponent(new OwnerFollowScript(PLAYER));
+			pFollowScript->SetOffset(Vec3(-10.f, 30.f, 20.f));
+			spHolder->SetDontDestroyObject(L"CameraHolder");
+
+			AddGameObject(spHolder);
+		}
+
 
 		{
 			pBus = Factory::CreateObject<Bus>(Vec3(-17.0f, -8.0f, 33.0f), L"Deferred",
@@ -133,20 +154,44 @@ namespace yj
 			pBus->GetTransform()->SetScale(Vec3(50.0f, 50.0f, 50.0f));
 			pBus->GetTransform()->SetRotation(Vec3(0.0f, 135.0f, 0.0f));
 
+			pBus->GetMeshRenderer()->SetSubsetRenderFlag(103, false);
+			pBus->GetMeshRenderer()->SetSubsetRenderFlag(104, false);
+
+			pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, 68);
+			pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 68);
+			pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, 73);
+			pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 73);
+			pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, 78);
+			pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 78);
+			pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, 79);
+			pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 79);
+			pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, 81);
+			pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 81);
+
+			for (int i = 93; i <= 102; ++i)
+			{
+				pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, i);
+				pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), i);
+			}
+
+			pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, 107);
+			pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 0.5f, 1.f), 107);
+			pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, 108);
+			pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 0.5f, 1.f), 108);
+
+
+
 			AddGameObject(pBus);
 		}
 
 		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Static;
-			physicsInfo.eGeometryType = GeometryType::Mesh;
-			physicsInfo.size = Vec3(49.f, 49.f, 49.f);
-
-			Ground* pFrontGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.4f, -5.5f, -0.5f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\uv1.fbx");
+			Ground* pFrontGround = Factory::CreateObject<Ground>(Vec3(0.4f, -5.3f, -0.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\uv1.fbx");
 			pFrontGround->GetTransform()->SetScale(Vec3(49.0f, 49.0f, 49.0f));
 
 			AddGameObject(pFrontGround);
 		}
+
+
 
 		{
 			Ground* pREFLECTIONS = Factory::CreateObject<Ground>(Vec3(5.5f, -9.0f, -1.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Floor_REFLECTIONS.fbx");
@@ -156,31 +201,48 @@ namespace yj
 		}
 
 		{
+			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(4.9f, -8.85f, -12.1f), L"Forward", L"", false, LayerType::Mirror);
+
+			pMirror->GetTransform()->SetScale(Vec3(25.f, 20.f, 20.f));
+			pMirror->AddComponent(new Mirror);
+			pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+			pMirror->GetTransform()->SetRotation(Vec3(90.f, 319.4f, 0.f));
+			pMirror->GetMirror()->SetAlpha(0.4f);
+
+			AddGameObject(pMirror);
+		}
+
+		{
 			Ground* pUpstair = Factory::CreateObject<Ground>(Vec3(9.5f, 3.0f, -5.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Upstairs.fbx");
 			pUpstair->GetTransform()->SetScale(Vec3(35.f, 35.f, 35.f));
+
+			pUpstair->GetMeshRenderer()->GetMaterial()->SetBloom(true, 7);
+			pUpstair->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 7);
+			pUpstair->GetMeshRenderer()->GetMaterial()->SetBloom(true, 31);
+			pUpstair->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 31);
+
 
 			AddGameObject(pUpstair);
 		}
 
-		{
-			Ground* pStair_Single5 = Factory::CreateObject<Ground>(Vec3(29.5f, 3.5f, 8.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\HoD_Stairs_Single.fbx");
-			pStair_Single5->GetTransform()->SetScale(Vec3(10.0f, 10.0f, 10.0f));
-			AddGameObject(pStair_Single5);
-		}
+		//{
+		//	Ground* pStair_Single5 = Factory::CreateObject<Ground>(Vec3(29.5f, 3.5f, 8.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\HoD_Stairs_Single.fbx");
+		//	pStair_Single5->GetTransform()->SetScale(Vec3(10.0f, 10.0f, 10.0f));
+		//	AddGameObject(pStair_Single5);
+		//}
 
-		{
-			Ground* pGrandmaDoorFence = Factory::CreateObject<Ground>(Vec3(61.0f, 12.5f, 23.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\GrandmaDoorsFence.fbx");
-			pGrandmaDoorFence->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
-			pGrandmaDoorFence->GetTransform()->SetRotation(Vec3(0.0f, -10.0f, 0.0f));
-			AddGameObject(pGrandmaDoorFence);
-		}
+		//{
+		//	Ground* pGrandmaDoorFence = Factory::CreateObject<Ground>(Vec3(61.0f, 12.5f, 23.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\GrandmaDoorsFence.fbx");
+		//	pGrandmaDoorFence->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
+		//	pGrandmaDoorFence->GetTransform()->SetRotation(Vec3(0.0f, -10.0f, 0.0f));
+		//	AddGameObject(pGrandmaDoorFence);
+		//}
 
 		{
 			Ground* pBusStop = Factory::CreateObject<Ground>(Vec3(-8.0f, -16.5f, 24.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\stairsIsland.fbx");
 			pBusStop->GetTransform()->SetScale(Vec3(25.0f, 25.0f, 25.0f));
 			pBusStop->GetTransform()->SetRotation(Vec3(0.0f, -160.0f, 0.0f));
 			pBusStop->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.04f, 0.04f));
-			//x65444eedccdew
 			AddGameObject(pBusStop);
 		}
 
@@ -504,9 +566,11 @@ namespace yj
 		for (int i = 0; i < 2; i++)
 		{
 			DecoObject* pSphereLightBase = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\SphereLightBase.fbx");
-
 			AddGameObject(pSphereLightBase);
+			pSphereLightBase->GetMeshRenderer()->GetMaterial()->SetBloom(true, 3);
+			pSphereLightBase->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 3);
 			mSphereLightList.push_back(pSphereLightBase);
+			
 		}
 
 		mSphereLightList[0]->GetTransform()->SetPosition(Vec3(6.6f, -1.6f, -15.4f));
@@ -517,6 +581,8 @@ namespace yj
 		mSphereLightList[1]->GetTransform()->SetPosition(Vec3(21.0f, -1.6f, -1.5f));
 		mSphereLightList[1]->GetTransform()->SetRotation(Vec3(0.0f, -20.0f, 0.0f));
 		mSphereLightList[1]->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
+
+		
 #pragma endregion
 
 #pragma region PostBoard
@@ -538,6 +604,8 @@ namespace yj
 		{
 			DecoObject* pHoD_LampPost = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\HoD_LampPost.fbx");
 			AddGameObject(pHoD_LampPost);
+			pHoD_LampPost->GetMeshRenderer()->GetMaterial()->SetBloom(true, 3);
+			pHoD_LampPost->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 3);
 			pHoD_LampPost->GetTransform()->SetPosition(Vec3(-3.1f, -8.5f, 14.8f));
 			pHoD_LampPost->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
 			pHoD_LampPost->GetTransform()->SetScale(Vec3(8.0f, 8.0f, 8.0f));
@@ -561,15 +629,6 @@ namespace yj
 		mSideRallingBusStopStairList[1]->GetTransform()->SetPosition(Vec3(-12.3f, -9.5f, 10.0f));
 		mSideRallingBusStopStairList[1]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
 		mSideRallingBusStopStairList[1]->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
-
-
-		{
-			DecoObject* pRoundElevator = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\RoundElevator.fbx");
-			AddGameObject(pRoundElevator);
-			pRoundElevator->GetTransform()->SetPosition(Vec3(-20.9f, 3.8f, -17.2f));
-			pRoundElevator->GetTransform()->SetRotation(Vec3::Zero);
-			pRoundElevator->GetTransform()->SetScale(Vec3(32.5f, 32.5f, 32.5f));
-		}
 
 		{
 			DecoObject* pRailing11 = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Railing11.fbx");
@@ -595,16 +654,16 @@ namespace yj
 
 		}
 
-		{
-			DecoObject* pUpperStairContainer = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\UpperStairContainer.fbx");
-			AddGameObject(pUpperStairContainer);
-			pUpperStairContainer->GetTransform()->SetPosition(Vec3(60.9f, 2.7f, 22.4f));
-			pUpperStairContainer->GetTransform()->SetRotation(Vec3(0.0f, -8.0f, 0.0f));
-			pUpperStairContainer->GetTransform()->SetScale(Vec3(61.0f, 61.0f, 61.0f));
-			pUpperStairContainer->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(12.0f, 12.0f));
-			pUpperStairContainer->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(12.0f, 12.0f), 1);
+		//{
+		//	DecoObject* pUpperStairContainer = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\UpperStairContainer.fbx");
+		//	AddGameObject(pUpperStairContainer);
+		//	pUpperStairContainer->GetTransform()->SetPosition(Vec3(60.9f, 2.7f, 22.4f));
+		//	pUpperStairContainer->GetTransform()->SetRotation(Vec3(0.0f, -8.0f, 0.0f));
+		//	pUpperStairContainer->GetTransform()->SetScale(Vec3(61.0f, 61.0f, 61.0f));
+		//	pUpperStairContainer->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(12.0f, 12.0f));
+		//	pUpperStairContainer->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(12.0f, 12.0f), 1);
 
-		}
+		//}
 
 #pragma endregion
 
@@ -614,11 +673,12 @@ namespace yj
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Static;
 			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(37.08f, 0.5f, 30.1f);
+			physicsInfo.size = Vec3(48.57f, 0.5f, 39.122f);
 
-			Ground* pHallCollider = Factory::CreateObjectHasPhysical<Ground>(Vec3(5.6f, -9.2f, -1.8f), physicsInfo, L"Deferred", L"");
+			Ground* pHallCollider = Factory::CreateObjectHasPhysical<Ground>(Vec3(9.2f, -9.12f, -6.7f), physicsInfo, L"Deferred", L"");
+			pHallCollider->GetTransform()->SetRotation(Vec3(0.f, -332.9f, 0.f));
+			pHallCollider->DrawShadow(false);
 			AddGameObject(pHallCollider);
-			SetGizmoTarget(pHallCollider);
 		}
 
 		{
@@ -627,7 +687,8 @@ namespace yj
 			physicsInfo.eGeometryType = GeometryType::Mesh;
 			physicsInfo.size = Vec3(49.0f, 49.0f, 49.0f);
 
-			Ground* pOfficeCollider = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.9f, -5.5f, -0.3f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\OfficeCollider.fbx");
+			Ground* pOfficeCollider = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.9f, -4.5f, -0.3f), physicsInfo, L"NoDraw", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\OfficeCollider.fbx");
+			pOfficeCollider->DrawShadow(false);
 			AddGameObject(pOfficeCollider);
 		}
 
@@ -651,7 +712,7 @@ namespace yj
 			mEntrancePInfo.eGeometryType = GeometryType::Box;
 			mEntrancePInfo.size = Vec3(3.33f, 5.7f, 2.65f);
 
-			DecoObject* pEntranceColObj = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(19.1f, 4.9f, -15.2f), mEntrancePInfo, L"Forward", L"");
+			DecoObject* pEntranceColObj = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(19.1f, 4.9f, -15.2f), mEntrancePInfo, L"Deferred", L"");
 
 			SoulDoor* pSoulDoor = Factory::CreateObject<SoulDoor>(Vec3(0, 0, 0), L"Deferred", L"", false , pDoor, pBackUv, pEntranceColObj,MapType::EntranceHallMap,1);
 			
@@ -669,10 +730,9 @@ namespace yj
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(25.5f, 1.0f, 25.5f);
 
-			Ground* pBusGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-7.2f, -13.1f, 24.0f), physicsInfo, L"Deferred", L"");
+			Ground* pBusGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-7.2f, -12.1f, 24.0f), physicsInfo, L"Deferred", L"");
 			pBusGround->GetTransform()->SetRotation(Vec3(0.0f,15.0f,0.0f));
 			AddGameObject(pBusGround);
-			SetGizmoTarget(pBusGround);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -680,8 +740,44 @@ namespace yj
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(5.31f, 1.0f, 26.39f);
 
-			Ground* pBridgeGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(22.9f, -0.8f, -0.6f), physicsInfo, L"Deferred", L"");
+			Ground* pBridgeGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(21.95f, -0.22f, -0.03f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pBridgeGround);
+			
+		}
+
+		// 버스 배치된 다리에서 오피스쪽으로 이동하는 다리 충돌체
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(6.5f, 1.f, 10.15f);
+
+			Ground* pBusStopToMainDeskCollider = Factory::CreateObjectHasPhysical<Ground>(Vec3(-15.6f, -11.3f, 11.7f), physicsInfo, L"Deferred", L"");
+			pBusStopToMainDeskCollider->GetTransform()->SetRotation(Vec3(25.3f, 14.05f, 2.24f));
+			AddGameObject(pBusStopToMainDeskCollider);
+		}
+
+		// 상층에서 꼭대기로 이어주는 충돌체
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(3.9f, 1.f, 6.09f);
+
+			Ground* pStairToTop = Factory::CreateObjectHasPhysical<Ground>(Vec3(21.9f, 0.f, -8.5f), physicsInfo, L"Deferred", L"");
+			pStairToTop->GetTransform()->SetRotation(Vec3(28.6f, 12.12f, 0.f));
+			AddGameObject(pStairToTop);
+		}
+
+		// 꼭대기 충돌체
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(12.65f, 1.f, 13.f);
+
+			Ground* pTop = Factory::CreateObjectHasPhysical<Ground>(Vec3(21.6f, 1.39f, -17.35f), physicsInfo, L"Deferred", L"");
+			AddGameObject(pTop);
 		}
 	}
 

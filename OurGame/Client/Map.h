@@ -2,6 +2,7 @@
 #include "Scene.h"
 namespace hm
 {
+	class CameraHolder;
 	class Map :
 		public Scene
 	{
@@ -23,9 +24,12 @@ namespace hm
 	public:
 		void SetGizmoTarget(GameObject* _pTarget);
 		void SetMeshTarget(GameObject* _pTarget);
+		void SetCameraHolder(CameraHolder* _pHolder);
+		CameraHolder* GetCameraHolder() { return spHolder; }
 
 	protected:
 		GameObject* mTarget = nullptr;
+		static CameraHolder* spHolder;
 		bool mbShadow;
 	};
 }

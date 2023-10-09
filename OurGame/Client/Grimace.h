@@ -34,9 +34,14 @@ public:
 private:
 	void CreateProjectTile();
 	void MonsterAttackCol();
+
+	void BackstepRotTurn();
+	void BackstepDirSet();
+	void BackstepDirLive();
 private:
 	Vec3 dir;
 	Vec3 dir_backstep;
+	Vec3 Ve_backstep;
 	Vec3 dir_desh;
 
 	GameObject* pMonsterAttackCol;

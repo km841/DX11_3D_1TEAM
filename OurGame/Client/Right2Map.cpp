@@ -31,7 +31,9 @@
 #include "Effect.h"
 #include "SwordGlareEffect.h"
 #include "SpiderWeb.h"
+#include "Mirror.h"
 #include "TeleportZone.h"
+
 
 /* Component */
 #include "Collider.h"
@@ -132,6 +134,8 @@ namespace hm
 
 	void Right2Map::InitObjectAdd()
 	{
+
+		shared_ptr<Texture> pTemp = nullptr;
 		// Ground
 		{
 			PhysicsInfo physicsInfo;
@@ -140,9 +144,23 @@ namespace hm
 			physicsInfo.size = Vec3(50.f, 1.f, 40.f);
 
 			Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Right2_Ground.fbx");
+			pTemp = pGround->GetMeshRenderer()->GetMaterial()->GetTexture(0);
 			pGround->GetTransform()->SetScale(Vec3(50.f, 1.f, 50.f));
 
 			AddGameObject(pGround);
+		}
+
+		// ë¯¸ëŸ¬
+		{
+			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, 0.1f, 0.f), L"Forward", L"", false, LayerType::Mirror);
+
+			pMirror->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTemp);
+			pMirror->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+			pMirror->AddComponent(new Mirror);
+			pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+			pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+
+			AddGameObject(pMirror);
 		}
 
 		// Side
@@ -155,17 +173,18 @@ namespace hm
 		}
 
 
-		// ÁÂÃø º®ÂÊ 2´Ü ¼±¹İ
+		// ì¢Œì¸¡ ë²½ìª½ 2ë‹¨ ì„ ë°˜
 		{
 			for (int i = 0; i < 4; ++i)
 			{
 				DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-9.9f + i * 8.5f, 2.8f, 16.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
 				pTwoTierShelf->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
 
+				
 				AddGameObject(pTwoTierShelf);
 			}
 
-			// ¼±¹İ ¾ÈÂÊ Ç×¾Æ¸®
+			// ì„ ë°˜ ì•ˆìª½ í•­ì•„ë¦¬
 
 			for (int i = 0; i < 6; ++i)
 			{
@@ -175,14 +194,14 @@ namespace hm
 				AddGameObject(pMansionSpicePot);
 			}
 
-			// È¥ÀÚ °¡·Î·Î »ßÁ®³ª¿Â ¼±¹İ (½ÄÅ¹º¸·Î µ¤ÇôÁú ¿¹Á¤)
+			// í˜¼ì ê°€ë¡œë¡œ ì‚ì ¸ë‚˜ì˜¨ ì„ ë°˜ (ì‹íƒë³´ë¡œ ë®í˜€ì§ˆ ì˜ˆì •)
 			{
 				DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(-5.6f, 2.8f, 10.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
 				pTwoTierShelf->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
 				pTwoTierShelf->GetTransform()->SetRotation(AXIS_Y, 90.f);
 				AddGameObject(pTwoTierShelf);
 
-				// ¼±¹İ ¾ÈÂÊ ¼­¶øµé
+				// ì„ ë°˜ ì•ˆìª½ ì„œëë“¤
 				{
 					{
 						DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-5.8f, 3.5f, 12.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\EmptyBox.fbx");
@@ -209,7 +228,7 @@ namespace hm
 					}
 				}
 
-				// ±úÁö´Â Ç×¾Æ¸®
+				// ê¹¨ì§€ëŠ” í•­ì•„ë¦¬
 				{
 					DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(-9.3f, 7.3f, 16.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\POT_HEAL_Generic.fbx");
 					pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
@@ -218,7 +237,7 @@ namespace hm
 				}
 			}
 
-			//// ½ÄÅ¹º¸
+			//// ì‹íƒë³´
 			//{
 			//	DecoObject* pTableCloth = Factory::CreateObject<DecoObject>(Vec3(21.7f, 8.6f, 6.5f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\tableCloth.fbx");
 			//	pTableCloth->GetTransform()->SetScale(Vec3(15.4f, 10.f, 23.3f));
@@ -227,7 +246,7 @@ namespace hm
 			//}
 		}
 
-		// º®ÂÊ 3´Ü ¼±¹İ
+		// ë²½ìª½ 3ë‹¨ ì„ ë°˜
 		for (int i = 0; i < 2; ++i)
 		{
 			DecoObject* pThreeTierShelf = Factory::CreateObject<DecoObject>(Vec3(21.6f, 4.4f, 13.1f + i * -12.95f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ThreeTierShelf.fbx");
@@ -236,7 +255,7 @@ namespace hm
 			AddGameObject(pThreeTierShelf);
 		}
 
-		// 3´Ü ¼±¹İ ÀÌ¾îÁÖ´Â ÇÑÄ­ Â¥¸® ¼±¹İ
+		// 3ë‹¨ ì„ ë°˜ ì´ì–´ì£¼ëŠ” í•œì¹¸ ì§œë¦¬ ì„ ë°˜
 		{
 			DecoObject* pThreeTierCornerFoot = Factory::CreateObject<DecoObject>(Vec3(21.6f, 4.4f, 6.55f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ThreeTierSquareCornerFoot.fbx");
 
@@ -245,7 +264,7 @@ namespace hm
 			AddGameObject(pThreeTierCornerFoot);
 		}
 
-		// °¡¿îµ¥ÂÊ 2´Ü ¼±¹İ ³ª¶õÈ÷ ³õÀÎ °Í
+		// ê°€ìš´ë°ìª½ 2ë‹¨ ì„ ë°˜ ë‚˜ë€íˆ ë†“ì¸ ê²ƒ
 		{
 			for (int i = 0; i < 2; ++i)
 			{
@@ -255,7 +274,7 @@ namespace hm
 				AddGameObject(pTwoTierShelf);
 			}
 
-			// ¼±¹İ ¾ÈÂÊ ¼­¶øµé
+			// ì„ ë°˜ ì•ˆìª½ ì„œëë“¤
 			{
 				{
 					DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(5.5f, 3.5f, -2.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\EmptyBox.fbx");
@@ -277,7 +296,7 @@ namespace hm
 				}
 			}
 
-			// »ç´Ù¸®
+			// ì‚¬ë‹¤ë¦¬
 			{
 				DecoObject* pLadderObj = Factory::CreateObject<DecoObject>(Vec3(5.f, 2.43f, -1.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Ladder.fbx");
 				pLadderObj->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
@@ -341,7 +360,7 @@ namespace hm
 			}
 		}
 
-		//// ½ÄÅ¹º¸
+		//// ì‹íƒë³´
 		//{
 		//	DecoObject* pTableCloth = Factory::CreateObject<DecoObject>(Vec3(-5.6f, 5.3f, 11.9f), L"Deferred_CullNone", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\tableCloth.fbx");
 		//	pTableCloth->GetTransform()->SetScale(Vec3(13.4f, 10.f, 12.4f));
@@ -351,7 +370,7 @@ namespace hm
 		//	AddGameObject(pTableCloth);
 		//}
 
-		// ²À´ë±â ³ª¹«ÆÇÀÚ
+		// ê¼­ëŒ€ê¸° ë‚˜ë¬´íŒì
 		{
 			DecoObject* pTopShelf = Factory::CreateObject<DecoObject>(Vec3(17.f, 6.1f, -2.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TopShelf.fbx");
 			pTopShelf->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
@@ -360,15 +379,15 @@ namespace hm
 			AddGameObject(pTopShelf);
 		}
 
-		// ¹Ù´Ú ·¯±×
+		// ë°”ë‹¥ ëŸ¬ê·¸
 		{
-			DecoObject* pBottomRug = Factory::CreateObject<DecoObject>(Vec3(-5.8f, 0.f, -2.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Rug_Mark.fbx");
+			DecoObject* pBottomRug = Factory::CreateObject<DecoObject>(Vec3(-5.8f, 0.2f, -2.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Rug_Mark.fbx");
 			pBottomRug->GetTransform()->SetScale(Vec3(15.f, 8.f, 18.f));
 
 			AddGameObject(pBottomRug);
 		}
 
-		// ÀÇÀÚ
+		// ì˜ì
 		{
 			DecoObject* pChair = Factory::CreateObject<DecoObject>(Vec3(16.2f, 3.5f, 7.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Chair.fbx");
 
@@ -378,9 +397,9 @@ namespace hm
 			AddGameObject(pChair);
 		}
 
-		// Ç×¾Æ¸® »ïÃÑ»ç
+		// í•­ì•„ë¦¬ ì‚¼ì´ì‚¬
 		{
-			// ±úÁö´Â Ç×¾Æ¸®
+			// ê¹¨ì§€ëŠ” í•­ì•„ë¦¬
 			{
 				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(12.8f, 1.18f, 4.7f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\POT_HEAL_Generic.fbx");
 				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
@@ -388,7 +407,7 @@ namespace hm
 				AddGameObject(pPotHeal);
 			}
 
-			// ±úÁö´Â Ç×¾Æ¸®
+			// ê¹¨ì§€ëŠ” í•­ì•„ë¦¬
 			{
 				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(11.6f, 1.18f, 6.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\POT_HEAL_Generic.fbx");
 				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
@@ -398,7 +417,7 @@ namespace hm
 				AddGameObject(pPotHeal);
 			}
 
-			// ±úÁö´Â Ç×¾Æ¸®
+			// ê¹¨ì§€ëŠ” í•­ì•„ë¦¬
 			{
 				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(14.f, 1.18f, 6.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\POT_HEAL_Generic.fbx");
 				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
@@ -410,9 +429,9 @@ namespace hm
 
 
 
-		// ¿ìÃø º®¿¡ ºÙÀº ¼±¹İµé
+		// ìš°ì¸¡ ë²½ì— ë¶™ì€ ì„ ë°˜ë“¤
 		{
-			// 2´Ü ¼±¹İ (¾ÈÂÊ, ¹Ù±ùÂÊ)
+			// 2ë‹¨ ì„ ë°˜ (ì•ˆìª½, ë°”ê¹¥ìª½)
 			for (int i = 0; i < 2; ++i)
 			{
 				DecoObject* pTwoTierShelf = Factory::CreateObject<DecoObject>(Vec3(i == 0 ? 13.9f : -8.2f, 2.8f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierShelf.fbx");
@@ -420,7 +439,7 @@ namespace hm
 				AddGameObject(pTwoTierShelf);
 			}
 
-			// ¼±¹İ ¾È¿¡ ±×¸©µé
+			// ì„ ë°˜ ì•ˆì— ê·¸ë¦‡ë“¤
 			for (int i = 0; i < 2; ++i)
 			{
 				for (int j = 0; j < 2; ++j)
@@ -436,7 +455,7 @@ namespace hm
 
 			}
 
-			// ¼±¹İ ¾È¿¡ ¼­¶øµé
+			// ì„ ë°˜ ì•ˆì— ì„œëë“¤
 			{
 				{
 					DecoObject* pEmptyBox = Factory::CreateObject<DecoObject>(Vec3(-6.f, 3.5f, -16.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\EmptyBox.fbx");
@@ -460,7 +479,7 @@ namespace hm
 				}
 			}
 
-			// 2´Ü ¼±¹İ°ú ÀÌ¾îÁö´Â ÇÑ Ä­Â¥¸® ¼±¹İ (¹Ù±ùÂÊ)
+			// 2ë‹¨ ì„ ë°˜ê³¼ ì´ì–´ì§€ëŠ” í•œ ì¹¸ì§œë¦¬ ì„ ë°˜ (ë°”ê¹¥ìª½)
 			{
 				DecoObject* pTwoTierCornerFoot = Factory::CreateObject<DecoObject>(Vec3(20.1f, 2.88f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierSquareCornerFoot.fbx");
 				pTwoTierCornerFoot->GetTransform()->SetScale(Vec3(6.5f, 5.86f, 6.0f));
@@ -469,14 +488,14 @@ namespace hm
 				AddGameObject(pTwoTierCornerFoot);
 			}
 
-			// 2´Ü ¼±¹İ°ú ÀÌ¾îÁö´Â ÇÑ Ä­Â¥¸® ¼±¹İ (¾ÈÂÊ)
+			// 2ë‹¨ ì„ ë°˜ê³¼ ì´ì–´ì§€ëŠ” í•œ ì¹¸ì§œë¦¬ ì„ ë°˜ (ì•ˆìª½)
 			{
 				DecoObject* pTwoTierCornerFoot = Factory::CreateObject<DecoObject>(Vec3(-14.4f, 2.88f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierSquareCornerFoot.fbx");
 				pTwoTierCornerFoot->GetTransform()->SetScale(Vec3(6.5f, 5.86f, 6.0f));
 				AddGameObject(pTwoTierCornerFoot);
 			}
 
-			// ±úÁö´Â Ç×¾Æ¸®
+			// ê¹¨ì§€ëŠ” í•­ì•„ë¦¬
 			{
 				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(-9.8f, 6.88f, -16.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\POT_HEAL_Generic.fbx");
 				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
@@ -484,7 +503,7 @@ namespace hm
 				AddGameObject(pPotHeal);
 			}
 
-			// È­ºĞ
+			// í™”ë¶„
 			{
 				//MansionPlantPot
 				DecoObject* pMansionPlantPot = Factory::CreateObject<DecoObject>(Vec3(20.1f, 8.1f, -16.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\MansionPlantPot.fbx");
@@ -493,7 +512,7 @@ namespace hm
 				AddGameObject(pMansionPlantPot);
 			}
 
-			// »ç´Ù¸®
+			// ì‚¬ë‹¤ë¦¬
 			{
 				DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(-14.f, 2.63f, -14.7f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Ladder.fbx");
 				pLadder->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
@@ -502,7 +521,7 @@ namespace hm
 
 			}
 
-			// ¹Ù±ùÂÊ Ã¥ ½×¿©ÀÖ´Â °÷
+			// ë°”ê¹¥ìª½ ì±… ìŒ“ì—¬ìˆëŠ” ê³³
 			{
 				DecoObject* pBookStack = Factory::CreateObject<DecoObject>(Vec3(23.5f, 3.5f, -15.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\BookStack.fbx");
 				pBookStack->GetTransform()->SetScale(Vec3(7.2f, 7.2f, 7.2f));
@@ -512,7 +531,7 @@ namespace hm
 				AddGameObject(pBookStack);
 			}
 
-			// È­·ÔºÒ
+			// í™”ë¡¯ë¶ˆ
 			{
 				PhysicsInfo physicsInfo;
 				physicsInfo.eActorType = ActorType::Kinematic;
@@ -563,7 +582,7 @@ namespace hm
 				AddGameObject(pFireLamp);
 			}
 
-			// È­·ÔºÒ
+			// í™”ë¡¯ë¶ˆ
 			{
 				PhysicsInfo physicsInfo;
 				physicsInfo.eActorType = ActorType::Kinematic;
@@ -617,7 +636,7 @@ namespace hm
 			}
 		}
 
-		// °¡¿îµ¥ ÀÖ´Â 2´Ü ¼±¹İ
+		// ê°€ìš´ë° ìˆëŠ” 2ë‹¨ ì„ ë°˜
 		{
 			DecoObject* pTwoTierFootAbs = Factory::CreateObject<DecoObject>(Vec3(-5.9f, 2.8f, -2.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\TwoTierSquareFootAbsolute.fbx");
 
@@ -627,7 +646,7 @@ namespace hm
 
 			AddGameObject(pTwoTierFootAbs);
 
-			// È­·ÔºÒ
+			// í™”ë¡¯ë¶ˆ
 			{
 
 				PhysicsInfo physicsInfo;
@@ -681,9 +700,9 @@ namespace hm
 			}
 		}
 
-		// ±âµÕµé
+		// ê¸°ë‘¥ë“¤
 		{
-			// ¿ìÃø º® ±âµÕ 1
+			// ìš°ì¸¡ ë²½ ê¸°ë‘¥ 1
 			{
 				DecoObject* pColumn = Factory::CreateObject<DecoObject>(Vec3(-21.f, 7.9f, -17.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ColumnFull.fbx");
 				pColumn->GetTransform()->SetScale(Vec3(10.f, 16.f, 10.f));
@@ -692,7 +711,7 @@ namespace hm
 				AddGameObject(pColumn);
 			}
 
-			// ¿ìÃø º® ±âµÕ 2
+			// ìš°ì¸¡ ë²½ ê¸°ë‘¥ 2
 			{
 				DecoObject* pColumn = Factory::CreateObject<DecoObject>(Vec3(-3.1f, 7.9f, -17.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ColumnFull.fbx");
 				pColumn->GetTransform()->SetScale(Vec3(10.f, 16.f, 10.f));
@@ -701,7 +720,7 @@ namespace hm
 				AddGameObject(pColumn);
 			}
 
-			// º®³­·Î º®
+			// ë²½ë‚œë¡œ ë²½
 			{
 				DecoObject* pFireplaceWall = Factory::CreateObject<DecoObject>(Vec3(2.9f, 7.9f, -18.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\fireplaceWall.fbx");
 				pFireplaceWall->GetTransform()->SetScale(Vec3(10.f, 16.f, 15.6f));
@@ -710,7 +729,7 @@ namespace hm
 				AddGameObject(pFireplaceWall);
 			}
 
-			// ¿ìÃø º® ±âµÕ 3
+			// ìš°ì¸¡ ë²½ ê¸°ë‘¥ 3
 			{
 				DecoObject* pColumn = Factory::CreateObject<DecoObject>(Vec3(8.9f, 7.9f, -17.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ColumnFull.fbx");
 				pColumn->GetTransform()->SetScale(Vec3(10.f, 16.f, 10.f));
@@ -719,7 +738,7 @@ namespace hm
 				AddGameObject(pColumn);
 			}
 
-			// ¿ìÃø º® ±âµÕ 4
+			// ìš°ì¸¡ ë²½ ê¸°ë‘¥ 4
 			{
 				DecoObject* pColumn = Factory::CreateObject<DecoObject>(Vec3(24.5f, 7.9f, -17.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ColumnFull.fbx");
 				pColumn->GetTransform()->SetScale(Vec3(10.f, 16.f, 10.f));
@@ -728,7 +747,7 @@ namespace hm
 				AddGameObject(pColumn);
 			}
 
-			// ÁÂÃø º® ±âµÕ
+			// ì¢Œì¸¡ ë²½ ê¸°ë‘¥
 			{
 				DecoObject* pColumn = Factory::CreateObject<DecoObject>(Vec3(24.5f, 7.9f, 18.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ColumnFull.fbx");
 				pColumn->GetTransform()->SetScale(Vec3(10.f, 16.f, 10.f));
@@ -737,9 +756,9 @@ namespace hm
 			}
 		}
 
-		// »óºÎ ¸¶°¨ Rim
+		// ìƒë¶€ ë§ˆê° Rim
 		{
-			// Á¤¸é ±ä Rim
+			// ì •ë©´ ê¸´ Rim
 			{
 				DecoObject* pRim = Factory::CreateObject<DecoObject>(Vec3(24.8f, 15.5f, -0.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\WallRim.fbx");
 				pRim->GetTransform()->SetScale(Vec3(32.f, 32.f, 35.f));
@@ -747,7 +766,7 @@ namespace hm
 				AddGameObject(pRim);
 			}
 
-			// ¿ìÃø ¹Ù±ùÂÊ Rim
+			// ìš°ì¸¡ ë°”ê¹¥ìª½ Rim
 			{
 				DecoObject* pRim = Factory::CreateObject<DecoObject>(Vec3(16.7f, 15.5f, -18.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\WallRim.fbx");
 				pRim->GetTransform()->SetScale(Vec3(32.f, 32.f, 14.f));
@@ -756,7 +775,7 @@ namespace hm
 				AddGameObject(pRim);
 			}
 
-			// ¿ìÃø ¾ÈÂÊ Rim
+			// ìš°ì¸¡ ì•ˆìª½ Rim
 			{
 				DecoObject* pRim = Factory::CreateObject<DecoObject>(Vec3(-12.f, 15.5f, -18.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\WallRim.fbx");
 				pRim->GetTransform()->SetScale(Vec3(32.f, 32.f, 16.6f));
@@ -766,7 +785,7 @@ namespace hm
 			}
 		}
 
-		// Å° º£ÀÌ½º
+		// í‚¤ ë² ì´ìŠ¤
 		{
 			DecoObject* pKeyShrine = Factory::CreateObject<DecoObject>(Vec3(16.1f, 0.3f, -9.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\keyShrineBase.fbx");
 			pKeyShrine->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
@@ -774,7 +793,7 @@ namespace hm
 			AddGameObject(pKeyShrine);
 		}
 
-		// Å°
+		// í‚¤
 		{
 			DecoObject* pKey = Factory::CreateObject<DecoObject>(Vec3(16.1f, 2.2f, -9.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\grandmaKey.fbx");
 			pKey->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
@@ -785,7 +804,7 @@ namespace hm
 			AddGameObject(pKey);
 		}
 
-		// ¼§µé¸®¿¡
+		// ìƒ¹ë“¤ë¦¬ì—
 		{
 			DecoObject* pChandelier = Factory::CreateObject<DecoObject>(Vec3(5.f, 37.6f, 8.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ChandelierWithChain.fbx");
 			pChandelier->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
@@ -826,7 +845,7 @@ namespace hm
 		}
 
 
-		// ¹ÚÁã
+		// ë°•ì¥
 		{
 			PhysicsInfo info = {};
 			info.eActorType = ActorType::Kinematic;
@@ -840,7 +859,7 @@ namespace hm
 			//SetMeshTarget(p_E_BAT_White);
 		}
 
-		// ¼§µé¸®¿¡ ¶óÀÌÆ®
+		// ìƒ¹ë“¤ë¦¬ì— ë¼ì´íŠ¸
 		{
 			GameObject* pGameObject = new GameObject(LayerType::Unknown);
 			Transform* pTransform = pGameObject->AddComponent(new Transform);
@@ -855,19 +874,18 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
-		// Spider Web
-		{
-			PhysicsInfo info = {};
-			info.eActorType = ActorType::Kinematic;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(2.f, 4.f, 4.f);
+		//// Spider Web
+		//{
+		//	PhysicsInfo info = {};
+		//	info.eActorType = ActorType::Kinematic;
+		//	info.eGeometryType = GeometryType::Box;
+		//	info.size = Vec3(2.f, 4.f, 4.f);
 
-			SpiderWeb* pWeb = Factory::CreateObjectHasPhysical<SpiderWeb>(Vec3(0.f, 2.f, 0.f), info, L"SpiderWeb", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Cobweb_Flat.fbx");
-			pWeb->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
-			pWeb->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
-			AddGameObject(pWeb);
-			SetGizmoTarget(pWeb);
-		}
+		//	SpiderWeb* pWeb = Factory::CreateObjectHasPhysical<SpiderWeb>(Vec3(0.f, 2.f, 0.f), info, L"SpiderWeb", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Cobweb_Flat.fbx");
+		//	pWeb->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+		//	pWeb->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+		//	AddGameObject(pWeb);
+		//}
 	}
 
 	void Right2Map::InitCollidertAdd()

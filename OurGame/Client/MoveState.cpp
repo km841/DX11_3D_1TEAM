@@ -66,28 +66,28 @@ void MoveState::Update()
 #pragma region "이동 방향 힘 결정"
 	float mMoveSpeed = pPlayer->GetMoveSpeed();
 
-	if (IS_PRESS(KeyType::UP))
+	if (IS_PRESS(P_UP))
 	{
 		rb->SetVelocity(AXIS_Z, mMoveSpeed);
 		tr->SetRotation(Vec3(0.f, 180.f, 90.f));
 		//tr->SetRotation(Vec3(-90.f, 0.f, 180.f));
 	}
 
-	if (IS_PRESS(KeyType::DOWN))
+	if (IS_PRESS(P_DOWN))
 	{
 		rb->SetVelocity(AXIS_Z, -mMoveSpeed);
 		tr->SetRotation(Vec3(0.f, 0.f, 90.f));
 
 	}
 
-	if (IS_PRESS(KeyType::LEFT))
+	if (IS_PRESS(P_LEFT))
 	{
 		rb->SetVelocity(AXIS_X, -mMoveSpeed);
 		tr->SetRotation(Vec3(0.f, 90.f, 90.f));
 
 	}
 
-	if (IS_PRESS(KeyType::RIGHT))
+	if (IS_PRESS(P_RIGHT))
 	{
 		rb->SetVelocity(AXIS_X, mMoveSpeed);
 		tr->SetRotation(Vec3(0.f, -90.f, 90.f));
@@ -99,27 +99,27 @@ void MoveState::Update()
 		rb->SetVelocity(AXIS_Y, mMoveSpeed * 5.f);
 	}
 
-	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::LEFT))
+	if (IS_PRESS(P_UP) && IS_PRESS(P_LEFT))
 	{
-		mMoveSpeed = mMoveSpeed / 1.5f;
+		//mMoveSpeed = mMoveSpeed / 1.5f;
 		rb->SetVelocity(Vec3(-mMoveSpeed, 0.f, mMoveSpeed));
 		tr->SetRotation(Vec3(0.f, 135.f, 90.f));
 	}
-	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::RIGHT))
+	if (IS_PRESS(P_UP) && IS_PRESS(P_RIGHT))
 	{
-		mMoveSpeed = mMoveSpeed / 1.5f;
+		//mMoveSpeed = mMoveSpeed / 1.5f;
 		rb->SetVelocity(Vec3(mMoveSpeed, 0.f, mMoveSpeed));
 		tr->SetRotation(Vec3(0.f, 225.f, 90.f));
 	}
-	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::LEFT))
+	if (IS_PRESS(P_DOWN) && IS_PRESS(P_LEFT))
 	{
-		mMoveSpeed = mMoveSpeed / 1.5f;
+		//mMoveSpeed = mMoveSpeed / 1.5f;
 		rb->SetVelocity(Vec3(-mMoveSpeed, 0.f, -mMoveSpeed));
 		tr->SetRotation(Vec3(0.f, 45.f, 90.f));
 	}
-	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::RIGHT))
+	if (IS_PRESS(P_DOWN) && IS_PRESS(P_RIGHT))
 	{
-		mMoveSpeed = mMoveSpeed / 1.5f;
+		//mMoveSpeed = mMoveSpeed / 1.5f;
 		rb->SetVelocity(Vec3(mMoveSpeed, 0.f, -mMoveSpeed));
 		tr->SetRotation(Vec3(0.f, 315.f, 90.f));
 	}
@@ -128,54 +128,54 @@ void MoveState::Update()
 
 #pragma region "방향 설정"
 
-	if (IS_PRESS(KeyType::UP))
+	if (IS_PRESS(P_UP))
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::FORWARD);
 	}
 
-	if (IS_PRESS(KeyType::DOWN))
+	if (IS_PRESS(P_DOWN))
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::BACKWARD);
 	}
 
-	if (IS_PRESS(KeyType::RIGHT))
+	if (IS_PRESS(P_RIGHT))
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::RIGHT);
 	}
 	
-	if (IS_PRESS(KeyType::LEFT))
+	if (IS_PRESS(P_LEFT))
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::LEFT);
 	}
 	
-	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::LEFT))
+	if (IS_PRESS(P_UP) && IS_PRESS(P_LEFT))
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::TOPLEFT);
 	}
 
-	if (IS_PRESS(KeyType::UP) && IS_PRESS(KeyType::RIGHT))
+	if (IS_PRESS(P_UP) && IS_PRESS(P_RIGHT))
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::TOPRIGHT);
 	}
 
-	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::LEFT))
+	if (IS_PRESS(P_DOWN) && IS_PRESS(P_LEFT))
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::BOTTOMLEFT);
 	}
 
-	if (IS_PRESS(KeyType::DOWN) && IS_PRESS(KeyType::RIGHT))
+	if (IS_PRESS(P_DOWN) && IS_PRESS(P_RIGHT))
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::BOTTOMRIGHT);
 	}
 
 	PlayerMoveScript* pScript = PLAYER->GetScript<PlayerMoveScript>();
-	pScript->AutoStepping(2.0f);
+	pScript->AutoStepping(1.0f);
 
 #pragma endregion
 
 	/*키 입력시 넘어가는 행동들*/
-	if (IS_UP(KeyType::UP) || IS_UP(KeyType::DOWN) ||
-		IS_UP(KeyType::LEFT) || IS_UP(KeyType::RIGHT))
+	if (IS_UP(P_UP) || IS_UP(P_DOWN) ||
+		IS_UP(P_LEFT) || IS_UP(P_RIGHT))
 	{
 		pPlayer->StateChange(PlayerState::IdleState);
 	}

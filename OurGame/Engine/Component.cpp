@@ -13,6 +13,7 @@
 #include "AI.h"
 #include "UIText.h"
 #include "Mirror.h"
+#include "AudioSound.h"
 
 namespace hm
 {
@@ -69,6 +70,10 @@ namespace hm
 	Mirror* Component::GetMirror()
 	{
 		return mpGameObject->GetMirror();
+	}
+	AudioSound* Component::GetAudioSound()
+	{
+		return mpGameObject->GetAudioSound();
 	}
 	bool Component::IsPhysicsObject()
 	{

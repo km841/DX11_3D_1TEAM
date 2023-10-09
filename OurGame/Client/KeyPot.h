@@ -30,6 +30,10 @@ namespace yj
 		bool GetIsBreak() { return isBreak; }
 		int mBreakSequence = -1;
 
+		virtual void OnTriggerEnter(Collider* _pOther);
+		virtual void OnTriggerStay(Collider* _pOther);
+		virtual void OnTriggerExit(Collider* _pOther);
+
 	private:
 
 		bool isBreak;

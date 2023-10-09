@@ -11,7 +11,7 @@
 namespace yj
 {
 	KeyPot::KeyPot()
-		:GameObject(LayerType::PotCell)
+		:GameObject(LayerType::DungeonObject)
 	{
 	}
 	KeyPot::~KeyPot()
@@ -28,24 +28,9 @@ namespace yj
 		{
 			return;
 		}
-		if (!isBreak)
-		{
-			if (this->GetRigidBody()->GetCollider()->CheckIsCollisionObject(LayerType::ArrowCol))
-			{
-				pReceiver->AddKey();
-				mBreakSequence = 0;
-				isBreak = true;
-				this->Disable();
-			}
-			if (this->GetRigidBody()->GetCollider()->CheckIsCollisionObject(LayerType::Item))
-			{
-				pReceiver->AddKey();
-				mBreakSequence = 0;
-				isBreak = true;
-				this->Disable();
-			}
-		}
-		if (mBreakSequence >= 0)
+
+
+		if (mBreakSequence > 0)
 		{
 			Break();
 		}
@@ -76,7 +61,27 @@ namespace yj
 	}
 	void KeyPot::Break()
 	{
-		//�ִϸ��̼� ��� ��
+		//¾Ö´Ï¸ÞÀÌ¼Ç Àç»ý ÈÄ
 		//mBreakSequence = 0;
+	}
+	void KeyPot::OnTriggerEnter(Collider* _pOther)
+	{
+		if (LayerType::PlayerCol == _pOther->GetGameObject()->GetLayerType() || 
+			LayerType::ArrowCol == _pOther->GetGameObject()->GetLayerType())
+		{
+			if (false == isBreak)
+			{
+				pReceiver->AddKey();
+				mBreakSequence = 0;
+				isBreak = true;
+				this->Disable();
+			}
+		}
+	}
+	void KeyPot::OnTriggerStay(Collider* _pOther)
+	{
+	}
+	void KeyPot::OnTriggerExit(Collider* _pOther)
+	{
 	}
 }

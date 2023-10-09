@@ -77,8 +77,10 @@ namespace hm
 
 		RenderShadow(_pScene);
 		RenderDeferred(_pScene);
+		//RenderPreReflect(_pScene);
 		RenderEffect(_pScene);
 		RenderBloom();
+		//RenderMotionBlur();
 		RenderLight(_pScene);
 
 		if (true == mbEnableRim)
@@ -288,9 +290,10 @@ namespace hm
 		Camera* pMainCam = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera();
 		for (auto pMirror : _pScene->mMirrorObjects)
 		{
+			pMirror->GetMirror()->CreateReflectPlane();
 			pMirror->GetMirror()->RenderMasking(pMainCam);
 			pMirror->GetMirror()->RenderReflect(pMainCam);
-			pMirror->GetMirror()->RenderAlbedo(pMainCam);
+			//pMirror->GetMirror()->RenderAlbedo(pMainCam);
 		}
 	}
 
@@ -309,6 +312,16 @@ namespace hm
 		shared_ptr<Texture> pScreenEffectTarget = GET_SINGLE(Resources)->Get<Texture>(L"ScreenEffectTarget");
 		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->SetTexture(0, pScreenEffectTarget);
 		GET_SINGLE(Resources)->Get<Material>(L"ScreenEffect")->PushGraphicData();
+		GET_SINGLE(Resources)->LoadRectMesh()->Render();
+	}
+
+	void RenderManager::RenderMotionBlur()
+	{
+		shared_ptr<Texture> pColorTarget = GET_SINGLE(Resources)->Get<Texture>(L"DiffuseTarget");
+		CONTEXT->OMSetRenderTargets(1, pColorTarget->GetRTV().GetAddressOf(), nullptr);
+
+		GET_SINGLE(Resources)->Get<Material>(L"MotionBlur")->PushGraphicData();
+		GET_SINGLE(Resources)->Get<Material>(L"MotionBlur")->SetTexture(0, GET_SINGLE(Resources)->Get<Texture>(L"VelocityTarget"));
 		GET_SINGLE(Resources)->LoadRectMesh()->Render();
 	}
 
@@ -435,11 +448,12 @@ namespace hm
 
 	void RenderManager::AddCameraShakeEffect(float _endTime, float _amplitude, int _groupIndex)
 	{
-		for (float i = 0.f; i < _endTime; i += 0.1f)
+		_endTime -= 0.001;
+		for (float i = 0.f; i < _endTime; i += 0.03f)
 		{
 			ScreenEffectInfo* pInfo = new ScreenEffectInfo;
 			pInfo->eEffectType = ScreenEffectType::CameraShake;
-			pInfo->endTime = 0.1f;
+			pInfo->endTime = 0.03f;
 			pInfo->param1 = Vec4(_amplitude, 0.f, 1.f, 0.f);
 			AddScreenEffect(pInfo, _groupIndex);
 		}

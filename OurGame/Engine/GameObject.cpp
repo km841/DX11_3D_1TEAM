@@ -14,6 +14,7 @@
 #include "AI.h"
 #include "UIText.h"
 #include "Mirror.h"
+#include "AudioSound.h"
 #include "CollisionManager.h"
 
 namespace hm
@@ -27,6 +28,7 @@ namespace hm
 		, mbCheckFrustum(true)
 		, mbShadow(true)
 		, mbReflect(true)
+		, mbMotionBlur(false)
 	{
 	}
 
@@ -193,6 +195,11 @@ namespace hm
 	Mirror* GameObject::GetMirror()
 	{
 		return static_cast<Mirror*>(GetFixedComponent(ComponentType::Mirror));
+	}
+
+	AudioSound* GameObject::GetAudioSound()
+	{
+		return static_cast<AudioSound*>(GetFixedComponent(ComponentType::AudioSound));
 	}
 
 	void GameObject::Enable()

@@ -8,7 +8,7 @@ namespace jh
 	class BreakablePot : public GameObject
 	{
 	public:
-		BreakablePot(GameObject* _pBase, std::vector<BreakablePotCell*> _vpCells);
+		BreakablePot(GameObject* _pBase);
 		virtual ~BreakablePot();
 		virtual void Initialize();
 		virtual void Update();

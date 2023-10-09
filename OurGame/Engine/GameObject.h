@@ -18,6 +18,7 @@ namespace hm
 	class UIText;
 	class AI;
 	class Mirror;
+	class AudioSound;
 
 	class GameObject :
 		public Object
@@ -73,6 +74,7 @@ namespace hm
 		UIText* GetUIText();
 		AI* GetAI();
 		Mirror* GetMirror();
+		AudioSound* GetAudioSound();
 		GameObject* GetGameObject() { return this; }
 
 		LayerType GetLayerType() { return meLayerType; }
@@ -93,10 +95,15 @@ namespace hm
 		bool IsPhysicsObject();
 
 		void SetShader(const wstring& _shaderName);
+
 		void DrawShadow(bool _bFlag) { mbShadow = _bFlag; }
 		bool IsDrawShadow() { return mbShadow; }
+
 		bool IsReflect() { return mbReflect; }
 		void SetReflect(bool _bFlag) { mbReflect = _bFlag; }
+
+		void SetMotionBlur(bool _bFlag) { mbMotionBlur = _bFlag; }
+		bool IsMotionBlur() { return mbMotionBlur; }
 
 		const std::vector<MonoBehavior*>& GetScripts() { return mScripts; }
 
@@ -159,6 +166,7 @@ namespace hm
 		bool mbCheckFrustum;
 		bool mbShadow;
 		bool mbReflect;
+		bool mbMotionBlur;
 	};
 }
 

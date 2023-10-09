@@ -6,10 +6,11 @@
 #include "Camera.h"
 #include "Engine.h"
 #include "Animator.h"
+#include "InstancingBuffer.h"
 
 namespace hm
 {
-	bool Mirror::sbIsInit =false;
+	bool Mirror::sbIsInit = false;
 	ComPtr<ID3D11RasterizerState> Mirror::spSolidRS;
 	ComPtr<ID3D11RasterizerState> Mirror::spSolidCCWRS;
 
@@ -20,11 +21,17 @@ namespace hm
 
 	Mirror::Mirror()
 		: Component(ComponentType::Mirror)
+		, mAlpha(0.05f)
 	{
 	}
 
 	Mirror::~Mirror()
 	{
+		for (auto& pair : mBuffers)
+		{
+			InstancingBuffer* buffer = pair.second;
+			SAFE_DELETE(buffer);
+		}
 	}
 
 	void Mirror::Initialize()
@@ -37,7 +44,7 @@ namespace hm
 
 	void Mirror::Update()
 	{
-		
+
 	}
 
 	void Mirror::FinalUpdate()
@@ -60,6 +67,14 @@ namespace hm
 		Vec3 pos = GetTransform()->GetPosition();
 		mReflectPlane = Plane(pos, Vec3(0.f, 1.f, 0.f));
 		mReflectMatrix = Matrix::CreateReflection(mReflectPlane);
+	}
+	void Mirror::ClearInstancingBuffer()
+	{
+		for (auto& pair : mBuffers)
+		{
+			InstancingBuffer* buffer = pair.second;
+			buffer->ClearData();
+		}
 	}
 	void Mirror::InitRenderState()
 	{
@@ -155,6 +170,16 @@ namespace hm
 		hr = DEVICE->CreateBlendState(&mirrorBlendDesc, spMirrorBS.GetAddressOf());
 		AssertEx(SUCCEEDED(hr), L"RenderManager::MirrorInit() - 초기화 실패");
 	}
+	void Mirror::AddParam(UINT64 _instanceID, InstancingParams& _params)
+	{
+		if (mBuffers.find(_instanceID) == mBuffers.end())
+		{
+			mBuffers[_instanceID] = new InstancingBuffer;
+			mBuffers[_instanceID]->Initialize(sizeof(InstancingParams));
+		}
+
+		mBuffers[_instanceID]->AddData(_params);
+	}
 	void Mirror::RenderMasking(Camera* _pCamera)
 	{
 		CONTEXT->OMSetDepthStencilState(spMaskDSS.Get(), 1);
@@ -185,39 +210,117 @@ namespace hm
 		CONST_BUFFER(ConstantBufferType::Reflect)->PushData(&params, sizeof(ReflectParams));
 		CONST_BUFFER(ConstantBufferType::Reflect)->Mapping();
 
+		ClearInstancingBuffer();
 		auto reflectObjects = _pCamera->GetReflectObject();
-		for (auto pObject : reflectObjects)
-		{
-			pObject->GetTransform()->PushData(_pCamera);
-			CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
-			shared_ptr<Mesh> pObjectMesh = pObject->GetMeshRenderer()->GetMesh();
-			shared_ptr<Material> pObjectMaterial = pObject->GetMeshRenderer()->GetMaterial();
-
-			if (pObject->GetAnimator())
-			{
-				pObject->GetAnimator()->PushData();
-				pObjectMaterial->SetIntAllSubset(1, 1);
-			}
-
-			UINT32 meshCount = pObjectMesh->GetMeshContainerCount();
-
-			for (UINT32 i = 0; i < meshCount; ++i)
-			{
-				pObjectMaterial->PushGraphicData(i);
-				GET_SINGLE(Resources)->Get<Shader>(L"Forward")->UpdateShaderAndSampler();
-				GET_SINGLE(Resources)->Get<Shader>(L"Forward")->UpdateTopology();
-				GET_SINGLE(Resources)->Get<Shader>(L"Forward")->UpdateInputLayout();
-				CONTEXT->OMSetDepthStencilState(spDrawMaskedDSS.Get(), 1);
-				CONTEXT->RSSetState(spSolidCCWRS.Get());
-				pObjectMesh->Render(i);
-			}
-		}
+		RenderInstancing(_pCamera, reflectObjects);
 
 		params.reflectMatrix = Matrix::Identity;
 		params.reflectRVPMatrix = Matrix::Identity;
 		params.use = 0;
 		CONST_BUFFER(ConstantBufferType::Reflect)->PushData(&params, sizeof(ReflectParams));
 		CONST_BUFFER(ConstantBufferType::Reflect)->Mapping();
+	}
+	void Mirror::RenderInstancing(Camera* _pCamera, const std::vector<GameObject*> _gameObjects)
+	{
+		std::map<UINT64, std::vector<GameObject*>> tempMap;
+
+		for (GameObject* pGameObject : _gameObjects)
+		{
+			UINT32 forwardMaterialID = GET_SINGLE(Resources)->Get<Material>(L"Forward")->GetID();
+			UINT32 meshID = pGameObject->GetMeshRenderer()->GetMesh()->GetID();
+			InstanceID id = {};
+			id.materialID = forwardMaterialID;
+			id.meshID = meshID;
+			const UINT64 instanceID = id.id;
+			tempMap[instanceID].push_back(pGameObject);
+		}
+
+		for (auto& pair : tempMap)
+		{
+			const std::vector<GameObject*>& gameObjects = pair.second;
+
+			if (gameObjects.size() == 1)
+			{
+				gameObjects[0]->GetTransform()->PushData(_pCamera);
+				CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
+
+				shared_ptr<Mesh> pObjectMesh = gameObjects[0]->GetMeshRenderer()->GetMesh();
+				shared_ptr<Material> pObjectMaterial = gameObjects[0]->GetMeshRenderer()->GetMaterial();
+				pObjectMaterial->SetIntAllSubset(0, 0);
+				if (gameObjects[0]->GetAnimator())
+				{
+					gameObjects[0]->GetAnimator()->PushData();
+					pObjectMaterial->SetIntAllSubset(1, 1);
+				}
+
+				UINT32 meshCount = pObjectMesh->GetMeshContainerCount();
+
+				for (UINT32 i = 0; i < meshCount; ++i)
+				{
+					pObjectMaterial->PushGraphicDataExceptForShader(i);
+					CONST_BUFFER(ConstantBufferType::Material)->Mapping();
+					GET_SINGLE(Resources)->Get<Shader>(L"Forward")->UpdateShaderAndSampler();
+					GET_SINGLE(Resources)->Get<Shader>(L"Forward")->UpdateTopology();
+					GET_SINGLE(Resources)->Get<Shader>(L"Forward")->UpdateInputLayout();
+					CONTEXT->OMSetDepthStencilState(spDrawMaskedDSS.Get(), 1);
+
+					const float t = mAlpha;
+					const float blendColor[] = { t, t, t, 1.0f };
+					CONTEXT->OMSetBlendState(spMirrorBS.Get(), blendColor, 0xffffffff);
+					CONTEXT->RSSetState(spSolidCCWRS.Get());
+					pObjectMesh->Render(i);
+				}
+			}
+
+			else
+			{
+				const UINT64 instanceId = pair.first;
+
+				for (GameObject* pGameObject : gameObjects)
+				{
+					InstancingParams params;
+					params.matWorld = pGameObject->GetTransform()->GetWorldMatrix();
+					params.matWV = params.matWorld * _pCamera->GetViewMatrix();
+					params.matWVP = params.matWorld * _pCamera->GetViewMatrix() * _pCamera->GetProjectionMatrix();
+
+					AddParam(instanceId, params);
+				}
+
+				InstancingBuffer* pBuffer = mBuffers[instanceId];
+
+				gameObjects[0]->GetTransform()->PushData(_pCamera);
+				CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
+
+				shared_ptr<Mesh> pObjectMesh = gameObjects[0]->GetMeshRenderer()->GetMesh();
+				shared_ptr<Material> pObjectMaterial = gameObjects[0]->GetMeshRenderer()->GetMaterial();
+
+				if (gameObjects[0]->GetAnimator())
+				{
+					gameObjects[0]->GetAnimator()->PushData();
+					pObjectMaterial->SetIntAllSubset(1, 1);
+				}
+
+				pObjectMaterial->SetIntAllSubset(0, 1);
+				UINT32 meshCount = pObjectMesh->GetMeshContainerCount();
+
+				for (UINT32 i = 0; i < meshCount; ++i)
+				{
+					pObjectMaterial->PushGraphicDataExceptForShader(i);
+					CONST_BUFFER(ConstantBufferType::Material)->Mapping();
+					GET_SINGLE(Resources)->Get<Shader>(L"Forward")->UpdateShaderAndSampler();
+					GET_SINGLE(Resources)->Get<Shader>(L"Forward")->UpdateTopology();
+					GET_SINGLE(Resources)->Get<Shader>(L"Forward")->UpdateInputLayout();
+					CONTEXT->OMSetDepthStencilState(spDrawMaskedDSS.Get(), 1);
+
+					const float t = 0.05f;
+					const float blendColor[] = { t, t, t, 1.0f };
+					CONTEXT->OMSetBlendState(spMirrorBS.Get(), blendColor, 0xffffffff);
+					CONTEXT->RSSetState(spSolidCCWRS.Get());
+					pBuffer->PushData();
+					pObjectMesh->RenderInstancing(pBuffer, i);
+				}
+			}
+		}
 	}
 	void Mirror::RenderAlbedo(Camera* _pCamera)
 	{
@@ -233,12 +336,14 @@ namespace hm
 		CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
 
 		pMaterial->PushGraphicDataExceptForShader();
-		shared_ptr<Shader> pShader = pMaterial->GetShader();
+		shared_ptr<Shader> pShader = GET_SINGLE(Resources)->Get<Shader>(L"Mirror");
 
 		pShader->UpdateShaderAndSampler();
 		pShader->UpdateInputLayout();
 		pShader->UpdateTopology();
 		pMesh->Render();
+
+
 	}
 }
 
