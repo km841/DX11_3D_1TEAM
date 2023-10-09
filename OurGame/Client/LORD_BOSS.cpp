@@ -234,12 +234,14 @@ void LORD_BOSS::SetBehaviorTree()
 					{
 						isCrash = false;
 						GET_SINGLE(RenderManager)->AddCameraShakeEffect(0.03f, 0.02f);
+						pMonsterAttackCol->Enable();
 					}
 
 
 					else if (pAni->GetFrameRatio() > 0.35
 						&& pAni->GetFrameRatio() < 0.45)
 					{
+						
 						TurnSpeed = 4;
 						SlowTurnLive();
 						mMagnScale = 5;
@@ -251,6 +253,7 @@ void LORD_BOSS::SetBehaviorTree()
 						&& pAni->GetFrameRatio() < 0.50
 						&& isCrash == true)
 					{
+						pMonsterAttackCol->Enable();
 						isCrash = false;
 						GET_SINGLE(RenderManager)->AddCameraShakeEffect(0.03f, 0.02f);
 					}
@@ -258,6 +261,7 @@ void LORD_BOSS::SetBehaviorTree()
 					else if (pAni->GetFrameRatio() >= 0.65
 						&& pAni->GetFrameRatio() < 0.8)
 					{
+						
 						TurnSpeed = 4;
 						SlowTurnLive();
 						mMagnScale = 20;
@@ -269,11 +273,13 @@ void LORD_BOSS::SetBehaviorTree()
 						&& pAni->GetFrameRatio() < 0.85
 						&& isCrash == true)
 					{
+						pMonsterAttackCol->Enable();
 						isCrash = false;
 						GET_SINGLE(RenderManager)->AddCameraShakeEffect(0.03f, 0.02f);
 					}
 					else
 					{
+						pMonsterAttackCol->Disable();
 						PrevFollowSet();
 						isCrash = true;
 					}
@@ -788,7 +794,7 @@ void LORD_BOSS::SetBehaviorTree()
 					pAni->Play(1, true);
 
 				if (isWall == false) {
-					mMagnScale = 3.f;
+					mMagnScale = 4.f;
 					PrevFollowLive();
 				}
 				else if (isWall == true)
@@ -1649,7 +1655,7 @@ void LORD_BOSS::PrevFollowLive()
 
 
 	mSpeed = 8.f;
-	mMagnScale = 2.f;
+	mMagnScale = 3.f;
 }
 
 bool LORD_BOSS::LookRay()
@@ -1840,5 +1846,28 @@ void LORD_BOSS::CreateCow(Vec3 _pos)
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pBullKnocker);
 
 		//SetMeshTarget(pBullKnocker);
+	}
+}
+
+void LORD_BOSS::MonsterAttackCol()
+{
+	//몬스터 공격 콜라이더
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eGeometryType = GeometryType::Sphere;
+		physicsInfo.size = Vec3(5.f, 0.1f, 5.f);
+
+		pMonsterAttackCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"NoDraw", L"", false, LayerType::MonsterCol);
+		pMonsterAttackCol->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+		pMonsterAttackCol->GetTransform()->SetRotation(Vec3(00.f, 00.f, 0.f));
+		MonsterColScript* MonSc = pMonsterAttackCol->AddComponent(new MonsterColScript);
+		MonSc->SetOffSetPos(Vec3(0.f, -3.f, -0.f));
+		pMonsterAttackCol->Disable();
+
+		auto pFollowSc2 = pMonsterAttackCol->AddComponent(new OwnerFollowScript(this));
+
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pMonsterAttackCol);
+
 	}
 }

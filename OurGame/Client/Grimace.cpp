@@ -1298,7 +1298,8 @@ void Grimace::MonsterAttackCol()
 		pMonsterAttackCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"NoDraw", L"", false, LayerType::MonsterCol);
 		pMonsterAttackCol->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 		pMonsterAttackCol->GetTransform()->SetRotation(Vec3(00.f, 00.f, 0.f));
-		pMonsterAttackCol->AddComponent(new MonsterColScript);
+		MonsterColScript* MonSc = pMonsterAttackCol->AddComponent(new MonsterColScript);
+		MonSc->SetOffSetPos(Vec3(0.f, -4.f, 0.f));
 		pMonsterAttackCol->Disable();
 
 		auto pFollowSc2 = pMonsterAttackCol->AddComponent(new OwnerFollowScript(this));

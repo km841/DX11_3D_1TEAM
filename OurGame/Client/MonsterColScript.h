@@ -13,5 +13,8 @@ public:
 
     virtual Component* Clone(GameObject* _pGameObject);
 
+    void SetOffSetPos(Vec3 _Pos) { OffSetPos = _Pos; }
+private:
+    Vec3 OffSetPos;
 };
 
