@@ -21,6 +21,7 @@ namespace hm
 		Grandma_Boss,  //이거 더미 목록
 		Monster,
 		MonsterCol,
+		MonsterSlowCol,
 		MonsterHeavyCol,
 		Monster_ProjectTile,
 		Item,

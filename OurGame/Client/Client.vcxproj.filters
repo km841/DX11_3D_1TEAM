@@ -338,6 +338,12 @@
     <ClInclude Include="CameraHolder.h">
       <Filter>소스 파일\GameObject\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Pot_ProjectTile.h">
+      <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterSlowColScript.h">
+      <Filter>소스 파일\GameObject\Monster\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -673,6 +679,12 @@
     </ClCompile>
     <ClCompile Include="CameraHolder.cpp">
       <Filter>소스 파일\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Pot_ProjectTile.cpp">
+      <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterSlowColScript.cpp">
+      <Filter>소스 파일\GameObject\Monster\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

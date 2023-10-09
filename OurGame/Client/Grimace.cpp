@@ -26,6 +26,7 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "Resources.h"
+#include "RenderManager.h"
 
 /* GameObject */
 #include "GameObject.h"
@@ -86,7 +87,7 @@
 
 Grimace::Grimace()
 {
-	mMaxHP = 20.f;
+	mMaxHP = 30.f;
 	mHP = mMaxHP; // 피통
 	Health = (mHP / mMaxHP) * 100;
 	mSpeed = 6.f; //이동속도
@@ -329,7 +330,11 @@ void Grimace::SetBehaviorTree()
 				//pAni
 
 				//이부분 중요
-				GetRigidBody()->SetVelocityExcludingColliders(-dir * 8.0f);
+				if (pAni->GetFrameRatio() < 0.6f)
+					GetRigidBody()->SetVelocityExcludingColliders(-dir * 7.0f);
+				else
+					GetRigidBody()->SetVelocityExcludingColliders(-dir * 0.0f);
+
 				GetRigidBody()->SetVelocity(Ve);
 
 				Transform* pTr = GetTransform();
@@ -355,7 +360,12 @@ void Grimace::SetBehaviorTree()
 					float distance = (playerPos - myPos).Length();
 					Animator* pAni = GetAnimator();
 
-				
+					if (pAni->GetFrameRatio() > 0.9f)
+					{
+						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+						GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
+						pAni->Play(3, true);
+					}
 					
 
 					return BehaviorResult::Success;
@@ -401,7 +411,7 @@ void Grimace::SetBehaviorTree()
 						eState = MonsterBasicState::Trace_BackStep;
 					}
 
-					if (Health >= 41 && Health <= 51 && pAni->GetFrameRatio() > 0.7) //50% 미만일떄 디펜딩 자세 시작
+					if (Health >= 41 && Health <= 61 && pAni->GetFrameRatio() > 0.7) //50% 미만일떄 디펜딩 자세 시작
 					{
 						eState = MonsterBasicState::Defend_Start;
 					}
@@ -554,11 +564,15 @@ void Grimace::SetBehaviorTree()
 					Vec3 myPos = GetTransform()->GetPosition();
 					Animator* pAni = GetAnimator();
 
-					if (pAni->GetFrameRatio() > 0.7)
+					if (pAni->GetFrameRatio() > 0.7 && pAni->GetFrameRatio() < 0.8) {
 						pMonsterAttackCol->Enable();
-
-					if (pAni->GetFrameRatio() > 0.8)
+						pMonsterAttackCol->GetScript<MonsterColScript>()->SetAniRatio(pAni->GetFrameRatio());
+						GET_SINGLE(RenderManager)->AddCameraShakeEffect(0.05f, 0.04f);
+					}
+					if (pAni->GetFrameRatio() > 0.8) {
+						pMonsterAttackCol->GetScript<MonsterColScript>()->SetAniRatio(pAni->GetFrameRatio());
 						pMonsterAttackCol->Disable();
+					}
 
 					if (pAni->GetFrameRatio() > 0.98) {
 						return BehaviorResult::Success;
@@ -1293,12 +1307,16 @@ void Grimace::MonsterAttackCol()
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Kinematic;
 		physicsInfo.eGeometryType = GeometryType::Sphere;
-		physicsInfo.size = Vec3(9.f, 0.1f, 9.f);
+		physicsInfo.size = Vec3(10.f, 0.1f, 10.f);
+		//ChandelierSlam_Variant
+		pMonsterAttackCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Monster\\ChandelierSlam_Variant.fbx", false, LayerType::MonsterCol);
+		pMonsterAttackCol->GetMeshRenderer()->SetMaterial(pMonsterAttackCol->GetMeshRenderer()->GetMaterial()->Clone());
 
-		pMonsterAttackCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"NoDraw", L"", false, LayerType::MonsterCol);
-		pMonsterAttackCol->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+		pMonsterAttackCol->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
 		pMonsterAttackCol->GetTransform()->SetRotation(Vec3(00.f, 00.f, 0.f));
+		pMonsterAttackCol->GetMeshRenderer()->GetMaterial()->SetBloom(true);
 		MonsterColScript* MonSc = pMonsterAttackCol->AddComponent(new MonsterColScript);
+		MonSc->SetInit(Vec3(10.f, 1.f, 10.f), 0.7f);
 		MonSc->SetOffSetPos(Vec3(0.f, -4.f, 0.f));
 		pMonsterAttackCol->Disable();
 
