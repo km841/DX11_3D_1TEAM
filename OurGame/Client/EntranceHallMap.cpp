@@ -66,7 +66,7 @@ void EntranceHallMap::Initialize()
 {
 	Map::Initialize();
 
-	PLAYER->GetAudioSound()->SetSound(L"GrandmaBGM", this, true, "..\\Resources\\Sound\\GrandmaBGM.mp3");
+	PLAYER->GetAudioSound()->SetSound(L"GrandmaBGM", this, true, "..\\Resources\\Sound\\GrandmaHouseBGM.mp3");
 	PLAYER->GetAudioSound()->Play();
 }
 
