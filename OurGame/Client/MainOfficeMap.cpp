@@ -94,7 +94,6 @@ namespace yj
 		SetDirLightPosition(Vec3(-31.5f, 27.2f, 33.9f));
 		SetDirLightRotation(Vec3(41.7f, 136.54f, 294.54f));
 		mpMainCamera->GetScript<FocusingScript>()->SetFocusingTarget(spHolder);
-		SetGizmoTarget(spHolder);
 	}
 
 	void MainOfficeMap::FixedUpdate()
