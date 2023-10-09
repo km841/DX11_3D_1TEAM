@@ -15,6 +15,7 @@
 #include "Timer.h"
 #include "Mirror.h"
 #include "Animator.h"
+#include "ParticleSystem.h"
 
 
 namespace hm
@@ -206,6 +207,12 @@ namespace hm
 				continue;
 
 			RenderInstancing(pCameraObject->GetCamera(), pCameraObject->GetCamera()->GetEffectObjects());
+		}
+
+		for (GameObject* pGameObject : _pScene->mpMainCamera->GetCamera()->GetEffectObjects())
+		{
+			if (nullptr != pGameObject->GetParticleSystem())
+				pGameObject->GetParticleSystem()->Render(_pScene->mpMainCamera->GetCamera());
 		}
 	}
 

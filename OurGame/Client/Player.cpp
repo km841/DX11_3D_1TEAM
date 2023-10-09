@@ -71,6 +71,8 @@
 #include "ClimingEndState.h"
 #include "ClimingUpState.h"
 #include "BowState.h"
+#include "Map.h"
+#include "FocusingScript.h"
 
 Player* Player::spPlayer;
 
@@ -108,6 +110,7 @@ Player::Player()
 	mState[int(PlayerState::ClimingEndState)] = new ClimingEndState;
 	mState[int(PlayerState::ClimingUpState)] = new ClimingUpState;
 	mState[int(PlayerState::BowState)] = new BowState;
+
 
 	// Sword_Heavy
 	{
@@ -229,10 +232,18 @@ Player::Player()
 
 		pArrowSc = pArrow->AddComponent(new ArrowScript);
 
+		Effect* pEffect = Factory::CreateObject<Effect>(Vec3::Zero, L"Forward", L"", false);
+		pEffect->SetDontDestroyObject(L"ArrowParticle");
+		pEffect->AddComponent(new OwnerFollowScript(pArrow));
+		ParticleSystem* pParticle = pEffect->AddComponent(new ParticleSystem);
+		pParticle->SetStartColor(Vec3(1.f, 0.f, 0.f));
+		pParticle->SetEndColor(Vec3(1.f, 1.f, 0.5f));
+
 		pArrow->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
 		pArrow->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 		//gpEngine->GetTool()->UseGizmo();
 		//gpEngine->GetTool()->SetGameObject(pArrow);
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pEffect);
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pArrow);
 		//SetMeshTarget(pArrow);
 	}

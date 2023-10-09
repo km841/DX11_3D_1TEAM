@@ -50,8 +50,8 @@ namespace hm
 
 			// 스무딩된 목표 위치 계산
 			Vec3 smoothedTargetPos = myPos + (targetPos - myPos) * 0.2f;
-
 			Vec3 dir = smoothedTargetPos - myPos;
+
 			float distance = dir.Length();
 			if (distance < 0.01f)
 			{

@@ -14,13 +14,13 @@ namespace hm
 		, mpParticleBuffer(nullptr)
 		, mpSharedBuffer(nullptr)
 		, mMaxParticles(1000)
-		, mEndTime(1.f)
+		, mEndTime(0.25f)
 		, mAccTime(0.f)
-		, mStartSpeed(5.0f)
-		, mEndSpeed(15.f)
+		, mStartSpeed(1.0f)
+		, mEndSpeed(3.f)
 		, mElapsedTime(0.f)
-		, mCreateInterval(0.05f)
-		, mStartScale(2.f, 2.f, 2.f)
+		, mCreateInterval(0.001f)
+		, mStartScale(0.5f, 0.5f, 0.5f)
 		, mGravity(-0.1f)
 		, mAliveCount(0)
 		, mStartAngle(0.f)
@@ -46,8 +46,10 @@ namespace hm
 		mpMaterial = GET_SINGLE(Resources)->Get<Material>(L"Particle");
 		mpComputeMaterial = GET_SINGLE(Resources)->Get<Material>(L"ComputeParticle");
 
-		shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"Bubble", L"..\\Resources\\Texture\\bubble.png");
+		shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"Bubble", L"..\\Resources\\Texture\\Default-ParticleSystem.png");
+		shared_ptr<Texture> pNoiseTexture = GET_SINGLE(Resources)->Load<Texture>(L"NoiseParticle", L"..\\Resources\\Texture\\cloud_noise.png");
 		mpMaterial->SetTexture(0, pTexture);
+		mpMaterial->SetTexture(1, pNoiseTexture);
 
 		std::vector<ParticleInfo> particles(mMaxParticles);
 		mpParticleBuffer = new StructuredBuffer;
@@ -68,7 +70,7 @@ namespace hm
 
 		if (mCreateInterval < mAccTime)
 		{
-			mAliveCount = 1;
+			mAliveCount = 3;
 			mAccTime = 0.f;
 		}
 
@@ -97,6 +99,9 @@ namespace hm
 		mpComputeMaterial->SetVec2(0, Vec2(DELTA_TIME, mElapsedTime));
 		mpComputeMaterial->SetVec2(1, Vec2(mStartSpeed, mEndSpeed));
 		mpComputeMaterial->SetVec2(2, Vec2(mStartAngle, mEndAngle));
+		mpComputeMaterial->SetVec4(2, Vec4(mStartColor.x, mStartColor.y, mStartColor.z, 1.f));
+		mpComputeMaterial->SetVec4(3, Vec4(mEndColor.x, mEndColor.y, mEndColor.z, 1.f));
+
 
 		mpParticleBuffer->PushComputeUAVData(RegisterUAV::u0);
 		mpSharedBuffer->PushComputeUAVData(RegisterUAV::u1);
@@ -112,6 +117,7 @@ namespace hm
 		mpMaterial->PushGraphicDataExceptForTextures();
 
 		GET_SINGLE(Resources)->Get<Texture>(L"Bubble")->PushSRV(RegisterSRV::t0);
+		GET_SINGLE(Resources)->Get<Texture>(L"NoiseParticle")->PushSRV(RegisterSRV::t1);
 		CONST_BUFFER(ConstantBufferType::Material)->Mapping();
 		mpMesh->RenderInstancing(mMaxParticles);
 
