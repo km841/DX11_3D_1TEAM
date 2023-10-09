@@ -44,6 +44,7 @@ namespace hm
 	{
 		Matrix matWorld = GetTransform()->GetWorldMatrix();
 		Matrix matWorldInv = matWorld.Invert();
+		mMatOldView = mMatView;
 		mMatView = matWorldInv;
 
 		if (ProjectionType::Perspective == meProjectionType)

@@ -53,6 +53,9 @@ namespace hm
 				if (nullptr != GetAnimator())
 					mpMaterial->SetInt(1, 1, i, j);
 
+				if (true == GetGameObject()->IsMotionBlur())
+					mpMaterial->SetVec4(2, Vec4(1.f, 0.f, 0.f, 0.f), i, j);
+
 				mpMaterial->PushGraphicData(i, j);
 				CONST_BUFFER(ConstantBufferType::Material)->Mapping();
 				CONST_BUFFER(ConstantBufferType::Bloom)->Mapping();
@@ -88,6 +91,9 @@ namespace hm
 			{
 				if (nullptr != GetAnimator())
 					mpMaterial->SetInt(1, 1, i, j);
+
+				if (true == GetGameObject()->IsMotionBlur())
+					mpMaterial->SetVec4(2, Vec4(1.f, 0.f, 0.f, 0.f), i, j);
 				
 				mpMaterial->PushGraphicData(i, j);
 				CONST_BUFFER(ConstantBufferType::Material)->Mapping();

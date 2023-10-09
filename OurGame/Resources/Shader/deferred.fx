@@ -28,6 +28,7 @@ struct VS_OUT
     float3 viewNormal : NORMAL;
     float3 viewTangent : TANGENT;
     float3 viewBinormal : BINORMAL;
+    float4 dir : DIR;
 };
 
 VS_OUT VS_Main(VS_IN _in)
@@ -35,8 +36,7 @@ VS_OUT VS_Main(VS_IN _in)
     VS_OUT output = (VS_OUT) 0;
     
     int instancingFlag = g_int_0;
-    
-    
+    int motion_blur_flag = g_vec4_2.x;
     
     if (1 == instancingFlag)
     {
@@ -58,16 +58,18 @@ VS_OUT VS_Main(VS_IN _in)
         
         if (g_int_2 == 1)
         {
-            row_major matrix reflect_matWV = g_matWorld * g_reflect_mat * g_matView;
-            row_major matrix reflect_matVP = g_reflect_mat * g_matView * g_matProjection;
-            row_major matrix reflect_matWVP = g_matWorld * reflect_matVP;
+            row_major matrix matWRV = g_matWorld;
+            row_major matrix matWRVP = g_matWorld;
+            matWRV = mul(matWRV, g_reflect_mat);
+            matWRV = mul(matWRV, g_matView);
+            matWRVP = mul(matWRV, g_matProjection);
             
-            output.pos = mul(float4(_in.pos, 1.f), reflect_matWVP);
+            output.pos = mul(float4(_in.pos, 1.f), matWRVP);
             output.uv = _in.uv;
-            output.viewPos = mul(float4(_in.pos, 1.f), reflect_matWV).xyz;
-            output.projPos = mul(float4(_in.pos, 1.f), reflect_matWVP);
-            output.viewNormal = normalize(mul(float4(_in.normal, 0.f), reflect_matWV)).xyz;
-            output.viewTangent = normalize(mul(float4(_in.tangent, 0.f), reflect_matWV)).xyz;
+            output.viewPos = mul(float4(_in.pos, 1.f), matWRV).xyz;
+            output.projPos = mul(float4(_in.pos, 1.f), matWRVP);
+            output.viewNormal = normalize(mul(float4(_in.normal, 0.f), matWRV)).xyz;
+            output.viewTangent = normalize(mul(float4(_in.tangent, 0.f), matWRV)).xyz;
             output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal));
         }
         else
@@ -81,6 +83,23 @@ VS_OUT VS_Main(VS_IN _in)
             output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal));
         }
     }
+    if (1 == motion_blur_flag)
+    {
+        float4 currentPos = output.pos;
+        float4 oldPos = mul(float4(_in.pos, 1.f), g_matOldWorld);
+        oldPos = mul(oldPos, g_matOldView);
+        oldPos = mul(oldPos, g_matProjection);
+    
+        float3 dir = currentPos - oldPos;
+        float check = dot(normalize(dir), normalize(output.viewNormal));
+        output.pos = check < 0.f ? oldPos : currentPos;
+
+        float2 velocity = (currentPos.xy / currentPos.w) - (oldPos.xy / oldPos.w);
+        output.dir.xy = velocity * 0.5f;
+        output.dir.y *= -1.f;
+        output.dir.z *= output.pos.z;
+        output.dir.w *= output.pos.w;
+    }
 
     return output;
 }
@@ -92,12 +111,14 @@ struct PS_OUT
     float4 color : SV_Target2;
     float4 bloom : SV_Target3;
     float4 depth : SV_Target4;
+    float4 dir : SV_Target5;
 };
 
 PS_OUT PS_Main(VS_OUT _in)
 {
     PS_OUT output = (PS_OUT) 0;
    
+    int motion_blur_flag = g_vec4_2.x;
     float4 bloomColor = g_bloomColor;
     float4 color = float4(g_vec4_0.xyz, 1.f);
     
@@ -132,6 +153,13 @@ PS_OUT PS_Main(VS_OUT _in)
     output.depth.xyz = (float3) (_in.projPos.z / _in.projPos.w);
     output.depth.w = _in.projPos.w;
     output.depth.yzw = _in.viewPos;
+    
+    //if (1 == motion_blur_flag)
+    //{
+    //    output.dir.xy = _in.dir.xy;
+    //    output.dir.z = 1.f;
+    //    output.dir.w = _in.dir.z / _in.dir.w;
+    //}
     
     if (length(g_bloomFilter) > 0)
     {

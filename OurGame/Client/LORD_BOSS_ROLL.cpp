@@ -32,6 +32,7 @@
 #include "LadderCollider.h"
 #include "HeadRoller.h"
 #include "Grimace_ProjectTile.h"
+#include "LORD_BOSS.h"
 
 /* Component */
 #include "Collider.h"
@@ -131,6 +132,11 @@ void LORD_BOSS_ROLL::OnTriggerEnter(Collider* _pOtherCollider)
 		}
 
 		mGroundCount++;
+	}
+
+	if (LayerType::WallObject == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		pLord_Boss->OnTriggerEnter(_pOtherCollider);
 	}
 }
 
