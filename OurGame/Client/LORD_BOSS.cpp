@@ -36,6 +36,8 @@
 #include "Grimace_ProjectTile.h"
 #include "LORD_BOSS_ROLL.h"
 #include "Cow.h"
+#include "IrreparablePot.h"
+#include "Pot_ProjectTile.h"
 
 /* Component */
 #include "Collider.h"
@@ -59,6 +61,7 @@
 #include "BowScript.h"
 #include "ArrowScript.h"
 #include "MonsterColScript.h"
+#include "MonsterSlowColScript.h"
 
 LORD_BOSS::LORD_BOSS()
 {
@@ -71,7 +74,7 @@ LORD_BOSS::LORD_BOSS()
 	
 	mAttackDamage = 1; // 공격력
 	
-
+	MonsterAttackCol();
 	meBasicState = MonsterBasicState::Idle;
 }
 
@@ -174,7 +177,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					//meBasicState = MonsterBasicState::Laser_Start;
+					meBasicState = MonsterBasicState::Silent_Clap;
 					return BehaviorResult::Success;
 				});
 
@@ -218,11 +221,13 @@ void LORD_BOSS::SetBehaviorTree()
 				{
 					Animator* pAni = GetAnimator();
 					
+					pMonsterAttackCol->GetScript<MonsterColScript>()->SetAniRatio(pAni->GetFrameRatio());
+
 					if (pAni->GetFrameRatio() > 0.1
 						&& pAni->GetFrameRatio() < 0.2)
 					{
-						TurnSpeed = 4;
-						SlowTurnLive();
+						//TurnSpeed = 4;
+						SlowTurn();
 						mMagnScale = 5;
 						PrevFollowLive();
 					}
@@ -235,6 +240,8 @@ void LORD_BOSS::SetBehaviorTree()
 						isCrash = false;
 						GET_SINGLE(RenderManager)->AddCameraShakeEffect(0.03f, 0.02f);
 						pMonsterAttackCol->Enable();
+						//pMonsterAttackCol->GetScript<MonsterColScript>()->SetAniRatio(pAni->GetFrameRatio());
+						pMonsterAttackCol->GetScript<MonsterColScript>()->SetInit(Vec3(7.f, 1.f, 7.f), 0.2f,2.f);
 					}
 
 
@@ -242,8 +249,8 @@ void LORD_BOSS::SetBehaviorTree()
 						&& pAni->GetFrameRatio() < 0.45)
 					{
 						
-						TurnSpeed = 4;
-						SlowTurnLive();
+						//TurnSpeed = 4;
+						SlowTurn();
 						mMagnScale = 5;
 						PrevFollowLive();
 					}
@@ -253,17 +260,19 @@ void LORD_BOSS::SetBehaviorTree()
 						&& pAni->GetFrameRatio() < 0.50
 						&& isCrash == true)
 					{
-						pMonsterAttackCol->Enable();
 						isCrash = false;
 						GET_SINGLE(RenderManager)->AddCameraShakeEffect(0.03f, 0.02f);
+						pMonsterAttackCol->Enable();
+						//pMonsterAttackCol->GetScript<MonsterColScript>()->SetAniRatio(pAni->GetFrameRatio());
+						pMonsterAttackCol->GetScript<MonsterColScript>()->SetInit(Vec3(7.f, 1.f, 7.f), 0.45f,2.f);
 					}
 
 					else if (pAni->GetFrameRatio() >= 0.65
 						&& pAni->GetFrameRatio() < 0.8)
 					{
 						
-						TurnSpeed = 4;
-						SlowTurnLive();
+						//TurnSpeed = 4;
+						SlowTurn();
 						mMagnScale = 20;
 						PrevFollowLive();
 					}
@@ -273,9 +282,11 @@ void LORD_BOSS::SetBehaviorTree()
 						&& pAni->GetFrameRatio() < 0.85
 						&& isCrash == true)
 					{
-						pMonsterAttackCol->Enable();
 						isCrash = false;
 						GET_SINGLE(RenderManager)->AddCameraShakeEffect(0.03f, 0.02f);
+						pMonsterAttackCol->Enable();
+						//pMonsterAttackCol->GetScript<MonsterColScript>()->SetAniRatio(pAni->GetFrameRatio());
+						pMonsterAttackCol->GetScript<MonsterColScript>()->SetInit(Vec3(7.f, 1.f, 7.f), 0.8f, 2.f);
 					}
 					else
 					{
@@ -283,6 +294,7 @@ void LORD_BOSS::SetBehaviorTree()
 						PrevFollowSet();
 						isCrash = true;
 					}
+						
 
 					return BehaviorResult::Success;
 				});
@@ -353,6 +365,7 @@ void LORD_BOSS::SetBehaviorTree()
 				Animator* pAni = GetAnimator();
 
 				if (pAni->GetFrameRatio() > 0.5) {
+					MonsterSilent_ClapCol();
 					return BehaviorResult::Success;
 				}
 				return BehaviorResult::Failure;
@@ -395,6 +408,8 @@ void LORD_BOSS::SetBehaviorTree()
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (10 != animIndex)
 				{
+					CreatePOTProJectTile();
+
 					pAnimator->Play(10, true);
 				}
 				return BehaviorResult::Success;
@@ -422,6 +437,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
+					CreatePOTProJectTile(-1);
 					PrevState = meBasicState;
 					meBasicState = MonsterBasicState::Idle;
 					return BehaviorResult::Success;
@@ -711,8 +727,8 @@ void LORD_BOSS::SetBehaviorTree()
 			// 이동+Col 처리 하는곳
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
-					TurnSpeed = 3;
-					SlowTurnLive();
+					//TurnSpeed = 3;
+					SlowTurn();
 					
 					Transform* pObjTr = pObject->GetTransform();
 					Transform* pTr = GetTransform();
@@ -794,7 +810,7 @@ void LORD_BOSS::SetBehaviorTree()
 					pAni->Play(1, true);
 
 				if (isWall == false) {
-					mMagnScale = 4.f;
+					mMagnScale = 7.f;
 					PrevFollowLive();
 				}
 				else if (isWall == true)
@@ -1123,7 +1139,7 @@ void LORD_BOSS::SetBehaviorTree()
 				{
 					mMagnScale = 3.f;
 					LaserPrevFollowLive();
-					SlowTurnLive();
+					SlowTurn();
 					return BehaviorResult::Success;
 				});
 
@@ -1303,7 +1319,7 @@ void LORD_BOSS::Update()
 	Health = (mHP / mMaxHP) * 100;
 	Monster::Update();
 
-	SlowTurnLive();
+	
 }
 
 void LORD_BOSS::FixedUpdate()
@@ -1461,7 +1477,7 @@ void LORD_BOSS::SlowTurn()
 	else if (check < 0.f)
 		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Right * DELTA_TIME));
 
-	TurnSpeed = 50.f;
+	TurnSpeed = 250.f;
 }
 
 void LORD_BOSS::Follow()
@@ -1690,11 +1706,20 @@ void LORD_BOSS::LaserFollow_Turn()
 
 	PosDir = LaserPos - myPos; //목표 위치
 
-	if (PosDir.Length() < 1) {
+	if (PosDir.Length() < 2) {
 		GetRigidBody()->SetVelocity(Vec3::Zero);
 		return;
 	}
 	PosDir.Normalize();
+
+	Vec3 Ve = PosDir * (mSpeed * mMagnScale);
+	GetRigidBody()->SetVelocity(Ve);
+
+
+
+
+
+
 	Vec3 Rot = pTr->GetRotation();
 	float TargetRot = LaserRot.z;
 	//Vec3 rot = Vec3(0, 0, -1);
@@ -1706,15 +1731,13 @@ void LORD_BOSS::LaserFollow_Turn()
 
 	int Right = TurnSpeed;
 	int Left = -TurnSpeed;
-	if (Rot.z + 3 < TargetRot)
+	if (Rot.z + 4 < TargetRot)
 		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Right));
-	else if (Rot.z - 3 > TargetRot)
+	else if (Rot.z - 4 > TargetRot)
 		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Left));
 	else if (Rot.z == TargetRot)
 		pTr->SetRotation(Vec3(-90.f, 0.f, TargetRot));
 
-	Vec3 Ve = PosDir * (mSpeed * mMagnScale);
-	GetRigidBody()->SetVelocity(Ve);
 
 	TurnSpeed = 6.f;
 }
@@ -1856,18 +1879,173 @@ void LORD_BOSS::MonsterAttackCol()
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Kinematic;
 		physicsInfo.eGeometryType = GeometryType::Sphere;
-		physicsInfo.size = Vec3(5.f, 0.1f, 5.f);
+		physicsInfo.size = Vec3(7.f, 0.1f, 7.f);
 
-		pMonsterAttackCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"NoDraw", L"", false, LayerType::MonsterCol);
+		pMonsterAttackCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Monster\\ChandelierSlam_Variant.fbx", false, LayerType::MonsterCol);
+		pMonsterAttackCol->GetMeshRenderer()->SetMaterial(pMonsterAttackCol->GetMeshRenderer()->GetMaterial()->Clone());
 		pMonsterAttackCol->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 		pMonsterAttackCol->GetTransform()->SetRotation(Vec3(00.f, 00.f, 0.f));
+		pMonsterAttackCol->GetMeshRenderer()->GetMaterial()->SetBloom(true);
+
 		MonsterColScript* MonSc = pMonsterAttackCol->AddComponent(new MonsterColScript);
+		MonSc->SetInit(Vec3(7.f, 1.f, 7.f), 0.2f);
 		MonSc->SetOffSetPos(Vec3(0.f, -3.f, -0.f));
 		pMonsterAttackCol->Disable();
 
 		auto pFollowSc2 = pMonsterAttackCol->AddComponent(new OwnerFollowScript(this));
 
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pMonsterAttackCol);
+
+	}
+}
+
+void LORD_BOSS::MonsterSilent_ClapCol()
+{
+	Vec3 pPlayerPos = PLAYER->GetTransform()->GetPosition();
+	pPlayerPos.y += 0.2f;
+	//몬스터 공격 콜라이더
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eGeometryType = GeometryType::Sphere;
+		physicsInfo.size = Vec3(7.f, 0.1f, 7.f);
+
+		pMonsterSilent_ClapCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(pPlayerPos), physicsInfo, L"Forward", L"..\\Resources\\FBX\\Monster\\SilenceEffect.fbx", false, LayerType::MonsterSlowCol);
+		pMonsterSilent_ClapCol->GetMeshRenderer()->SetMaterial(pMonsterSilent_ClapCol->GetMeshRenderer()->GetMaterial()->Clone());
+		pMonsterSilent_ClapCol->GetTransform()->SetScale(Vec3(10.f, 1.f, 10.f));
+		pMonsterSilent_ClapCol->GetTransform()->SetRotation(Vec3(00.f, 00.f, 0.f));
+		pMonsterSilent_ClapCol->GetMeshRenderer()->GetMaterial()->SetBloom(true);
+		pMonsterSilent_ClapCol->Initialize();
+		MonsterSlowColScript* MonSlowSc = pMonsterSilent_ClapCol->AddComponent(new MonsterSlowColScript);
+		pMonsterSilent_ClapCol->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
+
+		TOOL->UseMeshTool();
+		TOOL->SetGameObject(pMonsterSilent_ClapCol);
+		
+
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pMonsterSilent_ClapCol);
+
+	}
+}
+
+void LORD_BOSS::CreatePOTProJectTile()
+{
+	static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 난수 엔진
+	static std::uniform_int_distribution<int> distribution(-8, 8);          // 생성 범위
+	static auto generator = std::bind(distribution, engine);
+	Transform* pTr = GetTransform();
+	PotProjectPos = pTr->GetPosition();
+	PotProjectPos.x += generator() * 1;
+	PotProjectPos.z += abs(generator()) * 2;
+	PotProjectPos.y += 10;
+
+	Vec3 PlayerPos = PLAYER->GetTransform()->GetPosition();
+
+	Vec3 PotDir = PlayerPos - PotProjectPos;
+	PotDir.y += 10;
+	PotDir.Normalize();
+	PotDir *= 10;
+	//키+파란색 항아리 두번째 - POT_Key
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+		GameObject* pPot2 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(PotProjectPos), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\OrgPot.fbx", false, LayerType::Monster_ProjectTile);
+		pPot2->GetMeshRenderer()->SetMaterial(pPot2->GetMeshRenderer()->GetMaterial()->Clone());
+		pPot2->GetTransform()->SetRotation(Vec3(0.00f, 0.00f, 90.00f));
+		pPot2->GetTransform()->SetScale(Vec3(3.15f, 2.85f, 3.15f));
+		pPot2->Initialize();
+		pPot2->GetRigidBody()->ApplyGravity();
+		pPot2->GetRigidBody()->SetVelocity(PotDir);
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloom(true, 1);
+		
+	
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 0);
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 1);
+		
+		
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.2f, 0.2f, 0.2f), 0);
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.2f, 0.2f, 0.2f), 1);
+		
+	
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pPot2);
+
+
+
+		PhysicsInfo basePhysicsInfo;
+		basePhysicsInfo.eActorType = ActorType::Kinematic;
+		basePhysicsInfo.eGeometryType = GeometryType::Box;
+		basePhysicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+		Pot_ProjectTile* pIrreparablePot = Factory::CreateObjectHasPhysical<Pot_ProjectTile>(Vec3(PotProjectPos), basePhysicsInfo, L"Deferred", L"", false, pPot2);
+		pIrreparablePot->Initialize();
+		pIrreparablePot->GetRigidBody()->ApplyGravity();
+		pIrreparablePot->GetRigidBody()->SetVelocity(PotDir);
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pIrreparablePot);
+
+	}
+}
+
+void LORD_BOSS::CreatePOTProJectTile(int _a)
+{
+	static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 난수 엔진
+	static std::uniform_int_distribution<int> distribution(-8, 8);          // 생성 범위
+	static auto generator = std::bind(distribution, engine);
+	Transform* pTr = GetTransform();
+	PotProjectPos = pTr->GetPosition();
+	PotProjectPos.x += generator() * 1.5f * _a;
+	PotProjectPos.z += abs(generator()) * 2;
+	PotProjectPos.y += 10;
+
+	Vec3 PlayerPos = PLAYER->GetTransform()->GetPosition();
+
+	Vec3 PotDir = PlayerPos - PotProjectPos;
+	PotDir.y += 10;
+	PotDir.Normalize();
+	PotDir *= 10;
+	//키+파란색 항아리 두번째 - POT_Key
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+		GameObject* pPot2 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(PotProjectPos), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\OrgPot.fbx",false,LayerType::Monster_ProjectTile);
+		pPot2->GetMeshRenderer()->SetMaterial(pPot2->GetMeshRenderer()->GetMaterial()->Clone());
+		pPot2->GetTransform()->SetRotation(Vec3(0.00f, 0.00f, 90.00f));
+		pPot2->GetTransform()->SetScale(Vec3(3.15f, 2.85f, 3.15f));
+		pPot2->Initialize();
+		pPot2->GetRigidBody()->ApplyGravity();
+		pPot2->GetRigidBody()->SetVelocity(PotDir);
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloom(true, 1);
+
+
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 0);
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 1);
+
+
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.2f, 0.2f, 0.2f), 0);
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.2f, 0.2f, 0.2f), 1);
+
+
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pPot2);
+
+
+
+		PhysicsInfo basePhysicsInfo;
+		basePhysicsInfo.eActorType = ActorType::Kinematic;
+		basePhysicsInfo.eGeometryType = GeometryType::Box;
+		basePhysicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+		Pot_ProjectTile* pIrreparablePot = Factory::CreateObjectHasPhysical<Pot_ProjectTile>(Vec3(PotProjectPos), basePhysicsInfo, L"Deferred", L"", false, pPot2);
+		pIrreparablePot->Initialize();
+		pIrreparablePot->GetRigidBody()->ApplyGravity();
+		pIrreparablePot->GetRigidBody()->SetVelocity(PotDir);
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pIrreparablePot);
 
 	}
 }

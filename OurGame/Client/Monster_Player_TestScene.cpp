@@ -108,6 +108,10 @@ namespace hm {
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::ArrowCol);
 
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PlayerCol, LayerType::Monster_ProjectTile);
+
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::Ground);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::WallObject);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::PotCell);
 		
 
 		//GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
@@ -135,6 +139,8 @@ namespace hm {
 			AddGameObject(pFloor);
 			
 		}
+
+		
 
 		PLAYER->GetTransform()->SetPosition(Vec3(0.f, -7.f, 0.f));
 
@@ -184,8 +190,8 @@ namespace hm {
 			pLordOfDoorRoll->SetLORD_BOSS(pLordOfDoor);
 			
 
-			//AddGameObject(pLordOfDoorRoll);
-			//AddGameObject(pLordOfDoor);
+			AddGameObject(pLordOfDoorRoll);
+			AddGameObject(pLordOfDoor);
 			//SetMeshTarget(pLordOfDoor);
 		
 		}
@@ -262,8 +268,8 @@ namespace hm {
 				p_E_GRIMACE_KNIGHT->GetAnimator()->SetPlaySpeed(i, 0.8f);
 			}
 			//SetGizmoTarget(p_E_GRIMACE_KNIGHT);
-			AddGameObject(p_E_GRIMACE_KNIGHT);
-			SetMeshTarget(p_E_GRIMACE_KNIGHT);
+			//AddGameObject(p_E_GRIMACE_KNIGHT);
+			//SetMeshTarget(p_E_GRIMACE_KNIGHT);
 		}
 
 		// 박쥐
@@ -308,7 +314,7 @@ namespace hm {
 		{
 			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, -8.6f, 0.f), L"Forward", L"", false, LayerType::Mirror);
 
-			pMirror->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Test11", L"..\\Resources\\Texture\\White.png"));
+			pMirror->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Test11", L"..\\Resources\\Texture\\Black.png"));
 			pMirror->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 			pMirror->AddComponent(new Mirror);
 			pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
@@ -327,12 +333,81 @@ namespace hm {
 			Light* pLight = pGameObject->AddComponent(new Light);
 			pLight->SetDiffuse(Vec3(1.f, 1.f, 1.f));
 			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
-			pLight->SetLightRange(100.f);
+			pLight->SetLightRange(10.f);
 			pLight->SetLightType(LightType::PointLight);
 			AddGameObject(pGameObject);
 		}
 
 		DisableDirLight();
+
+		// 벽 
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(1.f, 100.f, 100.f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(50.f, 0.0f, -7.6f), info, L"Forward", L"");
+
+			pWall->GetTransform()->SetScale(Vec3(50.f, 1.f, 50.f));
+			pWall->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
+			pWall->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(114, 114, 115));
+
+			AddGameObject(pWall);
+
+		}
+		// 벽 
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(1.f, 100.f, 100.f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-50.f, 0.0f, -7.6f), info, L"Forward", L"");
+
+			pWall->GetTransform()->SetScale(Vec3(50.f, 1.f, 50.f));
+			pWall->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
+			pWall->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(114, 114, 115));
+
+			AddGameObject(pWall);
+
+		}
+
+		// 벽 
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(1.f, 100.f, 100.f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(4.f, 0.0f, -43.6f), info, L"Forward", L"");
+
+			pWall->GetTransform()->SetScale(Vec3(50.f, 1.f, 50.f));
+			pWall->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+			pWall->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
+			pWall->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(114, 114, 115));
+
+			AddGameObject(pWall);
+			//SetGizmoTarget(pWall);
+		}
+
+		// 벽 
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Static;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(1.f, 100.f, 100.f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(4.f, 0.0f, 43.6f), info, L"Forward", L"");
+
+			pWall->GetTransform()->SetScale(Vec3(50.f, 1.f, 50.f));
+			pWall->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+			pWall->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
+			pWall->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(114, 114, 115));
+
+			AddGameObject(pWall);
+			//SetGizmoTarget(pWall);
+		}
 	}
 	void Monster_Player_TestScene::Exit()
 	{
