@@ -239,7 +239,7 @@ void EntranceHallMap::InitObjectAdd()
 	}
 #pragma endregion
 
-#pragma region "벽패널"
+#pragma region 벽패널
 	//벽패널 1 - WallPanel	
 	{
 		DecoObject* pWallPanel = Factory::CreateObject<DecoObject>(Vec3(5.90f, -3.30f, 8.75f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\R_EntranceHallMap\\WallPanel.fbx");

@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "TitleScene.h"
 #include "Engine.h"
 
@@ -83,7 +83,7 @@ namespace hm
 
 			mpSelectedInterface->GetTransform()->SetPosition(pos);
 		}
-		
+
 		// 현모
 		// - GrandmaBossMap
 		// - Right2Map
@@ -236,7 +236,7 @@ namespace hm
 			pTransform->SetPosition(Vec3(0.f, 0.f, 0.f));
 			AddGameObject(pGameObject);
 		}
-		
+
 		// Create DirLight
 		{
 			GameObject* pGameObject = new GameObject(LayerType::Unknown);
@@ -266,7 +266,7 @@ namespace hm
 		}
 
 		// Buttons
-		{		
+		{
 			// 현모
 			{
 				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(-450.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
@@ -280,10 +280,10 @@ namespace hm
 				pButtonScript->SetClickedCallback([=]() { pScript->Start(); });
 
 				// 마우스가 버튼에서 벗어났을 때
-				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"현모", 35.f, true); }); 
+				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"현모", 35.f, true); });
 
 				// 마우스가 버튼에 올라갔을 때
-				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"현모", 40.f, true); mpActiveInterface = pInterface; }); 
+				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"현모", 40.f, true); mpActiveInterface = pInterface; });
 
 				// 텍스쳐 알파값 지정
 				pInterface->SetAlpha(0.f);
@@ -372,39 +372,9 @@ namespace hm
 
 		}
 
-
-		//Player
-		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Kinematic;
-			physicsInfo.eGeometryType = GeometryType::Capsule;
-			physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
-
-			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, -100.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
-			pPlayer->SetDontDestroyObject(L"Player");
-			pPlayer->SetReflect(true);
-
-			AudioSound* pSound = pPlayer->AddComponent(new AudioSound);
-			pSound->SetSound(L"BGM", this, true, "..\\Resources\\Sound\\TitleBGM.mp3");
-			pSound->Play();
-
-			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
-			yj::PlayerMoveOverMapScript* pMoveOverSc = pPlayer->AddComponent(new yj::PlayerMoveOverMapScript);
-			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
-			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
-			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
-			pPlayer->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.6f, 0.f));
-
-			pPlayer->GetRigidBody()->ApplyGravity();
-			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-			AddGameObject(pPlayer);
-			//SetMeshTarget(pPlayer);
-		}
-
-		AddSceneChangeCallback(L"플레이어 충돌 초기화", []() 
+		AddSceneChangeCallback(L"플레이어 충돌 초기화", []()
 			{
-				GET_SINGLE(CollisionManager)->ClearAllCollisionForObject(PLAYER); 
+				GET_SINGLE(CollisionManager)->ClearAllCollisionForObject(PLAYER);
 			});
 
 	}
@@ -414,4 +384,3 @@ namespace hm
 		PLAYER->GetAudioSound()->Stop();
 	}
 }
-
