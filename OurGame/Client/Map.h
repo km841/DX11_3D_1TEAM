@@ -24,12 +24,20 @@ namespace hm
 	public:
 		void SetGizmoTarget(GameObject* _pTarget);
 		void SetMeshTarget(GameObject* _pTarget);
-		void SetCameraHolder(CameraHolder* _pHolder);
-		CameraHolder* GetCameraHolder() { return spHolder; }
+		void SetPlayerHolder(GameObject* _pHolder);
+		void SetCutSceneHolder(GameObject* _pHolder);
+		static GameObject* GetPlayerHolder() { return spPlayerHolder; }
+		static GameObject* GetCutSceneHolder() { return spCutSceneHolder; }
+
+		void ChangeCameraMode() { std::swap(mpMainCamera, mpCutSceneCamera); }
+		static void SetPlayerHolderPosition(const Vec3& _pos);
+		static void SetCutSceneHolderPosition(const Vec3& _pos);
 
 	protected:
 		GameObject* mTarget = nullptr;
-		static CameraHolder* spHolder;
+		static GameObject* spPlayerHolder;
+		static GameObject* spCutSceneHolder;
+		static GameObject* spCutSceneFocusingTarget;
 		bool mbShadow;
 	};
 }

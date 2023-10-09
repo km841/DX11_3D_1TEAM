@@ -50,6 +50,7 @@
 #include "PlayerMoveScript.h"
 #include "PlayerMoveOverMapScript.h"
 #include "FocusingScript.h"
+#include "OwnerFollowScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -57,7 +58,7 @@
 namespace hm
 {
 	TitleScene::TitleScene()
-		: Scene(SceneType::Title)
+		: Map(SceneType::Title)
 	{
 	}
 
@@ -88,7 +89,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::EntranceHallMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
 		}
 
 		// 지형
@@ -146,6 +147,35 @@ namespace hm
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
 
+		//Player
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Capsule;
+			physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
+
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, -100.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
+			pPlayer->SetDontDestroyObject(L"Player");
+			pPlayer->SetReflect(true);
+
+			AudioSound* pSound = pPlayer->AddComponent(new AudioSound);
+			pSound->SetSound(L"BGM", this, true, "..\\Resources\\Sound\\TitleBGM.mp3");
+			pSound->Play();
+
+			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
+			yj::PlayerMoveOverMapScript* pMoveOverSc = pPlayer->AddComponent(new yj::PlayerMoveOverMapScript);
+			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
+			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
+			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
+			pPlayer->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.6f, 0.f));
+
+			pPlayer->GetRigidBody()->ApplyGravity();
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+			AddGameObject(pPlayer);
+			//SetMeshTarget(pPlayer);
+		}
+
 		// Create Main Camera
 		{
 			GameObject* pGameObject = new GameObject(LayerType::Unknown);
@@ -155,7 +185,9 @@ namespace hm
 
 			Camera* pCamera = pGameObject->AddComponent(new Camera);
 			pGameObject->AddComponent(new CameraMoveScript);
-			pGameObject->AddComponent(new FocusingScript);
+			FocusingScript* pScript = pGameObject->AddComponent(new FocusingScript);
+			pScript->SetFollowTarget(spPlayerHolder);
+			pScript->SetFocusingTarget(PLAYER);
 			//pGameObject->AddComponent(new yj::CinematicCamMove);
 
 			pCamera->SetCullingMask(LayerType::Interface, true);
@@ -165,6 +197,11 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
+		// Holder ����
+		{
+			OwnerFollowScript* pFollowScript = spPlayerHolder->AddComponent(new OwnerFollowScript(PLAYER));
+			pFollowScript->SetOffset(Vec3(-10.f, 30.f, 20.f));
+		}
 
 		// Create UI Camera
 		{
@@ -176,6 +213,25 @@ namespace hm
 			pCamera->SetProjectionType(ProjectionType::Orthographic);
 			pCamera->EnableAllCullingMask();
 			pCamera->SetCullingMask(LayerType::Interface, false);
+
+			pTransform->SetPosition(Vec3(0.f, 0.f, 0.f));
+			AddGameObject(pGameObject);
+		}
+
+		// Create CutScene Camera
+		{
+			GameObject* pGameObject = new GameObject(LayerType::Unknown);
+			pGameObject->SetDontDestroyObject(L"CutSceneCamera");
+			Transform* pTransform = pGameObject->AddComponent(new Transform);
+			pGameObject->AddComponent(new RigidBody);
+
+			Camera* pCamera = pGameObject->AddComponent(new Camera);
+			pGameObject->AddComponent(new CameraMoveScript);
+			FocusingScript* pScript = pGameObject->AddComponent(new FocusingScript);
+			pScript->SetFollowTarget(spCutSceneHolder);
+			pScript->SetFocusingTarget(spCutSceneFocusingTarget);
+			pCamera->SetCullingMask(LayerType::Interface, true);
+			pCamera->SetCullingMask(LayerType::Mirror, true);
 
 			pTransform->SetPosition(Vec3(0.f, 0.f, 0.f));
 			AddGameObject(pGameObject);
@@ -214,6 +270,7 @@ namespace hm
 			// 현모
 			{
 				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(-450.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
+
 				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"현모", MapType::Monster_Player_Test));
 
 				// 클릭 기능을 스크립트로 구현
@@ -314,6 +371,7 @@ namespace hm
 			}
 
 		}
+
 
 		//Player
 		{

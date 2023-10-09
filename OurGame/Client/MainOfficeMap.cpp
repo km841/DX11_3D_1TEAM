@@ -75,6 +75,12 @@ namespace yj
 	void MainOfficeMap::Update()
 	{
 		Map::Update();
+
+		if (IS_DOWN(KeyType::O))
+		{
+			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 0.1f, nullptr, std::bind(&Map::ChangeCameraMode, this));
+			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 0.1f);
+		}
 	}
 
 	void MainOfficeMap::Start()
@@ -93,7 +99,7 @@ namespace yj
 
 		SetDirLightPosition(Vec3(-31.5f, 27.2f, 33.9f));
 		SetDirLightRotation(Vec3(41.7f, 136.54f, 294.54f));
-		mpMainCamera->GetScript<FocusingScript>()->SetFocusingTarget(spHolder);
+		mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
 	}
 
 	void MainOfficeMap::FixedUpdate()
@@ -137,16 +143,6 @@ namespace yj
 	void MainOfficeMap::InitObjectAdd()
 	{
 		PLAYER->SetDontDestroyObject(L"Player");
-		{
-			spHolder = new CameraHolder;
-			spHolder->AddComponent(new Transform);
-			OwnerFollowScript* pFollowScript = spHolder->AddComponent(new OwnerFollowScript(PLAYER));
-			pFollowScript->SetOffset(Vec3(-10.f, 30.f, 20.f));
-			spHolder->SetDontDestroyObject(L"CameraHolder");
-
-			AddGameObject(spHolder);
-		}
-
 
 		{
 			pBus = Factory::CreateObject<Bus>(Vec3(-17.0f, -8.0f, 33.0f), L"Deferred",

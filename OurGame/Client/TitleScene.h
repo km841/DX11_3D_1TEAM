@@ -1,10 +1,10 @@
 #pragma once
-#include "Scene.h"
+#include "Map.h"
 
 namespace hm
 {
 	class TitleScene :
-		public Scene
+		public Map
 	{
 	public:
 		TitleScene();
