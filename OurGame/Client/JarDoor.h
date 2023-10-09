@@ -9,7 +9,7 @@ namespace yj
 	public:
 		JarDoor(int _requireKey, GameObject* _doorL, GameObject* _doorR, GameObject* _doorCol);
 		virtual ~JarDoor();
-
+		virtual void Addkey() {};
 		virtual void Initialize();
 		virtual void Update();
 
