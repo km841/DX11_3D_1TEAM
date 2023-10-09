@@ -109,6 +109,7 @@ enum class MonsterBasicState
 	Hop_dojge,
 	//idle
 	//Trace
+	Trace2,
 	Trace_to_Attack,
 	//attack
 	//hit
@@ -126,6 +127,7 @@ enum class MonsterBasicState
 	//Idle //내루미 중간보스
 	//trace
 	Trace_BackStep,
+	Delay,
 	//attack
 	Attack02,
 	Attack03,

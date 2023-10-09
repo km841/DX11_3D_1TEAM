@@ -126,6 +126,9 @@ namespace hm
 					case hm::ShaderType::Deferred:
 						mDeferredObjects.push_back(pGameObject);
 						break;
+					case hm::ShaderType::Mirror:
+						mDeferredObjects.push_back(pGameObject);
+						break;
 					default:
 						AssertEx(false, L"잘못된 셰이더 타입");
 						break;
@@ -151,7 +154,8 @@ namespace hm
 
 			if (LayerType::Player == static_cast<LayerType>(i) ||
 				LayerType::Monster == static_cast<LayerType>(i) ||
-				LayerType::Npc == static_cast<LayerType>(i))
+				LayerType::Npc == static_cast<LayerType>(i) ||
+				LayerType::PotCell == static_cast<LayerType>(i))
 				continue;
 
 			const auto& gameObjects = pActiveScene->GetGameObjects(static_cast<LayerType>(i));
@@ -183,7 +187,8 @@ namespace hm
 
 			if (LayerType::Player != static_cast<LayerType>(i) &&
 				LayerType::Monster != static_cast<LayerType>(i) &&
-				LayerType::Npc != static_cast<LayerType>(i))
+				LayerType::Npc != static_cast<LayerType>(i) &&
+				LayerType::PotCell != static_cast<LayerType>(i))
 				continue;
 
 			const auto& gameObjects = pActiveScene->GetGameObjects(static_cast<LayerType>(i));

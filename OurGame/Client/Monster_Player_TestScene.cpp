@@ -36,6 +36,7 @@
 #include "LORD_BOSS.h"
 #include "LORD_BOSS_ROLL.h"
 #include "Cow.h"
+#include "CameraHolder.h"
 
 /* Component */
 #include "Collider.h"
@@ -56,6 +57,7 @@
 #include "OwnerFollowScript.h"
 #include "PlayerSlashScript.h"
 #include "BonFireScript.h"
+#include "FocusingScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -77,6 +79,7 @@ namespace hm {
 	void Monster_Player_TestScene::Start()
 	{
 		Map::Start();
+		mpMainCamera->GetScript<FocusingScript>()->SetFocusingTarget(spHolder);
 	}
 	void Monster_Player_TestScene::Update()
 	{
@@ -116,6 +119,16 @@ namespace hm {
 		//pVideo->Play();
 		//¹è°æ¸Ê ÇÏ¾á»öÀ¸·Î ¸¸µé¾îÁÖ´Â ÄÚµå
 		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
+
+		{
+			spHolder = new CameraHolder;
+			spHolder->AddComponent(new Transform);
+			OwnerFollowScript* pFollowScript = spHolder->AddComponent(new OwnerFollowScript(PLAYER));
+			pFollowScript->SetOffset(Vec3(-10.f, 30.f, 20.f));
+			spHolder->SetDontDestroyObject(L"CameraHolder");
+
+			AddGameObject(spHolder);
+		}
 
 		// 1Ãþ ¹Ù´Ú - Floor
 		{
@@ -182,8 +195,8 @@ namespace hm {
 			pLordOfDoorRoll->SetLORD_BOSS(pLordOfDoor);
 			
 
-			AddGameObject(pLordOfDoorRoll);
-			AddGameObject(pLordOfDoor);
+			//AddGameObject(pLordOfDoorRoll);
+			//AddGameObject(pLordOfDoor);
 			//SetMeshTarget(pLordOfDoor);
 		
 		}
@@ -261,7 +274,7 @@ namespace hm {
 			}
 			//SetGizmoTarget(p_E_GRIMACE_KNIGHT);
 			AddGameObject(p_E_GRIMACE_KNIGHT);
-			//SetMeshTarget(p_E_GRIMACE_KNIGHT);
+			SetMeshTarget(p_E_GRIMACE_KNIGHT);
 		}
 
 		// ¹ÚÁã
@@ -289,10 +302,24 @@ namespace hm {
 			AddGameObject(pBonFire);
 		}*/
 
+
 		// ¹Ì·¯
 		{
-			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, -8.7f, 0.f), L"Forward", L"", false, LayerType::Mirror);
+			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, -8.7f, 0.f), L"Deferred", L"", false, LayerType::Unknown);
+			pMirror->DrawShadow(false);
+			pMirror->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Test11", L"..\\Resources\\Texture\\White.png"));
+			pMirror->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+			pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+			pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
 
+			AddGameObject(pMirror);
+		}
+
+		// ¹Ì·¯
+		{
+			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, -8.6f, 0.f), L"Forward", L"", false, LayerType::Mirror);
+
+			pMirror->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Test11", L"..\\Resources\\Texture\\White.png"));
 			pMirror->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 			pMirror->AddComponent(new Mirror);
 			pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
@@ -300,6 +327,23 @@ namespace hm {
 
 			AddGameObject(pMirror);
 		}
+
+		// ¼§µé¸®¿¡ ¶óÀÌÆ®
+		{
+			GameObject* pGameObject = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pGameObject->AddComponent(new Transform);
+			pTransform->SetPosition(Vec3(0.f, 50.f, 0.f));
+			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+			Light* pLight = pGameObject->AddComponent(new Light);
+			pLight->SetDiffuse(Vec3(1.f, 1.f, 1.f));
+			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+			pLight->SetLightRange(100.f);
+			pLight->SetLightType(LightType::PointLight);
+			AddGameObject(pGameObject);
+		}
+
+		DisableDirLight();
 	}
 	void Monster_Player_TestScene::Exit()
 	{

@@ -6,6 +6,7 @@
 #include "Resources.h"
 #include "Collider.h"
 #include "Interface.h"
+#include "AudioSound.h"
 
 #include "InterfaceAlphaScript.h"
 #include "InterfaceButtonScript.h"
@@ -103,6 +104,7 @@ namespace hm
 		pObject->AddComponent<PaperBurnScript>();
 		pObject->AddComponent<MonsterCrackScript>();
 		pObject->AddComponent<MonsterHitScript>();
+		pObject->AddComponent<AudioSound>();
 		pObject->GetRigidBody()->ApplyGravity();
 		pObject->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
 		pObject->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);

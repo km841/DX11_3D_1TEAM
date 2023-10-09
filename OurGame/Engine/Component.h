@@ -16,6 +16,7 @@ namespace hm
 	class AI;
 	class UIText;
 	class Mirror;
+	class AudioSound;
 
 	enum class ComponentType
 	{
@@ -32,8 +33,7 @@ namespace hm
 		Ai,
 		Mirror,
 		ParticleSystem,
-		SoundListener,
-		SoundSource,
+		AudioSound,
 		UIText,
 		// ...
 		MonoBehavior,
@@ -74,6 +74,7 @@ namespace hm
 		AI* GetAI();
 		UIText* GetUIText();
 		Mirror* GetMirror();
+		AudioSound* GetAudioSound();
 
 		bool IsPhysicsObject();
 

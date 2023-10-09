@@ -19,6 +19,7 @@
 #include "SceneManager.h"
 #include "Resources.h"
 #include "RenderManager.h"
+#include "Timer.h"
 
 /* GameObject */
 #include "GameObject.h"
@@ -173,7 +174,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Laser_Start;
+					//meBasicState = MonsterBasicState::Laser_Start;
 					return BehaviorResult::Success;
 				});
 
@@ -1295,6 +1296,8 @@ void LORD_BOSS::Update()
 {
 	Health = (mHP / mMaxHP) * 100;
 	Monster::Update();
+
+	SlowTurnLive();
 }
 
 void LORD_BOSS::FixedUpdate()
@@ -1405,12 +1408,12 @@ void LORD_BOSS::SlowTurnLive()
 
 	int Right = TurnSpeed;
 	int Left = -TurnSpeed;
-	   // 0 -> 360                200
-	if (Rot.z  + 3 < angleDegree )
+	// 0 -> 360                200
+	if (Rot.z + 3 < angleDegree)
 		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Right));
-	else if(Rot.z - 3 > angleDegree )
+	else if (Rot.z - 3 > angleDegree)
 		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Left));
-	else if(Rot.z  == angleDegree )
+	else if (Rot.z == angleDegree)
 		pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
 
 	TurnSpeed = 2.f;
@@ -1421,6 +1424,38 @@ void LORD_BOSS::SlowTurnLive()
 void LORD_BOSS::SlowTurn()
 {
 	//현모님이 봐주심
+	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	Vec3 myPos = GetTransform()->GetPosition();
+	Vec3 scale = GetRigidBody()->GetGeometrySize();
+	Transform* pTr = GetTransform();
+
+	RotDir = playerPos - myPos;
+	RotDir.Normalize();
+	RotDir.y = 0;
+
+	Vec3 look = pTr->GetRight();
+	look.Normalize();
+
+	float check = RotDir.Dot(look);
+
+	// 각도 계산 후 도 단위로 변경
+	float angle = (acosf(check) - XM_PIDIV2) * 180.f / XM_PI;
+
+	Vec3 Rot = pTr->GetRotation();
+
+	int Right = TurnSpeed;
+	int Left = -TurnSpeed;
+	// 0 -> 360                200
+
+	if (fabs(angle) < 3.f)
+		return;
+
+	if (check > 0.f)
+		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Left * DELTA_TIME));
+	else if (check < 0.f)
+		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Right * DELTA_TIME));
+
+	TurnSpeed = 50.f;
 }
 
 void LORD_BOSS::Follow()

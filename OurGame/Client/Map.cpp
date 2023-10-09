@@ -6,6 +6,7 @@
 
 namespace hm
 {
+	CameraHolder* Map::spHolder = nullptr;
 	Map::Map(MapType _eMapType)
 		: Scene(_eMapType)
 		, mbShadow(false)
@@ -81,6 +82,10 @@ namespace hm
 	{
 		TOOL->UseMeshTool();
 		TOOL->SetGameObject(_pTarget);
+	}
+	void Map::SetCameraHolder(CameraHolder* _pHolder)
+	{
+		spHolder = _pHolder;
 	}
 }
 

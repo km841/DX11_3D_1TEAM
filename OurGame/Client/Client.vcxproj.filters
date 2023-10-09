@@ -329,6 +329,15 @@
     <ClInclude Include="Cow.h">
       <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
     </ClInclude>
+    <ClInclude Include="IrreparablePot.h">
+      <Filter>소스 파일\GameObject\Dungeon</Filter>
+    </ClInclude>
+    <ClInclude Include="FocusingScript.h">
+      <Filter>소스 파일\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraHolder.h">
+      <Filter>소스 파일\GameObject\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -655,6 +664,15 @@
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="Cow.cpp">
       <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
+    </ClCompile>
+    <ClCompile Include="IrreparablePot.cpp">
+      <Filter>소스 파일\GameObject\Dungeon</Filter>
+    </ClCompile>
+    <ClCompile Include="FocusingScript.cpp">
+      <Filter>소스 파일\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraHolder.cpp">
+      <Filter>소스 파일\GameObject\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

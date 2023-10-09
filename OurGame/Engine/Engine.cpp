@@ -11,6 +11,7 @@
 #include "FontManager.h"
 #include "CollisionManager.h"
 #include "Tool.h"
+#include "SoundManager.h"
 
 namespace hm
 {
@@ -74,6 +75,7 @@ namespace hm
 		GET_SINGLE(SceneManager)->Initialize();
 		GET_SINGLE(Timer)->Initialize();
 		GET_SINGLE(RenderManager)->Initialize();
+		GET_SINGLE(SoundManager)->Initialize();
 	}
 
 	void Engine::ResizeWindow(int _width, int _height)
@@ -267,6 +269,7 @@ namespace hm
 		GET_SINGLE(SceneManager)->FixedUpdate();
 		GET_SINGLE(SceneManager)->FinalUpdate();
 		GET_SINGLE(CollisionManager)->Update();
+		GET_SINGLE(SoundManager)->Update();
 		mpPhysics->Update();
 
 		mpTool->Update();

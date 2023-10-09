@@ -131,13 +131,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>copy "$(SolutionDir)Library\Dll\FMod\fmod.dll" "$(SolutionDir)\Output\debug\"
-copy "$(SolutionDir)Library\Dll\FMod\fmodstudio.dll" "$(SolutionDir)\Output\debug\"
-copy "$(SolutionDir)Library\Dll\PhysX\debug\PhysX_64.dll" "$(SolutionDir)\Output\debug\"
-copy "$(SolutionDir)Library\Dll\PhysX\debug\PhysXCommon_64.dll" "$(SolutionDir)\Output\debug\"
-copy "$(SolutionDir)Library\Dll\PhysX\debug\PhysXCooking_64.dll" "$(SolutionDir)\Output\debug\"
-copy "$(SolutionDir)Library\Dll\PhysX\debug\PhysXFoundation_64.dll" "$(SolutionDir)\Output\debug\"
-copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Output\debug\"</Command>
+      <Command>copy "$(SolutionDir)Library\Dll\FMod\fmodL.dll" "$(SolutionDir)\Output\Debug\"
+copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\Debug\"
+copy "$(SolutionDir)Library\Dll\PhysX\debug\PhysX_64.dll" "$(SolutionDir)\Output\Debug\"
+copy "$(SolutionDir)Library\Dll\PhysX\debug\PhysXCommon_64.dll" "$(SolutionDir)\Output\Debug\"
+copy "$(SolutionDir)Library\Dll\PhysX\debug\PhysXCooking_64.dll" "$(SolutionDir)\Output\Debug\"
+copy "$(SolutionDir)Library\Dll\PhysX\debug\PhysXFoundation_64.dll" "$(SolutionDir)\Output\Debug\"
+copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Output\Debug\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -172,6 +172,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
   <ItemGroup>
     <ClInclude Include="AI.h" />
     <ClInclude Include="Animator.h" />
+    <ClInclude Include="AudioSound.h" />
     <ClInclude Include="BehaviorComposite.h" />
     <ClInclude Include="BehaviorCondition.h" />
     <ClInclude Include="BehaviorNode.h" />
@@ -253,6 +254,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClInclude Include="Sequence.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleMath.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="StructuredBuffer.h" />
     <ClInclude Include="SwapChain.h" />
     <ClInclude Include="Texture.h" />
@@ -270,6 +272,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
   <ItemGroup>
     <ClCompile Include="AI.cpp" />
     <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="AudioSound.cpp" />
     <ClCompile Include="BehaviorComposite.cpp" />
     <ClCompile Include="BehaviorCondition.cpp" />
     <ClCompile Include="BehaviorNode.cpp" />
@@ -349,6 +352,7 @@ copy "$(SolutionDir)Library\Dll\Assimp\assimp-vc143-mt.dll" "$(SolutionDir)\Outp
     <ClCompile Include="Sequence.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleMath.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="StructuredBuffer.cpp" />
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="Texture.cpp" />

@@ -35,6 +35,8 @@ namespace hm
 
 		void SetWorldMatrix(const Matrix& _matrix);
 		void SetUpdateByMat(bool _bFlag) { mbUpdateByMat = _bFlag; }
+		void SetUpdateByRotMat(bool _bFlag) { mbUpdateByRotMat = _bFlag; }
+		void SetRotationMatrix(const Matrix& _matrix) { mMatRot = _matrix; }
 
 		void DecomposeWorld();
 		static void DecomposeWorld(Matrix _worldMat, Vec3& _scale, Vec3& _rotation, Vec3& _position);
@@ -58,6 +60,7 @@ namespace hm
 		Vec3 GetLook() { return mMatWorld.Backward(); }
 
 		void LookAt(const Vec3& _look);
+		void SmoothRotateTo(const Vec3& _targetLook);
 		static bool CloseEnough(const float& _a, const float& _b, const float& _epsilon = std::numeric_limits<float>::epsilon());
 		static Vec3 DecomposeRotationMatrix(const Matrix& _rotation);
 		void AddRotation(Axis _eAxis, float _degree);
@@ -82,8 +85,10 @@ namespace hm
 		Matrix  mMatLocal;
 		Matrix  mMatWorld;
 		Matrix  mMatOldWorld;
+		Matrix  mMatRot;
 		
 		bool mbUpdateByMat;
+		bool mbUpdateByRotMat;
 
 	};
 
