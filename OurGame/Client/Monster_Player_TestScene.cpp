@@ -79,7 +79,6 @@ namespace hm {
 	void Monster_Player_TestScene::Start()
 	{
 		Map::Start();
-		mpMainCamera->GetScript<FocusingScript>()->SetFocusingTarget(spHolder);
 	}
 	void Monster_Player_TestScene::Update()
 	{
@@ -119,16 +118,6 @@ namespace hm {
 		//pVideo->Play();
 		//¹è°æ¸Ê ÇÏ¾á»öÀ¸·Î ¸¸µé¾îÁÖ´Â ÄÚµå
 		gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
-
-		{
-			spHolder = new CameraHolder;
-			spHolder->AddComponent(new Transform);
-			OwnerFollowScript* pFollowScript = spHolder->AddComponent(new OwnerFollowScript(PLAYER));
-			pFollowScript->SetOffset(Vec3(-10.f, 30.f, 20.f));
-			spHolder->SetDontDestroyObject(L"CameraHolder");
-
-			AddGameObject(spHolder);
-		}
 
 		// 1Ãþ ¹Ù´Ú - Floor
 		{

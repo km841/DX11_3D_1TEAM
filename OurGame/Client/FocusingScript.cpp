@@ -8,63 +8,76 @@
 
 namespace hm
 {
-    FocusingScript::FocusingScript()
-        : mFollowSpeed(3.f)
-        , mpTarget(nullptr)
-        , mbFocusMode(false)
-    {
-    }
+	FocusingScript::FocusingScript()
+		: mFollowSpeed(3.f)
+		, mpFollowTarget(nullptr)
+		, mpFocusingTarget(nullptr)
+		, mbFocusMode(false)
+		, mbFollowMode(false)
+	{
+	}
 
-    Component* FocusingScript::Clone(GameObject* _pGameObject)
-    {
-        return _pGameObject->AddComponent(new FocusingScript);
-    }
+	Component* FocusingScript::Clone(GameObject* _pGameObject)
+	{
+		return _pGameObject->AddComponent(new FocusingScript);
+	}
 
-    void FocusingScript::SetFocusingTarget(GameObject* _pTarget)
-    {
-        mpTarget = _pTarget;
-    }
+	void FocusingScript::SetFollowTarget(GameObject* _pTarget)
+	{
+		mpFollowTarget = _pTarget;
+	}
 
-    void FocusingScript::FixedUpdate()
-    {
-        if (nullptr == mpTarget)
-            return;
+	void FocusingScript::SetFocusingTarget(GameObject* _pTarget)
+	{
+		mpFocusingTarget = _pTarget;
+	}
 
-        if (IS_DOWN(KeyType::P))
-            mbFocusMode = !mbFocusMode;
+	void FocusingScript::FixedUpdate()
+	{
+		if (nullptr == mpFollowTarget)
+			return;
 
-        if (false == mbFocusMode)
-        {
-            GetRigidBody()->SetVelocity(Vec3::Zero);
-            GetTransform()->SetUpdateByRotMat(false);
-            return;
-        }
+		if (false == mbFocusMode)
+		{
+			GetRigidBody()->SetVelocity(Vec3::Zero);
+			GetTransform()->SetUpdateByRotMat(false);
+			return;
+		}
+		else
+		{
+			Vec3 myPos = GetTransform()->GetPosition();
+			Vec3 targetPos = mpFollowTarget->GetTransform()->GetPosition();
 
-        Vec3 myPos = GetTransform()->GetPosition();
-        Vec3 targetPos = mpTarget->GetTransform()->GetPosition();
+			// 스무딩된 목표 위치 계산
+			Vec3 smoothedTargetPos = myPos + (targetPos - myPos) * 0.2f;
 
-        // 스무딩된 목표 위치 계산
-        Vec3 smoothedTargetPos = myPos + (targetPos - myPos) * 0.2f;
+			Vec3 dir = smoothedTargetPos - myPos;
+			float distance = dir.Length();
+			if (distance < 0.01f)
+			{
+				GetTransform()->SetPosition(smoothedTargetPos);
+				GetRigidBody()->SetVelocity(Vec3::Zero);
+				return;
+			}
 
-        Vec3 dir = smoothedTargetPos - myPos;
-        float distance = dir.Length();
-        if (distance < 0.01f)
-        {
-            GetTransform()->SetPosition(smoothedTargetPos);
-            GetRigidBody()->SetVelocity(Vec3::Zero);
-            return;
-        }
+			float fixedSpeed = mFollowSpeed;
 
-        float fixedSpeed = mFollowSpeed;
+			dir.Normalize();
+			GetRigidBody()->SetVelocity(dir * fixedSpeed);
+		}
 
-        dir.Normalize();
+		if (nullptr == mpFocusingTarget)
+			return;
 
-        GetRigidBody()->SetVelocity(dir * fixedSpeed);
+		if (true == mbFocusMode)
+		{
+			Vec3 myPos = GetTransform()->GetPosition();
+			Vec3 focusPos = mpFocusingTarget->GetTransform()->GetPosition();
+			Vec3 lookDir = focusPos - myPos;
 
-        Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
-        Vec3 lookDir = playerPos - myPos;
+			GetTransform()->SmoothRotateTo(lookDir);
+		}
 
-        GetTransform()->SmoothRotateTo(lookDir);  
-    }
+	}
 }
 

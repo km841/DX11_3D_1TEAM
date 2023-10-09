@@ -159,6 +159,9 @@ namespace hm
 			if (pCameraObject == _pScene->mpUICamera)
 				continue;
 
+			if (pCameraObject == _pScene->mpCutSceneCamera)
+				continue;
+
 			RenderInstancing(pCameraObject->GetCamera(), pCameraObject->GetCamera()->GetForwardObjects());
 			pCameraObject->GetCamera()->RenderParticle();
 		}
@@ -176,6 +179,12 @@ namespace hm
 			if (pCameraObject == _pScene->mpMainCamera)
 				continue;
 
+			if (pCameraObject == _pScene->mpUICamera)
+				continue;
+
+			if (pCameraObject == _pScene->mpCutSceneCamera)
+				continue;
+
 			RenderInstancing(pCameraObject->GetCamera(), pCameraObject->GetCamera()->GetDeferredObjects());
 		}
 	}
@@ -188,6 +197,12 @@ namespace hm
 		for (GameObject* pCameraObject : _pScene->mCameraObjects)
 		{
 			if (pCameraObject == _pScene->mpMainCamera)
+				continue;
+
+			if (pCameraObject == _pScene->mpUICamera)
+				continue;
+
+			if (pCameraObject == _pScene->mpCutSceneCamera)
 				continue;
 
 			RenderInstancing(pCameraObject->GetCamera(), pCameraObject->GetCamera()->GetEffectObjects());
