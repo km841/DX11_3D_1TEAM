@@ -50,6 +50,8 @@ private:
 	void LaserPrevFollowLive();
 
 	void CreateCow(Vec3 _pos);
+
+	void MonsterAttackCol();
 private:
 	Vec3 RotDir;
 	Vec3 PosDir;
@@ -68,5 +70,6 @@ private:
 	MonsterBasicState PrevState;
 
 	LORD_BOSS_ROLL* pObject;
+	GameObject* pMonsterAttackCol;
 };
 

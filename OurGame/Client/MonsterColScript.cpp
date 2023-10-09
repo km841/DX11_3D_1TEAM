@@ -50,6 +50,7 @@
 #include "SceneChangeEvent.h"
 
 MonsterColScript::MonsterColScript()
+	:OffSetPos(0.f,0.f,0.f)
 {
 }
 
@@ -64,7 +65,7 @@ void MonsterColScript::FixedUpdate()
 	
 	
 	OwnerFollowScript* pOFSc = GetGameObject()->GetScript<OwnerFollowScript>();
-	pOFSc->SetOffset(Vec3(0.f,-4.f,0.f));
+	pOFSc->SetOffset(OffSetPos);
 	
 }
 
