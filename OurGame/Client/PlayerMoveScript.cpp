@@ -117,9 +117,9 @@ void PlayerMoveScript::CheckPenetration(RigidBody* _rigidBody, LayerType _eLayer
 				break;
 			}
 			
-			if (true == isPenetrating && depth > 0.1f)
+			if (true == isPenetrating && depth > 0.05f)
 			{
-				Vec3 offset = dir * (depth - 0.05f);
+				Vec3 offset = dir * (depth - 0.025f);
 				Vec3 fixedPos = PLAYER->GetTransform()->GetPosition();
 				PLAYER->GetTransform()->SetPosition(fixedPos + offset);
 			}
@@ -161,7 +161,7 @@ void PlayerMoveScript::AutoStepping(float _height)
 						return;
 					}
 
-					tempHeight += 0.1f;
+					tempHeight += 0.05f;
 					steppingPos.y += 0.1f;
 				}
 			}

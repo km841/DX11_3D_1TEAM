@@ -24,6 +24,7 @@ namespace hm
 		: meSceneType(_eSceneType)
 		, mpMainCamera(nullptr)
 		, mpUICamera(nullptr)
+		, mpCutSceneCamera(nullptr)
 		, mpDirLight(nullptr)
 		, mbIsBakedStaticShadow(false)
 		, mbEnableDirLight(true)
@@ -176,6 +177,9 @@ namespace hm
 				mpMainCamera = _pGameObject;
 			if (_pGameObject->GetName() == L"UICamera")
 				mpUICamera = _pGameObject;
+			if (_pGameObject->GetName() == L"CutSceneCamera")
+				mpCutSceneCamera = _pGameObject;
+
 			mCameraObjects.push_back(_pGameObject);
 		}
 
@@ -204,6 +208,8 @@ namespace hm
 					mpMainCamera = pGameObject;
 				if (pGameObject->GetName() == L"UICamera")
 					mpUICamera = pGameObject;
+				if (pGameObject->GetName() == L"CutSceneCamera")
+					mpCutSceneCamera = pGameObject;
 
 				mCameraObjects.push_back(pGameObject);
 			}
@@ -344,6 +350,11 @@ namespace hm
 		AssertEx(mpMainCamera, L"Scene::GetMainCamera() : Main CameraObject is nullptr");
 		return mpMainCamera->GetCamera();
 	}
+	Camera* Scene::GetCutSceneCamera()
+	{
+		AssertEx(mpCutSceneCamera, L"Scene::GetCutSceneCamera() : CutScene CameraObject is nullptr");
+		return mpCutSceneCamera->GetCamera();
+	}
 	Camera* Scene::GetUICamera()
 	{
 		AssertEx(mpUICamera, L"Scene::GetMainCamera() : UI CameraObject is nullptr");
@@ -378,6 +389,9 @@ namespace hm
 
 			if (_pGameObject == mpUICamera)
 				mpUICamera = nullptr;
+
+			if (_pGameObject == mpCutSceneCamera)
+				mpCutSceneCamera = nullptr;
 		}
 	}
 	void Scene::RemoveLightInObjectFromScene(GameObject* _pGameObject)

@@ -50,6 +50,7 @@
 #include "SceneChangeEvent.h"
 
 MonsterColScript::MonsterColScript()
+	:OffSetPos(0.f,0.f,0.f)
 {
 }
 
@@ -59,12 +60,26 @@ void MonsterColScript::Initialize()
 
 void MonsterColScript::FixedUpdate()
 {
-	
+	Transform* pTr = GetTransform();
+	Vec3 Pos = pTr->GetScale();
+
+	float ratio = AniRatio;
+	ratio -= StartRatio;
+	ratio *= 10;
+	ratio *= magn;
+	if (ratio > 0.f && ratio<1.f)
+	{
+		Vec3 Scale = Lerp(Vec3(1.f, 1.f, 1.f), Vec3(EndScale), ratio);
+		pTr->SetScale(Scale);
+	}
+	else
+	{
+		pTr->SetScale(Vec3(1.f, 1.f, 1.f));
+	}
 
 	
-	
 	OwnerFollowScript* pOFSc = GetGameObject()->GetScript<OwnerFollowScript>();
-	pOFSc->SetOffset(Vec3(0.f,-4.f,0.f));
+	pOFSc->SetOffset(OffSetPos);
 	
 }
 

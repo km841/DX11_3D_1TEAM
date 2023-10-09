@@ -12,18 +12,22 @@ namespace hm
 		virtual ~FocusingScript() = default;
 		virtual Component* Clone(GameObject* _pGameObject);
 
+		void SetFollowTarget(GameObject* _pTarget);
 		void SetFocusingTarget(GameObject* _pTarget);
+
+		void SetFollowingMode(bool _bFlag) { mbFollowMode = _bFlag; }
+		void SetFocusingMode(bool _bFlag) { mbFocusMode = _bFlag; }
 
 	public:
 		virtual void FixedUpdate() override;
 
 	private:
-		GameObject* mpTarget;
+		GameObject* mpFollowTarget;
+		GameObject* mpFocusingTarget;
+
 		float mFollowSpeed;
 
-		float mPrevLength;
-		Vec3 mPrevLookDir;
-
+		bool mbFollowMode;
 		bool mbFocusMode;
 	};
 

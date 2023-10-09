@@ -74,6 +74,7 @@ namespace hm
 		void RemovePhysicsActors();
 
 		Camera* GetMainCamera();
+		Camera* GetCutSceneCamera();
 		Camera* GetUICamera();
 		Light* GetDirLight();
 
@@ -98,6 +99,7 @@ namespace hm
 
 		GameObject* mpMainCamera;
 		GameObject* mpUICamera;
+		GameObject* mpCutSceneCamera;
 		GameObject* mpDirLight;
 
 		std::vector<GameObject*> mCameraObjects;

@@ -3,14 +3,42 @@
 #include "PlacementScript.h"
 #include "Input.h"
 #include "RenderManager.h"
+#include "CameraHolder.h"
 
 namespace hm
 {
-	CameraHolder* Map::spHolder = nullptr;
+	GameObject* Map::spPlayerHolder = nullptr;
+	GameObject* Map::spCutSceneHolder = nullptr;
+	GameObject* Map::spCutSceneFocusingTarget = nullptr;
+
 	Map::Map(MapType _eMapType)
 		: Scene(_eMapType)
 		, mbShadow(false)
 	{
+
+		if (nullptr == spPlayerHolder)
+		{
+			spPlayerHolder = new GameObject(LayerType::Unknown);
+			spPlayerHolder->AddComponent(new Transform);
+			spPlayerHolder->SetDontDestroyObject(L"PlayerHolder");
+			AddGameObject(spPlayerHolder);
+		}
+
+		if (nullptr == spCutSceneHolder)
+		{
+			spCutSceneHolder = new GameObject(LayerType::Unknown);
+			spCutSceneHolder->AddComponent(new Transform);
+			spCutSceneHolder->SetDontDestroyObject(L"CutSceneHolder");
+			AddGameObject(spCutSceneHolder);
+		}
+
+		if (nullptr == spCutSceneFocusingTarget)
+		{
+			spCutSceneFocusingTarget = new GameObject(LayerType::Unknown);
+			spCutSceneFocusingTarget->AddComponent(new Transform);
+			spCutSceneFocusingTarget->SetDontDestroyObject(L"CutSceneTarget");
+			AddGameObject(spCutSceneFocusingTarget);
+		}
 	}
 
 	Map::~Map()
@@ -83,9 +111,21 @@ namespace hm
 		TOOL->UseMeshTool();
 		TOOL->SetGameObject(_pTarget);
 	}
-	void Map::SetCameraHolder(CameraHolder* _pHolder)
+	void Map::SetPlayerHolder(GameObject* _pHolder)
 	{
-		spHolder = _pHolder;
+		spPlayerHolder = _pHolder;
+	}
+	void Map::SetCutSceneHolder(GameObject* _pHolder)
+	{
+		spCutSceneHolder = _pHolder;
+	}
+	void Map::SetPlayerHolderPosition(const Vec3& _pos)
+	{
+		spPlayerHolder->GetTransform()->SetPosition(_pos);
+	}
+	void Map::SetCutSceneHolderPosition(const Vec3& _pos)
+	{
+		spCutSceneHolder->GetTransform()->SetPosition(_pos);
 	}
 }
 

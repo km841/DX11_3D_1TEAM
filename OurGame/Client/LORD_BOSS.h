@@ -50,10 +50,18 @@ private:
 	void LaserPrevFollowLive();
 
 	void CreateCow(Vec3 _pos);
+
+	void MonsterAttackCol();
+	void MonsterSilent_ClapCol();
+
+	void CreatePOTProJectTile();
+	void CreatePOTProJectTile(int _a);
 private:
 	Vec3 RotDir;
 	Vec3 PosDir;
 	Vec3 PrevDir;
+
+	Vec3 PotProjectPos;
 
 	Vec3 LaserPos = Vec3(0.f, 15.f, 20.f);
 	Vec3 LaserRot = Vec3(-90.f, 360.f, 360.f);
@@ -68,5 +76,7 @@ private:
 	MonsterBasicState PrevState;
 
 	LORD_BOSS_ROLL* pObject;
+	GameObject* pMonsterAttackCol;
+	GameObject* pMonsterSilent_ClapCol;
 };
 
