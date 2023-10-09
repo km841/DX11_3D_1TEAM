@@ -129,16 +129,15 @@ namespace hm
 					case hm::ShaderType::Mirror:
 						mDeferredObjects.push_back(pGameObject);
 						break;
+
 					default:
 						AssertEx(false, L"잘못된 셰이더 타입");
 						break;
 					}
 				}
-				else
-				{
-					if (nullptr != pGameObject->GetParticleSystem())
-						mParticleObjects.push_back(pGameObject);
-				}
+
+				if (nullptr != pGameObject->GetParticleSystem())
+					mParticleObjects.push_back(pGameObject);
 			}
 		}
 	}
@@ -212,8 +211,12 @@ namespace hm
 	{
 		for (GameObject* pGameObject : mForwardObjects)
 		{
-
 			pGameObject->GetMeshRenderer()->Render(this);
+		}
+
+		for (GameObject* pGameObject : mParticleObjects)
+		{
+			pGameObject->GetParticleSystem()->Render(this);
 		}
 	}
 	void Camera::RenderDeferred()

@@ -14,6 +14,9 @@ namespace hm
 		Vec3 direction;
 		float curTime;
 
+		Vec3 startColor;
+		Vec3 endColor;
+
 		float speed;
 		Vec2 gravityAcc;
 		UINT alive;
@@ -44,7 +47,8 @@ namespace hm
 		void SetParticleLifeTime(float _lifeTime) { mEndTime = _lifeTime; }
 		void SetCreateInterval(float _createInterval) { mCreateInterval = _createInterval; }
 		void SetMaxParticles(UINT _maxParticles) { mMaxParticles = _maxParticles; }
-
+		void SetStartColor(const Vec3& _color) { mStartColor = _color; }
+		void SetEndColor(const Vec3& _color) { mEndColor = _color; }
 
 	private:
 		StructuredBuffer* mpParticleBuffer;
@@ -56,6 +60,8 @@ namespace hm
 
 		Vec3 mStartScale;
 		Vec3 mStartDir;
+		Vec3 mStartColor;
+		Vec3 mEndColor;
 
 		float mGravity;
 

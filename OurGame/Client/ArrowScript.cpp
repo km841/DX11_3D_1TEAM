@@ -51,7 +51,7 @@
 ArrowScript::ArrowScript()
 {
 	timerObj.SetEndTime(0.9f); //화살 잔여 시간 설정
-	mSpeed = 40;
+	mSpeed = 20;
 }
 
 void ArrowScript::Initialize()

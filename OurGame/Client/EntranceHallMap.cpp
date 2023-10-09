@@ -410,6 +410,14 @@ void EntranceHallMap::InitObjectAdd()
 		AddGameObject(pPaintingFrame4);
 	}
 
+	//{
+	//	GameObject* pParticle = Factory::CreateObject<GameObject>(Vec3(0.f, 0.f, 0.f), L"Forward", L"", false, LayerType::Unknown);
+	//	pParticle->AddComponent(new ParticleSystem);
+	//	pParticle->SetFrustumCheckFlag(false);
+	//	AddGameObject(pParticle);
+	//	SetGizmoTarget(pParticle);
+	//}
+
 
 
 	////////////yj
@@ -473,7 +481,6 @@ void EntranceHallMap::InitObjectAdd()
 		}
 	}
 
-
 	// 샹들리에 라이트
 	{
 		GameObject* pGameObject = new GameObject(LayerType::Unknown);
@@ -488,7 +495,6 @@ void EntranceHallMap::InitObjectAdd()
 		pLight->SetLightType(LightType::PointLight);
 		AddGameObject(pGameObject);
 	}
-
 }
 
 void EntranceHallMap::InitColliderAdd()

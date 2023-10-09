@@ -11,6 +11,9 @@ struct Particle
     float3 direction;
     float curTime;
     
+    float3 startColor;
+    float3 endColor;
+    
     float speed;
     float2 gravityAcc;
     uint alive;
@@ -67,7 +70,7 @@ void GS_Main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triangleStream)
     float3 vWorldPos = input[0].pos.xyz + particleBuffer[input[0].id].position.xyz;
     float3 vViewPos = mul(float4(vWorldPos, 1.0f), g_matView).xyz;
     float3 vScale = g_vec4_0.xyz;
-    
+
     float3 vNewPos[4] =
     {
         vViewPos + float3(-0.5f, 0.5f, 0.0f) * vScale,
@@ -107,12 +110,21 @@ float4 PS_Main(GS_OUT input) : SV_TARGET
     float fElapsedTime = g_vec2_0.y;
     float4 output = (float4) 0.0f;
     output = g_tex_0.Sample(g_sam_0, input.uv);
+    float4 noise = g_tex_1.Sample(g_sam_0, input.uv);
     
     float fCurTime = particleBuffer[input.id].curTime;
     float fEndTime = particleBuffer[input.id].endTime;
     
-    if (output.a > 0.1f)
-        output.a = 1.f - fCurTime / fEndTime;
+    float3 startColor = particleBuffer[input.id].startColor;
+    float3 endColor = particleBuffer[input.id].endColor;
+    uint maxCount = g_int_0;
+    float elapsedTime = g_vec2_0.y;
+    
+    if (length(startColor) > 0.f || length(endColor) > 0.f)
+    {
+        float3 lerpColor = lerp(startColor, endColor, fCurTime / fEndTime);
+        output.xyz = lerpColor;
+    }
     
     return output;
 }
@@ -149,6 +161,9 @@ void CS_Main(uint3 threadIndex : SV_DispatchThreadID)
     
     int startAngle = (int) g_vec2_2.x;
     int endAngle = (int) g_vec2_2.y;
+    
+    float3 startColor = g_vec4_2;
+    float3 endColor = g_vec4_3;
     
     if (maxCount <= threadIndex.x)
         return;
@@ -205,6 +220,8 @@ void CS_Main(uint3 threadIndex : SV_DispatchThreadID)
             g_particle[threadIndex.x].curTime = 0.f;
             g_particle[threadIndex.x].speed = randSpeed;
             g_particle[threadIndex.x].endTime = startLifeTime;
+            g_particle[threadIndex.x].startColor = startColor;
+            g_particle[threadIndex.x].endColor = endColor;
         }
     }
     else

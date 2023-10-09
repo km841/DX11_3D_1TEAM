@@ -89,7 +89,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::EntranceHallMap);
 		}
 
 		// 지형
@@ -197,7 +197,7 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
-		// Holder ����
+		// Holder
 		{
 			OwnerFollowScript* pFollowScript = spPlayerHolder->AddComponent(new OwnerFollowScript(PLAYER));
 			pFollowScript->SetOffset(Vec3(-10.f, 30.f, 20.f));
@@ -230,6 +230,7 @@ namespace hm
 			FocusingScript* pScript = pGameObject->AddComponent(new FocusingScript);
 			pScript->SetFollowTarget(spCutSceneHolder);
 			pScript->SetFocusingTarget(spCutSceneFocusingTarget);
+
 			pCamera->SetCullingMask(LayerType::Interface, true);
 			pCamera->SetCullingMask(LayerType::Mirror, true);
 
@@ -271,7 +272,7 @@ namespace hm
 			{
 				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(-450.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
 
-				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"현모", MapType::Monster_Player_Test));
+				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"현모", MapType::EntranceHallMap));
 
 				// 클릭 기능을 스크립트로 구현
 				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
