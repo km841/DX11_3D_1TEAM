@@ -19,8 +19,8 @@ Lurker::Lurker()
 	mHP = mMaxHP; // 피통
 	mSpeed = 1.5f; //이동속도
 	mAttackDamage = 1; // 공격력
-	mAttackRange = 4.f; // 공격 감지 거리
-	mRecogRange = 9.f; //감지거리
+	mAttackRange = 5.5f; // 공격 감지 거리
+	mRecogRange = 10.f; //감지거리
 
 	meBasicState = MonsterBasicState::Birth;
 }
@@ -272,11 +272,13 @@ void Lurker::SetBehaviorTree()
 				Vec3 scale = GetRigidBody()->GetGeometrySize();
 
 				dir = playerPos - myPos;
+				dir.Normalize();
+				dir.y = 0;
+
+
 				Vec3 Num = scale * dir;
 				float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
 
-				dir.Normalize();
-				dir.y = 0;
 				// 몬스터의 이동속도가 들어가야 함
 				// 방향을 변경해주는 Task도 필요
 				Vec3 Ve = dir * mSpeed;
@@ -341,11 +343,10 @@ void Lurker::SetBehaviorTree()
 					}
 				}
 
-
-
 				GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
 				//GetTransform()->SetPositionExcludingColliders(-Ve * 0.5f);
 
+				
 				Transform* pTr = GetTransform();
 				Vec3 rot = Vec3(0, 0, -1);
 				double angleRadian = atan2(dir.x, dir.z) - atan2(rot.x, rot.z);
@@ -356,6 +357,8 @@ void Lurker::SetBehaviorTree()
 
 				//몬스터의 고개를 돌리는 코드
 				pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
+
+
 
 				//이부분 중요
 				GetRigidBody()->SetVelocityExcludingColliders(-dir * 2.0f);
@@ -373,16 +376,17 @@ void Lurker::SetBehaviorTree()
 					float distance = (playerPos - myPos).Length();
 					Animator* pAni = GetAnimator();
 
-					if (pAni->GetFrameRatio() > 0.99f)
+
+					if (distance < mAttackRange && pAni->GetFrameRatio()>0.8f)
+					{
+						return BehaviorResult::Success;
+					}
+
+					if (pAni->GetFrameRatio() > 0.8f)
 					{
 						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 						GetTransform()->SetRelativePosition(Vec3(0.f, -0.4f, 0.f));
-					}
-
-
-					if (distance < mAttackRange && pAni->GetFrameRatio()>0.99f)
-					{
-						return BehaviorResult::Success;
+						pAni->Play(3, true);
 					}
 					return BehaviorResult::Failure;
 				});
@@ -405,6 +409,7 @@ void Lurker::SetBehaviorTree()
 
 #pragma endregion
 
+
 #pragma region Trace_to_Attack Sequence
 		Sequence* Trace_to_AttackSequence = new Sequence;
 		{
@@ -422,7 +427,8 @@ void Lurker::SetBehaviorTree()
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (1 != animIndex) {
-					
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, -0.4f, 0.f));
 					pAnimator->Play(1, false);
 				}
 
@@ -487,8 +493,10 @@ void Lurker::SetBehaviorTree()
 					Animator* pAni = GetAnimator();
 
 					//이부분 중요
-					GetRigidBody()->SetVelocityExcludingColliders(-dir * 5.f);
-					GetRigidBody()->SetVelocity(dir * 6.8f);
+					if (pAni->GetFrameRatio() < 0.3);
+						GetRigidBody()->SetVelocityExcludingColliders(-dir * 5.5f);
+					if (pAni->GetFrameRatio()<0.7);
+						GetRigidBody()->SetVelocity(dir * 6.8f);
 
 					const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
 					for (int i = 0; i < gameObjects.size(); ++i)
@@ -690,4 +698,122 @@ void Lurker::OnTriggerExit(Collider* _pOtherCollider)
 		if (0 == mGroundCount)
 			GetRigidBody()->ApplyGravity();
 	}
+}
+
+void Lurker::SlowTurnLive()
+{
+	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	Vec3 myPos = GetTransform()->GetPosition();
+	Vec3 scale = GetRigidBody()->GetGeometrySize();
+	Transform* pTr = GetTransform();
+
+	RotDir = playerPos - myPos;
+	RotDir.Normalize();
+	RotDir.y = 0;
+
+	Vec3 Rot = pTr->GetRotation();
+	Vec3 rot = Vec3(0, 0, -1);
+	double angleRadian = atan2(RotDir.x, RotDir.z) - atan2(rot.x, rot.z);
+	float angleDegree = static_cast<float>(angleRadian) * 180.f / XM_PI;
+
+	if (angleDegree < 0.f)
+		angleDegree += 360.f;
+
+	int Right = 5;
+	int Left = -5;
+	// 0 -> 360                200
+	if (Rot.z + 5 < angleDegree)
+		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Right));
+	else if (Rot.z - 5 > angleDegree)
+		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Left));
+	else if (Rot.z == angleDegree)
+		pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
+}
+
+void Lurker::PrevFollowSet()
+{
+	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	Vec3 myPos = GetTransform()->GetPosition();
+	dir = playerPos - myPos;
+	dir.Normalize();
+	dir.y = 0;
+}
+
+void Lurker::PrevFollowLive()
+{
+	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	Vec3 myPos = GetTransform()->GetPosition();
+	Vec3 scale = GetRigidBody()->GetGeometrySize();
+
+
+
+	Vec3 Ve = dir * (mSpeed);
+
+	Vec3 Num = scale * dir;
+	float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
+
+
+	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+
+	for (int i = 0; i < gameObjects.size(); ++i)
+	{
+		if (gameObjects[i]->GetCollider())
+		{
+			for (size_t j = 1; j <= 8; j++)
+			{
+				if (GetCollider()->Raycast(myPos, ConvertDir(static_cast<DirectionEvasion>(j)), gameObjects[i]->GetCollider(), offset + 0.5f))
+				{
+					if (static_cast<DirectionEvasion>(j) == DirectionEvasion::FORWARD)
+					{
+						Ve.z = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BACKWARD)
+					{
+						Ve.z = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::LEFT)
+					{
+						Ve.x = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::RIGHT)
+					{
+						Ve.x = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPLEFT)
+					{
+						if (Ve.x > Ve.z)
+							Ve.z = 0;
+						else
+							Ve.x = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPRIGHT)
+					{
+						if (Ve.x > Ve.z)
+							Ve.z = 0;
+						else
+							Ve.x = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMLEFT)
+					{
+						if (Ve.x > Ve.z)
+							Ve.z = 0;
+						else
+							Ve.x = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMRIGHT)
+					{
+						if (Ve.x > Ve.z)
+							Ve.z = 0;
+						else
+							Ve.x = 0;
+					}
+
+				}
+			}
+		}
+	}
+
+	GetRigidBody()->SetVelocity(AXIS_X, Ve.x); //따라오게 만드는 코드
+	GetRigidBody()->SetVelocity(AXIS_Z, Ve.z); //따라오게 만드는 코드
+
 }

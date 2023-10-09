@@ -62,7 +62,7 @@ Cow::Cow()
 	mMaxHP = 50.f;
 	mHP = mMaxHP; // 피통
 	mSpeed = 40.f;
-	TurnSpeed = 2.f;
+	TurnSpeed = 10.f;
 	mAttackDamage = 1; // 공격력
 
 
@@ -186,7 +186,7 @@ void Cow::SetBehaviorTree()
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
-				if (pAni->GetFrameRatio() > 0.96) {
+				if (pAni->GetFrameRatio() > 0.95) {
 					pAni->Play(0, true);
 					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 					GetTransform()->SetRelativePosition(Vec3(0.f, -1.f, 0.f));
@@ -317,16 +317,16 @@ void Cow::SlowTurnLive()
 	int Right = TurnSpeed;
 	int Left = -TurnSpeed;
 	// 0 -> 360                200
-	if (Rot.z + 3 < angleDegree)
+	if (Rot.z + 5 < angleDegree)
 		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Right));
-	else if (Rot.z - 3 > angleDegree)
+	else if (Rot.z - 5 > angleDegree)
 		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Left));
 	else if (Rot.z == angleDegree)
 		pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
 
 	//GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, -1.5f));
 
-	TurnSpeed = 8.f;
+	
 }
 
 void Cow::PrevFollowSet()
@@ -340,7 +340,7 @@ void Cow::PrevFollowSet()
 
 void Cow::PrevFollowLive()
 {
-	Vec3 Ve = PosDir * (mSpeed );
+	Vec3 Ve = PosDir * (mSpeed);
 	GetRigidBody()->SetVelocity(AXIS_X, Ve.x); //따라오게 만드는 코드
 	GetRigidBody()->SetVelocity(AXIS_Z, Ve.z); //따라오게 만드는 코드
 	

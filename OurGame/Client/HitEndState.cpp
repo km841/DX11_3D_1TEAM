@@ -55,7 +55,7 @@ void HitEndState::Update()
 {
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
-	if (pAni->GetFrameRatio() > 0.6)
+	if (pAni->GetFrameRatio() > 0.5)
 		pPlayer->StateChange(PlayerState::IdleState);
 }
 

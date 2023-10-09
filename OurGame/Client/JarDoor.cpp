@@ -6,7 +6,6 @@
 
 namespace yj
 {
-
 	JarDoor::JarDoor(int _requireKey, GameObject* _doorL, GameObject* _doorR, GameObject* _doorCol)
 	{
 		SetRequireKey(_requireKey);
@@ -15,10 +14,10 @@ namespace yj
 		pDoorColObj = _doorCol;
 	}
 	
-	
 
 	JarDoor::~JarDoor()
 	{
+
 	}
 
 	void JarDoor::Initialize()

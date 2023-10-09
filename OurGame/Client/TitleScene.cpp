@@ -84,7 +84,7 @@ namespace hm
 			mpSelectedInterface->GetTransform()->SetPosition(pos);
 		}
 		
-		// Çö¸ğ
+		// í˜„ëª¨
 		// - GrandmaBossMap
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
@@ -92,8 +92,8 @@ namespace hm
 			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
 		}
 
-		// ÁöÇü
-		// - HallColliderCheckMap - 2°³Ä¡ ºĞ·®
+		// ì§€í˜•
+		// - HallColliderCheckMap - 2ê°œì¹˜ ë¶„ëŸ‰
 		// - CorridorRightMap
 		// - RightSecretPassageMap
 		if (IS_DOWN(KeyType::O))
@@ -101,7 +101,7 @@ namespace hm
 			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::PhysicsTest);
 		}
 
-		// »ó¿¬
+		// ìƒì—°
 		// - DiningColliderCheckMap
 		// - EntranceHallMap
 		// - LeftSecretFightMap
@@ -112,8 +112,8 @@ namespace hm
 			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Monster_Player_Test);
 		}
 
-		// ¿µÁø
-		// - MainOfficeMap - 3°³Ä¡ ºĞ·®
+		// ì˜ì§„
+		// - MainOfficeMap - 3ê°œì¹˜ ë¶„ëŸ‰
 		// - RightMap
 		if (IS_DOWN(KeyType::K))
 		{
@@ -197,7 +197,7 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
-		// Holder ¼¼ÆÃ
+		// Holder ï¿½ï¿½ï¿½ï¿½
 		{
 			OwnerFollowScript* pFollowScript = spPlayerHolder->AddComponent(new OwnerFollowScript(PLAYER));
 			pFollowScript->SetOffset(Vec3(-10.f, 30.f, 20.f));
@@ -267,86 +267,87 @@ namespace hm
 
 		// Buttons
 		{		
-			// Çö¸ğ
+			// í˜„ëª¨
 			{
 				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(-450.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
-				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"Çö¸ğ", MapType::MainOfficeMap));
 
-				// Å¬¸¯ ±â´ÉÀ» ½ºÅ©¸³Æ®·Î ±¸Çö
+				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"í˜„ëª¨", MapType::Monster_Player_Test));
+
+				// í´ë¦­ ê¸°ëŠ¥ì„ ìŠ¤í¬ë¦½íŠ¸ë¡œ êµ¬í˜„
 				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
 
-				// Å¬¸¯ÇßÀ» ¶§ Äİ¹é
+				// í´ë¦­í–ˆì„ ë•Œ ì½œë°±
 				pButtonScript->SetClickedCallback([=]() { pScript->Start(); });
 
-				// ¸¶¿ì½º°¡ ¹öÆ°¿¡¼­ ¹ş¾î³µÀ» ¶§
-				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"Çö¸ğ", 35.f, true); }); 
+				// ë§ˆìš°ìŠ¤ê°€ ë²„íŠ¼ì—ì„œ ë²—ì–´ë‚¬ì„ ë•Œ
+				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"í˜„ëª¨", 35.f, true); }); 
 
-				// ¸¶¿ì½º°¡ ¹öÆ°¿¡ ¿Ã¶ó°¬À» ¶§
-				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"Çö¸ğ", 40.f, true); mpActiveInterface = pInterface; }); 
+				// ë§ˆìš°ìŠ¤ê°€ ë²„íŠ¼ì— ì˜¬ë¼ê°”ì„ ë•Œ
+				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"í˜„ëª¨", 40.f, true); mpActiveInterface = pInterface; }); 
 
-				// ÅØ½ºÃÄ ¾ËÆÄ°ª ÁöÁ¤
+				// í…ìŠ¤ì³ ì•ŒíŒŒê°’ ì§€ì •
 				pInterface->SetAlpha(0.f);
 
-				// ÅØ½ºÆ® ÁöÁ¤
-				pInterface->SetText(L"½ÃÀÛ", 25.f, true);
+				// í…ìŠ¤íŠ¸ ì§€ì •
+				pInterface->SetText(L"ì‹œì‘", 25.f, true);
 
-				// ÅØ½ºÆ® ÄÃ·¯ ÁöÁ¤
+				// í…ìŠ¤íŠ¸ ì»¬ëŸ¬ ì§€ì •
 				pInterface->SetTextColor(Vec4(1.f, 1.f, 1.f, 1.f));
 				AddGameObject(pInterface);
 
-				// ÀÓ½Ã·Î ¼³Á¤
+				// ì„ì‹œë¡œ ì„¤ì •
 				mpActiveInterface = pInterface;
 			}
 
-			// »ó¿¬
+			// ìƒì—°
 			{
 				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(-150.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
-				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"»ó¿¬", MapType::Monster_Player_Test));
+				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"ìƒì—°", MapType::Monster_Player_Test));
 
 				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
 				pButtonScript->SetClickedCallback([=]() { pScript->Start(); });
-				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"»ó¿¬", 35.f, true); });
-				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"»ó¿¬", 40.f, true); mpActiveInterface = pInterface; });
+				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"ìƒì—°", 35.f, true); });
+				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"ìƒì—°", 40.f, true); mpActiveInterface = pInterface; });
 
 				pInterface->SetAlpha(0.f);
 
-				pInterface->SetText(L"½ÃÀÛ", 25.f, true);
+				pInterface->SetText(L"ì‹œì‘", 25.f, true);
 				pInterface->SetTextColor(Vec4(1.f, 1.f, 1.f, 1.f));
 
 				AddGameObject(pInterface);
 			}
 
-			// ÁöÇü
+			// ì§€í˜•
 			{
 				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(150.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
-				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"ÁöÇü", MapType::PhysicsTest));
+				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"ì§€í˜•", MapType::PhysicsTest));
 
 				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
 				pButtonScript->SetClickedCallback([=]() { pScript->Start(); });
-				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"ÁöÇü", 35.f, true); });
-				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"ÁöÇü", 40.f, true); mpActiveInterface = pInterface; });
+				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"ì§€í˜•", 35.f, true); });
+				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"ì§€í˜•", 40.f, true); mpActiveInterface = pInterface; });
 
 				pInterface->SetAlpha(0.f);
 
-				pInterface->SetText(L"½ÃÀÛ", 25.f, true);
+				pInterface->SetText(L"ì‹œì‘", 25.f, true);
 				pInterface->SetTextColor(Vec4(1.f, 1.f, 1.f, 1.f));
 
 				AddGameObject(pInterface);
 			}
 
-			// ¿µÁø
+			// ì˜ì§„
 			{
 				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(450.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
-				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"¿µÁø", MapType::EntranceHallMap));
+				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"ì˜ì§„", MapType::EntranceHallMap));
 
 				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
 				pButtonScript->SetClickedCallback([=]() { pScript->Start(); });
-				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"¿µÁø", 35.f, true); });
-				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"¿µÁø", 40.f, true); mpActiveInterface = pInterface; });
+				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"ì˜ì§„", 35.f, true); });
+				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"ì˜ì§„", 40.f, true); mpActiveInterface = pInterface; });
 
 				pInterface->SetAlpha(0.f);
 
-				pInterface->SetText(L"½ÃÀÛ", 25.f, true);
+				pInterface->SetText(L"ì‹œì‘", 25.f, true);
 				pInterface->SetTextColor(Vec4(1.f, 1.f, 1.f, 1.f));
 
 				AddGameObject(pInterface);
@@ -360,10 +361,10 @@ namespace hm
 				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(0.f, -300.f, -1.f), Vec2(50.f, 50.f), info);
 
 				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();
-				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"Á¾·á", 35.f, true); });
-				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"Á¾·á", 40.f, true); mpActiveInterface = pInterface; });
+				pButtonScript->SetNonHoveredCallback([=]() { pInterface->SetText(L"ì¢…ë£Œ", 35.f, true); });
+				pButtonScript->SetHoveredCallback([=]() { pInterface->SetText(L"ì¢…ë£Œ", 40.f, true); mpActiveInterface = pInterface; });
 
-				pInterface->SetText(L"Á¾·á", 25.f, true);
+				pInterface->SetText(L"ì¢…ë£Œ", 25.f, true);
 				pInterface->SetTextColor(Vec4(1.f, 1.f, 1.f, 1.f));
 
 				AddGameObject(pInterface);
@@ -371,7 +372,37 @@ namespace hm
 
 		}
 
-		AddSceneChangeCallback(L"ÇÃ·¹ÀÌ¾î Ãæµ¹ ÃÊ±âÈ­", []() 
+
+		//Player
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Capsule;
+			physicsInfo.size = Vec3(0.8f, 0.5f, 0.8f);
+
+			Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, -100.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
+			pPlayer->SetDontDestroyObject(L"Player");
+			pPlayer->SetReflect(true);
+
+			AudioSound* pSound = pPlayer->AddComponent(new AudioSound);
+			pSound->SetSound(L"BGM", this, true, "..\\Resources\\Sound\\TitleBGM.mp3");
+			pSound->Play();
+
+			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
+			yj::PlayerMoveOverMapScript* pMoveOverSc = pPlayer->AddComponent(new yj::PlayerMoveOverMapScript);
+			pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
+			pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
+			pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
+			pPlayer->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.6f, 0.f));
+
+			pPlayer->GetRigidBody()->ApplyGravity();
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
+			pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
+			AddGameObject(pPlayer);
+			//SetMeshTarget(pPlayer);
+		}
+
+		AddSceneChangeCallback(L"í”Œë ˆì´ì–´ ì¶©ëŒ ì´ˆê¸°í™”", []() 
 			{
 				GET_SINGLE(CollisionManager)->ClearAllCollisionForObject(PLAYER); 
 			});

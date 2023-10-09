@@ -184,8 +184,8 @@ namespace hm {
 			pLordOfDoorRoll->SetLORD_BOSS(pLordOfDoor);
 			
 
-			AddGameObject(pLordOfDoorRoll);
-			AddGameObject(pLordOfDoor);
+			//AddGameObject(pLordOfDoorRoll);
+			//AddGameObject(pLordOfDoor);
 			//SetMeshTarget(pLordOfDoor);
 		
 		}
@@ -263,7 +263,7 @@ namespace hm {
 			}
 			//SetGizmoTarget(p_E_GRIMACE_KNIGHT);
 			AddGameObject(p_E_GRIMACE_KNIGHT);
-			//SetMeshTarget(p_E_GRIMACE_KNIGHT);
+			SetMeshTarget(p_E_GRIMACE_KNIGHT);
 		}
 
 		// ¹ÚÁã

@@ -29,6 +29,7 @@ namespace yj
 			return;
 		}
 
+
 		if (mBreakSequence > 0)
 		{
 			Break();
@@ -60,7 +61,7 @@ namespace yj
 	}
 	void KeyPot::Break()
 	{
-		//�ִϸ��̼� ��� ��
+		//¾Ö´Ï¸ÞÀÌ¼Ç Àç»ý ÈÄ
 		//mBreakSequence = 0;
 	}
 	void KeyPot::OnTriggerEnter(Collider* _pOther)

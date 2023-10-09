@@ -79,7 +79,7 @@
 Mage_ProjectTile::Mage_ProjectTile()
 {
 	mHP = 1.f; 
-	mSpeed = 3.f;
+	mSpeed = 5.f;
 	mAttackDamage = 1;
 }
 

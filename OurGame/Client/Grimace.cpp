@@ -163,6 +163,55 @@ void Grimace::SetBehaviorTree()
 
 #pragma endregion
 
+#pragma region Delay Sequence
+		Sequence* pDelaySequence = new Sequence;
+		{
+			// 상태 확인(Condition) : 현재 상태가 Idle인지 확인
+			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+				{
+					if (MonsterBasicState::Delay == meBasicState)
+						return BehaviorResult::Success;
+					else
+						return BehaviorResult::Failure;
+				});
+
+			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				Animator* pAnimator = GetAnimator();
+				int animIndex = pAnimator->GetCurrentClipIndex();
+				if (0 != animIndex) {
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
+					pAnimator->Play(0, true);
+				}
+
+				return BehaviorResult::Success;
+				});
+
+			// 플레이어 거리 확인(Condition) : 플레이어가 근처에 있는지 확인
+			BehaviorCondition* pCheckNearbyPlayer = new BehaviorCondition([&]()
+				{
+					Animator* pAnimator = GetAnimator();
+
+					
+					if (pAnimator->GetFrameRatio() > 0.99)
+					{
+						return BehaviorResult::Success;
+					}
+					return BehaviorResult::Failure;
+				});
+
+
+
+			pDelaySequence->AddChild(pStateChecker);
+			pDelaySequence->AddChild(pRunAnimationTask);
+			pDelaySequence->AddChild(pCheckNearbyPlayer);
+			pDelaySequence->AddChild(new ChangeStateTask(MonsterBasicState::Trace));
+		}
+		pStateSelector->AddChild(pDelaySequence);
+
+#pragma endregion
+
 #pragma region Trace Sequence
 		Sequence* pTraceSequence = new Sequence;
 		{
@@ -329,21 +378,21 @@ void Grimace::SetBehaviorTree()
 
 					
 
-					if (distance > 6 && distance < 10 && pAni->GetFrameRatio()>0.7)
+					if (distance > 6.f && distance < 10.f && pAni->GetFrameRatio()>0.7)
 					{
 						dir_desh = playerPos - myPos;
 						dir_desh.Normalize();
 						dir_desh.y = 0;
 
-						eState = MonsterBasicState::Attack03;
+						eState = MonsterBasicState::Attack03; //돌진 공격
 					}
 
-					else if (distance > 4.5f && distance < 5.5f )
+					else if (distance > 3.5f && distance < 5.5f )
 					{
-						eState = MonsterBasicState::Attack01;
+						eState = MonsterBasicState::Attack01; // 땅찍기
 					}
 
-					else if (distance < 4.5f )
+					else if (distance < 3.5f )
 					{
 						dir_backstep = playerPos - myPos;
 						dir_backstep.Normalize();
@@ -356,8 +405,9 @@ void Grimace::SetBehaviorTree()
 					{
 						eState = MonsterBasicState::Defend_Start;
 					}
-
-
+					
+					//임시 테스트
+					//eState = MonsterBasicState::Attack03;
 
 					bool check = GetHitCheck();
 
@@ -397,6 +447,10 @@ void Grimace::SetBehaviorTree()
 					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
 					pAnimator->Play(3, true);
+
+					BackstepDirSet();
+					BackstepRotTurn();
+					
 				}
 
 
@@ -409,95 +463,25 @@ void Grimace::SetBehaviorTree()
 				Vec3 myPos = GetTransform()->GetPosition();
 				Vec3 myRot = GetTransform()->GetRotation();
 				Vec3 scale = GetRigidBody()->GetGeometrySize();
+				Animator* pAni = GetAnimator();
+				GetRigidBody()->SetMaxVelocity(100.f);
 
-				//dir_backstep = playerPos - myPos;
-				Vec3 Num = scale * dir_backstep;
-				float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
+				BackstepDirLive();
 
-				//dir_backstep.Normalize();
-				//dir_backstep.y = 0;
-				// 몬스터의 이동속도가 들어가야 함
-				// 방향을 변경해주는 Task도 필요
-				Vec3 Ve = dir_backstep * mSpeed;
-
-				const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
-
-				for (int i = 0; i < gameObjects.size(); ++i)
+				if (pAni->GetFrameRatio() > 0.2f && pAni->GetFrameRatio() < 0.45f) 
 				{
-					if (gameObjects[i]->GetCollider())
-					{
-						for (size_t j = 1; j <= 8; j++)
-						{
-							if (GetCollider()->Raycast(myPos, ConvertDir(static_cast<DirectionEvasion>(j)), gameObjects[i]->GetCollider(), offset + 0.5f))
-							{
-								if (static_cast<DirectionEvasion>(j) == DirectionEvasion::FORWARD)
-								{
-									Ve.z = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BACKWARD)
-								{
-									Ve.z = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::LEFT)
-								{
-									Ve.x = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::RIGHT)
-								{
-									Ve.x = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPLEFT)
-								{
-									if (Ve.x > Ve.z)
-										Ve.z = 0;
-									else
-										Ve.x = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPRIGHT)
-								{
-									if (Ve.x > Ve.z)
-										Ve.z = 0;
-									else
-										Ve.x = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMLEFT)
-								{
-									if (Ve.x > Ve.z)
-										Ve.z = 0;
-									else
-										Ve.x = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMRIGHT)
-								{
-									if (Ve.x > Ve.z)
-										Ve.z = 0;
-									else
-										Ve.x = 0;
-								}
-
-							}
-						}
-					}
+					GetRigidBody()->SetVelocityExcludingColliders(dir_backstep * 15);
+					GetRigidBody()->SetVelocity(-Ve_backstep * 3);
+				}
+				else
+				{
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+					GetRigidBody()->SetVelocity(Vec3::Zero);
 				}
 
+				
 
-
-				//GetRigidBody()->SetVelocity(-Ve); //따라오게 만드는 코드
-
-				//이부분 중요
-				GetRigidBody()->SetVelocityExcludingColliders(dir_backstep * 10.0f);
-				GetRigidBody()->SetVelocity(-Ve * 2);
-
-				Transform* pTr = GetTransform();
-				Vec3 rot = Vec3(0, 0, -1);
-				double angleRadian = atan2(dir.x, dir.z) - atan2(rot.x, rot.z);
-				float angleDegree = static_cast<float>(angleRadian) * 180.f / XM_PI;
-
-				if (angleDegree < 0.f)
-					angleDegree += 360.f;
-
-				//몬스터의 고개를 돌리는 코드
-				pTr->SetRotation(Vec3(180.f, angleDegree, 0.f));
+				
 
 				return BehaviorResult::Success;
 				});
@@ -593,7 +577,7 @@ void Grimace::SetBehaviorTree()
 			pAttack01Sequence->AddChild(pStateChecker);
 			pAttack01Sequence->AddChild(pRunAnimationTask);
 			pAttack01Sequence->AddChild(pAttackTask);
-			pAttack01Sequence->AddChild(new ChangeStateTask(MonsterBasicState::Trace));
+			pAttack01Sequence->AddChild(new ChangeStateTask(MonsterBasicState::Trace_BackStep));
 		}
 		pStateSelector->AddChild(pAttack01Sequence);
 
@@ -631,7 +615,7 @@ void Grimace::SetBehaviorTree()
 					Vec3 myPos = GetTransform()->GetPosition();
 					Animator* pAni = GetAnimator();
 
-					if (pAni->GetFrameRatio() > 0.6) {
+					if (pAni->GetFrameRatio() > 0.5) {
 						if (true != isTrigger) {
 							isTrigger = true;
 							CreateProjectTile();
@@ -675,10 +659,15 @@ void Grimace::SetBehaviorTree()
 			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
+				Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+				Vec3 myPos = GetTransform()->GetPosition();
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (13 != animIndex) {
 					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
+					dir_desh = playerPos - myPos;
+					dir_desh.Normalize();
+					dir_desh.y = 0;
 					pAnimator->Play(13, true);
 				}
 
@@ -691,14 +680,12 @@ void Grimace::SetBehaviorTree()
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 					Vec3 myPos = GetTransform()->GetPosition();
 					Animator* pAni = GetAnimator();
+					GetRigidBody()->SetMaxVelocity(100.f);
 
-
-
-					//이부분 중요
-					GetRigidBody()->SetVelocityExcludingColliders(-dir_desh * 3.0f);
-
-					if (pAni->GetFrameRatio() > 0.38) {
-						GetRigidBody()->SetVelocity(dir_desh * 8.f);
+					if (pAni->GetFrameRatio() > 0.45 && pAni->GetFrameRatio() < 0.6) 
+					{
+						GetRigidBody()->SetVelocityExcludingColliders(-dir_desh * 10.0f);
+						GetRigidBody()->SetVelocity(dir_desh * 40.f);
 						const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
 						for (int i = 0; i < gameObjects.size(); ++i)
 						{
@@ -711,6 +698,12 @@ void Grimace::SetBehaviorTree()
 							}
 						}
 					}
+					else 
+					{
+						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
+						GetRigidBody()->SetVelocity(Vec3::Zero);
+					}
+				
 
 
 					if (pAni->GetFrameRatio() > 0.90)
@@ -1273,7 +1266,10 @@ void Grimace::CreateProjectTile()
 	physicsInfo.eGeometryType = GeometryType::Box;
 	physicsInfo.size = Vec3(0.3f, 4.3f, 0.3f);
 
-	Grimace_ProjectTile* pProjectTile = Factory::CreateObjectHasPhysical<Grimace_ProjectTile>(Vec3(0.f, -7.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Monster\\_DROP_SOUL50.fbx");
+	Vec3 Pos = GetTransform()->GetPosition();
+	Pos.y -= 2.f;
+
+	Grimace_ProjectTile* pProjectTile = Factory::CreateObjectHasPhysical<Grimace_ProjectTile>(Vec3(Pos), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Monster\\_DROP_SOUL50.fbx");
 	pProjectTile->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 	pProjectTile->GetTransform()->SetPosition(GetTransform()->GetPosition());
 	pProjectTile->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
@@ -1297,7 +1293,7 @@ void Grimace::MonsterAttackCol()
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Kinematic;
 		physicsInfo.eGeometryType = GeometryType::Sphere;
-		physicsInfo.size = Vec3(7.f, 0.1f, 7.f);
+		physicsInfo.size = Vec3(9.f, 0.1f, 9.f);
 
 		pMonsterAttackCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"NoDraw", L"", false, LayerType::MonsterCol);
 		pMonsterAttackCol->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
@@ -1309,5 +1305,103 @@ void Grimace::MonsterAttackCol()
 		
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pMonsterAttackCol);
 
+	}
+}
+
+void Grimace::BackstepRotTurn()
+{
+	Transform* pTr = GetTransform();
+	Vec3 rot = Vec3(0, 0, -1);
+	double angleRadian = atan2(dir_backstep.x, dir_backstep.z) - atan2(rot.x, rot.z);
+	float angleDegree = static_cast<float>(angleRadian) * 180.f / XM_PI;
+
+	if (angleDegree < 0.f)
+		angleDegree += 360.f;
+
+	//몬스터의 고개를 돌리는 코드
+	pTr->SetRotation(Vec3(180.f, angleDegree, 0.f));
+}
+
+void Grimace::BackstepDirSet()
+{
+	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	Vec3 myPos = GetTransform()->GetPosition();
+	dir_backstep = playerPos - myPos;
+	dir_backstep.y = 0;
+	dir_backstep.Normalize();
+}
+
+void Grimace::BackstepDirLive()
+{
+	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	Vec3 myPos = GetTransform()->GetPosition();
+	Vec3 myRot = GetTransform()->GetRotation();
+	Vec3 scale = GetRigidBody()->GetGeometrySize();
+
+	Vec3 Num = scale * dir_backstep;
+	float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
+
+	// 몬스터의 이동속도가 들어가야 함
+	// 방향을 변경해주는 Task도 필요
+	Ve_backstep = dir_backstep * mSpeed;
+
+	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+
+	for (int i = 0; i < gameObjects.size(); ++i)
+	{
+		if (gameObjects[i]->GetCollider())
+		{
+			for (size_t j = 1; j <= 8; j++)
+			{
+				if (GetCollider()->Raycast(myPos, ConvertDir(static_cast<DirectionEvasion>(j)), gameObjects[i]->GetCollider(), offset + 0.5f))
+				{
+					if (static_cast<DirectionEvasion>(j) == DirectionEvasion::FORWARD)
+					{
+						Ve_backstep.z = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BACKWARD)
+					{
+						Ve_backstep.z = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::LEFT)
+					{
+						Ve_backstep.x = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::RIGHT)
+					{
+						Ve_backstep.x = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPLEFT)
+					{
+						if (Ve_backstep.x > Ve_backstep.z)
+							Ve_backstep.z = 0;
+						else
+							Ve_backstep.x = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPRIGHT)
+					{
+						if (Ve_backstep.x > Ve_backstep.z)
+							Ve_backstep.z = 0;
+						else
+							Ve_backstep.x = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMLEFT)
+					{
+						if (Ve_backstep.x > Ve_backstep.z)
+							Ve_backstep.z = 0;
+						else
+							Ve_backstep.x = 0;
+					}
+					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMRIGHT)
+					{
+						if (Ve_backstep.x > Ve_backstep.z)
+							Ve_backstep.z = 0;
+						else
+							Ve_backstep.x = 0;
+					}
+
+				}
+			}
+		}
 	}
 }
