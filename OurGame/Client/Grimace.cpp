@@ -263,7 +263,9 @@ void Grimace::SetBehaviorTree()
 				// 방향을 변경해주는 Task도 필요
 				Vec3 Ve = dir * mSpeed;
 
-				const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::WallObject);
+				//그리마스 수정
+
+				/*const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::WallObject);
 
 				for (int i = 0; i < gameObjects.size(); ++i)
 				{
@@ -321,7 +323,7 @@ void Grimace::SetBehaviorTree()
 							}
 						}
 					}
-				}
+				}*/
 
 
 
@@ -477,6 +479,8 @@ void Grimace::SetBehaviorTree()
 				GetRigidBody()->SetMaxVelocity(100.f);
 
 				BackstepDirLive();
+
+				//그리마스 수정
 
 				if (pAni->GetFrameRatio() > 0.2f && pAni->GetFrameRatio() < 0.45f) 
 				{
@@ -701,6 +705,8 @@ void Grimace::SetBehaviorTree()
 						SetAttackCheck(true);
 						GetRigidBody()->SetVelocityExcludingColliders(-dir_desh * 10.0f);
 						GetRigidBody()->SetVelocity(dir_desh * 40.f);
+
+						//그리마스 수정
 						const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::WallObject);
 						for (int i = 0; i < gameObjects.size(); ++i)
 						{
@@ -1244,9 +1250,10 @@ void Grimace::OnTriggerEnter(Collider* _pOtherCollider)
 		mGroundCount++;
 	}
 
-	if (LayerType::WallObject == _pOtherCollider->GetGameObject()->GetLayerType()
+	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType()
 		&&( meBasicState == MonsterBasicState::Attack03 || meBasicState == MonsterBasicState::Trace_BackStep))
 	{
+		//그리마스 수정
 		dir_desh = Vec3::Zero;
 		dir_backstep = Vec3::Zero;
 	}
@@ -1377,6 +1384,7 @@ void Grimace::BackstepDirLive()
 	// 방향을 변경해주는 Task도 필요
 	Ve_backstep = dir_backstep * mSpeed;
 
+	//그리마스 수정
 	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
 
 	for (int i = 0; i < gameObjects.size(); ++i)
