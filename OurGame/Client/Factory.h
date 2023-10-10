@@ -130,6 +130,7 @@ namespace hm
 
 		InterfaceAlphaScript* pAlphaScript = pInterface->AddComponent(new InterfaceAlphaScript);
 		pInterface->SetAlphaFunction([=](float _alpha) { pAlphaScript->SetAlpha(_alpha); });
+		pInterface->SetColorFunction([=](Vec3 _color) { pAlphaScript->SetColor(_color); });
 
 		return pInterface;
 	}

@@ -338,6 +338,12 @@
     <ClInclude Include="CameraHolder.h">
       <Filter>소스 파일\GameObject\Player</Filter>
     </ClInclude>
+    <ClInclude Include="SparkParticle.h">
+      <Filter>소스 파일\Component\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FireArrowParticle.h">
+      <Filter>소스 파일\Component\ParticleSystem</Filter>
+    </ClInclude>
     <ClInclude Include="Pot_ProjectTile.h">
       <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
     </ClInclude>
@@ -681,6 +687,12 @@
     <ClCompile Include="CameraHolder.cpp">
       <Filter>소스 파일\GameObject\Player</Filter>
     </ClCompile>
+    <ClCompile Include="FireArrowParticle.cpp">
+      <Filter>소스 파일\Component\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="SparkParticle.cpp">
+      <Filter>소스 파일\Component\ParticleSystem</Filter>
+    </ClCompile>
     <ClCompile Include="Pot_ProjectTile.cpp">
       <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
     </ClCompile>
@@ -772,6 +784,12 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Monster\LOAD_BOSS">
       <UniqueIdentifier>{5839635a-2e12-444c-bad2-f39b7cb653d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component">
+      <UniqueIdentifier>{1217b474-4be5-4f6a-bd5d-65e0c23a78a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\ParticleSystem">
+      <UniqueIdentifier>{082d8b03-3b56-4abd-86b8-6889d0148c5b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

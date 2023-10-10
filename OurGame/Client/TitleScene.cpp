@@ -100,7 +100,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::EntranceHallMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Right2Map);
 		}
 
 		// 지형
@@ -267,6 +267,7 @@ namespace hm
 		{
 			Interface* pLogoInterface = Factory::CreateInterface<Interface>(Vec3(0.f, 180.f, 0.f), Vec2(300.f, 200.f), L"..\\Resources\\Texture\\DD_Logo_Smooth_Dropshadow.png");
 			pLogoInterface->AddComponent(new LogoBlinkScript);
+			pLogoInterface->SetColor(Vec3::Color(230.f, 200.f, 230.f));
 			AddGameObject(pLogoInterface);
 		}
 

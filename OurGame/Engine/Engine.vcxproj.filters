@@ -82,9 +82,6 @@
     <ClInclude Include="Light.h">
       <Filter>Object\GameObject\Component</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleSystem.h">
-      <Filter>Object\GameObject\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Frustum.h">
       <Filter>Object\GameObject\Component</Filter>
     </ClInclude>
@@ -289,6 +286,9 @@
     <ClInclude Include="AudioSound.h">
       <Filter>Object\GameObject\Component</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Object\GameObject\Component\ParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EnginePch.cpp">
@@ -367,9 +367,6 @@
       <Filter>Object\Resource</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
-      <Filter>Object\GameObject\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="ParticleSystem.cpp">
       <Filter>Object\GameObject\Component</Filter>
     </ClCompile>
     <ClCompile Include="Frustum.cpp">
@@ -555,6 +552,9 @@
     <ClCompile Include="AudioSound.cpp">
       <Filter>Object\GameObject\Component</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Object\GameObject\Component\ParticleSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -622,6 +622,9 @@
     </Filter>
     <Filter Include="Object\Interface">
       <UniqueIdentifier>{277f3d47-5433-4522-8847-d0976850a569}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\GameObject\Component\ParticleSystem">
+      <UniqueIdentifier>{e0b24324-4193-4c43-ad87-ab3275161eef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -742,6 +745,9 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resources\Shader\motion_blur.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\spark_particle.fx">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

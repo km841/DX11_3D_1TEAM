@@ -1,5 +1,5 @@
-#ifndef _PARTICLE_FX_
-#define _PARTICLE_FX_
+#ifndef _SPARK_PARTICLE_FX_
+#define _SPARK_PARTICLE_FX_
 
 #include "params.fx"
 #include "utils.fx"
@@ -111,12 +111,29 @@ float4 PS_Main(GS_OUT input) : SV_TARGET
 {
     float fElapsedTime = g_vec2_0.y;
     float4 output = (float4) 0.0f;
-    output = g_tex_0.Sample(g_sam_0, input.uv);
-    float4 noise = g_tex_1.Sample(g_sam_0, input.uv);
+    
+    float deltaTime = g_vec2_0.x;
+    
+    float3 dir = particleBuffer[input.id].direction + particleBuffer[input.id].gravityAcc.y;
+    
+    float2 uv = input.uv;
+    if (dir.y < 0.f)
+    {
+        float rad90f = 3.1415926535f / 40.f;
+        float curRad = dir.y * rad90f;
+    
+        float2 uvCentered = input.uv - 0.5f;
+        float2 rotatedUV = float2(
+        uvCentered.x * cos(curRad) - uvCentered.y * sin(curRad),
+        uvCentered.x * sin(curRad) + uvCentered.y * cos(curRad)
+    );
+    
+        rotatedUV += 0.5f;
+        uv = rotatedUV;
 
-    // 여기서 노이즈를 사용하여 UV 좌표를 변형합니다.
-    // noise 값을 사용하여 UV 좌표를 조절하여 파티클 모양을 변경합니다.
-    input.uv += noise.xy * 0.01f; // 조절할 크기를 조절하세요.
+    }
+   
+    output = g_tex_0.Sample(g_sam_0, uv);
 
     float fCurTime = particleBuffer[input.id].curTime;
     float fEndTime = particleBuffer[input.id].endTime;
@@ -139,7 +156,7 @@ float4 PS_Main(GS_OUT input) : SV_TARGET
 }
 
 // =========================
-//  Particle Compute Shader Constant Buffer
+//  Particle Compute Shader
 // =========================
 // g_vec3_0  : World Position
 // g_int_0   : Particle Max Count
@@ -161,6 +178,7 @@ void CS_Main(uint3 threadIndex : SV_DispatchThreadID)
 
     float startLifeTime = g_float_0;
     float gravity = g_float_1;
+    float scatterRadius = g_float_2;
     
     float deltaTime = g_vec2_0.x;
     float elapsedTime = g_vec2_0.y;
@@ -171,9 +189,10 @@ void CS_Main(uint3 threadIndex : SV_DispatchThreadID)
     int startAngle = (int) g_vec2_2.x;
     int endAngle = (int) g_vec2_2.y;
     
-    float3 middleColor = g_vec4_1;
-    float3 startColor = g_vec4_2;
-    float3 endColor = g_vec4_3;
+    float3 standardAngle = g_vec4_1.xyz;
+    float3 startColor = g_vec4_2.xyz;
+    float3 endColor = g_vec4_3.xyz;
+    
     
     if (maxCount <= threadIndex.x)
         return;
@@ -182,6 +201,8 @@ void CS_Main(uint3 threadIndex : SV_DispatchThreadID)
     {
         while (true)
         {
+            
+            
             int remaining = g_shared[0].add;
             if (remaining <= 0)
                 break;
@@ -212,18 +233,39 @@ void CS_Main(uint3 threadIndex : SV_DispatchThreadID)
                 2.f * rand2 - 1.f,
                 2.f * rand3 - 1.f,
             };
-            
-            float3 dir = (noise - 0.5f) * 2.f;
-            
-            float randSpeed = lerp((float) startSpeed, (float) endSpeed, noise.x);
-            //float randAngle = lerp((float) startAngle, (float) endAngle, noise.y);
-            //float randRadian = randAngle * 3.141592f / 180.f;
-            
-            //float2 rightNormal = float2(1.f, 0.f);
-            //float rotatedX = rightNormal.x * cos(randRadian) + rightNormal.y * sin(randRadian);
-            //float rotatedY = rightNormal.x * sin(randRadian) - rightNormal.y * cos(randRadian);
 
-            g_particle[threadIndex.x].direction.xyz = dir;
+            float randAngleX = lerp((float) standardAngle.x - scatterRadius, (float) standardAngle.x + scatterRadius, noise.x);
+            float randAngleY = lerp((float) standardAngle.y - scatterRadius, (float) standardAngle.y + scatterRadius, noise.y);
+            float randAngleZ = lerp((float) standardAngle.z - scatterRadius, (float) standardAngle.z + scatterRadius, noise.z);
+            
+            float randRadianX = randAngleX * 3.1415926535f / 180.f;
+            float randRadianY = randAngleY * 3.1415926535f / 180.f;
+            float randRadianZ = randAngleZ * 3.1415926535f / 180.f;
+            
+            float3 frontNormal = float3(0.f, 0.f, 1.f);
+            
+            float3 rotatedVector = mul(mul(mul(
+                                    float3x3(
+                                        1, 0, 0,
+                                        0, cos(randRadianX), -sin(randRadianX),
+                                        0, sin(randRadianX), cos(randRadianX)
+                                    ),
+                                    float3x3(
+                                        cos(randRadianY), 0, sin(randRadianY),
+                                        0, 1, 0,
+                                        -sin(randRadianY), 0, cos(randRadianY)
+                                    )),
+                                    float3x3(
+                                        cos(randRadianZ), -sin(randRadianZ), 0,
+                                        sin(randRadianZ), cos(randRadianZ), 0,
+                                        0, 0, 1
+                                    )),
+                                    frontNormal
+                                );
+            
+           
+            float randSpeed = lerp((float) startSpeed, (float) endSpeed, noise.x);
+            g_particle[threadIndex.x].direction.xyz = normalize(rotatedVector);
             g_particle[threadIndex.x].position.xyz = worldPos;
             
             g_particle[threadIndex.x].gravityAcc = 0.f;

@@ -1250,7 +1250,7 @@ namespace hm
             Add<Shader>(L"Mirror", pShader);
         }
 
-        // Mirror Shader
+        // Pre Mirror Shader
         {
             ShaderInfo shaderInfo =
             {
@@ -1282,6 +1282,38 @@ namespace hm
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\motion_blur.fx", shaderInfo);
 
             Add<Shader>(L"MotionBlur", pShader);
+        }
+
+        // Compute Particle
+        {
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"ComputeParticle_Spark");
+            pShader->CreateComputeShader(L"..\\Resources\\Shader\\spark_particle.fx", "CS_Main", "cs_5_0");
+            Add<Shader>(L"ComputeParticle_Spark", pShader);
+        }
+
+        // Spark Particle
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::LessNoWrite,
+                RasterizerType::CullNone,
+                BlendType::AlphaBlend,
+                D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST
+            };
+
+            ShaderArg shaderArg =
+            {
+                "VS_Main",
+                "GS_Main",
+                "PS_Main"
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"SparkParticle");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\spark_particle.fx", shaderInfo, shaderArg);
+            Add<Shader>(L"SparkParticle", pShader);
         }
     }
     void Resources::CreateDefaultMaterial()
@@ -1692,6 +1724,22 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"MotionBlur", pMaterial);
+        }
+
+        // Compute Spark Particle
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"ComputeParticle_Spark");
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"ComputeParticle_Spark", pMaterial);
+        }
+
+        // Spark Particle
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"SparkParticle");
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"SparkParticle", pMaterial);
         }
     }
 }

@@ -14,7 +14,8 @@ namespace hm
 
 	void InterfaceAlphaScript::FixedUpdate()
 	{
-		GetMeshRenderer()->GetMaterial()->SetFloatAllSubset(3, mAlpha);
+		GetMeshRenderer()->GetMaterial()->SetVec4(1, Vec4(mColor.x, mColor.y, mColor.z, 1.f));
+		GetMeshRenderer()->GetMaterial()->SetFloatAllSubset(0, mAlpha);
 	}
 
 	Component* InterfaceAlphaScript::Clone(GameObject* _pGameObject)
