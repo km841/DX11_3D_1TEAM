@@ -89,6 +89,8 @@ void Bat::SetBehaviorTree()
 				{
 					if (mHP <= 0) {
 						isDead = true;
+						isGODState = true;
+						SetAttackCheck(false);
 						meBasicState = MonsterBasicState::Dead;
 						return BehaviorResult::Failure;
 					}
@@ -103,7 +105,6 @@ void Bat::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
-					SetHitCheck(false);
 					meBasicState = MonsterBasicState::Trace;
 					return BehaviorResult::Success;
 				});
@@ -420,10 +421,18 @@ void Bat::SetBehaviorTree()
 					Animator* pAni = GetAnimator();
 
 					//이부분 중요
-					if(pAni->GetFrameRatio()>0.2)
+					if (pAni->GetFrameRatio() > 0.2) {
 						GetRigidBody()->SetVelocityExcludingColliders(-dir * 3.f);
-					if(pAni->GetFrameRatio()>0.4 && pAni->GetFrameRatio() < 0.6)
-						GetRigidBody()->SetVelocity(dir * 4.f);
+					}
+					if (pAni->GetFrameRatio() > 0.4 && pAni->GetFrameRatio() < 0.6) {
+						SetAttackCheck(true);
+						GetRigidBody()->SetVelocity(dir * 5.f);
+					}
+					else {
+						SetAttackCheck(false);
+
+
+					}
 
 					const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
 					for (int i = 0; i < gameObjects.size(); ++i)
@@ -628,10 +637,12 @@ void Bat::OnTriggerEnter(Collider* _pOtherCollider)
 	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
 		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		TakeDamage(attackDamage);
-		float hp = mHP;
-		meBasicState = MonsterBasicState::Hit;
-		SetHitCheck(true);
+		if (isGODState == false) {
+			TakeDamage(attackDamage);
+			float hp = mHP;
+			SetAttackCheck(false);
+			meBasicState = MonsterBasicState::Hit;
+		}
 	}
 }
 

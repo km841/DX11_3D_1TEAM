@@ -263,7 +263,7 @@ void Grimace::SetBehaviorTree()
 				// 방향을 변경해주는 Task도 필요
 				Vec3 Ve = dir * mSpeed;
 
-				const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+				const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::WallObject);
 
 				for (int i = 0; i < gameObjects.size(); ++i)
 				{
@@ -419,7 +419,7 @@ void Grimace::SetBehaviorTree()
 					//임시 테스트
 					//eState = MonsterBasicState::Attack03;
 
-					bool check = GetHitCheck();
+					bool check = GetAttackCheck();
 
 					if (check == false) {
 						SetBasicState(eState);
@@ -698,9 +698,10 @@ void Grimace::SetBehaviorTree()
 
 					if (pAni->GetFrameRatio() > 0.45 && pAni->GetFrameRatio() < 0.6) 
 					{
+						SetAttackCheck(true);
 						GetRigidBody()->SetVelocityExcludingColliders(-dir_desh * 10.0f);
 						GetRigidBody()->SetVelocity(dir_desh * 40.f);
-						const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+						const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::WallObject);
 						for (int i = 0; i < gameObjects.size(); ++i)
 						{
 							if (gameObjects[i]->GetCollider())
@@ -714,6 +715,7 @@ void Grimace::SetBehaviorTree()
 					}
 					else 
 					{
+						SetAttackCheck(false);
 						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 						GetRigidBody()->SetVelocity(Vec3::Zero);
 					}
@@ -1242,16 +1244,27 @@ void Grimace::OnTriggerEnter(Collider* _pOtherCollider)
 		mGroundCount++;
 	}
 
+	if (LayerType::WallObject == _pOtherCollider->GetGameObject()->GetLayerType()
+		&&( meBasicState == MonsterBasicState::Attack03 || meBasicState == MonsterBasicState::Trace_BackStep))
+	{
+		dir_desh = Vec3::Zero;
+		dir_backstep = Vec3::Zero;
+	}
+
 	Player* pPlayer = PLAYER;
 	float attackDamage = pPlayer->GetAttackDamage();
 
 	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
 		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		TakeDamage(attackDamage);
-		if (mHP <= 0) {
-			isDead = true;
-			meBasicState = MonsterBasicState::Dead;
+		if (isGODState == false) {
+			TakeDamage(attackDamage);
+			if (mHP <= 0) {
+				isDead = true;
+				isGODState = true;
+				SetAttackCheck(false);
+				meBasicState = MonsterBasicState::Dead;
+			}
 		}
 	}
 }

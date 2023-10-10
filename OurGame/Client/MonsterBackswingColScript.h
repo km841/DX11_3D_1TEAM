@@ -1,13 +1,11 @@
 #pragma once
 #include "MonoBehavior.h"
-#include "TimerObject.h"
-
-class MonsterSlowColScript :
+class MonsterBackswingColScript :
     public MonoBehavior
 {
 public:
-    MonsterSlowColScript();
-    virtual ~MonsterSlowColScript() = default;
+    MonsterBackswingColScript();
+    virtual ~MonsterBackswingColScript() = default;
 
     virtual void Initialize() override;
     virtual void FixedUpdate() override;
@@ -20,8 +18,6 @@ public:
     void SetOffSetPos(Vec3 _Pos) { OffSetPos = _Pos; }
 private:
     Vec3 OffSetPos;
-    TimerObject timer;
-    int Count;
-    float SumScale;
+   
 };
 

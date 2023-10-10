@@ -133,6 +133,8 @@ void Mage::SetBehaviorTree()
 
 					if (mHP <= 0) {
 						isDead = true;
+						isGODState = true;
+					
 						meBasicState = MonsterBasicState::Dead;
 						return BehaviorResult::Failure;
 					}
@@ -147,7 +149,7 @@ void Mage::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
-					SetHitCheck(false);
+					
 					meBasicState = MonsterBasicState::Teleport_Out;
 					return BehaviorResult::Success;
 				});
@@ -650,10 +652,11 @@ void Mage::OnTriggerEnter(Collider* _pOtherCollider)
 	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
 		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		TakeDamage(attackDamage);
-		float hp = mHP;
-		meBasicState = MonsterBasicState::Hit;
-		SetHitCheck(true);
+		if (isGODState == false) {
+			TakeDamage(attackDamage);
+			float hp = mHP;
+			meBasicState = MonsterBasicState::Hit;
+		}
 	}
 
 	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())

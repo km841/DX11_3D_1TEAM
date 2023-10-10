@@ -224,6 +224,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="Map.h" />
     <ClInclude Include="Mirror_ProjectTile.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="MonsterBackswingColScript.h" />
     <ClInclude Include="MonsterColScript.h" />
     <ClInclude Include="MonsterCrackScript.h" />
     <ClInclude Include="MonsterKeyScript.h" />
@@ -355,6 +356,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mirror_ProjectTile.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="MonsterBackswingColScript.cpp" />
     <ClCompile Include="MonsterColScript.cpp" />
     <ClCompile Include="MonsterCrackScript.cpp" />
     <ClCompile Include="MonsterKeyScript.cpp" />
