@@ -1,5 +1,6 @@
 #pragma once
 #include "Map.h"
+#include "TextBox.h"
 
 namespace hm
 {
@@ -24,6 +25,7 @@ namespace hm
 	private:
 		class Interface* mpActiveInterface;
 		class Interface* mpSelectedInterface;
+		yj::TextBox* pTextBox;
 	};
 }
 

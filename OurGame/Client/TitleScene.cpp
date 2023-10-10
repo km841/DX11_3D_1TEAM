@@ -38,6 +38,7 @@
 #include "ParticleSystem.h"
 #include "UIText.h"
 #include "AudioSound.h"
+//#include "TextBox.h"
 
 /* Script */
 #include "PaperBurnScript.h"
@@ -75,6 +76,16 @@ namespace hm
 	{
 		Scene::Update();
 
+		if (IS_DOWN(KeyType::A))
+		{
+			if (pTextBox != nullptr)
+			{
+
+				pTextBox->SetWriteTexts(0,5);
+				pTextBox->Apear();
+			}
+		}
+
 		if (nullptr != mpActiveInterface)
 		{
 			Vec3 pos = mpActiveInterface->GetTransform()->GetPosition();
@@ -89,7 +100,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::EntranceHallMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Right2Map);
 		}
 
 		// 지형
@@ -256,6 +267,7 @@ namespace hm
 		{
 			Interface* pLogoInterface = Factory::CreateInterface<Interface>(Vec3(0.f, 180.f, 0.f), Vec2(300.f, 200.f), L"..\\Resources\\Texture\\DD_Logo_Smooth_Dropshadow.png");
 			pLogoInterface->AddComponent(new LogoBlinkScript);
+			pLogoInterface->SetColor(Vec3::Color(230.f, 200.f, 230.f));
 			AddGameObject(pLogoInterface);
 		}
 
@@ -265,6 +277,16 @@ namespace hm
 			mpSelectedInterface->SetAlpha(0.8f);
 			AddGameObject(mpSelectedInterface);
 		}
+		// 텍스트 박스
+		{
+			pTextBox = Factory::CreateInterface<yj::TextBox>(Vec3(0.f, -300.f, -3.f), Vec2(400.0f, 100.0f), L"..\\Resources\\Texture\\TextBox.png");
+			pTextBox->SetAlpha(0.8f);
+			AddGameObject(pTextBox);
+			//사이즈는 400 100
+			pTextBox->Disable();
+			pTextBox->SetDontDestroyObject(L"TextBox");
+		}
+
 
 		// Buttons
 		{
@@ -377,7 +399,6 @@ namespace hm
 			{
 				GET_SINGLE(CollisionManager)->ClearAllCollisionForObject(PLAYER);
 			});
-
 	}
 
 	void TitleScene::Exit()
