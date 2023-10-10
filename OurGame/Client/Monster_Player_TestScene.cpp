@@ -105,6 +105,7 @@ namespace hm {
 
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::PlayerCol);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::WallObject);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::ArrowCol);
 
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PlayerCol, LayerType::Monster_ProjectTile);
@@ -268,7 +269,7 @@ namespace hm {
 				p_E_GRIMACE_KNIGHT->GetAnimator()->SetPlaySpeed(i, 0.8f);
 			}
 			//SetGizmoTarget(p_E_GRIMACE_KNIGHT);
-			//AddGameObject(p_E_GRIMACE_KNIGHT);
+			AddGameObject(p_E_GRIMACE_KNIGHT);
 			//SetMeshTarget(p_E_GRIMACE_KNIGHT);
 		}
 
@@ -333,7 +334,7 @@ namespace hm {
 			Light* pLight = pGameObject->AddComponent(new Light);
 			pLight->SetDiffuse(Vec3(1.f, 1.f, 1.f));
 			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
-			pLight->SetLightRange(10.f);
+			pLight->SetLightRange(100.f);
 			pLight->SetLightType(LightType::PointLight);
 			AddGameObject(pGameObject);
 		}

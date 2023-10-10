@@ -62,6 +62,7 @@
 #include "ArrowScript.h"
 #include "MonsterColScript.h"
 #include "MonsterSlowColScript.h"
+#include "MonsterBackswingColScript.h"
 
 LORD_BOSS::LORD_BOSS()
 {
@@ -75,6 +76,7 @@ LORD_BOSS::LORD_BOSS()
 	mAttackDamage = 1; // 공격력
 	
 	MonsterAttackCol();
+	MonsterBackswingCol();
 	meBasicState = MonsterBasicState::Idle;
 }
 
@@ -177,7 +179,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Silent_Clap;
+					meBasicState = MonsterBasicState::Backswing_Left;
 					return BehaviorResult::Success;
 				});
 
@@ -354,8 +356,13 @@ void LORD_BOSS::SetBehaviorTree()
 			// 이동+Col 처리 하는곳
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
+					Animator* pAni = GetAnimator();
 
-
+					if (pAni->GetFrameRatio() > 0.3 && isSilent_Clap == false)
+					{
+						isSilent_Clap = true;
+						MonsterSilent_ClapCol(); 
+					}
 
 					return BehaviorResult::Success;
 				});
@@ -365,7 +372,7 @@ void LORD_BOSS::SetBehaviorTree()
 				Animator* pAni = GetAnimator();
 
 				if (pAni->GetFrameRatio() > 0.5) {
-					MonsterSilent_ClapCol();
+					isSilent_Clap = false;
 					return BehaviorResult::Success;
 				}
 				return BehaviorResult::Failure;
@@ -533,6 +540,7 @@ void LORD_BOSS::SetBehaviorTree()
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (18 != animIndex)
 				{
+					
 					pAnimator->Play(18, true);
 				}
 				return BehaviorResult::Success;
@@ -541,9 +549,17 @@ void LORD_BOSS::SetBehaviorTree()
 			// 이동+Col 처리 하는곳
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
-
-
-
+					Animator* pAni = GetAnimator();
+					if (pAni->GetFrameRatio() > 0.1f)
+					{
+						pBackswingCol->Enable();
+					}
+					if (pAni->GetFrameRatio() > 0.2f)
+					{
+						pBackswingCol->Disable();
+					}
+				
+	
 					return BehaviorResult::Success;
 				});
 
@@ -560,6 +576,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
+					
 					PrevState = meBasicState;
 					meBasicState = MonsterBasicState::Idle;
 					return BehaviorResult::Success;
@@ -602,7 +619,15 @@ void LORD_BOSS::SetBehaviorTree()
 			// 이동+Col 처리 하는곳
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
-
+					Animator* pAni = GetAnimator();
+					if (pAni->GetFrameRatio() > 0.1f)
+					{
+						pBackswingCol->Enable();
+					}
+					if (pAni->GetFrameRatio() > 0.2f)
+					{
+						pBackswingCol->Disable();
+					}
 
 
 					return BehaviorResult::Success;
@@ -786,6 +811,7 @@ void LORD_BOSS::SetBehaviorTree()
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (1 != animIndex)
 				{
+					SetAttackCheck(true);
 					pAnimator->Play(1, true);
 				}
 				return BehaviorResult::Success;
@@ -815,6 +841,7 @@ void LORD_BOSS::SetBehaviorTree()
 				}
 				else if (isWall == true)
 				{
+					SetAttackCheck(false);
 					Vec3 Ve = PosDir * 3;
 					GetRigidBody()->SetVelocity(AXIS_X, -Ve.x);
 					GetRigidBody()->SetVelocity(AXIS_Z, -Ve.z);
@@ -1381,9 +1408,14 @@ void LORD_BOSS::OnTriggerEnter(Collider* _pOtherCollider)
 	float attackDamage = pPlayer->GetAttackDamage();
 
 	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
-		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
+		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType()
+		&& isGODState == false)
 	{
 		TakeDamage(attackDamage);
+		if (mHP < 0)
+		{
+			isGODState = true;
+		}
 	}
 
 	if (LayerType::WallObject == _pOtherCollider->GetGameObject()->GetLayerType()
@@ -1902,13 +1934,13 @@ void LORD_BOSS::MonsterAttackCol()
 void LORD_BOSS::MonsterSilent_ClapCol()
 {
 	Vec3 pPlayerPos = PLAYER->GetTransform()->GetPosition();
-	pPlayerPos.y += 0.2f;
+	pPlayerPos.y += 0.1f;
 	//몬스터 공격 콜라이더
 	{
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Kinematic;
 		physicsInfo.eGeometryType = GeometryType::Sphere;
-		physicsInfo.size = Vec3(7.f, 0.1f, 7.f);
+		physicsInfo.size = Vec3(6.0f, 0.1f, 6.f);
 
 		pMonsterSilent_ClapCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(pPlayerPos), physicsInfo, L"Forward", L"..\\Resources\\FBX\\Monster\\SilenceEffect.fbx", false, LayerType::MonsterSlowCol);
 		pMonsterSilent_ClapCol->GetMeshRenderer()->SetMaterial(pMonsterSilent_ClapCol->GetMeshRenderer()->GetMaterial()->Clone());
@@ -1917,13 +1949,39 @@ void LORD_BOSS::MonsterSilent_ClapCol()
 		pMonsterSilent_ClapCol->GetMeshRenderer()->GetMaterial()->SetBloom(true);
 		pMonsterSilent_ClapCol->Initialize();
 		MonsterSlowColScript* MonSlowSc = pMonsterSilent_ClapCol->AddComponent(new MonsterSlowColScript);
+		MonSlowSc->Initialize();
 		pMonsterSilent_ClapCol->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
 
-		TOOL->UseMeshTool();
-		TOOL->SetGameObject(pMonsterSilent_ClapCol);
+		//TOOL->UseMeshTool();
+		//TOOL->SetGameObject(pMonsterSilent_ClapCol);
 		
 
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pMonsterSilent_ClapCol);
+
+	}
+}
+
+void LORD_BOSS::MonsterBackswingCol()
+{
+	//몬스터 공격 콜라이더
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eGeometryType = GeometryType::Sphere;
+		physicsInfo.size = Vec3(7.f, 0.1f, 7.f);
+
+		pBackswingCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"NoDraw", L"", false, LayerType::MonsterCol);
+		pBackswingCol->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+		pBackswingCol->GetTransform()->SetRotation(Vec3(00.f, 00.f, 0.f));
+		pBackswingCol->Initialize();
+		MonsterBackswingColScript* MonBackswingSc = pBackswingCol->AddComponent(new MonsterBackswingColScript);
+
+		MonBackswingSc->SetOffSetPos(Vec3(0.f, -3.f, -0.f));
+		pBackswingCol->Disable();
+
+		auto pFollowSc2 = pBackswingCol->AddComponent(new OwnerFollowScript(this));
+
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pBackswingCol);
 
 	}
 }

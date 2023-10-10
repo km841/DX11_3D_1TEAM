@@ -2,7 +2,7 @@
 #include "MonsterSlowColScript.h"
 #include "GameObject.h"
 #include "Engine.h"
-
+#include "TimerObject.h"
 /* Resource */
 #include "MeshData.h"
 #include "Material.h"
@@ -51,14 +51,75 @@
 
 MonsterSlowColScript::MonsterSlowColScript()
 {
+	timer.SetEndTime(0.2f);
+	SumScale = 6.f;
+	Count = 0;
 }
 
 void MonsterSlowColScript::Initialize()
 {
+	timer.Start();
 }
 
 void MonsterSlowColScript::FixedUpdate()
 {
+	timer.Update();
+
+	Transform* pTr = GetTransform();
+	RigidBody* pRb = GetRigidBody();
+	Vec3 ColSize = pRb->GetGeometrySize();
+	Vec3 TextureSize = pTr->GetScale();
+
+	if (timer.IsFinished() && Count < 6) //지정된시간에 + 카운트 갯수만큼 스케일 키우기
+	{
+		timer.Stop();
+		ColSize.x += (SumScale - Count);
+		ColSize.z += (SumScale - Count);
+		TextureSize.x += (SumScale - Count);
+		TextureSize.z += (SumScale - Count);
+
+
+
+		pRb->SetGeometrySize(ColSize);
+		pTr->SetScale(TextureSize);
+		timer.Start();
+		Count++;
+	}
+
+	if (Count >= 6)
+	{
+		if (TextureSize.x > 15.f)
+		{
+			SceneType eSceneType = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
+			GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(eSceneType, GetGameObject());
+			return;
+		}
+		ColSize.x += 0.2f;
+		ColSize.z += 0.2f;
+		TextureSize.x += 0.2f;
+		TextureSize.z += 0.2f;
+
+
+
+		pRb->SetGeometrySize(ColSize);
+		pTr->SetScale(TextureSize);
+
+	
+	}
+	else 
+	{
+		ColSize.x -= 0.3f;
+		ColSize.z -= 0.3f;
+		TextureSize.x -= 0.3f;
+		TextureSize.z -= 0.3f;
+
+
+
+		pRb->SetGeometrySize(ColSize);
+		pTr->SetScale(TextureSize);
+
+	}
+
 }
 
 Component* MonsterSlowColScript::Clone(GameObject* _pGameObject)

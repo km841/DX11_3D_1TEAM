@@ -344,6 +344,9 @@
     <ClInclude Include="MonsterSlowColScript.h">
       <Filter>소스 파일\GameObject\Monster\Script</Filter>
     </ClInclude>
+    <ClInclude Include="MonsterBackswingColScript.h">
+      <Filter>소스 파일\GameObject\Monster\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -684,6 +687,9 @@
       <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
     </ClCompile>
     <ClCompile Include="MonsterSlowColScript.cpp">
+      <Filter>소스 파일\GameObject\Monster\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterBackswingColScript.cpp">
       <Filter>소스 파일\GameObject\Monster\Script</Filter>
     </ClCompile>
   </ItemGroup>

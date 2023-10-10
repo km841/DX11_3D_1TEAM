@@ -44,16 +44,18 @@ private:
 	void PrevFollowLive();
 	bool LookRay(); // 안씀
 
-
+	//레이저 패턴때 쓰는 이동+회전
 	void LaserFollow_Turn();
 	void LaserPrevFollowSet();
 	void LaserPrevFollowLive();
-
 	void CreateCow(Vec3 _pos);
 
+	//공격 콜라이더 오브젝트
 	void MonsterAttackCol();
 	void MonsterSilent_ClapCol();
+	void MonsterBackswingCol();
 
+	//투사체 공격(항아리던지기)
 	void CreatePOTProJectTile();
 	void CreatePOTProJectTile(int _a);
 private:
@@ -72,11 +74,13 @@ private:
 	bool isGround = false;
 	bool isWall = false;
 	bool isCrash = true;
+	bool isSilent_Clap = false;
 
 	MonsterBasicState PrevState;
 
 	LORD_BOSS_ROLL* pObject;
 	GameObject* pMonsterAttackCol;
 	GameObject* pMonsterSilent_ClapCol;
+	GameObject* pBackswingCol;
 };
 
