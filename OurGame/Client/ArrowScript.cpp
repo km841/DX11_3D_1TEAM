@@ -159,11 +159,21 @@ void ArrowScript::FixedUpdate()
 		{
 			timerObj.Stop();
 			pObj->Disable();
+			//isBurn = false;
 		}
 	}
 
 	if (isBurn == true) {
 		mSpeed = 20;
+
+		mpLight->Enable();
+		mpParticle->Enable();
+	}
+
+	else
+	{
+		//mpLight->Disable();
+		//mpParticle->Disable();
 	}
 	
 }
