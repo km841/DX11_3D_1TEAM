@@ -31,38 +31,38 @@ namespace yj
 		void Apear();
 		void Disapear();
 
+		void SetWriteTexts(int _startNum, int _endNum) { mLineStartNum = _startNum; mLineEndNum = _endNum; }
 	private:
 
-
 		void SetCurrWriteText(int _TextLineNum);
-		void AddText(wstring _AddText) { mCurrWriteText + _AddText; }
 		void WriteText();
+		void CurrWriteTextAdd(int num);
+
+		void ResetTextLine() { mCurrWriteText = L""; mCurrTextLength = -1; mAddedTextCount = -1; }
+
+		void SetTimerFlow() { isTimerFlow = true; }
+		bool IsTimerReach() { if (mTimer >= mTimerLimit) { return true; } else { return false; } }
+
+		void TimerReset() { mTimer = 0.0f; }
+		void SetTimerStop() { isTimerFlow = false; }
+
 		bool GetIsWriteDone() {
 			if (mCurrTextLength == mCurrWriteText.length()) {
 				return true;
 			}
 			else { return false; }
 		}
-
-		void ResetCurrWriteText() { mCurrWriteText = L""; }
-		void ResetCurrTextLength() { mCurrTextLength = -1; }
-
-		void SetTimerFlow() { isTimerFlow = true; }
-		bool IsTimerReach() { if (mTimer >= mTimerLimit) { return true; } else { return false; } }
-		void TimerReset() { mTimer = 0.0f; }
-		void TimerStop() { isTimerFlow = false; }
-
 	public:
 		enum ActState
 		{
 			Start,
 			ApearAct,
-			StandbyAct,
+			WriteTextAct,
 			DisapearAct,
 			End,
 		};
 
-		ActState mActState;
+		ActState mActState = Start;
 
 	private:
 		
@@ -74,14 +74,21 @@ namespace yj
 		float mIncreaseSize;
 
 		std::vector<wstring> mWriteTextArray;
-		wstring mCurrWriteText;
+		
 		wstring mSetWriteText;
+		wstring mCurrWriteText;
+
+		int mLineStartNum;
+		int mLineEndNum;
+		int mAddedLineNum;
+
 		int mCurrTextLength = -1;
+		int mAddedTextCount = -1;
 
 		bool isTextWriting;
 
 		float mTimer = 0.0f;
-		float mTimerLimit;
+		float mTimerLimit = 0.075f;
 		bool isTimerFlow;
 	};
 }
