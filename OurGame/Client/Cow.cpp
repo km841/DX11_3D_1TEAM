@@ -19,6 +19,7 @@
 #include "SceneManager.h"
 #include "Resources.h"
 #include "RenderManager.h"
+#include "Timer.h"
 
 /* GameObject */
 #include "GameObject.h"
@@ -297,6 +298,7 @@ void Cow::OnTriggerExit(Collider* _pOtherCollider)
 
 void Cow::SlowTurnLive()
 {
+	//현모님이 봐주심
 	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 	Vec3 myPos = GetTransform()->GetPosition();
 	Vec3 scale = GetRigidBody()->GetGeometrySize();
@@ -306,25 +308,29 @@ void Cow::SlowTurnLive()
 	RotDir.Normalize();
 	RotDir.y = 0;
 
-	Vec3 Rot = pTr->GetRotation();
-	Vec3 rot = Vec3(0, 0, -1);
-	double angleRadian = atan2(RotDir.x, RotDir.z) - atan2(rot.x, rot.z);
-	float angleDegree = static_cast<float>(angleRadian) * 180.f / XM_PI;
+	Vec3 look = pTr->GetRight();
+	look.Normalize();
 
-	if (angleDegree < 0.f)
-		angleDegree += 360.f;
+	float check = RotDir.Dot(look);
+
+	// 각도 계산 후 도 단위로 변경
+	float angle = (acosf(check) - XM_PIDIV2) * 180.f / XM_PI;
+
+	Vec3 Rot = pTr->GetRotation();
 
 	int Right = TurnSpeed;
 	int Left = -TurnSpeed;
 	// 0 -> 360                200
-	if (Rot.z + 5 < angleDegree)
-		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Right));
-	else if (Rot.z - 5 > angleDegree)
-		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Left));
-	else if (Rot.z == angleDegree)
-		pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
 
-	//GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, -1.5f));
+	if (fabs(angle) < 3.f)
+		return;
+
+	if (check > 0.f)
+		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Left * DELTA_TIME));
+	else if (check < 0.f)
+		pTr->SetRotation(Vec3(-90.f, 0.f, Rot.z + Right * DELTA_TIME));
+
+	TurnSpeed = 250.f;
 
 	
 }

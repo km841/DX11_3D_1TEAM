@@ -344,6 +344,13 @@
     <ClInclude Include="FireArrowParticle.h">
       <Filter>소스 파일\Component\ParticleSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Pot_ProjectTile.h">
+      <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterSlowColScript.h">
+      <Filter>소스 파일\GameObject\Monster\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="HpUi.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -686,6 +693,13 @@
     <ClCompile Include="SparkParticle.cpp">
       <Filter>소스 파일\Component\ParticleSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Pot_ProjectTile.cpp">
+      <Filter>소스 파일\GameObject\Monster\ProjectTile</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterSlowColScript.cpp">
+      <Filter>소스 파일\GameObject\Monster\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="HpUi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

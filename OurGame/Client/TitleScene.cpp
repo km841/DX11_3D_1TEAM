@@ -38,6 +38,7 @@
 #include "ParticleSystem.h"
 #include "UIText.h"
 #include "AudioSound.h"
+//#include "TextBox.h"
 
 /* Script */
 #include "PaperBurnScript.h"
@@ -74,6 +75,16 @@ namespace hm
 	void TitleScene::Update()
 	{
 		Scene::Update();
+
+		if (IS_DOWN(KeyType::A))
+		{
+			if (pTextBox != nullptr)
+			{
+
+				pTextBox->SetWriteTexts(0,5);
+				pTextBox->Apear();
+			}
+		}
 
 		if (nullptr != mpActiveInterface)
 		{
@@ -266,6 +277,16 @@ namespace hm
 			mpSelectedInterface->SetAlpha(0.8f);
 			AddGameObject(mpSelectedInterface);
 		}
+		// 텍스트 박스
+		{
+			pTextBox = Factory::CreateInterface<yj::TextBox>(Vec3(0.f, -300.f, -3.f), Vec2(400.0f, 100.0f), L"..\\Resources\\Texture\\TextBox.png");
+			pTextBox->SetAlpha(0.8f);
+			AddGameObject(pTextBox);
+			//사이즈는 400 100
+			pTextBox->Disable();
+			pTextBox->SetDontDestroyObject(L"TextBox");
+		}
+
 
 		// Buttons
 		{
@@ -378,7 +399,6 @@ namespace hm
 			{
 				GET_SINGLE(CollisionManager)->ClearAllCollisionForObject(PLAYER);
 			});
-
 	}
 
 	void TitleScene::Exit()

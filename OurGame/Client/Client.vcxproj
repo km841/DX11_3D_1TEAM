@@ -228,6 +228,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="MonsterCrackScript.h" />
     <ClInclude Include="MonsterKeyScript.h" />
     <ClInclude Include="MonsterHitScript.h" />
+    <ClInclude Include="MonsterSlowColScript.h" />
     <ClInclude Include="Monster_Player_TestScene.h" />
     <ClInclude Include="Monster_ProjectTile.h" />
     <ClInclude Include="MoveState.h" />
@@ -244,6 +245,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="PlayerMoveOverMapScript.h" />
     <ClInclude Include="PlayerMoveScript.h" />
     <ClInclude Include="PlayerSlashScript.h" />
+    <ClInclude Include="Pot_ProjectTile.h" />
     <ClInclude Include="PrefabManager.h" />
     <ClInclude Include="RangeAttack01State_Gm.h" />
     <ClInclude Include="RangeAttack02State_Gm.h" />
@@ -357,6 +359,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="MonsterCrackScript.cpp" />
     <ClCompile Include="MonsterKeyScript.cpp" />
     <ClCompile Include="MonsterHitScript.cpp" />
+    <ClCompile Include="MonsterSlowColScript.cpp" />
     <ClCompile Include="Monster_Player_TestScene.cpp" />
     <ClCompile Include="Monster_ProjectTile.cpp" />
     <ClCompile Include="MoveState.cpp" />
@@ -376,6 +379,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="PlayerMoveOverMapScript.cpp" />
     <ClCompile Include="PlayerMoveScript.cpp" />
     <ClCompile Include="PlayerSlashScript.cpp" />
+    <ClCompile Include="Pot_ProjectTile.cpp" />
     <ClCompile Include="PrefabManager.cpp" />
     <ClCompile Include="RangeAttack01State_Gm.cpp" />
     <ClCompile Include="RangeAttack02State_Gm.cpp" />
