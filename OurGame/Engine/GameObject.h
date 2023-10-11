@@ -155,6 +155,8 @@ namespace hm
 		virtual void OnTriggerStay(Collider* pOtherCollider) {}
 		virtual void OnTriggerExit(Collider* pOtherCollider) {}
 
+		bool IsRaysCollide(const Vec3& _origin, const Vec3& _dir, LayerType _eLayerType, float _length);
+
 	private:
 		LayerType                                     meLayerType;
 		std::array<Component*, FIXED_COMPONENT_COUNT> mComponents;

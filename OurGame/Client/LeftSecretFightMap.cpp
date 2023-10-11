@@ -35,6 +35,7 @@
 #include "ParticleSystem.h"
 #include "UIText.h"
 #include "Animator.h"
+#include "Mirror.h"
 
 /* Script */
 #include "PaperBurnScript.h"
@@ -136,6 +137,21 @@ void LeftSecretFightMap::Enter()
 		//SetMeshTarget(p_E_GRIMACE_KNIGHT);
 	}
 
+	// ¼§µé¸®¿¡ ¶óÀÌÆ®
+	{
+		GameObject* pGameObject = new GameObject(LayerType::Unknown);
+		Transform* pTransform = pGameObject->AddComponent(new Transform);
+		pTransform->SetPosition(Vec3(0.f, 30.f, 0.f));
+		pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+		pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+		Light* pLight = pGameObject->AddComponent(new Light);
+		pLight->SetDiffuse(Vec3(0.7f, 0.7f, 0.7f));
+		pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+		pLight->SetLightRange(55.f);
+		pLight->SetLightType(LightType::PointLight);
+		AddGameObject(pGameObject);
+	}
+
 
 	//Æë±Ï »À´Ù±Í - skelecrow
 	{
@@ -201,6 +217,19 @@ void LeftSecretFightMap::InitObjectAdd()
 		pGrimace_Decay_Floor->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.01f, 0.01f), 1);
 
 		AddGameObject(pGrimace_Decay_Floor);
+	}
+
+	// ¹Ì·¯
+	{
+		GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(-4.8f, -8.3f, 9.8f), L"Forward", L"", false, LayerType::Mirror);
+
+		pMirror->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+		pMirror->AddComponent(new Mirror);
+		pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+		pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+
+		AddGameObject(pMirror);
+
 	}
 
 	// 2Ãþ ¹Ù´Ú - Floor
@@ -694,7 +723,6 @@ void LeftSecretFightMap::InitColliderAdd()
 		Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-5.f, -8.6f, 9.3f), physicsInfo, L"Forward",L"");
 
 		AddGameObject(pGround);
-		SetGizmoTarget(pGround);
 	}
 	{
 		PhysicsInfo physicsInfo;
@@ -788,5 +816,4 @@ void LeftSecretFightMap::FuncObjectAdd()
 
 	yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-11.0f, -7.7f, 27.7f), physicsInfo, L"Forward", L"", false, MapType::Right2Map,1);
 	AddGameObject(pTelZone);
-	SetGizmoTarget(pTelZone);
 }
