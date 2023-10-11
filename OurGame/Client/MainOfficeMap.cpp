@@ -29,7 +29,7 @@
 #include "Interface.h"
 
 /* Component */
-#include "Collider.h	
+#include "Collider.h"
 #include "RigidBody.h"
 #include "MeshRenderer.h"
 #include "Transform.h"
