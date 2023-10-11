@@ -25,6 +25,8 @@
 #include "DecoObject.h"
 #include "Monster.h"
 #include "Grimace.h"
+#include "SpawnDoor.h"
+
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -119,22 +121,8 @@ void LeftSecretFightMap::Enter()
 
 	//중간보스 내루미
 	{
-		PhysicsInfo info = {};
-		info.eActorType = ActorType::Kinematic;
-		info.eGeometryType = GeometryType::Box;
-		info.size = Vec3(2.f, 8.f, 2.f);
-
-		Grimace* p_E_GRIMACE_KNIGHT = Factory::CreateMonster<Grimace>(Vec3(-3.f, 0.f, -3.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_GRIMACE_KNIGHT.fbx");
-		p_E_GRIMACE_KNIGHT->GetTransform()->SetScale(Vec3(0.7f, 1.f, 0.7f));
-		p_E_GRIMACE_KNIGHT->GetTransform()->SetRotation(Vec3(180.f, 0.f, 0.f));
-		p_E_GRIMACE_KNIGHT->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -4.f, 0.f));
-		for (size_t i = 0; i < 13; i++)
-		{
-			p_E_GRIMACE_KNIGHT->GetAnimator()->SetPlaySpeed(i, 0.8f);
-		}
-		//SetGizmoTarget(p_E_GRIMACE_KNIGHT);
-		AddGameObject(p_E_GRIMACE_KNIGHT);
-		//SetMeshTarget(p_E_GRIMACE_KNIGHT);
+		SpawnDoor<Grimace>* pGrimace = Factory::SpawnMonster<Grimace>(Vec3(3.f, 0.f, -3.f));
+		AddGameObject(pGrimace);
 	}
 
 	// 샹들리에 라이트

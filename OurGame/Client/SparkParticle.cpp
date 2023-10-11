@@ -17,12 +17,12 @@ namespace hm
 		mElapsedTime = 0.f;
 		mCreateInterval = 0.05f;
 		mStartScale = Vec3(1.f, 1.f, 0.5f);
-		mGravity = -60.f;
+		mGravity = -50.f;
 		mAliveCount = 0;
 		mStartAngle = 0.f;
 		mEndAngle = 360.f;
-		mStartScaleFloat = 1.f;
-		mEndScaleFloat = 5.f;
+		mStartScaleFloat = 0.5f;
+		mEndScaleFloat = 0.5f;
 	}
 	SparkParticle::~SparkParticle()
 	{
@@ -33,7 +33,7 @@ namespace hm
 	}
 	void SparkParticle::Initialize()
 	{
-		mpParticleTexture = GET_SINGLE(Resources)->Load<Texture>(L"SampleParticle", L"..\\Resources\\Texture\\ParticleSample.png");
+		mpParticleTexture = GET_SINGLE(Resources)->Load<Texture>(L"SampleParticle", L"..\\Resources\\Texture\\ParticleSample2.png");
 
 		mpMesh = GET_SINGLE(Resources)->LoadPointMesh();
 		mpMaterial = GET_SINGLE(Resources)->Get<Material>(L"SparkParticle");

@@ -263,6 +263,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="Small_IdleState_Gm.h" />
     <ClInclude Include="SoulDoor.h" />
     <ClInclude Include="SparkParticle.h" />
+    <ClInclude Include="SpawnDoor.h" />
     <ClInclude Include="SpiderWeb.h" />
     <ClInclude Include="SpikeDoor.h" />
     <ClInclude Include="SpinEndState_Gm.h" />
@@ -398,6 +399,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="Small_IdleState_Gm.cpp" />
     <ClCompile Include="SoulDoor.cpp" />
     <ClCompile Include="SparkParticle.cpp" />
+    <ClCompile Include="SpawnDoor.cpp" />
     <ClCompile Include="SpiderWeb.cpp" />
     <ClCompile Include="SpikeDoor.cpp" />
     <ClCompile Include="SpinEndState_Gm.cpp" />

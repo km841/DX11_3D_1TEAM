@@ -353,6 +353,10 @@
     <ClInclude Include="CircleParticle.h">
       <Filter>소스 파일\Component\ParticleSystem</Filter>
     </ClInclude>
+    <ClInclude Include="MonsterBackswingColScript.h" />
+    <ClInclude Include="SpawnDoor.h">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -703,6 +707,10 @@
     </ClCompile>
     <ClCompile Include="CircleParticle.cpp">
       <Filter>소스 파일\Component\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterBackswingColScript.cpp" />
+    <ClCompile Include="SpawnDoor.cpp">
+      <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

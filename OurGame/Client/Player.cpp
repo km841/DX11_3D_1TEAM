@@ -40,6 +40,7 @@
 #include "Animator.h"
 #include "FireArrowParticle.h"
 #include "SparkParticle.h"
+#include "CircleParticle.h"
 
 /* Script */
 #include "PlayerMoveScript.h"

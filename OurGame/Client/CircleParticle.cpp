@@ -8,6 +8,23 @@ namespace hm
 {
 	CircleParticle::CircleParticle()
 	{
+		mMaxParticles = 1000;
+		mEndTime = 0.5f;
+		mAccTime = 0.f;
+		mStartSpeed = 1.0f;
+		mEndSpeed = 3.0f;
+		mElapsedTime = 0.f;
+		mCreateInterval = 0.05f;
+		mStartScale = Vec3(1.f, 1.f, 0.5f);
+		mGravity = -3.f;
+		mAliveCount = 0;
+		mStartAngle = 0.f;
+		mEndAngle = 360.f;
+		mStartScaleFloat = 0.5f;
+		mEndScaleFloat = 0.5f;
+
+		mStandardRadius = 5.f;
+		mAllowableRange = 1.f;
 	}
 
 	CircleParticle::~CircleParticle()
@@ -21,7 +38,21 @@ namespace hm
 
 	void CircleParticle::Initialize()
 	{
-		ParticleSystem::Initialize();
+		mpParticleTexture = GET_SINGLE(Resources)->Load<Texture>(L"SampleParticle", L"..\\Resources\\Texture\\ParticleSample2.png");
+
+		mpMesh = GET_SINGLE(Resources)->LoadPointMesh();
+		mpMaterial = GET_SINGLE(Resources)->Get<Material>(L"CircleParticle");
+		mpComputeMaterial = GET_SINGLE(Resources)->Get<Material>(L"ComputeParticle_Circle");
+
+		mpMaterial->SetTexture(0, mpParticleTexture);
+		mpMaterial->SetTexture(1, mpNoiseTexture);
+
+		std::vector<ParticleInfo> particles(mMaxParticles);
+		mpParticleBuffer = new StructuredBuffer;
+		mpParticleBuffer->Create(sizeof(ParticleInfo), mMaxParticles, particles.data());
+
+		mpSharedBuffer = new StructuredBuffer;
+		mpSharedBuffer->Create(sizeof(ParticleShared), 1, nullptr, true);
 	}
 
 	void CircleParticle::Update()

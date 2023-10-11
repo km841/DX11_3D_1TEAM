@@ -68,10 +68,21 @@ void GS_Main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triangleStream)
 	
     if (0 == particleBuffer[input[0].id].alive)
         return;
+    
+    float elapsedTime = g_vec2_0.y;
+    float seedValue = ((float) input[0].id / (float) 1000) + elapsedTime;
+
+    float noiseX = Rand(float2(seedValue, elapsedTime));
+    float noiseY = Rand(float2(seedValue * elapsedTime, elapsedTime));
 	
     float3 vWorldPos = input[0].pos.xyz + particleBuffer[input[0].id].position.xyz;
     float3 vViewPos = mul(float4(vWorldPos, 1.0f), g_matView).xyz;
     float3 vScale = g_vec4_0.xyz;
+    
+    float2 vScaleRand = g_vec2_3;
+    
+    vScale.x = lerp(vScale.x - vScaleRand.x, vScale.x + vScaleRand.y, noiseX);
+    vScale.y = lerp(vScale.y - vScaleRand.x, vScale.y + vScaleRand.y, noiseY);
 
     float3 vNewPos[4] =
     {
@@ -119,18 +130,16 @@ float4 PS_Main(GS_OUT input) : SV_TARGET
     float2 uv = input.uv;
     if (dir.y < 0.f)
     {
-        float rad90f = 3.1415926535f / 40.f;
-        float curRad = dir.y * rad90f;
+        float pi = 1.570796 / 6.f;
+        float lerpRad = lerp(0, pi, (dir.y + 1) / 2);
     
         float2 uvCentered = input.uv - 0.5f;
         float2 rotatedUV = float2(
-        uvCentered.x * cos(curRad) - uvCentered.y * sin(curRad),
-        uvCentered.x * sin(curRad) + uvCentered.y * cos(curRad)
-    );
+        uvCentered.x * cos(lerpRad) - uvCentered.y * sin(lerpRad),
+        uvCentered.x * sin(lerpRad) + uvCentered.y * cos(lerpRad));
     
         rotatedUV += 0.5f;
         uv = rotatedUV;
-
     }
    
     output = g_tex_0.Sample(g_sam_0, uv);

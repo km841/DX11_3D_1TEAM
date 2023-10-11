@@ -14,6 +14,13 @@
 #include "MonsterCrackScript.h"
 #include "MonsterHitScript.h"
 
+#include "Grimace.h"
+#include "Bat.h"
+#include "HeadRoller.h"
+#include "Mage.h"
+#include "Lurker.h"
+#include "SpawnDoor.h"
+
 namespace hm
 {
 	class Factory
@@ -52,8 +59,19 @@ namespace hm
 		template<typename T, typename ... Types>
 		static T* CreateButtonInterface(const Vec3& _pos, const Vec2& _scale, const ButtonInfo& _info, const wstring& _imgPath = L"", Types ... _args);
 
-		void CreateSwordGlareEffect(const Vec3& pos);
+		template<typename T, typename ... Types>
+		static SpawnDoor<T>* SpawnMonster(const Vec3& _pos, const Vec3& _rotation = Vec3(90.f, 0.f, 0.f), Types ... _args);
+
+		template<typename T, typename ... Types>
+		static SpawnDoor<T>* CreateSpawnDoor(const Vec3& _pos, Types ... _args);
+
 	private:
+		static Grimace* CreateGrimace(const Vec3& _pos, const Vec3& _rotation = Vec3(-90.f, 0.f, 0.f));
+	
+
+	private:
+		template<typename T>
+		static MonsterType GetMonsterType();
 
 	};
 
@@ -149,6 +167,61 @@ namespace hm
 		pButtonScript->SetClickedCallback(_info.clickedCallback);
 
 		return pInterface;
+	}
+	template<typename T, typename ...Types>
+	inline SpawnDoor<T>* Factory::SpawnMonster(const Vec3& _pos, const Vec3& _rotation, Types ..._args)
+	{
+		T* pMonster = nullptr;
+		MonsterType eMonsterType = GetMonsterType<T>();
+	
+		SpawnDoor<T>* pDoor = CreateSpawnDoor<T>(_pos, _args...);
+		switch (eMonsterType)
+		{
+		case MonsterType::Grimace:
+			pDoor->SetSpawnFunction(std::bind(&Factory::CreateGrimace, _pos, _rotation));
+			break;
+		case MonsterType::Bat:
+			break;
+		case MonsterType::HeadRoller:
+			break;
+		case MonsterType::Lurker:
+			break;
+		case MonsterType::Mage:
+			break;
+		}
+		pDoor->SetPaperBurn();
+		//AssertEx(nullptr != pMonster, L"Factory::SpawnMonster() - 몬스터가 생성되지 않음");
+		return pDoor;
+	}
+	template<typename T, typename ...Types>
+	inline SpawnDoor<T>* Factory::CreateSpawnDoor(const Vec3& _pos, Types ..._args)
+	{
+		SpawnDoor<T>* pSpawnDoor = CreateObject<SpawnDoor<T>>(_pos, L"Forward_CullNone", L"..\\Resources\\FBX\\Monster\\SpawnDoor.fbx");
+		pSpawnDoor->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+		pSpawnDoor->GetMeshRenderer()->GetMaterial()->SetVec4AllSubset(0, Vec4(1.f, 0.6f, 1.f, 1.f));
+		PaperBurnScript* pScript = pSpawnDoor->AddComponent(new PaperBurnScript);
+		
+		return pSpawnDoor;
+	}
+	template<typename T>
+	inline MonsterType Factory::GetMonsterType()
+	{
+		if (std::is_same_v<T, Grimace>)
+			return MonsterType::Grimace;
+		else if (std::is_same_v<T, Bat>)
+			return MonsterType::Bat;
+		else if (std::is_same_v<T, HeadRoller>)
+			return MonsterType::HeadRoller;
+		else if (std::is_same_v<T, Mage>)
+			return MonsterType::Mage;
+		else if (std::is_same_v<T, Lurker>)
+			return MonsterType::Lurker;
+
+		else
+		{
+			AssertEx(false, L"잘못된 타입 전달");
+			return MonsterType::End;
+		}
 	}
 }
 
