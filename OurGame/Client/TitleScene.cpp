@@ -101,7 +101,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::EntranceHallMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::LeftSecretFightMap);
 		}
 
 		// 지형
@@ -121,7 +121,7 @@ namespace hm
 		// - Monster_Player_Test
 		if (IS_DOWN(KeyType::L))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::RightMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::LeftSecretFightMap);
 		}
 
 		// 영진
@@ -305,7 +305,7 @@ namespace hm
 			{
 				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(-450.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
 
-				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"현모", MapType::EntranceHallMap));
+				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"현모", MapType::LeftSecretFightMap));
 
 				// 클릭 기능을 스크립트로 구현
 				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();

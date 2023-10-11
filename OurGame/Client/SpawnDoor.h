@@ -37,11 +37,11 @@ namespace hm
 		static MonsterType GetMonsterType();
 
 	public:
-		void SetSpawnFunction(std::function<T* ()> _spawnFunc) { mSpawnFunction = _spawnFunc; }
+		void SetSpawnFunction(std::function<Monster* ()> _spawnFunc) { mSpawnFunction = _spawnFunc; }
 		T* Spawn();
 
 	private:
-		std::function<T* ()> mSpawnFunction;
+		std::function<Monster* ()> mSpawnFunction;
 		TimerObject mTimer;
 		bool mbIsFinished;
 		bool mbIsSpawned;
@@ -121,7 +121,7 @@ namespace hm
 	inline T* SpawnDoor<T>::Spawn()
 	{
 		AssertEx(nullptr != mSpawnFunction, L"SpawnDoor<T>::Spawn() - SpawnFunction이 지정되지 않음");
-		return mSpawnFunction();
+		return static_cast<T*>(mSpawnFunction());
 	}
 	template<typename T>
 	inline MonsterType SpawnDoor<T>::GetMonsterType()

@@ -78,6 +78,11 @@ void LeftSecretFightMap::Start()
 void LeftSecretFightMap::Update()
 {
 	Map::Update();
+
+	if (IS_DOWN(KeyType::K))
+	{
+		
+	}
 }
 
 void LeftSecretFightMap::FixedUpdate()
@@ -124,11 +129,48 @@ void LeftSecretFightMap::Enter()
 #pragma region "어드민"
 #pragma endregion
 
-	//중간보스 내루미
+	// 거미 1
 	{
-		SpawnDoor<Grimace>* pGrimace = Factory::SpawnMonster<Grimace>(Vec3(3.f, 0.f, -3.f));
+		SpawnDoor<Bat>* pSpider = Factory::SpawnMonster<Bat>(Vec3(-5.f, 5.f, -3.f));
+		AddGameObject(pSpider);
+	}
+
+	// 거미 2
+	{
+		SpawnDoor<Bat>* pSpider = Factory::SpawnMonster<Bat>(Vec3(-10.f, 5.f, -3.f));
+		AddGameObject(pSpider);
+	}
+
+	// 거미 3
+	{
+		SpawnDoor<Bat>* pSpider = Factory::SpawnMonster<Bat>(Vec3(-15.f, 5.f, -3.f));
+		AddGameObject(pSpider);
+	}
+
+	// 헤드롤러 1
+	{
+		SpawnDoor<HeadRoller>* pRoller = Factory::SpawnMonster<HeadRoller>(Vec3(-5.f, 5.f, 5.f));
+		AddGameObject(pRoller);
+	}
+
+	// 헤드롤러 2
+	{
+		SpawnDoor<HeadRoller>* pRoller = Factory::SpawnMonster<HeadRoller>(Vec3(-10.f, 5.f, 5.f));
+		AddGameObject(pRoller);
+	}
+
+	// 헤드롤러 3
+	{
+		SpawnDoor<HeadRoller>* pRoller = Factory::SpawnMonster<HeadRoller>(Vec3(-15.f, 5.f, 5.f));
+		AddGameObject(pRoller);
+	}
+
+	// 그리마스
+	{
+		SpawnDoor<Grimace>* pGrimace = Factory::SpawnMonster<Grimace>(Vec3(-10.f, 5.f, 18.f));
 		AddGameObject(pGrimace);
 	}
+
 	
 
 	// 샹들리에 라이트

@@ -76,16 +76,16 @@ float4 PS_Main(VS_OUT _in) : SV_Target
     float3 fireshape = g_tex_1.Sample(g_sam_0, uv).rrr;
     float3 materialColor = g_tex_0.Sample(g_sam_0, uv).rgb;
     
-    //LightColor totalColor = (LightColor) 0.f;
-    //for (int i = 0; i < g_lightCount; ++i)
-    //{
-    //    LightColor color = CalculateLightColor(i, _in.viewNormal, _in.viewPos);
-    //    totalColor.diffuse += color.diffuse;
-    //    totalColor.ambient += color.ambient;
-    //}
+    LightColor totalColor = (LightColor) 0.f;
+    for (int i = 0; i < g_lightCount; ++i)
+    {
+        LightColor color = CalculateLightColor(i, _in.viewNormal, _in.viewPos);
+        totalColor.diffuse += color.diffuse;
+        totalColor.ambient += color.ambient;
+    }
 
-    //materialColor.xyz = (totalColor.diffuse.xyz * materialColor.xyz)
-    //    + (totalColor.ambient.xyz * materialColor.xyz);
+    materialColor.xyz = (totalColor.diffuse.xyz * materialColor.xyz)
+        + (totalColor.ambient.xyz * materialColor.xyz);
     
     float time = frac(g_float_0 * -0.2);
     float erosion = smoothstep(time - 0.2, time, fireshape.r);
