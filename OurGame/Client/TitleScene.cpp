@@ -263,16 +263,14 @@ namespace hm
 			pLight->SetLightType(LightType::DirectionalLight);
 			AddGameObject(pGameObject);
 		}
-
-		// HpUi
-		{	
-			GameObject* pHpUiObj = new GameObject(LayerType::Unknown);
-			yj::HpUi* pHpUI = pHpUiObj->AddComponent<yj::HpUi>();
-			pHpUI->AddHpUI();
-			pHpUiObj->SetDontDestroyObject(L"HpUi");
+		// Title
+		{
+			Interface* pLogoInterface = Factory::CreateInterface<Interface>(Vec3(0.f, 180.f, 0.f), Vec2(300.f, 200.f), L"..\\Resources\\Texture\\DD_Logo_Smooth_Dropshadow.png");
+			pLogoInterface->AddComponent(new LogoBlinkScript);
+			pLogoInterface->SetColor(Vec3::Color(230.f, 200.f, 230.f));
+			AddGameObject(pLogoInterface);
 		}
-
-
+	
 
 		// Select Interface
 		{
@@ -284,12 +282,20 @@ namespace hm
 		{
 			pTextBox = Factory::CreateInterface<yj::TextBox>(Vec3(0.f, -300.f, -3.f), Vec2(400.0f, 100.0f), L"..\\Resources\\Texture\\TextBox.png");
 			pTextBox->SetAlpha(0.8f);
+			//pTextBox->SetColor(Vec3::Color(255,255,255));
 			AddGameObject(pTextBox);
 			//사이즈는 400 100
 			pTextBox->Disable();
 			pTextBox->SetDontDestroyObject(L"TextBox");
 		}
-
+		// HpUi
+		{
+			GameObject* pHpUiObj = new GameObject(LayerType::Unknown);
+			yj::HpUi* pHpUI = pHpUiObj->AddComponent<yj::HpUi>();
+			pHpUI->AddHpUI();
+			pHpUiObj->SetDontDestroyObject(L"HpUi");
+			HPUI->UiOff();
+		}
 
 		// Buttons
 		{
