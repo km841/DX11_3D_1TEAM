@@ -23,8 +23,14 @@
 #include "DecoObject.h"
 #include "TeleportZone.h"
 #include "SpikeDoor.h"
+
 #include "LORD_BOSS.h"
 #include "LORD_BOSS_ROLL.h"
+#include "Bat.h"
+#include "Mage.h"
+#include "Lurker.h"
+#include "HeadRoller.h"
+#include "Grimace.h"
 
 /* Component */
 #include "Collider.h"
@@ -185,6 +191,18 @@ namespace yj
 	{
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::WallObject);
 
+		//중간보스 내루미
+		{
+			SpawnDoor<Bat>* pHeadRoller = Factory::SpawnMonster<Bat>(Vec3(-3.f, 3.f, -3.f));
+			AddGameObject(pHeadRoller);
+		}
+
+		//마법사
+		//{
+		//	Mage* pMage = Factory::CreateMage(Vec3(3.f, 0.f, -3.f));
+		//	AddGameObject(pMage);
+		//}
+
 
 			gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
 			InitObjectAdd();
@@ -193,33 +211,7 @@ namespace yj
 
 			PLAYER->GetTransform()->SetPosition(Vec3(0.f, 7.f, 0.f));
 
-			// ÃÖÁ¾º¸½º
-			{
-
-				PhysicsInfo info = {};
-				info.eActorType = ActorType::Kinematic;
-				info.eGeometryType = GeometryType::Box;
-				info.size = Vec3(2.f, 2.0f, 6.f);
-
-				LORD_BOSS_ROLL* pLordOfDoorRoll = Factory::CreateMonster<LORD_BOSS_ROLL>(Vec3(5.f, 7.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor_Roller.fbx");
-				pLordOfDoorRoll->GetTransform()->SetScale(Vec3(40.f, 40.f, 40.f));
-				pLordOfDoorRoll->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-				pLordOfDoorRoll->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -3.f, 0.f));
-				pLordOfDoorRoll->GetAnimator()->Play(1, true);
-				pLordOfDoorRoll->Disable();
-
-				LORD_BOSS* pLordOfDoor = Factory::CreateMonster<LORD_BOSS>(Vec3(5.f, 7.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor.fbx");
-				pLordOfDoor->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
-				pLordOfDoor->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-				pLordOfDoor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -3.f, 0.f));
-
-				pLordOfDoor->SetObject(pLordOfDoorRoll);
-				pLordOfDoorRoll->SetLORD_BOSS(pLordOfDoor);
-
-				AddGameObject(pLordOfDoorRoll);
-				AddGameObject(pLordOfDoor);
-
-			}
+			
 	}
 
 	void RightMap::Exit()

@@ -21,6 +21,7 @@
 #include "Lurker.h"
 #include "SpawnDoor.h"
 
+
 namespace hm
 {
 	class Factory
@@ -65,8 +66,13 @@ namespace hm
 		template<typename T, typename ... Types>
 		static SpawnDoor<T>* CreateSpawnDoor(const Vec3& _pos, Types ... _args);
 
-	private:
-		static Grimace* CreateGrimace(const Vec3& _pos, const Vec3& _rotation = Vec3(-90.f, 0.f, 0.f));
+	public:
+		static Grimace* CreateGrimace(const Vec3& _pos, const Vec3& _rotation = Vec3(-180.f, 0.f, 0.f));
+		static Bat* CreateBat(const Vec3& _pos, const Vec3& _rotation = Vec3(-90.f, 0.f, 0.f));
+		//static Mage* CreateMage(const Vec3& _pos, const Vec3& _rotation = Vec3(-90.f, 0.f, 0.f));
+		//static Lurker* CreateLurker(const Vec3& _pos, const Vec3& _rotation = Vec3(-90.f, 0.f, 0.f));
+		//static HeadRoller* CreateHeadRoller(const Vec3& _pos, const Vec3& _rotation = Vec3(0.f, 0.f, 0.f));
+	
 	
 
 	private:
@@ -171,22 +177,27 @@ namespace hm
 	template<typename T, typename ...Types>
 	inline SpawnDoor<T>* Factory::SpawnMonster(const Vec3& _pos, const Vec3& _rotation, Types ..._args)
 	{
-		T* pMonster = nullptr;
 		MonsterType eMonsterType = GetMonsterType<T>();
 	
 		SpawnDoor<T>* pDoor = CreateSpawnDoor<T>(_pos, _args...);
 		switch (eMonsterType)
 		{
-		case MonsterType::Grimace:
-			pDoor->SetSpawnFunction(std::bind(&Factory::CreateGrimace, _pos, _rotation));
-			break;
 		case MonsterType::Bat:
+			pDoor->SetSpawnFunction(std::bind(&Factory::CreateBat, _pos, _rotation));
 			break;
-		case MonsterType::HeadRoller:
-			break;
-		case MonsterType::Lurker:
-			break;
-		case MonsterType::Mage:
+		//case MonsterType::Grimace:
+		//	pDoor->SetSpawnFunction(std::bind(&Factory::CreateGrimace, _pos, _rotation));
+		//	break;
+		//case MonsterType::HeadRoller:
+		//	pDoor->SetSpawnFunction(std::bind(&Factory::CreateHeadRoller, _pos, _rotation));
+		//	break;
+		//case MonsterType::Lurker:
+		//	pDoor->SetSpawnFunction(std::bind(&Factory::CreateLurker, _pos, _rotation));
+		//	break;
+		//case MonsterType::Mage:
+		//	pDoor->SetSpawnFunction(std::bind(&Factory::CreateMage, _pos, _rotation));
+		//	break;
+		default:
 			break;
 		}
 		pDoor->SetPaperBurn();

@@ -33,10 +33,13 @@
 #include "SpiderWeb.h"
 #include "Mirror.h"
 #include "TeleportZone.h"
-#include "Grimace.h"
-#include "Lurker.h"
 #include "LORD_BOSS.h"
 #include "LORD_BOSS_ROLL.h"
+#include "Bat.h"
+#include "Mage.h"
+#include "Lurker.h"
+#include "HeadRoller.h"
+#include "Grimace.h"
 
 
 /* Component */
@@ -853,85 +856,7 @@ namespace hm
 		}
 
 
-		// 박쥐
-		{
-			PhysicsInfo info = {};
-			info.eActorType = ActorType::Kinematic;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(0.5f, 0.5f, 1.0f);
-
-			Bat* p_E_BAT_White = Factory::CreateMonster<Bat>(Vec3(-9.f, 5.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_BAT_White.fbx");
-			p_E_BAT_White->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
-			p_E_BAT_White->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-			//AddGameObject(p_E_BAT_White);
-			
-		}
-
-		//중간보스 내루미
-		{
-			PhysicsInfo info = {};
-			info.eActorType = ActorType::Kinematic;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(2.f, 8.f, 2.f);
-
-			Grimace* p_E_GRIMACE_KNIGHT = Factory::CreateMonster<Grimace>(Vec3(-9.f, 5.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_GRIMACE_KNIGHT.fbx");
-			p_E_GRIMACE_KNIGHT->GetTransform()->SetScale(Vec3(0.7f, 1.f, 0.7f));
-			p_E_GRIMACE_KNIGHT->GetTransform()->SetRotation(Vec3(180.f, 0.f, 0.f));
-			p_E_GRIMACE_KNIGHT->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -4.f, 0.f));
-			for (size_t i = 0; i < 13; i++)
-			{
-				p_E_GRIMACE_KNIGHT->GetAnimator()->SetPlaySpeed(i, 0.8f);
-			}
-			
-			//AddGameObject(p_E_GRIMACE_KNIGHT);
-			
-		}
-
-		//초록거미
-		{
-			PhysicsInfo info = {};
-			info.eActorType = ActorType::Kinematic;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(0.5f, 0.5f, 1.f);
-
-			Lurker* p_E_LURKER = Factory::CreateMonster<Lurker>(Vec3(-9.f, 5.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_LURKER.fbx");
-			p_E_LURKER->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
-			p_E_LURKER->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-			p_E_LURKER->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.4f, 0.f));
-
-			//AddGameObject(p_E_LURKER);
-			//SetMeshTarget(p_E_LURKER);
-		}
-
-		// 최종보스
-		{
-
-			PhysicsInfo info = {};
-			info.eActorType = ActorType::Kinematic;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(2.f, 2.0f, 6.f);
-
-			LORD_BOSS_ROLL* pLordOfDoorRoll = Factory::CreateMonster<LORD_BOSS_ROLL>(Vec3(-9.f, 5.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor_Roller.fbx");
-			pLordOfDoorRoll->GetTransform()->SetScale(Vec3(60.f, 60.f, 60.f));
-			pLordOfDoorRoll->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-			pLordOfDoorRoll->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -3.f, 0.f));
-			pLordOfDoorRoll->GetAnimator()->Play(1, true);
-			pLordOfDoorRoll->Disable();
-
-			LORD_BOSS* pLordOfDoor = Factory::CreateMonster<LORD_BOSS>(Vec3(-9.f, 5.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor.fbx");
-			pLordOfDoor->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
-			pLordOfDoor->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-			pLordOfDoor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -3.f, 0.f));
-
-			//pLordOfDoor->SetObject(pLordOfDoorRoll);
-			//pLordOfDoorRoll->SetLORD_BOSS(pLordOfDoor);
-
-
-			AddGameObject(pLordOfDoorRoll);
-			AddGameObject(pLordOfDoor);
-			//SetMeshTarget(pLordOfDoor);
-
-		}
+		
 
 		// 샹들리에 라이트
 		{

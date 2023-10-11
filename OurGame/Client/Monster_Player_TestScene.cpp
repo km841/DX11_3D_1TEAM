@@ -299,17 +299,17 @@ namespace hm {
 		}*/
 
 
-		// 미러
-		{
-			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, -8.7f, 0.f), L"Deferred", L"", false, LayerType::Unknown);
-			pMirror->DrawShadow(false);
-			pMirror->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Test11", L"..\\Resources\\Texture\\White.png"));
-			pMirror->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
-			pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
-			pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+		//// 미러
+		//{
+		//	GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, -8.7f, 0.f), L"Deferred", L"", false, LayerType::Unknown);
+		//	pMirror->DrawShadow(false);
+		//	pMirror->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Test11", L"..\\Resources\\Texture\\White.png"));
+		//	pMirror->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+		//	pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+		//	pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
 
-			AddGameObject(pMirror);
-		}
+		//	AddGameObject(pMirror);
+		//}
 
 		// 미러
 		{

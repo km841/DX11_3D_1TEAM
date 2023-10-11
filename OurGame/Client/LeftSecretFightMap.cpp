@@ -24,9 +24,14 @@
 #include "WallObject.h"
 #include "DecoObject.h"
 #include "Monster.h"
-#include "Grimace.h"
 #include "SpawnDoor.h"
-
+#include "LORD_BOSS.h"
+#include "LORD_BOSS_ROLL.h"
+#include "Bat.h"
+#include "Mage.h"
+#include "Lurker.h"
+#include "HeadRoller.h"
+#include "Grimace.h"
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -124,6 +129,7 @@ void LeftSecretFightMap::Enter()
 		SpawnDoor<Grimace>* pGrimace = Factory::SpawnMonster<Grimace>(Vec3(3.f, 0.f, -3.f));
 		AddGameObject(pGrimace);
 	}
+	
 
 	// 샹들리에 라이트
 	{

@@ -354,11 +354,7 @@
       <Filter>소스 파일\Component\ParticleSystem</Filter>
     </ClInclude>
     <ClInclude Include="MonsterBackswingColScript.h" />
-    <ClInclude Include="SpawnDoor.h">
-      <Filter>소스 파일\GameObject\Monster</Filter>
-    </ClInclude>
     <ClInclude Include="HpUi.h" />
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -711,11 +707,7 @@
       <Filter>소스 파일\Component\ParticleSystem</Filter>
     </ClCompile>
     <ClCompile Include="MonsterBackswingColScript.cpp" />
-    <ClCompile Include="SpawnDoor.cpp">
-      <Filter>소스 파일\GameObject\Monster</Filter>
-    </ClCompile>
     <ClCompile Include="HpUi.cpp" />
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
