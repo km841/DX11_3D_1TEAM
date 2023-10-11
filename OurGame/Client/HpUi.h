@@ -1,26 +1,44 @@
 #pragma once
 #include "GameObject.h"
 #include "Interface.h"
+
+#include "Player.h"
+#include "MonoBehavior.h"
+
 namespace yj
 {
-	namespace yj
+	class HpUi : public MonoBehavior
 	{
-		class HpUi : public Interface
-		{
-		public:
-			HpUi();
-			virtual ~HpUi();
+	public:
+		HpUi();
+		virtual ~HpUi();
 
-			HpUi* Clone()
-			{
-				HpUi* _pHpUi = GameObject::Clone<HpUi>();
-				return _pHpUi;
-			}
+		virtual Component* Clone(GameObject* _pGameObject);
+		virtual void Initialize();
+		virtual void Update();
 
-		private:
+		static HpUi* spHpUi;
+		static HpUi* GetHpUI();
+	public:
+		void AddHpUI();
+	private:
 
-			virtual void Initialize();
-			virtual void Update();
-		};
-	}
+		void HpRestore();
+
+		void HpDecrease();
+		void HpBarShake();
+		
+		int GetPlayerHp();
+
+	private:
+		
+		Interface* mpHpFrame[4];
+		Interface* mpHpIn[4];
+		Interface* mpEmty[4];
+
+		Vec2 mInitSize;
+		Vec2 mMaxSize;
+		int mShakeState = -1;
+		float mShakeSpeed;
+	};
 }

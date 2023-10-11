@@ -24,6 +24,7 @@
 #include "DecoObject.h"
 #include "UI.h"
 #include "CameraHolder.h"
+#include "HpUi.h"
 
 /* Interface */
 #include "Interface.h"
@@ -263,6 +264,12 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
+		// HpUi
+		{	
+			GameObject* pHpUiObj = new GameObject(LayerType::Unknown);
+			yj::HpUi* pHpUI = pHpUiObj->AddComponent<yj::HpUi>();
+			pHpUI->AddHpUI();
+			pHpUiObj->SetDontDestroyObject(L"HpUi");
 		// Title
 		{
 			Interface* pLogoInterface = Factory::CreateInterface<Interface>(Vec3(0.f, 180.f, 0.f), Vec2(300.f, 200.f), L"..\\Resources\\Texture\\DD_Logo_Smooth_Dropshadow.png");
@@ -270,6 +277,8 @@ namespace hm
 			pLogoInterface->SetColor(Vec3::Color(230.f, 200.f, 230.f));
 			AddGameObject(pLogoInterface);
 		}
+
+
 
 		// Select Interface
 		{

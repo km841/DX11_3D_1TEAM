@@ -88,6 +88,7 @@ public:
 
 	int GetHp() { return mHP; }
 public:
+	int GetHp() { return mHP; }
 	static Player* spPlayer;
 	static Player* GetPlayer();
 
