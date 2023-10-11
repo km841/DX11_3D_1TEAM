@@ -29,8 +29,6 @@ namespace hm
                 GetTransform()->SetPosition(fixedPos + mOffset);
             }
         }
-
-
     }
 
     Component* OwnerFollowScript::Clone(GameObject* _pGameObject)

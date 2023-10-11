@@ -40,8 +40,8 @@ namespace jh
 
 	void BreakablePotCell::CalculateForce(const Vec3 _hitPos)
 	{
-		float distance = Vec3::Distance(GetTransform()->GetPosition(), _hitPos);
 		Vec3 force = _hitPos - GetTransform()->GetPosition();
+		float distance = force.Length();
 		force.y = 0.f;
 
 		if (distance < 1.f)

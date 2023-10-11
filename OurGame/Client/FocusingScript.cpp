@@ -12,8 +12,8 @@ namespace hm
 		: mFollowSpeed(3.f)
 		, mpFollowTarget(nullptr)
 		, mpFocusingTarget(nullptr)
-		, mbFocusMode(false)
-		, mbFollowMode(false)
+		, mbFocusMode(true)
+		, mbFollowMode(true)
 	{
 	}
 

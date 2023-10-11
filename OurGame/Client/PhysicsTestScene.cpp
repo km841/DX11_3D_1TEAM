@@ -375,9 +375,9 @@ namespace jh
 		}*/
 
 		// AddForce 테스트용 Dynamic 오브젝트
-		/*{
+		{
 			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eActorType = ActorType::Dynamic;
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(2.f, 3.1f, 2.f);
 
@@ -388,7 +388,7 @@ namespace jh
 			testPot->AddComponent(new TestRigidBodyScript);
 
 			AddGameObject(testPot);
-		}*/
+		}
 
 #pragma region 항아리 조각
 		DecoObject* pBasePot = Factory::CreateObject<DecoObject>(Vec3(5.f, -3.2f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Pots\\OrgPot.fbx");
