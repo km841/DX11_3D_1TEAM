@@ -193,15 +193,21 @@ namespace yj
 
 		//중간보스 내루미
 		{
-			SpawnDoor<Bat>* pHeadRoller = Factory::SpawnMonster<Bat>(Vec3(-3.f, 3.f, -3.f));
+			SpawnDoor<Grimace>* pHeadRoller = Factory::SpawnMonster<Grimace>(Vec3(-3.f, 8.f, -3.f));
 			AddGameObject(pHeadRoller);
 		}
 
 		//마법사
-		//{
-		//	Mage* pMage = Factory::CreateMage(Vec3(3.f, 0.f, -3.f));
-		//	AddGameObject(pMage);
-		//}
+		{
+			SpawnDoor<Mage>* pMage = Factory::SpawnMonster<Mage>(Vec3(-10.f,8.f, -3.f));
+			AddGameObject(pMage);
+		}
+
+		//마법사
+		{
+			SpawnDoor<Mage>* pMage = Factory::SpawnMonster<Mage>(Vec3(10.f, 8.f, -3.f));
+			AddGameObject(pMage);
+		}
 
 
 			gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));

@@ -381,6 +381,7 @@ namespace hm
 	shared_ptr<Material> Material::Clone()
 	{
 		shared_ptr<Material> pMaterial = make_shared<Material>();
+		pMaterial->ClearMaterialContainers();
 
 		for (int i = 0; i < mMaterialContainerVec.size(); ++i)
 		{
@@ -393,6 +394,13 @@ namespace hm
 				pMaterial->mMaterialContainerVec[i]->materialSubsetVec[j]->materialParams = mMaterialContainerVec[i]->materialSubsetVec[j]->materialParams;
 				pMaterial->mMaterialContainerVec[i]->materialSubsetVec[j]->textures = mMaterialContainerVec[i]->materialSubsetVec[j]->textures;
 			}
+		}
+
+		if (0 == mMaterialContainerVec.size())
+		{
+			pMaterial->AddMaterialContainer(new MaterialContainer);
+			MaterialContainer* pContainer = pMaterial->GetMaterialContainer(0);
+			pContainer->AddSubset(new MaterialSubset);
 		}
 
 		pMaterial->SetShader(mpShader);

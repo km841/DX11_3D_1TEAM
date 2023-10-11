@@ -41,55 +41,55 @@ namespace hm
 		return p_E_BAT_White;
 	}
 
-	//Mage* Factory::CreateMage(const Vec3& _pos, const Vec3& _rotation)
-	//{
-	//	PhysicsInfo info = {};
-	//	info.eActorType = ActorType::Kinematic;
-	//	info.eGeometryType = GeometryType::Box;
-	//	info.size = Vec3(0.5f, 0.5f, 2.f);
+	Mage* Factory::CreateMage(const Vec3& _pos, const Vec3& _rotation)
+	{
+		PhysicsInfo info = {};
+		info.eActorType = ActorType::Kinematic;
+		info.eGeometryType = GeometryType::Box;
+		info.size = Vec3(0.5f, 0.5f, 2.f);
 
-	//	Mage* p_E_MAGE = Factory::CreateMonster<Mage>(_pos, info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_MAGE.fbx");
-	//	p_E_MAGE->GetMeshRenderer()->SetMaterial(p_E_MAGE->GetMeshRenderer()->GetMaterial()->Clone());
-	//	p_E_MAGE->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
-	//	p_E_MAGE->GetTransform()->SetRotation(_rotation);
-	//	p_E_MAGE->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
+		Mage* p_E_MAGE = Factory::CreateMonster<Mage>(_pos, info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_MAGE.fbx");
+		p_E_MAGE->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+		p_E_MAGE->GetTransform()->SetRotation(_rotation);
+		p_E_MAGE->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
+		p_E_MAGE->GetMeshRenderer()->SetMaterial(p_E_MAGE->GetMeshRenderer()->GetMaterial()->Clone());
 
-	//	return p_E_MAGE;
-	//}
+		return p_E_MAGE;
+	}
 
-	//Lurker* Factory::CreateLurker(const Vec3& _pos, const Vec3& _rotation)
-	//{
-	//	PhysicsInfo info = {};
-	//	info.eActorType = ActorType::Kinematic;
-	//	info.eGeometryType = GeometryType::Box;
-	//	info.size = Vec3(0.5f, 0.5f, 1.f);
+	Lurker* Factory::CreateLurker(const Vec3& _pos, const Vec3& _rotation)
+	{
+		PhysicsInfo info = {};
+		info.eActorType = ActorType::Kinematic;
+		info.eGeometryType = GeometryType::Box;
+		info.size = Vec3(0.5f, 0.5f, 1.f);
 
-	//	Lurker* p_E_LURKER = Factory::CreateMonster<Lurker>(_pos, info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_LURKER.fbx");
-	//	p_E_LURKER->GetMeshRenderer()->SetMaterial(p_E_LURKER->GetMeshRenderer()->GetMaterial()->Clone());
-	//	p_E_LURKER->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
-	//	p_E_LURKER->GetTransform()->SetRotation(_rotation);
-	//	p_E_LURKER->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.4f, 0.f));
+		Lurker* p_E_LURKER = Factory::CreateMonster<Lurker>(_pos, info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_LURKER.fbx");
+		p_E_LURKER->GetMeshRenderer()->SetMaterial(p_E_LURKER->GetMeshRenderer()->GetMaterial()->Clone());
+		p_E_LURKER->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+		p_E_LURKER->GetTransform()->SetRotation(_rotation);
+		p_E_LURKER->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.4f, 0.f));
 
-	//	return p_E_LURKER;
+		return p_E_LURKER;
 
-	//}
+	}
 
-	//HeadRoller* Factory::CreateHeadRoller(const Vec3& _pos, const Vec3& _rotation)
-	//{
-	//	PhysicsInfo info = {};
-	//	info.eActorType = ActorType::Kinematic;
-	//	info.eGeometryType = GeometryType::Box;
-	//	info.size = Vec3(1.f, 2.0f, 1.f);
+	HeadRoller* Factory::CreateHeadRoller(const Vec3& _pos, const Vec3& _rotation)
+	{
+		PhysicsInfo info = {};
+		info.eActorType = ActorType::Kinematic;
+		info.eGeometryType = GeometryType::Box;
+		info.size = Vec3(1.f, 2.0f, 1.f);
 
-	//	HeadRoller* p_E_HEADROLLER = Factory::CreateMonster<HeadRoller>(_pos, info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_HEADROLLER.fbx");
-	//	p_E_HEADROLLER->GetMeshRenderer()->SetMaterial(p_E_HEADROLLER->GetMeshRenderer()->GetMaterial()->Clone());
-	//	p_E_HEADROLLER->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
-	//	p_E_HEADROLLER->GetTransform()->SetRotation(_rotation);
-	//	p_E_HEADROLLER->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
+		HeadRoller* p_E_HEADROLLER = Factory::CreateMonster<HeadRoller>(_pos, info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_HEADROLLER.fbx");
+		p_E_HEADROLLER->GetMeshRenderer()->SetMaterial(p_E_HEADROLLER->GetMeshRenderer()->GetMaterial()->Clone());
+		p_E_HEADROLLER->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
+		p_E_HEADROLLER->GetTransform()->SetRotation(_rotation);
+		p_E_HEADROLLER->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
 
-	//	return p_E_HEADROLLER;
+		return p_E_HEADROLLER;
 
-	//}
+	}
 
 	
 

@@ -61,24 +61,23 @@ namespace hm
 		static T* CreateButtonInterface(const Vec3& _pos, const Vec2& _scale, const ButtonInfo& _info, const wstring& _imgPath = L"", Types ... _args);
 
 		template<typename T, typename ... Types>
-		static SpawnDoor<T>* SpawnMonster(const Vec3& _pos, const Vec3& _rotation = Vec3(90.f, 0.f, 0.f), Types ... _args);
+		static SpawnDoor<T>* SpawnMonster(const Vec3& _pos, const Vec3& _rotation = Vec3::Zero, Types ... _args);
 
 		template<typename T, typename ... Types>
 		static SpawnDoor<T>* CreateSpawnDoor(const Vec3& _pos, Types ... _args);
 
 	public:
 		static Grimace* CreateGrimace(const Vec3& _pos, const Vec3& _rotation = Vec3(-180.f, 0.f, 0.f));
-		static Bat* CreateBat(const Vec3& _pos, const Vec3& _rotation = Vec3(-90.f, 0.f, 0.f));
-		//static Mage* CreateMage(const Vec3& _pos, const Vec3& _rotation = Vec3(-90.f, 0.f, 0.f));
-		//static Lurker* CreateLurker(const Vec3& _pos, const Vec3& _rotation = Vec3(-90.f, 0.f, 0.f));
-		//static HeadRoller* CreateHeadRoller(const Vec3& _pos, const Vec3& _rotation = Vec3(0.f, 0.f, 0.f));
+		static Bat* CreateBat(const Vec3& _pos, const Vec3& _rotation = Vec3(90.f, 0.f, 0.f));
+		static Mage* CreateMage(const Vec3& _pos, const Vec3& _rotation = Vec3(90.f, 0.f, 0.f));
+		static Lurker* CreateLurker(const Vec3& _pos, const Vec3& _rotation = Vec3(90.f, 0.f, 0.f));
+		static HeadRoller* CreateHeadRoller(const Vec3& _pos, const Vec3& _rotation = Vec3(-90.f, 0.f, 0.f));
 	
 	
 
 	private:
 		template<typename T>
 		static MonsterType GetMonsterType();
-
 	};
 
 
@@ -178,31 +177,52 @@ namespace hm
 	inline SpawnDoor<T>* Factory::SpawnMonster(const Vec3& _pos, const Vec3& _rotation, Types ..._args)
 	{
 		MonsterType eMonsterType = GetMonsterType<T>();
-	
 		SpawnDoor<T>* pDoor = CreateSpawnDoor<T>(_pos, _args...);
-		switch (eMonsterType)
+
+		Vec3 rotation = _rotation;
+		if (Vec3::Zero == _rotation)
 		{
+			switch (eMonsterType)
+			{
+			case MonsterType::Grimace:
+				rotation = Vec3(-180.f, 0.f, 0.f);
+				break;
+
+			case MonsterType::Bat:
+			case MonsterType::Mage:
+			case MonsterType::Lurker:
+				rotation = Vec3(90.f, 0.f, 0.f);
+				break;
+
+			case MonsterType::HeadRoller:
+				rotation = Vec3(0.f, 0.f, 0.f);
+				break;
+			}
+		}
+
+		 switch  (eMonsterType)
+		{
+		case MonsterType::Grimace:
+			 pDoor->SetSpawnFunction(std::bind(&Factory::CreateGrimace, _pos, rotation));
+			 break;
 		case MonsterType::Bat:
-			pDoor->SetSpawnFunction(std::bind(&Factory::CreateBat, _pos, _rotation));
+			pDoor->SetSpawnFunction(std::bind(&Factory::CreateBat, _pos, rotation));
 			break;
-		//case MonsterType::Grimace:
-		//	pDoor->SetSpawnFunction(std::bind(&Factory::CreateGrimace, _pos, _rotation));
-		//	break;
-		//case MonsterType::HeadRoller:
-		//	pDoor->SetSpawnFunction(std::bind(&Factory::CreateHeadRoller, _pos, _rotation));
-		//	break;
-		//case MonsterType::Lurker:
-		//	pDoor->SetSpawnFunction(std::bind(&Factory::CreateLurker, _pos, _rotation));
-		//	break;
-		//case MonsterType::Mage:
-		//	pDoor->SetSpawnFunction(std::bind(&Factory::CreateMage, _pos, _rotation));
-		//	break;
+		case MonsterType::HeadRoller:
+			pDoor->SetSpawnFunction(std::bind(&Factory::CreateHeadRoller, _pos, rotation));
+			break;
+		case MonsterType::Lurker:
+			pDoor->SetSpawnFunction(std::bind(&Factory::CreateLurker, _pos, rotation));
+			break;
+		case MonsterType::Mage:
+			pDoor->SetSpawnFunction(std::bind(&Factory::CreateMage, _pos, rotation));
+			break;
 		default:
 			break;
 		}
+
 		pDoor->SetPaperBurn();
-		//AssertEx(nullptr != pMonster, L"Factory::SpawnMonster() - 몬스터가 생성되지 않음");
-		return pDoor;
+		return static_cast<SpawnDoor<T>*>(pDoor);
 	}
 	template<typename T, typename ...Types>
 	inline SpawnDoor<T>* Factory::CreateSpawnDoor(const Vec3& _pos, Types ..._args)
