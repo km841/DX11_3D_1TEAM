@@ -120,6 +120,68 @@ namespace jh
 		FuncObjectAdd();
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
+
+		//박쥐
+		{
+			Bat* pBat = Factory::CreateBat(Vec3(-6.9f, -4.6f, -45.8f), Vec3(-90.f, 0.f, -90.f));
+			AddGameObject(pBat);
+		}
+
+		//박쥐
+		{
+			Bat* pBat = Factory::CreateBat(Vec3(-6.9f, -4.6f, -53.5f), Vec3(-90.f, 0.f, -90.f));
+			AddGameObject(pBat);
+		}
+
+		//박쥐
+		{
+			Bat* pBat = Factory::CreateBat(Vec3(-6.9f, -4.6f, -35.f), Vec3(-90.f, 0.f, -90.f));
+			AddGameObject(pBat);
+		}
+
+		//박쥐
+		{
+			Bat* pBat = Factory::CreateBat(Vec3(12.2f, -4.5f, -39.2f), Vec3(-90.f, 0.f, 90.f));
+			AddGameObject(pBat);
+			
+		}
+
+		//박쥐
+		{
+			Bat* pBat = Factory::CreateBat(Vec3(12.2f, -4.5f, -50.2f), Vec3(-90.f, 0.f, 90.f));
+			AddGameObject(pBat);
+		}
+
+		//초록거미
+		{
+			Lurker* pLurker = Factory::CreateLurker(Vec3(7.7f, 5.5f, 5.5f), Vec3(-90.f, 0.f, 90.f));
+			AddGameObject(pLurker);
+			
+		}
+
+		//초록거미
+		{
+			Lurker* pLurker = Factory::CreateLurker(Vec3(7.7f, 5.5f, 0.5f), Vec3(-90.f, 0.f, 90.f));
+			AddGameObject(pLurker);
+
+		}
+
+		//초록거미
+		{
+			Lurker* pLurker = Factory::CreateLurker(Vec3(0.f, 5.5f, 5.5f), Vec3(-90.f, 0.f, -90.f));
+			AddGameObject(pLurker);
+			
+		}
+
+		//초록거미
+		{
+			Lurker* pLurker = Factory::CreateLurker(Vec3(0.f, 5.5f, 0.5f), Vec3(-90.f, 0.f, -90.f));
+			AddGameObject(pLurker);
+		}
+
+
+
+
 	}
 
 	void HallColliderCheckMap::LightDirSet()
@@ -145,7 +207,7 @@ namespace jh
 			pDoor->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
 
 			AddGameObject(pDoor);
-			SetMeshTarget(pDoor);
+			//SetMeshTarget(pDoor);
 		}
 
 		// Door Back Glow
@@ -161,40 +223,7 @@ namespace jh
 			AddGameObject(pDoor);
 		}
 
-		//Player
-		{
-			//PhysicsInfo physicsInfo;
-			//physicsInfo.eActorType = ActorType::Kinematic;
-			//physicsInfo.eGeometryType = GeometryType::Capsule;
-			//physicsInfo.size = Vec3(2.f, 2.f, 2.f);
-
-			//Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", LARGE_RESOURCE(L"Player\\Crow_Fix.fbx"));
-			////Player* pPlayer = Factory::CreateObjectHasPhysical<Player>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow_Fix.fbx");
-			//PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
-			//pPlayer->AddComponent(new PaperBurnScript);
-			//pPlayer->GetTransform()->SetScale(Vec3(20.f, 20.f, 20.f));
-			//pPlayer->GetTransform()->SetRotation(Vec3(0.f, 0.f, 90.f));
-			//pPlayer->GetTransform()->SetRotationExcludingColliders(Vec3(0.f, 90.f, -90.f));
-
-			//pPlayer->GetRigidBody()->ApplyGravity();
-			//pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
-			//pPlayer->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
-			//AddGameObject(pPlayer);
-		}
-
-		// Toy
-		//{
-		//	PhysicsInfo physicsInfo;
-		//	physicsInfo.eActorType = ActorType::Static;
-		//	physicsInfo.eGeometryType = GeometryType::Box;
-		//	physicsInfo.size = Vec3(2.f, 2.f, 2.f);
-
-		//	Monster* pPlayer = Factory::CreateObjectHasPhysical<Monster>(Vec3(0.f, 8.f, 0.f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Player\\Crow2.fbx");
-		//	//pPlayer->AddComponent(new TestAnimationScript);
-		//	pPlayer->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
-
-		//	AddGameObject(pPlayer);
-		//}
+		
 
 #pragma region 1층
 		// 1층 벽
@@ -1889,7 +1918,7 @@ namespace jh
 			Ground* pNdFGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(2.9f, 3.8f, 5.1f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pNdFGround);
-			SetGizmoTarget(pNdFGround);
+			//SetGizmoTarget(pNdFGround);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -1937,7 +1966,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(24.5f, 3.4f, -35.8f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -1947,7 +1976,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(33.2f, 3.4f, -4.3f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -1957,7 +1986,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(33.2f, 3.4f, 13.6f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -1967,7 +1996,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(33.2f, 9.1f, 38.6f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -1977,7 +2006,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-15.1f, 6.1f, -20.2f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -1987,7 +2016,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-18.9f, 6.1f, -36.4f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -1997,7 +2026,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-16.5f, 4.4f, 31.7f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -2007,7 +2036,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(3.1f, 7.9f, 40.2f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -2017,7 +2046,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-4.5f, 7.9f, 30.8f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -2027,7 +2056,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(10.8f, 7.9f, 30.8f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -2037,7 +2066,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(17.8f, 7.9f, 30.8f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -2047,7 +2076,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(12.2f, -0.6f, -19.1f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -2057,7 +2086,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(12.2f, -0.6f, -19.1f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -2067,7 +2096,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-6.1f, -0.6f, -19.1f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -2077,7 +2106,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-22.8f, 16.2f, 23.5f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -2087,7 +2116,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-7.3f, -2.5f, -63.0f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -2097,7 +2126,7 @@ namespace jh
 			WallObject* pStLFloor = Factory::CreateObjectHasPhysical<WallObject>(Vec3(13.7f, -2.5f, -63.0f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pStLFloor);
-			SetGizmoTarget(pStLFloor);
+			//SetGizmoTarget(pStLFloor);
 		}
 	}
 
@@ -2124,7 +2153,7 @@ namespace jh
 
 			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(3.1f, -3.7f, -64.8f), physicsInfo, L"Forward", L"", false, MapType::EntranceHallMap,3);
 			AddGameObject(pTelZone);
-			SetGizmoTarget(pTelZone);
+			//SetGizmoTarget(pTelZone);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -2134,7 +2163,7 @@ namespace jh
 
 			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(34.7f, 6.1f, 4.7f), physicsInfo, L"Forward", L"", false, MapType::RightMap,4);
 			AddGameObject(pTelZone);
-			SetGizmoTarget(pTelZone);
+			//SetGizmoTarget(pTelZone);
 		}
 	}
 

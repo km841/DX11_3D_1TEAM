@@ -108,6 +108,25 @@ namespace jh
 		InitObjectAdd();
 		InitColliderAdd();
 		FuncObjectAdd();
+
+		//초록거미
+		{
+			Lurker* pLurker = Factory::CreateLurker(Vec3(-1.6f, -8.0f, -1.6f), Vec3(-90.f, 0.f, -90.f));
+			AddGameObject(pLurker);
+		}
+
+		//박쥐
+		{
+			Bat* pBat = Factory::CreateBat(Vec3(7.2f, -8.0f, 16.1f), Vec3(-90.f, 0.f, 90.f));
+			AddGameObject(pBat);
+		}
+
+		//마법사
+		{
+			Mage* pMage = Factory::CreateMage(Vec3(2.3f, -8.0f, -23.6f), Vec3(-90.f, 0.f, 180.f));
+			AddGameObject(pMage);
+			
+		}
 	}
 
 	void CorridorRightMap::InitObjectAdd()
@@ -329,14 +348,14 @@ namespace jh
 
 				AddGameObject(pPotGeneric2);
 			}
-			// 항아리(폭발)
-			{
-				DecoObject* pPotExplode = Factory::CreateObject<DecoObject>(Vec3(7.88f, -7.98f, 16.13f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_Explode_NoLid Variant.fbx");
+			//// 항아리(폭발)
+			//{
+			//	DecoObject* pPotExplode = Factory::CreateObject<DecoObject>(Vec3(7.88f, -7.98f, 16.13f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_Explode_NoLid Variant.fbx");
 
-				pPotExplode->GetTransform()->SetScale(Vec3(2.48f, 2.48f, 2.48f));
+			//	pPotExplode->GetTransform()->SetScale(Vec3(2.48f, 2.48f, 2.48f));
 
-				AddGameObject(pPotExplode);
-			}
+			//	AddGameObject(pPotExplode);
+			//}
 		}
 		// 항아리 세트(가운데)
 		{
@@ -356,15 +375,15 @@ namespace jh
 
 				AddGameObject(pPotGeneric4);
 			}
-			// 항아리(미믹)
-			{
-				DecoObject* pPotMimic = Factory::CreateObject<DecoObject>(Vec3(-2.06f, -8.05f, -1.61f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_Mimic_Magic.fbx");
+			//// 항아리(미믹)
+			//{
+			//	DecoObject* pPotMimic = Factory::CreateObject<DecoObject>(Vec3(-2.06f, -8.05f, -1.61f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_Mimic_Magic.fbx");
 
-				pPotMimic->GetTransform()->SetRotation(Vec3(0.00f, 180.00f, 0.00f));
-				pPotMimic->GetTransform()->SetScale(Vec3(2.35f, 2.35f, 2.35f));
+			//	pPotMimic->GetTransform()->SetRotation(Vec3(0.00f, 180.00f, 0.00f));
+			//	pPotMimic->GetTransform()->SetScale(Vec3(2.35f, 2.35f, 2.35f));
 
-				AddGameObject(pPotMimic);
-			}
+			//	AddGameObject(pPotMimic);
+			//}
 		}
 		// 항아리 세트(철창 쪽)
 		{
