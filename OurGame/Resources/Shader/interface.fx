@@ -72,7 +72,7 @@ float4 PS_Main(VS_OUT _in) : SV_Target
     if (color.a < 0.1f)
         discard;
     
-    if (length(g_vec4_1))
+    if (length(g_vec4_1.rgb))
         color.rgb = g_vec4_1.rgb;
     
 

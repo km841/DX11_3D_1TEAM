@@ -19,7 +19,8 @@ namespace yj
 			TextBox* _pTextBox = GameObject::Clone<TextBox>();
 			return _pTextBox;
 		}
-
+		static TextBox* spTextBox;
+		static TextBox* GetTextBox();
 	private:
 		
 		virtual void Initialize();
