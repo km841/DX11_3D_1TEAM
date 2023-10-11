@@ -1,6 +1,8 @@
 #pragma once
 
 #define PLAYER Player::GetPlayer()
+#define HPUI yj::HpUi::GetHpUI()
+#define TEXTBOX yj::TextBox::GetTextBox()
 #define DIALOUGEBOX DialogBox::GetDialogBox()
 #define GRANDMA Grandma::GetGrandma()
 

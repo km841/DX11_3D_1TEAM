@@ -21,6 +21,9 @@ namespace yj
 		static HpUi* GetHpUI();
 	public:
 		void AddHpUI();
+		void UiOff();
+		void UiOn();
+
 	private:
 
 		void HpRestore();
@@ -29,6 +32,8 @@ namespace yj
 		void HpBarShake();
 		
 		int GetPlayerHp();
+		void ShakeOn() { isShake = true; mShakeState = 0; }
+		void ShakeOff() { isShake = false; mShakeState = -1; }
 
 	private:
 		
@@ -40,5 +45,6 @@ namespace yj
 		Vec2 mMaxSize;
 		int mShakeState = -1;
 		float mShakeSpeed;
+		bool isShake;
 	};
 }
