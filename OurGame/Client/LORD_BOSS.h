@@ -42,6 +42,7 @@ private:
 	void Follow(); // 안씀 
 	void PrevFollowSet();
 	void PrevFollowLive();
+	void PrevRollLive();
 	bool LookRay(); // 안씀
 
 	//레이저 패턴때 쓰는 이동+회전

@@ -254,45 +254,15 @@ void Grimace::SetBehaviorTree()
 				Vec3 scale = GetRigidBody()->GetGeometrySize();
 
 				dir = playerPos - myPos;
-				Vec3 Num = scale * dir;
-				float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
-
 				dir.Normalize();
 				dir.y = 0;
-				// 몬스터의 이동속도가 들어가야 함
-				// 방향을 변경해주는 Task도 필요
+				
 
 				Vec3 lookNormal = GetTransform()->GetLook();
 				lookNormal.Normalize();
+
 				Vec3 Ve = dir * mSpeed;
-
-
-				//그리마스 수정
-				Vec3 fixedPos = myPos + (scale * lookNormal);
-				const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::WallObject);
-
-
-				for (int i = 0; i < gameObjects.size(); ++i)
-				{
-					if (gameObjects[i]->GetCollider())
-					{
-						for (size_t j = 1; j <= 8; j++)
-						{
-							if (GetCollider()->Raycast(fixedPos, lookNormal, gameObjects[i]->GetCollider(), 0.5f))
-							{
-								int a = 0;
-							}
-						}
-					}
-				}
-
-
-
-				//GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
-
-				//pAni
-
-				//이부분 중요
+			
 				if (pAni->GetFrameRatio() < 0.6f)
 					GetRigidBody()->SetVelocityExcludingColliders(-dir * 7.0f);
 				else
@@ -300,6 +270,24 @@ void Grimace::SetBehaviorTree()
 
 				GetRigidBody()->SetVelocity(Ve);
 
+
+				if (IsRaysCollide(myPos + scale * lookNormal, lookNormal, LayerType::Ground, 1.f))
+				{
+					GetRigidBody()->SetVelocity(Ve * 0);
+				}
+
+				if (IsRaysCollide(myPos + scale * lookNormal, lookNormal, LayerType::WallObject, 1.f))
+				{
+					GetRigidBody()->SetVelocity(Ve * 0);
+				}
+
+				if (IsRaysCollide(myPos + scale * lookNormal, lookNormal, LayerType::DecoObject, 1.f))
+				{
+					GetRigidBody()->SetVelocity(Ve * 0);
+				}
+
+
+				//회전 파트
 				Transform* pTr = GetTransform();
 				Vec3 rot = Vec3(0, 0, -1);
 				double angleRadian = atan2(dir.x, dir.z) - atan2(rot.x, rot.z);
@@ -663,6 +651,8 @@ void Grimace::SetBehaviorTree()
 					Vec3 lookNormal = GetTransform()->GetLook();
 					lookNormal.Normalize();
 					GetRigidBody()->SetMaxVelocity(100.f);
+
+
 					dir_desh.Normalize();
 					if (pAni->GetFrameRatio() > 0.45 && pAni->GetFrameRatio() < 0.6)
 					{
@@ -1214,13 +1204,7 @@ void Grimace::OnTriggerEnter(Collider* _pOtherCollider)
 		mGroundCount++;
 	}
 
-	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType()
-		&&( meBasicState == MonsterBasicState::Attack03 || meBasicState == MonsterBasicState::Trace_BackStep))
-	{
-		//그리마스 수정
-		dir_desh = Vec3::Zero;
-		dir_backstep = Vec3::Zero;
-	}
+	
 
 	Player* pPlayer = PLAYER;
 	float attackDamage = pPlayer->GetAttackDamage();
@@ -1337,29 +1321,28 @@ void Grimace::BackstepDirSet()
 void Grimace::BackstepDirLive()
 {
 	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
-	Vec3 myPos = GetTransform()->GetPosition();
 	Vec3 myRot = GetTransform()->GetRotation();
+	Vec3 myPos = GetTransform()->GetPosition();
 	Vec3 scale = GetRigidBody()->GetGeometrySize();
 
-	dir_backstep.Normalize();
-	Vec3 Num = scale * dir_backstep;
-	float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
-
-	// 몬스터의 이동속도가 들어가야 함
-	// 방향을 변경해주는 Task도 필요
-	Ve_backstep = dir_backstep * mSpeed;
 	Vec3 dirBack = -GetTransform()->GetLook();
+
+	Ve_backstep = dir_backstep * mSpeed;
 
 	//그리마스 수정
 	if (IsRaysCollide(myPos + scale * dirBack, dirBack, LayerType::WallObject, 1.f))
 	{
-		dir_backstep = Vec3::Zero;
+		Ve_backstep = Vec3::Zero;
 	}
 
 	if (IsRaysCollide(myPos + scale * dirBack, dirBack, LayerType::Ground, 1.f))
 	{
-		dir_backstep = Vec3::Zero;
+		Ve_backstep = Vec3::Zero;
 	}
 
-	
+	if (IsRaysCollide(myPos + scale * dirBack, dirBack, LayerType::DecoObject, 1.f))
+	{
+		Ve_backstep = Vec3::Zero;
+	}
+
 }

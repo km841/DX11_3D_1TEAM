@@ -277,95 +277,35 @@ void Lurker::SetBehaviorTree()
 				dir.Normalize();
 				dir.y = 0;
 
-
-				Vec3 Num = scale * dir;
-				float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
-
-				// 몬스터의 이동속도가 들어가야 함
-				// 방향을 변경해주는 Task도 필요
-				Vec3 Ve = dir * mSpeed;
-
-				const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
-
-				for (int i = 0; i < gameObjects.size(); ++i)
 				{
-					if (gameObjects[i]->GetCollider())
-					{
-						for (size_t j = 1; j <= 8; j++)
-						{
-							if (GetCollider()->Raycast(myPos, ConvertDir(static_cast<DirectionEvasion>(j)), gameObjects[i]->GetCollider(), offset + 0.5f))
-							{
-								if (static_cast<DirectionEvasion>(j) == DirectionEvasion::FORWARD)
-								{
-									Ve.z = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BACKWARD)
-								{
-									Ve.z = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::LEFT)
-								{
-									Ve.x = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::RIGHT)
-								{
-									Ve.x = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPLEFT)
-								{
-									if (Ve.x > Ve.z)
-										Ve.z = 0;
-									else
-										Ve.x = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPRIGHT)
-								{
-									if (Ve.x > Ve.z)
-										Ve.z = 0;
-									else
-										Ve.x = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMLEFT)
-								{
-									if (Ve.x > Ve.z)
-										Ve.z = 0;
-									else
-										Ve.x = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMRIGHT)
-								{
-									if (Ve.x > Ve.z)
-										Ve.z = 0;
-									else
-										Ve.x = 0;
-								}
+					Transform* pTr = GetTransform();
+					Vec3 rot = Vec3(0, 0, -1);
+					double angleRadian = atan2(dir.x, dir.z) - atan2(rot.x, rot.z);
+					float angleDegree = static_cast<float>(angleRadian) * 180.f / XM_PI;
 
-							}
-						}
+					if (angleDegree < 0.f)
+						angleDegree += 360.f;
+
+					//몬스터의 고개를 돌리는 코드
+					pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
+				}
+				{
+					Vec3 Ve = dir;
+					
+					GetRigidBody()->SetVelocityExcludingColliders(-dir * 2.0f);
+					GetRigidBody()->SetVelocity(Ve * 2.f);
+
+					Vec3 dirLook = GetTransform()->GetUp();
+
+					if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::WallObject, 1.f))
+					{
+						GetRigidBody()->SetVelocity(Ve * 0);
+					}
+					if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::Ground, 1.f))
+					{
+						GetRigidBody()->SetVelocity(Ve * 0);
 					}
 				}
-
-				GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
-				//GetTransform()->SetPositionExcludingColliders(-Ve * 0.5f);
-
-				
-				Transform* pTr = GetTransform();
-				Vec3 rot = Vec3(0, 0, -1);
-				double angleRadian = atan2(dir.x, dir.z) - atan2(rot.x, rot.z);
-				float angleDegree = static_cast<float>(angleRadian) * 180.f / XM_PI;
-
-				if (angleDegree < 0.f)
-					angleDegree += 360.f;
-
-				//몬스터의 고개를 돌리는 코드
-				pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
-
-
-
-				//이부분 중요
-				GetRigidBody()->SetVelocityExcludingColliders(-dir * 2.0f);
-				GetRigidBody()->SetVelocity(dir * 2.f);
-
 				return BehaviorResult::Success;
 				});
 
@@ -493,6 +433,7 @@ void Lurker::SetBehaviorTree()
 				{
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 					Vec3 myPos = GetTransform()->GetPosition();
+					Vec3 scale = GetRigidBody()->GetGeometrySize();
 					Animator* pAni = GetAnimator();
 
 					//이부분 중요
@@ -501,17 +442,19 @@ void Lurker::SetBehaviorTree()
 					if (pAni->GetFrameRatio()<0.7);
 						GetRigidBody()->SetVelocity(dir * 6.8f);
 
-					const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
-					for (int i = 0; i < gameObjects.size(); ++i)
+					Vec3 dirLook = GetTransform()->GetUp();
+
+					if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::WallObject, 1.f))
 					{
-						if (gameObjects[i]->GetCollider())
-						{
-							if (GetCollider()->Raycast(myPos, dir, gameObjects[i]->GetCollider(), 0.5f))
-							{
-								GetRigidBody()->SetVelocity(dir * 0.f);
-							}
-						}
+						GetRigidBody()->SetVelocity(dir * 0);
 					}
+					if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::Ground, 1.f))
+					{
+						GetRigidBody()->SetVelocity(dir * 0);
+					}
+
+
+
 
 					if (pAni->GetFrameRatio() > 0.7) {
 						SetAttackCheck(false);
