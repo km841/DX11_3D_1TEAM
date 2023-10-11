@@ -23,7 +23,13 @@
 #include "Ground.h"
 #include "DecoObject.h"
 #include "Monster.h"
-
+#include "LORD_BOSS.h"
+#include "LORD_BOSS_ROLL.h"
+#include "Bat.h"
+#include "Mage.h"
+#include "Lurker.h"
+#include "HeadRoller.h"
+#include "Grimace.h"
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
