@@ -350,7 +350,9 @@
     <ClInclude Include="MonsterSlowColScript.h">
       <Filter>소스 파일\GameObject\Monster\Script</Filter>
     </ClInclude>
-    <ClInclude Include="HpUi.h" />
+    <ClInclude Include="CircleParticle.h">
+      <Filter>소스 파일\Component\ParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -699,7 +701,9 @@
     <ClCompile Include="MonsterSlowColScript.cpp">
       <Filter>소스 파일\GameObject\Monster\Script</Filter>
     </ClCompile>
-    <ClCompile Include="HpUi.cpp" />
+    <ClCompile Include="CircleParticle.cpp">
+      <Filter>소스 파일\Component\ParticleSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
