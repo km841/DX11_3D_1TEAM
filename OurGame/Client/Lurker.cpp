@@ -69,6 +69,8 @@ void Lurker::SetBehaviorTree()
 				{
 					if (mHP <= 0) {
 						isDead = true;
+						isGODState = true;
+						SetAttackCheck(false);
 						meBasicState = MonsterBasicState::Dead;
 						return BehaviorResult::Failure;
 					}
@@ -83,7 +85,7 @@ void Lurker::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
-					SetHitCheck(false);
+					SetAttackCheck(false);
 					meBasicState = MonsterBasicState::Trace;
 					return BehaviorResult::Success;
 				});
@@ -479,9 +481,10 @@ void Lurker::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (2 != animIndex)
+				if (2 != animIndex) {
+					SetAttackCheck(true);
 					pAnimator->Play(2, true);
-
+				}
 				return BehaviorResult::Success;
 				});
 
@@ -510,8 +513,11 @@ void Lurker::SetBehaviorTree()
 						}
 					}
 
-					if (pAni->GetFrameRatio() > 0.7)
+					if (pAni->GetFrameRatio() > 0.7) {
+						SetAttackCheck(false);
+
 						return BehaviorResult::Success;
+					}
 					return BehaviorResult::Failure;
 
 				});
@@ -667,10 +673,13 @@ void Lurker::OnTriggerEnter(Collider* _pOtherCollider)
 	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
 		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		TakeDamage(attackDamage);
-		float hp = mHP;
-		meBasicState = MonsterBasicState::Hit;
-		SetHitCheck(true);
+		if (isGODState == false) {
+			TakeDamage(attackDamage);
+			float hp = mHP;
+			meBasicState = MonsterBasicState::Hit;
+			SetAttackCheck(false);
+
+		}
 	}
 
 	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())

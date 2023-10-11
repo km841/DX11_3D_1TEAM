@@ -91,6 +91,8 @@ namespace hm
 					Animator* pAnimator = GetAnimator();
 					int animIndex = pAnimator->GetCurrentClipIndex();
 					if (8 != animIndex) {
+						isRoll = false;
+						SetAttackCheck(false);
 						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 						GetTransform()->SetRelativePosition(Vec3(0.f, -1.f, 0.f));
 						pAnimator->Play(8, true);
@@ -103,6 +105,9 @@ namespace hm
 					{
 						if (mHP <= 0) {
 							isDead = true;
+							isGODState = true;
+							isRoll = false;
+							SetAttackCheck(false);
 							meBasicState = MonsterBasicState::Dead;
 							return BehaviorResult::Failure;
 						}
@@ -117,7 +122,7 @@ namespace hm
 				// 상태 변경(Task) : 상태 변경
 				BehaviorTask* pChangeState = new BehaviorTask([&]()
 					{
-						SetHitCheck(false);
+						SetAttackCheck(false);
 						meBasicState = MonsterBasicState::Trace_to_Attack;
 						return BehaviorResult::Success;
 					});
@@ -496,6 +501,7 @@ namespace hm
 					int animIndex = pAnimator->GetCurrentClipIndex();
 					if (4 != animIndex)
 					{
+						SetAttackCheck(false);
 						//초기화 중요
 						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 						GetTransform()->SetRelativePosition(Vec3(0.f, -1.f, 0.f));
@@ -681,10 +687,12 @@ namespace hm
 		if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
 			|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
 		{
-			TakeDamage(attackDamage);
-			float hp = mHP;
-			meBasicState = MonsterBasicState::Hit;
-			SetHitCheck(true);
+			if (isGODState == false) {
+				TakeDamage(attackDamage);
+				float hp = mHP;
+				meBasicState = MonsterBasicState::Hit;
+				SetAttackCheck(false);
+			}
 		}
 	}
 	void HeadRoller::OnTriggerStay(Collider* _pOtherCollider)

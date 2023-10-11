@@ -35,9 +35,6 @@ namespace hm
 		MonsterBasicState GetBasicState() { return meBasicState; }
 		void SetBasicState(MonsterBasicState _BasicState) { meBasicState = _BasicState; }
 
-		bool GetHitCheck() { return mHitCheck; }
-		void SetHitCheck(bool _hitcheck) { mHitCheck = _hitcheck; }
-
 		bool GetIsDead() { return isDead; }
 		void SetIsDead(bool _isDead) { isDead = _isDead; }
 
@@ -45,10 +42,20 @@ namespace hm
 		float GetHP() { return mHP; }
 		float GetHPRatio() { return mHP / mMaxHP; }
 
-	protected:
+		bool GetAttackCheck() { return isAttackCheck; }
+		void SetAttackCheck(bool _hitcheck) { isAttackCheck = _hitcheck; }
+
+		bool GetGODState() { return isGODState; }
+		void SetGODState(bool _isGODState) { isGODState = _isGODState; }
+
+		void CheckPenetration(RigidBody* _rigidBody, LayerType _eLayertype);
+	protected: //몬스터 공격 체크
+		bool isAttackCheck = false;
+		bool isGODState = false;
+
+	protected: 
 		MonsterBasicState meBasicState;
 
-		bool mHitCheck = false;
 		bool isDead = false;
 
 		float mMaxHP; // 피통

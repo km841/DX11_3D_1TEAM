@@ -175,7 +175,7 @@ void EntranceHallMap::InitObjectAdd()
 		pMirror->GetTransform()->SetScale(Vec3(25.00f, 25.00f, 25.00f));
 		pMirror->AddComponent(new Mirror);
 		pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
-		pMirror->GetTransform()->SetRotation(Vec3(45.00f, 0.00f, 0.00f));
+		pMirror->GetTransform()->SetRotation(Vec3(90.00f, 0.00f, 0.00f));
 
 		AddGameObject(pMirror);
 	}

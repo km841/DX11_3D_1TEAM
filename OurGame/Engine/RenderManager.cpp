@@ -166,8 +166,6 @@ namespace hm
 			RenderInstancing(pCameraObject->GetCamera(), pCameraObject->GetCamera()->GetForwardObjects());
 			pCameraObject->GetCamera()->RenderParticle();
 		}
-
-
 	}
 
 	void RenderManager::RenderDeferred(Scene* _pScene)

@@ -25,6 +25,9 @@ public:
     void SetmSpeed() { mSpeed = 40; }
 
     void SetDirPos(Vec3 _dir) { DirPos = _dir; }
+
+    void SetLightObject(GameObject* _pLight) { mpLight = _pLight; };
+    void SetParticleObject(GameObject* _pParticle) { mpParticle = _pParticle; };
 private:
     PlayerState mPlayerStateNum;
 
@@ -36,5 +39,8 @@ private:
     bool isBurn = false;
 
     int mSpeed;
+
+    GameObject* mpLight;
+    GameObject* mpParticle;
 };
 

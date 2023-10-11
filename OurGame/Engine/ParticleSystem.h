@@ -1,11 +1,12 @@
 #pragma once
 #include "Component.h"
+#include "StructuredBuffer.h"
 namespace hm
 {
 	class Material;
 	class Mesh;
 	class Camera;
-	class StructuredBuffer;
+	class Texture;
 
 	struct ParticleInfo
 	{
@@ -15,7 +16,9 @@ namespace hm
 		float curTime;
 
 		Vec3 startColor;
+		float padd1;
 		Vec3 endColor;
+		float padd2;
 
 		float speed;
 		Vec2 gravityAcc;
@@ -47,10 +50,18 @@ namespace hm
 		void SetParticleLifeTime(float _lifeTime) { mEndTime = _lifeTime; }
 		void SetCreateInterval(float _createInterval) { mCreateInterval = _createInterval; }
 		void SetMaxParticles(UINT _maxParticles) { mMaxParticles = _maxParticles; }
+		void SetMiddleColor(const Vec3& _color) { mMiddleColor = _color; }
 		void SetStartColor(const Vec3& _color) { mStartColor = _color; }
 		void SetEndColor(const Vec3& _color) { mEndColor = _color; }
+		void SetAliveCount(const UINT32 _count) { mAliveCount = _count; }
 
-	private:
+		void SetAngle(const Vec3& _angle) { mStandardAngle = _angle; }
+		void SetScatterRadius(float _radius) { mScatterRadius = _radius; }
+
+		void SetParticleTexture(shared_ptr<Texture> _pTexture) { mpParticleTexture = _pTexture; }
+		void SetNoiseTexture(shared_ptr<Texture> _pTexture) { mpNoiseTexture = _pTexture; }
+
+	protected:
 		StructuredBuffer* mpParticleBuffer;
 		StructuredBuffer* mpSharedBuffer;
 
@@ -58,10 +69,15 @@ namespace hm
 		shared_ptr<Material> mpMaterial;
 		shared_ptr<Material> mpComputeMaterial;
 
+		shared_ptr<Texture> mpParticleTexture;
+		shared_ptr<Texture> mpNoiseTexture;
+
 		Vec3 mStartScale;
 		Vec3 mStartDir;
 		Vec3 mStartColor;
 		Vec3 mEndColor;
+		Vec3 mMiddleColor;
+		Vec3 mStandardAngle;
 
 		float mGravity;
 
@@ -74,10 +90,15 @@ namespace hm
 		float mStartAngle;
 		float mEndAngle;
 
+		float mStartScaleFloat;
+		float mEndScaleFloat;
+
 		float mElapsedTime;
 		float mAccTime;
 
 		float mCreateInterval;
+		float mScatterRadius;
+
 
 	};
 }

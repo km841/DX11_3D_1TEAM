@@ -85,6 +85,8 @@ public:
 	const PlayerKeyInfo& GetKeyInfo() { return mKeyInfo; }
 
 	SwordHeavyEffect* GetSwordEffect() { return mpSlashEffect; }
+
+	int GetHp() { return mHP; }
 public:
 	int GetHp() { return mHP; }
 	static Player* spPlayer;

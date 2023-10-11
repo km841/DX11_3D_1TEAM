@@ -1,53 +1,43 @@
 #include "pch.h"
-#include "ParticleSystem.h"
-#include "Resources.h"
-#include "StructuredBuffer.h"
+#include "SparkParticle.h"
+#include "Material.h"
 #include "Timer.h"
 #include "GameObject.h"
-#include "Transform.h"
-#include "Engine.h"
+#include "Resources.h"
 
 namespace hm
 {
-	ParticleSystem::ParticleSystem()
-		: Component(ComponentType::ParticleSystem)
-		, mpParticleBuffer(nullptr)
-		, mpSharedBuffer(nullptr)
-		, mMaxParticles(1000)
-		, mEndTime(0.3f)
-		, mAccTime(0.f)
-		, mStartSpeed(1.0f)
-		, mEndSpeed(1.0f)
-		, mElapsedTime(0.f)
-		, mCreateInterval(0.05f)
-		, mStartScale(0.5f, 0.5f, 0.5f)
-		, mGravity(-1.f)
-		, mAliveCount(0)
-		, mStartAngle(0.f)
-		, mEndAngle(360.f)
-		, mStartScaleFloat(1.f)
-		, mEndScaleFloat(5.f)
-		, mScatterRadius(1.f)
+	SparkParticle::SparkParticle()
+	{
+		mMaxParticles = 1000;
+		mEndTime = 0.5f;
+		mAccTime = 0.f;
+		mStartSpeed = 30.0f;
+		mEndSpeed = 35.0f;
+		mElapsedTime = 0.f;
+		mCreateInterval = 0.05f;
+		mStartScale = Vec3(1.f, 1.f, 0.5f);
+		mGravity = -60.f;
+		mAliveCount = 0;
+		mStartAngle = 0.f;
+		mEndAngle = 360.f;
+		mStartScaleFloat = 1.f;
+		mEndScaleFloat = 5.f;
+	}
+	SparkParticle::~SparkParticle()
 	{
 	}
-
-	ParticleSystem::~ParticleSystem()
+	Component* SparkParticle::Clone(GameObject* _pGameObject)
 	{
-		SAFE_DELETE(mpParticleBuffer);
-		SAFE_DELETE(mpSharedBuffer);
+		return _pGameObject->AddComponent(new SparkParticle);
 	}
-
-	Component* ParticleSystem::Clone(GameObject* _pGameObject)
+	void SparkParticle::Initialize()
 	{
-		ParticleSystem* pParticleSystem = _pGameObject->AddComponent(new ParticleSystem);
-		return pParticleSystem;
-	}
+		mpParticleTexture = GET_SINGLE(Resources)->Load<Texture>(L"SampleParticle", L"..\\Resources\\Texture\\ParticleSample.png");
 
-	void ParticleSystem::Initialize()
-	{
 		mpMesh = GET_SINGLE(Resources)->LoadPointMesh();
-		mpMaterial = GET_SINGLE(Resources)->Get<Material>(L"Particle");
-		mpComputeMaterial = GET_SINGLE(Resources)->Get<Material>(L"ComputeParticle");
+		mpMaterial = GET_SINGLE(Resources)->Get<Material>(L"SparkParticle");
+		mpComputeMaterial = GET_SINGLE(Resources)->Get<Material>(L"ComputeParticle_Spark");
 
 		mpMaterial->SetTexture(0, mpParticleTexture);
 		mpMaterial->SetTexture(1, mpNoiseTexture);
@@ -59,12 +49,11 @@ namespace hm
 		mpSharedBuffer = new StructuredBuffer;
 		mpSharedBuffer->Create(sizeof(ParticleShared), 1, nullptr, true);
 	}
-
-	void ParticleSystem::Update()
+	void SparkParticle::Update()
 	{
+		ParticleSystem::Update();
 	}
-
-	void ParticleSystem::FinalUpdate()
+	void SparkParticle::FinalUpdate()
 	{
 		mElapsedTime += DELTA_TIME;
 		mAccTime += DELTA_TIME;
@@ -113,25 +102,8 @@ namespace hm
 		mpSharedBuffer->PushComputeUAVData(RegisterUAV::u1);
 		mpComputeMaterial->Dispatch(1, 1, 1);
 	}
-
-	void ParticleSystem::Render(Camera* _pCamera)
+	void SparkParticle::Render(Camera* _pCamera)
 	{
-		GetGameObject()->GetTransform()->PushData(_pCamera);
-		mpParticleBuffer->PushGraphicsData(RegisterSRV::t9);
-
-		mpMaterial->GetShader()->SetSamplerType(SamplerType::Clamp);
-		mpMaterial->SetVec4(0, Vec4(mStartScale.x, mStartScale.y, mStartScale.z, 0.f));
-		mpMaterial->PushGraphicDataExceptForTextures();
-
-		mpParticleTexture->PushSRV(RegisterSRV::t0);
-		if (nullptr != mpNoiseTexture)
-			mpNoiseTexture->PushSRV(RegisterSRV::t1);
-
-		CONST_BUFFER(ConstantBufferType::Material)->Mapping();
-		mpMesh->RenderInstancing(mMaxParticles);
-
-		mpParticleBuffer->ClearGraphicsData();
+		ParticleSystem::Render(_pCamera);
 	}
-
 }
-

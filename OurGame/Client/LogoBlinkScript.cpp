@@ -16,7 +16,7 @@ namespace hm
 	{
 		Interface* pInterface = static_cast<Interface*>(GetGameObject());
 		
-		if (mRatio < 0.7f || mRatio > 1.f)
+		if (mRatio < 0.5f || mRatio > 1.f)
 			mSign = -mSign;
 
 		mRatio += mSign * DELTA_TIME;
