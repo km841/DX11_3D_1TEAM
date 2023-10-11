@@ -149,6 +149,7 @@ void Bat::SetBehaviorTree()
 					Vec3 myPos = GetTransform()->GetPosition();
 					Animator* pAnimator = GetAnimator();
 					float distance = (playerPos - myPos).Length();
+
 					if (distance < mRecogRange && pAnimator->GetFrameRatio()>0.2)
 					{
 						return BehaviorResult::Success;

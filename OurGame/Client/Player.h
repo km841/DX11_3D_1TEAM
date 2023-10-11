@@ -90,7 +90,7 @@ public:
 	SwordHeavyEffect* GetSwordEffect() { return mpSlashEffect; }
 
 public:
-	int GetHp() { return mHP; }
+	
 	static Player* spPlayer;
 	static Player* GetPlayer();
 

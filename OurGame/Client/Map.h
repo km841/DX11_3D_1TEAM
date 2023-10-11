@@ -33,6 +33,8 @@ namespace hm
 		static void SetPlayerHolderPosition(const Vec3& _pos);
 		static void SetCutSceneHolderPosition(const Vec3& _pos);
 
+
+		
 	protected:
 		GameObject* mTarget = nullptr;
 		static GameObject* spPlayerHolder;

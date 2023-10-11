@@ -180,7 +180,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Roll_Start;
+					meBasicState = MonsterBasicState::Snap_Once;
 					return BehaviorResult::Success;
 				});
 
@@ -427,8 +427,8 @@ void LORD_BOSS::SetBehaviorTree()
 			// 이동+Col 처리 하는곳
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
-
-
+					Animator* pAni = GetAnimator();
+					if(pAni->GetFrameRatio() < 0.2)
 
 					return BehaviorResult::Success;
 				});
@@ -813,7 +813,8 @@ void LORD_BOSS::SetBehaviorTree()
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (1 != animIndex)
 				{
-					SetAttackCheck(true);
+					pObject->SetAttackCheck(true);
+					PrevFollowSet();
 					pAnimator->Play(1, true);
 				}
 				return BehaviorResult::Success;
@@ -843,7 +844,7 @@ void LORD_BOSS::SetBehaviorTree()
 				}
 				else if (isWall == true)
 				{
-					SetAttackCheck(false);
+					pObject->SetAttackCheck(false);
 					Vec3 Ve = PosDir * 3;
 					GetRigidBody()->SetVelocity(AXIS_X, -Ve.x);
 					GetRigidBody()->SetVelocity(AXIS_Z, -Ve.z);

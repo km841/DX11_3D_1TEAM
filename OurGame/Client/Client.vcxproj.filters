@@ -353,6 +353,8 @@
     <ClInclude Include="CircleParticle.h">
       <Filter>소스 파일\Component\ParticleSystem</Filter>
     </ClInclude>
+    <ClInclude Include="MonsterBackswingColScript.h" />
+    <ClInclude Include="HpUi.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -704,6 +706,8 @@
     <ClCompile Include="CircleParticle.cpp">
       <Filter>소스 파일\Component\ParticleSystem</Filter>
     </ClCompile>
+    <ClCompile Include="MonsterBackswingColScript.cpp" />
+    <ClCompile Include="HpUi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
