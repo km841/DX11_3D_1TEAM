@@ -169,6 +169,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="ChangeStateCondition.h" />
     <ClInclude Include="ChangeStateTask.h" />
     <ClInclude Include="CinematicCamMove.h" />
+    <ClInclude Include="CircleParticle.h" />
     <ClInclude Include="ClientEnum.h" />
     <ClInclude Include="ClimingDownState.h" />
     <ClInclude Include="ClimingEndState.h" />
@@ -300,6 +301,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="ChangeStateCondition.cpp" />
     <ClCompile Include="ChangeStateTask.cpp" />
     <ClCompile Include="CinematicCamMove.cpp" />
+    <ClCompile Include="CircleParticle.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClimingDownState.cpp" />
     <ClCompile Include="ClimingEndState.cpp" />

@@ -261,7 +261,6 @@ Player::Player()
 			pLight->SetLightRange(5.f);
 			pLight->SetDiffuse(Vec3(0.5f, 0.2f, 0.f));
 			pLight->SetLightType(LightType::PointLight);
-
 		}
 		//pArrowSc->SetParticleObject(pEffect);
 		//pArrowSc->SetLightObject(pArrowLight);

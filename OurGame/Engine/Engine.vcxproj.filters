@@ -750,5 +750,8 @@
     <FxCompile Include="..\Resources\Shader\spark_particle.fx">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\Resources\Shader\circle_particle.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
