@@ -4,6 +4,7 @@
 #include "Timer.h"
 #include "Input.h"
 
+yj::TextBox* yj::TextBox::spTextBox;
 
 namespace yj
 {
@@ -150,4 +151,10 @@ namespace yj
 		SetText(L"", 25, false);
 		mActState = DisapearAct;
 	}
+
+	TextBox* TextBox::GetTextBox()
+	{
+		return spTextBox;
+	}
+
 }

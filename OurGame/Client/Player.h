@@ -54,6 +54,11 @@ public:
 	float GetMoveSpeed() { return mSpeed; }
 	void SetMoveSpeed(float _speed) { mSpeed = _speed; }
 
+	int GetHP() { return mHP; }
+
+	int GetCost() { return mCost; }
+	void SetCost(int  _cost) { mCost = _cost; }
+
 	float GetAttackDamage() { return mAttackDamage; }
 	void SetAttackDamage(float _Damage) { mAttackDamage = _Damage; }
 
@@ -86,8 +91,8 @@ public:
 
 	SwordHeavyEffect* GetSwordEffect() { return mpSlashEffect; }
 
-	int GetHp() { return mHP; }
 public:
+	
 	static Player* spPlayer;
 	static Player* GetPlayer();
 

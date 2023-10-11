@@ -183,7 +183,7 @@ void MoveState::Update()
 	{
 		pPlayer->StateChange(PlayerState::AttackState);
 	}
-	if (IS_DOWN(KeyType::RBUTTON))
+	if (IS_DOWN(KeyType::RBUTTON) && pPlayer->GetCost() > 0)
 	{
 		pPlayer->StateChange(PlayerState::BowState);
 	}

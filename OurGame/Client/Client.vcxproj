@@ -201,6 +201,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="HitStartState.h" />
     <ClInclude Include="HittingState.h" />
     <ClInclude Include="HeadRoller.h" />
+    <ClInclude Include="HpUi.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="IdleState_Gm.h" />
     <ClInclude Include="InterfaceAlphaScript.h" />
@@ -335,6 +336,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="HitStartState.cpp" />
     <ClCompile Include="HittingState.cpp" />
     <ClCompile Include="HeadRoller.cpp" />
+    <ClCompile Include="HpUi.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="IdleState_Gm.cpp" />
     <ClCompile Include="InterfaceAlphaScript.cpp" />

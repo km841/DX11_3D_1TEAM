@@ -25,6 +25,8 @@
 #include "Elevator.h"
 #include "SoulDoor.h"
 #include "CameraHolder.h"
+#include "HpUi.h"
+#include "Interface.h"
 
 /* Component */
 #include "Collider.h"
@@ -48,7 +50,6 @@
 
 /* Event */
 #include "SceneChangeEvent.h"
-
 
 namespace yj
 {
@@ -132,6 +133,8 @@ namespace yj
 
 		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1,
 			nullptr , std::bind(&MainOfficeMap::InitBusStart, this));
+
+		HPUI->UiOn();
 	}
 	
 	void MainOfficeMap::Exit()

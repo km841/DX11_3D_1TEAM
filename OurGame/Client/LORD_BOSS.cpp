@@ -127,6 +127,7 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorCondition* pIfCondition = new BehaviorCondition([&](){
 					Animator* pAni = GetAnimator();
 
+					
 
 					if (pAni->GetFrameRatio() > 0.98) {
 						return BehaviorResult::Success;
@@ -179,7 +180,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Backswing_Left;
+					meBasicState = MonsterBasicState::Snap_Once;
 					return BehaviorResult::Success;
 				});
 
@@ -294,6 +295,7 @@ void LORD_BOSS::SetBehaviorTree()
 					{
 						pMonsterAttackCol->Disable();
 						PrevFollowSet();
+					
 						isCrash = true;
 					}
 						
@@ -425,8 +427,8 @@ void LORD_BOSS::SetBehaviorTree()
 			// 이동+Col 처리 하는곳
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
-
-
+					Animator* pAni = GetAnimator();
+					if(pAni->GetFrameRatio() < 0.2)
 
 					return BehaviorResult::Success;
 				});
@@ -811,7 +813,8 @@ void LORD_BOSS::SetBehaviorTree()
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (1 != animIndex)
 				{
-					SetAttackCheck(true);
+					pObject->SetAttackCheck(true);
+					PrevFollowSet();
 					pAnimator->Play(1, true);
 				}
 				return BehaviorResult::Success;
@@ -836,12 +839,12 @@ void LORD_BOSS::SetBehaviorTree()
 					pAni->Play(1, true);
 
 				if (isWall == false) {
-					mMagnScale = 7.f;
-					PrevFollowLive();
+					mMagnScale = 10.f;
+					PrevRollLive();
 				}
 				else if (isWall == true)
 				{
-					SetAttackCheck(false);
+					pObject->SetAttackCheck(false);
 					Vec3 Ve = PosDir * 3;
 					GetRigidBody()->SetVelocity(AXIS_X, -Ve.x);
 					GetRigidBody()->SetVelocity(AXIS_Z, -Ve.z);
@@ -1174,7 +1177,7 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
-				if (pAni->GetFrameRatio() > 0.45) {
+				if (pAni->GetFrameRatio() > 0.40) {
 					return BehaviorResult::Success;
 				}
 				return BehaviorResult::Failure;
@@ -1291,8 +1294,14 @@ void LORD_BOSS::SetBehaviorTree()
 			// 이동+Col 처리 하는곳
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
+					Animator* pAni = GetAnimator();
 
+					pMonsterAttackCol->Enable();
+					pMonsterAttackCol->GetScript<MonsterColScript>()->SetAniRatio(pAni->GetFrameRatio());
+					pMonsterAttackCol->GetScript<MonsterColScript>()->SetInit(Vec3(9.f, 1.f, 9.f), 0.01f, 2.f);
 
+					if (pAni->GetFrameRatio() > 0.1) 
+						pMonsterAttackCol->Disable();
 
 					return BehaviorResult::Success;
 				});
@@ -1619,89 +1628,49 @@ void LORD_BOSS::PrevFollowLive()
 	Vec3 scale = GetRigidBody()->GetGeometrySize();
 	Transform* pTr = GetTransform();
 
-	
-	Vec3 Num = scale * PosDir;
-	float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
-
-	
-	// 몬스터의 이동속도가 들어가야 함
-	// 방향을 변경해주는 Task도 필요
 	Vec3 Ve = PosDir * (mSpeed*mMagnScale);
 
-	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
-
-	for (int i = 0; i < gameObjects.size(); ++i)
-	{
-		if (gameObjects[i]->GetCollider())
-		{
-			for (size_t j = 1; j <= 8; j++)
-			{
-				if (GetCollider()->Raycast(myPos, ConvertDir(static_cast<DirectionEvasion>(j)), gameObjects[i]->GetCollider(), offset + 0.5f))
-				{
-					if (static_cast<DirectionEvasion>(j) == DirectionEvasion::FORWARD)
-					{
-						Ve.z = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BACKWARD)
-					{
-						Ve.z = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::LEFT)
-					{
-						Ve.x = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::RIGHT)
-					{
-						Ve.x = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPLEFT)
-					{
-						if (Ve.x > Ve.z)
-							Ve.z = 0;
-						else
-							Ve.x = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPRIGHT)
-					{
-						if (Ve.x > Ve.z)
-							Ve.z = 0;
-						else
-							Ve.x = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMLEFT)
-					{
-						if (Ve.x > Ve.z)
-							Ve.z = 0;
-						else
-							Ve.x = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMRIGHT)
-					{
-						if (Ve.x > Ve.z)
-							Ve.z = 0;
-						else
-							Ve.x = 0;
-					}
-
-				}
-			}
-		}
-	}
+	Vec3 dirLook = GetTransform()->GetUp();
 
 	GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
-
-	for (int i = 0; i < gameObjects.size(); ++i)
+	
+	
+	if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::WallObject, 1.f))
 	{
-		if (gameObjects[i]->GetCollider())
-		{
-			if (GetCollider()->Raycast(myPos, PosDir, gameObjects[i]->GetCollider(), 0.5f))
-			{
-				GetRigidBody()->SetVelocity(PosDir * 0.f);
-			}
-		}
+		GetRigidBody()->SetVelocity(Ve * 0);
+	}
+
+	if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::Ground, 1.f))
+	{
+		GetRigidBody()->SetVelocity(Ve * 0);
+	}
+
+	if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::DecoObject, 1.f))
+	{
+		GetRigidBody()->SetVelocity(Ve * 0);
 	}
 
 
+
+	
+
+
+	mSpeed = 8.f;
+	mMagnScale = 3.f;
+}
+
+void LORD_BOSS::PrevRollLive()
+{
+	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	Vec3 myPos = GetTransform()->GetPosition();
+	Vec3 scale = GetRigidBody()->GetGeometrySize();
+	Transform* pTr = GetTransform();
+
+	Vec3 Ve = PosDir * (mSpeed * mMagnScale);
+
+	
+
+	GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
 	mSpeed = 8.f;
 	mMagnScale = 3.f;
 }
@@ -1791,85 +1760,26 @@ void LORD_BOSS::LaserPrevFollowLive()
 	Transform* pTr = GetTransform();
 
 
-	Vec3 Num = scale * PosDir;
-	float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
-
-
-	// 몬스터의 이동속도가 들어가야 함
-	// 방향을 변경해주는 Task도 필요
 	Vec3 Ve = PosDir * (mSpeed * mMagnScale);
 
-	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
 
-	for (int i = 0; i < gameObjects.size(); ++i)
+	GetRigidBody()->SetVelocity(Ve); 
+
+	Vec3 dirLook = GetTransform()->GetUp();
+
+
+
+	if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::WallObject, 1.f))
 	{
-		if (gameObjects[i]->GetCollider())
-		{
-			for (size_t j = 1; j <= 8; j++)
-			{
-				if (GetCollider()->Raycast(myPos, ConvertDir(static_cast<DirectionEvasion>(j)), gameObjects[i]->GetCollider(), offset + 0.5f))
-				{
-					if (static_cast<DirectionEvasion>(j) == DirectionEvasion::FORWARD)
-					{
-						Ve.z = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BACKWARD)
-					{
-						Ve.z = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::LEFT)
-					{
-						Ve.x = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::RIGHT)
-					{
-						Ve.x = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPLEFT)
-					{
-						if (Ve.x > Ve.z)
-							Ve.z = 0;
-						else
-							Ve.x = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPRIGHT)
-					{
-						if (Ve.x > Ve.z)
-							Ve.z = 0;
-						else
-							Ve.x = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMLEFT)
-					{
-						if (Ve.x > Ve.z)
-							Ve.z = 0;
-						else
-							Ve.x = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMRIGHT)
-					{
-						if (Ve.x > Ve.z)
-							Ve.z = 0;
-						else
-							Ve.x = 0;
-					}
-
-				}
-			}
-		}
+		GetRigidBody()->SetVelocity(Ve * 0);
 	}
-
-	GetRigidBody()->SetVelocity(Ve); //따라오게 만드는 코드
-
-	for (int i = 0; i < gameObjects.size(); ++i)
+	if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::Ground, 1.f))
 	{
-		if (gameObjects[i]->GetCollider())
-		{
-			if (GetCollider()->Raycast(myPos, PosDir, gameObjects[i]->GetCollider(), 0.5f))
-			{
-				GetRigidBody()->SetVelocity(PosDir * 0.f);
-			}
-		}
+		GetRigidBody()->SetVelocity(Ve * 0);
+	}
+	if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::DecoObject, 1.f))
+	{
+		GetRigidBody()->SetVelocity(Ve * 0);
 	}
 
 
@@ -1921,7 +1831,7 @@ void LORD_BOSS::MonsterAttackCol()
 
 		MonsterColScript* MonSc = pMonsterAttackCol->AddComponent(new MonsterColScript);
 		MonSc->SetInit(Vec3(7.f, 1.f, 7.f), 0.2f);
-		MonSc->SetOffSetPos(Vec3(0.f, -3.f, -0.f));
+		MonSc->SetOffSetPos(Vec3(0.f, -2.5f, -0.f));
 		pMonsterAttackCol->Disable();
 
 		auto pFollowSc2 = pMonsterAttackCol->AddComponent(new OwnerFollowScript(this));

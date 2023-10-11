@@ -24,6 +24,7 @@
 #include "DecoObject.h"
 #include "UI.h"
 #include "CameraHolder.h"
+#include "HpUi.h"
 
 /* Interface */
 #include "Interface.h"
@@ -81,7 +82,7 @@ namespace hm
 			if (pTextBox != nullptr)
 			{
 
-				pTextBox->SetWriteTexts(0,5);
+				pTextBox->SetWriteTexts(0, 5);
 				pTextBox->Apear();
 			}
 		}
@@ -100,7 +101,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Right2Map);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::EntranceHallMap);
 		}
 
 		// 지형
@@ -117,10 +118,10 @@ namespace hm
 		// - EntranceHallMap
 		// - LeftSecretFightMap
 		// - LeftSecretTrialMap
-		// - Monster_Player_TestScene
+		// - Monster_Player_Test
 		if (IS_DOWN(KeyType::L))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::LeftSecretFightMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Monster_Player_Test);
 		}
 
 		// 영진
@@ -271,6 +272,7 @@ namespace hm
 			AddGameObject(pLogoInterface);
 		}
 
+
 		// Select Interface
 		{
 			mpSelectedInterface = Factory::CreateInterface<Interface>(Vec3(0.f, 180.f, -3.f), Vec2(40.f, 39.f), L"..\\Resources\\Texture\\icon_crowfoot.png");
@@ -281,10 +283,19 @@ namespace hm
 		{
 			pTextBox = Factory::CreateInterface<yj::TextBox>(Vec3(0.f, -300.f, -3.f), Vec2(400.0f, 100.0f), L"..\\Resources\\Texture\\TextBox.png");
 			pTextBox->SetAlpha(0.8f);
+			//pTextBox->SetColor(Vec3::Color(255,255,255));
 			AddGameObject(pTextBox);
 			//사이즈는 400 100
 			pTextBox->Disable();
 			pTextBox->SetDontDestroyObject(L"TextBox");
+		}
+		// HpUi
+		{
+			GameObject* pHpUiObj = new GameObject(LayerType::Unknown);
+			yj::HpUi* pHpUI = pHpUiObj->AddComponent<yj::HpUi>();
+			pHpUI->AddHpUI();
+			pHpUiObj->SetDontDestroyObject(L"HpUi");
+			HPUI->UiOff();
 		}
 
 
@@ -395,6 +406,7 @@ namespace hm
 
 		}
 
+
 		AddSceneChangeCallback(L"플레이어 충돌 초기화", []()
 			{
 				GET_SINGLE(CollisionManager)->ClearAllCollisionForObject(PLAYER);
@@ -406,3 +418,7 @@ namespace hm
 		PLAYER->GetAudioSound()->Stop();
 	}
 }
+
+
+
+
