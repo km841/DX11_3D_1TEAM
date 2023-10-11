@@ -5,6 +5,7 @@
 #include "Factory.h"
 
 #include "SceneManager.h"
+#include "Player.h"
 
 yj::HpUi* yj::HpUi::spHpUi;
 
@@ -142,7 +143,7 @@ namespace yj
 
 	int HpUi::GetPlayerHp()
 	{
-		return PLAYER->GetHp();
+		return PLAYER->GetHP();
 	}
 	HpUi* HpUi::GetHpUI()
 	{
