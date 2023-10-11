@@ -1284,7 +1284,7 @@ namespace hm
             Add<Shader>(L"MotionBlur", pShader);
         }
 
-        // Compute Particle
+        // Compute Spark Particle
         {
             shared_ptr<Shader> pShader = make_shared<Shader>();
             pShader->SetName(L"ComputeParticle_Spark");
@@ -1314,6 +1314,55 @@ namespace hm
             pShader->SetName(L"SparkParticle");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\spark_particle.fx", shaderInfo, shaderArg);
             Add<Shader>(L"SparkParticle", pShader);
+        }
+
+        // Compute Circle Particle
+        {
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"ComputeParticle_Circle");
+            pShader->CreateComputeShader(L"..\\Resources\\Shader\\circle_particle.fx", "CS_Main", "cs_5_0");
+            Add<Shader>(L"ComputeParticle_Circle", pShader);
+        }
+
+        // Spark Particle
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::LessNoWrite,
+                RasterizerType::CullNone,
+                BlendType::AlphaBlend,
+                D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST
+            };
+
+            ShaderArg shaderArg =
+            {
+                "VS_Main",
+                "GS_Main",
+                "PS_Main"
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"CircleParticle");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\circle_particle.fx", shaderInfo, shaderArg);
+            Add<Shader>(L"CircleParticle", pShader);
+        }
+
+        // Spawn Paper Burn Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::Less,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"PaperBurnSpawn");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\paperburn_spawn.fx", shaderInfo);
+
+            Add<Shader>(L"PaperBurnSpawn", pShader);
         }
     }
     void Resources::CreateDefaultMaterial()
@@ -1740,6 +1789,32 @@ namespace hm
             shared_ptr<Shader> pShader = Get<Shader>(L"SparkParticle");
             pMaterial->SetShader(pShader);
             Add<Material>(L"SparkParticle", pMaterial);
+        }
+
+        // Compute Circle Particle
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"ComputeParticle_Circle");
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"ComputeParticle_Circle", pMaterial);
+        }
+
+        // Circle Particle
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"CircleParticle");
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"CircleParticle", pMaterial);
+        }
+
+        // Spawn PaperBurn Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"PaperBurnSpawn");
+            pMaterial->SetTexture(1, Load<Texture>(L"BurnNoise", L"..\\Resources\\Texture\\BurnNoise.png"));
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"PaperBurnSpawn", pMaterial);
         }
     }
 }

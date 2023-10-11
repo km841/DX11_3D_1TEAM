@@ -362,6 +362,17 @@ namespace hm
 		mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams.SetVec4(_index, _value);
 	}
 
+	void Material::SetVec4AllSubset(int _index, Vec4 _value)
+	{
+		for (int i = 0; i < mMaterialContainerVec.size(); ++i)
+		{
+			for (int j = 0; j < mMaterialContainerVec[i]->materialSubsetVec.size(); ++j)
+			{
+				mMaterialContainerVec[i]->materialSubsetVec[j]->materialParams.SetVec4(_index, _value);
+			}
+		}
+	}
+
 	void Material::SetMatrix(int _index, Matrix _value, int _containerIndex, int _subsetIndex)
 	{
 		mMaterialContainerVec[_containerIndex]->materialSubsetVec[_subsetIndex]->materialParams.SetMatrix(_index, _value);

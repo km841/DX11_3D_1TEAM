@@ -233,29 +233,17 @@ void CS_Main(uint3 threadIndex : SV_DispatchThreadID)
                 2.f * rand3 - 1.f,
             };
             
-            float3 frontNormal = float3(0.f, 0.f, 1.f);
+            float3 right = float3(1.f, 0.f, 0.f);
+            
            
-            float randSpeed = lerp((float) startSpeed, (float) endSpeed, noise.x);
-            float2 randomVector = (float2) 0;
-            randomVector.x = lerp(worldPos.x - standardRadius, worldPos.x + standardRadius, noise.x);
-            randomVector.y = lerp(worldPos.z - standardRadius, worldPos.z + standardRadius, noise.y);
-            
-            float randAngle = lerp(0, 360, noise.x);
-            float randRadian = randAngle * 3.1415926535 / 180.f;
-            
-            float rotatedX = randomVector.x * cos(randRadian) + randomVector.y * sin(randRadian);
-            float rotatedY = randomVector.x * sin(randRadian) - randomVector.y * cos(randRadian);
-            
-            float2 rotatedVector = float2(rotatedX, rotatedY) - worldPos.xz;
-            // 길이 r의 벡터를 0~360도 안의 랜덤값으로 회전
-            
-            
-            g_particle[threadIndex.x].direction.xyz = normalize(float3(rotatedVector.x, 1.f, rotatedVector.y));
-            g_particle[threadIndex.x].position.xyz = float3(randomVector.x, 0.f, randomVector.y);
+            //// 
+
+            //g_particle[threadIndex.x].direction.xyz = (worldPos + float3(a, worldPos.y, b)) - worldPos;
+            //g_particle[threadIndex.x].position.xyz = float3(worldPos.x + a, worldPos.y, worldPos.z + b);
             
             g_particle[threadIndex.x].gravityAcc = 0.f;
             g_particle[threadIndex.x].curTime = 0.f;
-            g_particle[threadIndex.x].speed = randSpeed;
+            //g_particle[threadIndex.x].speed = randSpeed;
             g_particle[threadIndex.x].endTime = startLifeTime;
             g_particle[threadIndex.x].startColor = startColor;
             g_particle[threadIndex.x].endColor = endColor;

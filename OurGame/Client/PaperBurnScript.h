@@ -15,11 +15,14 @@ namespace hm
 		virtual Component* Clone(class GameObject* _pGameObject);
 
 		void Begin();
+		void SpawnBegin();
 		void SetPaperBurn() { Begin();  mbFlag = true; }
+		void SetSpawnPaperBurn() { SpawnBegin(); mbFlag = true; }
 		void SetReverse(bool _bFlag) { mbReverseFlag = _bFlag; }
 		void SetSpeed(float _speed) { mSpeed = _speed; }
 		bool IsFinished() { return mbPaperBurnFinished; }
 		void SetFinishedCallback(std::function<void()> _func) { mCallback = _func; }
+		void Reset() { mbFlag = false; }
 
 	private:
 		float mAccTime;

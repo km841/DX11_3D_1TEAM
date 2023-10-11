@@ -1289,9 +1289,8 @@ void Grimace::MonsterAttackCol()
 		pMonsterAttackCol->Disable();
 
 		auto pFollowSc2 = pMonsterAttackCol->AddComponent(new OwnerFollowScript(this));
-		
+		pMonsterAttackCol->Initialize();
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pMonsterAttackCol);
-
 	}
 }
 

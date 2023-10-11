@@ -81,6 +81,7 @@ namespace hm
         void SetVec2(int _index, Vec2 _value, int _containerIndex = 0, int _subsetIndex = 0);
         void SetVec3(int _index, Vec3 _value, int _containerIndex = 0, int _subsetIndex = 0);
         void SetVec4(int _index, Vec4 _value, int _containerIndex = 0, int _subsetIndex = 0);
+        void SetVec4AllSubset(int _index, Vec4 _value);
         void SetMatrix(int _index, Matrix _value, int _containerIndex = 0, int _subsetIndex = 0);
 
         shared_ptr<Material> Clone();

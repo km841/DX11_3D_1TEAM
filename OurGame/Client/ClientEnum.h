@@ -159,3 +159,13 @@ enum class MonsterBasicState
 
 	
 };
+
+enum class MonsterType
+{
+	Grimace,
+	Bat,
+	HeadRoller,
+	Lurker,
+	Mage,
+	End,
+};
