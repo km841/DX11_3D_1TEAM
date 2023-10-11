@@ -261,9 +261,16 @@ void Grimace::SetBehaviorTree()
 				dir.y = 0;
 				// 몬스터의 이동속도가 들어가야 함
 				// 방향을 변경해주는 Task도 필요
+
+				Vec3 lookNormal = GetTransform()->GetLook();
+				lookNormal.Normalize();
 				Vec3 Ve = dir * mSpeed;
 
-				const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
+
+				//그리마스 수정
+				Vec3 fixedPos = myPos + (scale * lookNormal);
+				const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::WallObject);
+
 
 				for (int i = 0; i < gameObjects.size(); ++i)
 				{
@@ -271,53 +278,9 @@ void Grimace::SetBehaviorTree()
 					{
 						for (size_t j = 1; j <= 8; j++)
 						{
-							if (GetCollider()->Raycast(myPos, ConvertDir(static_cast<DirectionEvasion>(j)), gameObjects[i]->GetCollider(), offset + 0.5f))
+							if (GetCollider()->Raycast(fixedPos, lookNormal, gameObjects[i]->GetCollider(), 0.5f))
 							{
-								if (static_cast<DirectionEvasion>(j) == DirectionEvasion::FORWARD)
-								{
-									Ve.z = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BACKWARD)
-								{
-									Ve.z = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::LEFT)
-								{
-									Ve.x = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::RIGHT)
-								{
-									Ve.x = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPLEFT)
-								{
-									if (Ve.x > Ve.z)
-										Ve.z = 0;
-									else
-										Ve.x = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPRIGHT)
-								{
-									if (Ve.x > Ve.z)
-										Ve.z = 0;
-									else
-										Ve.x = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMLEFT)
-								{
-									if (Ve.x > Ve.z)
-										Ve.z = 0;
-									else
-										Ve.x = 0;
-								}
-								else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMRIGHT)
-								{
-									if (Ve.x > Ve.z)
-										Ve.z = 0;
-									else
-										Ve.x = 0;
-								}
-
+								int a = 0;
 							}
 						}
 					}
@@ -419,7 +382,7 @@ void Grimace::SetBehaviorTree()
 					//임시 테스트
 					//eState = MonsterBasicState::Attack03;
 
-					bool check = GetHitCheck();
+					bool check = GetAttackCheck();
 
 					if (check == false) {
 						SetBasicState(eState);
@@ -477,6 +440,8 @@ void Grimace::SetBehaviorTree()
 				GetRigidBody()->SetMaxVelocity(100.f);
 
 				BackstepDirLive();
+
+				//그리마스 수정
 
 				if (pAni->GetFrameRatio() > 0.2f && pAni->GetFrameRatio() < 0.45f) 
 				{
@@ -694,26 +659,33 @@ void Grimace::SetBehaviorTree()
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 					Vec3 myPos = GetTransform()->GetPosition();
 					Animator* pAni = GetAnimator();
+					Vec3 geomSize = GetRigidBody()->GetGeometrySize();
+					Vec3 lookNormal = GetTransform()->GetLook();
+					lookNormal.Normalize();
 					GetRigidBody()->SetMaxVelocity(100.f);
-
-					if (pAni->GetFrameRatio() > 0.45 && pAni->GetFrameRatio() < 0.6) 
+					dir_desh.Normalize();
+					if (pAni->GetFrameRatio() > 0.45 && pAni->GetFrameRatio() < 0.6)
 					{
+						SetAttackCheck(true);
 						GetRigidBody()->SetVelocityExcludingColliders(-dir_desh * 10.0f);
 						GetRigidBody()->SetVelocity(dir_desh * 40.f);
-						const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
-						for (int i = 0; i < gameObjects.size(); ++i)
+
+						//그리마스 수정
+						
+						if (IsRaysCollide(myPos + (lookNormal * geomSize), lookNormal, LayerType::Ground, 0.5f))
 						{
-							if (gameObjects[i]->GetCollider())
-							{
-								if (GetCollider()->Raycast(myPos, dir_desh, gameObjects[i]->GetCollider(), 0.5f))
-								{
-									GetRigidBody()->SetVelocity(dir_desh * 0.f);
-								}
-							}
+							GetRigidBody()->SetVelocity(dir_desh * 0.f);
 						}
+
+						if (IsRaysCollide(myPos + (lookNormal * geomSize), lookNormal, LayerType::WallObject, 0.5f))
+						{
+							GetRigidBody()->SetVelocity(dir_desh * 0.f);
+						}
+						
 					}
 					else 
 					{
+						SetAttackCheck(false);
 						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 						GetRigidBody()->SetVelocity(Vec3::Zero);
 					}
@@ -1242,16 +1214,28 @@ void Grimace::OnTriggerEnter(Collider* _pOtherCollider)
 		mGroundCount++;
 	}
 
+	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType()
+		&&( meBasicState == MonsterBasicState::Attack03 || meBasicState == MonsterBasicState::Trace_BackStep))
+	{
+		//그리마스 수정
+		dir_desh = Vec3::Zero;
+		dir_backstep = Vec3::Zero;
+	}
+
 	Player* pPlayer = PLAYER;
 	float attackDamage = pPlayer->GetAttackDamage();
 
 	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
 		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		TakeDamage(attackDamage);
-		if (mHP <= 0) {
-			isDead = true;
-			meBasicState = MonsterBasicState::Dead;
+		if (isGODState == false) {
+			TakeDamage(attackDamage);
+			if (mHP <= 0) {
+				isDead = true;
+				isGODState = true;
+				SetAttackCheck(false);
+				meBasicState = MonsterBasicState::Dead;
+			}
 		}
 	}
 }
@@ -1357,70 +1341,25 @@ void Grimace::BackstepDirLive()
 	Vec3 myRot = GetTransform()->GetRotation();
 	Vec3 scale = GetRigidBody()->GetGeometrySize();
 
+	dir_backstep.Normalize();
 	Vec3 Num = scale * dir_backstep;
 	float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
 
 	// 몬스터의 이동속도가 들어가야 함
 	// 방향을 변경해주는 Task도 필요
 	Ve_backstep = dir_backstep * mSpeed;
+	Vec3 dirBack = -GetTransform()->GetLook();
 
-	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
-
-	for (int i = 0; i < gameObjects.size(); ++i)
+	//그리마스 수정
+	if (IsRaysCollide(myPos + scale * dirBack, dirBack, LayerType::WallObject, 1.f))
 	{
-		if (gameObjects[i]->GetCollider())
-		{
-			for (size_t j = 1; j <= 8; j++)
-			{
-				if (GetCollider()->Raycast(myPos, ConvertDir(static_cast<DirectionEvasion>(j)), gameObjects[i]->GetCollider(), offset + 0.5f))
-				{
-					if (static_cast<DirectionEvasion>(j) == DirectionEvasion::FORWARD)
-					{
-						Ve_backstep.z = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BACKWARD)
-					{
-						Ve_backstep.z = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::LEFT)
-					{
-						Ve_backstep.x = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::RIGHT)
-					{
-						Ve_backstep.x = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPLEFT)
-					{
-						if (Ve_backstep.x > Ve_backstep.z)
-							Ve_backstep.z = 0;
-						else
-							Ve_backstep.x = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::TOPRIGHT)
-					{
-						if (Ve_backstep.x > Ve_backstep.z)
-							Ve_backstep.z = 0;
-						else
-							Ve_backstep.x = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMLEFT)
-					{
-						if (Ve_backstep.x > Ve_backstep.z)
-							Ve_backstep.z = 0;
-						else
-							Ve_backstep.x = 0;
-					}
-					else if (static_cast<DirectionEvasion>(j) == DirectionEvasion::BOTTOMRIGHT)
-					{
-						if (Ve_backstep.x > Ve_backstep.z)
-							Ve_backstep.z = 0;
-						else
-							Ve_backstep.x = 0;
-					}
-
-				}
-			}
-		}
+		dir_backstep = Vec3::Zero;
 	}
+
+	if (IsRaysCollide(myPos + scale * dirBack, dirBack, LayerType::Ground, 1.f))
+	{
+		dir_backstep = Vec3::Zero;
+	}
+
+	
 }

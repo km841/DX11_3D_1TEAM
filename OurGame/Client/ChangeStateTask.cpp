@@ -12,7 +12,7 @@ BehaviorResult ChangeStateTask::Run()
 {
     Monster* pMonster = GetMonster();
 
-    bool check = pMonster->GetHitCheck();
+    bool check = pMonster->GetAttackCheck();
 
     if (check == false) {
         pMonster->SetBasicState(meCmpState);

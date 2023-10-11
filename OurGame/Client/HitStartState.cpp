@@ -70,8 +70,10 @@ void HitStartState::Enter()
 	Player* pPlayer = Player::GetPlayer();
 
 	GameObject* pObj = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
-	pObj->Disable(); // 칼 투명화 그리기
+	pObj->Disable(); // 칼 오브젝트 안그리기
 
+	GameObject* pArrowObj = pPlayer->GetArrow(); //화살 오브젝트
+	pArrowObj->Disable(); //화살 안그리기
 	
 }
 

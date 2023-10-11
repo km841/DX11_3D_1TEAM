@@ -38,6 +38,8 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "Animator.h"
+#include "FireArrowParticle.h"
+#include "SparkParticle.h"
 
 /* Script */
 #include "PlayerMoveScript.h"
@@ -232,18 +234,44 @@ Player::Player()
 
 		pArrowSc = pArrow->AddComponent(new ArrowScript);
 
-		Effect* pEffect = Factory::CreateObject<Effect>(Vec3::Zero, L"Forward", L"", false);
-		pEffect->SetDontDestroyObject(L"ArrowParticle");
-		pEffect->AddComponent(new OwnerFollowScript(pArrow));
-		ParticleSystem* pParticle = pEffect->AddComponent(new ParticleSystem);
-		pParticle->SetStartColor(Vec3(1.f, 0.f, 0.f));
-		pParticle->SetEndColor(Vec3(1.f, 1.f, 0.5f));
+		GameObject* pEffect = nullptr;
+		{
+			pEffect = Factory::CreateObject<GameObject>(Vec3::Zero, L"Forward", L"", false, LayerType::Unknown);
+			pEffect->SetDontDestroyObject(L"ArrowParticle");
+			pEffect->AddComponent(new OwnerFollowScript(this));
+			//FireArrowParticle* pParticle = pEffect->AddComponent(new FireArrowParticle);
+			//pParticle->SetStartColor(Vec3(1.f, 0.f, 0.f));
+			//pParticle->SetEndColor(Vec3(1.f, 1.f, 0.f));
+
+			SparkParticle* pParticle = pEffect->AddComponent(new SparkParticle);
+			pParticle->SetAngle(Vec3(-150.f, 0.f, 90.f));
+			pParticle->SetScatterRadius(5.f);
+			pParticle->SetStartColor(Vec3(1.f, 0.f, 0.f));
+			pParticle->SetEndColor(Vec3(1.f, 1.f, 0.f));
+		}
+
+		GameObject* pArrowLight = nullptr;
+		{
+			pArrowLight = new GameObject(LayerType::Unknown);
+			pArrowLight->SetDontDestroyObject(L"ArrowLight");
+
+			pArrowLight->AddComponent(new Transform);
+			pArrowLight->AddComponent(new OwnerFollowScript(this));
+			Light* pLight = pArrowLight->AddComponent(new Light);
+			pLight->SetLightRange(5.f);
+			pLight->SetDiffuse(Vec3(0.5f, 0.2f, 0.f));
+			pLight->SetLightType(LightType::PointLight);
+		}
+		//pArrowSc->SetParticleObject(pEffect);
+		//pArrowSc->SetLightObject(pArrowLight);
+
 
 		pArrow->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
 		pArrow->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 		//gpEngine->GetTool()->UseGizmo();
 		//gpEngine->GetTool()->SetGameObject(pArrow);
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pEffect);
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pArrowLight);
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pArrow);
 		//SetMeshTarget(pArrow);
 	}
@@ -424,24 +452,28 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 		mGroundCount++;
 	}
 
-	if (LayerType::MonsterCol == _pOtherCollider->GetGameObject()->GetLayerType())
+	if (LayerType::MonsterCol == _pOtherCollider->GetGameObject()->GetLayerType()
+		|| LayerType::Monster_ProjectTile == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
+		mActiveState->Exit();
 		StateChange(PlayerState::HitStartState);
 	}
 
-	if (LayerType::Monster_ProjectTile == _pOtherCollider->GetGameObject()->GetLayerType())
+	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType()
+		&& static_cast<Monster*>(_pOtherCollider->GetGameObject())->GetAttackCheck() == true)
 	{
+		mActiveState->Exit();
 		StateChange(PlayerState::HitStartState);
 	}
 
 	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		if (_pOtherCollider->GetGameObject()->GetName() == L"HeadRoller" && 
-			static_cast<HeadRoller*>(_pOtherCollider->GetGameObject())->GetisRoll() == true ) {
+		if (_pOtherCollider->GetGameObject()->GetName() == L"HeadRoller" &&
+			static_cast<HeadRoller*>(_pOtherCollider->GetGameObject())->GetisRoll() == true) {
 			mActiveState->Exit();
 			StateChange(PlayerState::HitStartState);
 		}
-		
+
 	}
 
 

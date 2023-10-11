@@ -169,6 +169,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="ChangeStateCondition.h" />
     <ClInclude Include="ChangeStateTask.h" />
     <ClInclude Include="CinematicCamMove.h" />
+    <ClInclude Include="CircleParticle.h" />
     <ClInclude Include="ClientEnum.h" />
     <ClInclude Include="ClimingDownState.h" />
     <ClInclude Include="ClimingEndState.h" />
@@ -187,6 +188,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="Factory.h" />
     <ClInclude Include="FallDownState.h" />
     <ClInclude Include="FallState.h" />
+    <ClInclude Include="FireArrowParticle.h" />
     <ClInclude Include="FireLamp.h" />
     <ClInclude Include="FocusingScript.h" />
     <ClInclude Include="Grandma.h" />
@@ -223,6 +225,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="Map.h" />
     <ClInclude Include="Mirror_ProjectTile.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="MonsterBackswingColScript.h" />
     <ClInclude Include="MonsterColScript.h" />
     <ClInclude Include="MonsterCrackScript.h" />
     <ClInclude Include="MonsterKeyScript.h" />
@@ -259,6 +262,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="SmallTransStartState_Gm.h" />
     <ClInclude Include="Small_IdleState_Gm.h" />
     <ClInclude Include="SoulDoor.h" />
+    <ClInclude Include="SparkParticle.h" />
     <ClInclude Include="SpiderWeb.h" />
     <ClInclude Include="SpikeDoor.h" />
     <ClInclude Include="SpinEndState_Gm.h" />
@@ -298,6 +302,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="ChangeStateCondition.cpp" />
     <ClCompile Include="ChangeStateTask.cpp" />
     <ClCompile Include="CinematicCamMove.cpp" />
+    <ClCompile Include="CircleParticle.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClimingDownState.cpp" />
     <ClCompile Include="ClimingEndState.cpp" />
@@ -316,6 +321,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="FallDownState.cpp" />
     <ClCompile Include="FallState.cpp" />
+    <ClCompile Include="FireArrowParticle.cpp" />
     <ClCompile Include="FireLamp.cpp" />
     <ClCompile Include="FocusingScript.cpp" />
     <ClCompile Include="Grandma.cpp" />
@@ -352,6 +358,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mirror_ProjectTile.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="MonsterBackswingColScript.cpp" />
     <ClCompile Include="MonsterColScript.cpp" />
     <ClCompile Include="MonsterCrackScript.cpp" />
     <ClCompile Include="MonsterKeyScript.cpp" />
@@ -390,6 +397,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="SmallTransStartState_Gm.cpp" />
     <ClCompile Include="Small_IdleState_Gm.cpp" />
     <ClCompile Include="SoulDoor.cpp" />
+    <ClCompile Include="SparkParticle.cpp" />
     <ClCompile Include="SpiderWeb.cpp" />
     <ClCompile Include="SpikeDoor.cpp" />
     <ClCompile Include="SpinEndState_Gm.cpp" />

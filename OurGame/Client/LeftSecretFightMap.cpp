@@ -24,7 +24,7 @@
 #include "WallObject.h"
 #include "DecoObject.h"
 #include "Monster.h"
-
+#include "Grimace.h"
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -34,6 +34,8 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "UIText.h"
+#include "Animator.h"
+#include "Mirror.h"
 
 /* Script */
 #include "PaperBurnScript.h"
@@ -88,8 +90,23 @@ void LeftSecretFightMap::Render()
 
 void LeftSecretFightMap::Enter()
 {
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
+	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
+	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Monster_ProjectTile);
+	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Monster);
+	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::MonsterCol);
+
+	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
+	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::PlayerCol);
+	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::WallObject);
+	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::DecoObject);
+	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::ArrowCol);
+
+	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PlayerCol, LayerType::Monster_ProjectTile);
+
+	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::Ground);
+	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::WallObject);
+	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::PotCell);
 
 	//¹è°æ¸Ê ÇÏ¾á»öÀ¸·Î ¸¸µé¾îÁÖ´Â ÄÚµå
 	//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
@@ -99,6 +116,42 @@ void LeftSecretFightMap::Enter()
 	FuncObjectAdd();
 #pragma region "¾îµå¹Î"
 #pragma endregion
+
+	//Áß°£º¸½º ³»·ç¹Ì
+	{
+		PhysicsInfo info = {};
+		info.eActorType = ActorType::Kinematic;
+		info.eGeometryType = GeometryType::Box;
+		info.size = Vec3(2.f, 8.f, 2.f);
+
+		Grimace* p_E_GRIMACE_KNIGHT = Factory::CreateMonster<Grimace>(Vec3(-3.f, 0.f, -3.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_GRIMACE_KNIGHT.fbx");
+		p_E_GRIMACE_KNIGHT->GetTransform()->SetScale(Vec3(0.7f, 1.f, 0.7f));
+		p_E_GRIMACE_KNIGHT->GetTransform()->SetRotation(Vec3(180.f, 0.f, 0.f));
+		p_E_GRIMACE_KNIGHT->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -4.f, 0.f));
+		for (size_t i = 0; i < 13; i++)
+		{
+			p_E_GRIMACE_KNIGHT->GetAnimator()->SetPlaySpeed(i, 0.8f);
+		}
+		//SetGizmoTarget(p_E_GRIMACE_KNIGHT);
+		AddGameObject(p_E_GRIMACE_KNIGHT);
+		//SetMeshTarget(p_E_GRIMACE_KNIGHT);
+	}
+
+	// ¼§µé¸®¿¡ ¶óÀÌÆ®
+	{
+		GameObject* pGameObject = new GameObject(LayerType::Unknown);
+		Transform* pTransform = pGameObject->AddComponent(new Transform);
+		pTransform->SetPosition(Vec3(0.f, 30.f, 0.f));
+		pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+		pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+		Light* pLight = pGameObject->AddComponent(new Light);
+		pLight->SetDiffuse(Vec3(0.7f, 0.7f, 0.7f));
+		pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+		pLight->SetLightRange(55.f);
+		pLight->SetLightType(LightType::PointLight);
+		AddGameObject(pGameObject);
+	}
+
 
 	//Æë±Ï »À´Ù±Í - skelecrow
 	{
@@ -164,6 +217,19 @@ void LeftSecretFightMap::InitObjectAdd()
 		pGrimace_Decay_Floor->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.01f, 0.01f), 1);
 
 		AddGameObject(pGrimace_Decay_Floor);
+	}
+
+	// ¹Ì·¯
+	{
+		GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(-4.8f, -8.3f, 9.8f), L"Forward", L"", false, LayerType::Mirror);
+
+		pMirror->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+		pMirror->AddComponent(new Mirror);
+		pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+		pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+
+		AddGameObject(pMirror);
+
 	}
 
 	// 2Ãþ ¹Ù´Ú - Floor
@@ -654,10 +720,9 @@ void LeftSecretFightMap::InitColliderAdd()
 		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(31.85f, 1.f, 40.84f);
 
-		Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-5.f, -8.7f, 9.3f), physicsInfo, L"Forward",L"");
+		Ground* pGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-5.f, -8.6f, 9.3f), physicsInfo, L"Forward",L"");
 
 		AddGameObject(pGround);
-		SetGizmoTarget(pGround);
 	}
 	{
 		PhysicsInfo physicsInfo;
@@ -751,5 +816,4 @@ void LeftSecretFightMap::FuncObjectAdd()
 
 	yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-11.0f, -7.7f, 27.7f), physicsInfo, L"Forward", L"", false, MapType::Right2Map,1);
 	AddGameObject(pTelZone);
-	SetGizmoTarget(pTelZone);
 }

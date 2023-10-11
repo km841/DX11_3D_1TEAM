@@ -16,6 +16,7 @@
 #include "Mirror.h"
 #include "AudioSound.h"
 #include "CollisionManager.h"
+#include "SceneManager.h"
 
 namespace hm
 {
@@ -247,6 +248,28 @@ namespace hm
 		AssertEx(nullptr != GetMeshRenderer()->GetMaterial(), L"GameObject::SetShader() - 재질이 존재하지 않는 물체에 대한 셰이더 세팅");
 		
 		GetMeshRenderer()->GetMaterial()->SetShader(pShader);
+	}
+	bool GameObject::IsRaysCollide(const Vec3& _origin, const Vec3& _dir, LayerType _eLayerType, float _length)
+	{
+		AssertEx(IsPhysicsObject(), L"GameObject::IsRaysCollide - this가 물리적 객체가 아님");
+		const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(_eLayerType);
+		Vec3 normDir = _dir;
+		normDir.Normalize();
+		for (int i = 0; i < gameObjects.size(); ++i)
+		{
+			for (int j = 0; j < 3; ++j)
+			{
+				if (gameObjects[i]->GetCollider())
+				{
+					if (GetCollider()->Raycast(_origin, normDir, gameObjects[i]->GetCollider(), _length))
+					{
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 }
 
