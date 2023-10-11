@@ -191,22 +191,29 @@ namespace yj
 	{
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::WallObject);
 
-		//중간보스 내루미
+
+		////마법사
+		//{
+		//	SpawnDoor<Mage>* pMage = Factory::SpawnMonster<Mage>(Vec3(-10.f,8.f, -10.f),Vec3(-90.f,0.f,-90.f));
+		//	AddGameObject(pMage);
+		//}
+
+		//마법사
 		{
-			SpawnDoor<Grimace>* pHeadRoller = Factory::SpawnMonster<Grimace>(Vec3(-3.f, 8.f, -3.f));
+			Mage* pMage = Factory::CreateMage(Vec3(-10.f, 5.f, -10.f), Vec3(-90.f, 0.f, -90.f));
+			AddGameObject(pMage);
+		}
+
+		//마법사
+		{
+			Mage* pMage = Factory::CreateMage(Vec3(10.f, 5.f, 0.f), Vec3(-90.f, 0.f, -90.f));
+			AddGameObject(pMage);
+		}
+
+		//콩벌레
+		{
+			HeadRoller* pHeadRoller = Factory::CreateHeadRoller(Vec3(-10.f, 5.f, 0.f), Vec3(0.f, -45.f, 0.f));
 			AddGameObject(pHeadRoller);
-		}
-
-		//마법사
-		{
-			SpawnDoor<Mage>* pMage = Factory::SpawnMonster<Mage>(Vec3(-10.f,8.f, -3.f));
-			AddGameObject(pMage);
-		}
-
-		//마법사
-		{
-			SpawnDoor<Mage>* pMage = Factory::SpawnMonster<Mage>(Vec3(10.f, 8.f, -3.f));
-			AddGameObject(pMage);
 		}
 
 
@@ -652,7 +659,7 @@ namespace yj
 			WallObject* pSpawnPoint = Factory::CreateObjectHasPhysical<WallObject>(Vec3(15.2f, 3.2f, 0.5f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pSpawnPoint);
-			SetGizmoTarget(pSpawnPoint);
+			//SetGizmoTarget(pSpawnPoint);
 		}
 		{
 			PhysicsInfo physicsInfo;
