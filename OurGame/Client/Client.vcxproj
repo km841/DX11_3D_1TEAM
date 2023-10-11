@@ -284,6 +284,8 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="TitleSceneCutSceneCameraMoveScript.h" />
+    <ClInclude Include="TitleSceneCutSceneTargetScript.h" />
     <ClInclude Include="WallObject.h" />
   </ItemGroup>
   <ItemGroup>
@@ -421,6 +423,8 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="TitleSceneCutSceneCameraMoveScript.cpp" />
+    <ClCompile Include="TitleSceneCutSceneTargetScript.cpp" />
     <ClCompile Include="WallObject.cpp" />
   </ItemGroup>
   <ItemGroup>
