@@ -441,24 +441,24 @@ namespace hm
 						Animator* pAni = GetAnimator();
 						Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 						Vec3 myPos = GetTransform()->GetPosition();
+						Vec3 scale = GetTransform()->GetScale();
 						
 
 						//이부분 중요
 						GetRigidBody()->SetVelocityExcludingColliders(-attackDir * 14.0f);
 						GetRigidBody()->SetVelocity(attackDir * 7.f);
 
-						//이게 쓸모가잇나
-						const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
-						for (int i = 0; i < gameObjects.size(); ++i)
+						
+						Vec3 dirLook = GetTransform()->GetUp();
+
+						if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::WallObject, 1.f))
 						{
-							if (gameObjects[i]->GetCollider())
-							{
-								if (GetCollider()->Raycast(myPos, attackDir, gameObjects[i]->GetCollider(), 0.5f))
-								{
-									GetRigidBody()->SetVelocity(attackDir * 0.f);
-								}
-							}
-						}	
+							GetRigidBody()->SetVelocity(attackDir * 0);
+						}
+						if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::Ground, 1.f))
+						{
+							GetRigidBody()->SetVelocity(attackDir * 0);
+						}
 
 						if (pAni->GetFrameRatio() > 0.15) {
 							return BehaviorResult::Success;

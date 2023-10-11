@@ -334,7 +334,7 @@ namespace hm {
 			Light* pLight = pGameObject->AddComponent(new Light);
 			pLight->SetDiffuse(Vec3(1.f, 1.f, 1.f));
 			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
-			pLight->SetLightRange(100.f);
+			pLight->SetLightRange(10.f);
 			pLight->SetLightType(LightType::PointLight);
 			AddGameObject(pGameObject);
 		}
