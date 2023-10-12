@@ -98,6 +98,9 @@ public:
 	Vec3 GetToDownPos() { return ToDownPos; }
 	void SetToDownPos(Vec3 _Pos) { ToDownPos = _Pos; }
 
+	bool GetisDownState() { return isDownState; }
+	void SetisDownState(bool _isDownState) { isDownState = _isDownState; }
+
 	DirectionEvasion GetToRotPos() { return ToRotPos; }
 	void SetToRotPos(DirectionEvasion _dir) { ToRotPos = _dir; }
 
@@ -139,6 +142,8 @@ private:
 
 
 	int mGroundCount;
+
+	bool isDownState = false;
 
 	bool isClimb=false;
 	wstring lastLadderName;

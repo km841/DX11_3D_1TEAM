@@ -457,24 +457,31 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 	if (LayerType::MonsterCol == _pOtherCollider->GetGameObject()->GetLayerType()
 		|| LayerType::Monster_ProjectTile == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		mActiveState->Exit();
+		if (isDownState == false) {
+			mActiveState->Exit();
+			StateChange(PlayerState::HitStartState);
+		}
 		
-		StateChange(PlayerState::HitStartState);
 	}
 
 	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType()
 		&& static_cast<Monster*>(_pOtherCollider->GetGameObject())->GetAttackCheck() == true)
 	{
-		mActiveState->Exit();
-		StateChange(PlayerState::HitStartState);
+		if (isDownState == false) {
+			mActiveState->Exit();
+			StateChange(PlayerState::HitStartState);
+		}
 	}
 
 	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		if (_pOtherCollider->GetGameObject()->GetName() == L"HeadRoller" &&
-			static_cast<HeadRoller*>(_pOtherCollider->GetGameObject())->GetisRoll() == true) {
-			mActiveState->Exit();
-			StateChange(PlayerState::HitStartState);
+			static_cast<HeadRoller*>(_pOtherCollider->GetGameObject())->GetisRoll() == true) 
+		{
+			if (isDownState == false) {
+				mActiveState->Exit();
+				StateChange(PlayerState::HitStartState);
+			}
 		}
 
 	}

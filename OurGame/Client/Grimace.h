@@ -38,6 +38,9 @@ private:
 	void BackstepRotTurn();
 	void BackstepDirSet();
 	void BackstepDirLive();
+
+	void CreateMonsterWavefirst();
+	void CreateMonsterWaveSecond();
 private:
 	Vec3 dir;
 	Vec3 dir_backstep;

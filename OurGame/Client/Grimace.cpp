@@ -362,7 +362,7 @@ void Grimace::SetBehaviorTree()
 						eState = MonsterBasicState::Trace_BackStep;
 					}
 
-					if (Health >= 41 && Health <= 61 && pAni->GetFrameRatio() > 0.7) //50% 미만일떄 디펜딩 자세 시작
+					if (Health >= 41 && Health <= 61 ) //50% 미만일떄 디펜딩 자세 시작
 					{
 						eState = MonsterBasicState::Defend_Start;
 					}
@@ -721,6 +721,7 @@ void Grimace::SetBehaviorTree()
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (7 != animIndex) {
+					CreateMonsterWavefirst();
 					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
 					pAnimator->Play(7, true);
@@ -942,8 +943,10 @@ void Grimace::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (10 != animIndex)
+				if (10 != animIndex) {
+					CreateMonsterWaveSecond();
 					pAnimator->Play(10, true);
+				}
 
 				return BehaviorResult::Success;
 				});
@@ -1344,4 +1347,46 @@ void Grimace::BackstepDirLive()
 		Ve_backstep = Vec3::Zero;
 	}
 
+}
+
+void Grimace::CreateMonsterWavefirst()
+{
+	// 초록거미
+	{
+		SpawnDoor<Lurker>* pLurker = Factory::SpawnMonster<Lurker>(Vec3(4.5f, -5.5f, 1.5f), Vec3(-90.f, -90.f, 180.f));
+		pLurker->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+		pLurker->Initialize();
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pLurker);
+
+	}
+
+	// 마법사
+	{
+		SpawnDoor<Mage>* pMage = Factory::SpawnMonster<Mage>(Vec3(-15.5f, -5.5f, 17.f), Vec3(-90.f, 90.f, 180.f));
+		pMage->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+		pMage->Initialize();
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pMage);
+	}
+}
+
+void Grimace::CreateMonsterWaveSecond()
+{
+	//콩벌레
+	{
+		SpawnDoor<HeadRoller>* pRoller = Factory::SpawnMonster<HeadRoller>(Vec3(4.5f, -5.5f, 17.f), Vec3(180.f, -90.f, 180.f));
+		pRoller->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+		pRoller->Initialize();
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pRoller);
+
+	}
+
+
+	// 박쥐
+	{
+		SpawnDoor<Bat>* pBat = Factory::SpawnMonster<Bat>(Vec3(-15.5f, -5.5f, 1.5f), Vec3(-90.f, 90.f, 180.f));
+		pBat->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+		pBat->Initialize();
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pBat);
+
+	}
 }
