@@ -152,6 +152,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AIMoveState.h" />
     <ClInclude Include="AngryMotionState_Gm.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="ArrowScript.h" />
@@ -289,6 +290,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="WallObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AIMoveState.cpp" />
     <ClCompile Include="AngryMotionState_Gm.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="ArrowScript.cpp" />

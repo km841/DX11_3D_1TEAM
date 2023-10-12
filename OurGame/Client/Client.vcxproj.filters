@@ -362,6 +362,9 @@
     <ClInclude Include="TitleSceneCutSceneCameraMoveScript.h">
       <Filter>소스 파일\Script</Filter>
     </ClInclude>
+    <ClInclude Include="AIMoveState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -721,6 +724,9 @@
     </ClCompile>
     <ClCompile Include="TitleSceneCutSceneTargetScript.cpp">
       <Filter>소스 파일\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="AIMoveState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
