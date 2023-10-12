@@ -26,10 +26,9 @@ namespace yj
 		void Shake();
 
 		void BusActive() { isBusActive = true; }
+		bool IsBusArrived() { return mbIsArrived; }
 
 	private:
-
-
 		void BusEvent();
 
 		bool isBusActive = false;
@@ -39,6 +38,8 @@ namespace yj
 
 		float timer;
 		float mAddedDist = 0;
+
+		bool mbIsArrived = false;
 	};
 }
 

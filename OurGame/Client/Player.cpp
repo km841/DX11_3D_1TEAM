@@ -289,7 +289,6 @@ Player::~Player()
 	{
 		SAFE_DELETE(mState[i]);
 	}
-	
 }
 
 void Player::Initialize()
@@ -396,6 +395,20 @@ void Player::Update()
 	
 	mActiveState->Update();
 	
+	if (false == this->IsEnable())
+	{
+
+		pGreatSword->Disable();
+		pBow->Disable();
+		pArrow->Disable();
+	}
+	else
+	{
+		pGreatSword->Enable();
+		pBow->Enable();
+		pArrow->Enable();
+	}
+
 	pSwordSc->SetPlayerState(mActiveState->GetStateEnum());
 	pBowSc->SetPlayerState(mActiveState->GetStateEnum());
 	pArrowSc->SetPlayerState(mActiveState->GetStateEnum());

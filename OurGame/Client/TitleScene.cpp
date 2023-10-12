@@ -292,8 +292,8 @@ namespace hm
 			pCamera->SetCullingMask(LayerType::Interface, true);
 			pCamera->SetCullingMask(LayerType::Mirror, true);
 
-			pTransform->SetPosition(Vec3(3.4f, -2.91f, 22.6f));
-			pTransform->SetRotation(Vec3(10.52f, 174.23f, 0.f));
+			pTransform->SetPosition(Vec3(-25.84f, 3.54f, 34.86f));
+			pTransform->SetRotation(Vec3(44.58f, -225.f, 0.f));
 			AddGameObject(pGameObject);
 		}
 
