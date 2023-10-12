@@ -63,8 +63,8 @@ void IdleState::Update()
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 	RigidBody* pRb = pPlayer->GetRigidBody();
-
 	wstring name = pPlayer->GetLadderName();
+	int BigCount = pPlayer->GetBigAttackCount();
 
 	if (pAni->GetFrameRatio() > 0.99f) {
 		if (mIdleStatebool == true)

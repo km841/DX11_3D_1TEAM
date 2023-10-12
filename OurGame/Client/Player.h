@@ -95,6 +95,10 @@ public:
 	Vec3 GetToMovePos() { return ToMovePos; }
 	void SetToMovePos(Vec3 _Pos) { ToMovePos = _Pos; }
 
+	int GetBigAttackCount() { return BigAttackCount; }
+	void SetBigAttackCount() { BigAttackCount++; }
+	void SetBigAttackCountReset() { BigAttackCount = 0; }
+
 	Vec3 GetToDownPos() { return ToDownPos; }
 	void SetToDownPos(Vec3 _Pos) { ToDownPos = _Pos; }
 
@@ -114,6 +118,9 @@ public:
 	const PlayerKeyInfo& GetKeyInfo() { return mKeyInfo; }
 
 	SwordHeavyEffect* GetSwordEffect() { return mpSlashEffect; }
+
+	State* GetActiveState() { return mActiveState; }
+	PlayerState GetActiveStateEnum();
 
 public:
 	
@@ -142,6 +149,7 @@ private:
 
 
 	int mGroundCount;
+	int BigAttackCount = 0;
 
 	bool isDownState = false;
 
