@@ -362,8 +362,6 @@
     <ClInclude Include="TitleSceneCutSceneCameraMoveScript.h">
       <Filter>소스 파일\Script</Filter>
     </ClInclude>
-    <ClInclude Include="Fireplace.h" />
-    </ClInclude>
     <ClInclude Include="AIMoveState.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
@@ -730,8 +728,6 @@
     <ClCompile Include="TitleSceneCutSceneTargetScript.cpp">
       <Filter>소스 파일\Script</Filter>
     </ClCompile>
-    <ClCompile Include="Fireplace.cpp" />
-    </ClCompile>
     <ClCompile Include="AIMoveState.cpp">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClCompile>
@@ -828,9 +824,6 @@
     </Filter>
     <Filter Include="소스 파일\Component\ParticleSystem">
       <UniqueIdentifier>{082d8b03-3b56-4abd-86b8-6889d0148c5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Component\Light">
-      <UniqueIdentifier>{05a639f9-43e5-4374-878d-3ab05c4e1641}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
