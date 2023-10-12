@@ -106,7 +106,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::LeftSecretFightMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::HallColliderCheckMap);
 		}
 
 		// 지형
@@ -250,6 +250,7 @@ namespace hm
 	void TitleScene::Exit()
 	{
 		PLAYER->GetAudioSound()->Stop();
+		PLAYER->GetRigidBody()->ApplyGravity();
 	}
 
 	void TitleScene::InitCamera()
