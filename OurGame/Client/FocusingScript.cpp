@@ -9,7 +9,7 @@
 namespace hm
 {
 	FocusingScript::FocusingScript()
-		: mFollowSpeed(3.f)
+		: mFollowSpeed(5.f)
 		, mpFollowTarget(nullptr)
 		, mpFocusingTarget(nullptr)
 		, mbFocusMode(false)
@@ -49,7 +49,7 @@ namespace hm
 			Vec3 targetPos = mpFollowTarget->GetTransform()->GetPosition();
 
 			// 스무딩된 목표 위치 계산
-			Vec3 smoothedTargetPos = myPos + (targetPos - myPos) * 0.5f;
+			Vec3 smoothedTargetPos = myPos + (targetPos - myPos) * 0.2f;
 			Vec3 dir = smoothedTargetPos - myPos;
 
 			float distance = dir.Length();
