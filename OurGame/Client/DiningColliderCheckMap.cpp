@@ -101,8 +101,7 @@ namespace sy
 
 	void DiningColliderCheckMap::Enter()
 	{
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
+		
 
 
 		//배경맵 하얀색으로 만들어주는 코드

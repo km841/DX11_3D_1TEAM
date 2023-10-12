@@ -189,7 +189,7 @@ namespace yj
 
 	void RightMap::Enter()
 	{
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::WallObject);
+		
 
 
 		////마법사

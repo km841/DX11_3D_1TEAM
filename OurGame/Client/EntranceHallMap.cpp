@@ -115,19 +115,7 @@ void EntranceHallMap::Render()
 
 void EntranceHallMap::Enter()
 {
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Obstacle);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Portal);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Obstacle, LayerType::Ground);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PlayerCol, LayerType::DecoObject);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PlayerCol, LayerType::DungeonObject);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::ArrowCol, LayerType::DungeonObject);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Ground, LayerType::DungeonObject);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::Ground);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::WallObject);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::PotCell);
-
+	
 	//배경맵 하얀색으로 만들어주는 코드
 	//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 

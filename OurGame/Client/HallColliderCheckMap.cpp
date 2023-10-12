@@ -112,8 +112,7 @@ namespace jh
 
 	void HallColliderCheckMap::Enter()
 	{
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
+		
 
 		DisableDirLight();
 		InitObjectAdd();

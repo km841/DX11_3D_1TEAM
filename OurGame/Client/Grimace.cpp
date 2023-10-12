@@ -195,7 +195,7 @@ void Grimace::SetBehaviorTree()
 					Animator* pAnimator = GetAnimator();
 
 					
-					if (pAnimator->GetFrameRatio() > 0.99)
+					if (pAnimator->GetFrameRatio() > 0.95)
 					{
 						return BehaviorResult::Success;
 					}
@@ -527,7 +527,7 @@ void Grimace::SetBehaviorTree()
 						pMonsterAttackCol->Disable();
 					}
 
-					if (pAni->GetFrameRatio() > 0.98) {
+					if (pAni->GetFrameRatio() > 0.95) {
 						return BehaviorResult::Success;
 					}
 					return BehaviorResult::Failure;
@@ -589,7 +589,7 @@ void Grimace::SetBehaviorTree()
 						}
 					}
 
-					if (pAni->GetFrameRatio() > 0.98)
+					if (pAni->GetFrameRatio() > 0.95)
 						return BehaviorResult::Success;
 					return BehaviorResult::Failure;
 
@@ -754,7 +754,7 @@ void Grimace::SetBehaviorTree()
 
 
 
-					if (pAni->GetFrameRatio() > 0.98)
+					if (pAni->GetFrameRatio() > 0.95)
 					{
 						return BehaviorResult::Success;
 					}
@@ -1023,7 +1023,7 @@ void Grimace::SetBehaviorTree()
 				{
 					Animator* pAni = GetAnimator();
 
-					if (pAni->GetFrameRatio() > 0.98)
+					if (pAni->GetFrameRatio() > 0.95)
 					{
 						return BehaviorResult::Success;
 					}

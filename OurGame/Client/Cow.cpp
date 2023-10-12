@@ -121,7 +121,7 @@ void Cow::SetBehaviorTree()
 
 				
 
-				if (pAni->GetFrameRatio() > 0.98) {
+				if (pAni->GetFrameRatio() > 0.95) {
 					return BehaviorResult::Success;
 				}
 				return BehaviorResult::Failure;
