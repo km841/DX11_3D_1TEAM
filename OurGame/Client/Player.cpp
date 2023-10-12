@@ -458,6 +458,7 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 		|| LayerType::Monster_ProjectTile == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		mActiveState->Exit();
+		
 		StateChange(PlayerState::HitStartState);
 	}
 

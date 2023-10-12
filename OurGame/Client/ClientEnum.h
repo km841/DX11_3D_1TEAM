@@ -24,6 +24,7 @@ enum class PlayerState
 	ClimingDownState,
 	ClimingEndState,
 	BowState,
+	AIMoveState,
 
 	End
 };

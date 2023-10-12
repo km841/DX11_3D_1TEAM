@@ -1,11 +1,13 @@
 #pragma once
 #include "GameObject.h"
+#include "HpUi.h"
 class SwordScript;
 class BowScript;
 class ArrowScript;
 class SwordScript;
 class SwordHeavyEffect;
 class State;
+
 
 #define P_UP PLAYER->GetKeyInfo().eForwardKey
 #define P_DOWN PLAYER->GetKeyInfo().eBackwardKey
