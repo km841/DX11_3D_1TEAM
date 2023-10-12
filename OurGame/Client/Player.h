@@ -65,13 +65,13 @@ public:
 
 	int GetCost() { return mCost; }
 	void SetCost(int  _cost) { mCost = _cost; }
-	void DamegeCost() 
+	void DamegeCost() //마나 깎이는거
 	{
 		if (mCost <= 0)
 			return;
 		mCost--;
 	}
-	void RecoverCost()
+	void RecoverCost() // 마나 회복
 	{
 		if (mCost >= 5)
 			return;
