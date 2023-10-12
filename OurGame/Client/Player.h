@@ -55,9 +55,28 @@ public:
 	void SetMoveSpeed(float _speed) { mSpeed = _speed; }
 
 	int GetHP() { return mHP; }
+	void RecoverHP(){ mHP = 4; } // 피 최대회복
+	void DamegeHP()  // 피깍이는거
+	{
+		if (mHP <= 0)
+			return;
+		mHP--;
+	}
 
 	int GetCost() { return mCost; }
 	void SetCost(int  _cost) { mCost = _cost; }
+	void DamegeCost() 
+	{
+		if (mCost <= 0)
+			return;
+		mCost--;
+	}
+	void RecoverCost()
+	{
+		if (mCost >= 5)
+			return;
+		mCost++;
+	}
 
 	float GetAttackDamage() { return mAttackDamage; }
 	void SetAttackDamage(float _Damage) { mAttackDamage = _Damage; }
