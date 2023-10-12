@@ -121,6 +121,7 @@ namespace hm
 
 		mpMaterial->GetShader()->SetSamplerType(SamplerType::Clamp);
 		mpMaterial->SetVec4(0, Vec4(mStartScale.x, mStartScale.y, mStartScale.z, 0.f));
+		mpMaterial->SetVec4(1, Vec4(mParticleRotation.x, mParticleRotation.y, mParticleRotation.z, 0.f));
 		mpMaterial->PushGraphicDataExceptForTextures();
 
 		mpParticleTexture->PushSRV(RegisterSRV::t0);

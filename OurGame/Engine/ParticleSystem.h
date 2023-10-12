@@ -54,6 +54,7 @@ namespace hm
 		void SetStartColor(const Vec3& _color) { mStartColor = _color; }
 		void SetEndColor(const Vec3& _color) { mEndColor = _color; }
 		void SetAliveCount(const UINT32 _count) { mAliveCount = _count; }
+		void SetParticleRotation(const Vec3& _rotation) { mParticleRotation = _rotation; }
 
 		void SetAngle(const Vec3& _angle) { mStandardAngle = _angle; }
 		void SetScatterRadius(float _radius) { mScatterRadius = _radius; }
@@ -78,6 +79,7 @@ namespace hm
 		Vec3 mEndColor;
 		Vec3 mMiddleColor;
 		Vec3 mStandardAngle;
+		Vec3 mParticleRotation;
 
 		float mGravity;
 

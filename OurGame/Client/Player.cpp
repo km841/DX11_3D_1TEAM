@@ -238,14 +238,15 @@ Player::Player()
 		GameObject* pEffect = nullptr;
 		{
 			pEffect = Factory::CreateObject<GameObject>(Vec3::Zero, L"Forward", L"", false, LayerType::Unknown);
-			pEffect->SetDontDestroyObject(L"ArrowParticle");
+			pEffect->SetDontDestroyObject(L"SparkParticle");
 			pEffect->AddComponent(new OwnerFollowScript(this));
 			//FireArrowParticle* pParticle = pEffect->AddComponent(new FireArrowParticle);
 			//pParticle->SetStartColor(Vec3(1.f, 0.f, 0.f));
 			//pParticle->SetEndColor(Vec3(1.f, 1.f, 0.f));
 
 			SparkParticle* pParticle = pEffect->AddComponent(new SparkParticle);
-			pParticle->SetAngle(Vec3(-150.f, 0.f, 90.f));
+			pParticle->SetAngle(Vec3(-180.f, 0.f, 0.f));
+			pParticle->SetParticleRotation(Vec3(0.f, 0.f, 0.f));
 			pParticle->SetScatterRadius(5.f);
 			pParticle->SetStartColor(Vec3(1.f, 0.f, 0.f));
 			pParticle->SetEndColor(Vec3(1.f, 1.f, 0.f));
