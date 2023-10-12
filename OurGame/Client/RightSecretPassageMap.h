@@ -28,5 +28,6 @@ namespace jh
 		void InitColliderAdd();
 		void FuncObjectAdd();
 
+		void CreateSpawnMonsterMAP();
 	};
 }

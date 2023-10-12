@@ -206,7 +206,7 @@ namespace yj
 
 	void RightMap::Enter()
 	{
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::WallObject);
+		
 
 		gpEngine->SetSwapChainRTVClearColor(Vec4(0.f, 0.f, 0.f, 0.f));
 		////마법사

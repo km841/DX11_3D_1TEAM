@@ -76,6 +76,8 @@
 #include "BowState.h"
 #include "Map.h"
 #include "FocusingScript.h"
+#include "AIMoveState.h"
+#include "AttackBigState.h"
 
 Player* Player::spPlayer;
 
@@ -113,6 +115,8 @@ Player::Player()
 	mState[int(PlayerState::ClimingEndState)] = new ClimingEndState;
 	mState[int(PlayerState::ClimingUpState)] = new ClimingUpState;
 	mState[int(PlayerState::BowState)] = new BowState;
+	mState[int(PlayerState::AttackBigState)] = new AttackBigState;
+	mState[int(PlayerState::AIMoveState)] = new AIMoveState;
 
 
 	// Sword_Heavy
@@ -461,23 +465,31 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 	if (LayerType::MonsterCol == _pOtherCollider->GetGameObject()->GetLayerType()
 		|| LayerType::Monster_ProjectTile == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		mActiveState->Exit();
-		StateChange(PlayerState::HitStartState);
+		if (isDownState == false) {
+			mActiveState->Exit();
+			StateChange(PlayerState::HitStartState);
+		}
+		
 	}
 
 	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType()
 		&& static_cast<Monster*>(_pOtherCollider->GetGameObject())->GetAttackCheck() == true)
 	{
-		mActiveState->Exit();
-		StateChange(PlayerState::HitStartState);
+		if (isDownState == false) {
+			mActiveState->Exit();
+			StateChange(PlayerState::HitStartState);
+		}
 	}
 
 	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		if (_pOtherCollider->GetGameObject()->GetName() == L"HeadRoller" &&
-			static_cast<HeadRoller*>(_pOtherCollider->GetGameObject())->GetisRoll() == true) {
-			mActiveState->Exit();
-			StateChange(PlayerState::HitStartState);
+			static_cast<HeadRoller*>(_pOtherCollider->GetGameObject())->GetisRoll() == true) 
+		{
+			if (isDownState == false) {
+				mActiveState->Exit();
+				StateChange(PlayerState::HitStartState);
+			}
 		}
 
 	}
@@ -550,6 +562,12 @@ void Player::StateChange(PlayerState _eState)
 void Player::SetDirectionChange(DirectionEvasion _eState)
 {
 	meDirectionEvasion = _eState;
+}
+
+PlayerState Player::GetActiveStateEnum()
+{
+	AssertEx(nullptr != mActiveState, L"Player::GetActiveStateEnum() - 상태가 설정되지 않음");
+	return mActiveState->GetStateEnum();
 }
 
 Player* Player::GetPlayer()

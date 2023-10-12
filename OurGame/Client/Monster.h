@@ -42,6 +42,7 @@ namespace hm
 		float GetHP() { return mHP; }
 		float GetHPRatio() { return mHP / mMaxHP; }
 
+		void SetRecogRange(float _mRecogRange) { mRecogRange = _mRecogRange; }
 		bool GetAttackCheck() { return isAttackCheck; }
 		void SetAttackCheck(bool _hitcheck) { isAttackCheck = _hitcheck; }
 

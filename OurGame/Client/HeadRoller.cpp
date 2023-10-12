@@ -259,6 +259,8 @@ namespace hm
 						//초기화 중요
 						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 						GetTransform()->SetRelativePosition(Vec3(0.f, -1.f, 0.f));
+						isRoll = true;
+						isRollStay = true;
 						pAnimator->Play(1, false);
 					}
 
@@ -683,6 +685,8 @@ namespace hm
 		{
 			meBasicState = MonsterBasicState::Stun;
 		}
+
+
 
 		if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
 			|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())

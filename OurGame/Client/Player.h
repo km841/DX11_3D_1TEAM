@@ -1,11 +1,13 @@
 #pragma once
 #include "GameObject.h"
+#include "HpUi.h"
 class SwordScript;
 class BowScript;
 class ArrowScript;
 class SwordScript;
 class SwordHeavyEffect;
 class State;
+
 
 #define P_UP PLAYER->GetKeyInfo().eForwardKey
 #define P_DOWN PLAYER->GetKeyInfo().eBackwardKey
@@ -55,9 +57,28 @@ public:
 	void SetMoveSpeed(float _speed) { mSpeed = _speed; }
 
 	int GetHP() { return mHP; }
+	void RecoverHP(){ mHP = 4; } // 피 최대회복
+	void DamegeHP()  // 피깍이는거
+	{
+		if (mHP <= 0)
+			return;
+		mHP--;
+	}
 
 	int GetCost() { return mCost; }
 	void SetCost(int  _cost) { mCost = _cost; }
+	void DamegeCost() //마나 깎이는거
+	{
+		if (mCost <= 0)
+			return;
+		mCost--;
+	}
+	void RecoverCost() // 마나 회복
+	{
+		if (mCost >= 5)
+			return;
+		mCost++;
+	}
 
 	float GetAttackDamage() { return mAttackDamage; }
 	void SetAttackDamage(float _Damage) { mAttackDamage = _Damage; }
@@ -74,8 +95,15 @@ public:
 	Vec3 GetToMovePos() { return ToMovePos; }
 	void SetToMovePos(Vec3 _Pos) { ToMovePos = _Pos; }
 
+	int GetBigAttackCount() { return BigAttackCount; }
+	void SetBigAttackCount() { BigAttackCount++; }
+	void SetBigAttackCountReset() { BigAttackCount = 0; }
+
 	Vec3 GetToDownPos() { return ToDownPos; }
 	void SetToDownPos(Vec3 _Pos) { ToDownPos = _Pos; }
+
+	bool GetisDownState() { return isDownState; }
+	void SetisDownState(bool _isDownState) { isDownState = _isDownState; }
 
 	DirectionEvasion GetToRotPos() { return ToRotPos; }
 	void SetToRotPos(DirectionEvasion _dir) { ToRotPos = _dir; }
@@ -90,6 +118,9 @@ public:
 	PlayerKeyInfo& GetKeyInfo() { return mKeyInfo; }
 
 	SwordHeavyEffect* GetSwordEffect() { return mpSlashEffect; }
+
+	State* GetActiveState() { return mActiveState; }
+	PlayerState GetActiveStateEnum();
 
 public:
 	
@@ -118,6 +149,9 @@ private:
 
 
 	int mGroundCount;
+	int BigAttackCount = 0;
+
+	bool isDownState = false;
 
 	bool isClimb=false;
 	wstring lastLadderName;

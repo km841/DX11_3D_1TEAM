@@ -152,9 +152,11 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AIMoveState.h" />
     <ClInclude Include="AngryMotionState_Gm.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="ArrowScript.h" />
+    <ClInclude Include="AttackBigState.h" />
     <ClInclude Include="AttackState.h" />
     <ClInclude Include="BigTransEndState_Gm.h" />
     <ClInclude Include="BigTransStartState_Gm.h" />
@@ -290,9 +292,11 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="WallObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AIMoveState.cpp" />
     <ClCompile Include="AngryMotionState_Gm.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="ArrowScript.cpp" />
+    <ClCompile Include="AttackBigState.cpp" />
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="BigTransEndState_Gm.cpp" />
     <ClCompile Include="BigTransStartState_Gm.cpp" />

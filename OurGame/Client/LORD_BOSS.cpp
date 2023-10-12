@@ -129,7 +129,7 @@ void LORD_BOSS::SetBehaviorTree()
 
 					
 
-					if (pAni->GetFrameRatio() > 0.98) {
+					if (pAni->GetFrameRatio() > 0.95) {
 						return BehaviorResult::Success;
 					}
 					return BehaviorResult::Failure;
@@ -307,7 +307,7 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
-				if (pAni->GetFrameRatio() > 0.99) {
+				if (pAni->GetFrameRatio() > 0.95) {
 					return BehaviorResult::Success;
 				}
 				return BehaviorResult::Failure;
@@ -769,7 +769,7 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = pObject->GetAnimator();
 
-				if (pAni->GetFrameRatio() > 0.98) {
+				if (pAni->GetFrameRatio() > 0.95) {
 					PrevFollowSet();
 					return BehaviorResult::Success;
 				}
@@ -1047,7 +1047,7 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
-				if (pAni->GetFrameRatio() > 0.98) {
+				if (pAni->GetFrameRatio() > 0.95) {
 					return BehaviorResult::Success;
 				}
 				return BehaviorResult::Failure;
@@ -1114,7 +1114,7 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
-				if (pAni->GetFrameRatio() > 0.98) {
+				if (pAni->GetFrameRatio() > 0.95) {
 					return BehaviorResult::Success;
 				}
 				return BehaviorResult::Failure;
