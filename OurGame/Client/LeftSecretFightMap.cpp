@@ -79,9 +79,36 @@ void LeftSecretFightMap::Update()
 {
 	Map::Update();
 
-	if (IS_DOWN(KeyType::K))
+	if (IS_DOWN(KeyType::L))
 	{
-		
+		// 초록거미
+		{
+			SpawnDoor<Lurker>* pLurker = Factory::SpawnMonster<Lurker>(Vec3(4.5f, -5.5f, 1.5f), Vec3(-90.f, -90.f, 180.f));
+			pLurker->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+			AddGameObject(pLurker);
+		}
+
+		// 마법사
+		{
+			SpawnDoor<Mage>* pMage = Factory::SpawnMonster<Mage>(Vec3(-15.5f, -5.5f, 17.f), Vec3(-90.f, 90.f, 180.f));
+			pMage->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+			AddGameObject(pMage);
+		}
+		 
+		//콩벌레
+		{
+			SpawnDoor<HeadRoller>* pRoller = Factory::SpawnMonster<HeadRoller>(Vec3(4.5f, -5.5f, 17.f), Vec3(180.f, -90.f, 180.f));
+			pRoller->GetTransform()->SetRotation(Vec3(0.f, -90.f, 0.f));
+			AddGameObject(pRoller);
+		}
+
+
+		// 박쥐
+		{
+			SpawnDoor<Bat>* pBat = Factory::SpawnMonster<Bat>(Vec3(-15.5f, -5.5f, 1.5f), Vec3(-90.f, 90.f, 180.f));
+			pBat->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+			AddGameObject(pBat);
+		}
 	}
 }
 
@@ -113,47 +140,16 @@ void LeftSecretFightMap::Enter()
 #pragma region "어드민"
 #pragma endregion
 
-	//// 거미 1
-	//{
-	//	SpawnDoor<Bat>* pSpider = Factory::SpawnMonster<Bat>(Vec3(-5.f, 5.f, -3.f));
-	//	AddGameObject(pSpider);
-	//}
+	
 
-	//// 거미 2
-	//{
-	//	SpawnDoor<Bat>* pSpider = Factory::SpawnMonster<Bat>(Vec3(-10.f, 5.f, -3.f));
-	//	AddGameObject(pSpider);
-	//}
+	
 
-	//// 거미 3
-	//{
-	//	SpawnDoor<Bat>* pSpider = Factory::SpawnMonster<Bat>(Vec3(-15.f, 5.f, -3.f));
-	//	AddGameObject(pSpider);
-	//}
-
-	//// 헤드롤러 1
-	//{
-	//	SpawnDoor<HeadRoller>* pRoller = Factory::SpawnMonster<HeadRoller>(Vec3(-5.f, 5.f, 5.f));
-	//	AddGameObject(pRoller);
-	//}
-
-	//// 헤드롤러 2
-	//{
-	//	SpawnDoor<HeadRoller>* pRoller = Factory::SpawnMonster<HeadRoller>(Vec3(-10.f, 5.f, 5.f));
-	//	AddGameObject(pRoller);
-	//}
-
-	//// 헤드롤러 3
-	//{
-	//	SpawnDoor<HeadRoller>* pRoller = Factory::SpawnMonster<HeadRoller>(Vec3(-15.f, 5.f, 5.f));
-	//	AddGameObject(pRoller);
-	//}
-
-	//// 그리마스
-	//{
-	//	SpawnDoor<Grimace>* pGrimace = Factory::SpawnMonster<Grimace>(Vec3(-10.f, 5.f, 18.f));
-	//	AddGameObject(pGrimace);
-	//}
+	// 그리마스
+	{
+		SpawnDoor<Grimace>* pGrimace = Factory::SpawnMonster<Grimace>(Vec3(-9.5f, -4.f, -2.8f),Vec3(180.f,180.f,0.f));
+		pGrimace->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
+		AddGameObject(pGrimace);
+	}
 
 	
 

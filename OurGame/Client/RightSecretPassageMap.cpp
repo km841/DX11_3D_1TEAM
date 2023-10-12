@@ -71,6 +71,11 @@ namespace jh
 	void RightSecretPassageMap::Update()
 	{
 		Map::Update();
+
+		if (IS_DOWN(KeyType::L))
+		{
+			CreateSpawnMonsterMAP();
+		}
 	}
 
 	void RightSecretPassageMap::FixedUpdate()
@@ -98,6 +103,10 @@ namespace jh
 		InitObjectAdd();
 		InitColliderAdd();
 		FuncObjectAdd();
+
+		//CreateSpawnMonsterMAP(); //몬스터 만드는 코드
+	
+
 	}
 
 	void RightSecretPassageMap::Exit()
@@ -261,7 +270,7 @@ namespace jh
 			pCobwebDoor->GetTransform()->SetRotation(Vec3(90.f, -90.f, 0.f));
 			pCobwebDoor->GetTransform()->SetScale(Vec3(3.f, 8.4f, 9.27f));
 
-			SetGizmoTarget(pCobwebDoor);
+			//SetGizmoTarget(pCobwebDoor);
 			AddGameObject(pCobwebDoor);
 		}
 #pragma endregion
@@ -352,7 +361,7 @@ namespace jh
 
 			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(15.1f, -1.7f, -1.8f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pWall);
-			SetGizmoTarget(pWall);
+			//SetGizmoTarget(pWall);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -362,7 +371,7 @@ namespace jh
 
 			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-15.1f, -1.7f, -1.8f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pWall);
-			SetGizmoTarget(pWall);
+			//SetGizmoTarget(pWall);
 		}
 	}
 	void RightSecretPassageMap::FuncObjectAdd()
@@ -412,7 +421,7 @@ namespace jh
 
 			yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(0.2f, -3.1f, -1.5f), physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow, pBonFire, pLightObject);
 			AddGameObject(pFireLamp);
-			SetGizmoTarget(pFireLamp);
+			//SetGizmoTarget(pFireLamp);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -422,7 +431,7 @@ namespace jh
 
 			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(0.6f, -3.7f, 13.1f), physicsInfo, L"Forward", L"", false, MapType::EntranceHallMap, 3);
 			AddGameObject(pTelZone);
-			SetGizmoTarget(pTelZone);
+			//SetGizmoTarget(pTelZone);
 		}
 		{
 			PhysicsInfo physicsInfo;
@@ -432,7 +441,28 @@ namespace jh
 
 			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-8.3f, -3.7f, -14.0f), physicsInfo, L"Forward", L"", false, MapType::EntranceHallMap, 3);
 			AddGameObject(pTelZone);
-			SetGizmoTarget(pTelZone);
+			//SetGizmoTarget(pTelZone);
+		}
+	}
+	void RightSecretPassageMap::CreateSpawnMonsterMAP()
+	{
+		{//콩벌레
+			SpawnDoor<HeadRoller>* pHeadRoller = Factory::SpawnMonster<HeadRoller>(Vec3(-8.f, -1.f, 1.2f), Vec3(0.f, -60.f, 0.f));
+			pHeadRoller->GetTransform()->SetRotation(Vec3(0.f, -60.f, 0.f));
+			AddGameObject(pHeadRoller);
+			//SetGizmoTarget(pHeadRoller);
+		}
+
+		{//콩벌레
+			SpawnDoor<HeadRoller>* pHeadRoller = Factory::SpawnMonster<HeadRoller>(Vec3(7.7f, -1.f, -5.5f), Vec3(0.f, 130.f, 0.f));
+			pHeadRoller->GetTransform()->SetRotation(Vec3(0.f, 130.f, 0.f));
+			AddGameObject(pHeadRoller);
+		}
+
+		{//마법사
+			SpawnDoor<Mage>* pMage = Factory::SpawnMonster<Mage>(Vec3(7.7f, -1.f, 2.5f), Vec3(-90.f, 40.f, 0.f));
+			pMage->GetTransform()->SetRotation(Vec3(0.f, 40.f, 0.f));
+			AddGameObject(pMage);
 		}
 	}
 }
