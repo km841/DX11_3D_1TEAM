@@ -128,8 +128,9 @@ namespace yj
 			mOpenSequnce = 0;
 
 			PLAYER->GetScript<PlayerMoveOverMapScript>()->SetMoveOverNum(mSpawnPoint);
-			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 1,
-				nullptr, std::bind(&SoulDoor::ChangeScene, this));
+			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 1);
+			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 0.5,
+				std::bind(&SoulDoor::ChangeScene, this), nullptr);
 		}
 	}
 	void SoulDoor::ChangeScene()

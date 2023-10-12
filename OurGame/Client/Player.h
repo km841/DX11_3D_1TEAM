@@ -115,7 +115,7 @@ public:
 	GameObject* GetBow() { return pBow; }
 	GameObject* GetArrow() { return pArrow; }
 	
-	const PlayerKeyInfo& GetKeyInfo() { return mKeyInfo; }
+	PlayerKeyInfo& GetKeyInfo() { return mKeyInfo; }
 
 	SwordHeavyEffect* GetSwordEffect() { return mpSlashEffect; }
 

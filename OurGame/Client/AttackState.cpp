@@ -93,7 +93,7 @@ void AttackState::Update()
 	
 
 	if (pAni->GetFrameRatio() > 0.1f) {
-		
+		pPlayer->SetBigAttackCountReset();
 		pPlayer->StateChange(PlayerState::IdleState);
 	}
 	

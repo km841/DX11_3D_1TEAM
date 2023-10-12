@@ -154,7 +154,6 @@ namespace yj
 		
 		ChangeCameraMode();
 		InitObjectAdd();
-
 		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1,
 			nullptr , std::bind(&MainOfficeMap::InitBusStart, this));
 
@@ -271,6 +270,16 @@ namespace yj
 			pBusStop->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.04f, 0.04f));
 			AddGameObject(pBusStop);
 		}
+
+		//{
+		//	GameObject* pGameObject = Factory::CreateObject<GameObject>(Vec3(0.f, 0.f, 0.f), L"Forward", L"", false, LayerType::Unknown);
+		//	pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\TestTexture.png"));
+		//	pGameObject->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+		//	pGameObject->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+
+		//	AddGameObject(pGameObject);
+		//	SetGizmoTarget(pGameObject);
+		//}
 
 #pragma region 사무실 책상 리스트
 		{
