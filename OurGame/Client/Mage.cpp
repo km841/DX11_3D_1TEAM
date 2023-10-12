@@ -194,7 +194,7 @@ void Mage::SetBehaviorTree()
 
 
 					float distance = (playerPos - myPos).Length();
-					if (distance < mRecogRange && pAnimator->GetFrameRatio()>0.99)
+					if (distance < mRecogRange && pAnimator->GetFrameRatio()>0.95)
 					{
 						return BehaviorResult::Success;
 					}
@@ -242,7 +242,7 @@ void Mage::SetBehaviorTree()
 					Vec3 myPos = GetTransform()->GetPosition();
 
 					float distance = (playerPos - myPos).Length();
-					if (pAnimator->GetFrameRatio()>0.98)
+					if (pAnimator->GetFrameRatio()>0.95)
 					{
 						return BehaviorResult::Success;
 					}
@@ -465,7 +465,7 @@ void Mage::SetBehaviorTree()
 					Animator* pAni = GetAnimator();
 
 
-					if (pAni->GetFrameRatio() > 0.99) {
+					if (pAni->GetFrameRatio() > 0.95) {
 						isTrigger01 = false;
 						isTrigger02 = false;
 						isTrigger03 = false;
@@ -725,6 +725,7 @@ void Mage::Teleport()
 	static std::uniform_int_distribution<int> distribution(-5, 5);          // 생성 범위
 	static auto generator = std::bind(distribution, engine);
 
+	int Count = 0;
 	while (true)
 	{
 		float randX = generator() *1.5;
@@ -737,6 +738,7 @@ void Mage::Teleport()
 		const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
 		bool bEscape = false;
 
+		Count++;
 		for (int i = 0; i < gameObjects.size(); ++i)
 		{
 			if (gameObjects[i]->GetCollider())
@@ -746,6 +748,7 @@ void Mage::Teleport()
 					if (GetCollider()->Raycast(randPos, ConvertDir(static_cast<DirectionEvasion>(j)), gameObjects[i]->GetCollider(), offset + 0.1f))
 					{
 						bEscape = true;
+						
 					}
 				}
 			}
@@ -753,6 +756,11 @@ void Mage::Teleport()
 
 		if (false == bEscape) {
 			pTr->SetPosition(randPos);
+			break;
+		}
+
+		if (Count >= 100) {
+			pTr->SetPosition(playerPos + Vec3(3.f, 0.f, 3.f));
 			break;
 		}
 	}

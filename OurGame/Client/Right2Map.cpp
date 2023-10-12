@@ -112,15 +112,10 @@ namespace hm
 
 	void Right2Map::Enter()
 	{
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Item, LayerType::ArrowCol);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Ladder, LayerType::Player);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PlayerCol, LayerType::Monster);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::ArrowCol, LayerType::Monster);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::DecoObject, LayerType::Monster);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Ground, LayerType::Monster);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::WallObject, LayerType::Monster);
+		
+
+	
+	
 
 		if (PLAYER != nullptr)
 		{
@@ -137,6 +132,37 @@ namespace hm
 		InitObjectAdd();
 		InitCollidertAdd();
 		InitFuncObjAdd();
+
+		//마법사
+		{
+			Mage* pMage = Factory::CreateMage(Vec3(-16.f, 2.f, -10.f), Vec3(-90.f, 0.f, 180.f));
+			AddGameObject(pMage);
+			//SetGizmoTarget(pMage);
+		}
+
+		//박쥐
+		{
+			Bat* pBat = Factory::CreateBat(Vec3(-14.f, 1.5f, -5.8f), Vec3(-90.f, 0.f, 180.f));
+			AddGameObject(pBat);
+		}
+
+		//박쥐
+		{
+			Bat* pBat = Factory::CreateBat(Vec3(-18.f, 1.5f, -5.8f), Vec3(-90.f, 0.f, 180.f));
+			AddGameObject(pBat);
+		}
+
+		//초록 거미
+		{
+			Lurker* pLurker = Factory::CreateLurker(Vec3(9.5f, 1.5f, 10.8f), Vec3(-90.f, 0.f, 60.f));
+			AddGameObject(pLurker);
+		}
+
+		//초록 거미
+		{
+			Lurker* pLurker = Factory::CreateLurker(Vec3(9.5f, 1.5f, 1.5f), Vec3(-90.f, 0.f, 120.f));
+			AddGameObject(pLurker);
+		}
 	}
 
 	void Right2Map::Exit()
