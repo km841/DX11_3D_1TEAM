@@ -76,6 +76,8 @@
 #include "BowState.h"
 #include "Map.h"
 #include "FocusingScript.h"
+#include "AIMoveState.h"
+#include "AttackBigState.h"
 
 Player* Player::spPlayer;
 
@@ -113,6 +115,8 @@ Player::Player()
 	mState[int(PlayerState::ClimingEndState)] = new ClimingEndState;
 	mState[int(PlayerState::ClimingUpState)] = new ClimingUpState;
 	mState[int(PlayerState::BowState)] = new BowState;
+	mState[int(PlayerState::AttackBigState)] = new AttackBigState;
+	mState[int(PlayerState::AIMoveState)] = new AIMoveState;
 
 
 	// Sword_Heavy
@@ -554,6 +558,12 @@ void Player::StateChange(PlayerState _eState)
 void Player::SetDirectionChange(DirectionEvasion _eState)
 {
 	meDirectionEvasion = _eState;
+}
+
+PlayerState Player::GetActiveStateEnum()
+{
+	AssertEx(nullptr != mActiveState, L"Player::GetActiveStateEnum() - 상태가 설정되지 않음");
+	return mActiveState->GetStateEnum();
 }
 
 Player* Player::GetPlayer()

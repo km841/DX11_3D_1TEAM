@@ -177,8 +177,8 @@ namespace hm {
 			pLordOfDoorRoll->SetLORD_BOSS(pLordOfDoor);
 			
 
-			AddGameObject(pLordOfDoorRoll);
-			AddGameObject(pLordOfDoor);
+			//AddGameObject(pLordOfDoorRoll);
+			//AddGameObject(pLordOfDoor);
 			//SetMeshTarget(pLordOfDoor);
 		
 		}
@@ -217,7 +217,7 @@ namespace hm {
 			p_E_LURKER->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 			p_E_LURKER->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.4f, 0.f));
 
-			AddGameObject(p_E_LURKER);
+			//AddGameObject(p_E_LURKER);
 			//SetMeshTarget(p_E_LURKER);
 		}
 		
@@ -255,7 +255,7 @@ namespace hm {
 				p_E_GRIMACE_KNIGHT->GetAnimator()->SetPlaySpeed(i, 0.8f);
 			}
 			//SetGizmoTarget(p_E_GRIMACE_KNIGHT);
-			AddGameObject(p_E_GRIMACE_KNIGHT);
+			//AddGameObject(p_E_GRIMACE_KNIGHT);
 			//SetMeshTarget(p_E_GRIMACE_KNIGHT);
 		}
 
@@ -320,7 +320,7 @@ namespace hm {
 			Light* pLight = pGameObject->AddComponent(new Light);
 			pLight->SetDiffuse(Vec3(1.f, 1.f, 1.f));
 			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
-			pLight->SetLightRange(10.f);
+			pLight->SetLightRange(100.f);
 			pLight->SetLightType(LightType::PointLight);
 			AddGameObject(pGameObject);
 		}

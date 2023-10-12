@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "AttackState.h"
+#include "AttackBigState.h"
 #include "Engine.h"
 
 /* Resource */
@@ -47,22 +47,22 @@
 /* Event */
 #include "SceneChangeEvent.h"
 
-AttackState::AttackState()
-	: State(PlayerState::AttackState)
-	, mbTrigger(true) 
+AttackBigState::AttackBigState()
+	: State(PlayerState::AttackBigState)
+	, mbTrigger(true)
 {
 }
 
-void AttackState::Initialize()
+void AttackBigState::Initialize()
 {
 }
 
-void AttackState::Update()
+void AttackBigState::Update()
 {
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 	RigidBody* pRb = pPlayer->GetRigidBody();
-	
+
 	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
 	Transform* pEff_Tr = pEffect->GetTransform();
 
@@ -70,37 +70,36 @@ void AttackState::Update()
 	mbTrigger = pPlayer->GetAttackDir();
 
 #pragma region 공격시 앞으로 튕기는 힘
-		//가져와서 튕기는 힘 주기
-		DirectionEvasion eDir = pPlayer->GetDirectioninfo();
-		Vec3 totalDir = ConvertDir(eDir); // 8가지 방향 체크후 주는 힘 방향 설정
-		float DashSpeed = 5.f;
+	//가져와서 튕기는 힘 주기
+	DirectionEvasion eDir = pPlayer->GetDirectioninfo();
+	Vec3 totalDir = ConvertDir(eDir); // 8가지 방향 체크후 주는 힘 방향 설정
+	float DashSpeed = 5.f;
 
-		if (pAni->GetFrameRatio() > 0.02f)
-			DashSpeed = 0;
+	if (pAni->GetFrameRatio() > 0.02f)
+		DashSpeed = 0;
 
-		pRb->SetVelocity(totalDir * DashSpeed);
+	pRb->SetVelocity(totalDir * DashSpeed);
 #pragma endregion
 
 	if (pAni->GetFrameRatio() > 0.01f && pAni->GetFrameRatio() < 0.02f) {
 
 		pAttackCol_Obj->Enable();
 	}
-	if (pAni->GetFrameRatio() > 0.03f ) {
+	if (pAni->GetFrameRatio() > 0.03f) {
 
 		pAttackCol_Obj->Disable();
 	}
 
-	
 
-	if (pAni->GetFrameRatio() > 0.1f) {
-		
+	if (pAni->GetFrameRatio() > 0.14f) {
+
 		pPlayer->StateChange(PlayerState::IdleState);
+
 	}
-	
+
 	////마우스 좌측 버튼 클릭했을때
-	if (IS_DOWN(KeyType::LBUTTON) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed() && isKeydown == true)
+	if (IS_DOWN(KeyType::LBUTTON) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed())
 	{
-		
 		if (mbTrigger == true) //오른쪽 공격
 		{
 			mbTrigger = false;
@@ -118,7 +117,7 @@ void AttackState::Update()
 	}
 
 	//LCTRL 버튼 눌렀을떄
-	if (IS_DOWN(KeyType::LCTRL) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed() && isKeydown == true)
+	if (IS_DOWN(KeyType::LCTRL) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed())
 	{
 		if (mbTrigger == true) //오른쪽 공격
 		{
@@ -135,46 +134,37 @@ void AttackState::Update()
 			return;
 		}
 	}
-
 }
 
-void AttackState::Enter()
+void AttackBigState::Enter()
 {
 	PlayAnimation();
-	
+	Player* pPlayer = Player::GetPlayer();
+	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
+	pEffect->GetTransform()->SetScale(Vec3(4.f, 4.f, 4.f));
 }
 
-void AttackState::Exit()
+void AttackBigState::Exit()
 {
 	GameObject* pAttackCol_Obj = PLAYER->GetAttackCol();
 	pAttackCol_Obj->Disable();
 
 	Player* pPlayer = Player::GetPlayer();
 	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
-	pEffect->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f)); //이펙트 크기 초기화
-	isKeydown = true; //연속 공격 작동하게 만들기
-	pPlayer->SetAttackDamage(1.f); //어택 데미지 다시 1로 만들기
+	pEffect->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 }
 
-void AttackState::PlayAnimation()
+void AttackBigState::PlayAnimation()
 {
 	//애니메이션 출력
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
 	PlayerSlashScript* pSlashSc = pEffect->GetScript<PlayerSlashScript>();
-	int BigCount = pPlayer->GetBigAttackCount();
 
 	mbTrigger = pPlayer->GetAttackDir();
+
 	DirSlash(); // 플레이어 방향 회전 함수
-	pPlayer->SetBigAttackCount();
-	if (BigCount >= 2) //큰 검기 나가는 조건
-	{
-		pEffect->GetTransform()->SetScale(Vec3(5.f, 3.f, 5.f));
-		pPlayer->SetBigAttackCountReset();
-		pPlayer->SetAttackDamage(2.f);
-		isKeydown = false;
-	}
 
 	if (!mbTrigger)
 	{
@@ -186,16 +176,14 @@ void AttackState::PlayAnimation()
 	else
 	{
 		pAni->Play(70, false);
-	
+
 		pSlashSc->ChangeReverse(true);
 		pSlashSc->Attack();
 
 	}
-
-	
 }
 
-void AttackState::DirSlash()
+void AttackBigState::DirSlash()
 {
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
@@ -209,7 +197,7 @@ void AttackState::DirSlash()
 	{
 		Vec3 Pos = ConvertDir(eDir);
 		Pos.Normalize();
-		pOFSc->SetOffset(Pos* 1.2f);
+		pOFSc->SetOffset(Pos * 1.2f);
 	}
 
 	if (eDir == DirectionEvasion::FORWARD)
