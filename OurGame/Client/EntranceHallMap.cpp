@@ -54,6 +54,7 @@
 #include "PlayerMoveOverMapScript.h"
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
+#include "OwnerFollowScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -91,6 +92,13 @@ void EntranceHallMap::Start()
 	}
 
 	DisableDirLight();
+
+	mpMainCamera->GetTransform()->SetPosition(Vec3(-14.f, 24.8f, 25.2f));
+	mpMainCamera->GetTransform()->SetRotation(Vec3(51.4f, 145.2f, 0.f));
+
+	OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
+	pFollowScript->SetOffset(Vec3(-14.f, 29.f, 10.f));
+
 }
 
 void EntranceHallMap::Update()
@@ -134,12 +142,7 @@ void EntranceHallMap::Enter()
 	InitObjectAdd();
 	InitColliderAdd();
 	InitFuncObjAdd();
-	GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1);
 
-	if (PLAYER)
-	{
-		int a = 0;
-	}
 	PLAYER->GetRigidBody()->ApplyGravity();
 	PLAYER->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
 	PLAYER->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);

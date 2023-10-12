@@ -41,9 +41,15 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "Animator.h"
+#include "Fireplace.h"
+#include "Mirror.h"
+
 /* Script */
 #include "PaperBurnScript.h"
 #include "CameraMoveScript.h"
+#include "BonFireScript.h"
+#include "OwnerFollowScript.h"
+#include "PlayerMoveOverMapScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -67,12 +73,23 @@ namespace yj
 	void RightMap::Start()
 	{
 		Map::Start();
+
+		mpMainCamera->GetTransform()->SetPosition(Vec3(14.6f, 36.65f, 10.6f));
+		mpMainCamera->GetTransform()->SetRotation(Vec3(59.6f, 201.9f, 0.f));
+
+		OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
+		pFollowScript->SetOffset(Vec3(0.f, 35.f, 18.f));
+
+		PLAYER->GetKeyInfo().SetLeftKey(KeyType::RIGHT);
+		PLAYER->GetKeyInfo().SetForwardKey(KeyType::DOWN);
+
 		if (PLAYER != nullptr)
 		{
+			mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
 			switch (mSpawnPoint)
 			{
 			case 4:
-				PLAYER->GetTransform()->SetPosition(Vec3(14.5f,1.5f,-7.3f));
+				PLAYER->GetTransform()->SetPosition(Vec3(14.6f, 4.6f,-7.0f));
 				break;
 			case 5:
 				//PLAYER->GetTransform()->SetPosition(Vec3(-17.0f, 1.6f,-2.1f));
@@ -191,7 +208,7 @@ namespace yj
 	{
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::WallObject);
 
-
+		gpEngine->SetSwapChainRTVClearColor(Vec4(0.f, 0.f, 0.f, 0.f));
 		////마법사
 		//{
 		//	SpawnDoor<Mage>* pMage = Factory::SpawnMonster<Mage>(Vec3(-10.f,8.f, -10.f),Vec3(-90.f,0.f,-90.f));
@@ -217,13 +234,9 @@ namespace yj
 		}
 
 
-			gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
 			InitObjectAdd();
 			InitColliderAdd();
 			FuncObjectAdd();
-
-			PLAYER->GetTransform()->SetPosition(Vec3(0.f, 7.f, 0.f));
-
 			
 	}
 
@@ -248,6 +261,18 @@ namespace yj
 			pGround->GetTransform()->SetScale(Vec3(40.0f, 40.0f, 40.0f));
 
 			AddGameObject(pGround);
+		}
+
+		// 미러
+		{
+			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.0f, 0.87f, 0.0f), L"Forward", L"", false, LayerType::Mirror);
+
+			pMirror->GetTransform()->SetScale(Vec3(15.f, 15.f, 15.f));
+			pMirror->AddComponent(new Mirror);
+			pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+			pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+
+			AddGameObject(pMirror);
 		}
 
 		{
@@ -282,26 +307,49 @@ namespace yj
 		mColumnFullver2List[1]->GetTransform()->SetRotation(Vec3(0.0f, -180.0f, 0.0f));
 		mColumnFullver2List[1]->GetTransform()->SetScale(Vec3(14.0f, 14.0f, 14.0f));
 
-
+		// 샹들리에 라이트
 		{
-			DecoObject* pDoorFrameBig = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\DoorFrameBig.fbx");
-
-			AddGameObject(pDoorFrameBig);
-
-			pDoorFrameBig->GetTransform()->SetPosition(Vec3(14.8f, 4.2f, -19.2f));
-			pDoorFrameBig->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
-			pDoorFrameBig->GetTransform()->SetScale(Vec3(29.0f, 29.0f, 29.0f));
+			GameObject* pGameObject = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pGameObject->AddComponent(new Transform);
+			pTransform->SetPosition(Vec3(-1.3f, 11.f, -16.1f));
+			pTransform->SetRotation(Vec3(71.9f, 0.f, 0.f));
+			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+			Fireplace* pLight = pGameObject->AddComponent(new Fireplace);
+			pLight->SetDiffuse(Vec3(1.0f, 0.3f, 0.3f));
+			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+			pLight->SetLightRange(70.f);
+			pLight->SetLightType(LightType::PointLight);
+			AddGameObject(pGameObject);
 		}
 
 		{
-			DecoObject* pCeilingBeamLow = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\CeilingBeamLow.fbx");
-
-			AddGameObject(pCeilingBeamLow);
-
-			pCeilingBeamLow->GetTransform()->SetPosition(Vec3(-1.2f, 11.8f, -18.4f));
-			pCeilingBeamLow->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
-			pCeilingBeamLow->GetTransform()->SetScale(Vec3(32.0f, 32.0f, 32.0f));
+			DecoObject* pBonFire = Factory::CreateObject<DecoObject>(Vec3(-1.3f, 4.9f, -18.1f), L"Fireplace", L"");
+			pBonFire->GetMeshRenderer()->SetMaterial(pBonFire->GetMeshRenderer()->GetMaterial()->Clone());
+			pBonFire->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::WrapClamp);
+			pBonFire->GetTransform()->SetScale(Vec3(2.8f, 3.f, 2.f));
+			pBonFire->AddComponent(new BonFireScript);
+			AddGameObject(pBonFire);
 		}
+
+		//{
+		//	DecoObject* pDoorFrameBig = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\DoorFrameBig.fbx");
+
+		//	AddGameObject(pDoorFrameBig);
+
+		//	pDoorFrameBig->GetTransform()->SetPosition(Vec3(14.8f, 4.2f, -19.2f));
+		//	pDoorFrameBig->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
+		//	pDoorFrameBig->GetTransform()->SetScale(Vec3(29.0f, 29.0f, 29.0f));
+		//}
+
+		//{
+		//	DecoObject* pCeilingBeamLow = Factory::CreateObject<DecoObject>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\CeilingBeamLow.fbx");
+
+		//	AddGameObject(pCeilingBeamLow);
+
+		//	pCeilingBeamLow->GetTransform()->SetPosition(Vec3(-1.2f, 11.8f, -18.4f));
+		//	pCeilingBeamLow->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
+		//	pCeilingBeamLow->GetTransform()->SetScale(Vec3(32.0f, 32.0f, 32.0f));
+		//}
 
 
 		std::vector<GameObject*> mCurtainHorizontalList;

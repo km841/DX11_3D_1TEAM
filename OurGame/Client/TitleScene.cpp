@@ -106,7 +106,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::HallColliderCheckMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
 		}
 
 		// 지형
@@ -221,20 +221,15 @@ namespace hm
 			AddGameObject(pGameObject);
 		}
 
-		// 타이틀 컷신 카메라용 타겟
-		//{
-		//	PhysicsInfo physicsInfo;
-		//	physicsInfo.eActorType = ActorType::Static;
-		//	physicsInfo.eGeometryType = GeometryType::Box;
+		{
+			mpFocusTarget = Factory::CreateObject<DecoObject>(Vec3(7.f, -7.f, -6.f), L"Forward", L"");
+			mpFocusTarget->SetDontDestroyObject(L"PlayerFocusTarget");
+			AddGameObject(mpFocusTarget);
 
-		//	mpFocusTarget = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(7.f, -7.f, -6.f), physicsInfo, L"Deferred", L"");
-		//	//mpFocusTarget->AddComponent(new jh::TitleSceneCutSceneTargetScript);
-		//	//SetGizmoTarget(mpTitleTarget);
-		//	AddGameObject(mpFocusTarget);
-
-		//	mpFollowTarget = Factory::CreateObject<DecoObject>(Vec3(3.4f, -2.91f, 22.6f));
-		//	AddGameObject(mpFollowTarget);
-		//}
+			spPlayerHolder = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f));
+			spPlayerHolder->SetDontDestroyObject(L"PlayerFollowTarget");
+			AddGameObject(spPlayerHolder);
+		}
 
 		InitObject();
 		InitCamera();
@@ -251,6 +246,9 @@ namespace hm
 	{
 		PLAYER->GetAudioSound()->Stop();
 		PLAYER->GetRigidBody()->ApplyGravity();
+		ChangeCameraMode();
+
+
 	}
 
 	void TitleScene::InitCamera()
@@ -265,24 +263,18 @@ namespace hm
 			Camera* pCamera = pGameObject->AddComponent(new Camera);
 			pGameObject->AddComponent(new CameraMoveScript);
 			FocusingScript* pScript = pGameObject->AddComponent(new FocusingScript);
-			//pScript->SetFollowTarget(mpFollowTarget);
-			//pScript->SetFocusingTarget(mpFocusTarget);
-			//OwnerFollowScript* pFollowScript = mpFollowTarget->AddComponent(new OwnerFollowScript(mpFocusTarget));
-			//pFollowScript->SetOffset(Vec3(-3.6f, 4.09f, 28.6f));
-			//pGameObject->AddComponent(new yj::CinematicCamMove);
+			pScript->SetFollowTarget(spPlayerHolder);
+			//////pScript->SetFocusingTarget(mpFocusTarget);
+			OwnerFollowScript* pFollowScript = spPlayerHolder->AddComponent(new OwnerFollowScript(PLAYER));
+			pFollowScript->SetOffset(Vec3(-0.f, 30.f, 20.f));
+			////pGameObject->AddComponent(new yj::CinematicCamMove);
 
 			pCamera->SetCullingMask(LayerType::Interface, true);
 			pCamera->SetCullingMask(LayerType::Mirror, true);
 
-			pTransform->SetPosition(Vec3(3.4f, -2.91f, 22.6f));
-			pTransform->SetRotation(Vec3(10.52f, 174.23f, 0.f));
+			pTransform->SetPosition(Vec3(-12.7f, 19.f, 40.2f));
+			pTransform->SetRotation(Vec3(52.6f, 162.f, 0.f));
 			AddGameObject(pGameObject);
-		}
-
-		// Holder
-		{
-			OwnerFollowScript* pFollowScript = spPlayerHolder->AddComponent(new OwnerFollowScript(PLAYER));
-			pFollowScript->SetOffset(Vec3(-10.f, 30.f, 20.f));
 		}
 
 		// Create UI Camera
@@ -773,13 +765,13 @@ namespace hm
 			AddGameObject(pLogoInterface);
 		}
 
-
 		// Select Interface
 		{
 			mpSelectedInterface = Factory::CreateInterface<Interface>(Vec3(0.f, 180.f, -3.f), Vec2(40.f, 39.f), L"..\\Resources\\Texture\\icon_crowfoot.png");
 			mpSelectedInterface->SetAlpha(0.8f);
 			AddGameObject(mpSelectedInterface);
 		}
+
 		// 텍스트 박스
 		{
 			pTextBox = Factory::CreateInterface<yj::TextBox>(Vec3(0.f, -300.f, -3.f), Vec2(400.0f, 100.0f), L"..\\Resources\\Texture\\TextBox.png");
@@ -790,6 +782,7 @@ namespace hm
 			pTextBox->Disable();
 			pTextBox->SetDontDestroyObject(L"TextBox");
 		}
+
 		// HpUi
 		{
 			GameObject* pHpUiObj = new GameObject(LayerType::Unknown);
@@ -798,7 +791,6 @@ namespace hm
 			pHpUiObj->SetDontDestroyObject(L"HpUi");
 			HPUI->UiOff();
 		}
-
 
 		// Buttons
 		{

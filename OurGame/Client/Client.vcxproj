@@ -190,6 +190,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="FallState.h" />
     <ClInclude Include="FireArrowParticle.h" />
     <ClInclude Include="FireLamp.h" />
+    <ClInclude Include="Fireplace.h" />
     <ClInclude Include="FocusingScript.h" />
     <ClInclude Include="Grandma.h" />
     <ClInclude Include="GrandmaBossMap.h" />
@@ -327,6 +328,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="FallState.cpp" />
     <ClCompile Include="FireArrowParticle.cpp" />
     <ClCompile Include="FireLamp.cpp" />
+    <ClCompile Include="Fireplace.cpp" />
     <ClCompile Include="FocusingScript.cpp" />
     <ClCompile Include="Grandma.cpp" />
     <ClCompile Include="GrandmaBossMap.cpp" />
