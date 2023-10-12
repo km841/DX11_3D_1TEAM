@@ -185,6 +185,7 @@ namespace hm
 		CONTEXT->OMSetDepthStencilState(spMaskDSS.Get(), 1);
 		CONTEXT->RSSetState(spSolidRS.Get());
 
+		Vec3 pos = GetTransform()->GetPosition();
 		GetTransform()->PushData(_pCamera);
 		CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
 		shared_ptr<Mesh> pMesh = GetMeshRenderer()->GetMesh();
@@ -219,6 +220,8 @@ namespace hm
 		params.use = 0;
 		CONST_BUFFER(ConstantBufferType::Reflect)->PushData(&params, sizeof(ReflectParams));
 		CONST_BUFFER(ConstantBufferType::Reflect)->Mapping();
+
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::ScreenEffect)->ClearStencilView();
 	}
 	void Mirror::RenderInstancing(Camera* _pCamera, const std::vector<GameObject*> _gameObjects)
 	{

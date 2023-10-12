@@ -42,6 +42,7 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "Animator.h"
+#include "Mirror.h"
 
 /* Script */
 #include "PlayerMoveScript.h"
@@ -192,39 +193,6 @@ namespace jh
 
 	void HallColliderCheckMap::InitObjectAdd()
 	{
-	
-
-		// Door
-		{
-			DecoObject* pDoor = Factory::CreateObject<DecoObject>(Vec3(2.8f, 15.3f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\ShortcutDoor_Fix.fbx");
-			pDoor->AddComponent(new PaperBurnScript);
-
-			PaperBurnScript* pScript = pDoor->GetScript<PaperBurnScript>();
-			pScript->SetReverse(true);
-			pScript->SetPaperBurn();
-
-			pDoor->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
-			pDoor->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
-
-			AddGameObject(pDoor);
-			//SetMeshTarget(pDoor);
-		}
-
-		// Door Back Glow
-		{
-			DecoObject* pDoor = Factory::CreateObject<DecoObject>(Vec3(2.8f, 15.3f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\DoorBackGlow.fbx");
-
-			pDoor->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
-			pDoor->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
-
-			pDoor->GetMeshRenderer()->GetMaterial()->SetBloom(true);
-			pDoor->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f));
-
-			AddGameObject(pDoor);
-		}
-
-		
-
 #pragma region 1층
 		// 1층 벽
 		{
@@ -238,8 +206,33 @@ namespace jh
 				pTotalFrame->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
 				pTotalFrame->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(148.f, 147.f, 150.f));
 
-
+				pTotalFrame->DrawShadow(false);
 				AddGameObject(pTotalFrame);
+
+			}
+
+			//// 1층 미러
+			{
+				GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(3.2f, -5.3f, -47.5f), L"Forward", L"", false, LayerType::Mirror);
+
+				pMirror->GetTransform()->SetScale(Vec3(17.5f, 17.5f, 1.f));
+				pMirror->AddComponent(new Mirror);
+				pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+				pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+
+				AddGameObject(pMirror);
+			}
+
+			// 2층 미러
+			{
+				GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(6.1f, 4.4f, 17.3f), L"Forward", L"", false, LayerType::Mirror);
+				pMirror->GetTransform()->SetScale(Vec3(29.75f, 26.87f, 1.f));
+				pMirror->AddComponent(new Mirror);
+				pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+				pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+
+				AddGameObject(pMirror);
+				SetGizmoTarget(pMirror);
 
 			}
 
@@ -1770,6 +1763,7 @@ namespace jh
 			pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 20, 0);
 
 			AddGameObject(pChandelier);
+			pChandelier->DrawShadow(false);
 		}
 
 		// 3F 샹들리에
@@ -1810,17 +1804,37 @@ namespace jh
 
 			//SetGizmoTarget(pChandelier);
 			AddGameObject(pChandelier);
+			pChandelier->DrawShadow(false);
+		}
+
+
+
+		// 샹들리에 라이트
+		{
+			GameObject* pGameObject = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pGameObject->AddComponent(new Transform);
+			pTransform->SetPosition(Vec3(2.3f, 77.8f, -45.8f));
+			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+			Light* pLight = pGameObject->AddComponent(new Light);
+			pLight->SetDiffuse(Vec3(0.7f, 0.7f, 0.5f));
+			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+			pLight->SetLightRange(150.f);
+			pLight->SetLightType(LightType::PointLight);
+			AddGameObject(pGameObject);
+			
+			
 		}
 
 		// 샹들리에 라이트
 		{
 			GameObject* pGameObject = new GameObject(LayerType::Unknown);
 			Transform* pTransform = pGameObject->AddComponent(new Transform);
-			pTransform->SetPosition(Vec3(2.3f, 43.6f, -2.f));
+			pTransform->SetPosition(Vec3(2.3f, 57.2f, 37.3f));
 			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
 			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
 			Light* pLight = pGameObject->AddComponent(new Light);
-			pLight->SetDiffuse(Vec3(0.5f, 0.5f, 0.2f));
+			pLight->SetDiffuse(Vec3(0.7f, 0.7f, 0.5f));
 			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
 			pLight->SetLightRange(50.f);
 			pLight->SetLightType(LightType::PointLight);
