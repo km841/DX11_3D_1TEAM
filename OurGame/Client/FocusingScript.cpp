@@ -12,8 +12,8 @@ namespace hm
 		: mFollowSpeed(3.f)
 		, mpFollowTarget(nullptr)
 		, mpFocusingTarget(nullptr)
-		, mbFocusMode(true)
-		, mbFollowMode(true)
+		, mbFocusMode(false)
+		, mbFollowMode(false)
 	{
 	}
 
@@ -49,11 +49,11 @@ namespace hm
 			Vec3 targetPos = mpFollowTarget->GetTransform()->GetPosition();
 
 			// 스무딩된 목표 위치 계산
-			Vec3 smoothedTargetPos = myPos + (targetPos - myPos) * 0.2f;
+			Vec3 smoothedTargetPos = myPos + (targetPos - myPos) * 0.5f;
 			Vec3 dir = smoothedTargetPos - myPos;
 
 			float distance = dir.Length();
-			if (distance < 0.01f)
+			if (distance < 0.1f)
 			{
 				GetTransform()->SetPosition(smoothedTargetPos);
 				GetRigidBody()->SetVelocity(Vec3::Zero);

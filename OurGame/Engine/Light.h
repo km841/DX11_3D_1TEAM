@@ -79,7 +79,7 @@ namespace hm
         shared_ptr<Texture> GetStaticShadowMap() { return mpStaticShadowMap; }
         shared_ptr<Texture> GetDynamicShadowMap() { return mpDynamicShadowMap; }
 
-    private:
+    protected:
         LightInfo mLightInfo;
         int mLightIndex;
         shared_ptr<Mesh> mpMesh;
