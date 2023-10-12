@@ -1,5 +1,4 @@
-Ôªø#include "pch.h"
-#include "MainOfficeMap.h"
+#include "pch.h"
 #include "Engine.h"
 
 /* Resource */
@@ -59,187 +58,73 @@
 
 /* Event */
 #include "SceneChangeEvent.h"
+#include "BossMap.h"
 
-namespace yj
+namespace hm
 {
-	MainOfficeMap::MainOfficeMap()
-		: Map(MapType::MainOfficeMap)
-		, eTarget(nullptr)
-		, pBus(nullptr)
+	BossMap::BossMap()
+		:Map(MapType::BossMap)
 	{
 	}
-
-	MainOfficeMap::~MainOfficeMap()
+	BossMap::~BossMap()
 	{
 	}
-
-	void MainOfficeMap::Initialize()
+	void BossMap::Initialize()
 	{
 		Map::Initialize();
-
-		PLAYER->GetAudioSound()->SetSound(L"MainOfficeBGM", this, true, "..\\Resources\\Sound\\MainOfficeBGM.mp3");
-		PLAYER->GetAudioSound()->Play();
-#pragma endregion
 	}
-
-	void MainOfficeMap::Update()
-	{
-		Map::Update();
-
-		if (IS_DOWN(KeyType::O))
-		{
-			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 0.1f, nullptr, std::bind(&Map::ChangeCameraMode, this));
-			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 0.1f);
-		}
-
-		if (false == pBus->IsBusArrived())
-		{
-			PLAYER->Disable();
-		}
-		else
-		{
-			PLAYER->Enable();
-		}
-
-		Vec3 pos = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetGameObject()->GetTransform()->GetPosition();
-		wstring strPos = {};
-		strPos += L"x = " + std::to_wstring(pos.x) + L" ";
-		strPos += L"y = " + std::to_wstring(pos.y) + L" ";
-		strPos += L"z = " + std::to_wstring(pos.z);
-
-		Vec3 rot = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetGameObject()->GetTransform()->GetRotation();
-		wstring strRot = {};
-		strRot += L"x = " + std::to_wstring(rot.x) + L" ";
-		strRot += L"y = " + std::to_wstring(rot.y) + L" ";
-		strRot += L"z = " + std::to_wstring(rot.z);
-		FONT->DrawString(strPos, 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
-		FONT->DrawString(strRot, 30.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
-	}
-
-	void MainOfficeMap::Start()
+	void BossMap::Start()
 	{
 		Map::Start();
-		if (PLAYER != nullptr)
-		{
-			mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
-			switch (mSpawnPoint)
-			{
-			case -1:
-				PLAYER->GetTransform()->SetPosition(Vec3(-15.6f, -10.0f, 24.4f));
-				break;
-			}
-		}
+		PLAYER->GetTransform()->SetPosition(Vec3(-15.6f, -10.0f, 24.4f));
 
 		SetDirLightPosition(Vec3(-31.5f, 27.2f, 33.9f));
 		SetDirLightRotation(Vec3(41.7f, 136.54f, 294.54f));
-		//mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
 	}
-
-	void MainOfficeMap::FixedUpdate()
+	void BossMap::Update()
+	{
+		Map::Update();
+	}
+	void BossMap::FixedUpdate()
 	{
 		Map::FixedUpdate();
 	}
-
-	void MainOfficeMap::FinalUpdate()
+	void BossMap::FinalUpdate()
 	{
 		Map::FinalUpdate();
 	}
-
-	void MainOfficeMap::Render()
+	void BossMap::Render()
 	{
 		Map::Render();
 	}
-
-	void MainOfficeMap::Enter()
+	void BossMap::Enter()
 	{
-		gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
-
-		ChangeCameraMode();
-		InitObjectAdd();
-		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1,
-			nullptr, std::bind(&MainOfficeMap::InitBusStart, this));
-
-		HPUI->UiOn();
-	}
-
-	void MainOfficeMap::Exit()
-	{
-		PLAYER->GetAudioSound()->Stop();
-	}
-
-
-	void MainOfficeMap::InitObjectAdd()
-	{
-		PLAYER->SetDontDestroyObject(L"Player");
-
-
+		// √÷¡æ∫∏Ω∫
 		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Kinematic;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(10.0f, 10.0f, 10.0f);
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Kinematic;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(2.f, 2.0f, 6.f);
 
-			Banker* pBanker = Factory::CreateObjectHasPhysical<Banker>(Vec3(13.9f, -6.3f, -8.6f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Banker.fbx");
-			pBanker->GetTransform()->SetScale(Vec3(1.3f, 1.3f, 1.3f));
-			pBanker->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 135.f));
+			LORD_BOSS_ROLL* pLordOfDoorRoll = Factory::CreateMonster<LORD_BOSS_ROLL>(Vec3(8.f, 5.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor_Roller.fbx");
+			pLordOfDoorRoll->GetTransform()->SetScale(Vec3(60.f, 60.f, 60.f));
+			pLordOfDoorRoll->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			pLordOfDoorRoll->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -3.f, 0.f));
+			pLordOfDoorRoll->GetAnimator()->Play(1, true);
+			pLordOfDoorRoll->Disable();
 
-			pBanker->GetAnimator()->Play(L"Banker_WriteLoop", true);
-			AddGameObject(pBanker);
-			//SetMeshTarget(pBanker);
+			LORD_BOSS* pLordOfDoor = Factory::CreateMonster<LORD_BOSS>(Vec3(5.f, -4.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor.fbx");
+			pLordOfDoor->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pLordOfDoor->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			pLordOfDoor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -3.f, 0.f));
+
+			pLordOfDoor->SetObject(pLordOfDoorRoll);
+			pLordOfDoorRoll->SetLORD_BOSS(pLordOfDoor);
+
+			AddGameObject(pLordOfDoorRoll);
+			AddGameObject(pLordOfDoor);
 		}
 
-		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Kinematic;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(10.0f, 10.0f, 10.0f);
-
-			Npc* pHallCrow = Factory::CreateObjectHasPhysical<Npc>(Vec3(-5.2f, -8.f, -10.5f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\HallCrowWorker.fbx");
-			pHallCrow->GetTransform()->SetScale(Vec3(0.7f, 0.7f, 0.7f));
-			pHallCrow->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 135.f));
-
-			AddGameObject(pHallCrow);
-		}
-
-
-		{
-			/*pBus = Factory::CreateObject<Bus>(Vec3(-17.0f, -8.0f, 33.0f), L"Deferred",
-				L"..\\Resources\\FBX\\Map\\MainOfficeMap\\CUTSCENE_Bus.fbx");
-			pBus->GetTransform()->SetScale(Vec3(50.0f, 50.0f, 50.0f));*/
-			pBus = Factory::CreateObject<Bus>(Vec3(-2.f, -10.0f, 45.0f), L"Deferred",
-				L"..\\Resources\\FBX\\Map\\MainOfficeMap\\CUTSCENE_Bus.fbx");
-			pBus->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
-			pBus->GetTransform()->SetRotation(Vec3(0.0f, 135.0f, 0.0f));
-
-			pBus->GetMeshRenderer()->SetSubsetRenderFlag(103, false);
-			pBus->GetMeshRenderer()->SetSubsetRenderFlag(104, false);
-
-			pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, 68);
-			pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 68);
-			pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, 73);
-			pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 73);
-			pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, 78);
-			pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 78);
-			pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, 79);
-			pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 79);
-			pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, 81);
-			pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 81);
-
-			for (int i = 93; i <= 102; ++i)
-			{
-				pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, i);
-				pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), i);
-			}
-
-			pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, 107);
-			pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 0.5f, 1.f), 107);
-			pBus->GetMeshRenderer()->GetMaterial()->SetBloom(true, 108);
-			pBus->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 0.5f, 1.f), 108);
-
-
-
-			AddGameObject(pBus);
-		}
 
 		{
 			Ground* pFrontGround = Factory::CreateObject<Ground>(Vec3(0.4f, -5.3f, -0.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\uv1.fbx");
@@ -247,8 +132,6 @@ namespace yj
 
 			AddGameObject(pFrontGround);
 		}
-
-
 
 		{
 			Ground* pREFLECTIONS = Factory::CreateObject<Ground>(Vec3(5.5f, -9.0f, -1.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Floor_REFLECTIONS.fbx");
@@ -282,19 +165,6 @@ namespace yj
 			AddGameObject(pUpstair);
 		}
 
-		//{
-		//	Ground* pStair_Single5 = Factory::CreateObject<Ground>(Vec3(29.5f, 3.5f, 8.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\HoD_Stairs_Single.fbx");
-		//	pStair_Single5->GetTransform()->SetScale(Vec3(10.0f, 10.0f, 10.0f));
-		//	AddGameObject(pStair_Single5);
-		//}
-
-		//{
-		//	Ground* pGrandmaDoorFence = Factory::CreateObject<Ground>(Vec3(61.0f, 12.5f, 23.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\GrandmaDoorsFence.fbx");
-		//	pGrandmaDoorFence->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
-		//	pGrandmaDoorFence->GetTransform()->SetRotation(Vec3(0.0f, -10.0f, 0.0f));
-		//	AddGameObject(pGrandmaDoorFence);
-		//}
-
 		{
 			Ground* pBusStop = Factory::CreateObject<Ground>(Vec3(-8.0f, -16.5f, 24.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\stairsIsland.fbx");
 			pBusStop->GetTransform()->SetScale(Vec3(25.0f, 25.0f, 25.0f));
@@ -303,114 +173,7 @@ namespace yj
 			AddGameObject(pBusStop);
 		}
 
-		//{
-		//	GameObject* pGameObject = Factory::CreateObject<GameObject>(Vec3(0.f, 0.f, 0.f), L"Forward", L"", false, LayerType::Unknown);
-		//	pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\TestTexture.png"));
-		//	pGameObject->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
-		//	pGameObject->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
 
-		//	AddGameObject(pGameObject);
-		//	SetGizmoTarget(pGameObject);
-		//}
-
-#pragma region ÏÇ¨Î¨¥Ïã§ Ï±ÖÏÉÅ Î¶¨Ïä§Ìä∏
-		{
-			std::vector<GameObject*> deskList;
-			for (int i = 0; i < 9; i++)
-			{
-
-				Ground* pDesk = Factory::CreateObject<Ground>(Vec3::Zero, L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Desk.fbx");
-				AddGameObject(pDesk);
-				deskList.push_back(pDesk);
-			}
-			deskList[0]->GetTransform()->SetPosition(Vec3(-0.5f, -8.0f, 2.0f));
-			deskList[0]->GetTransform()->SetRotation(Vec3(-0.0f, -23.0f, 0.0f));
-			deskList[0]->GetTransform()->SetScale(Vec3(4.4f, 4.4f, 4.4f));
-
-			deskList[1]->GetTransform()->SetPosition(Vec3(3.0f, -8.0f, -1.5f));
-			deskList[1]->GetTransform()->SetRotation(Vec3(-0.0f, -23.0f, 0.0f));
-			deskList[1]->GetTransform()->SetScale(Vec3(4.4f, 4.4f, 4.4f));
-
-			deskList[2]->GetTransform()->SetPosition(Vec3(7.0f, -8.0f, -5.0f));
-			deskList[2]->GetTransform()->SetRotation(Vec3(-0.0f, -23.0f, 0.0f));
-			deskList[2]->GetTransform()->SetScale(Vec3(4.4f, 4.4f, 4.4f));
-
-			deskList[3]->GetTransform()->SetPosition(Vec3(14.0f, -8.0f, 0.5f));
-			deskList[3]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-			deskList[3]->GetTransform()->SetScale(Vec3(4.4f, 4.4f, 4.4f));
-
-			deskList[4]->GetTransform()->SetPosition(Vec3(12.9f, -8.0f, 4.9f));
-			deskList[4]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-			deskList[4]->GetTransform()->SetScale(Vec3(4.4f, 4.4f, 4.4f));
-
-			deskList[5]->GetTransform()->SetPosition(Vec3(11.6f, -8.0f, 9.5f));
-			deskList[5]->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-			deskList[5]->GetTransform()->SetScale(Vec3(4.4f, 4.4f, 4.4f));
-
-			deskList[6]->GetTransform()->SetPosition(Vec3(-6.8f, -8.0f, -10.2f));
-			deskList[6]->GetTransform()->SetRotation(Vec3(0.0f, -57.0f, 0.0f));
-			deskList[6]->GetTransform()->SetScale(Vec3(4.4f, 4.4f, 4.4f));
-
-			deskList[7]->GetTransform()->SetPosition(Vec3(-1.4f, -8.0f, -11.0f));
-			deskList[7]->GetTransform()->SetRotation(Vec3(0.0f, -57.0f, 0.0f));
-			deskList[7]->GetTransform()->SetScale(Vec3(4.4f, 4.4f, 4.4f));
-
-			deskList[8]->GetTransform()->SetPosition(Vec3(3.59f, -8.0f, -11.4f));
-			deskList[8]->GetTransform()->SetRotation(Vec3(0.0f, -65.0f, 0.0f));
-			deskList[8]->GetTransform()->SetScale(Vec3(4.4f, 4.4f, 4.4f));
-		}
-#pragma endregion
-
-
-#pragma region ÏÇ¨Î¨¥Ïã§ ÏùòÏûê Î¶¨Ïä§Ìä∏
-
-		std::vector<GameObject*> chairList;
-
-		for (int i = 0; i < 9; i++)
-		{
-			Ground* pChair = Factory::CreateObject<Ground>(Vec3(-8.0f, -16.5f, 24.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\ChairBaseMerged.fbx");
-			pChair->GetTransform()->SetScale(Vec3(25.0f, 25.0f, 25.0f));
-			pChair->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-			AddGameObject(pChair);
-			chairList.push_back(pChair);
-		}
-		chairList[0]->GetTransform()->SetPosition(Vec3(0.2f, -7.9f, 0.5f));
-		chairList[0]->GetTransform()->SetRotation(Vec3(-0.0f, 79.0, 0.0f));
-		chairList[0]->GetTransform()->SetScale(Vec3(2.0f, 2.0f, 2.0f));
-
-		chairList[1]->GetTransform()->SetPosition(Vec3(4.5f, -7.9f, -2.7f));
-		chairList[1]->GetTransform()->SetRotation(Vec3(0.0f, 36.0, 0.0f));
-		chairList[1]->GetTransform()->SetScale(Vec3(2.0f, 2.0f, 2.0f));
-
-		chairList[2]->GetTransform()->SetPosition(Vec3(8.1f, -7.9f, -6.1f));
-		chairList[2]->GetTransform()->SetRotation(Vec3(0.0f, 37.0, 0.0f));
-		chairList[2]->GetTransform()->SetScale(Vec3(2.0f, 2.0f, 2.0f));
-
-		chairList[3]->GetTransform()->SetPosition(Vec3(13.6f, -7.9f, 1.5f));
-		chairList[3]->GetTransform()->SetRotation(Vec3(0.0f, 223.0f, 0.0f));
-		chairList[3]->GetTransform()->SetScale(Vec3(2.0f, 2.0f, 2.0f));
-
-		chairList[4]->GetTransform()->SetPosition(Vec3(12.3f, -7.9f, 6.1f));
-		chairList[4]->GetTransform()->SetRotation(Vec3(0.0f, 243.0f, 0.0f));
-		chairList[4]->GetTransform()->SetScale(Vec3(2.0f, 2.0f, 2.0f));
-
-		chairList[5]->GetTransform()->SetPosition(Vec3(12.3f, -7.9f, 8.5f));
-		chairList[5]->GetTransform()->SetRotation(Vec3(0.0f, 52.0f, 0.0f));
-		chairList[5]->GetTransform()->SetScale(Vec3(2.0f, 2.0f, 2.0f));
-
-		chairList[6]->GetTransform()->SetPosition(Vec3(5.1f, -7.9f, -11.4f));
-		chairList[6]->GetTransform()->SetRotation(Vec3(0.0f, 1.0f, 0.0f));
-		chairList[6]->GetTransform()->SetScale(Vec3(2.0f, 2.0f, 2.0f));
-
-		chairList[7]->GetTransform()->SetPosition(Vec3(-2.6f, -7.9f, -11.1f));
-		chairList[7]->GetTransform()->SetRotation(Vec3(0.0f, 171.0f, 0.0f));
-		chairList[7]->GetTransform()->SetScale(Vec3(2.0f, 2.0f, 2.0f));
-
-		chairList[8]->GetTransform()->SetPosition(Vec3(-5.1f, -7.9f, -10.5f));
-		chairList[8]->GetTransform()->SetRotation(Vec3(0.0f, -6.0f, 0.0f));
-		chairList[8]->GetTransform()->SetScale(Vec3(2.0f, 2.0f, 2.0f));
-
-#pragma endregion
 
 
 #pragma region "laterWallList"
@@ -560,72 +323,6 @@ namespace yj
 #pragma endregion
 
 
-#pragma region "Elevator"
-
-		Elevator* elevator = Factory::CreateObject<Elevator>(Vec3(0, 0, 0), L"Deferred", L"");
-		AddGameObject(elevator);
-		eTarget = elevator;
-#pragma endregion
-
-#pragma region "mPlantBase"
-
-
-		std::vector<GameObject*> mPlantBaseList;
-		for (int i = 0; i < 3; i++)
-		{
-			Ground* pPlantBase = Factory::CreateObject<Ground>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\PlantBase.fbx");
-			pPlantBase->GetTransform()->SetScale(Vec3(9.0f, 9.0f, 9.0f));
-			pPlantBase->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-			AddGameObject(pPlantBase);
-
-			pPlantBase->GetTransform()->SetPosition(Vec3(-2.8f, -7.8f, -5.0f));
-			pPlantBase->GetTransform()->SetRotation(Vec3(0.0f, 33.0f, 0.0f));
-			pPlantBase->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
-			mPlantBaseList.push_back(pPlantBase);
-		}
-
-		mPlantBaseList[0]->GetTransform()->SetPosition(Vec3(-3.0f, -7.8f, 4.7f));
-		mPlantBaseList[0]->GetTransform()->SetRotation(Vec3(0.0f, 33.0f, 0.0f));
-		mPlantBaseList[0]->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
-
-		mPlantBaseList[1]->GetTransform()->SetPosition(Vec3(-21.6f, -7.8f, -7.5f));
-		mPlantBaseList[1]->GetTransform()->SetRotation(Vec3(0.0f, -49.0f, 0.0f));
-		mPlantBaseList[1]->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
-
-		mPlantBaseList[2]->GetTransform()->SetPosition(Vec3(-1.0f, -11.4f, 19.2f));
-		mPlantBaseList[2]->GetTransform()->SetRotation(Vec3(0.0f, -178.0f, 0.0f));
-		mPlantBaseList[2]->GetTransform()->SetScale(Vec3(8.5f, 8.5f, 8.5f));
-#pragma endregion
-
-#pragma region TypeMachine
-
-
-		std::vector<GameObject*> mTypeMachineList;
-		for (int i = 0; i < 4; i++)
-		{
-			Ground* pTypeMachineMerged = Factory::CreateObject<Ground>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\TypeMachineMerged.fbx");
-			pTypeMachineMerged->GetTransform()->SetScale(Vec3(9.0f, 9.0f, 9.0f));
-			pTypeMachineMerged->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
-			AddGameObject(pTypeMachineMerged);
-			mTypeMachineList.push_back(pTypeMachineMerged);
-		}
-		mTypeMachineList[0]->GetTransform()->SetPosition(Vec3(11.5f, -6.8f, 9.3f));
-		mTypeMachineList[0]->GetTransform()->SetRotation(Vec3(0.0f, 187.0f, 0.0f));
-		mTypeMachineList[0]->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
-
-		mTypeMachineList[1]->GetTransform()->SetPosition(Vec3(12.6f, -6.8f, 4.8f));
-		mTypeMachineList[1]->GetTransform()->SetRotation(Vec3(0.0f, 37.0f, 0.0f));
-		mTypeMachineList[1]->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
-
-		mTypeMachineList[2]->GetTransform()->SetPosition(Vec3(14.1f, -6.8f, 0.5f));
-		mTypeMachineList[2]->GetTransform()->SetRotation(Vec3(0.0f, 37.0f, 0.0f));
-		mTypeMachineList[2]->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
-
-		mTypeMachineList[3]->GetTransform()->SetPosition(Vec3(14.1f, -6.8f, 0.5f));
-		mTypeMachineList[3]->GetTransform()->SetRotation(Vec3(0.0f, 37.0f, 0.0f));
-		mTypeMachineList[3]->GetTransform()->SetScale(Vec3(1.5f, 1.5f, 1.5f));
-#pragma endregion
-
 #pragma region SphereLight
 
 
@@ -721,17 +418,6 @@ namespace yj
 
 		}
 
-		//{
-		//	DecoObject* pUpperStairContainer = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\UpperStairContainer.fbx");
-		//	AddGameObject(pUpperStairContainer);
-		//	pUpperStairContainer->GetTransform()->SetPosition(Vec3(60.9f, 2.7f, 22.4f));
-		//	pUpperStairContainer->GetTransform()->SetRotation(Vec3(0.0f, -8.0f, 0.0f));
-		//	pUpperStairContainer->GetTransform()->SetScale(Vec3(61.0f, 61.0f, 61.0f));
-		//	pUpperStairContainer->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(12.0f, 12.0f));
-		//	pUpperStairContainer->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(12.0f, 12.0f), 1);
-
-		//}
-
 #pragma endregion
 
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
@@ -760,37 +446,6 @@ namespace yj
 		}
 
 
-
-#pragma region SoulDoor
-		{
-			DecoObject* pDoor = Factory::CreateObject<DecoObject>(Vec3(19.1f, 6.7f, -12.8f), L"Deferred", LARGE_RESOURCE(L"ShortcutDoor\\ShortcutDoor_Fix.fbx"));
-
-			pDoor->GetTransform()->SetPosition(Vec3(19.1f, 7.7f, -12.8f));
-			pDoor->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
-			pDoor->GetTransform()->SetScale(Vec3(7.82f, 7.82f, 7.82f));
-
-			DecoObject* pBackUv = Factory::CreateObject<DecoObject>(Vec3(19.8f, 4.8f, -15.2f), L"Deferred", LARGE_RESOURCE(L"DoorBackGlow\\DoorBackGlow.fbx"));
-			pBackUv->GetTransform()->SetPosition(Vec3(19.8f, 4.7f, -15.2f));
-			pBackUv->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
-			pBackUv->GetTransform()->SetScale(Vec3(5.48f, 5.48f, 5.48f));
-
-			PhysicsInfo mEntrancePInfo;
-			mEntrancePInfo.eActorType = ActorType::Kinematic;
-			mEntrancePInfo.eGeometryType = GeometryType::Box;
-			mEntrancePInfo.size = Vec3(3.33f, 5.7f, 2.65f);
-
-			DecoObject* pEntranceColObj = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(19.1f, 4.9f, -15.2f), mEntrancePInfo, L"Deferred", L"");
-
-			SoulDoor* pSoulDoor = Factory::CreateObject<SoulDoor>(Vec3(0, 0, 0), L"Deferred", L"", false, pDoor, pBackUv, pEntranceColObj, MapType::EntranceHallMap, 1);
-
-			AddGameObject(pDoor);
-			AddGameObject(pBackUv);
-			AddGameObject(pEntranceColObj);
-			AddGameObject(pSoulDoor);
-		}
-#pragma endregion
-
-
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Static;
@@ -812,7 +467,7 @@ namespace yj
 
 		}
 
-		// Î≤ÑÏä§ Î∞∞ÏπòÎêú Îã§Î¶¨ÏóêÏÑú Ïò§ÌîºÏä§Ï™ΩÏúºÎ°ú Ïù¥ÎèôÌïòÎäî Îã§Î¶¨ Ï∂©ÎèåÏ≤¥
+		// πˆΩ∫ πËƒ°µ» ¥Ÿ∏Æø°º≠ ø¿««Ω∫¬ ¿∏∑Œ ¿Ãµø«œ¥¬ ¥Ÿ∏Æ √Êµπ√º
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Static;
@@ -824,7 +479,7 @@ namespace yj
 			AddGameObject(pBusStopToMainDeskCollider);
 		}
 
-		// ÏÉÅÏ∏µÏóêÏÑú Íº≠ÎåÄÍ∏∞Î°ú Ïù¥Ïñ¥Ï£ºÎäî Ï∂©ÎèåÏ≤¥
+		// ªÛ√˛ø°º≠ ≤¿¥Î±‚∑Œ ¿ÃæÓ¡÷¥¬ √Êµπ√º
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Static;
@@ -836,7 +491,7 @@ namespace yj
 			AddGameObject(pStairToTop);
 		}
 
-		// Íº≠ÎåÄÍ∏∞ Ï∂©ÎèåÏ≤¥
+		// ≤¿¥Î±‚ √Êµπ√º
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Static;
@@ -847,11 +502,7 @@ namespace yj
 			AddGameObject(pTop);
 		}
 	}
-
-
-	void MainOfficeMap::InitBusStart()
+	void BossMap::Exit()
 	{
-		pBus->BusActive();
-		int b = 0;
 	}
 }

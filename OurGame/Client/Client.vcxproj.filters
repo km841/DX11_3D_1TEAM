@@ -368,6 +368,13 @@
     <ClInclude Include="AttackBigState.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
+    <ClInclude Include="Fireplace.h" />
+    <ClInclude Include="Banker.h">
+      <Filter>소스 파일\GameObject\Npc</Filter>
+    </ClInclude>
+    <ClInclude Include="BossMap.h">
+      <Filter>소스 파일\Scene\Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -733,6 +740,13 @@
     </ClCompile>
     <ClCompile Include="AttackBigState.cpp">
       <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Fireplace.cpp" />
+    <ClCompile Include="Banker.cpp">
+      <Filter>소스 파일\GameObject\Npc</Filter>
+    </ClCompile>
+    <ClCompile Include="BossMap.cpp">
+      <Filter>소스 파일\Scene\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
