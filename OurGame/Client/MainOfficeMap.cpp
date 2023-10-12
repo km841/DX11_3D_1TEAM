@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "MainOfficeMap.h"
 #include "Engine.h"
 
@@ -34,6 +34,7 @@
 #include "Lurker.h"
 #include "HeadRoller.h"
 #include "Grimace.h"
+
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -88,6 +89,29 @@ namespace yj
 			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 0.1f, nullptr, std::bind(&Map::ChangeCameraMode, this));
 			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 0.1f);
 		}
+
+		if (false == pBus->IsBusArrived())
+		{
+			PLAYER->Disable();
+		}
+		else
+		{
+			PLAYER->Enable();
+		}
+
+		Vec3 pos = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetGameObject()->GetTransform()->GetPosition();
+		wstring strPos = {};
+		strPos += L"x = " + std::to_wstring(pos.x) + L" ";
+		strPos += L"y = " + std::to_wstring(pos.y) + L" ";
+		strPos += L"z = " + std::to_wstring(pos.z);
+
+		Vec3 rot = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetGameObject()->GetTransform()->GetRotation();
+		wstring strRot = {};
+		strRot += L"x = " + std::to_wstring(rot.x) + L" ";
+		strRot += L"y = " + std::to_wstring(rot.y) + L" ";
+		strRot += L"z = " + std::to_wstring(rot.z);
+		FONT->DrawString(strPos, 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
+		FONT->DrawString(strRot, 30.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
 	}
 
 	void MainOfficeMap::Start()
@@ -99,7 +123,7 @@ namespace yj
 			switch (mSpawnPoint)
 			{
 			case -1:
-				PLAYER->GetTransform()->SetPosition(Vec3(-15.6f, -1.0f, 23.4f));
+				PLAYER->GetTransform()->SetPosition(Vec3(-15.6f, -10.0f, 24.4f));
 				break;
 			}
 		}
@@ -126,9 +150,9 @@ namespace yj
 
 	void MainOfficeMap::Enter()
 	{
-		
 		gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
 		
+		ChangeCameraMode();
 		InitObjectAdd();
 		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1,
 			nullptr , std::bind(&MainOfficeMap::InitBusStart, this));
@@ -147,9 +171,12 @@ namespace yj
 		PLAYER->SetDontDestroyObject(L"Player");
 
 		{
-			pBus = Factory::CreateObject<Bus>(Vec3(-17.0f, -8.0f, 33.0f), L"Deferred",
+			/*pBus = Factory::CreateObject<Bus>(Vec3(-17.0f, -8.0f, 33.0f), L"Deferred",
 				L"..\\Resources\\FBX\\Map\\MainOfficeMap\\CUTSCENE_Bus.fbx");
-			pBus->GetTransform()->SetScale(Vec3(50.0f, 50.0f, 50.0f));
+			pBus->GetTransform()->SetScale(Vec3(50.0f, 50.0f, 50.0f));*/
+			pBus = Factory::CreateObject<Bus>(Vec3(-2.f, -10.0f, 45.0f), L"Deferred",
+				L"..\\Resources\\FBX\\Map\\MainOfficeMap\\CUTSCENE_Bus.fbx");
+			pBus->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
 			pBus->GetTransform()->SetRotation(Vec3(0.0f, 135.0f, 0.0f));
 
 			pBus->GetMeshRenderer()->SetSubsetRenderFlag(103, false);
