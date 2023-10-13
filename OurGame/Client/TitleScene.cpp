@@ -26,6 +26,7 @@
 #include "CameraHolder.h"
 #include "Elevator.h"
 #include "HpUi.h"
+#include "MpUi.h"
 
 /* Interface */
 #include "Interface.h"
@@ -807,6 +808,14 @@ namespace hm
 		{
 			GameObject* pHpUiObj = new GameObject(LayerType::Unknown);
 			yj::HpUi* pHpUI = pHpUiObj->AddComponent<yj::HpUi>();
+			pHpUI->AddHpUI();
+			pHpUiObj->SetDontDestroyObject(L"HpUi");
+			HPUI->UiOff();
+		}
+		// MpUI
+		{
+			GameObject* pMpUiObj = new GameObject(LayerType::Unknown);
+			yj::HpUi* pHpUI = pMpUiObj->AddComponent<yj::MpUi>();
 			pHpUI->AddHpUI();
 			pHpUiObj->SetDontDestroyObject(L"HpUi");
 			HPUI->UiOff();

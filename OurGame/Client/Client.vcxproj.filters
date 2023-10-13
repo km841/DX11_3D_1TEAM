@@ -355,7 +355,6 @@
     </ClInclude>
     <ClInclude Include="MonsterBackswingColScript.h" />
     <ClInclude Include="HpUi.h" />
-<<<<<<< HEAD
     <ClInclude Include="SpawnDoor.h" />
     <ClInclude Include="TitleSceneCutSceneTargetScript.h">
       <Filter>소스 파일\Script</Filter>
@@ -376,8 +375,6 @@
     <ClInclude Include="BossMap.h">
       <Filter>소스 파일\Scene\Map</Filter>
     </ClInclude>
-=======
->>>>>>> parent of ff1c9a0 (HeadTextbox 추가)
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -731,7 +728,6 @@
     </ClCompile>
     <ClCompile Include="MonsterBackswingColScript.cpp" />
     <ClCompile Include="HpUi.cpp" />
-<<<<<<< HEAD
     <ClCompile Include="SpawnDoor.cpp" />
     <ClCompile Include="TitleSceneCutSceneCameraMoveScript.cpp">
       <Filter>소스 파일\Script</Filter>
@@ -752,8 +748,6 @@
     <ClCompile Include="BossMap.cpp">
       <Filter>소스 파일\Scene\Map</Filter>
     </ClCompile>
-=======
->>>>>>> parent of ff1c9a0 (HeadTextbox 추가)
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
