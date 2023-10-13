@@ -65,7 +65,7 @@ namespace hm
 	void Mirror::CreateReflectPlane()
 	{
 		Vec3 pos = GetTransform()->GetPosition();
-		mReflectPlane = Plane(pos, Vec3(0.f, 1.f, 0.f));
+		mReflectPlane = Plane(pos, Vec3(0.0f, 0.1f, 0.0f));
 		mReflectMatrix = Matrix::CreateReflection(mReflectPlane);
 	}
 	void Mirror::ClearInstancingBuffer()
@@ -185,6 +185,7 @@ namespace hm
 		CONTEXT->OMSetDepthStencilState(spMaskDSS.Get(), 1);
 		CONTEXT->RSSetState(spSolidRS.Get());
 
+		Vec3 pos = GetTransform()->GetPosition();
 		GetTransform()->PushData(_pCamera);
 		CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
 		shared_ptr<Mesh> pMesh = GetMeshRenderer()->GetMesh();
@@ -219,6 +220,8 @@ namespace hm
 		params.use = 0;
 		CONST_BUFFER(ConstantBufferType::Reflect)->PushData(&params, sizeof(ReflectParams));
 		CONST_BUFFER(ConstantBufferType::Reflect)->Mapping();
+
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::ScreenEffect)->ClearStencilView();
 	}
 	void Mirror::RenderInstancing(Camera* _pCamera, const std::vector<GameObject*> _gameObjects)
 	{
@@ -312,7 +315,7 @@ namespace hm
 					GET_SINGLE(Resources)->Get<Shader>(L"Forward")->UpdateInputLayout();
 					CONTEXT->OMSetDepthStencilState(spDrawMaskedDSS.Get(), 1);
 
-					const float t = 0.05f;
+					const float t = mAlpha;
 					const float blendColor[] = { t, t, t, 1.0f };
 					CONTEXT->OMSetBlendState(spMirrorBS.Get(), blendColor, 0xffffffff);
 					CONTEXT->RSSetState(spSolidCCWRS.Get());
@@ -327,7 +330,7 @@ namespace hm
 		shared_ptr<Mesh> pMesh = GetMeshRenderer()->GetMesh();
 		shared_ptr<Material> pMaterial = GetMeshRenderer()->GetMaterial();
 
-		const float t = 0.7f;
+		const float t = mAlpha;
 		const float blendColor[] = { t, t, t, 1.0f };
 		CONTEXT->OMSetBlendState(spMirrorBS.Get(), blendColor, 0xffffffff);
 		CONTEXT->RSSetState(spSolidRS.Get());
@@ -336,7 +339,7 @@ namespace hm
 		CONST_BUFFER(ConstantBufferType::Transform)->Mapping();
 
 		pMaterial->PushGraphicDataExceptForShader();
-		shared_ptr<Shader> pShader = GET_SINGLE(Resources)->Get<Shader>(L"Mirror");
+		shared_ptr<Shader> pShader = GET_SINGLE(Resources)->Get<Shader>(L"Forward");
 
 		pShader->UpdateShaderAndSampler();
 		pShader->UpdateInputLayout();

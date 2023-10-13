@@ -20,6 +20,6 @@ private:
 	
 private:
 	bool mbTrigger;
-
+	bool isKeydown = true;
 	
 };

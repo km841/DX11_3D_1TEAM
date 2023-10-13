@@ -54,6 +54,7 @@
 #include "PlayerMoveOverMapScript.h"
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
+#include "OwnerFollowScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -91,6 +92,13 @@ void EntranceHallMap::Start()
 	}
 
 	DisableDirLight();
+
+	mpMainCamera->GetTransform()->SetPosition(Vec3(-14.f, 24.8f, 25.2f));
+	mpMainCamera->GetTransform()->SetRotation(Vec3(51.4f, 145.2f, 0.f));
+
+	OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
+	pFollowScript->SetOffset(Vec3(-14.f, 29.f, 10.f));
+
 }
 
 void EntranceHallMap::Update()
@@ -115,31 +123,14 @@ void EntranceHallMap::Render()
 
 void EntranceHallMap::Enter()
 {
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Obstacle);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Portal);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Obstacle, LayerType::Ground);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PlayerCol, LayerType::DecoObject);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PlayerCol, LayerType::DungeonObject);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::ArrowCol, LayerType::DungeonObject);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Ground, LayerType::DungeonObject);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::Ground);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::WallObject);
-	GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::PotCell);
-
+	
 	//배경맵 하얀색으로 만들어주는 코드
 	//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
 	InitObjectAdd();
 	InitColliderAdd();
 	InitFuncObjAdd();
-	GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1);
 
-	if (PLAYER)
-	{
-		int a = 0;
-	}
 	PLAYER->GetRigidBody()->ApplyGravity();
 	PLAYER->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
 	PLAYER->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);

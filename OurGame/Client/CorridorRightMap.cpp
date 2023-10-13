@@ -39,6 +39,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include "ParticleSystem.h"
+#include "Mirror.h"
 
 /* Script */
 #include "PlayerMoveScript.h"
@@ -66,12 +67,24 @@ namespace jh
 	void CorridorRightMap::Start()
 	{
 		Map::Start();
+
+		mpMainCamera->GetTransform()->SetPosition(Vec3(15.3f, 22.7f, 2.08f));
+		mpMainCamera->GetTransform()->SetRotation(Vec3(51.f, 304.f, 0.f));
+
+		PLAYER->GetKeyInfo().SetLeftKey(KeyType::LEFT);
+		PLAYER->GetKeyInfo().SetForwardKey(KeyType::UP);
+
+		DisableDirLight();
 		if (PLAYER != nullptr)
 		{
 			mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
 			switch (mSpawnPoint)
 			{
 			case 1:
+				PLAYER->GetTransform()->SetPosition(Vec3(-0.9f, -8.27f, 19.1f));
+				break;
+
+			case 5:
 				PLAYER->GetTransform()->SetPosition(Vec3(-0.9f, -8.27f, 19.1f));
 				break;
 			}
@@ -100,8 +113,7 @@ namespace jh
 
 	void CorridorRightMap::Enter()
 	{
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
+		
 
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
@@ -264,6 +276,18 @@ namespace jh
 			pFloor->GetTransform()->SetRotation(Vec3(0.00f, 180.00f, 0.00f));
 
 			AddGameObject(pFloor);
+		}
+
+		{
+			GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.00f, -9.2f, -2.85f), L"Forward", L"", false, LayerType::Mirror);
+
+			pMirror->GetTransform()->SetScale(Vec3(18.f, 30.f, 15.f));
+			pMirror->AddComponent(new Mirror);
+			pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+			pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+			pMirror->GetMirror()->SetAlpha(0.07f);
+
+			AddGameObject(pMirror);
 		}
 		// 바깥쪽 바닥틀
 		{
@@ -629,18 +653,20 @@ namespace jh
 			yj::SpikeDoor* pDoor = Factory::CreateObject<yj::SpikeDoor>(Vec3(-7.4f, -4.57f, 19.2f), L"Deferred", L"", false, pSpikeDoor,pSpikeDoorCol,4);
 			AddGameObject(pDoor);
 		}
+
 		{
 			GameObject* pLightObject = new GameObject(LayerType::Unknown);
 			Transform* pTransform = pLightObject->AddComponent(new Transform);
-			pTransform->SetPosition(Vec3(3.4f, 7.7f, -3.5f));
+			pTransform->SetPosition(Vec3(3.4f, 17.7f, -3.5f));
 			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
 			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
 			Light* pLight = pLightObject->AddComponent(new Light);
-			pLight->SetDiffuse(Vec3(0.5f, 0.5f, 0.2f));
+			pLight->SetDiffuse(Vec3(1.0f, 1.0f, 0.7f));
 			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
-			pLight->SetLightRange(22.f);
+			pLight->SetLightRange(40.f);
 			pLight->SetLightType(LightType::PointLight);
 			AddGameObject(pLightObject);
+			
 		}
 	}
 

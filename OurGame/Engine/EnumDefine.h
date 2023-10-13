@@ -90,6 +90,7 @@ namespace hm
 		Right2Map,
 		RightMap,
 		RightSecretPassageMap,
+		BossMap,
 
 		Monster_Player_Test,
 		PhysicsTest,

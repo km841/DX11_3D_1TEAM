@@ -90,16 +90,17 @@ void AttackState::Update()
 		pAttackCol_Obj->Disable();
 	}
 
+	
 
-	if (pAni->GetFrameRatio() > 0.07f) {
-		
+	if (pAni->GetFrameRatio() > 0.1f) {
+		pPlayer->SetBigAttackCountReset();
 		pPlayer->StateChange(PlayerState::IdleState);
-
 	}
 	
 	////마우스 좌측 버튼 클릭했을때
-	if (IS_DOWN(KeyType::LBUTTON) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed())
+	if (IS_DOWN(KeyType::LBUTTON) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed() && isKeydown == true)
 	{
+		
 		if (mbTrigger == true) //오른쪽 공격
 		{
 			mbTrigger = false;
@@ -117,7 +118,7 @@ void AttackState::Update()
 	}
 
 	//LCTRL 버튼 눌렀을떄
-	if (IS_DOWN(KeyType::LCTRL) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed())
+	if (IS_DOWN(KeyType::LCTRL) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed() && isKeydown == true)
 	{
 		if (mbTrigger == true) //오른쪽 공격
 		{
@@ -147,6 +148,12 @@ void AttackState::Exit()
 {
 	GameObject* pAttackCol_Obj = PLAYER->GetAttackCol();
 	pAttackCol_Obj->Disable();
+
+	Player* pPlayer = Player::GetPlayer();
+	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
+	pEffect->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f)); //이펙트 크기 초기화
+	isKeydown = true; //연속 공격 작동하게 만들기
+	pPlayer->SetAttackDamage(1.f); //어택 데미지 다시 1로 만들기
 }
 
 void AttackState::PlayAnimation()
@@ -156,10 +163,18 @@ void AttackState::PlayAnimation()
 	Animator* pAni = pPlayer->GetAnimator();
 	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
 	PlayerSlashScript* pSlashSc = pEffect->GetScript<PlayerSlashScript>();
+	int BigCount = pPlayer->GetBigAttackCount();
 
 	mbTrigger = pPlayer->GetAttackDir();
-
 	DirSlash(); // 플레이어 방향 회전 함수
+	pPlayer->SetBigAttackCount();
+	if (BigCount >= 2) //큰 검기 나가는 조건
+	{
+		pEffect->GetTransform()->SetScale(Vec3(5.f, 3.f, 5.f));
+		pPlayer->SetBigAttackCountReset();
+		pPlayer->SetAttackDamage(2.f);
+		isKeydown = false;
+	}
 
 	if (!mbTrigger)
 	{

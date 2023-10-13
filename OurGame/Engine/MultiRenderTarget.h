@@ -64,6 +64,7 @@ namespace hm
 		*/
 		void ClearRenderTargetView();
 		void ClearDepthView();
+		void ClearStencilView();
 
 		void SetClearColor(Vec4 _color);
 		void SetClearColor(int _index, Vec4 _color);

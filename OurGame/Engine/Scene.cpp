@@ -93,6 +93,14 @@ namespace hm
 			GET_SINGLE(RenderManager)->SetRimLighting(!bIsApplyRimLighting);
 		}
 
+		//const Vec3& pos = mpMainCamera->GetTransform()->GetPosition();
+		//wstring strPos = L"카메라 위치 : " + std::to_wstring(pos.x) + L", " + std::to_wstring(pos.y) + L", " + std::to_wstring(pos.z);
+		//FONT->DrawString(strPos, 30.f, Vec3(200.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
+
+		//const Vec3& rot = mpMainCamera->GetTransform()->GetRotation();
+		//wstring strRot = L"카메라 회전 : " + std::to_wstring(rot.x) + L", " + std::to_wstring(rot.y) + L", " + std::to_wstring(rot.z);
+		//FONT->DrawString(strRot, 30.f, Vec3(200.f, 810.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
+
 	}
 	void Scene::FixedUpdate()
 	{

@@ -360,6 +360,25 @@
     <ClInclude Include="HeadText.h" />
     <ClInclude Include="ManaIconScript.h" />
     <ClInclude Include="HpIconScript.h" />
+    <ClInclude Include="TitleSceneCutSceneTargetScript.h">
+      <Filter>소스 파일\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleSceneCutSceneCameraMoveScript.h">
+      <Filter>소스 파일\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="AIMoveState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackBigState.h">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Fireplace.h" />
+    <ClInclude Include="Banker.h">
+      <Filter>소스 파일\GameObject\Npc</Filter>
+    </ClInclude>
+    <ClInclude Include="BossMap.h">
+      <Filter>소스 파일\Scene\Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -718,6 +737,25 @@
     <ClCompile Include="HeadText.cpp" />
     <ClCompile Include="ManaIconScript.cpp" />
     <ClCompile Include="HpIconScript.cpp" />
+    <ClCompile Include="TitleSceneCutSceneCameraMoveScript.cpp">
+      <Filter>소스 파일\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleSceneCutSceneTargetScript.cpp">
+      <Filter>소스 파일\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="AIMoveState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackBigState.cpp">
+      <Filter>소스 파일\GameObject\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Fireplace.cpp" />
+    <ClCompile Include="Banker.cpp">
+      <Filter>소스 파일\GameObject\Npc</Filter>
+    </ClCompile>
+    <ClCompile Include="BossMap.cpp">
+      <Filter>소스 파일\Scene\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

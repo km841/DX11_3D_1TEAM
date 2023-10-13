@@ -97,7 +97,7 @@ namespace hm
 				if (false == pGameObject->IsEnable())
 					continue; 
 
-				if (pGameObject->IsFrustumCheck())
+				if (nullptr != pGameObject->GetTransform() && pGameObject->IsFrustumCheck())
 				{
 					if (false == mFrustumCulling.ContainsSphere(
 						pGameObject->GetTransform()->GetWorldPosition(),

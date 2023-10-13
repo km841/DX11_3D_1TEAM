@@ -93,8 +93,7 @@ namespace hm
 
 	void GrandmaBossMap::Enter()
 	{
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
+		
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 		// Ground
 		{
