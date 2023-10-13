@@ -745,7 +745,7 @@ namespace yj
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(2.82f, 5.28f, 2.5f);
 
-			DecoObject* pWall = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(-1.2f, 3.6f, -7.0f), physicsInfo, L"Forward", L"");
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-1.2f, 3.6f, -7.0f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pWall);
 		}
@@ -755,7 +755,7 @@ namespace yj
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(5.65f, 5.28f, 2.5f);
 
-			DecoObject* pWall = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(9.3f, 3.6f, -16.8f), physicsInfo, L"Forward", L"");
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(9.3f, 3.6f, -16.8f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pWall);
 		}
@@ -765,7 +765,7 @@ namespace yj
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(5.65f, 5.28f, 3.5f);
 
-			DecoObject* pWall = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(11.9f, 3.6f, -14.2f), physicsInfo, L"Forward", L"");
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(11.9f, 3.6f, -14.2f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pWall);
 		}
@@ -775,7 +775,7 @@ namespace yj
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(0.56f, 5.28f, 7.35f);
 
-			DecoObject* pWall = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(-17.7f, 3.6f, 3.7f), physicsInfo, L"Forward", L"");
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-17.7f, 3.6f, 3.7f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pWall);
 		}
@@ -785,11 +785,79 @@ namespace yj
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(0.56f, 4.7f, 4.41f);
 
-			DecoObject* pSpikeCol = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(-17.7f, 3.3f, -2.3f), physicsInfo, L"Forward", L"");
+			WallObject* pSpikeCol = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-17.7f, 3.3f, -2.3f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pSpikeCol);
 			pSpikeDoorCol = pSpikeCol;
 		}
+
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(11.4f, 5.3f, 7.3f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-23.9f, 3.6f, 3.7f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pWall);
+		}
+
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(11.4f, 5.3f, 15.3f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-23.9f, 3.6f, -12.4f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pWall);
+		}
+
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(11.4f, 5.3f, 15.3f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-25.6f, 3.6f, -2.8f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pWall);
+		}
+
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(38.4f, 5.3f, 15.3f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-1.5f, 3.6f, -25.7f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pWall);
+		}
+
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(38.4f, 5.3f, 15.3f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-2.2f, 3.6f, 15.4f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pWall);
+		}
+
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(11.5f, 5.3f, 55.7f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(23.f, 3.6f, -5.f), physicsInfo, L"Forward", L"");
+
+			AddGameObject(pWall);
+			SetGizmoTarget(pWall);
+		}
+
 	}
 	void RightMap::FuncObjectAdd()
 	{
