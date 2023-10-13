@@ -78,7 +78,7 @@ LORD_BOSS::LORD_BOSS()
 	
 	MonsterAttackCol();
 	MonsterBackswingCol();
-	meBasicState = MonsterBasicState::Idle;
+	meBasicState = MonsterBasicState::CutScene;
 }
 
 LORD_BOSS::~LORD_BOSS()
@@ -95,6 +95,71 @@ void LORD_BOSS::SetBehaviorTree()
 
 	Selector* pStateSelector = new Selector;
 	{
+#pragma region CutScene Sequence
+		Sequence* pCutSceneSequence = new Sequence;
+		{
+			// 상태 확인(Condition) : 현재 상태가 Idle인지 확인
+			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+				{
+					if (MonsterBasicState::CutScene == meBasicState)
+						return BehaviorResult::Success;
+					else
+						return BehaviorResult::Failure;
+				});
+
+			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				Animator* pAnimator = GetAnimator();
+				int animIndex = pAnimator->GetCurrentClipIndex();
+				AudioSound* pSound = GetAudioSound();
+				Transform* pTr = GetTransform();
+				Vec3 Rot = pTr->GetRotation();
+				if (17 != animIndex)
+				{
+					pSound->SetSound(L"BOSSBGM", GET_SINGLE(SceneManager)->GetActiveScene(), true, "..\\Resources\\Sound\\BossMapBGM.mp3");
+					pSound->Play(20);
+					pAnimator->Play(17, true);
+
+				}
+				return BehaviorResult::Success;
+				});
+
+			// 특별한 조건 실행할때
+			BehaviorCondition* pIfCondition = new BehaviorCondition([&]() {
+				Animator* pAni = GetAnimator();
+
+				/*if (pAni->GetFrameRatio()>0.95) 
+				{
+					return BehaviorResult::Success;
+				}*/
+
+
+				if (isCutSceneEnd) //컷신 체크가 트루일때 아이들 상태로 넘어가기
+				{
+					return BehaviorResult::Success;
+				}
+				return BehaviorResult::Failure;
+				});
+
+
+			// 상태 변경(Task) : 상태 변경 조건
+			BehaviorTask* pChangeState = new BehaviorTask([&]()
+				{
+					meBasicState = MonsterBasicState::Idle;
+					return BehaviorResult::Success;
+				});
+
+
+			pCutSceneSequence->AddChild(pStateChecker);
+			pCutSceneSequence->AddChild(pRunAnimationTask);
+			pCutSceneSequence->AddChild(pIfCondition);
+			pCutSceneSequence->AddChild(pChangeState);
+	
+		}
+		pStateSelector->AddChild(pCutSceneSequence);
+
+#pragma endregion
+
 #pragma region Idle Sequence
 		Sequence* pIdleSequence = new Sequence;
 		{
@@ -181,7 +246,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Roll_Start;
+					//meBasicState = MonsterBasicState::Roll_Start;
 					return BehaviorResult::Success;
 				});
 

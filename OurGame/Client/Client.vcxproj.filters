@@ -749,6 +749,10 @@
     <ClCompile Include="MonsterSlowObject.cpp">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="Banker.cpp" />
+    <ClCompile Include="BossMap.cpp">
+      <Filter>소스 파일\Scene\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

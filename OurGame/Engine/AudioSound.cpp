@@ -68,6 +68,8 @@ namespace hm
 	void AudioSound::SetSound(const std::wstring& _strName)
 	{
 		mpSoundInfo = GET_SINGLE(SoundManager)->FindSound(_strName);
+		AssertEx(nullptr != mpChannel, L"AudioSound::SetSound() - ä���� �������� ����");
+
 
 		mFileName = _strName;
 	}
@@ -77,7 +79,8 @@ namespace hm
 		{
 			return;
 		}
-
+		
+		
 		mpSoundInfo = GET_SINGLE(SoundManager)->FindSound(_strName);
 		mFileName = _strName;
 	}
@@ -85,7 +88,7 @@ namespace hm
 	{
 		mbBGM = _Enable;
 	}
-	void AudioSound::Play()
+	void AudioSound::Play(int _volume)
 	{
 		if (false == mbPlay)
 		{
@@ -93,7 +96,7 @@ namespace hm
 
 			std::list<FMOD::Channel*>::iterator Iter = mpSoundInfo->ChannelList.begin();
 			std::list<FMOD::Channel*>::iterator EndIter = mpSoundInfo->ChannelList.end();
-
+      
 			for (; Iter != EndIter; ++Iter)
 			{
 				if (*Iter == mpChannel)
@@ -110,6 +113,15 @@ namespace hm
 		GET_SINGLE(SoundManager)->Play(mpSoundInfo);
 
 		mpChannel = mpSoundInfo->ChannelList.back();
+
+		float beforeVolume = 0.f;
+		mpChannel->getVolume(&beforeVolume);
+		
+		int intbeforeVolume = beforeVolume * 100;
+		if (intbeforeVolume != _volume)
+			intbeforeVolume = _volume;
+		mpChannel->setVolume(intbeforeVolume *0.01f);
+
 	}
 	void AudioSound::Stop()
 	{

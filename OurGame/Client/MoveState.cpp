@@ -179,11 +179,11 @@ void MoveState::Update()
 	{
 		pPlayer->StateChange(PlayerState::IdleState);
 	}
-	if (IS_DOWN(KeyType::LBUTTON) || IS_DOWN(KeyType::LCTRL))
+	if (IS_DOWN(KeyType::X) || IS_DOWN(KeyType::LCTRL))
 	{
 		pPlayer->StateChange(PlayerState::AttackState);
 	}
-	if (IS_DOWN(KeyType::RBUTTON) && pPlayer->GetCost() > 0)
+	if (IS_DOWN(KeyType::Z) && pPlayer->GetCost() > 0)
 	{
 		pPlayer->StateChange(PlayerState::BowState);
 	}

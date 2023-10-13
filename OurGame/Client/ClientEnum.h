@@ -141,6 +141,7 @@ enum class MonsterBasicState
 	Dazed,
 	//dead
 
+	CutScene,
 	//Idle //LOAD_BOSS
 	Melee_Chain,
 	Silent_Clap,
