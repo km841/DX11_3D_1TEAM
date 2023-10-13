@@ -39,6 +39,11 @@ namespace jh
 
 	void TriggerObject::OnTriggerEnter(Collider* _pOther)
 	{
+		/*
+		영진님) MainOffice에서 플레이어와 충돌 시 여기로 들어옵니다.
+		pScript->CutSceneStart()에서 bool변수 값을 바꿔주면
+		CutSceneCameraMoveScript의 FixedUpdate에서 MainOfficeMove함수(실제 카메라가 이동하는 함수)를 호출합니다.
+		*/
 		if (LayerType::Player == _pOther->GetGameObject()->GetLayerType() &&
 			SceneType::MainOfficeMap == ACTIVE_SCENE->GetSceneType())
 		{
