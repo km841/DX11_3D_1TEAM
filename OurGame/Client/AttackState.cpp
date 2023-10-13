@@ -35,6 +35,7 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "Animator.h"
+#include "AudioSound.h"
 
 /* Script */
 #include "PlayerMoveScript.h"
@@ -161,9 +162,26 @@ void AttackState::PlayAnimation()
 	//애니메이션 출력
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
+	AudioSound* pSound = pPlayer->GetAudioSound();
 	SwordHeavyEffect* pEffect = pPlayer->GetSwordEffect();
 	PlayerSlashScript* pSlashSc = pEffect->GetScript<PlayerSlashScript>();
 	int BigCount = pPlayer->GetBigAttackCount();
+
+	if (BigCount == 0)
+	{
+		pSound->SetSound(L"Sword1", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Player\\SwordSwing1.ogg");
+		pSound->Play();
+	}
+	else if (BigCount == 1)
+	{
+		pSound->SetSound(L"Sword2", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Player\\SwordSwing2.ogg");
+		pSound->Play();
+	}
+	else if (BigCount == 2)
+	{
+		pSound->SetSound(L"Sword3", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Player\\SwordSwing3.ogg");
+		pSound->Play();
+	}
 
 	mbTrigger = pPlayer->GetAttackDir();
 	DirSlash(); // 플레이어 방향 회전 함수
@@ -191,6 +209,7 @@ void AttackState::PlayAnimation()
 		pSlashSc->Attack();
 
 	}
+
 
 	
 }

@@ -77,6 +77,8 @@ namespace hm
 	void TitleScene::Initialize()
 	{
 		Scene::Initialize();
+		
+	
 	}
 
 	void TitleScene::Update()
@@ -212,9 +214,10 @@ namespace hm
 			pPlayer->SetDontDestroyObject(L"Player");
 			pPlayer->SetReflect(true);
 
-			AudioSound* pSound = pPlayer->AddComponent(new AudioSound);
+			AudioSound* pSound = PLAYER->AddComponent(new AudioSound);
+	
 			pSound->SetSound(L"BGM", this, true, "..\\Resources\\Sound\\TitleBGM.mp3");
-			pSound->Play();
+			pSound->Play(30);
 
 			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
 			yj::PlayerMoveOverMapScript* pMoveOverSc = pPlayer->AddComponent(new yj::PlayerMoveOverMapScript);
@@ -266,6 +269,8 @@ namespace hm
 
 	void TitleScene::Exit()
 	{
+	
+		PLAYER->GetAudioSound()->SetSound(L"BGM");
 		PLAYER->GetAudioSound()->Stop();
 		PLAYER->GetRigidBody()->ApplyGravity();
 		ChangeCameraMode();

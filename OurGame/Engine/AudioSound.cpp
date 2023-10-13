@@ -68,6 +68,8 @@ namespace hm
 	void AudioSound::SetSound(const std::wstring& _strName)
 	{
 		mpSoundInfo = GET_SINGLE(SoundManager)->FindSound(_strName);
+		AssertEx(nullptr != mpChannel, L"AudioSound::SetSound() - 채널이 존재하지 않음");
+
 
 		mFileName = _strName;
 	}
@@ -77,7 +79,8 @@ namespace hm
 		{
 			return;
 		}
-
+		
+		
 		mpSoundInfo = GET_SINGLE(SoundManager)->FindSound(_strName);
 		mFileName = _strName;
 	}
@@ -85,31 +88,39 @@ namespace hm
 	{
 		mbBGM = _Enable;
 	}
-	void AudioSound::Play()
+	void AudioSound::Play(int _volume)
 	{
-		//if (false == mbPlay)
-		//{
-		//	mpChannel->stop();
+		if (false == mbPlay)
+		{
+			mpChannel->stop();
 
-		//	std::list<FMOD::Channel*>::iterator Iter = mpSoundInfo->ChannelList.begin();
-		//	std::list<FMOD::Channel*>::iterator EndIter = mpSoundInfo->ChannelList.end();
+			std::list<FMOD::Channel*>::iterator Iter = mpSoundInfo->ChannelList.begin();
+			std::list<FMOD::Channel*>::iterator EndIter = mpSoundInfo->ChannelList.end();
 
-		//	for (; Iter != EndIter; ++Iter)
-		//	{
-		//		if (*Iter == mpChannel)
-		//		{
-		//			mpSoundInfo->ChannelList.erase(Iter);
-		//			break;
-		//		}
-		//	}
+			for (; Iter != EndIter; ++Iter)
+			{
+				if (*Iter == mpChannel)
+				{
+					mpSoundInfo->ChannelList.erase(Iter);
+					break;
+				}
+			}
 
-		//	mpChannel = nullptr;
-		//}
+			mpChannel = nullptr;
+		}
 
-		//mbPlay = true;
-		//GET_SINGLE(SoundManager)->Play(mpSoundInfo);
+		mbPlay = true;
+		GET_SINGLE(SoundManager)->Play(mpSoundInfo);
 
-		//mpChannel = mpSoundInfo->ChannelList.back();
+		mpChannel = mpSoundInfo->ChannelList.back();
+
+		float beforeVolume = 0.f;
+		mpChannel->getVolume(&beforeVolume);
+		
+		int intbeforeVolume = beforeVolume * 100;
+		if (intbeforeVolume != _volume)
+			intbeforeVolume = _volume;
+		mpChannel->setVolume(intbeforeVolume *0.01f);
 	}
 	void AudioSound::Stop()
 	{

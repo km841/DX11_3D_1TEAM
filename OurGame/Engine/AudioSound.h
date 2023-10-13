@@ -22,7 +22,7 @@ namespace hm
 
 		void EnableBGM(bool _Enable);
 
-		void Play();
+		void Play(int _volume = 100);
 		void Stop();
 		void Pause();
 
@@ -34,6 +34,7 @@ namespace hm
 		bool			  mbBGM;
 		bool			  mbLoop;
 		bool			  mbPlay;
+		float Volume;
 	};
 }
 

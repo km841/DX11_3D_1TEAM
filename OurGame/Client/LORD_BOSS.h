@@ -36,6 +36,8 @@ public:
 public:
 	void SetObject(LORD_BOSS_ROLL* _obj) { pObject = _obj; }
 
+	void CutSceneEnd() { isCutSceneEnd = true; }
+
 private:
 	
 	void SlowTurnLive();
@@ -77,6 +79,7 @@ private:
 	bool isWall = false;
 	bool isCrash = true;
 	bool isSilent_Clap = false;
+	bool isCutSceneEnd = false;
 
 	MonsterBasicState PrevState;
 

@@ -48,6 +48,7 @@
 #include "AudioSound.h"
 #include "Animator.h"
 
+
 /* Script */
 #include "PaperBurnScript.h"
 #include "CameraMoveScript.h"
@@ -110,24 +111,35 @@ namespace hm
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(2.f, 2.0f, 6.f);
 
-			LORD_BOSS_ROLL* pLordOfDoorRoll = Factory::CreateMonster<LORD_BOSS_ROLL>(Vec3(8.f, 5.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor_Roller.fbx");
+			LORD_BOSS_ROLL* pLordOfDoorRoll = Factory::CreateMonster<LORD_BOSS_ROLL>(Vec3(12.3f, -4.f, -8.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor_Roller.fbx");
 			pLordOfDoorRoll->GetTransform()->SetScale(Vec3(60.f, 60.f, 60.f));
-			pLordOfDoorRoll->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			pLordOfDoorRoll->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 130.f));
 			pLordOfDoorRoll->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -2.5f, 0.f));
 			pLordOfDoorRoll->GetAnimator()->Play(1, true);
 			pLordOfDoorRoll->Disable();
 
-			LORD_BOSS* pLordOfDoor = Factory::CreateMonster<LORD_BOSS>(Vec3(5.f, -4.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor.fbx");
+			LORD_BOSS* pLordOfDoor = Factory::CreateMonster<LORD_BOSS>(Vec3(12.3f, -4.f, -8.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor.fbx");
 			pLordOfDoor->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
-			pLordOfDoor->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
+			pLordOfDoor->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 130.f));
 			pLordOfDoor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -2.5f, 0.f));
+
+			pLordOfDoor->GetMeshRenderer()->GetMaterial()->SetBloom(true, 4);
+			
+			//pLordOfDoor->GetMeshRenderer()->GetMaterial()->SetBloomPower(3.f, 4);
+		
+			pLordOfDoor->GetMeshRenderer()->GetMaterial()->SetBloomFilter(Vec4(0.f, 0.f, 1.f, 0.f), 4);
+			//pLordOfDoor->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.f, 0.f, 0.f), 4);
+
+			AudioSound* pSound = pLordOfDoor->AddComponent(new AudioSound);
+			
 
 			pLordOfDoor->SetObject(pLordOfDoorRoll);
 			pLordOfDoorRoll->SetLORD_BOSS(pLordOfDoor);
 
 			AddGameObject(pLordOfDoorRoll);
 			AddGameObject(pLordOfDoor);
-			//SetGizmoTarget(pLordOfDoor);
+			//SetMeshTarget(pLordOfDoor);
+		
 		}
 
 		
