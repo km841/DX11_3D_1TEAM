@@ -37,6 +37,7 @@ namespace hm
 		Mirror,
 		PotCell,
 		Interface,
+		Trigger,
 		End,
 	};
 
