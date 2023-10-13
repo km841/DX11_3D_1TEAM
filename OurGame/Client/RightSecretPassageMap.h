@@ -22,6 +22,7 @@ namespace jh
 		virtual void Exit();
 
 	private:
+		int mSpawnPoint = -1;
 
 	private:
 		void InitObjectAdd();

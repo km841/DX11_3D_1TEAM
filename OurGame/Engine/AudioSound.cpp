@@ -87,29 +87,29 @@ namespace hm
 	}
 	void AudioSound::Play()
 	{
-		//if (false == mbPlay)
-		//{
-		//	mpChannel->stop();
+		if (false == mbPlay)
+		{
+			mpChannel->stop();
 
-		//	std::list<FMOD::Channel*>::iterator Iter = mpSoundInfo->ChannelList.begin();
-		//	std::list<FMOD::Channel*>::iterator EndIter = mpSoundInfo->ChannelList.end();
+			std::list<FMOD::Channel*>::iterator Iter = mpSoundInfo->ChannelList.begin();
+			std::list<FMOD::Channel*>::iterator EndIter = mpSoundInfo->ChannelList.end();
 
-		//	for (; Iter != EndIter; ++Iter)
-		//	{
-		//		if (*Iter == mpChannel)
-		//		{
-		//			mpSoundInfo->ChannelList.erase(Iter);
-		//			break;
-		//		}
-		//	}
+			for (; Iter != EndIter; ++Iter)
+			{
+				if (*Iter == mpChannel)
+				{
+					mpSoundInfo->ChannelList.erase(Iter);
+					break;
+				}
+			}
 
-		//	mpChannel = nullptr;
-		//}
+			mpChannel = nullptr;
+		}
 
-		//mbPlay = true;
-		//GET_SINGLE(SoundManager)->Play(mpSoundInfo);
+		mbPlay = true;
+		GET_SINGLE(SoundManager)->Play(mpSoundInfo);
 
-		//mpChannel = mpSoundInfo->ChannelList.back();
+		mpChannel = mpSoundInfo->ChannelList.back();
 	}
 	void AudioSound::Stop()
 	{
