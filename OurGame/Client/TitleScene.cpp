@@ -816,9 +816,8 @@ namespace hm
 		{
 			GameObject* pMpUiObj = new GameObject(LayerType::Unknown);
 			yj::HpUi* pHpUI = pMpUiObj->AddComponent<yj::MpUi>();
-			pHpUI->AddHpUI();
-			pHpUiObj->SetDontDestroyObject(L"HpUi");
-			HPUI->UiOff();
+			pMpUI->AddHpUI();
+			pMpUiObj->SetDontDestroyObject(L"MpUi");
 		}
 
 		// Buttons
