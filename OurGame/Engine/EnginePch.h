@@ -156,6 +156,8 @@ public:						  \
 #define IS_NONE(key) GET_SINGLE(Input)->GetButtonNone(key)
 #define DELTA_TIME GET_SINGLE(Timer)->GetDeltaTime()
 #define ACTIVE_SCENE GET_SINGLE(SceneManager)->GetActiveScene()
+#define MAIN_CAMERA ACTIVE_SCENE->GetMainCamera()->GetGameObject()
+#define CUTSCENE_CAMERA ACTIVE_SCENE->GetCutSceneCamera()->GetGameObject()
 #define RESOLUTION gpEngine->GetResolution()
 #define RENDERTARGET_2D gpEngine->GetGraphicsCore()->GetRenderTarget2D()
 #define LARGE_RESOURCE(path) wstring(L"..\\..\\..\\LargeResource\\") + path

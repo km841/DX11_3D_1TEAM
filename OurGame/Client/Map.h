@@ -29,7 +29,7 @@ namespace hm
 		static GameObject* GetPlayerHolder() { return spPlayerHolder; }
 		static GameObject* GetCutSceneHolder() { return spCutSceneHolder; }
 
-		void ChangeCameraMode() { std::swap(mpMainCamera, mpCutSceneCamera); }
+		//void ChangeCameraMode() { std::swap(mpMainCamera, mpCutSceneCamera); }
 		static void SetPlayerHolderPosition(const Vec3& _pos);
 		static void SetCutSceneHolderPosition(const Vec3& _pos);
 
