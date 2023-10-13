@@ -72,6 +72,7 @@ namespace hm
 
 		/* 씬에 있는 Physics Actor들을 씬에서 모두 제거해주는 함수 */
 		void RemovePhysicsActors();
+		void AddPhysicsActors();
 
 		Camera* GetMainCamera();
 		Camera* GetCutSceneCamera();

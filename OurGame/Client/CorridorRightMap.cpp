@@ -44,6 +44,7 @@
 /* Script */
 #include "PlayerMoveScript.h"
 #include "PlayerMoveOverMapScript.h"
+#include "OwnerFollowScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -68,11 +69,14 @@ namespace jh
 	{
 		Map::Start();
 
-		mpMainCamera->GetTransform()->SetPosition(Vec3(15.3f, 22.7f, 2.08f));
-		mpMainCamera->GetTransform()->SetRotation(Vec3(51.f, 304.f, 0.f));
+		mpMainCamera->GetTransform()->SetPosition(Vec3(19.8f, 19.5f, 0.5f));
+		mpMainCamera->GetTransform()->SetRotation(Vec3(46.3f, 308.f, 0.f));
 
 		PLAYER->GetKeyInfo().SetLeftKey(KeyType::LEFT);
 		PLAYER->GetKeyInfo().SetForwardKey(KeyType::UP);
+
+		OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
+		pFollowScript->SetOffset(Vec3(21.f, 28.f, -18.5f));
 
 		DisableDirLight();
 		if (PLAYER != nullptr)

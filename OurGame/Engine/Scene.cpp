@@ -353,6 +353,23 @@ namespace hm
 			}
 		}
 	}
+	void Scene::AddPhysicsActors()
+	{
+		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
+		{
+			for (auto& pGameObject : mGameObjects[i])
+			{
+				if (pGameObject->IsPhysicsObject())
+				{
+					if (false == pGameObject->GetRigidBody()->GetActorInSceneFlag())
+					{
+						pGameObject->GetRigidBody()->AddActorToScene();
+						pGameObject->GetRigidBody()->SetActorInSceneFlag(true);
+					}
+				}
+			}
+		}
+	}
 	Camera* Scene::GetMainCamera()
 	{
 		AssertEx(mpMainCamera, L"Scene::GetMainCamera() : Main CameraObject is nullptr");

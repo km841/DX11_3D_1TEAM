@@ -50,12 +50,15 @@
 #include "TestAnimationScript.h"
 #include "PlayerMoveOverMapScript.h"
 #include "BonFireScript.h"
+#include "OwnerFollowScript.h"
+#include "FocusingScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
 
 LeftSecretTrialMap::LeftSecretTrialMap()
 	: Map(MapType::LeftSecretTrialMap)
+	, mbIsEnter(false)
 {
 }
 
@@ -72,9 +75,6 @@ void LeftSecretTrialMap::Start()
 {
 	Map::Start();
 
-	mpMainCamera->GetTransform()->SetPosition(Vec3(-18.4f, 26.3f, 27.2f));
-	mpMainCamera->GetTransform()->SetRotation(Vec3(47.f, -233.3f, 0.f));
-
 	PLAYER->GetKeyInfo().SetLeftKey(KeyType::RIGHT);
 	PLAYER->GetKeyInfo().SetForwardKey(KeyType::DOWN);
 
@@ -83,11 +83,24 @@ void LeftSecretTrialMap::Start()
 		mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
 		switch (mSpawnPoint)
 		{
+
 		case 3:
 			PLAYER->GetTransform()->SetPosition(Vec3(0.92f, -2.57f, 13.1f));
+			mpMainCamera->GetTransform()->SetPosition(Vec3(-18.4f, 26.3f, 27.2f));
+			mpMainCamera->GetTransform()->SetRotation(Vec3(47.f, -233.3f, 0.f));
+			break;
+
+		case 2:
+			PLAYER->GetTransform()->SetPosition(Vec3(-13.7f, -2.57f, -43.8f));
+			mpMainCamera->GetTransform()->SetPosition(Vec3(-31.f, 26.3f, -29.7f));
+			mpMainCamera->GetTransform()->SetRotation(Vec3(47.f, -233.3f, 0.f));
 			break;
 		}
 	}
+
+	OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
+	pFollowScript->SetOffset(Vec3(-17.4f, 29.f, 14.1f));
+	mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
 }
 
 void LeftSecretTrialMap::Update()
@@ -113,25 +126,26 @@ void LeftSecretTrialMap::Render()
 void LeftSecretTrialMap::Enter()
 {
 
+	if (false == mbIsEnter)
+	{
+		mbIsEnter = true;
+		InitObjectAdd();
+		InitColliderAdd();
+		FuncObjectAdd();
+	}
+
+
+	
+
 	//배경맵 하얀색으로 만들어주는 코드
 	//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
 
-#pragma region "어드민"
-#pragma endregion
-	InitObjectAdd();
-	InitColliderAdd();
-	FuncObjectAdd();
 }
 
 void LeftSecretTrialMap::Exit()
 {
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Unknown);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Ground);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Monster);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::DecoObject);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::WallObject);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Player);
+
 }
 
 void LeftSecretTrialMap::InitObjectAdd()
@@ -1263,7 +1277,7 @@ void LeftSecretTrialMap::FuncObjectAdd()
 		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(4.7f, 10.8f, 3.5f);
 
-		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(0.6f, -1.7f, 16.7f), physicsInfo, L"Forward", L"", false, MapType::RightSecretPassageMap,1);
+		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(14.1f, -1.7f, -14.5f), physicsInfo, L"Forward", L"", false, MapType::BossMap,1);
 		AddGameObject(pTelZone);
 	}
 
@@ -1275,6 +1289,5 @@ void LeftSecretTrialMap::FuncObjectAdd()
 
 		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-13.5f, -1.1f, -49.6f), physicsInfo, L"Forward", L"", false, MapType::LeftSecretFightMap, 2);
 		AddGameObject(pTelZone);
-		SetGizmoTarget(pTelZone);
 	}
 }

@@ -28,16 +28,17 @@ namespace yj
 	void TeleportZone::Update()
 	{
 		GameObject::Update();
-		if (!isActive)
-		{
-			if (CheckPlayerIn())
-			{
-				PLAYER->GetScript<PlayerMoveOverMapScript>()->SetMoveOverNum(mSpawnPoint);
-				GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 1);
-				GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 0.5f, std::bind(&TeleportZone::ChangeScene, this), nullptr);
+	}
 
-				isActive = true;
-			}
+	void TeleportZone::OnTriggerEnter(Collider* _pOtherCollider)
+	{
+		if (LayerType::Player == _pOtherCollider->GetGameObject()->GetLayerType() && false == isActive)
+		{
+			PLAYER->GetScript<PlayerMoveOverMapScript>()->SetMoveOverNum(mSpawnPoint);
+			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 1);
+			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 0.5f, std::bind(&TeleportZone::ChangeScene, this), nullptr);
+
+			isActive = true;
 		}
 	}
 

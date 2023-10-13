@@ -51,6 +51,7 @@
 #include "PlayerSlashScript.h"
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
+#include "PlayerMoveOverMapScript.h"
 
 
 /* Event */
@@ -74,6 +75,23 @@ void LeftSecretFightMap::Initialize()
 void LeftSecretFightMap::Start()
 {
 	Map::Start();
+
+	mpMainCamera->GetTransform()->SetPosition(Vec3(-27.2f, 29.3f, 27.2f));
+	mpMainCamera->GetTransform()->SetRotation(Vec3(56.f, -225.3f, 0.f));
+
+	PLAYER->GetKeyInfo().SetLeftKey(KeyType::RIGHT);
+	PLAYER->GetKeyInfo().SetForwardKey(KeyType::DOWN);
+
+	if (PLAYER != nullptr)
+	{
+		mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
+		switch (mSpawnPoint)
+		{
+		case 2:
+			PLAYER->GetTransform()->SetPosition(Vec3(-10.8f, -7.5f, 23.6f));
+			break;
+		}
+	}
 }
 
 void LeftSecretFightMap::Update()
@@ -182,12 +200,6 @@ void LeftSecretFightMap::Enter()
 
 void LeftSecretFightMap::Exit()
 {
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Unknown);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Ground);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Monster);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::DecoObject);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::WallObject);
-	GET_SINGLE(EventManager)->PushDeleteGameObjectsEvent(meSceneType, LayerType::Player);
 }
 
 void LeftSecretFightMap::InitObjectAdd()
@@ -826,11 +838,13 @@ void LeftSecretFightMap::InitColliderAdd()
 
 void LeftSecretFightMap::FuncObjectAdd()
 {
-	PhysicsInfo physicsInfo;
-	physicsInfo.eActorType = ActorType::Static;
-	physicsInfo.eGeometryType = GeometryType::Box;
-	physicsInfo.size = Vec3(5.52, 3.8f, 2.18f);
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(5.52, 3.8f, 2.18f);
 
-	yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-11.0f, -7.7f, 27.7f), physicsInfo, L"Forward", L"", false, MapType::Right2Map,1);
-	AddGameObject(pTelZone);
+		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-11.0f, -7.7f, 27.7f), physicsInfo, L"Forward", L"", false, MapType::LeftSecretTrialMap, 2);
+		AddGameObject(pTelZone);
+	}
 }

@@ -45,6 +45,8 @@
 #include "PlayerMoveScript.h"
 #include "BonFireScript.h"
 #include "PlayerMoveOverMapScript.h"
+#include "OwnerFollowScript.h"
+#include "FocusingScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -69,11 +71,15 @@ namespace jh
 	{
 		Map::Start();
 
-		mpMainCamera->GetTransform()->SetPosition(Vec3(12.5f, 32.f, -24.2f));
+		mpMainCamera->GetTransform()->SetPosition(Vec3(0.38f, 25.8f, -32.2f));
 		mpMainCamera->GetTransform()->SetRotation(Vec3(53.1f, -29.5f, 0.f));
 
 		PLAYER->GetKeyInfo().SetLeftKey(KeyType::LEFT);
 		PLAYER->GetKeyInfo().SetForwardKey(KeyType::UP);
+
+		OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
+		pFollowScript->SetOffset(Vec3(8.f, 28.f, -21.4f));
+		mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
 
 		if (PLAYER != nullptr)
 		{
