@@ -85,6 +85,9 @@ namespace hm
 
 		virtual void Enable();
 		virtual void Disable();
+
+		virtual void EnableCollider();
+		virtual void DisableCollider();
 		bool IsEnable() { return mbEnable; }
 
 		/* Frustum Culling을 적용받을 것인지를 세팅 */

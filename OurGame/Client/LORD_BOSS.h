@@ -1,6 +1,7 @@
 #pragma once
 #include "Monster.h"
 class LORD_BOSS_ROLL;
+class MonsterSlowObject;
 class LORD_BOSS :
     public Monster
 {
@@ -81,7 +82,7 @@ private:
 
 	LORD_BOSS_ROLL* pObject;
 	GameObject* pMonsterAttackCol;
-	GameObject* pMonsterSilent_ClapCol;
+	MonsterSlowObject* pMonsterSilent_ClapCol;
 	GameObject* pBackswingCol;
 };
 

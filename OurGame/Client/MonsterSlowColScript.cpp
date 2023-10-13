@@ -26,6 +26,7 @@
 #include "Npc.h"
 #include "Monster.h"
 #include "Grandma.h"
+#include "MonsterSlowObject.h"
 
 /* Component */
 #include "Collider.h"
@@ -93,6 +94,10 @@ void MonsterSlowColScript::FixedUpdate()
 			SceneType eSceneType = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 			GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(eSceneType, GetGameObject());
 			return;
+		}
+		if (TextureSize.x > 14.f)
+		{
+			static_cast<MonsterSlowObject*>(GetGameObject())->SetColCheck(true);
 		}
 		ColSize.x += 0.2f;
 		ColSize.z += 0.2f;
