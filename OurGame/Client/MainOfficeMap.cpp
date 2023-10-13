@@ -53,6 +53,7 @@
 #include "PlayerMoveOverMapScript.h"
 #include "FocusingScript.h"
 #include "OwnerFollowScript.h"
+#include "HeadText.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -728,6 +729,18 @@ namespace yj
 		}
 #pragma endregion
 
+		{
+			GameObject* pEnterTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::Unknown);
+			pEnterTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0,GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpEnter.png"));
+			pEnterTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+
+			HeadText* pEnterTextScript = pEnterTextBox->AddComponent<HeadText>();
+			AddGameObject(pEnterTextBox);
+			/*pEnterTextScript->SetDectetorPos(Vec3(10.0f, 10.0f, 10.0f));*/
+			SetGizmoTarget(pEnterTextBox);
+
+
+		}
 
 		{
 			PhysicsInfo physicsInfo;

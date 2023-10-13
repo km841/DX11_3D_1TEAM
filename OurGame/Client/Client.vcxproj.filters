@@ -355,6 +355,11 @@
     </ClInclude>
     <ClInclude Include="MonsterBackswingColScript.h" />
     <ClInclude Include="HpUi.h" />
+    <ClInclude Include="SpawnDoor.h" />
+    <ClInclude Include="ManaUi.h" />
+    <ClInclude Include="HeadText.h" />
+    <ClInclude Include="ManaIconScript.h" />
+    <ClInclude Include="HpIconScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -708,6 +713,11 @@
     </ClCompile>
     <ClCompile Include="MonsterBackswingColScript.cpp" />
     <ClCompile Include="HpUi.cpp" />
+    <ClCompile Include="SpawnDoor.cpp" />
+    <ClCompile Include="ManaUi.cpp" />
+    <ClCompile Include="HeadText.cpp" />
+    <ClCompile Include="ManaIconScript.cpp" />
+    <ClCompile Include="HpIconScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

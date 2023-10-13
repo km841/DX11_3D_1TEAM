@@ -25,6 +25,7 @@
 #include "UI.h"
 #include "CameraHolder.h"
 #include "HpUi.h"
+#include "ManaUi.h"
 
 /* Interface */
 #include "Interface.h"
@@ -292,13 +293,23 @@ namespace hm
 		// HpUi
 		{
 			GameObject* pHpUiObj = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pHpUiObj->AddComponent(new Transform);
+			pHpUiObj->AddComponent(new RigidBody);
+			AddGameObject(pHpUiObj);
 			yj::HpUi* pHpUI = pHpUiObj->AddComponent<yj::HpUi>();
 			pHpUI->AddHpUI();
-			pHpUiObj->SetDontDestroyObject(L"HpUi");
-			HPUI->UiOff();
+			pHpUiObj->SetDontDestroyObject(L"HpUi"); 
 		}
-
-
+		// HpUi
+		{
+			GameObject* pManaUiObj = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pManaUiObj->AddComponent(new Transform);
+			pManaUiObj->AddComponent(new RigidBody);
+			AddGameObject(pManaUiObj);
+			yj::ManaUi* pManaUI = pManaUiObj->AddComponent<yj::ManaUi>();
+			pManaUI->AddManaUI();
+			pManaUiObj->SetDontDestroyObject(L"MpUi");
+		}
 		// Buttons
 		{
 			// 현모
