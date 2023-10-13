@@ -38,6 +38,7 @@
 #include "Cow.h"
 #include "IrreparablePot.h"
 #include "Pot_ProjectTile.h"
+#include "MonsterSlowObject.h"
 
 /* Component */
 #include "Collider.h"
@@ -180,7 +181,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Snap_Once;
+					meBasicState = MonsterBasicState::Roll_Start;
 					return BehaviorResult::Success;
 				});
 
@@ -770,7 +771,6 @@ void LORD_BOSS::SetBehaviorTree()
 				Animator* pAni = pObject->GetAnimator();
 
 				if (pAni->GetFrameRatio() > 0.95) {
-					PrevFollowSet();
 					return BehaviorResult::Success;
 				}
 				return BehaviorResult::Failure;
@@ -841,6 +841,7 @@ void LORD_BOSS::SetBehaviorTree()
 				if (isWall == false) {
 					mMagnScale = 10.f;
 					PrevRollLive();
+					PrevFollowSet();
 				}
 				else if (isWall == true)
 				{
@@ -1614,6 +1615,7 @@ void LORD_BOSS::Follow()
 
 void LORD_BOSS::PrevFollowSet()
 {
+	//hm Look Plz
 	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 	Vec3 myPos = GetTransform()->GetPosition();
 	PosDir = playerPos - myPos;
@@ -1852,12 +1854,13 @@ void LORD_BOSS::MonsterSilent_ClapCol()
 		physicsInfo.eGeometryType = GeometryType::Sphere;
 		physicsInfo.size = Vec3(6.0f, 0.1f, 6.f);
 
-		pMonsterSilent_ClapCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(pPlayerPos), physicsInfo, L"Forward", L"..\\Resources\\FBX\\Monster\\SilenceEffect.fbx", false, LayerType::MonsterSlowCol);
+		pMonsterSilent_ClapCol = Factory::CreateObjectHasPhysical<MonsterSlowObject>(Vec3(pPlayerPos), physicsInfo, L"Forward", L"..\\Resources\\FBX\\Monster\\SilenceEffect.fbx");
 		pMonsterSilent_ClapCol->GetMeshRenderer()->SetMaterial(pMonsterSilent_ClapCol->GetMeshRenderer()->GetMaterial()->Clone());
 		pMonsterSilent_ClapCol->GetTransform()->SetScale(Vec3(10.f, 1.f, 10.f));
 		pMonsterSilent_ClapCol->GetTransform()->SetRotation(Vec3(00.f, 00.f, 0.f));
 		pMonsterSilent_ClapCol->GetMeshRenderer()->GetMaterial()->SetBloom(true);
 		pMonsterSilent_ClapCol->Initialize();
+
 		MonsterSlowColScript* MonSlowSc = pMonsterSilent_ClapCol->AddComponent(new MonsterSlowColScript);
 		MonSlowSc->Initialize();
 		pMonsterSilent_ClapCol->GetMeshRenderer()->SetSubsetRenderFlag(1, false);

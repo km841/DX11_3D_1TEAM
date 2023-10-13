@@ -76,7 +76,7 @@ namespace hm
 	void BossMap::Start()
 	{
 		Map::Start();
-		PLAYER->GetTransform()->SetPosition(Vec3(-15.6f, -10.0f, 24.4f));
+		PLAYER->GetTransform()->SetPosition(Vec3(0.f, 0.0f, 0.f));
 
 		SetDirLightPosition(Vec3(-31.5f, 27.2f, 33.9f));
 		SetDirLightRotation(Vec3(41.7f, 136.54f, 294.54f));
@@ -125,6 +125,43 @@ namespace hm
 			AddGameObject(pLordOfDoor);
 		}
 
+		//WallObject Zip
+		{
+			PhysicsInfo Info;
+			Info.eActorType = ActorType::Static;
+			Info.eGeometryType = GeometryType::Box;
+			Info.size = Vec3(28.6f, 9.2f, 0.8f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(7.8f, -4.7f, 15.7f), Info, L"NoDraw", L"");
+
+			AddGameObject(pWall);
+			
+		}
+
+		//WallObject Zip
+		{
+			PhysicsInfo Info;
+			Info.eActorType = ActorType::Static;
+			Info.eGeometryType = GeometryType::Box;
+			Info.size = Vec3(28.6f, 9.2f, 0.8f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-12.5f, -4.7f, -13.2f), Info, L"NoDraw", L"");
+			pWall->GetTransform()->SetRotation(Vec3(0.f, 236.f, 0.f));
+			AddGameObject(pWall);
+
+		}
+
+		//WallObject Zip
+		{
+			PhysicsInfo Info;
+			Info.eActorType = ActorType::Static;
+			Info.eGeometryType = GeometryType::Box;
+			Info.size = Vec3(28.6f, 9.2f, 0.8f);
+
+			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-9.3f, -4.7f, 7.2f), Info, L"NoDraw", L"");
+			pWall->GetTransform()->SetRotation(Vec3(0.f, 320.f, 0.f));
+			AddGameObject(pWall);
+		}
 
 		{
 			Ground* pFrontGround = Factory::CreateObject<Ground>(Vec3(0.4f, -5.3f, -0.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\uv1.fbx");
@@ -165,13 +202,13 @@ namespace hm
 			AddGameObject(pUpstair);
 		}
 
-		{
+		/*{
 			Ground* pBusStop = Factory::CreateObject<Ground>(Vec3(-8.0f, -16.5f, 24.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\stairsIsland.fbx");
 			pBusStop->GetTransform()->SetScale(Vec3(25.0f, 25.0f, 25.0f));
 			pBusStop->GetTransform()->SetRotation(Vec3(0.0f, -160.0f, 0.0f));
 			pBusStop->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.04f, 0.04f));
 			AddGameObject(pBusStop);
-		}
+		}*/
 
 
 

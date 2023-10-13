@@ -109,7 +109,8 @@ void AIMoveState::Enter()
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 
-
+	GameObject* pObj = pPlayer->GetGreatSword();
+	pObj->Disable();
 
 	int MoveToAnim = 67; 
 	pAni->Play(MoveToAnim, true);
@@ -117,6 +118,9 @@ void AIMoveState::Enter()
 
 void AIMoveState::Exit()
 {
+	Player* pPlayer = Player::GetPlayer();
+	GameObject* pObj = pPlayer->GetGreatSword();
+	pObj->Enable();
 }
 
 void AIMoveState::PlayAnimation()

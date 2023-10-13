@@ -238,6 +238,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="MonsterKeyScript.h" />
     <ClInclude Include="MonsterHitScript.h" />
     <ClInclude Include="MonsterSlowColScript.h" />
+    <ClInclude Include="MonsterSlowObject.h" />
     <ClInclude Include="Monster_Player_TestScene.h" />
     <ClInclude Include="Monster_ProjectTile.h" />
     <ClInclude Include="MoveState.h" />
@@ -380,6 +381,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="MonsterKeyScript.cpp" />
     <ClCompile Include="MonsterHitScript.cpp" />
     <ClCompile Include="MonsterSlowColScript.cpp" />
+    <ClCompile Include="MonsterSlowObject.cpp" />
     <ClCompile Include="Monster_Player_TestScene.cpp" />
     <ClCompile Include="Monster_ProjectTile.cpp" />
     <ClCompile Include="MoveState.cpp" />

@@ -76,6 +76,9 @@ void HitStartState::Enter()
 
 	GameObject* pArrowObj = pPlayer->GetArrow(); //화살 오브젝트
 	pArrowObj->Disable(); //화살 안그리기
+
+	GameObject* pBowObj = pPlayer->GetBow(); //화살 오브젝트
+	pBowObj->Disable(); //화살 안그리기
 	
 }
 

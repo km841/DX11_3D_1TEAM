@@ -227,6 +227,28 @@ namespace hm
 		}
 	}
 
+	void GameObject::EnableCollider()
+	{
+		if (true == IsPhysicsObject())
+		{
+			GetRigidBody()->SetSimulationShapeFlag(true);
+		}
+	}
+
+	void GameObject::DisableCollider()
+	{
+		if (true == IsPhysicsObject())
+		{
+			GetRigidBody()->SetSimulationShapeFlag(false);
+
+			ActorType eActorType = GetRigidBody()->GetActorType();
+			if (ActorType::Kinematic == eActorType)
+			{
+				GET_SINGLE(CollisionManager)->ClearAllCollisionForObject(this);
+			}
+		}
+	}
+
 	void GameObject::SetDontDestroyObject(const wstring& _name)
 	{
 		mbDontDestroy = true;
