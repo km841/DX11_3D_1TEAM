@@ -37,7 +37,7 @@ namespace yj
 
 	private:
 		
-		//Interface* mpHpFrame;
+		Interface* mpHpFrame[4];
 		Interface* mpHpIn[4];
 		Interface* mpEmty[4];
 

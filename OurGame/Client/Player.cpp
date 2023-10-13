@@ -289,6 +289,7 @@ Player::~Player()
 	{
 		SAFE_DELETE(mState[i]);
 	}
+	
 }
 
 void Player::Initialize()
@@ -355,6 +356,17 @@ void Player::Initialize()
 
 
 #pragma endregion
+
+
+
+
+
+
+
+
+
+
+
 
 
 

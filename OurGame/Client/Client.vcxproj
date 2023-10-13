@@ -202,12 +202,10 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="Grimace_ProjectTile.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="HallColliderCheckMap.h" />
-    <ClInclude Include="HeadText.h" />
     <ClInclude Include="HitEndState.h" />
     <ClInclude Include="HitStartState.h" />
     <ClInclude Include="HittingState.h" />
     <ClInclude Include="HeadRoller.h" />
-    <ClInclude Include="HpIconScript.h" />
     <ClInclude Include="HpUi.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="IdleState_Gm.h" />
@@ -230,8 +228,6 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="Mage_ProjectTile.h" />
     <ClInclude Include="MagicAttackState.h" />
     <ClInclude Include="MainOfficeMap.h" />
-    <ClInclude Include="ManaIconScript.h" />
-    <ClInclude Include="ManaUi.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Mirror_ProjectTile.h" />
     <ClInclude Include="Monster.h" />
@@ -348,12 +344,10 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="Grimace_ProjectTile.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="HallColliderCheckMap.cpp" />
-    <ClCompile Include="HeadText.cpp" />
     <ClCompile Include="HitEndState.cpp" />
     <ClCompile Include="HitStartState.cpp" />
     <ClCompile Include="HittingState.cpp" />
     <ClCompile Include="HeadRoller.cpp" />
-    <ClCompile Include="HpIconScript.cpp" />
     <ClCompile Include="HpUi.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="IdleState_Gm.cpp" />
@@ -376,8 +370,6 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="Mage_ProjectTile.cpp" />
     <ClCompile Include="MagicAttackState.cpp" />
     <ClCompile Include="MainOfficeMap.cpp" />
-    <ClCompile Include="ManaIconScript.cpp" />
-    <ClCompile Include="ManaUi.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mirror_ProjectTile.cpp" />
     <ClCompile Include="Monster.cpp" />

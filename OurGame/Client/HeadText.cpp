@@ -1,14 +1,8 @@
 #include "pch.h"
 #include "HeadText.h"
-
 #include "Player.h"
-
 #include "Timer.h"
-#include "Rigidbody.h"
-#include "Collider.h"
-#include "Scene.h"
-#include "SceneManager.h"
-#include "Factory.h"
+#include "UIText.h"
 
 namespace yj
 {
@@ -23,75 +17,68 @@ namespace yj
 
 	void HeadText::Initialize()
 	{
-		Scene* mScene = SceneManager::GetInstance()->GetActiveScene();
-		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Kinematic;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3::One;
-
-			pDetector = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, -100.f, 0.f), physicsInfo, L"Forward", L"" ,false,LayerType::Unknown);
-
-			mScene->AddGameObject(pDetector);
-			pDetector->Initialize();
-		}
+		mWriteTextArray.push_back(L"항아리 저택");
+		mWriteTextArray.push_back(L"E 입장");
+		mWriteTextArray.push_back(L"E 대화하기");
 	}
 
 	void HeadText::Update()
 	{
-		if (pDetector == nullptr)
+		//GetTransform()->SetPosition();
+		//GetTransform()->SetPosition();
+		//플레이어 위를 따라다니게 넘버에 따라서 머리 바로위 그리고 더 위 하나
+		//맵 표시와 키 입력 표시
+		Vec3 mPlayerPos = PLAYER->GetTransform()->GetPosition();
+		Vec3 mFixedPos = mPlayerPos + Vec3(0.0f, 0.5f, 0.0f);
+		GetTransform()->SetPosition(mFixedPos);
+
+
+		UIText* pUIText = GetUIText();
+		pUIText = GetUIText();
+
+		if (ApearAct)
 		{
-			return;
-		}
-		if (pDetector->GetRigidBody()->GetCollider()->CheckIsCollisionObject(LayerType::Player))
-		{
-			Increase();
-			if (!this->GetGameObject()->IsEnable())
+			while (mCurrSize < mExpandLimitSize)
 			{
-				GetGameObject()->Enable();
+				mCurrSize += mIncreaseSize * DELTA_TIME;
+				pUIText->SetSize(mCurrSize);
+			}
+			if (mCurrSize >= mExpandLimitSize)
+			{
+				pUIText->SetSize(mExpandLimitSize);
+				mActState = StandbyAct;
 			}
 		}
-		else
+		if (StandbyAct)
 		{
-			Decrease();
+			//
+		}
+		if (DisapearAct)
+		{
+			while (mCurrSize > mExpandLimitSize)
+			{
+				mCurrSize -= mIncreaseSize * DELTA_TIME;
+				pUIText->SetSize(mCurrSize);
+			}
+			if (mCurrSize < 0.2f)
+			{
+				pUIText->SetSize(0.2f);
+				Disable();
+				mActState = End;
+			}
 		}
 	}
-	Component* HeadText::Clone(GameObject* _pGameObject)
+	void HeadText::SetHeadText(int num)
 	{
-		return _pGameObject->AddComponent(new HeadText);
+		SetText(mWriteTextArray[num], 25.f, true);
 	}
-	void HeadText::Increase()
+	void HeadText::Apear()
 	{
-		if (mState == Apear)
-		{
-			if (GetTransform()->GetScale().x < mMaxSize.x)
-			{
-				Vec3 mCurrScale = GetTransform()->GetScale();
-				Vec3 mFixedScale = mCurrScale + Vec3(mSpeed, mSpeed, 0.0f);
-				GetTransform()->SetScale(mFixedScale);
-			}
-			if (GetTransform()->GetScale().x >= mMaxSize.x)
-			{
-				GetTransform()->SetScale(Vec3(mMaxSize));
-				mState = Standby;
-			}
-		}
+		this->GetGameObject()->Enable();
+		mActState = ApearAct;
 	}
-	void HeadText::Decrease()
+	void HeadText::Disapear()
 	{
-		if (mState == Disapear)
-		{
-			if (GetTransform()->GetScale().x < mMaxSize.x)
-			{
-				Vec3 mCurrScale = GetTransform()->GetScale();
-				Vec3 mFixedScale = mCurrScale + Vec3(mSpeed, mSpeed, 0.0f);
-				GetTransform()->SetScale(mFixedScale);
-			}
-			if (GetTransform()->GetScale().x >= mMaxSize.x)
-			{
-				GetGameObject()->Disable();
-				mState = Standby;
-			}
-		}
+		mActState = DisapearAct;
 	}
 }
