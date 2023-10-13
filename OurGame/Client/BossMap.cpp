@@ -34,6 +34,7 @@
 #include "HeadRoller.h"
 #include "Grimace.h"
 #include "Banker.h"
+#include "Cow.h"
 
 /* Component */
 #include "Collider.h"
@@ -80,6 +81,9 @@ namespace hm
 
 		SetDirLightPosition(Vec3(-31.5f, 27.2f, 33.9f));
 		SetDirLightRotation(Vec3(41.7f, 136.54f, 294.54f));
+
+		PLAYER->GetKeyInfo().SetLeftKey(KeyType::RIGHT);
+		PLAYER->GetKeyInfo().SetForwardKey(KeyType::DOWN);
 	}
 	void BossMap::Update()
 	{
@@ -109,21 +113,24 @@ namespace hm
 			LORD_BOSS_ROLL* pLordOfDoorRoll = Factory::CreateMonster<LORD_BOSS_ROLL>(Vec3(8.f, 5.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor_Roller.fbx");
 			pLordOfDoorRoll->GetTransform()->SetScale(Vec3(60.f, 60.f, 60.f));
 			pLordOfDoorRoll->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-			pLordOfDoorRoll->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -3.f, 0.f));
+			pLordOfDoorRoll->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -2.5f, 0.f));
 			pLordOfDoorRoll->GetAnimator()->Play(1, true);
 			pLordOfDoorRoll->Disable();
 
 			LORD_BOSS* pLordOfDoor = Factory::CreateMonster<LORD_BOSS>(Vec3(5.f, -4.f, 0.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor.fbx");
 			pLordOfDoor->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 			pLordOfDoor->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-			pLordOfDoor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -3.f, 0.f));
+			pLordOfDoor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -2.5f, 0.f));
 
 			pLordOfDoor->SetObject(pLordOfDoorRoll);
 			pLordOfDoorRoll->SetLORD_BOSS(pLordOfDoor);
 
 			AddGameObject(pLordOfDoorRoll);
 			AddGameObject(pLordOfDoor);
+			//SetGizmoTarget(pLordOfDoor);
 		}
+
+		
 
 		//WallObject Zip
 		{
@@ -164,10 +171,11 @@ namespace hm
 		}
 
 		{
-			Ground* pFrontGround = Factory::CreateObject<Ground>(Vec3(0.4f, -5.3f, -0.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\uv1.fbx");
+			WallObject* pFrontGround = Factory::CreateObject<WallObject>(Vec3(0.4f, -5.3f, -0.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\uv1.fbx");
 			pFrontGround->GetTransform()->SetScale(Vec3(49.0f, 49.0f, 49.0f));
 
 			AddGameObject(pFrontGround);
+			
 		}
 
 		{
@@ -334,7 +342,7 @@ namespace hm
 
 
 #pragma region "pMainDesk"
-		{
+		/*{
 			Ground* pMainDesk = Factory::CreateObject<Ground>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\MainDesk.fbx");
 			pMainDesk->GetTransform()->SetScale(Vec3(9.0f, 9.0f, 9.0f));
 			pMainDesk->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
@@ -343,7 +351,7 @@ namespace hm
 			pMainDesk->GetTransform()->SetPosition(Vec3(13.5f, -7.7f, -9.4f));
 			pMainDesk->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
 			pMainDesk->GetTransform()->SetScale(Vec3(14.5f, 14.5f, 14.5f));
-		}
+		}*/
 #pragma endregion
 
 
@@ -469,6 +477,7 @@ namespace hm
 			pHallCollider->GetTransform()->SetRotation(Vec3(0.f, -332.9f, 0.f));
 			pHallCollider->DrawShadow(false);
 			AddGameObject(pHallCollider);
+			
 		}
 
 		{
@@ -477,9 +486,10 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Mesh;
 			physicsInfo.size = Vec3(49.0f, 49.0f, 49.0f);
 
-			Ground* pOfficeCollider = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.9f, -4.5f, -0.3f), physicsInfo, L"NoDraw", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\OfficeCollider.fbx");
+			WallObject* pOfficeCollider = Factory::CreateObjectHasPhysical<WallObject>(Vec3(0.9f, -4.5f, -0.3f), physicsInfo, L"NoDraw", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\OfficeCollider.fbx");
 			pOfficeCollider->DrawShadow(false);
 			AddGameObject(pOfficeCollider);
+			//SetGizmoTarget(pOfficeCollider);
 		}
 
 
@@ -489,7 +499,7 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(25.5f, 1.0f, 25.5f);
 
-			Ground* pBusGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-7.2f, -12.1f, 24.0f), physicsInfo, L"Deferred", L"");
+			WallObject* pBusGround = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-7.2f, -12.1f, 24.0f), physicsInfo, L"Deferred", L"");
 			pBusGround->GetTransform()->SetRotation(Vec3(0.0f, 15.0f, 0.0f));
 			AddGameObject(pBusGround);
 		}
@@ -499,7 +509,7 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(5.31f, 1.0f, 26.39f);
 
-			Ground* pBridgeGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(21.95f, -0.22f, -0.03f), physicsInfo, L"Deferred", L"");
+			WallObject* pBridgeGround = Factory::CreateObjectHasPhysical<WallObject>(Vec3(21.95f, -0.22f, -0.03f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pBridgeGround);
 
 		}
@@ -523,7 +533,7 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(3.9f, 1.f, 6.09f);
 
-			Ground* pStairToTop = Factory::CreateObjectHasPhysical<Ground>(Vec3(21.9f, 0.f, -8.5f), physicsInfo, L"Deferred", L"");
+			WallObject* pStairToTop = Factory::CreateObjectHasPhysical<WallObject>(Vec3(21.9f, 0.f, -8.5f), physicsInfo, L"Deferred", L"");
 			pStairToTop->GetTransform()->SetRotation(Vec3(28.6f, 12.12f, 0.f));
 			AddGameObject(pStairToTop);
 		}
@@ -535,7 +545,7 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(12.65f, 1.f, 13.f);
 
-			Ground* pTop = Factory::CreateObjectHasPhysical<Ground>(Vec3(21.6f, 1.39f, -17.35f), physicsInfo, L"Deferred", L"");
+			WallObject* pTop = Factory::CreateObjectHasPhysical<WallObject>(Vec3(21.6f, 1.39f, -17.35f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pTop);
 		}
 	}
