@@ -67,8 +67,8 @@ private:
 
 	Vec3 PotProjectPos;
 
-	Vec3 LaserPos = Vec3(0.f, 15.f, 20.f);
-	Vec3 LaserRot = Vec3(-90.f, 360.f, 360.f);
+	Vec3 LaserPos = Vec3(14.5f, 10.f, -10.f);
+	Vec3 LaserRot = Vec3(-90.f, 360.f, 130.f);
 
 	int Health;
 	float TurnSpeed;

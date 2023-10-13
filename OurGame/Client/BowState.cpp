@@ -67,7 +67,7 @@ void BowState::Update()
 
 	Vec3 Dir = ConvertDir(eDir);
 
-	if (IS_UP(KeyType::RBUTTON))
+	if (IS_UP(KeyType::Z))
 	{
 		pPlayer->StateChange(PlayerState::IdleState);
 		pArrowSc->SetArrowAtkCheck(true); //화살 발사 부분 시작

@@ -98,7 +98,7 @@ void AttackState::Update()
 	}
 	
 	////마우스 좌측 버튼 클릭했을때
-	if (IS_DOWN(KeyType::LBUTTON) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed() && isKeydown == true)
+	if (IS_DOWN(KeyType::X) && pAni->GetFrameRatio() > pPlayer->GetAttackSpeed() && isKeydown == true)
 	{
 		
 		if (mbTrigger == true) //오른쪽 공격

@@ -841,7 +841,6 @@ void LORD_BOSS::SetBehaviorTree()
 				if (isWall == false) {
 					mMagnScale = 10.f;
 					PrevRollLive();
-					PrevFollowSet();
 				}
 				else if (isWall == true)
 				{
@@ -1093,10 +1092,10 @@ void LORD_BOSS::SetBehaviorTree()
 				{
 					GetRigidBody()->RemoveGravity();
 					GetRigidBody()->SetVelocity(AXIS_Y, 0.f);
-					CreateCow(Vec3(10.f, -1.f, 0.f));
-					CreateCow(Vec3(-15.f, -1.f, 0.f));
-					CreateCow(Vec3(0.f, -1.f, 10.f));
-					CreateCow(Vec3(0.f, -1.f, -10.f));
+					CreateCow(Vec3(1.4f, -0.3f, -13.f));
+					CreateCow(Vec3(-4.6f, -0.3f, -13.8f));
+					CreateCow(Vec3(17.4f, -0.3f, 2.7f));
+					CreateCow(Vec3(18.f, -0.3f, 10.f));
 					pAnimator->Play(7, true);
 				}
 				return BehaviorResult::Success;
@@ -1176,11 +1175,23 @@ void LORD_BOSS::SetBehaviorTree()
 
 			// 특별한 조건 실행할때
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
+				Vec3 myRot = GetTransform()->GetRotation();
+				Vec3 myPos = GetTransform()->GetPosition();
+				Vec3 scale = GetRigidBody()->GetGeometrySize();
 				Animator* pAni = GetAnimator();
 
-				if (pAni->GetFrameRatio() > 0.40) {
+				Vec3 Look = Vec3(0.f, -1.f, 0.f);
+
+				Vec3 dirLook = GetTransform()->GetUp();
+				if (IsRaysCollide(myPos + scale * Look, Look, LayerType::Ground, 1.f))
+				{
+					GetRigidBody()->SetVelocity(PosDir * 0);
 					return BehaviorResult::Success;
 				}
+
+				/*if (pAni->GetFrameRatio() > 0.35) {
+					return BehaviorResult::Success;
+				}*/
 				return BehaviorResult::Failure;
 				});
 
@@ -1767,22 +1778,16 @@ void LORD_BOSS::LaserPrevFollowLive()
 
 	GetRigidBody()->SetVelocity(Ve); 
 
-	Vec3 dirLook = GetTransform()->GetUp();
+	/*Vec3 dirLook = GetTransform()->GetLook();
 
 
 
-	if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::WallObject, 1.f))
+	
+	if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::Ground, 0.5f))
 	{
 		GetRigidBody()->SetVelocity(Ve * 0);
-	}
-	if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::Ground, 1.f))
-	{
-		GetRigidBody()->SetVelocity(Ve * 0);
-	}
-	if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::DecoObject, 1.f))
-	{
-		GetRigidBody()->SetVelocity(Ve * 0);
-	}
+	}*/
+	
 
 
 	mSpeed = 8.f;
@@ -1803,10 +1808,11 @@ void LORD_BOSS::CreateCow(Vec3 _pos)
 
 		pBullKnocker->GetTransform()->SetScale(Vec3(0.3f, 0.3f, 0.3f));
 		pBullKnocker->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-		pBullKnocker->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
+		pBullKnocker->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.5f, 0.f));
 		pBullKnocker->GetAnimator()->SetPlaySpeed(0, 4.f);
 		pBullKnocker->GetAnimator()->SetPlaySpeed(1, 3.f);
 		pBullKnocker->GetAnimator()->SetPlaySpeed(2, 2.f);
+		pBullKnocker->SetAttackCheck(true);
 		//pBullKnocker->GetAnimator()->Play(0,true);
 		//SetGizmoTarget(p_E_HEADROLLER);
 		pBullKnocker->Initialize();
@@ -1833,7 +1839,7 @@ void LORD_BOSS::MonsterAttackCol()
 
 		MonsterColScript* MonSc = pMonsterAttackCol->AddComponent(new MonsterColScript);
 		MonSc->SetInit(Vec3(7.f, 1.f, 7.f), 0.2f);
-		MonSc->SetOffSetPos(Vec3(0.f, -2.5f, -0.f));
+		MonSc->SetOffSetPos(Vec3(0.f, -2.f, -0.f));
 		pMonsterAttackCol->Disable();
 
 		auto pFollowSc2 = pMonsterAttackCol->AddComponent(new OwnerFollowScript(this));
@@ -1889,7 +1895,7 @@ void LORD_BOSS::MonsterBackswingCol()
 		pBackswingCol->Initialize();
 		MonsterBackswingColScript* MonBackswingSc = pBackswingCol->AddComponent(new MonsterBackswingColScript);
 
-		MonBackswingSc->SetOffSetPos(Vec3(0.f, -3.f, -0.f));
+		MonBackswingSc->SetOffSetPos(Vec3(0.f, -2.f, -0.f));
 		pBackswingCol->Disable();
 
 		auto pFollowSc2 = pBackswingCol->AddComponent(new OwnerFollowScript(this));

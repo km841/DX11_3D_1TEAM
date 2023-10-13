@@ -112,11 +112,11 @@ void IdleState::Update()
 	}
 
 
-	if (IS_DOWN(KeyType::LBUTTON) || IS_DOWN(KeyType::LCTRL))
+	if (IS_DOWN(KeyType::LBUTTON) || IS_DOWN(KeyType::X))
 	{
 		pPlayer->StateChange(PlayerState::AttackState);
 	}
-	if (IS_DOWN(KeyType::RBUTTON) && pPlayer->GetCost() > 0)
+	if (IS_DOWN(KeyType::Z) && pPlayer->GetCost() > 0)
 	{
 		pPlayer->StateChange(PlayerState::BowState);
 	}
