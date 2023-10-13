@@ -18,6 +18,7 @@
 #include "Right2Map.h"
 #include "RightMap.h"
 #include "RightSecretPassageMap.h"
+#include "BossMap.h"
 
 #include "PrefabManager.h"
 
@@ -45,6 +46,7 @@ namespace hm
 		GET_SINGLE(SceneManager)->AddMap(new yj::RightMap);
 		GET_SINGLE(SceneManager)->AddMap(new jh::RightSecretPassageMap);
 		GET_SINGLE(SceneManager)->AddMap(new yj::MainOfficeMap);
+		GET_SINGLE(SceneManager)->AddMap(new BossMap);
 
 		GET_SINGLE(SceneManager)->AddMap(new Monster_Player_TestScene);
 		GET_SINGLE(SceneManager)->AddMap(new jh::PhysicsTestScene);

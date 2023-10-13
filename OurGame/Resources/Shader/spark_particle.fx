@@ -59,53 +59,150 @@ struct GS_OUT
 // ==========================
 // g_vec3_0 : Particle Scale
 
+float4x4 RotationX(float angle)
+{
+    float s = sin(angle);
+    float c = cos(angle);
+    return float4x4(1, 0, 0, 0, 0, c, -s, 0, 0, s, c, 0, 0, 0, 0, 1);
+}
+
+float4x4 RotationY(float angle)
+{
+    float s = sin(angle);
+    float c = cos(angle);
+    return float4x4(c, 0, s, 0, 0, 1, 0, 0, -s, 0, c, 0, 0, 0, 0, 1);
+}
+
+float4x4 RotationZ(float angle)
+{
+    float s = sin(angle);
+    float c = cos(angle);
+    return float4x4(c, -s, 0, 0, s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+}
+
+float3 computeCenter(float3 vPos[24], int numVertices)
+{
+    float3 center = float3(0.0f, 0.0f, 0.0f);
+    for (int i = 0; i < numVertices; ++i)
+    {
+        center += vPos[i];
+    }
+    center /= numVertices;
+    return center;
+}
+
 StructuredBuffer<Particle> particleBuffer : register(t9);
 
 [maxvertexcount(6)]
 void GS_Main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triangleStream)
 {
-    GS_OUT output[4] = { (GS_OUT) 0.0f, (GS_OUT) 0.0f, (GS_OUT) 0.0f, (GS_OUT) 0.0f };
+    GS_OUT output[24] = { 
+        (GS_OUT) 0.0f, (GS_OUT) 0.0f, (GS_OUT) 0.0f, (GS_OUT) 0.0f,
+        (GS_OUT) 0.0f, (GS_OUT) 0.0f, (GS_OUT) 0.0f, (GS_OUT) 0.0f,
+        (GS_OUT) 0.0f, (GS_OUT) 0.0f, (GS_OUT) 0.0f, (GS_OUT) 0.0f,
+        (GS_OUT) 0.0f, (GS_OUT) 0.0f, (GS_OUT) 0.0f, (GS_OUT) 0.0f,
+        (GS_OUT) 0.0f, (GS_OUT) 0.0f, (GS_OUT) 0.0f, (GS_OUT) 0.0f,
+        (GS_OUT) 0.0f, (GS_OUT) 0.0f, (GS_OUT) 0.0f, (GS_OUT) 0.0f
+        };
 	
     if (0 == particleBuffer[input[0].id].alive)
         return;
-    
-    float elapsedTime = g_vec2_0.y;
-    float seedValue = ((float) input[0].id / (float) 1000) + elapsedTime;
-
-    float noiseX = Rand(float2(seedValue, elapsedTime));
-    float noiseY = Rand(float2(seedValue * elapsedTime, elapsedTime));
 	
     float3 vWorldPos = input[0].pos.xyz + particleBuffer[input[0].id].position.xyz;
     float3 vViewPos = mul(float4(vWorldPos, 1.0f), g_matView).xyz;
     float3 vScale = g_vec4_0.xyz;
     
-    float2 vScaleRand = g_vec2_3;
+    float w2 = 0.5f, h2 = 0.5f, d2 = 0.5f;
     
-    vScale.x = lerp(vScale.x - vScaleRand.x, vScale.x + vScaleRand.y, noiseX);
-    vScale.y = lerp(vScale.y - vScaleRand.x, vScale.y + vScaleRand.y, noiseY);
-
-    float3 vNewPos[4] =
+    float3 vNewPos[24] =
     {
-        vViewPos + float3(-0.5f, 0.5f, 0.0f) * vScale,
-        vViewPos + float3(0.5f, 0.5f, 0.0f) * vScale,
-        vViewPos + float3(0.5f, -0.5f, 0.0f) * vScale,
-        vViewPos + float3(-0.5f, -0.5f, 0.0f) * vScale
+        vWorldPos + float3(-w2, -h2, -d2) * vScale,
+        vWorldPos + float3(-w2, +h2, -d2) * vScale,
+        vWorldPos + float3(+w2, +h2, -d2) * vScale,
+        vWorldPos + float3(+w2, -h2, -d2) * vScale,
+        
+        vWorldPos + float3(-w2, -h2, +d2) * vScale,
+        vWorldPos + float3(+w2, -h2, +d2) * vScale,
+        vWorldPos + float3(+w2, +h2, +d2) * vScale,
+        vWorldPos + float3(-w2, +h2, +d2) * vScale,
+        
+        vWorldPos + float3(-w2, +h2, -d2) * vScale,
+        vWorldPos + float3(-w2, +h2, +d2) * vScale,
+        vWorldPos + float3(+w2, +h2, +d2) * vScale,
+        vWorldPos + float3(+w2, +h2, -d2) * vScale,
+        
+        vWorldPos + float3(-w2, -h2, -d2) * vScale,
+        vWorldPos + float3(+w2, -h2, -d2) * vScale,
+        vWorldPos + float3(+w2, -h2, +d2) * vScale,
+        vWorldPos + float3(-w2, -h2, +d2) * vScale,
+        
+        vWorldPos + float3(-w2, -h2, +d2) * vScale,
+        vWorldPos + float3(-w2, +h2, +d2) * vScale,
+        vWorldPos + float3(-w2, +h2, -d2) * vScale,
+        vWorldPos + float3(-w2, -h2, -d2) * vScale,
+        
+        vWorldPos + float3(+w2, -h2, -d2) * vScale,
+        vWorldPos + float3(+w2, +h2, -d2) * vScale,
+        vWorldPos + float3(+w2, +h2, +d2) * vScale,
+        vWorldPos + float3(+w2, -h2, +d2) * vScale,
+    };
+    
+    float pi = 3.1415926535f / 2.f;
+    
+    float3 standardAngle = g_vec4_1.xyz;
+    float4x4 rotationMatrix = RotationX(standardAngle.x * pi / 180.f);
+    rotationMatrix = mul(rotationMatrix, RotationY(standardAngle.y * pi / 180.f));
+    rotationMatrix = mul(rotationMatrix, RotationZ(standardAngle.z * pi / 180.f));
+    
+    float3 center = computeCenter(vNewPos, 24);
+    for (int i = 0; i < 24; ++i)
+    {
+        vNewPos[i] -= center;
+        vNewPos[i].xyz = mul(float4(vNewPos[i], 1.0f), rotationMatrix).xyz;
+        vNewPos[i] += center;
+    }
+
+    
+    float2 newUV[24] =
+    {
+        float2(0.0f, 1.0f),
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        
+        float2(1.0f, 1.0f),
+        float2(0.0f, 1.0f),
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        
+        float2(0.0f, 1.0f),
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        
+        float2(1.0f, 1.0f),
+        float2(0.0f, 1.0f),
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        
+        float2(0.0f, 1.0f),
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        
+        float2(0.0f, 1.0f),
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(1.0f, 1.0f),
     };
 	
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 24; i++)
     {
-        output[i].pos = mul(float4(vNewPos[i], 1.0f), g_matProjection);
+        output[i].pos = mul(float4(vNewPos[i], 1.0f), g_matView);
+        output[i].pos = mul(output[i].pos, g_matProjection);
+        output[i].id = input[0].id;
+        output[i].uv = newUV[i];
     }
-	
-    output[0].uv = float2(0.0f, 0.0f);
-    output[1].uv = float2(1.0f, 0.0f);
-    output[2].uv = float2(1.0f, 1.0f);
-    output[3].uv = float2(0.0f, 1.0f);
-	
-    output[0].id = input[0].id;
-    output[1].id = input[0].id;
-    output[2].id = input[0].id;
-    output[3].id = input[0].id;
     
     triangleStream.Append(output[0]);
     triangleStream.Append(output[1]);
@@ -116,6 +213,56 @@ void GS_Main(point VS_OUT input[1], inout TriangleStream<GS_OUT> triangleStream)
     triangleStream.Append(output[2]);
     triangleStream.Append(output[3]);
     triangleStream.RestartStrip();
+    
+    triangleStream.Append(output[4]);
+    triangleStream.Append(output[5]);
+    triangleStream.Append(output[6]);
+    triangleStream.RestartStrip();
+    
+    triangleStream.Append(output[4]);
+    triangleStream.Append(output[6]);
+    triangleStream.Append(output[7]);
+    triangleStream.RestartStrip();
+    
+    triangleStream.Append(output[8]);
+    triangleStream.Append(output[9]);
+    triangleStream.Append(output[10]);
+    triangleStream.RestartStrip();
+    
+    triangleStream.Append(output[8]);
+    triangleStream.Append(output[10]);
+    triangleStream.Append(output[11]);
+    triangleStream.RestartStrip();
+    
+    triangleStream.Append(output[12]);
+    triangleStream.Append(output[13]);
+    triangleStream.Append(output[14]);
+    triangleStream.RestartStrip();
+    
+    triangleStream.Append(output[12]);
+    triangleStream.Append(output[14]);
+    triangleStream.Append(output[15]);
+    triangleStream.RestartStrip();
+    
+    triangleStream.Append(output[16]);
+    triangleStream.Append(output[17]);
+    triangleStream.Append(output[18]);
+    triangleStream.RestartStrip();
+    
+    triangleStream.Append(output[16]);
+    triangleStream.Append(output[18]);
+    triangleStream.Append(output[19]);
+    triangleStream.RestartStrip();
+    
+    triangleStream.Append(output[20]);
+    triangleStream.Append(output[21]);
+    triangleStream.Append(output[22]);
+    triangleStream.RestartStrip();
+    
+    triangleStream.Append(output[20]);
+    triangleStream.Append(output[22]);
+    triangleStream.Append(output[23]);
+    triangleStream.RestartStrip();
 }
 
 float4 PS_Main(GS_OUT input) : SV_TARGET
@@ -124,24 +271,8 @@ float4 PS_Main(GS_OUT input) : SV_TARGET
     float4 output = (float4) 0.0f;
     
     float deltaTime = g_vec2_0.x;
-    
-    float3 dir = particleBuffer[input.id].direction + particleBuffer[input.id].gravityAcc.y;
-    
     float2 uv = input.uv;
-    if (dir.y < 0.f)
-    {
-        float pi = 1.570796 / 6.f;
-        float lerpRad = lerp(0, pi, (dir.y + 1) / 2);
-    
-        float2 uvCentered = input.uv - 0.5f;
-        float2 rotatedUV = float2(
-        uvCentered.x * cos(lerpRad) - uvCentered.y * sin(lerpRad),
-        uvCentered.x * sin(lerpRad) + uvCentered.y * cos(lerpRad));
-    
-        rotatedUV += 0.5f;
-        uv = rotatedUV;
-    }
-   
+
     output = g_tex_0.Sample(g_sam_0, uv);
 
     float fCurTime = particleBuffer[input.id].curTime;

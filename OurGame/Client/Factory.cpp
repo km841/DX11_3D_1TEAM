@@ -12,8 +12,8 @@ namespace hm
 		info.size = Vec3(2.f, 8.f, 2.f);
 
 		Grimace* pGrimace = Factory::CreateMonster<Grimace>(_pos, info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\_E_GRIMACE_KNIGHT.fbx");
-		pGrimace->GetTransform()->SetScale(Vec3(0.7f, 1.f, 0.7f));
-		pGrimace->GetTransform()->SetRotation(Vec3(180.f, 0.f, 0.f));
+		pGrimace->GetTransform()->SetScale(Vec3(0.7f, 0.9f, 0.7f));
+		pGrimace->GetTransform()->SetRotation(_rotation);
 		pGrimace->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -4.f, 0.f));
 		pGrimace->GetMeshRenderer()->SetMaterial(pGrimace->GetMeshRenderer()->GetMaterial()->Clone());
 

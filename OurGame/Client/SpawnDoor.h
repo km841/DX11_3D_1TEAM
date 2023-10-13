@@ -121,7 +121,9 @@ namespace hm
 	inline T* SpawnDoor<T>::Spawn()
 	{
 		AssertEx(nullptr != mSpawnFunction, L"SpawnDoor<T>::Spawn() - SpawnFunction이 지정되지 않음");
-		return static_cast<T*>(mSpawnFunction());
+		T* pMonster = static_cast<T*>(mSpawnFunction());
+		pMonster->SetRecogRange(40.f);
+		return pMonster;
 	}
 	template<typename T>
 	inline MonsterType SpawnDoor<T>::GetMonsterType()

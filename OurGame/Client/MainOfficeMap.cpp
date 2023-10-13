@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "MainOfficeMap.h"
 #include "Engine.h"
 
@@ -34,6 +34,8 @@
 #include "Lurker.h"
 #include "HeadRoller.h"
 #include "Grimace.h"
+#include "Banker.h"
+
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -44,6 +46,7 @@
 #include "ParticleSystem.h"
 #include "Mirror.h"
 #include "AudioSound.h"
+#include "Animator.h"
 
 /* Script */
 #include "PaperBurnScript.h"
@@ -62,8 +65,8 @@ namespace yj
 {
 	MainOfficeMap::MainOfficeMap()
 		: Map(MapType::MainOfficeMap)
-		,eTarget(nullptr)
-		,pBus(nullptr)
+		, eTarget(nullptr)
+		, pBus(nullptr)
 	{
 	}
 
@@ -89,6 +92,29 @@ namespace yj
 			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 0.1f, nullptr, std::bind(&Map::ChangeCameraMode, this));
 			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 0.1f);
 		}
+
+		if (false == pBus->IsBusArrived())
+		{
+			PLAYER->Disable();
+		}
+		else
+		{
+			PLAYER->Enable();
+		}
+
+		Vec3 pos = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetGameObject()->GetTransform()->GetPosition();
+		wstring strPos = {};
+		strPos += L"x = " + std::to_wstring(pos.x) + L" ";
+		strPos += L"y = " + std::to_wstring(pos.y) + L" ";
+		strPos += L"z = " + std::to_wstring(pos.z);
+
+		Vec3 rot = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetGameObject()->GetTransform()->GetRotation();
+		wstring strRot = {};
+		strRot += L"x = " + std::to_wstring(rot.x) + L" ";
+		strRot += L"y = " + std::to_wstring(rot.y) + L" ";
+		strRot += L"z = " + std::to_wstring(rot.z);
+		FONT->DrawString(strPos, 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
+		FONT->DrawString(strRot, 30.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
 	}
 
 	void MainOfficeMap::Start()
@@ -100,7 +126,7 @@ namespace yj
 			switch (mSpawnPoint)
 			{
 			case -1:
-				PLAYER->GetTransform()->SetPosition(Vec3(-15.6f, -1.0f, 23.4f));
+				PLAYER->GetTransform()->SetPosition(Vec3(-15.6f, -10.0f, 24.4f));
 				break;
 			}
 		}
@@ -127,23 +153,16 @@ namespace yj
 
 	void MainOfficeMap::Enter()
 	{
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::DecoObject);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Portal);
-		
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::ArrowCol, LayerType::PotCell);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::ArrowCol);
 		gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
-		
-		InitObjectAdd();
 
+		ChangeCameraMode();
+		InitObjectAdd();
 		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1,
-			nullptr , std::bind(&MainOfficeMap::InitBusStart, this));
+			nullptr, std::bind(&MainOfficeMap::InitBusStart, this));
 
 		HPUI->UiOn();
 	}
-	
+
 	void MainOfficeMap::Exit()
 	{
 		PLAYER->GetAudioSound()->Stop();
@@ -154,10 +173,43 @@ namespace yj
 	{
 		PLAYER->SetDontDestroyObject(L"Player");
 
+
 		{
-			pBus = Factory::CreateObject<Bus>(Vec3(-17.0f, -8.0f, 33.0f), L"Deferred",
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(10.0f, 10.0f, 10.0f);
+
+			Banker* pBanker = Factory::CreateObjectHasPhysical<Banker>(Vec3(13.9f, -6.3f, -8.6f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Banker.fbx");
+			pBanker->GetTransform()->SetScale(Vec3(1.3f, 1.3f, 1.3f));
+			pBanker->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 135.f));
+
+			pBanker->GetAnimator()->Play(L"Banker_WriteLoop", true);
+			AddGameObject(pBanker);
+			//SetMeshTarget(pBanker);
+		}
+
+		{
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(10.0f, 10.0f, 10.0f);
+
+			Npc* pHallCrow = Factory::CreateObjectHasPhysical<Npc>(Vec3(-5.2f, -8.f, -10.5f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\HallCrowWorker.fbx");
+			pHallCrow->GetTransform()->SetScale(Vec3(0.7f, 0.7f, 0.7f));
+			pHallCrow->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 135.f));
+
+			AddGameObject(pHallCrow);
+		}
+
+
+		{
+			/*pBus = Factory::CreateObject<Bus>(Vec3(-17.0f, -8.0f, 33.0f), L"Deferred",
 				L"..\\Resources\\FBX\\Map\\MainOfficeMap\\CUTSCENE_Bus.fbx");
-			pBus->GetTransform()->SetScale(Vec3(50.0f, 50.0f, 50.0f));
+			pBus->GetTransform()->SetScale(Vec3(50.0f, 50.0f, 50.0f));*/
+			pBus = Factory::CreateObject<Bus>(Vec3(-2.f, -10.0f, 45.0f), L"Deferred",
+				L"..\\Resources\\FBX\\Map\\MainOfficeMap\\CUTSCENE_Bus.fbx");
+			pBus->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
 			pBus->GetTransform()->SetRotation(Vec3(0.0f, 135.0f, 0.0f));
 
 			pBus->GetMeshRenderer()->SetSubsetRenderFlag(103, false);
@@ -251,6 +303,16 @@ namespace yj
 			pBusStop->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.04f, 0.04f));
 			AddGameObject(pBusStop);
 		}
+
+		//{
+		//	GameObject* pGameObject = Factory::CreateObject<GameObject>(Vec3(0.f, 0.f, 0.f), L"Forward", L"", false, LayerType::Unknown);
+		//	pGameObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\TestTexture.png"));
+		//	pGameObject->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+		//	pGameObject->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+
+		//	AddGameObject(pGameObject);
+		//	SetGizmoTarget(pGameObject);
+		//}
 
 #pragma region 사무실 책상 리스트
 		{
@@ -576,7 +638,7 @@ namespace yj
 			pSphereLightBase->GetMeshRenderer()->GetMaterial()->SetBloom(true, 3);
 			pSphereLightBase->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 3);
 			mSphereLightList.push_back(pSphereLightBase);
-			
+
 		}
 
 		mSphereLightList[0]->GetTransform()->SetPosition(Vec3(6.6f, -1.6f, -15.4f));
@@ -588,7 +650,7 @@ namespace yj
 		mSphereLightList[1]->GetTransform()->SetRotation(Vec3(0.0f, -20.0f, 0.0f));
 		mSphereLightList[1]->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
 
-		
+
 #pragma endregion
 
 #pragma region PostBoard
@@ -703,7 +765,7 @@ namespace yj
 #pragma region SoulDoor
 		{
 			DecoObject* pDoor = Factory::CreateObject<DecoObject>(Vec3(19.1f, 6.7f, -12.8f), L"Deferred", LARGE_RESOURCE(L"ShortcutDoor\\ShortcutDoor_Fix.fbx"));
-			
+
 			pDoor->GetTransform()->SetPosition(Vec3(19.1f, 7.7f, -12.8f));
 			pDoor->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
 			pDoor->GetTransform()->SetScale(Vec3(7.82f, 7.82f, 7.82f));
@@ -720,8 +782,8 @@ namespace yj
 
 			DecoObject* pEntranceColObj = Factory::CreateObjectHasPhysical<DecoObject>(Vec3(19.1f, 4.9f, -15.2f), mEntrancePInfo, L"Deferred", L"");
 
-			SoulDoor* pSoulDoor = Factory::CreateObject<SoulDoor>(Vec3(0, 0, 0), L"Deferred", L"", false , pDoor, pBackUv, pEntranceColObj,MapType::EntranceHallMap,1);
-			
+			SoulDoor* pSoulDoor = Factory::CreateObject<SoulDoor>(Vec3(0, 0, 0), L"Deferred", L"", false, pDoor, pBackUv, pEntranceColObj, MapType::EntranceHallMap, 1);
+
 			AddGameObject(pDoor);
 			AddGameObject(pBackUv);
 			AddGameObject(pEntranceColObj);
@@ -749,7 +811,7 @@ namespace yj
 			physicsInfo.size = Vec3(25.5f, 1.0f, 25.5f);
 
 			Ground* pBusGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-7.2f, -12.1f, 24.0f), physicsInfo, L"Deferred", L"");
-			pBusGround->GetTransform()->SetRotation(Vec3(0.0f,15.0f,0.0f));
+			pBusGround->GetTransform()->SetRotation(Vec3(0.0f, 15.0f, 0.0f));
 			AddGameObject(pBusGround);
 		}
 		{
@@ -760,7 +822,7 @@ namespace yj
 
 			Ground* pBridgeGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(21.95f, -0.22f, -0.03f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pBridgeGround);
-			
+
 		}
 
 		// 버스 배치된 다리에서 오피스쪽으로 이동하는 다리 충돌체

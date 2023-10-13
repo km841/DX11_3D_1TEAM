@@ -12,6 +12,7 @@ enum class PlayerState
 	IdleState,
 	MoveState,
 	AttackState,
+	AttackBigState,
 	MagicAttackState,
 	EvasionState,
 	FallState,
@@ -24,6 +25,7 @@ enum class PlayerState
 	ClimingDownState,
 	ClimingEndState,
 	BowState,
+	AIMoveState,
 
 	End
 };

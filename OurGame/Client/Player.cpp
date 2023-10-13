@@ -76,6 +76,8 @@
 #include "BowState.h"
 #include "Map.h"
 #include "FocusingScript.h"
+#include "AIMoveState.h"
+#include "AttackBigState.h"
 
 Player* Player::spPlayer;
 
@@ -113,6 +115,8 @@ Player::Player()
 	mState[int(PlayerState::ClimingEndState)] = new ClimingEndState;
 	mState[int(PlayerState::ClimingUpState)] = new ClimingUpState;
 	mState[int(PlayerState::BowState)] = new BowState;
+	mState[int(PlayerState::AttackBigState)] = new AttackBigState;
+	mState[int(PlayerState::AIMoveState)] = new AIMoveState;
 
 
 	// Sword_Heavy
@@ -238,14 +242,15 @@ Player::Player()
 		GameObject* pEffect = nullptr;
 		{
 			pEffect = Factory::CreateObject<GameObject>(Vec3::Zero, L"Forward", L"", false, LayerType::Unknown);
-			pEffect->SetDontDestroyObject(L"ArrowParticle");
+			pEffect->SetDontDestroyObject(L"SparkParticle");
 			pEffect->AddComponent(new OwnerFollowScript(this));
 			//FireArrowParticle* pParticle = pEffect->AddComponent(new FireArrowParticle);
 			//pParticle->SetStartColor(Vec3(1.f, 0.f, 0.f));
 			//pParticle->SetEndColor(Vec3(1.f, 1.f, 0.f));
 
 			SparkParticle* pParticle = pEffect->AddComponent(new SparkParticle);
-			pParticle->SetAngle(Vec3(-150.f, 0.f, 90.f));
+			pParticle->SetAngle(Vec3(-180.f, 0.f, 0.f));
+			pParticle->SetParticleRotation(Vec3(0.f, 0.f, 0.f));
 			pParticle->SetScatterRadius(5.f);
 			pParticle->SetStartColor(Vec3(1.f, 0.f, 0.f));
 			pParticle->SetEndColor(Vec3(1.f, 1.f, 0.f));
@@ -379,9 +384,27 @@ void Player::Update()
 	
 	mActiveState->Update();
 	
+	if (false == this->IsEnable())
+	{
+
+		pGreatSword->Disable();
+		pBow->Disable();
+		pArrow->Disable();
+	}
+	else
+	{
+		pGreatSword->Enable();
+		pBow->Enable();
+		pArrow->Enable();
+	}
+
 	pSwordSc->SetPlayerState(mActiveState->GetStateEnum());
 	pBowSc->SetPlayerState(mActiveState->GetStateEnum());
 	pArrowSc->SetPlayerState(mActiveState->GetStateEnum());
+
+	//const Vec3& pos = GetTransform()->GetPosition();
+	//wstring strPos = L"플레이어 : " + std::to_wstring(pos.x) + L", " + std::to_wstring(pos.y) + L", " + std::to_wstring(pos.z);
+	//FONT->DrawString(strPos, 30.f, Vec3(200.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
 }
 
 void Player::FixedUpdate()
@@ -444,23 +467,31 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 	if (LayerType::MonsterCol == _pOtherCollider->GetGameObject()->GetLayerType()
 		|| LayerType::Monster_ProjectTile == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		mActiveState->Exit();
-		StateChange(PlayerState::HitStartState);
+		if (isDownState == false) {
+			mActiveState->Exit();
+			StateChange(PlayerState::HitStartState);
+		}
+		
 	}
 
 	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType()
 		&& static_cast<Monster*>(_pOtherCollider->GetGameObject())->GetAttackCheck() == true)
 	{
-		mActiveState->Exit();
-		StateChange(PlayerState::HitStartState);
+		if (isDownState == false) {
+			mActiveState->Exit();
+			StateChange(PlayerState::HitStartState);
+		}
 	}
 
 	if (LayerType::Monster == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		if (_pOtherCollider->GetGameObject()->GetName() == L"HeadRoller" &&
-			static_cast<HeadRoller*>(_pOtherCollider->GetGameObject())->GetisRoll() == true) {
-			mActiveState->Exit();
-			StateChange(PlayerState::HitStartState);
+			static_cast<HeadRoller*>(_pOtherCollider->GetGameObject())->GetisRoll() == true) 
+		{
+			if (isDownState == false) {
+				mActiveState->Exit();
+				StateChange(PlayerState::HitStartState);
+			}
 		}
 
 	}
@@ -533,6 +564,12 @@ void Player::StateChange(PlayerState _eState)
 void Player::SetDirectionChange(DirectionEvasion _eState)
 {
 	meDirectionEvasion = _eState;
+}
+
+PlayerState Player::GetActiveStateEnum()
+{
+	AssertEx(nullptr != mActiveState, L"Player::GetActiveStateEnum() - 상태가 설정되지 않음");
+	return mActiveState->GetStateEnum();
 }
 
 Player* Player::GetPlayer()

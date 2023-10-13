@@ -98,21 +98,7 @@ namespace hm {
 	}
 	void Monster_Player_TestScene::Enter()
 	{
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Monster_ProjectTile);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Monster);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::MonsterCol);
-
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::PlayerCol);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::WallObject);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::ArrowCol);
-
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PlayerCol, LayerType::Monster_ProjectTile);
-
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::Ground);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::WallObject);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::PotCell, LayerType::PotCell);
+		
 		
 
 		//GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 3.f, nullptr, nullptr, Vec4(1.f, 0.f, 0.f, 1.f) );
@@ -191,8 +177,8 @@ namespace hm {
 			pLordOfDoorRoll->SetLORD_BOSS(pLordOfDoor);
 			
 
-			AddGameObject(pLordOfDoorRoll);
-			AddGameObject(pLordOfDoor);
+			//AddGameObject(pLordOfDoorRoll);
+			//AddGameObject(pLordOfDoor);
 			//SetMeshTarget(pLordOfDoor);
 		
 		}
@@ -231,7 +217,7 @@ namespace hm {
 			p_E_LURKER->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
 			p_E_LURKER->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.4f, 0.f));
 
-			AddGameObject(p_E_LURKER);
+			//AddGameObject(p_E_LURKER);
 			//SetMeshTarget(p_E_LURKER);
 		}
 		
@@ -269,7 +255,7 @@ namespace hm {
 				p_E_GRIMACE_KNIGHT->GetAnimator()->SetPlaySpeed(i, 0.8f);
 			}
 			//SetGizmoTarget(p_E_GRIMACE_KNIGHT);
-			AddGameObject(p_E_GRIMACE_KNIGHT);
+			//AddGameObject(p_E_GRIMACE_KNIGHT);
 			//SetMeshTarget(p_E_GRIMACE_KNIGHT);
 		}
 
@@ -334,7 +320,7 @@ namespace hm {
 			Light* pLight = pGameObject->AddComponent(new Light);
 			pLight->SetDiffuse(Vec3(1.f, 1.f, 1.f));
 			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
-			pLight->SetLightRange(10.f);
+			pLight->SetLightRange(100.f);
 			pLight->SetLightType(LightType::PointLight);
 			AddGameObject(pGameObject);
 		}

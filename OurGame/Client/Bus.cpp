@@ -90,12 +90,26 @@ namespace yj
 		{
 			Vec3 mPos = this->GetTransform()->GetPosition();
 			Vec3 mAddPos = Vec3(-4, 0, -4);
-			Vec3 mFixedPos = mPos + mAddPos * DELTA_TIME;
+			Vec3 mFixedPos = mPos + mAddPos * DELTA_TIME * 2;
 			mAddedDist += 1 * DELTA_TIME;
 			this->GetTransform()->SetPosition(mFixedPos);
-			if (mAddedDist > 4)
+			if (mAddedDist > 2)
 			{
 				sequenceNum = 1;
+				mbIsArrived = true;
+			}
+		}
+		if (sequenceNum == 1)
+		{
+			Vec3 mPos = this->GetTransform()->GetPosition();
+			Vec3 mAddPos = Vec3(-4, 0, -4);
+			Vec3 mFixedPos = mPos + mAddPos * DELTA_TIME * 2;
+			mAddedDist += 1 * DELTA_TIME;
+			if(mAddedDist > 3 && mAddedDist <= 10)
+				this->GetTransform()->SetPosition(mFixedPos);
+			if (mAddedDist > 10)
+			{
+				sequenceNum = 2;
 			}
 		}
 	}

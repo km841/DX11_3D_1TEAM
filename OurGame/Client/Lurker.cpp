@@ -76,7 +76,7 @@ void Lurker::SetBehaviorTree()
 					}
 
 					Animator* pAnimator = GetAnimator();
-					if (pAnimator->GetFrameRatio() > 0.99)
+					if (pAnimator->GetFrameRatio() > 0.95)
 						return BehaviorResult::Success;
 
 					return BehaviorResult::Failure;
@@ -173,7 +173,7 @@ void Lurker::SetBehaviorTree()
 				{
 					Animator* pAni = GetAnimator();
 
-					if (pAni->GetFrameRatio() > 0.99)
+					if (pAni->GetFrameRatio() > 0.95)
 					{
 						return BehaviorResult::Success;
 					}
@@ -223,7 +223,7 @@ void Lurker::SetBehaviorTree()
 				{
 					Animator* pAni = GetAnimator();
 
-					if (pAni->GetFrameRatio() > 0.99)
+					if (pAni->GetFrameRatio() > 0.95)
 					{
 						return BehaviorResult::Success;
 					}
@@ -382,7 +382,7 @@ void Lurker::SetBehaviorTree()
 				{
 					Animator* pAni = GetAnimator();
 
-					if (pAni->GetFrameRatio() > 0.99)
+					if (pAni->GetFrameRatio() > 0.95)
 					{
 						return BehaviorResult::Success;
 					}

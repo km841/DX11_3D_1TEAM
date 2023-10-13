@@ -23,8 +23,15 @@ namespace hm
 		virtual void Exit();
 
 	private:
+		void InitCamera();
+		void InitObject();
+		void InitUI();
+
+	private:
 		class Interface* mpActiveInterface;
 		class Interface* mpSelectedInterface;
+		class DecoObject* mpFollowTarget;
+		class DecoObject* mpFocusTarget;
 		yj::TextBox* pTextBox;
 	};
 }

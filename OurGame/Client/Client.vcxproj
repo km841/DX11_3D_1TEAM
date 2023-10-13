@@ -152,13 +152,17 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AIMoveState.h" />
     <ClInclude Include="AngryMotionState_Gm.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="ArrowScript.h" />
+    <ClInclude Include="AttackBigState.h" />
     <ClInclude Include="AttackState.h" />
+    <ClInclude Include="Banker.h" />
     <ClInclude Include="BigTransEndState_Gm.h" />
     <ClInclude Include="BigTransStartState_Gm.h" />
     <ClInclude Include="BonFireScript.h" />
+    <ClInclude Include="BossMap.h" />
     <ClInclude Include="BowScript.h" />
     <ClInclude Include="BowState.h" />
     <ClInclude Include="BreakablePot.h" />
@@ -190,6 +194,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="FallState.h" />
     <ClInclude Include="FireArrowParticle.h" />
     <ClInclude Include="FireLamp.h" />
+    <ClInclude Include="Fireplace.h" />
     <ClInclude Include="FocusingScript.h" />
     <ClInclude Include="Grandma.h" />
     <ClInclude Include="GrandmaBossMap.h" />
@@ -288,16 +293,22 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="TitleSceneCutSceneCameraMoveScript.h" />
+    <ClInclude Include="TitleSceneCutSceneTargetScript.h" />
     <ClInclude Include="WallObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AIMoveState.cpp" />
     <ClCompile Include="AngryMotionState_Gm.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="ArrowScript.cpp" />
+    <ClCompile Include="AttackBigState.cpp" />
     <ClCompile Include="AttackState.cpp" />
+    <ClCompile Include="Banker.cpp" />
     <ClCompile Include="BigTransEndState_Gm.cpp" />
     <ClCompile Include="BigTransStartState_Gm.cpp" />
     <ClCompile Include="BonFireScript.cpp" />
+    <ClCompile Include="BossMap.cpp" />
     <ClCompile Include="BowScript.cpp" />
     <ClCompile Include="BowState.cpp" />
     <ClCompile Include="BreakablePot.cpp" />
@@ -329,6 +340,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="FallState.cpp" />
     <ClCompile Include="FireArrowParticle.cpp" />
     <ClCompile Include="FireLamp.cpp" />
+    <ClCompile Include="Fireplace.cpp" />
     <ClCompile Include="FocusingScript.cpp" />
     <ClCompile Include="Grandma.cpp" />
     <ClCompile Include="GrandmaBossMap.cpp" />
@@ -429,6 +441,8 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="TitleSceneCutSceneCameraMoveScript.cpp" />
+    <ClCompile Include="TitleSceneCutSceneTargetScript.cpp" />
     <ClCompile Include="WallObject.cpp" />
   </ItemGroup>
   <ItemGroup>

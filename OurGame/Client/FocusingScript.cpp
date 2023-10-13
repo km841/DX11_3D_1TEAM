@@ -9,7 +9,7 @@
 namespace hm
 {
 	FocusingScript::FocusingScript()
-		: mFollowSpeed(3.f)
+		: mFollowSpeed(5.f)
 		, mpFollowTarget(nullptr)
 		, mpFocusingTarget(nullptr)
 		, mbFocusMode(false)
@@ -53,7 +53,7 @@ namespace hm
 			Vec3 dir = smoothedTargetPos - myPos;
 
 			float distance = dir.Length();
-			if (distance < 0.01f)
+			if (distance < 0.1f)
 			{
 				GetTransform()->SetPosition(smoothedTargetPos);
 				GetRigidBody()->SetVelocity(Vec3::Zero);
@@ -62,7 +62,7 @@ namespace hm
 
 			float fixedSpeed = mFollowSpeed;
 
-			dir.Normalize();
+			dir.Normalize();\
 			GetRigidBody()->SetVelocity(dir * fixedSpeed);
 		}
 

@@ -33,8 +33,9 @@ namespace yj
 			if (CheckPlayerIn())
 			{
 				PLAYER->GetScript<PlayerMoveOverMapScript>()->SetMoveOverNum(mSpawnPoint);
-				GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1,
-					nullptr, std::bind(&TeleportZone::ChangeScene, this));
+				GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 1);
+				GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 0.5f, std::bind(&TeleportZone::ChangeScene, this), nullptr);
+
 				isActive = true;
 			}
 		}
