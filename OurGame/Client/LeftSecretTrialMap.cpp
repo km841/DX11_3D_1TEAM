@@ -39,6 +39,7 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "UIText.h"
+#include "Mirror.h"
 
 /* Script */
 #include "PaperBurnScript.h"
@@ -47,6 +48,8 @@
 #include "PlayerSlashScript.h"
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
+#include "PlayerMoveOverMapScript.h"
+#include "BonFireScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -68,6 +71,23 @@ void LeftSecretTrialMap::Initialize()
 void LeftSecretTrialMap::Start()
 {
 	Map::Start();
+
+	mpMainCamera->GetTransform()->SetPosition(Vec3(-18.4f, 26.3f, 27.2f));
+	mpMainCamera->GetTransform()->SetRotation(Vec3(47.f, -233.3f, 0.f));
+
+	PLAYER->GetKeyInfo().SetLeftKey(KeyType::RIGHT);
+	PLAYER->GetKeyInfo().SetForwardKey(KeyType::DOWN);
+
+	if (PLAYER != nullptr)
+	{
+		mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
+		switch (mSpawnPoint)
+		{
+		case 3:
+			PLAYER->GetTransform()->SetPosition(Vec3(0.92f, -2.57f, 13.1f));
+			break;
+		}
+	}
 }
 
 void LeftSecretTrialMap::Update()
@@ -175,6 +195,18 @@ void LeftSecretTrialMap::InitObjectAdd()
 		pRoughLowerFloor->GetTransform()->SetScale(Vec3(86.f, 86.f, 86.f));
 		pRoughLowerFloor->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.02f, 0.02f));
 		AddGameObject(pRoughLowerFloor);
+	}
+
+	{
+		GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(10.7f, -7.98f, -7.5f), L"Forward", L"", false, LayerType::Mirror);
+
+		pMirror->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
+		pMirror->AddComponent(new Mirror);
+		pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+		pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+		pMirror->GetMirror()->SetAlpha(0.07f);
+
+		AddGameObject(pMirror);
 	}
 
 
@@ -800,8 +832,6 @@ void LeftSecretTrialMap::InitObjectAdd()
 		AddGameObject(pSilverwareShelfFiller_Goblets);
 	}
 
-
-
 	// Ŀư - CurtainHorizontal
 	{
 		DecoObject* pCurtainHorizontal = Factory::CreateObject<DecoObject>(Vec3(0.6f, 7.0f, 6.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\CurtainHorizontal.fbx");
@@ -841,6 +871,7 @@ void LeftSecretTrialMap::InitObjectAdd()
 		DecoObject* pChandelier = Factory::CreateObject<DecoObject>(Vec3(-8.2f, 18.0f, 1.2f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\ChandelierWithChain.fbx");
 		pChandelier->GetTransform()->SetScale(Vec3(60.0f, 60.0f, 60.0f));
 		pChandelier->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
+		pChandelier->DrawShadow(false);
 
 		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloom(true, 13, 0);
 		pChandelier->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 13, 0);
@@ -884,6 +915,30 @@ void LeftSecretTrialMap::InitObjectAdd()
 		pLadder->GetTransform()->SetRotation(Vec3(0.0f, 0.0f, 0.0f));
 
 		AddGameObject(pLadder);
+	}
+
+	{
+		DecoObject* pBonFire = Factory::CreateObject<DecoObject>(Vec3(-13.7f, -0.5f, -6.9f), L"Fire", L"");
+		pBonFire->GetMeshRenderer()->SetMaterial(pBonFire->GetMeshRenderer()->GetMaterial()->Clone());
+		pBonFire->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::WrapClamp);
+		pBonFire->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+		pBonFire->AddComponent(new BonFireScript);
+		AddGameObject(pBonFire);
+		
+		DecoObject* pLightObject = nullptr;
+		{
+			pLightObject = new DecoObject;
+			Transform* pTransform = pLightObject->AddComponent(new Transform);
+			pTransform->SetPosition(Vec3(-14.f, 5.9f, -6.5f));
+			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+			Light* pLight = pLightObject->AddComponent(new Light);
+			pLight->SetDiffuse(Vec3(1.0f, 0.3f, 0.2f));
+			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+			pLight->SetLightRange(70.f);
+			pLight->SetLightType(LightType::PointLight);
+			AddGameObject(pLightObject);
+		}
 	}
 }
 
@@ -983,11 +1038,11 @@ void LeftSecretTrialMap::InitColliderAdd()
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Static;
 		physicsInfo.eGeometryType = GeometryType::Box;
-		physicsInfo.size = Vec3(23.99f, 5.2f, 2.64f);
+		physicsInfo.size = Vec3(23.99f, 5.2f, 10.64f);
 
-		WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-8.6f, -5.9f, -37.6f), physicsInfo, L"Forward", L"");
+		Ground* pWallAndGround = Factory::CreateObjectHasPhysical<Ground>(Vec3(-8.6f, -5.8f, -42.7f), physicsInfo, L"Forward", L"");
 
-		AddGameObject(pWall);
+		AddGameObject(pWallAndGround);
 	}
 	{
 		PhysicsInfo physicsInfo;
@@ -1187,24 +1242,38 @@ void LeftSecretTrialMap::FuncObjectAdd()
 	}
 #pragma endregion
 
-
 	{
-		PhysicsInfo physicsInfo;
-		physicsInfo.eActorType = ActorType::Static;
-		physicsInfo.eGeometryType = GeometryType::Box;
-		physicsInfo.size = Vec3(4.7f, 3.8f, 3.5f);
-
-		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(0.6f, -1.7f, 16.7f), physicsInfo, L"Forward", L"", false, MapType::Right2Map,1);
-		AddGameObject(pTelZone);
-		SetGizmoTarget(pTelZone);
+		GameObject* pLightObject = new GameObject(LayerType::Unknown);
+		Transform* pTransform = pLightObject->AddComponent(new Transform);
+		pTransform->SetPosition(Vec3(-8.4f, 12.2f, -27.3f));
+		pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+		pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+		Light* pLight = pLightObject->AddComponent(new Light);
+		pLight->SetDiffuse(Vec3(1.0f, 1.0f, 0.7f));
+		pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+		pLight->SetLightRange(40.f);
+		pLight->SetLightType(LightType::PointLight);
+		AddGameObject(pLightObject);
 	}
+
+
 	{
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Static;
 		physicsInfo.eGeometryType = GeometryType::Box;
-		physicsInfo.size = Vec3(4.13f, 3.8f, 3.5f);
+		physicsInfo.size = Vec3(4.7f, 10.8f, 3.5f);
 
-		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-13.3f, -1.7f, -50.8f), physicsInfo, L"Forward", L"", false, MapType::Right2Map,1);
+		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(0.6f, -1.7f, 16.7f), physicsInfo, L"Forward", L"", false, MapType::RightSecretPassageMap,1);
+		AddGameObject(pTelZone);
+	}
+
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(4.7f, 10.8f, 3.5f);
+
+		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-13.5f, -1.1f, -49.6f), physicsInfo, L"Forward", L"", false, MapType::LeftSecretFightMap, 2);
 		AddGameObject(pTelZone);
 		SetGizmoTarget(pTelZone);
 	}

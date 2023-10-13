@@ -31,7 +31,7 @@ namespace sy
 		GameObject* pDoorRight;
 		GameObject* pDoorLeft;
 		GameObject* pDoorCol;
-
+		int mSpawnPoint = -1;
 
 	private:
 		PxCapsuleController* mpCharacterController;

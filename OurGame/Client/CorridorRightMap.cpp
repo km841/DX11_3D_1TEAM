@@ -638,6 +638,7 @@ namespace jh
 			yj::TeleportZone* pLeftZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-6.9f, -4.57f, -23.7f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map,6);
 			//yj::TeleportZone* pLeftZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-6.9f, -4.57f, -23.7f), physicsInfo, L"Deferred", L"", false, MapType::LeftSecretTrialMap,1);
 			AddGameObject(pLeftZone);
+			
 		}
 		{
 			PhysicsInfo physicsInfo;
