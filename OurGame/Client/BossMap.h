@@ -23,7 +23,7 @@ namespace hm
 		virtual void Exit();
 
 	private:
-		
+		int mSpawnPoint = -1;
 	};
 }
 

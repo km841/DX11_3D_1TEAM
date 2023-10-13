@@ -37,6 +37,19 @@ namespace hm
 		if (nullptr == mpFollowTarget)
 			return;
 
+		if (IS_DOWN(KeyType::P))
+		{
+			mbFollowMode = !mbFollowMode;
+			if (false == mbFollowMode)
+			{
+				GetRigidBody()->SetVelocity(Vec3::Zero);
+				GetTransform()->SetUpdateByRotMat(false);
+			}
+		}
+
+		if (false == mbFollowMode)
+			return;
+
 		if (false == mbFocusMode)
 		{
 			GetRigidBody()->SetVelocity(Vec3::Zero);
@@ -62,7 +75,7 @@ namespace hm
 
 			float fixedSpeed = mFollowSpeed;
 
-			dir.Normalize();\
+			dir.Normalize();
 			GetRigidBody()->SetVelocity(dir * fixedSpeed);
 		}
 

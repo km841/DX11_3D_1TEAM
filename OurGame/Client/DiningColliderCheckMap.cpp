@@ -50,6 +50,8 @@
 #include "PaperBurnScript.h"
 #include "PlayerMoveOverMapScript.h"
 #include "BonFireScript.h"
+#include "OwnerFollowScript.h"
+#include "FocusingScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -77,12 +79,19 @@ namespace sy
 	void DiningColliderCheckMap::Start()
 	{
 		Map::Start();
+		mpMainCamera->GetTransform()->SetPosition(Vec3(-9.7f, 16.6f, 13.1f));
+		mpMainCamera->GetTransform()->SetRotation(Vec3(51.7f, 139.7f, 0.f));
+
+		OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
+		pFollowScript->SetOffset(Vec3(-9.4f, 24.3f, 12.f));
+		mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
 
 		if (PLAYER != nullptr)
 		{
 			mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
 			switch (mSpawnPoint)
 			{
+
 			case 6:
 				PLAYER->GetTransform()->SetPosition(Vec3(-0.2f, -7.8f, 1.1f));
 				break;

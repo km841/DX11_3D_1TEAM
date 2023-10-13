@@ -128,6 +128,7 @@ namespace hm
 
 		mpActiveScene->RemovePhysicsActors();
 		ActiveAndInitializeScene(_eSceneType);
+		mpActiveScene->AddPhysicsActors();
 
 		mpActiveScene->PushGameObjects(mGameObjects);
 		mpActiveScene->Start();

@@ -109,7 +109,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::RightSecretPassageMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
 		}
 
 		// 지형
@@ -330,8 +330,6 @@ namespace hm
 			pScript->SetFollowTarget(spPlayerHolder);
 			//pScript->SetFocusingTarget(spCutSceneFocusingTarget);
 			pScript->SetFocusingMode(false);
-			OwnerFollowScript* pFollowScript = spPlayerHolder->AddComponent(new OwnerFollowScript(PLAYER));
-			pFollowScript->SetOffset(Vec3(-0.f, 30.f, 20.f));
 			jh::CutSceneCameraMoveScript* pCutSceneCameraScript = pGameObject->AddComponent(new jh::CutSceneCameraMoveScript);
 			pCutSceneCameraScript->SetLeft(Vec3(3.4f, -2.91f, 22.6f), Vec3(10.52f, 174.23f, 0.f));
 			pCutSceneCameraScript->SetRight(Vec3(-3.3f, -2.91f, 21.1f), Vec3(10.52f, 163.5f, 0.f));
@@ -847,6 +845,8 @@ namespace hm
 			pHpUI->AddHpUI();
 			pHpUiObj->SetDontDestroyObject(L"HpUi");
 			HPUI->UiOff();
+
+			AddGameObject(pHpUiObj);
 		}
 
 		// Buttons

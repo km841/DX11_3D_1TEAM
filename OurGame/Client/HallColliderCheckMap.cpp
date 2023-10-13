@@ -75,11 +75,11 @@ namespace jh
 	void HallColliderCheckMap::Start()
 	{
 		LightDirSet();
-		mpMainCamera->GetTransform()->SetPosition(Vec3(20.1f, 21.5f, -56.33f));
-		mpMainCamera->GetTransform()->SetRotation(Vec3(42.4f, -41.f, 0.f));
+		mpMainCamera->GetTransform()->SetPosition(Vec3(11.7f, 22.3f, -60.6f));
+		mpMainCamera->GetTransform()->SetRotation(Vec3(53.9f, -48.3f, 0.f));
 
 		OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
-		pFollowScript->SetOffset(Vec3(18.f, 25.f, -10.f));
+		pFollowScript->SetOffset(Vec3(9.f, 25.f, -14.f));
 
 		PLAYER->GetKeyInfo().SetLeftKey(KeyType::LEFT);
 		PLAYER->GetKeyInfo().SetForwardKey(KeyType::UP);

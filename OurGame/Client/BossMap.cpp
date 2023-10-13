@@ -85,6 +85,24 @@ namespace hm
 
 		PLAYER->GetKeyInfo().SetLeftKey(KeyType::RIGHT);
 		PLAYER->GetKeyInfo().SetForwardKey(KeyType::DOWN);
+
+		mpMainCamera->GetTransform()->SetPosition(Vec3(-32.24f, 26.3f, 14.f));
+		mpMainCamera->GetTransform()->SetRotation(Vec3(47.f, -233.3f, 0.f));
+
+		if (PLAYER != nullptr)
+		{
+			mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
+			switch (mSpawnPoint)
+			{
+			case 1:
+				PLAYER->GetTransform()->SetPosition(Vec3(-15.f, -2.57f, 0.f));
+				break;
+			}
+		}
+
+		OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
+		pFollowScript->SetOffset(Vec3(-17.4f, 29.f, 14.1f));
+		mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
 	}
 	void BossMap::Update()
 	{

@@ -68,7 +68,7 @@ namespace hm
 	void AudioSound::SetSound(const std::wstring& _strName)
 	{
 		mpSoundInfo = GET_SINGLE(SoundManager)->FindSound(_strName);
-		AssertEx(nullptr != mpChannel, L"AudioSound::SetSound() - ä���� �������� ����");
+		AssertEx(nullptr != mpChannel, L"AudioSound::SetSound() - Channel is empty");
 
 
 		mFileName = _strName;
