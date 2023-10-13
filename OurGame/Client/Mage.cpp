@@ -134,7 +134,7 @@ void Mage::SetBehaviorTree()
 					if (mHP <= 0) {
 						isDead = true;
 						isGODState = true;
-					
+
 						meBasicState = MonsterBasicState::Dead;
 						return BehaviorResult::Failure;
 					}
@@ -149,7 +149,7 @@ void Mage::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
-					
+
 					meBasicState = MonsterBasicState::Teleport_Out;
 					return BehaviorResult::Success;
 				});
@@ -242,7 +242,7 @@ void Mage::SetBehaviorTree()
 					Vec3 myPos = GetTransform()->GetPosition();
 
 					float distance = (playerPos - myPos).Length();
-					if (pAnimator->GetFrameRatio()>0.95)
+					if (pAnimator->GetFrameRatio() > 0.95)
 					{
 						return BehaviorResult::Success;
 					}
@@ -357,7 +357,7 @@ void Mage::SetBehaviorTree()
 					}
 				}*/
 
-				
+
 
 				return BehaviorResult::Success;
 				});
@@ -583,7 +583,7 @@ void Mage::Initialize()
 	GetAnimator()->SetLoop(6, true);
 	GetAnimator()->SetHasExitFlag(6, true);
 
-	
+
 }
 
 void Mage::Update()
@@ -709,7 +709,7 @@ void Mage::CreateProjectTile()
 	pProjectTile->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 
 	pProjectTile->Initialize();
-	
+
 	GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pProjectTile);
 }
 
@@ -728,29 +728,26 @@ void Mage::Teleport()
 	int Count = 0;
 	while (true)
 	{
-		float randX = generator() *1.5;
-		float randZ = generator() *1.5;
+		float randX = generator() * 1.5;
+		float randZ = generator() * 1.5;
 
 		Vec3 randPos = Vec3(playerPos.x + randX, myPos.y, playerPos.z + randZ);
 
 		float offset = max(max(fabs(scale.x), fabs(scale.y)), fabs(scale.z));
-
-		const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
 		bool bEscape = false;
 
 		Count++;
-		for (int i = 0; i < gameObjects.size(); ++i)
+
+		for (size_t j = 1; j <= 8; j++)
 		{
-			if (gameObjects[i]->GetCollider())
+			if (IsRaysCollide(randPos, ConvertDir(static_cast<DirectionEvasion>(j)), LayerType::Ground, offset + 0.1f))
 			{
-				for (size_t j = 1; j <= 8; j++)
-				{
-					if (GetCollider()->Raycast(randPos, ConvertDir(static_cast<DirectionEvasion>(j)), gameObjects[i]->GetCollider(), offset + 0.1f))
-					{
-						bEscape = true;
-						
-					}
-				}
+				bEscape = true;
+			}
+
+			if (IsRaysCollide(randPos, ConvertDir(static_cast<DirectionEvasion>(j)), LayerType::WallObject, offset + 0.1f))
+			{
+				bEscape = true;
 			}
 		}
 

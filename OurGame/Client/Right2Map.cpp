@@ -65,6 +65,8 @@
 #include "MonsterCrackScript.h"
 #include "SlashGlareScript.h"
 #include "PlayerMoveOverMapScript.h"
+#include "OwnerFollowScript.h"
+#include "FocusingScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -93,6 +95,31 @@ namespace hm
 	void Right2Map::Start()
 	{
 		Map::Start();
+
+		mpMainCamera->GetTransform()->SetPosition(Vec3(-32.4f, 28.4f, 21.08f));
+		mpMainCamera->GetTransform()->SetRotation(Vec3(54.f, 143.1f, 0.f));
+
+		//OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
+		//pFollowScript->SetOffset(Vec3(-9.f, 27.f, 13.5f));
+		//mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
+
+		PLAYER->GetKeyInfo().SetLeftKey(KeyType::RIGHT);
+		PLAYER->GetKeyInfo().SetForwardKey(KeyType::DOWN);
+
+		if (PLAYER != nullptr)
+		{
+			mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
+			switch (mSpawnPoint)
+			{
+			case 5:
+				PLAYER->GetTransform()->SetPosition(Vec3(-15.6f, -10.0f, 24.4f));
+				break;
+
+			case 6: // CorriderMap -> Right2Map
+				PLAYER->GetTransform()->SetPosition(Vec3(-23.6f, 1.1f, 7.5f));
+				break;
+			}
+		}
 	}
 
 	void Right2Map::FixedUpdate()
@@ -556,6 +583,79 @@ namespace hm
 
 				AddGameObject(pLadder);
 
+				//{
+				//	PhysicsInfo mEnterInfo;
+				//	mEnterInfo.eActorType = ActorType::Static;
+				//	mEnterInfo.eGeometryType = GeometryType::Box;
+				//	mEnterInfo.size = Vec3(1.f, 0.5f, 0.5f);
+
+				//	LadderCollider* pEnterLadderCol = Factory::CreateObjectHasPhysical<LadderCollider>(Vec3(2.67f, 0.7f, -19.5f), mEnterInfo, L"Deferred", L"");
+				//	pEnterLadderCol->SetPlayerToMovePos(Vec3(2.67f, 0.73f, -17.5f));
+				//	pEnterLadderCol->SetDir(DirectionEvasion::BACKWARD);
+				//	pEnterLadderCol->SetName(L"LadderEnterCol");
+
+				//	AddGameObject(pEnterLadderCol);
+				//	//SetGizmoTarget(pEnterLadderCol);
+				//}
+
+				//{
+				//	PhysicsInfo mExitInfo;
+				//	mExitInfo.eActorType = ActorType::Static;
+				//	mExitInfo.eGeometryType = GeometryType::Box;
+				//	mExitInfo.size = Vec3(1.f, 0.5f, 0.5f);
+
+				//	LadderCollider* pExitLadderCol = Factory::CreateObjectHasPhysical<LadderCollider>(Vec3(2.67f, 15.8f, -19.5f), mExitInfo, L"Deferred", L"");
+				//	pExitLadderCol->SetPlayerToMovePos(Vec3(2.67f, 15.8f, -17.5f));
+				//	pExitLadderCol->SetPlayerToDownPos(Vec3(2.67f, 15.6f, -17.5f));
+				//	pExitLadderCol->SetDir(DirectionEvasion::BACKWARD);
+				//	pExitLadderCol->SetName(L"LadderExitCol");
+
+				//	AddGameObject(pExitLadderCol);
+				//	SetGizmoTarget(pExitLadderCol);
+
+				//}
+
+			}
+
+			// to 2floor 사다리
+			{
+				DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(2.67f, 7.f, -17.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Ladder.fbx");
+				pLadder->GetTransform()->SetScale(Vec3(6.5f, 17.8f, 6.5f));
+				//SetGizmoTarget(pLadder);
+				AddGameObject(pLadder);
+
+				{
+					PhysicsInfo mEnterInfo;
+					mEnterInfo.eActorType = ActorType::Static;
+					mEnterInfo.eGeometryType = GeometryType::Box;
+					mEnterInfo.size = Vec3(1.f, 0.5f, 0.5f);
+
+					LadderCollider* pEnterLadderCol = Factory::CreateObjectHasPhysical<LadderCollider>(Vec3(2.67f, 0.7f, -17.5f), mEnterInfo, L"Deferred", L"");
+					pEnterLadderCol->SetPlayerToMovePos(Vec3(2.67f, 0.73f, -17.5f));
+					pEnterLadderCol->SetDir(DirectionEvasion::BACKWARD);
+					pEnterLadderCol->SetName(L"LadderEnterCol");
+
+					AddGameObject(pEnterLadderCol);
+					//SetGizmoTarget(pEnterLadderCol);
+				}
+
+				{
+					PhysicsInfo mExitInfo;
+					mExitInfo.eActorType = ActorType::Static;
+					mExitInfo.eGeometryType = GeometryType::Box;
+					mExitInfo.size = Vec3(1.f, 0.5f, 0.5f);
+
+					LadderCollider* pExitLadderCol = Factory::CreateObjectHasPhysical<LadderCollider>(Vec3(2.67f, 15.8f, -17.5f), mExitInfo, L"Deferred", L"");
+					pExitLadderCol->SetPlayerToMovePos(Vec3(2.67f, 15.8f, -17.5f));
+					pExitLadderCol->SetPlayerToDownPos(Vec3(2.67f, 15.6f, -17.5f));
+					pExitLadderCol->SetDir(DirectionEvasion::BACKWARD);
+					pExitLadderCol->SetName(L"LadderExitCol");
+
+					AddGameObject(pExitLadderCol);
+					
+
+				}
+
 			}
 
 			// 바깥쪽 책 쌓여있는 곳
@@ -998,24 +1098,24 @@ namespace hm
 	}
 	void Right2Map::InitFuncObjAdd()
 	{
+		//{
+		//	PhysicsInfo physicsInfo;
+		//	physicsInfo.eActorType = ActorType::Static;
+		//	physicsInfo.eGeometryType = GeometryType::Box;
+		//	physicsInfo.size = Vec3(7.8f, 5.1f, 4.82f);
+
+		//	yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(2.5f, 17.7f, -17.2f), physicsInfo, L"Deferred", L"", false, MapType::CorridorRightMap, 5);
+		//	AddGameObject(pRightZone);
+		//	//SetGizmoTarget(pRightZone);
+		//}
+
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Static;
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(3.4f, 10.1f, 4.82f);
 
-			yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-7.4f, -4.57f, 19.2f), physicsInfo, L"Deferred", L"", false, MapType::CorridorRightMap, 5);
-			AddGameObject(pRightZone);
-			//SetGizmoTarget(pRightZone);
-		}
-
-		{
-			PhysicsInfo physicsInfo;
-			physicsInfo.eActorType = ActorType::Static;
-			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(3.4f, 10.1f, 4.82f);
-
-			yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-7.4f, -4.57f, 19.2f), physicsInfo, L"Deferred", L"", false, MapType::DiningColliderCheckMap,6);
+			yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(2.5f, 17.7f, -17.2f), physicsInfo, L"Deferred", L"", false, MapType::DiningColliderCheckMap,6);
 			AddGameObject(pRightZone);
 			//SetGizmoTarget(pRightZone);
 		}

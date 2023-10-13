@@ -415,7 +415,7 @@ void Player::Update()
 
 	//const Vec3& pos = GetTransform()->GetPosition();
 	//wstring strPos = L"플레이어 : " + std::to_wstring(pos.x) + L", " + std::to_wstring(pos.y) + L", " + std::to_wstring(pos.z);
-	//FONT->DrawString(strPos, 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
+	//FONT->DrawString(strPos, 30.f, Vec3(200.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
 }
 
 void Player::FixedUpdate()

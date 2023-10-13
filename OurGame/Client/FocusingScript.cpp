@@ -62,7 +62,7 @@ namespace hm
 
 			float fixedSpeed = mFollowSpeed;
 
-			dir.Normalize();
+			dir.Normalize();\
 			GetRigidBody()->SetVelocity(dir * fixedSpeed);
 		}
 
