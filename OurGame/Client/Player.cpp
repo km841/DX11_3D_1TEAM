@@ -394,6 +394,7 @@ void Player::Update()
 {
 	GameObject::Update();
 	
+	GET_SINGLE(Input)->SetPlayerKeyInfo(mKeyInfo);
 	mActiveState->Update();
 	
 	

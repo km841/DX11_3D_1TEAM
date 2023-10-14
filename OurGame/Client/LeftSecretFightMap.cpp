@@ -148,8 +148,6 @@ void LeftSecretFightMap::Render()
 
 void LeftSecretFightMap::Enter()
 {
-	
-
 	//배경맵 하얀색으로 만들어주는 코드
 	//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
@@ -159,18 +157,12 @@ void LeftSecretFightMap::Enter()
 #pragma region "어드민"
 #pragma endregion
 
-	
-
-	
-
 	// 그리마스
 	{
 		SpawnDoor<Grimace>* pGrimace = Factory::SpawnMonster<Grimace>(Vec3(-9.5f, -4.f, -2.8f),Vec3(180.f,180.f,0.f));
 		pGrimace->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
 		AddGameObject(pGrimace);
 	}
-
-	
 
 	// 샹들리에 라이트
 	{

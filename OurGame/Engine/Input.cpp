@@ -82,7 +82,7 @@ namespace hm
 		
 		bool bIsPressedHotKey = false;
 		// UP_LEFT
-		if (GetButtonPress(KeyType::UP) && GetButtonPress(KeyType::LEFT))
+		if (GetButtonPress(mKeyInfo.eForwardKey) && GetButtonPress(mKeyInfo.eLeftKey))
 		{
 			ClearHotkey();
 			mHotkeyStates[static_cast<int>(HotKeyType::UP_LEFT)] = KeyState::Press;
@@ -91,8 +91,8 @@ namespace hm
 			mTimer.Start();
 		}
 
-		if (GetButtonUp(KeyType::UP) && GetButtonNone(KeyType::LEFT) || 
-			GetButtonNone(KeyType::UP) && GetButtonUp(KeyType::LEFT))
+		if (GetButtonUp(mKeyInfo.eForwardKey) && GetButtonNone(mKeyInfo.eLeftKey) ||
+			GetButtonNone(mKeyInfo.eForwardKey) && GetButtonUp(mKeyInfo.eLeftKey))
 		{
 			if (mHotkeyStates[static_cast<int>(HotKeyType::UP_LEFT)] == KeyState::Press)
 			{
@@ -101,7 +101,7 @@ namespace hm
 		}
 
 		// UP_RIGHT
-		if (GetButtonPress(KeyType::UP) && GetButtonPress(KeyType::RIGHT))
+		if (GetButtonPress(mKeyInfo.eForwardKey) && GetButtonPress(mKeyInfo.eRightKey))
 		{
 			ClearHotkey();
 			mHotkeyStates[static_cast<int>(HotKeyType::UP_RIGHT)] = KeyState::Press;
@@ -110,8 +110,8 @@ namespace hm
 			mTimer.Start();
 		}
 
-		if (GetButtonUp(KeyType::UP) && GetButtonNone(KeyType::RIGHT) ||
-			GetButtonNone(KeyType::UP) && GetButtonUp(KeyType::RIGHT))
+		if (GetButtonUp(mKeyInfo.eForwardKey) && GetButtonNone(mKeyInfo.eRightKey) ||
+			GetButtonNone(mKeyInfo.eForwardKey) && GetButtonUp(mKeyInfo.eRightKey))
 		{
 			if (mHotkeyStates[static_cast<int>(HotKeyType::UP_RIGHT)] == KeyState::Press)
 			{
@@ -120,7 +120,7 @@ namespace hm
 		}
 
 		// DOWN_LEFT
-		if (GetButtonPress(KeyType::DOWN) && GetButtonPress(KeyType::LEFT))
+		if (GetButtonPress(mKeyInfo.eBackwardKey) && GetButtonPress(mKeyInfo.eLeftKey))
 		{
 			ClearHotkey();
 			mHotkeyStates[static_cast<int>(HotKeyType::DOWN_LEFT)] = KeyState::Press;
@@ -129,8 +129,8 @@ namespace hm
 			mTimer.Start();
 		}
 
-		if (GetButtonUp(KeyType::DOWN) && GetButtonNone(KeyType::LEFT) ||
-			GetButtonNone(KeyType::DOWN) && GetButtonUp(KeyType::LEFT))
+		if (GetButtonUp(mKeyInfo.eBackwardKey) && GetButtonNone(mKeyInfo.eLeftKey) ||
+			GetButtonNone(mKeyInfo.eBackwardKey) && GetButtonUp(mKeyInfo.eLeftKey))
 		{
 			if (mHotkeyStates[static_cast<int>(HotKeyType::DOWN_LEFT)] == KeyState::Press)
 			{
@@ -139,7 +139,7 @@ namespace hm
 		}
 
 		// DOWN_RIGHT
-		if (GetButtonPress(KeyType::DOWN) && GetButtonPress(KeyType::RIGHT))
+		if (GetButtonPress(mKeyInfo.eBackwardKey) && GetButtonPress(mKeyInfo.eRightKey))
 		{
 			ClearHotkey();
 			mHotkeyStates[static_cast<int>(HotKeyType::DOWN_RIGHT)] = KeyState::Press;
@@ -148,8 +148,8 @@ namespace hm
 			mTimer.Start();
 		}
 
-		if (GetButtonUp(KeyType::DOWN) && GetButtonNone(KeyType::RIGHT) ||
-			GetButtonNone(KeyType::DOWN) && GetButtonUp(KeyType::RIGHT))
+		if (GetButtonUp(mKeyInfo.eBackwardKey) && GetButtonNone(mKeyInfo.eRightKey) ||
+			GetButtonNone(mKeyInfo.eBackwardKey) && GetButtonUp(mKeyInfo.eRightKey))
 		{
 			if (mHotkeyStates[static_cast<int>(HotKeyType::DOWN_RIGHT)] == KeyState::Press)
 			{
