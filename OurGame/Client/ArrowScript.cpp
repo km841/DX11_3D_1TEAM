@@ -36,6 +36,7 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "Animator.h"
+#include "AudioSound.h"
 
 /* Script */
 #include "PlayerMoveScript.h"

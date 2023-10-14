@@ -504,6 +504,8 @@ void Lurker::SetBehaviorTree()
 					//pObj->Disable();
 					isDead = false;
 					GetScript<PaperBurnScript>()->SetPaperBurn();
+					GameObject* pObj = GetGameObject();
+					pObj->DisableCollider();
 					pAnimator->Play(9, false);
 				}
 

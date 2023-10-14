@@ -117,7 +117,7 @@ void LORD_BOSS::SetBehaviorTree()
 				if (17 != animIndex)
 				{
 					pSound->SetSound(L"BOSSBGM", GET_SINGLE(SceneManager)->GetActiveScene(), true, "..\\Resources\\Sound\\BossMapBGM.mp3");
-					pSound->Play(20);
+					pSound->Play(15);
 					pAnimator->Play(17, true);
 
 				}
@@ -128,10 +128,16 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorCondition* pIfCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
+				//임시 코드
 				/*if (pAni->GetFrameRatio()>0.95) 
 				{
 					return BehaviorResult::Success;
 				}*/
+				//임시코드
+				if (IS_DOWN(KeyType::G))
+				{
+					return BehaviorResult::Success;
+				}
 
 
 				if (isCutSceneEnd) //컷신 체크가 트루일때 아이들 상태로 넘어가기
@@ -1430,6 +1436,13 @@ void LORD_BOSS::Initialize()
 void LORD_BOSS::Update()
 {
 	Health = (mHP / mMaxHP) * 100;
+
+	if (IS_DOWN(KeyType::H)) {
+		Transform* pTr = GetTransform();
+		pTr->SetPosition(Vec3(12.3f, -4.f, -8.f));
+		meBasicState = MonsterBasicState::Idle;
+	}
+
 	Monster::Update();
 
 	
@@ -1494,13 +1507,15 @@ void LORD_BOSS::OnTriggerEnter(Collider* _pOtherCollider)
 	float attackDamage = pPlayer->GetAttackDamage();
 
 	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
-		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType()
-		&& isGODState == false)
+		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		TakeDamage(attackDamage);
-		if (mHP < 0)
-		{
-			isGODState = true;
+		if (isGODState == false) {
+			HitSound();
+			TakeDamage(attackDamage);
+			if (mHP < 0)
+			{
+				isGODState = true;
+			}
 		}
 	}
 

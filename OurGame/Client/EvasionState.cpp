@@ -87,6 +87,10 @@ void EvasionState::Enter()
 	pObj->Disable();
 	PlayAnimation();
 
+	AudioSound* pSound = pPlayer->GetAudioSound();
+	pSound->SetSound(L"Evasion", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Player\\PlayerRoll.ogg");
+	pSound->Play(150);
+
 }
 
 void EvasionState::Exit()

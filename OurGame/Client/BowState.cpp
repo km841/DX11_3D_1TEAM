@@ -65,15 +65,25 @@ void BowState::Update()
 	GameObject* pArrowObj = pPlayer->GetArrow(); //화살 오브젝트
 	ArrowScript* pArrowSc = pArrowObj->GetScript<ArrowScript>();
 
+	AudioSound* pSound = PLAYER->GetAudioSound();
+
 	Vec3 Dir = ConvertDir(eDir);
 
+	
 	if (IS_UP(KeyType::Z))
 	{
-		pPlayer->StateChange(PlayerState::IdleState);
+		if (pAni->GetFrameRatio() > 0.9 && isArrowFireCheck == true)
+		{
+			isArrowFireCheck = false;
+			pSound->SetSound(L"ArrowFire", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Player\\ArrowFire.ogg");
+			pSound->Play();
+		}
+
 		pArrowSc->SetArrowAtkCheck(true); //화살 발사 부분 시작
 		pArrowSc->BurnReset(); //불화살 초기화 부분
 		pArrowSc->SetDirPos(Dir); // 화살 발사 방향 Set
-		//pArrowSc->SetmSpeed(); // 화살 발사 방향 Set
+		pPlayer->StateChange(PlayerState::IdleState);
+		pArrowSc->SetmSpeed(); // 화살 발사 방향 Set
 	}
 	if (pAni->GetFrameRatio() > 0.9)
 	{
@@ -86,6 +96,10 @@ void BowState::Update()
 void BowState::Enter()
 {
 	PlayAnimation();
+
+	AudioSound* pSound = PLAYER->GetAudioSound();
+	pSound->SetSound(L"ArrowCharge", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Player\\ArrowCharge.ogg");
+	pSound->Play();
 
 	Player* pPlayer = Player::GetPlayer();
 	GameObject* pBowObj = pPlayer->GetBow(); //활 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
@@ -112,6 +126,9 @@ void BowState::Exit()
 
 	GameObject* pSwordObj = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
 	pSwordObj->Enable();
+
+	isArrowFireCheck = true;
+
 }
 
 void BowState::PlayAnimation()

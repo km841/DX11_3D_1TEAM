@@ -89,6 +89,7 @@ namespace hm
 		virtual void EnableCollider();
 		virtual void DisableCollider();
 		bool IsEnable() { return mbEnable; }
+		bool ismbEnableCollider() {return mbEnableCollider;}
 
 		/* Frustum Culling을 적용받을 것인지를 세팅 */
 		void SetFrustumCheckFlag(bool _bFlag) { mbCheckFrustum = _bFlag; }
@@ -172,6 +173,7 @@ namespace hm
 		bool mbShadow;
 		bool mbReflect;
 		bool mbMotionBlur;
+		bool mbEnableCollider = false;
 	};
 }
 
