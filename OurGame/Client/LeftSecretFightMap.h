@@ -24,7 +24,7 @@ private:
 	void FuncObjectAdd();
 
 private:
-
+	int mSpawnPoint = -1;
 
 };
 

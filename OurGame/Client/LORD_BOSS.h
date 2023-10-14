@@ -1,6 +1,7 @@
 #pragma once
 #include "Monster.h"
 class LORD_BOSS_ROLL;
+class MonsterSlowObject;
 class LORD_BOSS :
     public Monster
 {
@@ -35,6 +36,8 @@ public:
 public:
 	void SetObject(LORD_BOSS_ROLL* _obj) { pObject = _obj; }
 
+	void CutSceneEnd() { isCutSceneEnd = true; }
+
 private:
 	
 	void SlowTurnLive();
@@ -66,8 +69,8 @@ private:
 
 	Vec3 PotProjectPos;
 
-	Vec3 LaserPos = Vec3(0.f, 15.f, 20.f);
-	Vec3 LaserRot = Vec3(-90.f, 360.f, 360.f);
+	Vec3 LaserPos = Vec3(14.5f, 10.f, -10.f);
+	Vec3 LaserRot = Vec3(-90.f, 360.f, 130.f);
 
 	int Health;
 	float TurnSpeed;
@@ -76,12 +79,13 @@ private:
 	bool isWall = false;
 	bool isCrash = true;
 	bool isSilent_Clap = false;
+	bool isCutSceneEnd = false;
 
 	MonsterBasicState PrevState;
 
 	LORD_BOSS_ROLL* pObject;
 	GameObject* pMonsterAttackCol;
-	GameObject* pMonsterSilent_ClapCol;
+	MonsterSlowObject* pMonsterSilent_ClapCol;
 	GameObject* pBackswingCol;
 };
 

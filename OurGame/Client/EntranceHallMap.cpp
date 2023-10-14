@@ -93,17 +93,23 @@ void EntranceHallMap::Start()
 
 	DisableDirLight();
 
-	mpMainCamera->GetTransform()->SetPosition(Vec3(-14.f, 24.8f, 25.2f));
-	mpMainCamera->GetTransform()->SetRotation(Vec3(51.4f, 145.2f, 0.f));
+	mpMainCamera->GetTransform()->SetPosition(Vec3(-14.f, 18.2f, 20.2f));
+	mpMainCamera->GetTransform()->SetRotation(Vec3(42.6f, 130.f, 0.f));
 
 	OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
-	pFollowScript->SetOffset(Vec3(-14.f, 29.f, 10.f));
+	pFollowScript->SetOffset(Vec3(-14.f, 22.f, 5.f));
 
 }
 
 void EntranceHallMap::Update()
 {
 	Map::Update();
+
+	if (IS_DOWN(KeyType::O))
+	{
+		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 0.1f, nullptr, std::bind(&Map::ChangeCameraMode, this));
+		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 0.1f);
+	}
 }
 
 void EntranceHallMap::FixedUpdate()

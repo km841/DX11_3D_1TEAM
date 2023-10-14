@@ -29,6 +29,8 @@
 #include "LadderCollider.h"
 #include "HeadRoller.h"
 #include "HpUi.h"
+#include "MonsterSlowObject.h"
+
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -411,6 +413,7 @@ void Player::Update()
 		pBow->Enable();
 		pArrow->Enable();
 	}
+	
 
 	pSwordSc->SetPlayerState(mActiveState->GetStateEnum());
 	pBowSc->SetPlayerState(mActiveState->GetStateEnum());
@@ -505,6 +508,7 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 		}
 
 	}
+	
 
 
 	if (LayerType::Ladder == _pOtherCollider->GetGameObject()->GetLayerType())
@@ -535,6 +539,16 @@ void Player::OnTriggerStay(Collider* _pOtherCollider)
 			static_cast<HeadRoller*>(_pOtherCollider->GetGameObject())->SetisRollStay(false);
 		}
 
+	}
+
+	if (LayerType::MonsterSlowCol == _pOtherCollider->GetGameObject()->GetLayerType()
+		&& static_cast<MonsterSlowObject*>(_pOtherCollider->GetGameObject())->GetColCheck() == true)
+	{
+		static_cast<MonsterSlowObject*>(_pOtherCollider->GetGameObject())->SetColCheck(false);
+		if (isDownState == false) {
+			mActiveState->Exit();
+			StateChange(PlayerState::HitStartState);
+		}
 	}
 
 }

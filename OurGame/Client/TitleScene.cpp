@@ -27,6 +27,7 @@
 #include "Elevator.h"
 #include "HpUi.h"
 #include "ManaUi.h"
+#include "Banker.h"
 
 /* Interface */
 #include "Interface.h"
@@ -42,6 +43,7 @@
 #include "UIText.h"
 #include "AudioSound.h"
 #include "Mirror.h"
+#include "Animator.h"
 
 /* Script */
 #include "PaperBurnScript.h"
@@ -55,8 +57,7 @@
 #include "PlayerMoveOverMapScript.h"
 #include "FocusingScript.h"
 #include "OwnerFollowScript.h"
-#include "TitleSceneCutSceneTargetScript.h"
-#include "TitleSceneCutSceneCameraMoveScript.h"
+#include "CutSceneCameraMoveScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -77,6 +78,8 @@ namespace hm
 	void TitleScene::Initialize()
 	{
 		Scene::Initialize();
+		
+	
 	}
 
 	void TitleScene::Update()
@@ -107,7 +110,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Right2Map);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
 		}
 
 		// 지형
@@ -127,7 +130,7 @@ namespace hm
 		// - Monster_Player_Test
 		if (IS_DOWN(KeyType::L))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Monster_Player_Test);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::BossMap);
 		}
 
 		// 영진
@@ -178,10 +181,12 @@ namespace hm
 
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Monster_ProjectTile);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::MonsterSlowCol);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Monster);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::MonsterCol);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ladder);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Trigger);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::DecoObject);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Portal);
 
@@ -210,9 +215,10 @@ namespace hm
 			pPlayer->SetDontDestroyObject(L"Player");
 			pPlayer->SetReflect(true);
 
-			AudioSound* pSound = pPlayer->AddComponent(new AudioSound);
+			AudioSound* pSound = PLAYER->AddComponent(new AudioSound);
+	
 			pSound->SetSound(L"BGM", this, true, "..\\Resources\\Sound\\TitleBGM.mp3");
-			pSound->Play();
+			pSound->Play(30);
 
 			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
 			yj::PlayerMoveOverMapScript* pMoveOverSc = pPlayer->AddComponent(new yj::PlayerMoveOverMapScript);
@@ -260,16 +266,15 @@ namespace hm
 			{
 				GET_SINGLE(CollisionManager)->ClearAllCollisionForObject(PLAYER);
 			});
-
 	}
 
 	void TitleScene::Exit()
 	{
+	
+		PLAYER->GetAudioSound()->SetSound(L"BGM");
 		PLAYER->GetAudioSound()->Stop();
 		PLAYER->GetRigidBody()->ApplyGravity();
 		ChangeCameraMode();
-
-
 	}
 
 	void TitleScene::InitCamera()
@@ -323,9 +328,10 @@ namespace hm
 			Camera* pCamera = pGameObject->AddComponent(new Camera);
 			pGameObject->AddComponent(new CameraMoveScript);
 			FocusingScript* pScript = pGameObject->AddComponent(new FocusingScript);
-			//pScript->SetFollowTarget(spCutSceneHolder);
+			pScript->SetFollowTarget(spPlayerHolder);
 			//pScript->SetFocusingTarget(spCutSceneFocusingTarget);
-			jh::TitleSceneCutSceneCameraMoveScript* pCutSceneCameraScript = pGameObject->AddComponent(new jh::TitleSceneCutSceneCameraMoveScript);
+			pScript->SetFocusingMode(false);
+			jh::CutSceneCameraMoveScript* pCutSceneCameraScript = pGameObject->AddComponent(new jh::CutSceneCameraMoveScript);
 			pCutSceneCameraScript->SetLeft(Vec3(3.4f, -2.91f, 22.6f), Vec3(10.52f, 174.23f, 0.f));
 			pCutSceneCameraScript->SetRight(Vec3(-3.3f, -2.91f, 21.1f), Vec3(10.52f, 163.5f, 0.f));
 			pCamera->SetCullingMask(LayerType::Interface, true);
@@ -341,6 +347,35 @@ namespace hm
 
 	void TitleScene::InitObject()
 	{
+		{
+			/*PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(10.0f, 10.0f, 10.0f);
+
+			Banker* pBanker = Factory::CreateObjectHasPhysical<Banker>(Vec3(13.9f, -6.3f, -8.6f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Banker.fbx");*/
+			Banker* pBanker = Factory::CreateObject<Banker>(Vec3(13.9f, -6.3f, -8.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Banker.fbx");
+			pBanker->GetTransform()->SetScale(Vec3(1.3f, 1.3f, 1.3f));
+			pBanker->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 135.f));
+
+			pBanker->GetAnimator()->Play(L"Banker_WriteLoop", true);
+			AddGameObject(pBanker);
+		}
+
+		{
+			/*PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(10.0f, 10.0f, 10.0f);
+
+			Npc* pHallCrow = Factory::CreateObjectHasPhysical<Npc>(Vec3(-5.2f, -8.f, -10.5f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\HallCrowWorker.fbx");*/
+			Npc* pHallCrow = Factory::CreateObject<Npc>(Vec3(-5.2f, -8.f, -10.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\HallCrowWorker.fbx");
+			pHallCrow->GetTransform()->SetScale(Vec3(0.7f, 0.7f, 0.7f));
+			pHallCrow->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 135.f));
+
+			AddGameObject(pHallCrow);
+		}
+
 		{
 			Ground* pFrontGround = Factory::CreateObject<Ground>(Vec3(0.4f, -5.3f, -0.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\uv1.fbx");
 			pFrontGround->GetTransform()->SetScale(Vec3(49.0f, 49.0f, 49.0f));
@@ -814,6 +849,7 @@ namespace hm
 			pHpUI->AddHpUI();
 			pHpUiObj->SetDontDestroyObject(L"HpUi");
 		}
+
 		// MpUI
 		{
 			GameObject* pManaUiObj = new GameObject(LayerType::Unknown);
@@ -823,6 +859,9 @@ namespace hm
 			yj::ManaUi* pManaUI = pManaUiObj->AddComponent<yj::ManaUi>();
 			pManaUI->AddManaUI();
 			pManaUiObj->SetDontDestroyObject(L"MpUi");
+			HPUI->UiOff();
+
+			AddGameObject(pHpUiObj);
 		}
 
 		// Buttons

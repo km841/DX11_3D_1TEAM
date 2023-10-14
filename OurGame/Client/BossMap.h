@@ -3,6 +3,7 @@
 
 namespace hm
 {
+	
 	class BossMap :
 		public Map
 	{
@@ -21,6 +22,8 @@ namespace hm
 		virtual void Enter();
 		virtual void Exit();
 
+	private:
+		int mSpawnPoint = -1;
 	};
 }
 

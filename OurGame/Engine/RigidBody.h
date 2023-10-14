@@ -90,6 +90,7 @@ namespace hm
 		void SetTriggerShapeFlag(bool _bFlag);
 
 		void SetActorInSceneFlag(bool _bFlag);
+		bool GetActorInSceneFlag() { return mbIsActorInScene; }
 		bool IsActorInScene() { return mbIsActorInScene; }
 
 		void AddForce(const Vec3& _force);

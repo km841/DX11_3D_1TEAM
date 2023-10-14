@@ -38,6 +38,7 @@
 #include "Cow.h"
 #include "IrreparablePot.h"
 #include "Pot_ProjectTile.h"
+#include "MonsterSlowObject.h"
 
 /* Component */
 #include "Collider.h"
@@ -77,7 +78,7 @@ LORD_BOSS::LORD_BOSS()
 	
 	MonsterAttackCol();
 	MonsterBackswingCol();
-	meBasicState = MonsterBasicState::Idle;
+	meBasicState = MonsterBasicState::CutScene;
 }
 
 LORD_BOSS::~LORD_BOSS()
@@ -94,6 +95,71 @@ void LORD_BOSS::SetBehaviorTree()
 
 	Selector* pStateSelector = new Selector;
 	{
+#pragma region CutScene Sequence
+		Sequence* pCutSceneSequence = new Sequence;
+		{
+			// 상태 확인(Condition) : 현재 상태가 Idle인지 확인
+			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
+				{
+					if (MonsterBasicState::CutScene == meBasicState)
+						return BehaviorResult::Success;
+					else
+						return BehaviorResult::Failure;
+				});
+
+			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
+			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				Animator* pAnimator = GetAnimator();
+				int animIndex = pAnimator->GetCurrentClipIndex();
+				AudioSound* pSound = GetAudioSound();
+				Transform* pTr = GetTransform();
+				Vec3 Rot = pTr->GetRotation();
+				if (17 != animIndex)
+				{
+					pSound->SetSound(L"BOSSBGM", GET_SINGLE(SceneManager)->GetActiveScene(), true, "..\\Resources\\Sound\\BossMapBGM.mp3");
+					pSound->Play(20);
+					pAnimator->Play(17, true);
+
+				}
+				return BehaviorResult::Success;
+				});
+
+			// 특별한 조건 실행할때
+			BehaviorCondition* pIfCondition = new BehaviorCondition([&]() {
+				Animator* pAni = GetAnimator();
+
+				/*if (pAni->GetFrameRatio()>0.95) 
+				{
+					return BehaviorResult::Success;
+				}*/
+
+
+				if (isCutSceneEnd) //컷신 체크가 트루일때 아이들 상태로 넘어가기
+				{
+					return BehaviorResult::Success;
+				}
+				return BehaviorResult::Failure;
+				});
+
+
+			// 상태 변경(Task) : 상태 변경 조건
+			BehaviorTask* pChangeState = new BehaviorTask([&]()
+				{
+					meBasicState = MonsterBasicState::Idle;
+					return BehaviorResult::Success;
+				});
+
+
+			pCutSceneSequence->AddChild(pStateChecker);
+			pCutSceneSequence->AddChild(pRunAnimationTask);
+			pCutSceneSequence->AddChild(pIfCondition);
+			pCutSceneSequence->AddChild(pChangeState);
+	
+		}
+		pStateSelector->AddChild(pCutSceneSequence);
+
+#pragma endregion
+
 #pragma region Idle Sequence
 		Sequence* pIdleSequence = new Sequence;
 		{
@@ -180,7 +246,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Snap_Once;
+					//meBasicState = MonsterBasicState::Roll_Start;
 					return BehaviorResult::Success;
 				});
 
@@ -770,7 +836,6 @@ void LORD_BOSS::SetBehaviorTree()
 				Animator* pAni = pObject->GetAnimator();
 
 				if (pAni->GetFrameRatio() > 0.95) {
-					PrevFollowSet();
 					return BehaviorResult::Success;
 				}
 				return BehaviorResult::Failure;
@@ -1092,10 +1157,10 @@ void LORD_BOSS::SetBehaviorTree()
 				{
 					GetRigidBody()->RemoveGravity();
 					GetRigidBody()->SetVelocity(AXIS_Y, 0.f);
-					CreateCow(Vec3(10.f, -1.f, 0.f));
-					CreateCow(Vec3(-15.f, -1.f, 0.f));
-					CreateCow(Vec3(0.f, -1.f, 10.f));
-					CreateCow(Vec3(0.f, -1.f, -10.f));
+					CreateCow(Vec3(1.4f, -0.3f, -13.f));
+					CreateCow(Vec3(-4.6f, -0.3f, -13.8f));
+					CreateCow(Vec3(17.4f, -0.3f, 2.7f));
+					CreateCow(Vec3(18.f, -0.3f, 10.f));
 					pAnimator->Play(7, true);
 				}
 				return BehaviorResult::Success;
@@ -1175,11 +1240,23 @@ void LORD_BOSS::SetBehaviorTree()
 
 			// 특별한 조건 실행할때
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
+				Vec3 myRot = GetTransform()->GetRotation();
+				Vec3 myPos = GetTransform()->GetPosition();
+				Vec3 scale = GetRigidBody()->GetGeometrySize();
 				Animator* pAni = GetAnimator();
 
-				if (pAni->GetFrameRatio() > 0.40) {
+				Vec3 Look = Vec3(0.f, -1.f, 0.f);
+
+				Vec3 dirLook = GetTransform()->GetUp();
+				if (IsRaysCollide(myPos + scale * Look, Look, LayerType::Ground, 1.f))
+				{
+					GetRigidBody()->SetVelocity(PosDir * 0);
 					return BehaviorResult::Success;
 				}
+
+				/*if (pAni->GetFrameRatio() > 0.35) {
+					return BehaviorResult::Success;
+				}*/
 				return BehaviorResult::Failure;
 				});
 
@@ -1614,6 +1691,7 @@ void LORD_BOSS::Follow()
 
 void LORD_BOSS::PrevFollowSet()
 {
+	//hm Look Plz
 	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 	Vec3 myPos = GetTransform()->GetPosition();
 	PosDir = playerPos - myPos;
@@ -1765,22 +1843,16 @@ void LORD_BOSS::LaserPrevFollowLive()
 
 	GetRigidBody()->SetVelocity(Ve); 
 
-	Vec3 dirLook = GetTransform()->GetUp();
+	/*Vec3 dirLook = GetTransform()->GetLook();
 
 
 
-	if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::WallObject, 1.f))
+	
+	if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::Ground, 0.5f))
 	{
 		GetRigidBody()->SetVelocity(Ve * 0);
-	}
-	if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::Ground, 1.f))
-	{
-		GetRigidBody()->SetVelocity(Ve * 0);
-	}
-	if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::DecoObject, 1.f))
-	{
-		GetRigidBody()->SetVelocity(Ve * 0);
-	}
+	}*/
+	
 
 
 	mSpeed = 8.f;
@@ -1801,10 +1873,11 @@ void LORD_BOSS::CreateCow(Vec3 _pos)
 
 		pBullKnocker->GetTransform()->SetScale(Vec3(0.3f, 0.3f, 0.3f));
 		pBullKnocker->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 0.f));
-		pBullKnocker->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
+		pBullKnocker->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.5f, 0.f));
 		pBullKnocker->GetAnimator()->SetPlaySpeed(0, 4.f);
 		pBullKnocker->GetAnimator()->SetPlaySpeed(1, 3.f);
 		pBullKnocker->GetAnimator()->SetPlaySpeed(2, 2.f);
+		pBullKnocker->SetAttackCheck(true);
 		//pBullKnocker->GetAnimator()->Play(0,true);
 		//SetGizmoTarget(p_E_HEADROLLER);
 		pBullKnocker->Initialize();
@@ -1831,7 +1904,7 @@ void LORD_BOSS::MonsterAttackCol()
 
 		MonsterColScript* MonSc = pMonsterAttackCol->AddComponent(new MonsterColScript);
 		MonSc->SetInit(Vec3(7.f, 1.f, 7.f), 0.2f);
-		MonSc->SetOffSetPos(Vec3(0.f, -2.5f, -0.f));
+		MonSc->SetOffSetPos(Vec3(0.f, -2.f, -0.f));
 		pMonsterAttackCol->Disable();
 
 		auto pFollowSc2 = pMonsterAttackCol->AddComponent(new OwnerFollowScript(this));
@@ -1852,12 +1925,13 @@ void LORD_BOSS::MonsterSilent_ClapCol()
 		physicsInfo.eGeometryType = GeometryType::Sphere;
 		physicsInfo.size = Vec3(6.0f, 0.1f, 6.f);
 
-		pMonsterSilent_ClapCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(pPlayerPos), physicsInfo, L"Forward", L"..\\Resources\\FBX\\Monster\\SilenceEffect.fbx", false, LayerType::MonsterSlowCol);
+		pMonsterSilent_ClapCol = Factory::CreateObjectHasPhysical<MonsterSlowObject>(Vec3(pPlayerPos), physicsInfo, L"Forward", L"..\\Resources\\FBX\\Monster\\SilenceEffect.fbx");
 		pMonsterSilent_ClapCol->GetMeshRenderer()->SetMaterial(pMonsterSilent_ClapCol->GetMeshRenderer()->GetMaterial()->Clone());
 		pMonsterSilent_ClapCol->GetTransform()->SetScale(Vec3(10.f, 1.f, 10.f));
 		pMonsterSilent_ClapCol->GetTransform()->SetRotation(Vec3(00.f, 00.f, 0.f));
 		pMonsterSilent_ClapCol->GetMeshRenderer()->GetMaterial()->SetBloom(true);
 		pMonsterSilent_ClapCol->Initialize();
+
 		MonsterSlowColScript* MonSlowSc = pMonsterSilent_ClapCol->AddComponent(new MonsterSlowColScript);
 		MonSlowSc->Initialize();
 		pMonsterSilent_ClapCol->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
@@ -1886,7 +1960,7 @@ void LORD_BOSS::MonsterBackswingCol()
 		pBackswingCol->Initialize();
 		MonsterBackswingColScript* MonBackswingSc = pBackswingCol->AddComponent(new MonsterBackswingColScript);
 
-		MonBackswingSc->SetOffSetPos(Vec3(0.f, -3.f, -0.f));
+		MonBackswingSc->SetOffSetPos(Vec3(0.f, -2.f, -0.f));
 		pBackswingCol->Disable();
 
 		auto pFollowSc2 = pBackswingCol->AddComponent(new OwnerFollowScript(this));

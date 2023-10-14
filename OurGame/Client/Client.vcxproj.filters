@@ -356,12 +356,6 @@
     <ClInclude Include="MonsterBackswingColScript.h" />
     <ClInclude Include="HpUi.h" />
     <ClInclude Include="SpawnDoor.h" />
-    <ClInclude Include="TitleSceneCutSceneTargetScript.h">
-      <Filter>소스 파일\Script</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleSceneCutSceneCameraMoveScript.h">
-      <Filter>소스 파일\Script</Filter>
-    </ClInclude>
     <ClInclude Include="AIMoveState.h">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
@@ -369,11 +363,21 @@
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClInclude>
     <ClInclude Include="Fireplace.h" />
+    <ClInclude Include="TriggerObject.h">
+      <Filter>소스 파일\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CutSceneCameraMoveScript.h">
+      <Filter>소스 파일\Script\CutScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Fireplace.h" />
     <ClInclude Include="Banker.h">
       <Filter>소스 파일\GameObject\Npc</Filter>
     </ClInclude>
     <ClInclude Include="BossMap.h">
       <Filter>소스 파일\Scene\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterSlowObject.h">
+      <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -729,12 +733,6 @@
     <ClCompile Include="MonsterBackswingColScript.cpp" />
     <ClCompile Include="HpUi.cpp" />
     <ClCompile Include="SpawnDoor.cpp" />
-    <ClCompile Include="TitleSceneCutSceneCameraMoveScript.cpp">
-      <Filter>소스 파일\Script</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleSceneCutSceneTargetScript.cpp">
-      <Filter>소스 파일\Script</Filter>
-    </ClCompile>
     <ClCompile Include="AIMoveState.cpp">
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClCompile>
@@ -742,9 +740,16 @@
       <Filter>소스 파일\GameObject\Player\State</Filter>
     </ClCompile>
     <ClCompile Include="Fireplace.cpp" />
-    <ClCompile Include="Banker.cpp">
-      <Filter>소스 파일\GameObject\Npc</Filter>
+    <ClCompile Include="TriggerObject.cpp">
+      <Filter>소스 파일\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="CutSceneCameraMoveScript.cpp">
+      <Filter>소스 파일\Script\CutScene</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterSlowObject.cpp">
+      <Filter>소스 파일\GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Banker.cpp" />
     <ClCompile Include="BossMap.cpp">
       <Filter>소스 파일\Scene\Map</Filter>
     </ClCompile>
@@ -838,6 +843,9 @@
     </Filter>
     <Filter Include="소스 파일\Component\ParticleSystem">
       <UniqueIdentifier>{082d8b03-3b56-4abd-86b8-6889d0148c5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Script\CutScene">
+      <UniqueIdentifier>{a6eab342-3e74-45fe-b18c-af7d296610a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

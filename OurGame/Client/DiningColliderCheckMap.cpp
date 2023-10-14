@@ -41,11 +41,17 @@
 #include "Camera.h"
 #include "Light.h"
 #include "ParticleSystem.h"
+#include "Fireplace.h"
+#include "Mirror.h"
 
 /* Script */
 #include "PlayerMoveScript.h"
 #include "PlacementScript.h"
 #include "PaperBurnScript.h"
+#include "PlayerMoveOverMapScript.h"
+#include "BonFireScript.h"
+#include "OwnerFollowScript.h"
+#include "FocusingScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -73,6 +79,24 @@ namespace sy
 	void DiningColliderCheckMap::Start()
 	{
 		Map::Start();
+		mpMainCamera->GetTransform()->SetPosition(Vec3(-9.7f, 16.6f, 13.1f));
+		mpMainCamera->GetTransform()->SetRotation(Vec3(51.7f, 139.7f, 0.f));
+
+		OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
+		pFollowScript->SetOffset(Vec3(-9.4f, 24.3f, 12.f));
+		mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
+
+		if (PLAYER != nullptr)
+		{
+			mSpawnPoint = PLAYER->GetScript<yj::PlayerMoveOverMapScript>()->GetMoveOverNum();
+			switch (mSpawnPoint)
+			{
+
+			case 6:
+				PLAYER->GetTransform()->SetPosition(Vec3(-0.2f, -7.8f, 1.1f));
+				break;
+			}
+		}
 	}
 
 	void DiningColliderCheckMap::Update()
@@ -87,10 +111,6 @@ namespace sy
 
 	void DiningColliderCheckMap::FinalUpdate()
 	{
-		PxVec3 disp = PLAYER->GetRigidBody()->GetVelocity();
-		disp.y = -9.8f;
-		//mpCharacterController->move(disp * DELTA_TIME, 0.f, DELTA_TIME, filter);
-
 		Map::FinalUpdate();
 	}
 
@@ -101,9 +121,6 @@ namespace sy
 
 	void DiningColliderCheckMap::Enter()
 	{
-		
-
-
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 		DisableDirLight();
@@ -133,7 +150,7 @@ namespace sy
 		// 전체맵 가이드라인 벽
 		{
 			DecoObject* pNormalBase = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Diningroom.fbx", true);
-
+			pNormalBase->SetReflect(false);
 			pNormalBase->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 			pNormalBase->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));
 			pNormalBase->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr, 2, 0); //3번째인자 == 텍스처 첫번째 png 인지 두번째 png인지 구별하게 해주는거
@@ -152,12 +169,25 @@ namespace sy
 				info.size = Vec3(30.f, 0.1f, 37.f);
 
 				Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.f, -8.5f, 6.6f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Floor.fbx");
-
+				
 				pFloor->GetTransform()->SetScale(Vec3(37.f, 37.f, 37.f));
 				pFloor->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
 				pFloor->GetMeshRenderer()->GetMaterial()->SetVec3(0, Vec3::Color(164, 164, 145));
 
 				AddGameObject(pFloor);
+			}
+
+			// 미러
+			{
+				GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(0.f, -8.4f, 6.6f), L"Forward", L"", false, LayerType::Mirror);
+
+				pMirror->GetTransform()->SetScale(Vec3(25.f, 25.f, 25.f));
+				pMirror->AddComponent(new Mirror);
+				pMirror->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+				pMirror->GetTransform()->SetRotation(Vec3(90.f, 0.f, 0.f));
+				pMirror->GetMirror()->SetAlpha(0.1f);
+
+				AddGameObject(pMirror);
 			}
 			//1층 계단 - Stairs
 			{
@@ -252,22 +282,22 @@ namespace sy
 				AddGameObject(pPotLeft);
 
 				{
-						PhysicsInfo info = {};
-						info.eActorType = ActorType::Static;
-						info.size = Vec3(3.8f, 5.f, 0.4f);
+					PhysicsInfo info = {};
+					info.eActorType = ActorType::Static;
+					info.size = Vec3(3.8f, 5.f, 0.4f);
 
-						WallObject* pPotRight = Factory::CreateObjectHasPhysical<WallObject>(Vec3(8.75f, -5.5f, -5.8f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\POT_Door_4_Variant.fbx");
-						pPotRight->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
-						pPotRight->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.5f, 4.7f));
+					WallObject* pPotRight = Factory::CreateObjectHasPhysical<WallObject>(Vec3(8.75f, -5.5f, -5.8f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\POT_Door_4_Variant.fbx");
+					pPotRight->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+					pPotRight->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.5f, 4.7f));
 
-						AddGameObject(pPotRight);
+					AddGameObject(pPotRight);
 
-						pPotRight->GetMeshRenderer()->SetSubsetRenderFlag(5, false);
-						pPotRight->GetMeshRenderer()->SetSubsetRenderFlag(6, false);
-						pPotRight->GetMeshRenderer()->SetSubsetRenderFlag(7, false);
-						pPotRight->GetMeshRenderer()->SetSubsetRenderFlag(8, false);
-						pPotRight->GetMeshRenderer()->SetSubsetRenderFlag(9, false);
-						pDoorRight = pPotRight;
+					pPotRight->GetMeshRenderer()->SetSubsetRenderFlag(5, false);
+					pPotRight->GetMeshRenderer()->SetSubsetRenderFlag(6, false);
+					pPotRight->GetMeshRenderer()->SetSubsetRenderFlag(7, false);
+					pPotRight->GetMeshRenderer()->SetSubsetRenderFlag(8, false);
+					pPotRight->GetMeshRenderer()->SetSubsetRenderFlag(9, false);
+					pDoorRight = pPotRight;
 				}
 			}
 
@@ -295,7 +325,7 @@ namespace sy
 				DecoObject* pRimStarter = Factory::CreateObject<DecoObject>(Vec3(-0.3f, -8.5f, 3.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\RimStarter.fbx");
 
 				pRimStarter->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
-
+				pRimStarter->SetReflect(false);
 
 				AddGameObject(pRimStarter);
 			}
@@ -403,6 +433,40 @@ namespace sy
 				pChandelierWithChain->GetTransform()->SetScale(Vec3(30.f, 30.f, 30.f));
 				pChandelierWithChain->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
 				pChandelierWithChain->DrawShadow(false);
+
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloom(true, 13, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 13, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 13, 0);
+
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloom(true, 14, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 14, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 14, 0);
+
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloom(true, 15, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 15, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 15, 0);
+
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloom(true, 16, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 16, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 16, 0);
+
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloom(true, 17, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 17, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 17, 0);
+
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloom(true, 18, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 18, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 18, 0);
+
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloom(true, 19, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 19, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 19, 0);
+
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloom(true, 20, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 20, 0);
+				pChandelierWithChain->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.0f, 1.0f, 0.4f, 1.f), 20, 0);
+
+
 				AddGameObject(pChandelierWithChain);
 			}
 
@@ -823,13 +887,13 @@ namespace sy
 			info.eGeometryType = GeometryType::Box;
 			info.size = Vec3(5.5f, 0.1f, 50.f);
 
-			Ground* pWallObject = Factory::CreateObjectHasPhysical<Ground>(Vec3(11.f, 4.9f, 0.f), info, L"Forward", L"");
+			Ground* pWallObject = Factory::CreateObjectHasPhysical<Ground>(Vec3(11.f, 4.9f, 0.f), info, L"Deferred", L"");
 			AddGameObject(pWallObject);
 		}
 
 		// 3층 바닥 - floorextension_nocollider
 		{
-			Ground* pfloorextension_nocollider = Factory::CreateObject<Ground>(Vec3(11.5f, 5.f, 169.8f), L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\floorextension_nocollider.fbx");
+			Ground* pfloorextension_nocollider = Factory::CreateObject<Ground>(Vec3(11.5f, 5.f, 169.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\floorextension_nocollider.fbx");
 
 			pfloorextension_nocollider->GetTransform()->SetScale(Vec3(20.f, 10.f, 400.f));
 			pfloorextension_nocollider->GetMeshRenderer()->GetMaterial()->SetTexture(0, nullptr);
@@ -1150,16 +1214,39 @@ namespace sy
 		{
 			GameObject* pLightObject = new GameObject(LayerType::Unknown);
 			Transform* pTransform = pLightObject->AddComponent(new Transform);
-			pTransform->SetPosition(Vec3(0.3f, 15.6f, 16.3f));
+			pTransform->SetPosition(Vec3(0.3f, 11.2f, 11.2f));
 			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
 			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
 			Light* pLight = pLightObject->AddComponent(new Light);
-			pLight->SetDiffuse(Vec3(0.5f, 0.5f, 0.2f));
+			pLight->SetDiffuse(Vec3(0.8f, 0.8f, 0.5f));
 			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
-			pLight->SetLightRange(50.f);
+			pLight->SetLightRange(80.f);
 			pLight->SetLightType(LightType::PointLight);
 			AddGameObject(pLightObject);
-			SetGizmoTarget(pLightObject);
+			
+		}
+
+		{
+			GameObject* pGameObject = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pGameObject->AddComponent(new Transform);
+			pTransform->SetPosition(Vec3(-0.5f, -5.6f, -4.f));
+			pTransform->SetRotation(Vec3(71.9f, 0.f, 0.f));
+			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+			Fireplace* pLight = pGameObject->AddComponent(new Fireplace);
+			pLight->SetDiffuse(Vec3(1.0f, 0.3f, 0.3f));
+			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+			pLight->SetLightRange(30.f);
+			pLight->SetLightType(LightType::PointLight);
+			AddGameObject(pGameObject);
+		}
+
+		{
+			DecoObject* pBonFire = Factory::CreateObject<DecoObject>(Vec3(-0.4f, -6.5f, -5.2f), L"Fireplace", L"");
+			pBonFire->GetMeshRenderer()->SetMaterial(pBonFire->GetMeshRenderer()->GetMaterial()->Clone());
+			pBonFire->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::WrapClamp);
+			pBonFire->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			pBonFire->AddComponent(new BonFireScript);
+			AddGameObject(pBonFire);
 		}
 
 		{
@@ -1168,15 +1255,16 @@ namespace sy
 		}
 
 		{
-			{
-				PhysicsInfo physicsInfo;
-				physicsInfo.eActorType = ActorType::Static;
-				physicsInfo.eGeometryType = GeometryType::Box;
-				physicsInfo.size = Vec3(3.8, 3.8f, 4.9f);
 
-				yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(8.8f, -6.5f, -9.0f), physicsInfo, L"Deferred", L"", false, MapType::Right2Map,1);
-				AddGameObject(pTelZone);
-			}
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Static;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(3.8, 3.8f, 4.9f);
+
+			yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(8.8f, -6.5f, -9.0f), physicsInfo, L"Deferred", L"", false, MapType::RightSecretPassageMap, 1);
+			AddGameObject(pTelZone);
+			//SetGizmoTarget(pTelZone);
+
 		}
 
 	}

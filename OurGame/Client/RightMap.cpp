@@ -74,11 +74,11 @@ namespace yj
 	{
 		Map::Start();
 
-		mpMainCamera->GetTransform()->SetPosition(Vec3(14.6f, 36.65f, 10.6f));
-		mpMainCamera->GetTransform()->SetRotation(Vec3(59.6f, 201.9f, 0.f));
+		mpMainCamera->GetTransform()->SetPosition(Vec3(0.7f, 26.35f, 8.6f));
+		mpMainCamera->GetTransform()->SetRotation(Vec3(54.2f, 137.f, 0.f));
 
 		OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
-		pFollowScript->SetOffset(Vec3(0.f, 35.f, 18.f));
+		pFollowScript->SetOffset(Vec3(-10.3f, 25.f, 14.f));
 
 		PLAYER->GetKeyInfo().SetLeftKey(KeyType::RIGHT);
 		PLAYER->GetKeyInfo().SetForwardKey(KeyType::DOWN);
@@ -855,7 +855,6 @@ namespace yj
 			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(23.f, 3.6f, -5.f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pWall);
-			SetGizmoTarget(pWall);
 		}
 
 	}

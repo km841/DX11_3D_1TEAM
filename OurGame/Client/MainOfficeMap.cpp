@@ -35,6 +35,7 @@
 #include "Lurker.h"
 #include "HeadRoller.h"
 #include "Grimace.h"
+#include "TriggerObject.h"
 #include "Banker.h"
 
 /* Component */
@@ -58,6 +59,7 @@
 #include "FocusingScript.h"
 #include "OwnerFollowScript.h"
 #include "HeadText.h"
+#include "CutSceneCameraMoveScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -103,19 +105,19 @@ namespace yj
 			PLAYER->Enable();
 		}
 
-		Vec3 pos = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetGameObject()->GetTransform()->GetPosition();
+		/*Vec3 pos = MAIN_CAMERA->GetTransform()->GetPosition();
 		wstring strPos = {};
 		strPos += L"x = " + std::to_wstring(pos.x) + L" ";
 		strPos += L"y = " + std::to_wstring(pos.y) + L" ";
 		strPos += L"z = " + std::to_wstring(pos.z);
 
-		Vec3 rot = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetGameObject()->GetTransform()->GetRotation();
+		Vec3 rot = MAIN_CAMERA->GetTransform()->GetRotation();
 		wstring strRot = {};
 		strRot += L"x = " + std::to_wstring(rot.x) + L" ";
 		strRot += L"y = " + std::to_wstring(rot.y) + L" ";
 		strRot += L"z = " + std::to_wstring(rot.z);
 		FONT->DrawString(strPos, 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
-		FONT->DrawString(strRot, 30.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
+		FONT->DrawString(strRot, 30.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);*/
 	}
 
 	void MainOfficeMap::Start()
@@ -127,7 +129,7 @@ namespace yj
 			switch (mSpawnPoint)
 			{
 			case -1:
-				PLAYER->GetTransform()->SetPosition(Vec3(-15.6f, -10.0f, 24.4f));
+				PLAYER->GetTransform()->SetPosition(Vec3(-17.0f, -10.0f, 26.0f));
 				break;
 			}
 		}
@@ -156,8 +158,10 @@ namespace yj
 	{
 		gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
 
-		//ChangeCameraMode();
+		hangeCameraMode();
+		
 		InitObjectAdd();
+
 		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1,
 			nullptr, std::bind(&MainOfficeMap::InitBusStart, this));
 
@@ -849,6 +853,19 @@ namespace yj
 
 			Ground* pTop = Factory::CreateObjectHasPhysical<Ground>(Vec3(21.6f, 1.39f, -17.35f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pTop);
+		}
+
+		// 컷씬 트리거용 오브젝트
+		{
+			PhysicsInfo info;
+			info.eActorType = ActorType::Kinematic;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(6.f, 4.f, 2.f);
+
+			jh::TriggerObject* pTriggerObject = Factory::CreateObjectHasPhysical<jh::TriggerObject>(Vec3(-16.4f, -6.6f, 6.1f), info, L"Deferred");
+			pTriggerObject->GetTransform()->SetRotation(Vec3(0.f, 19.f, 0.f));
+
+			AddGameObject(pTriggerObject);
 		}
 	}
 

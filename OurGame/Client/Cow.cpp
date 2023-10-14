@@ -63,7 +63,7 @@ Cow::Cow()
 	mMaxHP = 50.f;
 	mHP = mMaxHP; // 피통
 	mSpeed = 40.f;
-	TurnSpeed = 10.f;
+	TurnSpeed = 250.f;
 	mAttackDamage = 1; // 공격력
 
 
@@ -279,6 +279,12 @@ void Cow::OnTriggerEnter(Collider* _pOtherCollider)
 
 		mGroundCount++;
 	}
+
+	if (LayerType::Player == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
+		GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
+	}
 }
 
 void Cow::OnTriggerStay(Collider* _pOtherCollider)
@@ -339,7 +345,8 @@ void Cow::PrevFollowSet()
 {
 	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 	Vec3 myPos = GetTransform()->GetPosition();
-	PosDir = playerPos - myPos;
+	Vec3 Look = GetTransform()->GetUp();
+	PosDir = Look;
 	PosDir.Normalize();
 	PosDir.y = 0;
 }

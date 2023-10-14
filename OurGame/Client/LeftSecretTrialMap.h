@@ -21,6 +21,7 @@ private:
 	void InitColliderAdd();
 	void FuncObjectAdd();
 private:
-
+	int mSpawnPoint = -1;
+	bool mbIsEnter;
 };
 

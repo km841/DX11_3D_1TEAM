@@ -13,6 +13,11 @@ namespace yj
 
 		virtual void Update();
 
+
+	public:
+		virtual void OnTriggerEnter(Collider* _pOtherCollider);
+
+
 	private:
 		bool CheckPlayerIn();
 		void ChangeScene();

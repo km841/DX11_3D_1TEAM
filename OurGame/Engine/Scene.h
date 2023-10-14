@@ -72,6 +72,7 @@ namespace hm
 
 		/* 씬에 있는 Physics Actor들을 씬에서 모두 제거해주는 함수 */
 		void RemovePhysicsActors();
+		void AddPhysicsActors();
 
 		Camera* GetMainCamera();
 		Camera* GetCutSceneCamera();
@@ -85,6 +86,8 @@ namespace hm
 		bool IsBakedStaticShadow() { return mbIsBakedStaticShadow; }
 		void SetDirLightPosition(const Vec3& _position);
 		void SetDirLightRotation(const Vec3& _rotation);
+
+		void ChangeCameraMode() { std::swap(mpMainCamera, mpCutSceneCamera); }
 
 	private:
 		/* 인자로 넘어온 게임 오브젝트가 가진 카메라를 씬에서 제거해주는 함수 */

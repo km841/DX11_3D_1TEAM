@@ -96,12 +96,12 @@ namespace hm
 	{
 		Map::Start();
 
-		mpMainCamera->GetTransform()->SetPosition(Vec3(-32.4f, 28.4f, 21.08f));
-		mpMainCamera->GetTransform()->SetRotation(Vec3(54.f, 143.1f, 0.f));
+		mpMainCamera->GetTransform()->SetPosition(Vec3(-38.7f, 32.f, 24.0f));
+		mpMainCamera->GetTransform()->SetRotation(Vec3(54.3f, 135.f, 0.f));
 
-		//OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
-		//pFollowScript->SetOffset(Vec3(-9.f, 27.f, 13.5f));
-		//mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
+		OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
+		pFollowScript->SetOffset(Vec3(-15.f, 31.f, 16.5f));
+		mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
 
 		PLAYER->GetKeyInfo().SetLeftKey(KeyType::RIGHT);
 		PLAYER->GetKeyInfo().SetForwardKey(KeyType::DOWN);
@@ -116,7 +116,7 @@ namespace hm
 				break;
 
 			case 6: // CorriderMap -> Right2Map
-				PLAYER->GetTransform()->SetPosition(Vec3(-23.6f, 1.1f, 7.5f));
+				PLAYER->GetTransform()->SetPosition(Vec3(-23.8f, 1.5f, 7.6f));
 				break;
 			}
 		}
@@ -231,7 +231,6 @@ namespace hm
 		{
 			DecoObject* pSideWall = Factory::CreateObject<DecoObject>(Vec3(1.7f, 7.3f, -0.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Right2_Side.fbx");
 			pSideWall->GetTransform()->SetScale(Vec3(46.7f, 50.f, 46.5f));
-
 
 			AddGameObject(pSideWall);
 		}
@@ -1113,11 +1112,10 @@ namespace hm
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Static;
 			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(3.4f, 10.1f, 4.82f);
+			physicsInfo.size = Vec3(3.4f, 4.1f, 4.82f);
 
 			yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(2.5f, 17.7f, -17.2f), physicsInfo, L"Deferred", L"", false, MapType::DiningColliderCheckMap,6);
 			AddGameObject(pRightZone);
-			//SetGizmoTarget(pRightZone);
 		}
 	}
 }
