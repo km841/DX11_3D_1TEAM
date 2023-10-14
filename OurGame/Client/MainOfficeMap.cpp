@@ -158,7 +158,7 @@ namespace yj
 	{
 		gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
 
-		hangeCameraMode();
+		ChangeCameraMode();
 		
 		InitObjectAdd();
 
@@ -729,15 +729,16 @@ namespace yj
 		}
 
 		{
-			GameObject* pEnterTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::Unknown);
+			GameObject* pEnterTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::InterativeCol);
 			pEnterTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpEnter.png"));
 			pEnterTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
-
-			HeadText* pEnterTextScript = pEnterTextBox->AddComponent<HeadText>();
-			AddGameObject(pEnterTextBox);
-			/*pEnterTextScript->SetDectetorPos(Vec3(10.0f, 10.0f, 10.0f));*/
+			pEnterTextBox->GetTransform()->SetPosition(Vec3(19.0f,6.2f,-15.2f));
 			SetGizmoTarget(pEnterTextBox);
-
+			pEnterTextBox->GetTransform()->SetRotation(Vec3(0.0f,90.0f,0.0f));
+			pEnterTextBox->GetTransform()->SetScale(Vec3(2.0f,1.0f,1.0f));
+			AddGameObject(pEnterTextBox);
+			HeadText* pEnterTextScript = pEnterTextBox->AddComponent<HeadText>();
+			pEnterTextScript->SetDectetorPos(Vec3(18.8f, 2.8f, -15.3f));
 		}
 
 #pragma endregion

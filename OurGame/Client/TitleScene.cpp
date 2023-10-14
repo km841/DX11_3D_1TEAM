@@ -22,7 +22,7 @@
 #include "Player.h"
 #include "Ground.h"
 #include "DecoObject.h"
-#include "UI.h"-
+#include "UI.h"
 #include "CameraHolder.h"
 #include "Elevator.h"
 #include "HpUi.h"
@@ -138,8 +138,22 @@ namespace hm
 		// - RightMap
 		if (IS_DOWN(KeyType::K))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Right2Map);
 		}
+		/*MainOfficeMap,
+			CorridorRightMap,
+			DiningColliderCheckMap,
+			EntranceHallMap,
+			GrandmaBossMap,
+			HallColliderCheckMap,
+			LeftSecretFightMap,
+			LeftSecretTrialMap,
+			Right2Map,
+			RightMap,
+			RightSecretPassageMap,
+			BossMap,*/
+
+
 
 		/*Vec3 pos = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetGameObject()->GetTransform()->GetPosition();
 		wstring strPos = {};
@@ -186,8 +200,9 @@ namespace hm
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::MonsterCol);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ladder);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Trigger);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::InterativeCol);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::DecoObject);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Portal);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Portal);
 
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
@@ -859,9 +874,8 @@ namespace hm
 			yj::ManaUi* pManaUI = pManaUiObj->AddComponent<yj::ManaUi>();
 			pManaUI->AddManaUI();
 			pManaUiObj->SetDontDestroyObject(L"MpUi");
-			HPUI->UiOff();
 
-			AddGameObject(pHpUiObj);
+			AddGameObject(pManaUiObj);
 		}
 
 		// Buttons

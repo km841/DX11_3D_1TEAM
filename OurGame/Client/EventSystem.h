@@ -1,7 +1,11 @@
 #pragma once
-class EventSystem
+
+#include "MonoBehavior.h"
+#include "GameObject.h"
+
+class EventSystem : public MonoBehavior
 {
-public:
+public: 
 
 	virtual void Initialize();
 

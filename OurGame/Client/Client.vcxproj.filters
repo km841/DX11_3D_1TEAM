@@ -379,6 +379,9 @@
     <ClInclude Include="MonsterSlowObject.h">
       <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="ManaUi.h" />
+    <ClInclude Include="HeadText.h" />
+    <ClInclude Include="EventSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -753,6 +756,9 @@
     <ClCompile Include="BossMap.cpp">
       <Filter>소스 파일\Scene\Map</Filter>
     </ClCompile>
+    <ClCompile Include="ManaUi.cpp" />
+    <ClCompile Include="HeadText.cpp" />
+    <ClCompile Include="EventSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

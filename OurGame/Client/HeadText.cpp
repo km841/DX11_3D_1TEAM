@@ -9,6 +9,7 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "Factory.h"
+#include "Tool.h"
 
 namespace yj
 {
@@ -25,12 +26,15 @@ namespace yj
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Kinematic;
 			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3::One;
+			physicsInfo.size = Vec3(2,2,2);
 
-			pDetector = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, -100.f, 0.f), physicsInfo, L"Forward", L"", false, LayerType::Unknown);
+			pDetector = Factory::CreateObjectHasPhysical<GameObject>(Vec3(0.f, -100.f, 0.f), physicsInfo, L"Forward", L"", false, LayerType::InterativeCol);
 
 			mScene->AddGameObject(pDetector);
 			pDetector->Initialize();
+			pDetector->GetTransform()->SetPosition(mDetectorPos);
+			/*TOOL->SetGameObject(pDetector);
+			TOOL->UseGizmo();*/
 		}
 	}
 
@@ -50,7 +54,7 @@ namespace yj
 		}
 		else
 		{
-			Decrease();
+			//Decrease();
 		}
 	}
 	Component* HeadText::Clone(GameObject* _pGameObject)
@@ -77,8 +81,6 @@ namespace yj
 
 	void HeadText::Decrease()
 	{
-		if (mState == Disapear)
-		{
 			if (GetTransform()->GetScale().x < mMaxSize.x)
 			{
 				Vec3 mCurrScale = GetTransform()->GetScale();
@@ -90,6 +92,5 @@ namespace yj
 				GetGameObject()->Disable();
 				mState = Standby;
 			}
-		}
 	}
 }

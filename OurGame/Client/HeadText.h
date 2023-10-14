@@ -15,7 +15,7 @@ namespace yj
 		virtual Component* Clone(GameObject* _pGameObject);
 
 	public:
-		void SetDectetorPos(Vec3 _pos) { pDetector->GetTransform()->SetPosition(_pos); }
+		void SetDectetorPos(Vec3 _pos) { mDetectorPos = _pos; }
 	public:
 
 		enum State
@@ -27,6 +27,9 @@ namespace yj
 			End
 		};
 		State mState;
+
+		GameObject* GetDetector() { return pDetector; }
+
 	private:
 
 		void Increase();
@@ -37,6 +40,7 @@ namespace yj
 
 
 		GameObject* pDetector;
+		Vec3 mDetectorPos;
 		GameObject* pTextObj;
 
 	};

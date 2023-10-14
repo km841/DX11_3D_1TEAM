@@ -2,6 +2,7 @@
 #include "ManaUi.h"
 
 #include "SceneManager.h"
+#include "Scene.h"
 
 #include "Timer.h"
 #include "Input.h"
@@ -35,10 +36,7 @@ namespace yj
 
 	void ManaUi::Update()
 	{
-		if (IS_DOWN(KeyType::R))
-		{
-			DecreaseMana();
-		}
+
 	}
 
 	void ManaUi::AddManaUI()
@@ -67,12 +65,12 @@ namespace yj
 			mpMpIns[i] = pMpIn;
 			pMpIn->SetDontDestroyObject(L"ManaIn");
 			pMpIn->SetColor(Vec3::Color(255, 255, 255));
-			pMpIn->AddComponent<ManaIconScript>();
+			//pMpIn->AddComponent<ManaIconScript>();
 			OnOffList.push_back(pMpIn);
 
 		}
-		mpMpIns[3]->GetScript<ManaIconScript>()->SetBigIcon();
-		mpMpIns[4]->GetScript<ManaIconScript>()->SetBigIcon();
+	/*	mpMpIns[3]->GetScript<ManaIconScript>()->SetBigIcon();
+		mpMpIns[4]->GetScript<ManaIconScript>()->SetBigIcon();*/
 
 		mpMpIns[0]->GetTransform()->SetPosition(Vec3(-663.0f, 357.0f, 1.0f));
 		mpMpIns[1]->GetTransform()->SetPosition(Vec3(-629.5f, 357.0f, 1.0f));
@@ -117,13 +115,13 @@ namespace yj
 	}
 	void ManaUi::AddMana()
 	{
-		mCurrManaAmount += 1;
-		mpMpSlots[mCurrManaAmount]->GetScript<ManaIconScript>()->Apear();
+	/*	mCurrManaAmount += 1;
+		mpMpSlots[mCurrManaAmount]->GetScript<ManaIconScript>()->Apear();*/
 	}
 	void ManaUi::DecreaseMana()
 	{
-		if (mCurrManaAmount > 0)
+		/*if (mCurrManaAmount > 0)
 			mCurrManaAmount -= 0;
-		mpMpSlots[mCurrManaAmount]->GetScript<ManaIconScript>()->Decrease();
+		mpMpSlots[mCurrManaAmount]->GetScript<ManaIconScript>()->Decrease();*/
 	}
 }
