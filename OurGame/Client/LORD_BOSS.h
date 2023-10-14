@@ -1,6 +1,8 @@
 #pragma once
 #include "Monster.h"
+#include "BossLaser.h"
 #include "TimerObject.h"
+
 class LORD_BOSS_ROLL;
 class MonsterSlowObject;
 class LORD_BOSS :
@@ -26,11 +28,11 @@ public:
 	virtual void Destroy();
 
 public:
-	virtual void OnCollisionEnter(Collider* _pOtherCollider); //´ÙÀÌ³ª¹Í,½ºÅÂÆ½ÀÌ Ãæµ¹ ÀÏ¾î³µÀ»‹š ÀÌÇÔ¼ö·Î
+	virtual void OnCollisionEnter(Collider* _pOtherCollider); //ë‹¤ì´ë‚˜ë¯¹,ìŠ¤íƒœí‹±ì´ ì¶©ëŒ ì¼ì–´ë‚¬ì„Â‹Âš ì´í•¨ìˆ˜ë¡œ
 	virtual void OnCollisionStay(Collider* _pOtherCollider);
 	virtual void OnCollisionExit(Collider* _pOtherCollider);
 
-	virtual void OnTriggerEnter(Collider* _pOtherCollider); //Å°³×Æ½ÀÌ Ãæµ¹ÀÌÀÏ¾î³µÀ»¶§ ÀÌÇÔ¼ö·Î
+	virtual void OnTriggerEnter(Collider* _pOtherCollider); //í‚¤ë„¤í‹±ì´ ì¶©ëŒì´ì¼ì–´ë‚¬ì„ë•Œ ì´í•¨ìˆ˜ë¡œ
 	virtual void OnTriggerStay(Collider* _pOtherCollider);
 	virtual void OnTriggerExit(Collider* _pOtherCollider);
 
@@ -42,25 +44,25 @@ public:
 private:
 	
 	void SlowTurnLive();
-	void SlowTurn(); // ¾È¾¸
-	void Follow(); // ¾È¾¸ 
+	void SlowTurn(); // ì•ˆì”€
+	void Follow(); // ì•ˆì”€ 
 	void PrevFollowSet();
 	void PrevFollowLive();
 	void PrevRollLive();
-	bool LookRay(); // ¾È¾¸
+	bool LookRay(); // ì•ˆì”€
 
-	//·¹ÀÌÀú ÆĞÅÏ¶§ ¾²´Â ÀÌµ¿+È¸Àü
+	//ë ˆì´ì € íŒ¨í„´ë•Œ ì“°ëŠ” ì´ë™+íšŒì „
 	void LaserFollow_Turn();
 	void LaserPrevFollowSet();
 	void LaserPrevFollowLive();
 	void CreateCow(Vec3 _pos);
 
-	//°ø°İ Äİ¶óÀÌ´õ ¿ÀºêÁ§Æ®
+	//ê³µê²© ì½œë¼ì´ë” ì˜¤ë¸Œì íŠ¸
 	void MonsterAttackCol();
 	void MonsterSilent_ClapCol();
 	void MonsterBackswingCol();
 
-	//Åõ»çÃ¼ °ø°İ(Ç×¾Æ¸®´øÁö±â)
+	//íˆ¬ì‚¬ì²´ ê³µê²©(í•­ì•„ë¦¬ë˜ì§€ê¸°)
 	void CreatePOTProJectTile();
 	void CreatePOTProJectTile(int _a);
 private:
@@ -91,10 +93,11 @@ private:
 	GameObject* pMonsterAttackCol;
 	MonsterSlowObject* pMonsterSilent_ClapCol;
 	GameObject* pBackswingCol;
+	BossLaser* pBossLaser;
 
 	TimerObject mTimer;
 private:
-	//»ç¿îµå °ü·Ã bool
+	//ì‚¬ìš´ë“œ ê´€ë ¨ bool
 	bool isMelee_Jump01 = true;
 	bool isMelee_Jump02 = true;
 	bool isMelee_Jump03 = true;

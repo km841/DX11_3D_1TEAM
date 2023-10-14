@@ -64,26 +64,58 @@
 #include "MonsterColScript.h"
 #include "MonsterSlowColScript.h"
 #include "MonsterBackswingColScript.h"
+#include "BossLaser.h"
+#include "LaserLockOnScript.h"
 
 LORD_BOSS::LORD_BOSS()
 {
 	mMaxHP = 50.f;
-	mHP = mMaxHP; // ÇÇÅë
+	mHP = mMaxHP; // í”¼í†µ
 	mSpeed = 8.f;
 	TurnSpeed = 2.f;
 	mMagnScale = 2.f;
 	Health = (mHP / mMaxHP) * 100;
 	
-	mAttackDamage = 1; // °ø°İ·Â
+	mAttackDamage = 1; // ê³µê²©ë ¥
 	
 	MonsterAttackCol();
 	MonsterBackswingCol();
 	meBasicState = MonsterBasicState::CutScene;
 
+	// ë³´ìŠ¤ ë ˆì´ì €
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(1.f, 3.f, 3.f);
+
+		pBossLaser = Factory::CreateObject<BossLaser>(Vec3(0.f, 0.f, 0.f), L"Deferred_CullNone", L"", false);
+		pBossLaser->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadLaserMesh());
+		pBossLaser->GetRigidBody()->SetPhysical(physicsInfo);
+		pBossLaser->AddComponent(new Collider);
+
+		pBossLaser->GetTransform()->SetScale(Vec3(1.f, 3.f, 3.f));
+		pBossLaser->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		pBossLaser->GetMeshRenderer()->GetMaterial()->SetBloom(true);
+		pBossLaser->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.3f, 0.8f, 1.f));
+
+		OwnerFollowScript* pScript = pBossLaser->AddComponent(new OwnerFollowScript(this));
+		pScript->SetOffset(Vec3(0.f, 6.f, 0.f));
+		pBossLaser->AddComponent(new LaserLockOnScript);
+
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pBossLaser);
+
+		GET_SINGLE(RenderManager)->AddCameraShakeEffect(10.f, 0.2f, 0);
+		GET_SINGLE(RenderManager)->AddChromaticEffect(10.f, nullptr, nullptr, 1);
+		GET_SINGLE(RenderManager)->SetBloomScale(5.0f);
+	}
+
 	mTimer.SetEndTime(6.5f);
+
 
 	Shaketime=0.2f;
 	ShakeNum=0.04f;
+
 
 }
 
@@ -93,9 +125,11 @@ LORD_BOSS::~LORD_BOSS()
 
 void LORD_BOSS::SetBehaviorTree()
 {
+
+
 	AI* pAI = AddComponent(new AI);
 
-	// ·çÆ® ³ëµå µî·Ï
+	// ë£¨íŠ¸ ë…¸ë“œ ë“±ë¡
 	Selector* pRootNode = new Selector;
 	pAI->SetRootNode(pRootNode);
 
@@ -104,7 +138,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region CutScene Sequence
 		Sequence* pCutSceneSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::CutScene == meBasicState)
@@ -113,7 +147,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -130,23 +164,23 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pIfCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
-				//ÀÓ½Ã ÄÚµå
+				//ì„ì‹œ ì½”ë“œ
 				/*if (pAni->GetFrameRatio()>0.95) 
 				{
 					return BehaviorResult::Success;
 				}*/
-				//ÀÓ½ÃÄÚµå
+				//ì„ì‹œì½”ë“œ
 				if (IS_DOWN(KeyType::G))
 				{
 					return BehaviorResult::Success;
 				}
 
 
-				if (isCutSceneEnd) //ÄÆ½Å Ã¼Å©°¡ Æ®·çÀÏ¶§ ¾ÆÀÌµé »óÅÂ·Î ³Ñ¾î°¡±â
+				//if (isCutSceneEnd) //ì»·ì‹  ì²´í¬ê°€ íŠ¸ë£¨ì¼ë•Œ ì•„ì´ë“¤ ìƒíƒœë¡œ ë„˜ì–´ê°€ê¸°
 				{
 					return BehaviorResult::Success;
 				}
@@ -154,7 +188,7 @@ void LORD_BOSS::SetBehaviorTree()
 				});
 
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					meBasicState = MonsterBasicState::Idle;
@@ -175,7 +209,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region Idle Sequence
 		Sequence* pIdleSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Idle == meBasicState)
@@ -184,7 +218,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -194,14 +228,14 @@ void LORD_BOSS::SetBehaviorTree()
 				{
 					pAnimator->Play(0, true);
 
-					if(PrevState == MonsterBasicState::Backswing_Left //¹é½ºÀ®ÈÄ Rot°ª È¸Àü
+					if(PrevState == MonsterBasicState::Backswing_Left //ë°±ìŠ¤ìœ™í›„ Rotê°’ íšŒì „
 						|| PrevState == MonsterBasicState::Backswing_Right)
 						pTr->SetRotation(Vec3(-90.f, Rot.y, Rot.z + 180));
 				}
 				return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pIfCondition = new BehaviorCondition([&](){
 					Animator* pAni = GetAnimator();
 
@@ -213,13 +247,13 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					PrevState = meBasicState;
 
-					static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 ³­¼ö ¿£Áø
-					static std::uniform_int_distribution<int> distribution(0, 7);          // »ı¼º ¹üÀ§
+					static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 ë‚œìˆ˜ ì—”ì§„
+					static std::uniform_int_distribution<int> distribution(0, 7);          // ìƒì„± ë²”ìœ„
 					static auto generator = std::bind(distribution, engine);
 
 					switch (generator())
@@ -255,7 +289,7 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
 					//meBasicState = MonsterBasicState::Laser_Start;
@@ -277,7 +311,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region Attack Melee_Chain Sequence
 		Sequence* pMelee_ChainSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Melee_Chain == meBasicState)
@@ -286,7 +320,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -297,7 +331,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					Animator* pAni = GetAnimator();
@@ -421,7 +455,7 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
@@ -431,7 +465,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					isMelee_Jump01 = true;
@@ -459,7 +493,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region Attack Silent_Clap Sequence
 		Sequence* pSilent_ClapSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Silent_Clap == meBasicState)
@@ -468,7 +502,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -479,7 +513,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					Animator* pAni = GetAnimator();
@@ -496,7 +530,7 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
@@ -506,7 +540,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					isSilent_Clap = false;
@@ -529,7 +563,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region Attack Snap_Once Sequence
 		Sequence* pSnap_OnceSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Snap_Once == meBasicState)
@@ -538,7 +572,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -551,7 +585,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					Animator* pAni = GetAnimator();
@@ -560,7 +594,7 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
@@ -570,7 +604,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					CreatePOTProJectTile(-1);
@@ -593,7 +627,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region Attack Mega_Aoe Sequence
 		Sequence* pMega_AoeSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Mega_Aoe == meBasicState)
@@ -602,7 +636,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -613,7 +647,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					Animator* pAni = GetAnimator();
@@ -629,7 +663,7 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
@@ -639,7 +673,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					isSilent_Clap = false;
@@ -662,7 +696,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region Attack Backswing_Left Sequence
 		Sequence* pBackswing_LeftSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Backswing_Left == meBasicState)
@@ -671,7 +705,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -683,7 +717,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					Animator* pAni = GetAnimator();
@@ -709,7 +743,7 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
@@ -719,7 +753,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					isBackSwing = true;
@@ -742,7 +776,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region Attack Backswing_Right Sequence
 		Sequence* pBackswing_RightSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Backswing_Right == meBasicState)
@@ -751,7 +785,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -762,7 +796,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					Animator* pAni = GetAnimator();
@@ -788,7 +822,7 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 				
@@ -799,7 +833,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					isBackSwing = true;
@@ -822,7 +856,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region Attack Roll_Start Sequence
 		Sequence* pRoll_StartSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Roll_Start == meBasicState)
@@ -831,7 +865,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -842,7 +876,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 
@@ -850,7 +884,7 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
@@ -860,7 +894,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					PrevState = meBasicState;
@@ -882,7 +916,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region Attack Roll_01 Sequence
 		Sequence* pRoll_01Sequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Roll_01 == meBasicState)
@@ -891,7 +925,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = pObject->GetAnimator();
 				AudioSound* pSound = GetAudioSound();
@@ -907,7 +941,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					//TurnSpeed = 3;
@@ -921,7 +955,7 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = pObject->GetAnimator();
 
@@ -931,7 +965,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					PrevState = meBasicState;
@@ -953,7 +987,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region Attack Roll_02 Sequence
 		Sequence* pRoll_02Sequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Roll_02 == meBasicState)
@@ -962,7 +996,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = pObject->GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -977,7 +1011,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					Transform* pObjTr = pObject->GetTransform();
@@ -989,7 +1023,7 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = pObject->GetAnimator();
 				AudioSound* pSound = GetAudioSound();
@@ -1027,7 +1061,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					isRollWall = true;
@@ -1050,7 +1084,7 @@ void LORD_BOSS::SetBehaviorTree()
 //#pragma region Attack Roll_03 Sequence
 //		Sequence* pRoll_03Sequence = new Sequence;
 //		{
-//			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+//			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 //			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 //				{
 //					if (MonsterBasicState::Roll_03 == meBasicState)
@@ -1059,7 +1093,7 @@ void LORD_BOSS::SetBehaviorTree()
 //						return BehaviorResult::Failure;
 //				});
 //
-//			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+//			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 //			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 //				Animator* pAnimator = pObject->GetAnimator();
 //				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -1070,7 +1104,7 @@ void LORD_BOSS::SetBehaviorTree()
 //				return BehaviorResult::Success;
 //				});
 //
-//			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+//			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 //			BehaviorTask* pTask = new BehaviorTask([&]()
 //				{
 //					Transform* pObjTr = pObject->GetTransform();
@@ -1081,7 +1115,7 @@ void LORD_BOSS::SetBehaviorTree()
 //					return BehaviorResult::Success;
 //				});
 //
-//			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+//			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 //			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 //				Animator* pAni = pObject->GetAnimator();
 //
@@ -1091,7 +1125,7 @@ void LORD_BOSS::SetBehaviorTree()
 //				return BehaviorResult::Failure;
 //				});
 //
-//			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+//			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 //			BehaviorTask* pChangeState = new BehaviorTask([&]()
 //				{
 //					PrevState = meBasicState;
@@ -1113,7 +1147,7 @@ void LORD_BOSS::SetBehaviorTree()
 //#pragma region Attack Roll_End Sequence
 //		Sequence* pRoll_EndSequence = new Sequence;
 //		{
-//			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+//			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 //			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 //				{
 //					if (MonsterBasicState::Roll_End == meBasicState)
@@ -1122,7 +1156,7 @@ void LORD_BOSS::SetBehaviorTree()
 //						return BehaviorResult::Failure;
 //				});
 //
-//			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+//			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 //			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 //				Animator* pAnimator = GetAnimator();
 //				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -1135,7 +1169,7 @@ void LORD_BOSS::SetBehaviorTree()
 //				return BehaviorResult::Success;
 //				});
 //
-//			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+//			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 //			BehaviorTask* pTask = new BehaviorTask([&]()
 //				{
 //
@@ -1144,7 +1178,7 @@ void LORD_BOSS::SetBehaviorTree()
 //					return BehaviorResult::Success;
 //				});
 //
-//			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+//			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 //			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 //				Animator* pAni = GetAnimator();
 //
@@ -1154,7 +1188,7 @@ void LORD_BOSS::SetBehaviorTree()
 //				return BehaviorResult::Failure;
 //				});
 //
-//			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+//			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 //			BehaviorTask* pChangeState = new BehaviorTask([&]()
 //				{
 //					PrevState = meBasicState;
@@ -1176,7 +1210,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region Attack Laser_Start Sequence
 		Sequence* pLaser_StartSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Laser_Start == meBasicState)
@@ -1185,7 +1219,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -1199,7 +1233,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 
@@ -1208,7 +1242,7 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
@@ -1218,7 +1252,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					PrevState = meBasicState;
@@ -1240,7 +1274,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region Attack Laser Sequence
 		Sequence* pLaserSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Laser == meBasicState)
@@ -1249,7 +1283,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -1267,7 +1301,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					Animator* pAni = GetAnimator();
@@ -1284,7 +1318,7 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
@@ -1295,7 +1329,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					mTimer.Stop();
@@ -1319,7 +1353,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region Attack Laser_End Sequence
 		Sequence* pLaser_EndSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Laser_End == meBasicState)
@@ -1328,7 +1362,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -1341,7 +1375,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					mMagnScale = 3.f;
@@ -1350,7 +1384,7 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Vec3 myRot = GetTransform()->GetRotation();
 				Vec3 myPos = GetTransform()->GetPosition();
@@ -1372,7 +1406,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					PrevState = meBasicState;
@@ -1394,7 +1428,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region Fall_Loop Sequence
 		Sequence* pFall_LoopSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Fall_Loop == meBasicState)
@@ -1403,7 +1437,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -1415,7 +1449,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					TurnSpeed = 3.f;
@@ -1425,7 +1459,7 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
@@ -1435,7 +1469,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					PrevState = meBasicState;
@@ -1457,7 +1491,7 @@ void LORD_BOSS::SetBehaviorTree()
 #pragma region Land_Slam Sequence
 		Sequence* pLand_SlamSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Land_Slam == meBasicState)
@@ -1466,7 +1500,7 @@ void LORD_BOSS::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				AudioSound* pSound = GetAudioSound();
@@ -1486,7 +1520,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÀÌµ¿+Col Ã³¸® ÇÏ´Â°÷
+			// ì´ë™+Col ì²˜ë¦¬ í•˜ëŠ”ê³³
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					Animator* pAni = GetAnimator();
@@ -1501,7 +1535,7 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				});
 
-			// Æ¯º°ÇÑ Á¶°Ç ½ÇÇàÇÒ¶§
+			// íŠ¹ë³„í•œ ì¡°ê±´ ì‹¤í–‰í• ë•Œ
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
@@ -1511,7 +1545,7 @@ void LORD_BOSS::SetBehaviorTree()
 				return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ Á¶°Ç
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½ ì¡°ê±´
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					PrevState = meBasicState;
@@ -1690,7 +1724,7 @@ void LORD_BOSS::SlowTurnLive()
 
 void LORD_BOSS::SlowTurn()
 {
-	//Çö¸ğ´ÔÀÌ ºÁÁÖ½É
+	//í˜„ëª¨ë‹˜ì´ ë´ì£¼ì‹¬
 	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 	Vec3 myPos = GetTransform()->GetPosition();
 	Vec3 scale = GetRigidBody()->GetGeometrySize();
@@ -1705,7 +1739,7 @@ void LORD_BOSS::SlowTurn()
 
 	float check = RotDir.Dot(look);
 
-	// °¢µµ °è»ê ÈÄ µµ ´ÜÀ§·Î º¯°æ
+	// ê°ë„ ê³„ì‚° í›„ ë„ ë‹¨ìœ„ë¡œ ë³€ê²½
 	float angle = (acosf(check) - XM_PIDIV2) * 180.f / XM_PI;
 
 	Vec3 Rot = pTr->GetRotation();
@@ -1738,8 +1772,8 @@ void LORD_BOSS::Follow()
 
 	PosDir.Normalize();
 	PosDir.y = 0;
-	// ¸ó½ºÅÍÀÇ ÀÌµ¿¼Óµµ°¡ µé¾î°¡¾ß ÇÔ
-	// ¹æÇâÀ» º¯°æÇØÁÖ´Â Taskµµ ÇÊ¿ä
+	// ëª¬ìŠ¤í„°ì˜ ì´ë™ì†ë„ê°€ ë“¤ì–´ê°€ì•¼ í•¨
+	// ë°©í–¥ì„ ë³€ê²½í•´ì£¼ëŠ” Taskë„ í•„ìš”
 	Vec3 Ve = PosDir * mSpeed;
 
 	const auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects(LayerType::Ground);
@@ -1802,7 +1836,7 @@ void LORD_BOSS::Follow()
 		}
 	}
 
-	GetRigidBody()->SetVelocity(Ve); //µû¶ó¿À°Ô ¸¸µå´Â ÄÚµå
+	GetRigidBody()->SetVelocity(Ve); //ë”°ë¼ì˜¤ê²Œ ë§Œë“œëŠ” ì½”ë“œ
 
 	for (int i = 0; i < gameObjects.size(); ++i)
 	{
@@ -1837,7 +1871,7 @@ void LORD_BOSS::PrevFollowLive()
 
 	Vec3 dirLook = GetTransform()->GetUp();
 
-	GetRigidBody()->SetVelocity(Ve); //µû¶ó¿À°Ô ¸¸µå´Â ÄÚµå
+	GetRigidBody()->SetVelocity(Ve); //ë”°ë¼ì˜¤ê²Œ ë§Œë“œëŠ” ì½”ë“œ
 	
 	
 	if (IsRaysCollide(myPos + scale * dirLook, dirLook, LayerType::WallObject, 1.f))
@@ -1875,14 +1909,14 @@ void LORD_BOSS::PrevRollLive()
 
 	
 
-	GetRigidBody()->SetVelocity(Ve); //µû¶ó¿À°Ô ¸¸µå´Â ÄÚµå
+	GetRigidBody()->SetVelocity(Ve); //ë”°ë¼ì˜¤ê²Œ ë§Œë“œëŠ” ì½”ë“œ
 	mSpeed = 8.f;
 	mMagnScale = 3.f;
 }
 
 bool LORD_BOSS::LookRay()
 {
-	//Çö¸ğ´ÔÀÌ ºÁÁÖ½É
+	//í˜„ëª¨ë‹˜ì´ ë´ì£¼ì‹¬
 	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 	Vec3 myPos = pObject->GetTransform()->GetPosition();
 
@@ -1910,7 +1944,7 @@ void LORD_BOSS::LaserFollow_Turn()
 	Vec3 myPos = GetTransform()->GetPosition();
 	Transform* pTr = GetTransform();
 
-	PosDir = LaserPos - myPos; //¸ñÇ¥ À§Ä¡
+	PosDir = LaserPos - myPos; //ëª©í‘œ ìœ„ì¹˜
 
 	if (PosDir.Length() < 2) {
 		GetRigidBody()->SetVelocity(Vec3::Zero);
@@ -1988,7 +2022,7 @@ void LORD_BOSS::LaserPrevFollowLive()
 
 void LORD_BOSS::CreateCow(Vec3 _pos)
 {
-	// º¸½º°¡ ¼ÒÈ¯ÇÏ´Â ¼Ò
+	// ë³´ìŠ¤ê°€ ì†Œí™˜í•˜ëŠ” ì†Œ
 	{
 		PhysicsInfo info = {};
 		info.eActorType = ActorType::Kinematic;
@@ -2016,7 +2050,7 @@ void LORD_BOSS::CreateCow(Vec3 _pos)
 
 void LORD_BOSS::MonsterAttackCol()
 {
-	//¸ó½ºÅÍ °ø°İ Äİ¶óÀÌ´õ
+	//ëª¬ìŠ¤í„° ê³µê²© ì½œë¼ì´ë”
 	{
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Kinematic;
@@ -2045,7 +2079,7 @@ void LORD_BOSS::MonsterSilent_ClapCol()
 {
 	Vec3 pPlayerPos = PLAYER->GetTransform()->GetPosition();
 	pPlayerPos.y += 0.1f;
-	//¸ó½ºÅÍ °ø°İ Äİ¶óÀÌ´õ
+	//ëª¬ìŠ¤í„° ê³µê²© ì½œë¼ì´ë”
 	{
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Kinematic;
@@ -2074,7 +2108,7 @@ void LORD_BOSS::MonsterSilent_ClapCol()
 
 void LORD_BOSS::MonsterBackswingCol()
 {
-	//¸ó½ºÅÍ °ø°İ Äİ¶óÀÌ´õ
+	//ëª¬ìŠ¤í„° ê³µê²© ì½œë¼ì´ë”
 	{
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Kinematic;
@@ -2099,8 +2133,8 @@ void LORD_BOSS::MonsterBackswingCol()
 
 void LORD_BOSS::CreatePOTProJectTile()
 {
-	static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 ³­¼ö ¿£Áø
-	static std::uniform_int_distribution<int> distribution(-8, 8);          // »ı¼º ¹üÀ§
+	static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 ë‚œìˆ˜ ì—”ì§„
+	static std::uniform_int_distribution<int> distribution(-8, 8);          // ìƒì„± ë²”ìœ„
 	static auto generator = std::bind(distribution, engine);
 	Transform* pTr = GetTransform();
 	PotProjectPos = pTr->GetPosition();
@@ -2114,7 +2148,7 @@ void LORD_BOSS::CreatePOTProJectTile()
 	PotDir.y += 10;
 	PotDir.Normalize();
 	PotDir *= 10;
-	//Å°+ÆÄ¶õ»ö Ç×¾Æ¸® µÎ¹øÂ° - POT_Key
+	//í‚¤+íŒŒë€ìƒ‰ í•­ì•„ë¦¬ ë‘ë²ˆì§¸ - POT_Key
 	{
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Kinematic;
@@ -2160,8 +2194,8 @@ void LORD_BOSS::CreatePOTProJectTile()
 
 void LORD_BOSS::CreatePOTProJectTile(int _a)
 {
-	static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 ³­¼ö ¿£Áø
-	static std::uniform_int_distribution<int> distribution(-8, 8);          // »ı¼º ¹üÀ§
+	static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 ë‚œìˆ˜ ì—”ì§„
+	static std::uniform_int_distribution<int> distribution(-8, 8);          // ìƒì„± ë²”ìœ„
 	static auto generator = std::bind(distribution, engine);
 	Transform* pTr = GetTransform();
 	PotProjectPos = pTr->GetPosition();
@@ -2175,7 +2209,7 @@ void LORD_BOSS::CreatePOTProJectTile(int _a)
 	PotDir.y += 10;
 	PotDir.Normalize();
 	PotDir *= 10;
-	//Å°+ÆÄ¶õ»ö Ç×¾Æ¸® µÎ¹øÂ° - POT_Key
+	//í‚¤+íŒŒë€ìƒ‰ í•­ì•„ë¦¬ ë‘ë²ˆì§¸ - POT_Key
 	{
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Kinematic;

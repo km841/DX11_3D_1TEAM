@@ -179,6 +179,20 @@ namespace hm
         vertices.push_back(Vertex(Vec3(0.6f, -0.8f, 0.f), Vec2(0.6f, 0.9f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
         vertices.push_back(Vertex(Vec3(0.f, -1.f, 0.f), Vec2(0.5f, 1.0f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
 
+        Vec3 desiredCenter(0.0f, -1.0f, 0.0f);
+
+        Vec3 currentCenter(0.0f, 0.0f, 0.0f);
+        for (const Vertex& vertex : vertices) {
+            currentCenter += vertex.pos;
+        }
+        currentCenter /= static_cast<float>(vertices.size());
+
+        Vec3 offset = desiredCenter - currentCenter;
+
+        for (Vertex& vertex : vertices) {
+            vertex.pos += offset;
+        }
+
         std::vector<int> indices(60);
 
         indices[0] = 1;
@@ -1205,6 +1219,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetSamplerType(SamplerType::Clamp);
             pShader->SetName(L"ScreenEffect");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\screeneffect.fx", shaderInfo);
 
