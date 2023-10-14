@@ -117,7 +117,7 @@ void LORD_BOSS::SetBehaviorTree()
 				if (17 != animIndex)
 				{
 					pSound->SetSound(L"BOSSBGM", GET_SINGLE(SceneManager)->GetActiveScene(), true, "..\\Resources\\Sound\\BossMapBGM.mp3");
-					pSound->Play(20);
+					pSound->Play(15);
 					pAnimator->Play(17, true);
 
 				}
@@ -128,10 +128,16 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorCondition* pIfCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
+				//임시 코드
 				/*if (pAni->GetFrameRatio()>0.95) 
 				{
 					return BehaviorResult::Success;
 				}*/
+				//임시코드
+				if (IS_DOWN(KeyType::G))
+				{
+					return BehaviorResult::Success;
+				}
 
 
 				if (isCutSceneEnd) //컷신 체크가 트루일때 아이들 상태로 넘어가기
@@ -246,7 +252,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					//meBasicState = MonsterBasicState::Roll_Start;
+					meBasicState = MonsterBasicState::Laser_Start;
 					return BehaviorResult::Success;
 				});
 
@@ -289,7 +295,8 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					Animator* pAni = GetAnimator();
-					
+					AudioSound* pSound = GetAudioSound();
+
 					pMonsterAttackCol->GetScript<MonsterColScript>()->SetAniRatio(pAni->GetFrameRatio());
 
 					if (pAni->GetFrameRatio() > 0.1
@@ -299,6 +306,12 @@ void LORD_BOSS::SetBehaviorTree()
 						SlowTurn();
 						mMagnScale = 5;
 						PrevFollowLive();
+						if (isMelee_Jump01 == true)
+						{
+							isMelee_Jump01 = false;
+							pSound->SetSound(L"Jump", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\Jump.wav");
+							pSound->Play(40);
+						}
 					}
 
 
@@ -311,6 +324,13 @@ void LORD_BOSS::SetBehaviorTree()
 						pMonsterAttackCol->Enable();
 						//pMonsterAttackCol->GetScript<MonsterColScript>()->SetAniRatio(pAni->GetFrameRatio());
 						pMonsterAttackCol->GetScript<MonsterColScript>()->SetInit(Vec3(7.f, 1.f, 7.f), 0.2f,2.f);
+
+						if (isMelee_Slam01 == true)
+						{
+							isMelee_Slam01 = false;
+							pSound->SetSound(L"MeleeSlam", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\MeleeSlam.wav");
+							pSound->Play(30);
+						}
 					}
 
 
@@ -322,6 +342,12 @@ void LORD_BOSS::SetBehaviorTree()
 						SlowTurn();
 						mMagnScale = 5;
 						PrevFollowLive();
+						if (isMelee_Jump02 == true)
+						{
+							isMelee_Jump02 = false;
+							pSound->SetSound(L"Jump", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\Jump.wav");
+							pSound->Play(40);
+						}
 					}
 
 
@@ -334,6 +360,13 @@ void LORD_BOSS::SetBehaviorTree()
 						pMonsterAttackCol->Enable();
 						//pMonsterAttackCol->GetScript<MonsterColScript>()->SetAniRatio(pAni->GetFrameRatio());
 						pMonsterAttackCol->GetScript<MonsterColScript>()->SetInit(Vec3(7.f, 1.f, 7.f), 0.45f,2.f);
+
+						if (isMelee_Slam02 == true)
+						{
+							isMelee_Slam02 = false;
+							pSound->SetSound(L"MeleeSlam", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\MeleeSlam.wav");
+							pSound->Play(30);
+						}
 					}
 
 					else if (pAni->GetFrameRatio() >= 0.65
@@ -344,6 +377,12 @@ void LORD_BOSS::SetBehaviorTree()
 						SlowTurn();
 						mMagnScale = 20;
 						PrevFollowLive();
+						if (isMelee_Jump03 == true)
+						{
+							isMelee_Jump03 = false;
+							pSound->SetSound(L"Jump", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\Jump.wav");
+							pSound->Play(40);
+						}
 					}
 
 
@@ -356,6 +395,13 @@ void LORD_BOSS::SetBehaviorTree()
 						pMonsterAttackCol->Enable();
 						//pMonsterAttackCol->GetScript<MonsterColScript>()->SetAniRatio(pAni->GetFrameRatio());
 						pMonsterAttackCol->GetScript<MonsterColScript>()->SetInit(Vec3(7.f, 1.f, 7.f), 0.8f, 2.f);
+
+						if (isMelee_Slam03 == true)
+						{
+							isMelee_Slam03 = false;
+							pSound->SetSound(L"MeleeSlam", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\MeleeSlam.wav");
+							pSound->Play(30);
+						}
 					}
 					else
 					{
@@ -382,6 +428,12 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
+					isMelee_Jump01 = true;
+					isMelee_Jump02 = true;
+					isMelee_Jump03 = true;
+					isMelee_Slam01 = true;
+					isMelee_Slam02 = true;
+					isMelee_Slam03 = true;
 					PrevState = meBasicState;
 					meBasicState = MonsterBasicState::Idle;
 					return BehaviorResult::Success;
@@ -425,10 +477,12 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					Animator* pAni = GetAnimator();
-
-					if (pAni->GetFrameRatio() > 0.3 && isSilent_Clap == false)
+					AudioSound* pSound = GetAudioSound();
+					if (pAni->GetFrameRatio() > 0.25 && isSilent_Clap == false)
 					{
 						isSilent_Clap = true;
+						pSound->SetSound(L"Ball", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\Ball.ogg");
+						pSound->Play();
 						MonsterSilent_ClapCol(); 
 					}
 
@@ -440,7 +494,6 @@ void LORD_BOSS::SetBehaviorTree()
 				Animator* pAni = GetAnimator();
 
 				if (pAni->GetFrameRatio() > 0.5) {
-					isSilent_Clap = false;
 					return BehaviorResult::Success;
 				}
 				return BehaviorResult::Failure;
@@ -449,6 +502,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
+					isSilent_Clap = false;
 					PrevState = meBasicState;
 					meBasicState = MonsterBasicState::Idle;
 					return BehaviorResult::Success;
@@ -618,9 +672,17 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					Animator* pAni = GetAnimator();
+					AudioSound* pSound = GetAudioSound();
+
 					if (pAni->GetFrameRatio() > 0.1f)
 					{
 						pBackswingCol->Enable();
+						if (isBackSwing == true)
+						{
+							isBackSwing = false;
+							pSound->SetSound(L"BackSwing", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\BackSwing.wav");
+							pSound->Play(50);
+						}
 					}
 					if (pAni->GetFrameRatio() > 0.2f)
 					{
@@ -644,7 +706,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
-					
+					isBackSwing = true;
 					PrevState = meBasicState;
 					meBasicState = MonsterBasicState::Idle;
 					return BehaviorResult::Success;
@@ -688,9 +750,17 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					Animator* pAni = GetAnimator();
+					AudioSound* pSound = GetAudioSound();
+
 					if (pAni->GetFrameRatio() > 0.1f)
 					{
 						pBackswingCol->Enable();
+						if (isBackSwing == true)
+						{
+							isBackSwing = false;
+							pSound->SetSound(L"BackSwing", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\BackSwing.wav");
+							pSound->Play(50);
+						}
 					}
 					if (pAni->GetFrameRatio() > 0.2f)
 					{
@@ -715,6 +785,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
+					isBackSwing = true;
 					PrevState = meBasicState;
 					meBasicState = MonsterBasicState::Idle;
 					return BehaviorResult::Success;
@@ -1169,9 +1240,17 @@ void LORD_BOSS::SetBehaviorTree()
 			// 이동+Col 처리 하는곳
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
-
-					
-
+					Animator* pAni = GetAnimator();
+					AudioSound* pSound = GetAudioSound();
+					if (pAni->GetFrameRatio() > 0.25)
+					{
+						if (isLaser == true)
+						{
+							isLaser = false;
+							pSound->SetSound(L"Laser", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\Laser.ogg");
+							pSound->Play(50);
+						}
+					}
 					return BehaviorResult::Success;
 				});
 
@@ -1188,6 +1267,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
+					isLaser = true;
 					PrevState = meBasicState;
 					meBasicState = MonsterBasicState::Laser_End;
 					return BehaviorResult::Success;
@@ -1357,6 +1437,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
+				AudioSound* pSound = GetAudioSound();
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (5 != animIndex)
 				{
@@ -1364,6 +1445,9 @@ void LORD_BOSS::SetBehaviorTree()
 					pObject->Disable();
 					Enable();
 					pAnimator->Play(5, true);
+
+					pSound->SetSound(L"LandSlam", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\LandSlam.wav");
+					pSound->Play(30);
 				}
 				return BehaviorResult::Success;
 				});
@@ -1430,6 +1514,13 @@ void LORD_BOSS::Initialize()
 void LORD_BOSS::Update()
 {
 	Health = (mHP / mMaxHP) * 100;
+
+	if (IS_DOWN(KeyType::H)) {
+		Transform* pTr = GetTransform();
+		pTr->SetPosition(Vec3(12.3f, -4.f, -8.f));
+		meBasicState = MonsterBasicState::Idle;
+	}
+
 	Monster::Update();
 
 	
@@ -1494,13 +1585,15 @@ void LORD_BOSS::OnTriggerEnter(Collider* _pOtherCollider)
 	float attackDamage = pPlayer->GetAttackDamage();
 
 	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType()
-		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType()
-		&& isGODState == false)
+		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		TakeDamage(attackDamage);
-		if (mHP < 0)
-		{
-			isGODState = true;
+		if (isGODState == false) {
+			HitSound();
+			TakeDamage(attackDamage);
+			if (mHP < 0)
+			{
+				isGODState = true;
+			}
 		}
 	}
 

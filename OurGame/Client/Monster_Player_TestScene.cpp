@@ -270,7 +270,7 @@ namespace hm {
 			p_E_BAT_White->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 			p_E_BAT_White->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 360.f));
 	
-			//AddGameObject(p_E_BAT_White);
+			AddGameObject(p_E_BAT_White);
 			//SetGizmoTarget(p_E_BAT_White);
 		}
 

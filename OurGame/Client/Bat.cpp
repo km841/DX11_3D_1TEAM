@@ -422,12 +422,13 @@ void Bat::SetBehaviorTree()
 			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
-				GameObject* pObj = GetGameObject(); //이거 확인도 필요함
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (isDead == true)
 				{
 					//pObj->GetRigidBody()->SetSimulationShapeFlag(false);
 					//pObj->Disable();
+					GameObject* pObj = GetGameObject(); 
+					pObj->DisableCollider();
 					isDead = false;
 					GetScript<PaperBurnScript>()->SetPaperBurn();
 					pAnimator->Play(4, false);

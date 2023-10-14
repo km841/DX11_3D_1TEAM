@@ -222,7 +222,7 @@ Player::Player()
 		PhysicsInfo physicsInfo;
 		physicsInfo.eActorType = ActorType::Dynamic;
 		physicsInfo.eGeometryType = GeometryType::Box;
-		physicsInfo.size = Vec3(0.05f, 0.05f, 0.7f);
+		physicsInfo.size = Vec3(0.5f, 0.05f, 0.7f);
 
 		pArrow = Factory::CreateObjectHasPhysical<GameObject>(Vec3(3.f, 100.f, 0.f), physicsInfo, L"Deferred_CullNone", L"..\\Resources\\FBX\\Weapon\\Arrow.fbx", false, LayerType::ArrowCol);
 		pArrow->SetDontDestroyObject(L"PlayerArrow");
@@ -470,7 +470,14 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 	{
 		if (isDownState == false) {
 			mActiveState->Exit();
-			StateChange(PlayerState::HitStartState);
+			if (mHP <= 0)
+			{
+				StateChange(PlayerState::DeadState);
+			}
+			else
+			{
+				StateChange(PlayerState::HitStartState);
+			}
 		}
 		
 	}
@@ -480,7 +487,14 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 	{
 		if (isDownState == false) {
 			mActiveState->Exit();
-			StateChange(PlayerState::HitStartState);
+			if (mHP <= 0)
+			{
+				StateChange(PlayerState::DeadState);
+			}
+			else
+			{
+				StateChange(PlayerState::HitStartState);
+			}
 		}
 	}
 
@@ -491,7 +505,14 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 		{
 			if (isDownState == false) {
 				mActiveState->Exit();
-				StateChange(PlayerState::HitStartState);
+				if (mHP <= 0)
+				{
+					StateChange(PlayerState::DeadState);
+				}
+				else
+				{
+					StateChange(PlayerState::HitStartState);
+				}
 			}
 		}
 
@@ -523,7 +544,14 @@ void Player::OnTriggerStay(Collider* _pOtherCollider)
 		if (_pOtherCollider->GetGameObject()->GetName() == L"HeadRoller" &&
 			static_cast<HeadRoller*>(_pOtherCollider->GetGameObject())->GetisRollStay() == true) {
 			mActiveState->Exit();
-			StateChange(PlayerState::HitStartState);
+			if (mHP <= 0)
+			{
+				StateChange(PlayerState::DeadState);
+			}
+			else
+			{
+				StateChange(PlayerState::HitStartState);
+			}
 			static_cast<HeadRoller*>(_pOtherCollider->GetGameObject())->SetisRollStay(false);
 		}
 
@@ -535,7 +563,14 @@ void Player::OnTriggerStay(Collider* _pOtherCollider)
 		static_cast<MonsterSlowObject*>(_pOtherCollider->GetGameObject())->SetColCheck(false);
 		if (isDownState == false) {
 			mActiveState->Exit();
-			StateChange(PlayerState::HitStartState);
+			if (mHP <= 0)
+			{
+				StateChange(PlayerState::DeadState);
+			}
+			else
+			{
+				StateChange(PlayerState::HitStartState);
+			}
 		}
 	}
 

@@ -112,7 +112,7 @@ void IdleState::Update()
 	}
 
 
-	if (IS_DOWN(KeyType::LBUTTON) || IS_DOWN(KeyType::X))
+	if (IS_DOWN(KeyType::LCTRL) || IS_DOWN(KeyType::X))
 	{
 		pPlayer->StateChange(PlayerState::AttackState);
 	}
@@ -123,6 +123,11 @@ void IdleState::Update()
 	if (IS_DOWN(KeyType::SHIFT_L))
 	{
 		pPlayer->StateChange(PlayerState::EvasionState);
+	}
+
+	if (IS_DOWN(KeyType::V))
+	{
+		pPlayer->StateChange(PlayerState::DeadState);
 	}
 	if (IS_DOWN(KeyType::SPACE))
 	{

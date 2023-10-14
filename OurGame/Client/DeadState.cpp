@@ -57,6 +57,10 @@ void DeadState::Update()
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 
+	if (IS_DOWN(KeyType::V))
+	{
+		pPlayer->StateChange(PlayerState::HitEndState);
+	}
 
 	//pPlayer->StateChange(PlayerState::AttackState);
 }
@@ -64,6 +68,18 @@ void DeadState::Update()
 void DeadState::Enter()
 {
 	PlayAnimation();
+	Player* pPlayer = Player::GetPlayer();
+	pPlayer->DamegeHP();
+	pPlayer->SetisDownState(true);
+	pPlayer->SetAttackDamage(1.f);
+	GameObject* pObj = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
+	pObj->Disable(); // 칼 오브젝트 안그리기
+
+	GameObject* pArrowObj = pPlayer->GetArrow(); //화살 오브젝트
+	pArrowObj->Disable(); //화살 안그리기
+
+	GameObject* pBowObj = pPlayer->GetBow(); //화살 오브젝트
+	pBowObj->Disable(); //화살 안그리기
 }
 
 void DeadState::Exit()
@@ -76,5 +92,5 @@ void DeadState::PlayAnimation()
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 
-	//pAni->Play(4, true);
+	pAni->Play(37, false);
 }

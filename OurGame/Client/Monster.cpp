@@ -189,5 +189,31 @@ namespace hm
 			}
 		}
 	}
+	void Monster::HitSound()
+	{
+		static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 난수 엔진
+		static std::uniform_int_distribution<int> distribution(0, 2);          // 생성 범위
+		static auto generator = std::bind(distribution, engine);
+		AudioSound* pSound = GetAudioSound();
+
+		int rnd = generator();
+		if (rnd == 0)
+		{
+			pSound->SetSound(L"EnemyHit1", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Player\\EnemyHit1.ogg");
+			pSound->Play();
+		}
+		else if (rnd == 1)
+		{
+			pSound->SetSound(L"EnemyHit2", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Player\\EnemyHit2.ogg");
+			pSound->Play();
+		}
+		else if (rnd == 2)
+		{
+			pSound->SetSound(L"EnemyHit3", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Player\\EnemyHit3.ogg");
+			pSound->Play();
+		}
+
+
+	}
 }
 

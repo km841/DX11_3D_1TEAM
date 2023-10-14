@@ -508,6 +508,9 @@ namespace hm
 						//초기화 중요
 						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 						GetTransform()->SetRelativePosition(Vec3(0.f, -1.f, 0.f));
+
+						GameObject* pObj = GetGameObject();
+						pObj->DisableCollider();
 						pAnimator->Play(4, true);
 					}
 
