@@ -57,6 +57,13 @@ void AIMoveState::Initialize()
 	//PLAYER->SetCutScenePos(Vec3(0.f, 0.f, 0.f));
 	//PLAYER->StateChange(PlayerState::AIMoveState);
 	//PLAYER->StateChange(PlayerState::PauseState);
+
+	//PLAYER->GetGreatSword()->Disable();
+	//PLAYER->Disable();
+	//
+	//PLAYER->Enable();
+	//PLAYER->GetGreatSword()->Enable();
+
 }
 
 void AIMoveState::Update()
@@ -77,7 +84,7 @@ void AIMoveState::Update()
 
 	if (distance<0.1f) 
 	{
-		pPlayer->StateChange(PlayerState::IdleState);
+		pPlayer->StateChange(PlayerState::IdleState); 
 		//컷신 종료할때 여기다가 추가
 	}
 
