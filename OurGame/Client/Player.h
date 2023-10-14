@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "HpUi.h"
+
 class SwordScript;
 class BowScript;
 class ArrowScript;
@@ -8,11 +8,11 @@ class SwordScript;
 class SwordHeavyEffect;
 class State;
 
-
 #define P_UP PLAYER->GetKeyInfo().eForwardKey
 #define P_DOWN PLAYER->GetKeyInfo().eBackwardKey
 #define P_LEFT PLAYER->GetKeyInfo().eLeftKey
 #define P_RIGHT PLAYER->GetKeyInfo().eRightKey
+
 
 class Player :
     public GameObject
@@ -58,12 +58,9 @@ public:
 
 	int GetHP() { return mHP; }
 	void RecoverHP(){ mHP = 4; } // 피 최대회복
-	void DamegeHP()  // 피깍이는거
-	{
-		if (mHP <= 0)
-			return;
-		mHP--;
-	}
+
+	void GetDamage(); // 피깍이는거
+
 
 	int GetCost() { return mCost; }
 	void SetCost(int  _cost) { mCost = _cost; }

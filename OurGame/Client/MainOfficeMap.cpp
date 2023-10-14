@@ -26,6 +26,7 @@
 #include "SoulDoor.h"
 #include "CameraHolder.h"
 #include "HpUi.h"
+#include "ManaUi.h"
 #include "Interface.h"
 #include "LORD_BOSS.h"
 #include "LORD_BOSS_ROLL.h"
@@ -56,6 +57,7 @@
 #include "PlayerMoveOverMapScript.h"
 #include "FocusingScript.h"
 #include "OwnerFollowScript.h"
+#include "HeadText.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -154,12 +156,13 @@ namespace yj
 	{
 		gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
 
-		ChangeCameraMode();
+		//ChangeCameraMode();
 		InitObjectAdd();
 		GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 1,
 			nullptr, std::bind(&MainOfficeMap::InitBusStart, this));
 
 		HPUI->UiOn();
+		MPUI->UiOn();
 	}
 
 	void MainOfficeMap::Exit()
@@ -721,16 +724,17 @@ namespace yj
 
 		}
 
-		//{
-		//	DecoObject* pUpperStairContainer = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\UpperStairContainer.fbx");
-		//	AddGameObject(pUpperStairContainer);
-		//	pUpperStairContainer->GetTransform()->SetPosition(Vec3(60.9f, 2.7f, 22.4f));
-		//	pUpperStairContainer->GetTransform()->SetRotation(Vec3(0.0f, -8.0f, 0.0f));
-		//	pUpperStairContainer->GetTransform()->SetScale(Vec3(61.0f, 61.0f, 61.0f));
-		//	pUpperStairContainer->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(12.0f, 12.0f));
-		//	pUpperStairContainer->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(12.0f, 12.0f), 1);
+		{
+			GameObject* pEnterTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::Unknown);
+			pEnterTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpEnter.png"));
+			pEnterTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
 
-		//}
+			HeadText* pEnterTextScript = pEnterTextBox->AddComponent<HeadText>();
+			AddGameObject(pEnterTextBox);
+			/*pEnterTextScript->SetDectetorPos(Vec3(10.0f, 10.0f, 10.0f));*/
+			SetGizmoTarget(pEnterTextBox);
+
+		}
 
 #pragma endregion
 

@@ -22,11 +22,11 @@
 #include "Player.h"
 #include "Ground.h"
 #include "DecoObject.h"
-#include "UI.h"
+#include "UI.h"-
 #include "CameraHolder.h"
 #include "Elevator.h"
 #include "HpUi.h"
-#include "MpUi.h"
+#include "ManaUi.h"
 
 /* Interface */
 #include "Interface.h"
@@ -807,17 +807,22 @@ namespace hm
 		// HpUi
 		{
 			GameObject* pHpUiObj = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pHpUiObj->AddComponent(new Transform);
+			pHpUiObj->AddComponent(new RigidBody);
+			AddGameObject(pHpUiObj);
 			yj::HpUi* pHpUI = pHpUiObj->AddComponent<yj::HpUi>();
 			pHpUI->AddHpUI();
 			pHpUiObj->SetDontDestroyObject(L"HpUi");
-			HPUI->UiOff();
 		}
 		// MpUI
 		{
-			GameObject* pMpUiObj = new GameObject(LayerType::Unknown);
-			yj::HpUi* pHpUI = pMpUiObj->AddComponent<yj::MpUi>();
-			pMpUI->AddHpUI();
-			pMpUiObj->SetDontDestroyObject(L"MpUi");
+			GameObject* pManaUiObj = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pManaUiObj->AddComponent(new Transform);
+			pManaUiObj->AddComponent(new RigidBody);
+			AddGameObject(pManaUiObj);
+			yj::ManaUi* pManaUI = pManaUiObj->AddComponent<yj::ManaUi>();
+			pManaUI->AddManaUI();
+			pManaUiObj->SetDontDestroyObject(L"MpUi");
 		}
 
 		// Buttons

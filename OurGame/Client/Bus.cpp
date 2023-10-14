@@ -55,33 +55,7 @@ namespace yj
 	}
 	void Bus::Shake()
 	{
-		//Vec3 mPos = this->GetTransform()->GetPosition();
-		//Vec3 mAddPos;
-		//Vec3 mFixedPos;
-		////타이머로 해야겠군
-		//timer += DELTA_TIME;
 
-		//if (shake == 1)
-		//{
-		//	mAddPos = Vec3(0.5f, 0.0f, -0.5f);
-		//	mFixedPos = mPos + mAddPos * DELTA_TIME;
-		//	if (timer >= 0.02f)
-		//	{
-		//		shake = 2;
-		//		timer = 0;
-		//	}
-		//}
-		//if (shake == 2)
-		//{
-		//	mAddPos = Vec3(-0.5f, 0.0f, 0.5f);
-		//	mFixedPos = mPos + mAddPos * DELTA_TIME;
-		//	if (timer >= 0.02f)
-		//	{
-		//		shake = 1;
-		//		timer = 0;
-		//	}
-		//}
-		//this->GetTransform()->SetPosition(mFixedPos);
 	}
 
 	void Bus::BusEvent()

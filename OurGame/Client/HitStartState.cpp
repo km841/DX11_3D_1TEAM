@@ -68,7 +68,7 @@ void HitStartState::Enter()
 {
 	PlayAnimation();
 	Player* pPlayer = Player::GetPlayer();
-	pPlayer->DamegeHP();
+	pPlayer->GetDamage();
 	pPlayer->SetisDownState(true);
 	pPlayer->SetAttackDamage(1.f);
 	GameObject* pObj = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분

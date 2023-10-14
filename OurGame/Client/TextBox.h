@@ -91,5 +91,6 @@ namespace yj
 		float mTimer = 0.0f;
 		float mTimerLimit = 0.075f;
 		bool isTimerFlow;
+
 	};
 }

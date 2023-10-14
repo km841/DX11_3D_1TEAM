@@ -28,7 +28,7 @@
 #include "Ladder.h"
 #include "LadderCollider.h"
 #include "HeadRoller.h"
-
+#include "HpUi.h"
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -289,7 +289,6 @@ Player::~Player()
 	{
 		SAFE_DELETE(mState[i]);
 	}
-	
 }
 
 void Player::Initialize()
@@ -395,7 +394,10 @@ void Player::Update()
 	GameObject::Update();
 	
 	mActiveState->Update();
-	
+	if (IS_DOWN(KeyType::P))
+	{
+		GetDamage();
+	}
 	if (false == this->IsEnable())
 	{
 
@@ -436,15 +438,11 @@ void Player::FinalUpdate()
 void Player::Render()
 {
 	GameObject::Render();
-
-
 }
 
 void Player::Destroy()
 {
 	GameObject::Destroy();
-	
-
 }
 
 void Player::OnCollisionEnter(Collider* _pOtherCollider)
@@ -577,6 +575,17 @@ void Player::SetDirectionChange(DirectionEvasion _eState)
 {
 	meDirectionEvasion = _eState;
 }
+
+void Player::GetDamage()
+{
+	if (mHP <= 0)
+	{
+		return;
+	}
+	mHP--;
+	HPUI->HpDecrease();
+}
+
 
 PlayerState Player::GetActiveStateEnum()
 {
