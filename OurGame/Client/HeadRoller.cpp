@@ -426,6 +426,7 @@ namespace hm
 				// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 				BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 					Animator* pAnimator = GetAnimator();
+					AudioSound* pSound = GetAudioSound();
 					int animIndex = pAnimator->GetCurrentClipIndex();
 					if (2 != animIndex) {
 						//초기화 중요
@@ -434,6 +435,9 @@ namespace hm
 						isRoll = true;
 						isRollStay = true;
 						pAnimator->Play(2, true);
+
+						pSound->SetSound(L"HeadRoolattack", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\HeadRoller\\Attack.wav");
+						pSound->Play(100);
 					}
 
 					return BehaviorResult::Success;
@@ -502,6 +506,7 @@ namespace hm
 				// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 				BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 					Animator* pAnimator = GetAnimator();
+					AudioSound* pSound = GetAudioSound();
 					int animIndex = pAnimator->GetCurrentClipIndex();
 					if (4 != animIndex)
 					{
@@ -513,6 +518,9 @@ namespace hm
 						GameObject* pObj = GetGameObject();
 						pObj->DisableCollider();
 						pAnimator->Play(4, true);
+
+						pSound->SetSound(L"HeadRoolattack", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\HeadRoller\\Attack.wav");
+						pSound->Stop();
 					}
 
 					return BehaviorResult::Success;
