@@ -2,6 +2,7 @@
 
 #define PLAYER Player::GetPlayer()
 #define HPUI yj::HpUi::GetHpUI()
+#define MPUI yj::ManaUi::GetMpUI()
 #define TEXTBOX yj::TextBox::GetTextBox()
 #define DIALOUGEBOX DialogBox::GetDialogBox()
 #define GRANDMA Grandma::GetGrandma()

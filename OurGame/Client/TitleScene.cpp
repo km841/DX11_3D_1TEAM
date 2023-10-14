@@ -26,6 +26,7 @@
 #include "CameraHolder.h"
 #include "Elevator.h"
 #include "HpUi.h"
+#include "ManaUi.h"
 #include "Banker.h"
 
 /* Interface */
@@ -142,8 +143,22 @@ namespace hm
 		// - RightMap
 		if (IS_DOWN(KeyType::K))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Right2Map);
 		}
+		/*MainOfficeMap,
+			CorridorRightMap,
+			DiningColliderCheckMap,
+			EntranceHallMap,
+			GrandmaBossMap,
+			HallColliderCheckMap,
+			LeftSecretFightMap,
+			LeftSecretTrialMap,
+			Right2Map,
+			RightMap,
+			RightSecretPassageMap,
+			BossMap,*/
+
+
 
 		/*Vec3 pos = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetGameObject()->GetTransform()->GetPosition();
 		wstring strPos = {};
@@ -190,8 +205,9 @@ namespace hm
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::MonsterCol);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ladder);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Trigger);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::InterativeCol);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::DecoObject);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Portal);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Portal);
 
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
@@ -844,12 +860,25 @@ namespace hm
 		// HpUi
 		{
 			GameObject* pHpUiObj = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pHpUiObj->AddComponent(new Transform);
+			pHpUiObj->AddComponent(new RigidBody);
+			AddGameObject(pHpUiObj);
 			yj::HpUi* pHpUI = pHpUiObj->AddComponent<yj::HpUi>();
 			pHpUI->AddHpUI();
 			pHpUiObj->SetDontDestroyObject(L"HpUi");
-			HPUI->UiOff();
+		}
 
-			AddGameObject(pHpUiObj);
+		// MpUI
+		{
+			GameObject* pManaUiObj = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pManaUiObj->AddComponent(new Transform);
+			pManaUiObj->AddComponent(new RigidBody);
+			AddGameObject(pManaUiObj);
+			yj::ManaUi* pManaUI = pManaUiObj->AddComponent<yj::ManaUi>();
+			pManaUI->AddManaUI();
+			pManaUiObj->SetDontDestroyObject(L"MpUi");
+
+			AddGameObject(pManaUiObj);
 		}
 
 		// Buttons

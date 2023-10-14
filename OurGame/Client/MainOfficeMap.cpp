@@ -26,6 +26,7 @@
 #include "SoulDoor.h"
 #include "CameraHolder.h"
 #include "HpUi.h"
+#include "ManaUi.h"
 #include "Interface.h"
 #include "LORD_BOSS.h"
 #include "LORD_BOSS_ROLL.h"
@@ -57,6 +58,7 @@
 #include "PlayerMoveOverMapScript.h"
 #include "FocusingScript.h"
 #include "OwnerFollowScript.h"
+#include "HeadText.h"
 #include "CutSceneCameraMoveScript.h"
 
 /* Event */
@@ -155,6 +157,8 @@ namespace yj
 	void MainOfficeMap::Enter()
 	{
 		gpEngine->SetSwapChainRTVClearColor(Vec4(100.f, 100.f, 100.f, 255.f));
+
+		ChangeCameraMode();
 		
 		InitObjectAdd();
 
@@ -162,6 +166,7 @@ namespace yj
 			nullptr, std::bind(&MainOfficeMap::InitBusStart, this));
 
 		HPUI->UiOn();
+		MPUI->UiOn();
 	}
 
 	void MainOfficeMap::Exit()
@@ -723,16 +728,18 @@ namespace yj
 
 		}
 
-		//{
-		//	DecoObject* pUpperStairContainer = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\UpperStairContainer.fbx");
-		//	AddGameObject(pUpperStairContainer);
-		//	pUpperStairContainer->GetTransform()->SetPosition(Vec3(60.9f, 2.7f, 22.4f));
-		//	pUpperStairContainer->GetTransform()->SetRotation(Vec3(0.0f, -8.0f, 0.0f));
-		//	pUpperStairContainer->GetTransform()->SetScale(Vec3(61.0f, 61.0f, 61.0f));
-		//	pUpperStairContainer->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(12.0f, 12.0f));
-		//	pUpperStairContainer->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(12.0f, 12.0f), 1);
-
-		//}
+		{
+			GameObject* pEnterTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::InterativeCol);
+			pEnterTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpEnter.png"));
+			pEnterTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+			pEnterTextBox->GetTransform()->SetPosition(Vec3(19.0f,6.2f,-15.2f));
+			SetGizmoTarget(pEnterTextBox);
+			pEnterTextBox->GetTransform()->SetRotation(Vec3(0.0f,90.0f,0.0f));
+			pEnterTextBox->GetTransform()->SetScale(Vec3(2.0f,1.0f,1.0f));
+			AddGameObject(pEnterTextBox);
+			HeadText* pEnterTextScript = pEnterTextBox->AddComponent<HeadText>();
+			pEnterTextScript->SetDectetorPos(Vec3(18.8f, 2.8f, -15.3f));
+		}
 
 #pragma endregion
 

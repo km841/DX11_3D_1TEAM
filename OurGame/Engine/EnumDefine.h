@@ -35,6 +35,7 @@ namespace hm
 		WallObject,
 		Portal,
 		Mirror,
+		InterativeCol,
 		PotCell,
 		Interface,
 		Trigger,
