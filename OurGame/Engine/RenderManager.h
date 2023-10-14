@@ -76,6 +76,10 @@ namespace hm
 
 		void AddCameraShakeEffect(float _endTime, float _amplitude, int _groupIndex = 0);
 		void AddChromaticEffect(float _endTime, std::function<void()> _startCallback= nullptr, std::function<void()> _endCallback = nullptr, int _groupIndex = 0);
+	
+		void SetBloomScale(float _bloomScale) { mBloomScale = _bloomScale; }
+	
+	
 	private:
 		void DownScale();
 		void Blur();

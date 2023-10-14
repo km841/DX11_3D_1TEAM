@@ -1,5 +1,6 @@
 #pragma once
 #include "Monster.h"
+#include "BossLaser.h"
 class LORD_BOSS_ROLL;
 class MonsterSlowObject;
 class LORD_BOSS :
@@ -87,6 +88,7 @@ private:
 	GameObject* pMonsterAttackCol;
 	MonsterSlowObject* pMonsterSilent_ClapCol;
 	GameObject* pBackswingCol;
+	BossLaser* pBossLaser;
 
 private:
 	//사운드 관련 bool

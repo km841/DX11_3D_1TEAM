@@ -64,6 +64,8 @@
 #include "MonsterColScript.h"
 #include "MonsterSlowColScript.h"
 #include "MonsterBackswingColScript.h"
+#include "BossLaser.h"
+#include "LaserLockOnScript.h"
 
 LORD_BOSS::LORD_BOSS()
 {
@@ -79,6 +81,34 @@ LORD_BOSS::LORD_BOSS()
 	MonsterAttackCol();
 	MonsterBackswingCol();
 	meBasicState = MonsterBasicState::CutScene;
+
+	// 보스 레이저
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(1.f, 3.f, 3.f);
+
+		pBossLaser = Factory::CreateObject<BossLaser>(Vec3(0.f, 0.f, 0.f), L"Deferred_CullNone", L"", false);
+		pBossLaser->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadLaserMesh());
+		pBossLaser->GetRigidBody()->SetPhysical(physicsInfo);
+		pBossLaser->AddComponent(new Collider);
+
+		pBossLaser->GetTransform()->SetScale(Vec3(1.f, 3.f, 3.f));
+		pBossLaser->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		pBossLaser->GetMeshRenderer()->GetMaterial()->SetBloom(true);
+		pBossLaser->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.3f, 0.8f, 1.f));
+
+		OwnerFollowScript* pScript = pBossLaser->AddComponent(new OwnerFollowScript(this));
+		pScript->SetOffset(Vec3(0.f, 6.f, 0.f));
+		pBossLaser->AddComponent(new LaserLockOnScript);
+
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pBossLaser);
+
+		GET_SINGLE(RenderManager)->AddCameraShakeEffect(10.f, 0.2f, 0);
+		GET_SINGLE(RenderManager)->AddChromaticEffect(10.f, nullptr, nullptr, 1);
+		GET_SINGLE(RenderManager)->SetBloomScale(5.0f);
+	}
 }
 
 LORD_BOSS::~LORD_BOSS()
@@ -87,6 +117,8 @@ LORD_BOSS::~LORD_BOSS()
 
 void LORD_BOSS::SetBehaviorTree()
 {
+
+
 	AI* pAI = AddComponent(new AI);
 
 	// 루트 노드 등록
@@ -140,7 +172,7 @@ void LORD_BOSS::SetBehaviorTree()
 				}
 
 
-				if (isCutSceneEnd) //컷신 체크가 트루일때 아이들 상태로 넘어가기
+				//if (isCutSceneEnd) //컷신 체크가 트루일때 아이들 상태로 넘어가기
 				{
 					return BehaviorResult::Success;
 				}
