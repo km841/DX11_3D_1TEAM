@@ -120,7 +120,7 @@ void LORD_BOSS::SetBehaviorTree()
 				if (17 != animIndex)
 				{
 					pSound->SetSound(L"BOSSBGM", GET_SINGLE(SceneManager)->GetActiveScene(), true, "..\\Resources\\Sound\\BossMapBGM.mp3");
-					pSound->Play(5);
+					pSound->Play(15);
 					pAnimator->Play(17, true);
 
 				}
