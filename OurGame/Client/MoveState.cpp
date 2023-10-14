@@ -202,6 +202,9 @@ void MoveState::Update()
 void MoveState::Enter()
 {
 	PlayAnimation();
+
+	GameObject* pObj = PLAYER->GetGreatSword();
+	pObj->Enable();
 }
 
 void MoveState::Exit()

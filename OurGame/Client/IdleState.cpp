@@ -66,7 +66,7 @@ void IdleState::Update()
 	wstring name = pPlayer->GetLadderName();
 	int BigCount = pPlayer->GetBigAttackCount();
 
-	if (pAni->GetFrameRatio() > 0.99f) {
+	if (pAni->GetFrameRatio() > 0.95f) {
 		if (mIdleStatebool == true)
 		{
 			mIdleStatebool = false;
@@ -173,6 +173,7 @@ void IdleState::PlayAnimation()
 	Animator* pAni = pPlayer->GetAnimator();
 
 	pAni->Play(42, false);
+	//pAni->Play(67, false);
 }
 
 void IdleState::PlayAnimayton2()
@@ -182,6 +183,7 @@ void IdleState::PlayAnimayton2()
 	Animator* pAni = pPlayer->GetAnimator();
 
 	pAni->Play(43, false);
+	//pAni->Play(67, false);
 }
 
 void IdleState::FallLate()
