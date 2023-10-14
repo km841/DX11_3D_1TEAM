@@ -115,7 +115,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::RightMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Right2Map);
 		}
 
 		// 지형
@@ -873,11 +873,9 @@ namespace hm
 			GameObject* pManaUiObj = new GameObject(LayerType::Unknown);
 			Transform* pTransform = pManaUiObj->AddComponent(new Transform);
 			pManaUiObj->AddComponent(new RigidBody);
-			AddGameObject(pManaUiObj);
 			yj::ManaUi* pManaUI = pManaUiObj->AddComponent<yj::ManaUi>();
 			pManaUI->AddManaUI();
 			pManaUiObj->SetDontDestroyObject(L"MpUi");
-
 			AddGameObject(pManaUiObj);
 		}
 

@@ -34,8 +34,10 @@ namespace hm
 	}
 	Scene::~Scene()
 	{
+		int c = 0;
 		for (std::vector<GameObject*>& layerGroup : mGameObjects)
 		{
+			c++;
 			for (size_t i = 0; i < layerGroup.size(); ++i)
 			{
 				SAFE_DELETE(layerGroup[i]);
@@ -50,10 +52,10 @@ namespace hm
 			mbIsInit = true;
 			for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 			{
-				for (GameObject* pGameObject : mGameObjects[i])
+				for (int j = 0; j < mGameObjects[i].size(); ++j)
 				{
-					AssertEx(pGameObject, L"This gameobject is nullptr");
-					pGameObject->Initialize();
+					AssertEx(mGameObjects[i][j], L"This gameobject is nullptr");
+					mGameObjects[i][j]->Initialize();
 				}
 			}
 		}
@@ -106,10 +108,10 @@ namespace hm
 	{
 		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 		{
-			for (GameObject* pGameObject : mGameObjects[i])
+			for (int j = 0; j < mGameObjects[i].size(); ++j)
 			{
-				AssertEx(pGameObject, L"This gameobject is nullptr");
-				pGameObject->FixedUpdate();
+				AssertEx(mGameObjects[i][j], L"This gameobject is nullptr");
+				mGameObjects[i][j]->FixedUpdate();
 			}
 		}
 	}
@@ -117,10 +119,10 @@ namespace hm
 	{
 		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 		{
-			for (GameObject* pGameObject : mGameObjects[i])
+			for (int j = 0; j < mGameObjects[i].size(); ++j)
 			{
-				AssertEx(pGameObject, L"This gameobject is nullptr");
-				pGameObject->FinalUpdate();
+				AssertEx(mGameObjects[i][j], L"This gameobject is nullptr");
+				mGameObjects[i][j]->FinalUpdate();
 			}
 		}
 	}
@@ -134,10 +136,10 @@ namespace hm
 		{
 			for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 			{
-				for (GameObject* pGameObject : mGameObjects[i])
+				for (int j = 0; j < mGameObjects[i].size(); ++j)
 				{
-					AssertEx(pGameObject, L"This gameobject is nullptr");
-					pGameObject->Render();
+					AssertEx(mGameObjects[i][j], L"This gameobject is nullptr");
+					mGameObjects[i][j]->Render();
 				}
 			}
 		}
@@ -149,10 +151,10 @@ namespace hm
 	{
 		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 		{
-			for (auto& pGameObject : mGameObjects[i])
+			for (int j = 0; j < mGameObjects[i].size(); ++j)
 			{
-				AssertEx(pGameObject, L"This gameobject is nullptr");
-				pGameObject->Destroy();
+				AssertEx(mGameObjects[i][j], L"This gameobject is nullptr");
+				mGameObjects[i][j]->Destroy();
 			}
 		}
 	}
