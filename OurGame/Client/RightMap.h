@@ -2,6 +2,7 @@
 #include "Map.h"
 namespace yj
 {
+	class SpikeDoor;
 	class RightMap :
 		public Map
 	{
@@ -29,6 +30,7 @@ namespace yj
 	private:
 		GameObject* pSpikeDoor;
 		GameObject* pSpikeDoorCol;
+		SpikeDoor* pOrgSpikeDoor;
 		int mSpawnPoint = -1;
 	};
 }

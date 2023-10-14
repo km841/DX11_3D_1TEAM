@@ -53,6 +53,7 @@
 #include "BowScript.h"
 #include "ArrowScript.h"
 #include "MageColScript.h"
+#include "MonsterKeyScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -531,6 +532,7 @@ void Mage::SetBehaviorTree()
 
 					if (GetScript<PaperBurnScript>()->IsFinished())
 					{
+						GetScript<yj::MonsterKeyScript>()->SendDeathTrigger();
 						MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 						GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
 					}

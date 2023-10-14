@@ -50,6 +50,7 @@
 #include "BonFireScript.h"
 #include "OwnerFollowScript.h"
 #include "PlayerMoveOverMapScript.h"
+#include "MonsterKeyScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -209,35 +210,32 @@ namespace yj
 		
 
 		gpEngine->SetSwapChainRTVClearColor(Vec4(0.f, 0.f, 0.f, 0.f));
-		////마법사
-		//{
-		//	SpawnDoor<Mage>* pMage = Factory::SpawnMonster<Mage>(Vec3(-10.f,8.f, -10.f),Vec3(-90.f,0.f,-90.f));
-		//	AddGameObject(pMage);
-		//}
 
-		//마법사
-		{
-			Mage* pMage = Factory::CreateMage(Vec3(-10.f, 5.f, -10.f), Vec3(-90.f, 0.f, -90.f));
-			AddGameObject(pMage);
-		}
-
-		//마법사
-		{
-			Mage* pMage = Factory::CreateMage(Vec3(10.f, 5.f, 0.f), Vec3(-90.f, 0.f, -90.f));
-			AddGameObject(pMage);
-		}
-
-		//콩벌레
-		{
-			HeadRoller* pHeadRoller = Factory::CreateHeadRoller(Vec3(-10.f, 5.f, 0.f), Vec3(0.f, -45.f, 0.f));
-			AddGameObject(pHeadRoller);
-		}
 
 
 			InitObjectAdd();
 			InitColliderAdd();
 			FuncObjectAdd();
 			
+			//마법사
+			{
+				Mage* pMage = Factory::CreateMage(Vec3(-10.f, 5.f, -10.f), Vec3(-90.f, 0.f, -90.f));
+				pMage->GetScript<MonsterKeyScript>()->AddReceiver(pOrgSpikeDoor);
+					AddGameObject(pMage);
+			}
+
+			//마법사
+			{
+				Mage* pMage = Factory::CreateMage(Vec3(10.f, 5.f, 0.f), Vec3(-90.f, 0.f, -90.f));
+				pMage->GetScript<MonsterKeyScript>()->AddReceiver(pOrgSpikeDoor);
+				AddGameObject(pMage);
+			}
+
+			//콩벌레
+			{
+				HeadRoller* pHeadRoller = Factory::CreateHeadRoller(Vec3(-10.f, 5.f, 0.f), Vec3(0.f, -45.f, 0.f));
+				AddGameObject(pHeadRoller);
+			}
 	}
 
 	void RightMap::Exit()
@@ -881,6 +879,8 @@ namespace yj
 		{
 			SpikeDoor* pDoor = Factory::CreateObject<yj::SpikeDoor>(Vec3(0.0f, 0.0f, 0.0f), L"Deferred", L"", false, pSpikeDoor, pSpikeDoorCol,2);
 			AddGameObject(pDoor);
+
+			pOrgSpikeDoor = pDoor;
 		}
 	}
 }

@@ -6,7 +6,7 @@ namespace yj
 	KeyDoor::KeyDoor()
 		:GameObject(LayerType::DecoObject)
 	{
-		
+		mName = L"KeyDoor";
 	}
 	
 	KeyDoor::~KeyDoor()
