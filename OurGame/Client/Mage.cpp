@@ -514,6 +514,8 @@ void Mage::SetBehaviorTree()
 					isDead = false;
 					GetScript<PaperBurnScript>()->SetPaperBurn();
 					pAnimator->Play(4, false);
+					GameObject* pObj = GetGameObject();
+					pObj->DisableCollider();
 				}
 
 				return BehaviorResult::Success;

@@ -87,5 +87,23 @@ private:
 	GameObject* pMonsterAttackCol;
 	MonsterSlowObject* pMonsterSilent_ClapCol;
 	GameObject* pBackswingCol;
+
+private:
+	//사운드 관련 bool
+	bool isMelee_Jump01 = true;
+	bool isMelee_Jump02 = true;
+	bool isMelee_Jump03 = true;
+	bool isMelee_Slam01 = true;
+	bool isMelee_Slam02 = true;
+	bool isMelee_Slam03 = true;
+
+	bool isBackSwing = true;
+
+	bool isLaser = true;
+
+	bool isLandSlam = true;
+
+	bool isBall = true;
+
 };
 

@@ -191,14 +191,7 @@ void MoveState::Update()
 	{
 		pPlayer->StateChange(PlayerState::EvasionState);
 	}
-	if (IS_DOWN(KeyType::G))
-	{
-		pPlayer->StateChange(PlayerState::ClimingUpState);
-	}
-	if (IS_DOWN(KeyType::B))
-	{
-		pPlayer->StateChange(PlayerState::ClimingDownState);
-	}
+	
 
 
 	//MOVE 애니메이션 반복 

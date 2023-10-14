@@ -232,6 +232,7 @@ namespace hm
 		if (true == IsPhysicsObject())
 		{
 			GetRigidBody()->SetSimulationShapeFlag(true);
+			mbEnableCollider = true;
 		}
 	}
 
@@ -240,6 +241,7 @@ namespace hm
 		if (true == IsPhysicsObject())
 		{
 			GetRigidBody()->SetSimulationShapeFlag(false);
+			mbEnableCollider = false;
 
 			ActorType eActorType = GetRigidBody()->GetActorType();
 			if (ActorType::Kinematic == eActorType)

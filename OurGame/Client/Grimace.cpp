@@ -1080,6 +1080,8 @@ void Grimace::SetBehaviorTree()
 					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
 					isDead = false;
 					GetScript<PaperBurnScript>()->SetPaperBurn();
+					GameObject* pObj = GetGameObject();
+					pObj->DisableCollider();
 					pAnimator->Play(6, false);
 					
 				}
