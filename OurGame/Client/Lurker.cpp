@@ -12,6 +12,7 @@
 #include "EventManager.h"
 #include "SceneManager.h"
 #include "ChangeStateTask.h"
+#include "MonsterKeyScript.h"
 
 Lurker::Lurker()
 {
@@ -521,9 +522,9 @@ void Lurker::SetBehaviorTree()
 					int animIndex = pAni->GetCurrentClipIndex();
 
 
-
 					if (GetScript<PaperBurnScript>()->IsFinished())
 					{
+						GetScript<yj::MonsterKeyScript>()->SendDeathTrigger();
 						MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 						GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
 					}

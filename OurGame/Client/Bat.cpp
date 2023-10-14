@@ -31,6 +31,7 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "Animator.h"
+#include "MonsterKeyScript.h"
 
 /* Manager */
 #include "RenderManager.h"
@@ -446,14 +447,12 @@ void Bat::SetBehaviorTree()
 					Animator* pAni= GetAnimator();
 					int animIndex = pAni->GetCurrentClipIndex();
 
-					
-
 					if (GetScript<PaperBurnScript>()->IsFinished())
 					{
+						GetScript<yj::MonsterKeyScript>()->SendDeathTrigger();
 						MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 						GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
 					}
-
 
 					return BehaviorResult::Success;
 

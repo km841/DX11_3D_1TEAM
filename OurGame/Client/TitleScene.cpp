@@ -78,7 +78,8 @@ namespace hm
 	{
 		Scene::Initialize();
 		
-	
+		PLAYER->GetAudioSound()->SetSound(L"BGM", this, true, "..\\Resources\\Sound\\TitleBGM.mp3");
+		PLAYER->GetAudioSound()->Play(1);
 	}
 
 	void TitleScene::Update()
@@ -109,7 +110,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::BossMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::RightMap);
 		}
 
 		// 지형
@@ -215,9 +216,8 @@ namespace hm
 			pPlayer->SetReflect(true);
 
 			AudioSound* pSound = PLAYER->AddComponent(new AudioSound);
-	
-			pSound->SetSound(L"BGM", this, true, "..\\Resources\\Sound\\TitleBGM.mp3");
-			pSound->Play(30);
+			
+
 
 			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
 			yj::PlayerMoveOverMapScript* pMoveOverSc = pPlayer->AddComponent(new yj::PlayerMoveOverMapScript);
@@ -801,6 +801,7 @@ namespace hm
 			pRailing10->GetTransform()->SetRotation(Vec3::Zero);
 			pRailing10->GetTransform()->SetScale(Vec3(17.5f, 17.5f, 17.5f));
 		}
+
 		{
 			DecoObject* pGraveyardPlane = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\GraveyardPlane.fbx");
 			AddGameObject(pGraveyardPlane);
