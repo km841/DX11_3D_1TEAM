@@ -254,6 +254,20 @@ namespace yj
 
 		{
 
+			Ground* pGround = Factory::CreateObject<Ground>((Vec3::Zero), L"Deferred", L"");
+			pGround->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadLaserMesh());
+			pGround->GetTransform()->SetPosition(Vec3(0.0f, 0.2f, 0.0f));
+			pGround->GetTransform()->SetScale(Vec3(1, 5, 5));
+
+			pGround->GetMeshRenderer()->GetMaterial()->SetBloom(true);
+			pGround->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.3f, 0.8f, 1.f));
+
+			AddGameObject(pGround);
+			SetGizmoTarget(pGround);
+		}
+
+		{
+
 			Ground* pGround = Factory::CreateObject<Ground>((Vec3::Zero), L"Deferred", L"..\\Resources\\FBX\\Map\\R_Right\\RightChairRoomFloor.fbx");
 			pGround->GetTransform()->SetPosition(Vec3(0.0f, 0.4f, 0.0f));
 			pGround->GetTransform()->SetScale(Vec3(40.0f, 40.0f, 40.0f));
