@@ -103,11 +103,11 @@ LORD_BOSS::LORD_BOSS()
 		pScript->SetOffset(Vec3(0.f, 6.f, 0.f));
 		pBossLaser->AddComponent(new LaserLockOnScript);
 
-		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pBossLaser);
 
-		GET_SINGLE(RenderManager)->AddCameraShakeEffect(10.f, 0.2f, 0);
-		GET_SINGLE(RenderManager)->AddChromaticEffect(10.f, nullptr, nullptr, 1);
-		GET_SINGLE(RenderManager)->SetBloomScale(5.0f);
+		//GET_SINGLE(RenderManager)->AddCameraShakeEffect(5.f, 0.2f, 0);
+		//GET_SINGLE(RenderManager)->AddChromaticEffect(10.f, nullptr, nullptr, 1);
+		//GET_SINGLE(RenderManager)->SetBloomScale(5.0f);
+		//GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pBossLaser);
 	}
 
 	mTimer.SetEndTime(6.5f);
@@ -180,7 +180,7 @@ void LORD_BOSS::SetBehaviorTree()
 				}
 
 
-				//if (isCutSceneEnd) //컷신 체크가 트루일때 아이들 상태로 넘어가기
+				if (isCutSceneEnd) //컷신 체크가 트루일때 아이들 상태로 넘어가기
 				{
 					return BehaviorResult::Success;
 				}
@@ -292,7 +292,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					//meBasicState = MonsterBasicState::Laser_Start;
+					meBasicState = MonsterBasicState::Roll_Start;
 					return BehaviorResult::Success;
 				});
 
@@ -1006,7 +1006,7 @@ void LORD_BOSS::SetBehaviorTree()
 					PrevFollowSet();
 					pAnimator->Play(1, true);
 
-					
+					GET_SINGLE(RenderManager)->AddCameraShakeEffect(3.f, ShakeNum);
 				}
 				return BehaviorResult::Success;
 				});
@@ -1019,7 +1019,7 @@ void LORD_BOSS::SetBehaviorTree()
 					pObjTr->SetPosition(pTr->GetPosition());
 					pObjTr->SetRotation(pTr->GetRotation());
 
-					GET_SINGLE(RenderManager)->AddCameraShakeEffect(Shaketime, ShakeNum);
+					
 					return BehaviorResult::Success;
 				});
 
@@ -1577,6 +1577,8 @@ void LORD_BOSS::Initialize()
 
 	Animator* pAnimator = GetAnimator();
 	pAnimator->SetLoop(0, true);
+
+	
 }
 
 void LORD_BOSS::Update()

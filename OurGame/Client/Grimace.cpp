@@ -98,6 +98,9 @@ Grimace::Grimace()
 
 	meBasicState = MonsterBasicState::Idle;
 	MonsterAttackCol();
+
+	Shaketime = 0.2f;
+	ShakeNum = 0.04f;
 }
 
 Grimace::~Grimace()
@@ -702,6 +705,7 @@ void Grimace::SetBehaviorTree()
 						SetAttackCheck(true);
 						GetRigidBody()->SetVelocityExcludingColliders(-dir_desh * 10.0f);
 						GetRigidBody()->SetVelocity(dir_desh * 40.f);
+						GET_SINGLE(RenderManager)->AddCameraShakeEffect(Shaketime, ShakeNum);
 
 						
 						//그리마스 수정

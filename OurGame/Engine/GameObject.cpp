@@ -30,6 +30,7 @@ namespace hm
 		, mbShadow(true)
 		, mbReflect(true)
 		, mbMotionBlur(false)
+		, mbEnableCollider(true)
 	{
 	}
 

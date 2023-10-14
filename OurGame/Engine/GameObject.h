@@ -173,7 +173,7 @@ namespace hm
 		bool mbShadow;
 		bool mbReflect;
 		bool mbMotionBlur;
-		bool mbEnableCollider = false;
+		bool mbEnableCollider;
 	};
 }
 
