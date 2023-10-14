@@ -1096,6 +1096,19 @@ namespace hm
 			AddGameObject(pCol8);
 		}
 
+		{
+			GameObject* pClimbDownTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::InterativeCol);
+			pClimbDownTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpClimbUppng.png"));
+			pClimbDownTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+			pClimbDownTextBox->GetTransform()->SetPosition(Vec3(-14.3f, 1.5f, -14.2f));
+			pClimbDownTextBox->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
+			pClimbDownTextBox->GetTransform()->SetScale(Vec3(2.0f, 1.0f, 1.0f));
+			AddGameObject(pClimbDownTextBox);
+			yj::HeadText* pClimbDownTextScript = pClimbDownTextBox->AddComponent<yj::HeadText>();
+			pClimbDownTextScript->SetDectetorPos(Vec3(14.9f, 1.2f, -14.3f));
+			SetGizmoTarget(pClimbDownTextBox);
+		}
+
 	}
 	void Right2Map::InitFuncObjAdd()
 	{
@@ -1110,7 +1123,7 @@ namespace hm
 		}
 
 		{
-		/*	GameObject* pClimbUpTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::InterativeCol);
+			GameObject* pClimbUpTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::InterativeCol);
 			pClimbUpTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpClimbUppng.png"));
 			pClimbUpTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
 			pClimbUpTextBox->GetTransform()->SetPosition(Vec3(-14.3f, 1.5f, -14.2f));
@@ -1119,7 +1132,8 @@ namespace hm
 			AddGameObject(pClimbUpTextBox);
 			yj::HeadText* pClimbUpTextScript = pClimbUpTextBox->AddComponent<yj::HeadText>();
 			pClimbUpTextScript->SetDectetorPos(Vec3(14.9f, 1.2f, -14.3f));
-			SetGizmoTarget(pClimbUpTextBox);*/
+			SetGizmoTarget(pClimbUpTextBox);
 		}
+
 	}
 }

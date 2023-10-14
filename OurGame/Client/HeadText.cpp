@@ -54,7 +54,7 @@ namespace yj
 		}
 		else
 		{
-			Decrease();
+			//Decrease();
 		}
 	}
 	Component* HeadText::Clone(GameObject* _pGameObject)
