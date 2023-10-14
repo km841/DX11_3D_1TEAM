@@ -39,7 +39,7 @@ public:
 public:
 	void SetObject(LORD_BOSS_ROLL* _obj) { pObject = _obj; }
 
-	void CutSceneEnd() { isCutSceneEnd = true; }
+	void CutSceneEnd() { isCutSceneEnd = true; } //이거 쓰면 보스 패턴 시작
 
 private:
 	

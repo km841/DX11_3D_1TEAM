@@ -167,12 +167,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 특별한 조건 실행할때
 			BehaviorCondition* pIfCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
-
-				//임시 코드
-				/*if (pAni->GetFrameRatio()>0.95) 
-				{
-					return BehaviorResult::Success;
-				}*/
+	
 				//임시코드
 				if (IS_DOWN(KeyType::G))
 				{

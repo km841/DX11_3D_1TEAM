@@ -82,7 +82,7 @@ void AIMoveState::Update()
 
 	float distance = (objectPos - myPos).Length(); // 목표좌표와 플레이어의 거리계산
 
-	if (distance<0.1f) 
+	if (distance < 0.1f) 
 	{
 		pPlayer->StateChange(PlayerState::IdleState); 
 		//컷신 종료할때 여기다가 추가
@@ -112,7 +112,7 @@ void AIMoveState::Update()
 
 
 	//MOVE 애니메이션 반복 
-	if (pAni->GetFrameRatio() > 0.7)
+	if (pAni->GetFrameRatio() > 0.7f)
 		PlayAnimation();
 
 }
@@ -120,11 +120,11 @@ void AIMoveState::Update()
 void AIMoveState::Enter()
 {
 	Player* pPlayer = Player::GetPlayer();
-	Animator* pAni = pPlayer->GetAnimator();
 
 	GameObject* pObj = pPlayer->GetGreatSword();
 	pObj->Disable();
 
+	Animator* pAni = pPlayer->GetAnimator();
 	int MoveToAnim = 67; 
 	pAni->Play(MoveToAnim, true);
 }
@@ -132,10 +132,12 @@ void AIMoveState::Enter()
 void AIMoveState::Exit()
 {
 	Player* pPlayer = Player::GetPlayer();
-	GameObject* pObj = pPlayer->GetGreatSword();
-	pObj->Enable();
+
 }
 
 void AIMoveState::PlayAnimation()
 {
+	Animator* pAni = PLAYER->GetAnimator();
+	int MoveToAnim = 67;
+	pAni->Play(MoveToAnim, true);
 }
