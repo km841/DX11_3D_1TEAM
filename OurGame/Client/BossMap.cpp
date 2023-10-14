@@ -204,6 +204,7 @@ namespace hm
 			WallObject* pFrontGround = Factory::CreateObject<WallObject>(Vec3(0.4f, -5.3f, -0.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\uv1.fbx");
 			pFrontGround->GetTransform()->SetScale(Vec3(49.0f, 49.0f, 49.0f));
 
+			
 			AddGameObject(pFrontGround);
 			
 		}
@@ -213,6 +214,7 @@ namespace hm
 			pREFLECTIONS->GetTransform()->SetScale(Vec3(40, 40, 40));
 			pREFLECTIONS->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.03f, 0.03f));
 			AddGameObject(pREFLECTIONS);
+			
 		}
 
 		{
@@ -228,7 +230,7 @@ namespace hm
 		}
 
 		{
-			Ground* pUpstair = Factory::CreateObject<Ground>(Vec3(9.5f, 3.0f, -5.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Upstairs.fbx");
+			WallObject* pUpstair = Factory::CreateObject<WallObject>(Vec3(9.5f, 3.0f, -5.0f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\Upstairs.fbx");
 			pUpstair->GetTransform()->SetScale(Vec3(35.f, 35.f, 35.f));
 
 			pUpstair->GetMeshRenderer()->GetMaterial()->SetBloom(true, 7);
@@ -236,7 +238,7 @@ namespace hm
 			pUpstair->GetMeshRenderer()->GetMaterial()->SetBloom(true, 31);
 			pUpstair->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 31);
 
-
+		
 			AddGameObject(pUpstair);
 		}
 
@@ -508,6 +510,7 @@ namespace hm
 			pHallCollider->DrawShadow(false);
 			AddGameObject(pHallCollider);
 			
+			
 		}
 
 		{
@@ -551,7 +554,7 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(6.5f, 1.f, 10.15f);
 
-			Ground* pBusStopToMainDeskCollider = Factory::CreateObjectHasPhysical<Ground>(Vec3(-15.6f, -11.3f, 11.7f), physicsInfo, L"Deferred", L"");
+			WallObject* pBusStopToMainDeskCollider = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-15.6f, -11.3f, 11.7f), physicsInfo, L"Deferred", L"");
 			pBusStopToMainDeskCollider->GetTransform()->SetRotation(Vec3(25.3f, 14.05f, 2.24f));
 			AddGameObject(pBusStopToMainDeskCollider);
 		}

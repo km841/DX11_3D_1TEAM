@@ -52,6 +52,9 @@ private:
 
 	bool isTrigger = false;
 
+	float Shaketime;
+	float ShakeNum;
+
 private:
 	bool isattack01 = true;
 	bool isattack02 = true;

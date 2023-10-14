@@ -67,6 +67,9 @@ void PauseState::Update()
 void PauseState::Enter()
 {
 	PlayAnimation();
+
+	GameObject* pObj = PLAYER->GetGreatSword();
+	pObj->Disable();
 }
 
 void PauseState::Exit()
