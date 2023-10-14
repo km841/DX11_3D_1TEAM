@@ -1,5 +1,6 @@
 #pragma once
 #include "Monster.h"
+#include "TimerObject.h"
 class LORD_BOSS_ROLL;
 class MonsterSlowObject;
 class LORD_BOSS :
@@ -88,6 +89,7 @@ private:
 	MonsterSlowObject* pMonsterSilent_ClapCol;
 	GameObject* pBackswingCol;
 
+	TimerObject mTimer;
 private:
 	//사운드 관련 bool
 	bool isMelee_Jump01 = true;
@@ -104,6 +106,8 @@ private:
 	bool isLandSlam = true;
 
 	bool isBall = true;
+
+	bool isRollWall = true;
 
 };
 

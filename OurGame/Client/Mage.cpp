@@ -39,6 +39,8 @@
 #include "Camera.h"
 #include "Light.h"
 #include "ParticleSystem.h"
+#include "AudioSound.h"
+#include "AudioSound.h"
 #include "Animator.h"
 
 /* Script */
@@ -335,6 +337,7 @@ void Mage::SetBehaviorTree()
 			//공격 구슬 생성
 			BehaviorTask* pAttack_ProjectTileTask = new BehaviorTask([&]() {
 				Animator* pAni = GetAnimator();
+				AudioSound* pSound = GetAudioSound();
 
 				/*if (pAni->GetFrameRatio() > 0.2) {
 					if (true != isTrigger01) {
@@ -347,6 +350,8 @@ void Mage::SetBehaviorTree()
 					if (true != isTrigger02) {
 						isTrigger02 = true;
 						CreateProjectTile();
+						pSound->SetSound(L"attack", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Mage\\attack.wav");
+						pSound->Play(50);
 					}
 				}
 
@@ -656,6 +661,7 @@ void Mage::OnTriggerEnter(Collider* _pOtherCollider)
 	{
 		if (isGODState == false) {
 			TakeDamage(attackDamage);
+			HitSound();
 			float hp = mHP;
 			meBasicState = MonsterBasicState::Hit;
 		}

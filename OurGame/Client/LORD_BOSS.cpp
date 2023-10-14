@@ -79,6 +79,9 @@ LORD_BOSS::LORD_BOSS()
 	MonsterAttackCol();
 	MonsterBackswingCol();
 	meBasicState = MonsterBasicState::CutScene;
+
+	mTimer.SetEndTime(6.5f);
+
 }
 
 LORD_BOSS::~LORD_BOSS()
@@ -117,7 +120,7 @@ void LORD_BOSS::SetBehaviorTree()
 				if (17 != animIndex)
 				{
 					pSound->SetSound(L"BOSSBGM", GET_SINGLE(SceneManager)->GetActiveScene(), true, "..\\Resources\\Sound\\BossMapBGM.mp3");
-					pSound->Play(15);
+					pSound->Play(5);
 					pAnimator->Play(17, true);
 
 				}
@@ -609,8 +612,14 @@ void LORD_BOSS::SetBehaviorTree()
 			// 이동+Col 처리 하는곳
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
-
-
+					Animator* pAni = GetAnimator();
+					AudioSound* pSound = GetAudioSound();
+					if (pAni->GetFrameRatio() > 0.5 && isSilent_Clap == false)
+					{
+						isSilent_Clap = true;
+						pSound->SetSound(L"Mega", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\LandSlam.wav");
+						pSound->Play(20);
+					}
 
 					return BehaviorResult::Success;
 				});
@@ -628,6 +637,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
+					isSilent_Clap = false;
 					PrevState = meBasicState;
 					meBasicState = MonsterBasicState::Idle;
 					return BehaviorResult::Success;
@@ -877,13 +887,15 @@ void LORD_BOSS::SetBehaviorTree()
 			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = pObject->GetAnimator();
-			
+				AudioSound* pSound = GetAudioSound();
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (0 != animIndex)
 				{
 					Disable();
 					pObject->Enable();
 					pAnimator->Play(0, true);
+					pSound->SetSound(L"Roll", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\Roll.wav");
+					pSound->Play(40);
 				}
 				return BehaviorResult::Success;
 				});
@@ -952,6 +964,8 @@ void LORD_BOSS::SetBehaviorTree()
 					pObject->SetAttackCheck(true);
 					PrevFollowSet();
 					pAnimator->Play(1, true);
+
+					
 				}
 				return BehaviorResult::Success;
 				});
@@ -971,6 +985,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 특별한 조건 실행할때
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = pObject->GetAnimator();
+				AudioSound* pSound = GetAudioSound();
 				if(pAni->GetFrameRatio() > 0.4)
 					pAni->Play(1, true);
 
@@ -988,6 +1003,12 @@ void LORD_BOSS::SetBehaviorTree()
 					{
 						GetRigidBody()->AddVelocity(AXIS_Y, -0.5f);
 					}
+					if (isRollWall == true)
+					{
+						isRollWall = false;
+						pSound->SetSound(L"RollWall", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\RollWall.ogg");
+						pSound->Play(60);
+					}
 				}
 					
 
@@ -1002,6 +1023,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
+					isRollWall = true;
 					PrevState = meBasicState;
 					meBasicState = MonsterBasicState::Land_Slam;
 					return BehaviorResult::Success;
@@ -1232,7 +1254,8 @@ void LORD_BOSS::SetBehaviorTree()
 					CreateCow(Vec3(-4.6f, -0.3f, -13.8f));
 					CreateCow(Vec3(17.4f, -0.3f, 2.7f));
 					CreateCow(Vec3(18.f, -0.3f, 10.f));
-					pAnimator->Play(7, true);
+					pAnimator->Play(7, false);
+					mTimer.Start();
 				}
 				return BehaviorResult::Success;
 				});
@@ -1247,7 +1270,7 @@ void LORD_BOSS::SetBehaviorTree()
 						if (isLaser == true)
 						{
 							isLaser = false;
-							pSound->SetSound(L"Laser", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\Laser.ogg");
+							pSound->SetSound(L"Laser", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\LaserLong.wav");
 							pSound->Play(50);
 						}
 					}
@@ -1258,7 +1281,8 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorCondition* pCondition = new BehaviorCondition([&]() {
 				Animator* pAni = GetAnimator();
 
-				if (pAni->GetFrameRatio() > 0.95) {
+				mTimer.Update();
+				if (mTimer.IsFinished()) {
 					return BehaviorResult::Success;
 				}
 				return BehaviorResult::Failure;
@@ -1267,6 +1291,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
+					mTimer.Stop();
 					isLaser = true;
 					PrevState = meBasicState;
 					meBasicState = MonsterBasicState::Laser_End;

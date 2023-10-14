@@ -12,6 +12,7 @@
 #include "EventManager.h"
 #include "SceneManager.h"
 #include "ChangeStateTask.h"
+#include "AudioSound.h"
 
 Lurker::Lurker()
 {
@@ -366,12 +367,15 @@ void Lurker::SetBehaviorTree()
 
 			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				AudioSound* pSound = GetAudioSound();
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (1 != animIndex) {
 					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 					GetTransform()->SetRelativePosition(Vec3(0.f, -0.4f, 0.f));
 					pAnimator->Play(1, false);
+					pSound->SetSound(L"LurkertoAttack", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Lurker\\LurkerPrepAttack.ogg");
+					pSound->Play();
 				}
 
 				return BehaviorResult::Success;
@@ -419,11 +423,14 @@ void Lurker::SetBehaviorTree()
 
 			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				AudioSound* pSound = GetAudioSound();
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (2 != animIndex) {
 					SetAttackCheck(true);
 					pAnimator->Play(2, true);
+					pSound->SetSound(L"LurkerAttack", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Lurker\\LurkerAttack.ogg");
+					pSound->Play();
 				}
 				return BehaviorResult::Success;
 				});
@@ -495,6 +502,7 @@ void Lurker::SetBehaviorTree()
 
 			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				AudioSound* pSound = GetAudioSound();
 				Animator* pAnimator = GetAnimator();
 				GameObject* pObj = GetGameObject(); //이거 확인도 필요함
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -507,6 +515,8 @@ void Lurker::SetBehaviorTree()
 					GameObject* pObj = GetGameObject();
 					pObj->DisableCollider();
 					pAnimator->Play(9, false);
+					pSound->SetSound(L"LurkerDead", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Lurker\\LurkerDeath.ogg");
+					pSound->Play();
 				}
 
 				//pObj->GetRigidBody()->SetSimulationShapeFlag(false); // 콜라이더 끄기
@@ -620,6 +630,7 @@ void Lurker::OnTriggerEnter(Collider* _pOtherCollider)
 	{
 		if (isGODState == false) {
 			TakeDamage(attackDamage);
+			HitSound();
 			float hp = mHP;
 			meBasicState = MonsterBasicState::Hit;
 			SetAttackCheck(false);

@@ -12,6 +12,7 @@
 #include "EventManager.h"
 #include "SceneManager.h"
 #include "ChangeStateTask.h"
+#include "AudioSound.h"
 #include "Factory.h"
 /* Resource */
 #include "MeshData.h"
@@ -403,6 +404,7 @@ void Grimace::SetBehaviorTree()
 			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
+				AudioSound* pSound = GetAudioSound();
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (3 != animIndex) {
 					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
@@ -412,6 +414,8 @@ void Grimace::SetBehaviorTree()
 					BackstepDirSet();
 					BackstepRotTurn();
 					
+					pSound->SetSound(L"Grimace_backdash", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Grimace\\BackDash01.wav");
+					pSound->Play(50);
 				}
 
 
@@ -425,6 +429,7 @@ void Grimace::SetBehaviorTree()
 				Vec3 myRot = GetTransform()->GetRotation();
 				Vec3 scale = GetRigidBody()->GetGeometrySize();
 				Animator* pAni = GetAnimator();
+
 				GetRigidBody()->SetMaxVelocity(100.f);
 
 				BackstepDirLive();
@@ -515,12 +520,20 @@ void Grimace::SetBehaviorTree()
 				{
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 					Vec3 myPos = GetTransform()->GetPosition();
+					AudioSound* pSound = GetAudioSound();
+
 					Animator* pAni = GetAnimator();
 
 					if (pAni->GetFrameRatio() > 0.7 && pAni->GetFrameRatio() < 0.8) {
 						pMonsterAttackCol->Enable();
 						pMonsterAttackCol->GetScript<MonsterColScript>()->SetAniRatio(pAni->GetFrameRatio());
 						GET_SINGLE(RenderManager)->AddCameraShakeEffect(0.05f, 0.04f);
+						if (isattack01 == true)
+						{
+							isattack01 = false;
+							pSound->SetSound(L"Grimace_atk01", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\MeleeSlam.wav");
+							pSound->Play(20);
+						}
 					}
 					if (pAni->GetFrameRatio() > 0.8) {
 						pMonsterAttackCol->GetScript<MonsterColScript>()->SetAniRatio(pAni->GetFrameRatio());
@@ -528,6 +541,7 @@ void Grimace::SetBehaviorTree()
 					}
 
 					if (pAni->GetFrameRatio() > 0.95) {
+						isattack01 = true;
 						return BehaviorResult::Success;
 					}
 					return BehaviorResult::Failure;
@@ -564,12 +578,16 @@ void Grimace::SetBehaviorTree()
 
 			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				AudioSound* pSound = GetAudioSound();
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (4 != animIndex) {
 					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 					GetTransform()->SetRelativePosition(Vec3(0.f, -4.f, 0.f));
 					pAnimator->Play(4, true);
+
+					pSound->SetSound(L"Grimace_atk02", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Grimace\\projecttile.wav");
+					pSound->Play(50);
 				}
 
 				return BehaviorResult::Success;
@@ -581,16 +599,26 @@ void Grimace::SetBehaviorTree()
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 					Vec3 myPos = GetTransform()->GetPosition();
 					Animator* pAni = GetAnimator();
+					AudioSound* pSound = GetAudioSound();
+
 
 					if (pAni->GetFrameRatio() > 0.5) {
 						if (true != isTrigger) {
 							isTrigger = true;
 							CreateProjectTile();
+
+							if (isattack02 == true)
+							{
+								isattack02 = false;
+							}
 						}
 					}
 
 					if (pAni->GetFrameRatio() > 0.95)
+					{
+						isattack02 = true;
 						return BehaviorResult::Success;
+					}
 					return BehaviorResult::Failure;
 
 				});
@@ -636,6 +664,10 @@ void Grimace::SetBehaviorTree()
 					dir_desh.Normalize();
 					dir_desh.y = 0;
 					pAnimator->Play(13, true);
+
+					/*AudioSound* pSound = GetAudioSound();
+					pSound->SetSound(L"Grimace_atk03", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Grimace\\dash.wav");
+					pSound->Play(50);*/
 				}
 
 				return BehaviorResult::Success;
@@ -650,8 +682,19 @@ void Grimace::SetBehaviorTree()
 					Vec3 geomSize = GetRigidBody()->GetGeometrySize();
 					Vec3 lookNormal = GetTransform()->GetLook();
 					lookNormal.Normalize();
+					AudioSound* pSound = GetAudioSound();
+
 					GetRigidBody()->SetMaxVelocity(100.f);
 
+					if (pAni->GetFrameRatio() > 0.2)
+					{
+						if (isattack03 == true)
+						{
+							isattack03 = false;
+							pSound->SetSound(L"Grimace_atk03", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Grimace\\dash.wav");
+							pSound->Play(50);
+						}
+					}
 
 					dir_desh.Normalize();
 					if (pAni->GetFrameRatio() > 0.45 && pAni->GetFrameRatio() < 0.6)
@@ -660,6 +703,7 @@ void Grimace::SetBehaviorTree()
 						GetRigidBody()->SetVelocityExcludingColliders(-dir_desh * 10.0f);
 						GetRigidBody()->SetVelocity(dir_desh * 40.f);
 
+						
 						//그리마스 수정
 						
 						if (IsRaysCollide(myPos + (lookNormal * geomSize), lookNormal, LayerType::Ground, 0.5f))
@@ -683,7 +727,11 @@ void Grimace::SetBehaviorTree()
 
 
 					if (pAni->GetFrameRatio() > 0.90)
+					{
 						return BehaviorResult::Success;
+						isattack03 = true;
+
+					}
 					return BehaviorResult::Failure;
 
 				});
@@ -1218,6 +1266,7 @@ void Grimace::OnTriggerEnter(Collider* _pOtherCollider)
 		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		if (isGODState == false) {
+			HitSound();
 			TakeDamage(attackDamage);
 			if (mHP <= 0) {
 				isDead = true;

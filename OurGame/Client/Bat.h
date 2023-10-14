@@ -33,4 +33,5 @@ public:
 
 private:
 	Vec3 dir;
+	bool isAttack = true;
 };

@@ -31,6 +31,7 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "Animator.h"
+#include "AudioSound.h"
 
 /* Manager */
 #include "RenderManager.h"
@@ -78,9 +79,10 @@ void Bat::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (4 != animIndex)
+				if (4 != animIndex) {
 					pAnimator->Play(4, true);
-
+					isAttack = true;
+				}
 				return BehaviorResult::Success;
 				});
 
@@ -355,7 +357,8 @@ void Bat::SetBehaviorTree()
 			// 공격 딜레이
 			BehaviorTask* pAttackTask = new BehaviorTask([&]()
 				{
-					
+					AudioSound* pSound = GetAudioSound();
+
 
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 					Vec3 myPos = GetTransform()->GetPosition();
@@ -369,6 +372,12 @@ void Bat::SetBehaviorTree()
 					if (pAni->GetFrameRatio() > 0.4 && pAni->GetFrameRatio() < 0.6) {
 						SetAttackCheck(true);
 						GetRigidBody()->SetVelocity(Ve * 5.f);
+						if (isAttack == true)
+						{
+							isAttack = false;
+							pSound->SetSound(L"Batattack", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Bat\\BatAttack.ogg");
+							pSound->Play();
+						}
 					}
 					else {
 						SetAttackCheck(false);
@@ -384,8 +393,10 @@ void Bat::SetBehaviorTree()
 						GetRigidBody()->SetVelocity(Ve * 0);
 					}
 
-					if(pAni->GetFrameRatio()>0.8)
+					if (pAni->GetFrameRatio() > 0.8) {
+						isAttack = true;
 						return BehaviorResult::Success;
+					}
 					return BehaviorResult::Failure;
 				
 				});
@@ -420,6 +431,7 @@ void Bat::SetBehaviorTree()
 
 			// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				AudioSound* pSound = GetAudioSound();
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (isDead == true)
@@ -431,7 +443,9 @@ void Bat::SetBehaviorTree()
 					isDead = false;
 					GetScript<PaperBurnScript>()->SetPaperBurn();
 					pAnimator->Play(4, false);
-					//
+					pSound->SetSound(L"BaDeath", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Bat\\BatDeath.ogg");
+					pSound->Play();
+					
 				}
 
 				//pObj->GetRigidBody()->SetSimulationShapeFlag(false); // 콜라이더 끄기
@@ -577,6 +591,7 @@ void Bat::OnTriggerEnter(Collider* _pOtherCollider)
 		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		if (isGODState == false) {
+			HitSound();
 			TakeDamage(attackDamage);
 			float hp = mHP;
 			SetAttackCheck(false);
