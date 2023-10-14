@@ -33,6 +33,7 @@
 #include "Animator.h"
 #include "AudioSound.h"
 
+#include "MonsterKeyScript.h"
 
 
 namespace hm
@@ -590,9 +591,9 @@ namespace hm
 						int animIndex = pAni->GetCurrentClipIndex();
 
 
-
 						if (GetScript<PaperBurnScript>()->IsFinished())
 						{
+							GetScript<yj::MonsterKeyScript>()->SendDeathTrigger();
 							MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 							GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
 						}

@@ -52,7 +52,7 @@
 #include "PlacementScript.h"
 #include "TestAnimationScript.h"
 #include "PlayerMoveOverMapScript.h"
-
+#include "HeadText.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -838,5 +838,28 @@ void LeftSecretFightMap::FuncObjectAdd()
 
 		yj::TeleportZone* pTelZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(-11.0f, -7.7f, 27.7f), physicsInfo, L"Forward", L"", false, MapType::LeftSecretTrialMap, 2);
 		AddGameObject(pTelZone);
+	}
+
+	{
+		GameObject* pClimbUpTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::InterativeCol);
+		pClimbUpTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpClimbUppng.png"));
+		pClimbUpTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+		pClimbUpTextBox->GetTransform()->SetPosition(Vec3(9.3f, -5.8f, 7.9f));
+		pClimbUpTextBox->GetTransform()->SetRotation(Vec3(0.0f, 90.0f, 0.0f));
+		pClimbUpTextBox->GetTransform()->SetScale(Vec3(2.0f, 1.0f, 1.0f));
+		AddGameObject(pClimbUpTextBox);
+		yj::HeadText* pClimbUpTextScript = pClimbUpTextBox->AddComponent<yj::HeadText>();
+		pClimbUpTextScript->SetDectetorPos(Vec3(8.9f, -6.8f, 7.5f));
+	}
+	{
+		/*GameObject* pClimbDownTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::InterativeCol);
+		pClimbDownTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpClimbDown.png"));
+		pClimbDownTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+		pClimbDownTextBox->GetTransform()->SetPosition(Vec3(10.1f, -0.1f, 7.9f));
+		pClimbDownTextBox->GetTransform()->SetRotation(Vec3(0.0f, 90.0f, 0.0f));
+		pClimbDownTextBox->GetTransform()->SetScale(Vec3(2.0f, 1.0f, 1.0f));
+		AddGameObject(pClimbDownTextBox);
+		yj::HeadText* pClimbDownTextScript = pClimbDownTextBox->AddComponent<yj::HeadText>();
+		pClimbDownTextScript->SetDectetorPos(Vec3(11.3f, -0.8f, 7.5f));*/
 	}
 }

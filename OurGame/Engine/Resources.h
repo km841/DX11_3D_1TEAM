@@ -73,6 +73,8 @@ namespace hm
 		// Point Mesh를 반환한다.
 		shared_ptr<Mesh> LoadPointMesh();
 
+		shared_ptr<Mesh> LoadLaserMesh();
+
 		shared_ptr<Mesh> LoadCubeMesh();
 		shared_ptr<Mesh> LoadSphereMesh();
 		shared_ptr<Mesh> LoadBoundingCubeMesh();

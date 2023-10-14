@@ -26,6 +26,7 @@
 #include "CameraHolder.h"
 #include "Elevator.h"
 #include "HpUi.h"
+#include "ManaUi.h"
 #include "Banker.h"
 
 /* Interface */
@@ -78,6 +79,7 @@ namespace hm
 	{
 		Scene::Initialize();
 		
+
 		AudioSound* pSound = PLAYER->AddComponent(new AudioSound);
 
 		pSound->SetSound(L"BGM", this, true, "..\\Resources\\Sound\\TitleBGM.mp3");
@@ -113,7 +115,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::BossMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Right2Map);
 		}
 
 		// 지형
@@ -141,8 +143,22 @@ namespace hm
 		// - RightMap
 		if (IS_DOWN(KeyType::K))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Right2Map);
 		}
+		/*MainOfficeMap,
+			CorridorRightMap,
+			DiningColliderCheckMap,
+			EntranceHallMap,
+			GrandmaBossMap,
+			HallColliderCheckMap,
+			LeftSecretFightMap,
+			LeftSecretTrialMap,
+			Right2Map,
+			RightMap,
+			RightSecretPassageMap,
+			BossMap,*/
+
+
 
 		/*Vec3 pos = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetGameObject()->GetTransform()->GetPosition();
 		wstring strPos = {};
@@ -189,8 +205,9 @@ namespace hm
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::MonsterCol);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ladder);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::WallObject);
-		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Trigger);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::InterativeCol);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::DecoObject);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Portal);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Portal);
 
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
@@ -219,8 +236,6 @@ namespace hm
 			pPlayer->SetReflect(true);
 
 			AudioSound* pSound = PLAYER->AddComponent(new AudioSound);
-	
-			
 
 			PlayerMoveScript* pPlayerSc = pPlayer->AddComponent(new PlayerMoveScript);
 			yj::PlayerMoveOverMapScript* pMoveOverSc = pPlayer->AddComponent(new yj::PlayerMoveOverMapScript);
@@ -804,6 +819,7 @@ namespace hm
 			pRailing10->GetTransform()->SetRotation(Vec3::Zero);
 			pRailing10->GetTransform()->SetScale(Vec3(17.5f, 17.5f, 17.5f));
 		}
+
 		{
 			DecoObject* pGraveyardPlane = Factory::CreateObject<DecoObject>(Vec3(0, 0, 0), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\GraveyardPlane.fbx");
 			AddGameObject(pGraveyardPlane);
@@ -844,12 +860,23 @@ namespace hm
 		// HpUi
 		{
 			GameObject* pHpUiObj = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pHpUiObj->AddComponent(new Transform);
+			pHpUiObj->AddComponent(new RigidBody);
+			AddGameObject(pHpUiObj);
 			yj::HpUi* pHpUI = pHpUiObj->AddComponent<yj::HpUi>();
 			pHpUI->AddHpUI();
 			pHpUiObj->SetDontDestroyObject(L"HpUi");
-			HPUI->UiOff();
+		}
 
-			AddGameObject(pHpUiObj);
+		// MpUI
+		{
+			GameObject* pManaUiObj = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pManaUiObj->AddComponent(new Transform);
+			pManaUiObj->AddComponent(new RigidBody);
+			yj::ManaUi* pManaUI = pManaUiObj->AddComponent<yj::ManaUi>();
+			pManaUI->AddManaUI();
+			pManaUiObj->SetDontDestroyObject(L"MpUi");
+			AddGameObject(pManaUiObj);
 		}
 
 		// Buttons

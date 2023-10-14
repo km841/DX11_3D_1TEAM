@@ -67,6 +67,7 @@
 #include "PlayerMoveOverMapScript.h"
 #include "OwnerFollowScript.h"
 #include "FocusingScript.h"
+#include "HeadText.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -1094,20 +1095,10 @@ namespace hm
 			Ground* pCol8 = Factory::CreateObjectHasPhysical<Ground>(Vec3(-5.9f, 2.7f, -2.8f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pCol8);
 		}
+
 	}
 	void Right2Map::InitFuncObjAdd()
 	{
-		//{
-		//	PhysicsInfo physicsInfo;
-		//	physicsInfo.eActorType = ActorType::Static;
-		//	physicsInfo.eGeometryType = GeometryType::Box;
-		//	physicsInfo.size = Vec3(7.8f, 5.1f, 4.82f);
-
-		//	yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(2.5f, 17.7f, -17.2f), physicsInfo, L"Deferred", L"", false, MapType::CorridorRightMap, 5);
-		//	AddGameObject(pRightZone);
-		//	//SetGizmoTarget(pRightZone);
-		//}
-
 		{
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Static;
@@ -1116,6 +1107,32 @@ namespace hm
 
 			yj::TeleportZone* pRightZone = Factory::CreateObjectHasPhysical<yj::TeleportZone>(Vec3(2.5f, 17.7f, -17.2f), physicsInfo, L"Deferred", L"", false, MapType::DiningColliderCheckMap,6);
 			AddGameObject(pRightZone);
+		}
+
+		{
+			GameObject* pClimbUpTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::InterativeCol);
+			pClimbUpTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpClimbUppng.png"));
+			pClimbUpTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+			pClimbUpTextBox->GetTransform()->SetPosition(Vec3(-14.3f, 1.5f, -14.2f));
+			pClimbUpTextBox->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
+			pClimbUpTextBox->GetTransform()->SetScale(Vec3(2.0f, 1.0f, 1.0f));
+			AddGameObject(pClimbUpTextBox);
+			yj::HeadText* pClimbUpTextScript = pClimbUpTextBox->AddComponent<yj::HeadText>();
+			pClimbUpTextScript->SetDectetorPos(Vec3(14.9f, 1.2f, -14.3f));
+			SetGizmoTarget(pClimbUpTextBox);
+		}
+
+		{
+			GameObject* pClimbUpTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::InterativeCol);
+			pClimbUpTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpClimbUppng.png"));
+			pClimbUpTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+			pClimbUpTextBox->GetTransform()->SetPosition(Vec3(-14.3f, 1.5f, -14.2f));
+			pClimbUpTextBox->GetTransform()->SetRotation(Vec3(0.0f, 180.0f, 0.0f));
+			pClimbUpTextBox->GetTransform()->SetScale(Vec3(2.0f, 1.0f, 1.0f));
+			AddGameObject(pClimbUpTextBox);
+			yj::HeadText* pClimbUpTextScript = pClimbUpTextBox->AddComponent<yj::HeadText>();
+			pClimbUpTextScript->SetDectetorPos(Vec3(14.9f, 1.2f, -14.3f));
+			SetGizmoTarget(pClimbUpTextBox);
 		}
 	}
 }

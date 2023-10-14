@@ -28,6 +28,7 @@
 #include "Ladder.h"
 #include "LadderCollider.h"
 #include "HeadRoller.h"
+#include "HpUi.h"
 #include "MonsterSlowObject.h"
 
 /* Component */
@@ -396,7 +397,23 @@ void Player::Update()
 	
 	GET_SINGLE(Input)->SetPlayerKeyInfo(mKeyInfo);
 	mActiveState->Update();
-	
+	if (IS_DOWN(KeyType::P))
+	{
+		GetDamage();
+	}
+	if (false == this->IsEnable())
+	{
+
+		pGreatSword->Disable();
+		pBow->Disable();
+		pArrow->Disable();
+	}
+	else
+	{
+		pGreatSword->Enable();
+		pBow->Enable();
+		pArrow->Enable();
+	}
 	
 
 	pSwordSc->SetPlayerState(mActiveState->GetStateEnum());
@@ -425,15 +442,11 @@ void Player::FinalUpdate()
 void Player::Render()
 {
 	GameObject::Render();
-
-
 }
 
 void Player::Destroy()
 {
 	GameObject::Destroy();
-	
-
 }
 
 void Player::OnCollisionEnter(Collider* _pOtherCollider)
@@ -612,6 +625,17 @@ void Player::SetDirectionChange(DirectionEvasion _eState)
 {
 	meDirectionEvasion = _eState;
 }
+
+void Player::GetDamage()
+{
+	if (mHP <= 0)
+	{
+		return;
+	}
+	mHP--;
+	HPUI->HpDecrease();
+}
+
 
 PlayerState Player::GetActiveStateEnum()
 {

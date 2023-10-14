@@ -19,6 +19,9 @@ namespace yj
 
 	void TextBox::Initialize()
 	{
+		mWriteTextArray.push_back(L"이제 영혼 수확 위원회 본부에 도착합니다.");
+		mWriteTextArray.push_back(L"이번 역은 종점입니다...");
+
 		mWriteTextArray.push_back(L"이런 이런 이런...");
 		mWriteTextArray.push_back(L"드디어 얼굴을 비추시는 구만, 자네 몫 벌레는 없어...");
 		mWriteTextArray.push_back(L"벌레는 일찍 일어나는 새가- 아니 됐다.");

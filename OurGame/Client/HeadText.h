@@ -1,51 +1,47 @@
 #pragma once
 
-#include "Interface.h"
+#include "GameObject.h"
+
 namespace yj
 {
-	class HeadText :public Interface
+	class HeadText : public MonoBehavior
 	{
-	private:
+	public:
 
 		HeadText();
 		virtual ~HeadText();
-
-		HeadText* Clone()
-		{
-			HeadText* _pHeadText = GameObject::Clone<HeadText>();
-			return _pHeadText;
-		}
 		virtual void Initialize();
 		virtual void Update();
+		virtual Component* Clone(GameObject* _pGameObject);
+
 	public:
-		enum ActState
+		void SetDectetorPos(Vec3 _pos) { mDetectorPos = _pos; }
+	public:
+
+		enum State
 		{
 			Start,
-			ApearAct,
-			StandbyAct,
-			DisapearAct,
-			End,
+			Apear,
+			Disapear,
+			Standby,
+			End
 		};
+		State mState;
 
-		ActState mActState;
-
-	public:
-		void AddTextInArray(wstring& _addText) { mWriteTextArray.push_back(_addText); }
-		void Apear();
-		void Disapear();
+		GameObject* GetDetector() { return pDetector; }
 
 	private:
 
-		void SetHeadText(int num);
+		void Increase();
+		void Decrease();
 
-	private:
-		float mExpandLimitSize;
-		float mInitSize;
-		float mCurrSize;
-		float mIncreaseSize;
+		Vec3 mMaxSize;
+		float mSpeed;
 
-		std::vector<wstring> mWriteTextArray;
-		wstring mCurrWriteText;
+
+		GameObject* pDetector;
+		Vec3 mDetectorPos;
+		GameObject* pTextObj;
 
 	};
 }

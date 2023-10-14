@@ -1,8 +1,10 @@
 #pragma once
 #include "Map.h"
+#include "SpikeDoor.h"
 
 namespace jh
 {
+	class SpikeDoor;
 	class CorridorRightMap :
 		public Map
 	{
@@ -31,6 +33,7 @@ namespace jh
 	private:
 		GameObject* pSpikeDoor;
 		GameObject* pSpikeDoorCol;
+		yj::SpikeDoor* pOrgSpikeDoor;
 		int mSpawnPoint = -1;
 	};
 

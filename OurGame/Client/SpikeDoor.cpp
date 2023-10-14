@@ -11,6 +11,8 @@ namespace yj
 		pDoorObj = _frameObj;
 		pDoorColObj = _doorCol;
 		SetRequireKey(_keyAmount);
+
+		mName = L"SpikeDoor";
 	}
 
 	SpikeDoor::~SpikeDoor()

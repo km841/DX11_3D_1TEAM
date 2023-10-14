@@ -45,6 +45,7 @@
 #include "PlayerMoveScript.h"
 #include "PlayerMoveOverMapScript.h"
 #include "OwnerFollowScript.h"
+#include "MonsterKeyScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -128,18 +129,21 @@ namespace jh
 		//초록거미
 		{
 			Lurker* pLurker = Factory::CreateLurker(Vec3(-1.6f, -8.0f, -1.6f), Vec3(-90.f, 0.f, -90.f));
+			pLurker->GetScript<yj::MonsterKeyScript>()->AddReceiver(pOrgSpikeDoor);
 			AddGameObject(pLurker);
 		}
 
 		//박쥐
 		{
 			Bat* pBat = Factory::CreateBat(Vec3(7.2f, -8.0f, 16.1f), Vec3(-90.f, 0.f, 90.f));
+			pBat->GetScript<yj::MonsterKeyScript>()->AddReceiver(pOrgSpikeDoor);
 			AddGameObject(pBat);
 		}
 
 		//마법사
 		{
 			Mage* pMage = Factory::CreateMage(Vec3(2.3f, -8.0f, -23.6f), Vec3(-90.f, 0.f, 180.f));
+			pMage->GetScript<yj::MonsterKeyScript>()->AddReceiver(pOrgSpikeDoor);
 			AddGameObject(pMage);
 			
 		}
@@ -655,8 +659,10 @@ namespace jh
 			AddGameObject(pRightZone);
 		}
 		{
-			yj::SpikeDoor* pDoor = Factory::CreateObject<yj::SpikeDoor>(Vec3(-7.4f, -4.57f, 19.2f), L"Deferred", L"", false, pSpikeDoor,pSpikeDoorCol,4);
+			yj::SpikeDoor* pDoor = Factory::CreateObject<yj::SpikeDoor>(Vec3(-7.4f, -4.57f, 19.2f), L"Deferred", L"", false, pSpikeDoor,pSpikeDoorCol,3);
 			AddGameObject(pDoor);
+
+			pOrgSpikeDoor = pDoor;
 		}
 
 		{
