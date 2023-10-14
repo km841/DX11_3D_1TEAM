@@ -401,7 +401,7 @@ void Player::Update()
 	{
 		GetDamage();
 	}
-	if (false == this->IsEnable())
+	/*if (false == this->IsEnable())
 	{
 
 		pGreatSword->Disable();
@@ -413,7 +413,7 @@ void Player::Update()
 		pGreatSword->Enable();
 		pBow->Enable();
 		pArrow->Enable();
-	}
+	}*/
 	
 
 	pSwordSc->SetPlayerState(mActiveState->GetStateEnum());

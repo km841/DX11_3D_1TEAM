@@ -82,6 +82,9 @@ LORD_BOSS::LORD_BOSS()
 
 	mTimer.SetEndTime(6.5f);
 
+	Shaketime=0.2f;
+	ShakeNum=0.04f;
+
 }
 
 LORD_BOSS::~LORD_BOSS()
@@ -255,7 +258,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Laser_Start;
+					//meBasicState = MonsterBasicState::Laser_Start;
 					return BehaviorResult::Success;
 				});
 
@@ -487,6 +490,7 @@ void LORD_BOSS::SetBehaviorTree()
 						pSound->SetSound(L"Ball", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\Ball.ogg");
 						pSound->Play();
 						MonsterSilent_ClapCol(); 
+						GET_SINGLE(RenderManager)->AddCameraShakeEffect(Shaketime, ShakeNum);
 					}
 
 					return BehaviorResult::Success;
@@ -616,6 +620,7 @@ void LORD_BOSS::SetBehaviorTree()
 					AudioSound* pSound = GetAudioSound();
 					if (pAni->GetFrameRatio() > 0.5 && isSilent_Clap == false)
 					{
+						GET_SINGLE(RenderManager)->AddCameraShakeEffect(Shaketime, ShakeNum*2);
 						isSilent_Clap = true;
 						pSound->SetSound(L"Mega", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\LandSlam.wav");
 						pSound->Play(20);
@@ -689,6 +694,7 @@ void LORD_BOSS::SetBehaviorTree()
 						pBackswingCol->Enable();
 						if (isBackSwing == true)
 						{
+							GET_SINGLE(RenderManager)->AddCameraShakeEffect(Shaketime, ShakeNum);
 							isBackSwing = false;
 							pSound->SetSound(L"BackSwing", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\BackSwing.wav");
 							pSound->Play(50);
@@ -767,6 +773,7 @@ void LORD_BOSS::SetBehaviorTree()
 						pBackswingCol->Enable();
 						if (isBackSwing == true)
 						{
+							GET_SINGLE(RenderManager)->AddCameraShakeEffect(Shaketime, ShakeNum);
 							isBackSwing = false;
 							pSound->SetSound(L"BackSwing", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\BackSwing.wav");
 							pSound->Play(50);
@@ -978,7 +985,7 @@ void LORD_BOSS::SetBehaviorTree()
 					pObjTr->SetPosition(pTr->GetPosition());
 					pObjTr->SetRotation(pTr->GetRotation());
 
-
+					GET_SINGLE(RenderManager)->AddCameraShakeEffect(Shaketime, ShakeNum);
 					return BehaviorResult::Success;
 				});
 
@@ -1473,6 +1480,8 @@ void LORD_BOSS::SetBehaviorTree()
 
 					pSound->SetSound(L"LandSlam", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\LandSlam.wav");
 					pSound->Play(30);
+
+					GET_SINGLE(RenderManager)->AddCameraShakeEffect(Shaketime, ShakeNum);
 				}
 				return BehaviorResult::Success;
 				});

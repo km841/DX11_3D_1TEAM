@@ -57,8 +57,11 @@ void PauseState::Update()
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 
-
-	//pPlayer->StateChange(PlayerState::AttackState);
+	//if (/*특정조건 발동되면 IDLE상태로 넘어가기*/)
+	//{
+	//	pPlayer->StateChange(PlayerState::AIMoveState);
+	//}
+	
 }
 
 void PauseState::Enter()
@@ -76,5 +79,5 @@ void PauseState::PlayAnimation()
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 
-	//pAni->Play(4, true);
+	pAni->Play(42, false);
 }
