@@ -84,6 +84,9 @@ private:
 	bool isSilent_Clap = false;
 	bool isCutSceneEnd = false;
 
+	float Shaketime;
+	float ShakeNum;
+
 	MonsterBasicState PrevState;
 
 	LORD_BOSS_ROLL* pObject;
