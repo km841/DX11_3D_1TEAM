@@ -31,6 +31,7 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "Animator.h"
+#include "AudioSound.h"
 
 #include "MonsterKeyScript.h"
 
@@ -697,6 +698,7 @@ namespace hm
 		{
 			if (isGODState == false) {
 				TakeDamage(attackDamage);
+				HitSound();
 				float hp = mHP;
 				meBasicState = MonsterBasicState::Hit;
 				SetAttackCheck(false);

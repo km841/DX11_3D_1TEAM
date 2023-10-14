@@ -76,7 +76,7 @@ void BowState::Update()
 		{
 			isArrowFireCheck = false;
 			pSound->SetSound(L"ArrowFire", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Player\\ArrowFire.ogg");
-			pSound->Play();
+			pSound->Play(70);
 		}
 
 		pArrowSc->SetArrowAtkCheck(true); //화살 발사 부분 시작
@@ -99,7 +99,7 @@ void BowState::Enter()
 
 	AudioSound* pSound = PLAYER->GetAudioSound();
 	pSound->SetSound(L"ArrowCharge", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Player\\ArrowCharge.ogg");
-	pSound->Play();
+	pSound->Play(70);
 
 	Player* pPlayer = Player::GetPlayer();
 	GameObject* pBowObj = pPlayer->GetBow(); //활 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분

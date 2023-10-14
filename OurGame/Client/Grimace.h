@@ -52,4 +52,11 @@ private:
 
 	bool isTrigger = false;
 
+private:
+	bool isattack01 = true;
+	bool isattack02 = true;
+	bool isattack03 = true;
+	bool isbackdash = true;
+
+
 };
