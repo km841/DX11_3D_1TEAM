@@ -23,6 +23,8 @@ namespace hm
         TimerObject mExplosionTimer;
         TimerObject mAlphaTimer;
 
+        GameObject* mpBoss;
+
 	};
 }
 
