@@ -7,6 +7,10 @@ class EventSystem : public MonoBehavior
 {
 public: 
 
+	EventSystem();
+	virtual ~EventSystem();
+
+
 	virtual void Initialize();
 
 	static EventSystem* GetEventSystem();

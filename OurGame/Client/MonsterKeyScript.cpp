@@ -27,7 +27,6 @@ namespace yj
 			}
 			if (pReceiverList[i]->GetName() == L"SpikeDoor")
 			{
-
 				static_cast<SpikeDoor*>(pReceiverList[i])->AddKey();
 			}
 		}

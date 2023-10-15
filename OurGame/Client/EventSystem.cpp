@@ -4,6 +4,15 @@
 EventSystem* EventSystem::spEventSystem;
 
 
+EventSystem::EventSystem()
+{
+	spEventSystem = this;
+}
+
+EventSystem::~EventSystem()
+{
+}
+
 void EventSystem::Initialize()
 {
 
