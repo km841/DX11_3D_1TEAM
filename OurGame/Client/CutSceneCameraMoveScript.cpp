@@ -50,10 +50,14 @@ namespace jh
 			break;
 		}
 
+		// 확인용 코드
 		if (IS_DOWN(KeyType::U))
 			SetSequence(1);
 		if (IS_DOWN(KeyType::I))
 			SetSequence(2);
+		if (IS_DOWN(KeyType::Y))
+			SetDeskPos();
+
 		if (EVENTSYSTEM->CheckEventOn("DoorApearCamMoveEvent"))
 		{
 			EVENTSYSTEM->EventOn("DoorApearEvent");
@@ -250,5 +254,11 @@ namespace jh
 			mMainOfficeTimer5.Stop();
 			SetSequence(-1);	// 반복 금지용
 		}
+	}
+	void CutSceneCameraMoveScript::SetDeskPos()
+	{
+		SetSequence(-1);
+		GetGameObject()->GetTransform()->SetPosition(mWidePos);
+		GetGameObject()->GetTransform()->SetRotation(mWideRot);
 	}
 }
