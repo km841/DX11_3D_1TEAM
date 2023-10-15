@@ -82,34 +82,7 @@ LORD_BOSS::LORD_BOSS()
 	MonsterBackswingCol();
 	meBasicState = MonsterBasicState::CutScene;
 
-	// 보스 레이저
-	{
-		PhysicsInfo physicsInfo;
-		physicsInfo.eActorType = ActorType::Kinematic;
-		physicsInfo.eGeometryType = GeometryType::Box;
-		physicsInfo.size = Vec3(1.f, 3.f, 3.f);
 
-		pBossLaser = Factory::CreateObject<BossLaser>(Vec3(0.f, 0.f, 0.f), L"Deferred_CullNone", L"", false, static_cast<GameObject*>(this));
-		pBossLaser->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadLaserMesh());
-		//pBossLaser->GetRigidBody()->SetPhysical(physicsInfo);
-		//pBossLaser->AddComponent(new Collider);
-
-		pBossLaser->GetTransform()->SetScale(Vec3(1.f, 3.f, 3.f));
-		pBossLaser->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
-		pBossLaser->GetMeshRenderer()->GetMaterial()->SetBloom(true);
-		pBossLaser->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.3f, 0.8f, 1.f));
-
-		OwnerFollowScript* pScript = pBossLaser->AddComponent(new OwnerFollowScript(this));
-		pScript->SetOffset(Vec3(0.f, 6.f, 0.f));
-		pBossLaser->AddComponent(new LaserLockOnScript(this));
-
-		//GET_SINGLE(RenderManager)->AddCameraShakeEffect(5.f, 0.2f, 0);
-		//GET_SINGLE(RenderManager)->AddChromaticEffect(10.f, nullptr, nullptr, 1);
-		//GET_SINGLE(RenderManager)->SetBloomScale(5.0f);
-		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pBossLaser);
-		//TOOL->UseGizmo();
-		//TOOL->SetGameObject(pBossLaser);
-	}
 
 	mTimer.SetEndTime(6.5f);
 
@@ -238,6 +211,7 @@ void LORD_BOSS::SetBehaviorTree()
 					
 
 					if (pAni->GetFrameRatio() > 0.95) {
+						LaserCount++; //레이저 패턴 강제해주는 카운트
 						return BehaviorResult::Success;
 					}
 					return BehaviorResult::Failure;
@@ -252,7 +226,7 @@ void LORD_BOSS::SetBehaviorTree()
 					static std::uniform_int_distribution<int> distribution(0, 7);          // 생성 범위
 					static auto generator = std::bind(distribution, engine);
 
-					switch (generator())
+					switch (generator()) //패턴 랜덤 생성
 					{
 					case 0:
 						meBasicState = MonsterBasicState::Melee_Chain;
@@ -276,19 +250,51 @@ void LORD_BOSS::SetBehaviorTree()
 						meBasicState = MonsterBasicState::Roll_Start;
 						break;
 					case 7:
-						meBasicState = MonsterBasicState::Laser_Start;
+						//meBasicState = MonsterBasicState::Laser_Start;
+						meBasicState = MonsterBasicState::Silent_Clap;
 						break;
 					default:
 						return BehaviorResult::Failure;
 						break;
 					}
+
+
+					/////////////////////////////////////////
+					/////////////디테일한 패턴 목록 /////////
+
+					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+					Vec3 myPos = GetTransform()->GetPosition();
+					float distance = (playerPos - myPos).Length();
+
+					if (distance > 17.f) //플레이어와의 거리가 멀때 무조건 둘중하나 패턴 강제실행
+					{
+						static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 난수 엔진
+						static std::uniform_int_distribution<int> distribution(0, 1);          // 생성 범위
+						static auto generator02 = std::bind(distribution, engine);
+						if(generator02() == 0)
+							meBasicState = MonsterBasicState::Melee_Chain;
+						else if(generator02() == 1)
+							meBasicState = MonsterBasicState::Roll_Start;
+					}
+
+					if (LaserCount >= 5) //패턴 5번째는 무조건 레이저 패턴
+					{
+						LaserCount = 0;
+						meBasicState = MonsterBasicState::Laser_Start;
+					}
+					
+	
+
+
+
+
 					return BehaviorResult::Success;
 				});
 
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Roll_Start;
+					meBasicState = MonsterBasicState::Silent_Clap;
 					return BehaviorResult::Success;
 				});
 
@@ -1311,6 +1317,16 @@ void LORD_BOSS::SetBehaviorTree()
 							pSound->Play(50);
 						}
 					}
+
+					if (pAni->GetFrameRatio() > 0.45)
+					{
+						if (isLaserCreate == true)
+						{
+							isLaserCreate = false;
+							CreateLaser();
+						}
+					}
+					
 					return BehaviorResult::Success;
 				});
 
@@ -1330,6 +1346,7 @@ void LORD_BOSS::SetBehaviorTree()
 				{
 					mTimer.Stop();
 					isLaser = true;
+					isLaserCreate = true;
 					PrevState = meBasicState;
 					meBasicState = MonsterBasicState::Laser_End;
 					return BehaviorResult::Success;
@@ -1589,6 +1606,13 @@ void LORD_BOSS::Update()
 
 	Monster::Update();
 
+
+	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	Vec3 myPos = GetTransform()->GetPosition();
+	float distance = (playerPos - myPos).Length();
+
+	wstring strPos = L"" + std::to_wstring(distance);
+	FONT->DrawString(strPos, 30.f, Vec3(200.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
 	
 }
 
@@ -2046,6 +2070,37 @@ void LORD_BOSS::CreateCow(Vec3 _pos)
 	}
 }
 
+void LORD_BOSS::CreateLaser()
+{
+
+	// 보스 레이저
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(1.f, 3.f, 3.f);
+
+		BossLaser* pBossLaser = Factory::CreateObject<BossLaser>(Vec3(0.f, 0.f, 0.f), L"Deferred_CullNone", L"", false, static_cast<GameObject*>(this));
+		pBossLaser->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadLaserMesh());
+
+		pBossLaser->GetTransform()->SetScale(Vec3(1.f, 3.f, 3.f));
+		pBossLaser->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
+		pBossLaser->GetMeshRenderer()->GetMaterial()->SetBloom(true);
+		pBossLaser->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.3f, 0.8f, 1.f));
+
+		OwnerFollowScript* pLaserScript = pBossLaser->AddComponent(new OwnerFollowScript(this));
+		pLaserScript->SetOffset(Vec3(0.f, 6.f, 0.f));
+
+		pBossLaser->AddComponent(new LaserLockOnScript(this));
+
+		GET_SINGLE(RenderManager)->AddCameraShakeEffect(4.f, 0.3f, 0);
+		GET_SINGLE(RenderManager)->AddChromaticEffect(4.f, nullptr, nullptr, 1);
+		GET_SINGLE(RenderManager)->SetBloomScale(5.0f);
+
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pBossLaser);
+	}
+}
+
 void LORD_BOSS::MonsterAttackCol()
 {
 	//몬스터 공격 콜라이더
@@ -2076,7 +2131,7 @@ void LORD_BOSS::MonsterAttackCol()
 void LORD_BOSS::MonsterSilent_ClapCol()
 {
 	Vec3 pPlayerPos = PLAYER->GetTransform()->GetPosition();
-	pPlayerPos.y += 0.1f;
+	pPlayerPos.y -= 0.61f;
 	//몬스터 공격 콜라이더
 	{
 		PhysicsInfo physicsInfo;
@@ -2090,12 +2145,13 @@ void LORD_BOSS::MonsterSilent_ClapCol()
 		pMonsterSilent_ClapCol->GetTransform()->SetRotation(Vec3(00.f, 00.f, 0.f));
 		pMonsterSilent_ClapCol->GetMeshRenderer()->GetMaterial()->SetBloom(true);
 		pMonsterSilent_ClapCol->Initialize();
+		pMonsterSilent_ClapCol->SetReflect(false);
 
 		MonsterSlowColScript* MonSlowSc = pMonsterSilent_ClapCol->AddComponent(new MonsterSlowColScript);
 		MonSlowSc->Initialize();
 		pMonsterSilent_ClapCol->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
 
-		//TOOL->UseMeshTool();
+		//TOOL->UseGizmo();
 		//TOOL->SetGameObject(pMonsterSilent_ClapCol);
 		
 
