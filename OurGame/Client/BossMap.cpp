@@ -160,6 +160,8 @@ namespace hm
 		
 		}
 
+
+		
 		
 
 		//WallObject Zip
@@ -503,7 +505,7 @@ namespace hm
 			PhysicsInfo physicsInfo;
 			physicsInfo.eActorType = ActorType::Static;
 			physicsInfo.eGeometryType = GeometryType::Box;
-			physicsInfo.size = Vec3(48.57f, 0.5f, 39.122f);
+			physicsInfo.size = Vec3(70.57f, 0.5f, 70.122f);
 
 			Ground* pHallCollider = Factory::CreateObjectHasPhysical<Ground>(Vec3(9.2f, -9.12f, -6.7f), physicsInfo, L"Deferred", L"");
 			pHallCollider->GetTransform()->SetRotation(Vec3(0.f, -332.9f, 0.f));

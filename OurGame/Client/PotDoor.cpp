@@ -26,8 +26,12 @@ namespace hm
 
 		if (mTimer.IsFinished() && false == mbIsFinished)
 		{
-			if (nullptr != mCreatedCallback)
-				mCreatedCallback();
+			if (nullptr != mCreatedCallback01)
+				mCreatedCallback01();
+			if (nullptr != mCreatedCallback02)
+				mCreatedCallback02(a);
+			if (nullptr != mCreatedCallback03)
+				mCreatedCallback03(b);
 
 			mbIsFinished = true;
 			GetScript<PaperBurnScript>()->Reset();

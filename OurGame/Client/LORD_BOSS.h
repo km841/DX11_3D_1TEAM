@@ -68,6 +68,10 @@ private:
 	void CreatePOTProJectTile();
 	void CreatePOTProJectTile(int _a);
 	void CreatePOTProJectTile(float _a);
+
+	void CreateDoorPot();
+	void CreateDoorPot(int _a);
+	void CreateDoorPot(float _a);
 private:
 	int Health;
 

@@ -396,22 +396,7 @@ void Player::Update()
 {
 	GameObject::Update();
 
-	if (IS_DOWN(KeyType::U))
-	{
-		Vec3 pos = Vec3(3.f, 3.f, 3.f);
-		PotDoor* pPotDoor = Factory::CreateObject<PotDoor>(pos, L"Forward_CullNone", L"..\\Resources\\FBX\\Monster\\SpawnDoor.fbx");
-		pPotDoor->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
-		pPotDoor->GetMeshRenderer()->GetMaterial()->SetVec4AllSubset(0, Vec4(1.f, 0.2f, 0.2f, 1.f));
-		pPotDoor->GetTransform()->LookAt(GetTransform()->GetPosition() - pos);
-		pPotDoor->GetTransform()->SetRotation(AXIS_X, 0.f);
-		PaperBurnScript* pScript = pPotDoor->AddComponent(new PaperBurnScript);
-		pPotDoor->GetRigidBody()->RemoveGravity();
-		pPotDoor->SetPaperBurn();
-		pPotDoor->CreatedCallback([]() { MessageBoxA(NULL, "TEST", "TEST", MB_OK); });
-		
-		SceneType eScepeType = GET_SINGLE(SceneManager)->GetActiveSceneType();
-		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pPotDoor);
-	}
+	
 	
 	GET_SINGLE(Input)->SetPlayerKeyInfo(mKeyInfo);
 	mActiveState->Update();

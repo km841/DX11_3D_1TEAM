@@ -41,7 +41,7 @@
 #include "MonsterSlowObject.h"
 #include "BossBigSnap.h"
 #include "BossLaser.h"
-
+#include "PotDoor.h"
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -248,8 +248,8 @@ void LORD_BOSS::SetBehaviorTree()
 						meBasicState = MonsterBasicState::Roll_Start;
 						break;
 					case 7:
-						meBasicState = MonsterBasicState::Laser_Start;
-						//meBasicState = MonsterBasicState::Silent_Clap;
+						//meBasicState = MonsterBasicState::Laser_Start;
+						meBasicState = MonsterBasicState::Mega_Aoe;
 						break;
 					default:
 						return BehaviorResult::Failure;
@@ -287,7 +287,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Snap_Once;
+					//meBasicState = MonsterBasicState::Snap_Once;
 					return BehaviorResult::Success;
 				});
 
@@ -582,12 +582,13 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					Animator* pAni = GetAnimator();
+					AudioSound* pSound = GetAudioSound();
 					if (pAni->GetFrameRatio() > 0.2)
 					{
 						if (Snap_Once01 == true)
 						{
 							Snap_Once01 = false;
-							CreatePOTProJectTile();
+							CreateDoorPot();
 						}
 					}
 
@@ -596,7 +597,7 @@ void LORD_BOSS::SetBehaviorTree()
 						if (Snap_Once02 == true)
 						{
 							Snap_Once02 = false;
-							CreatePOTProJectTile(-1);
+							CreateDoorPot(1);
 						}
 					}
 
@@ -616,8 +617,10 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
-					CreatePOTProJectTile();
+					AudioSound* pSound = GetAudioSound();
 
+					CreateDoorPot(1.f);
+					
 					Snap_Once01 = true;
 					Snap_Once02 = true;
 
@@ -1045,7 +1048,7 @@ void LORD_BOSS::SetBehaviorTree()
 					pAni->Play(1, true);
 
 				if (isWall == false) {
-					mMagnScale = 10.f;
+					mMagnScale = 20.f;
 					PrevRollLive();
 				}
 				else if (isWall == true)
@@ -2169,7 +2172,7 @@ void LORD_BOSS::MonsterAttackCol()
 void LORD_BOSS::MonsterSilent_ClapCol()
 {
 	Vec3 pPlayerPos = PLAYER->GetTransform()->GetPosition();
-	pPlayerPos.y -= 0.61f;
+	pPlayerPos.y -= 0.51f;
 	//몬스터 공격 콜라이더
 	{
 		PhysicsInfo physicsInfo;
@@ -2252,14 +2255,9 @@ void LORD_BOSS::CreateMagaAoe()
 
 void LORD_BOSS::CreatePOTProJectTile()
 {
-	static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 난수 엔진
-	static std::uniform_int_distribution<int> distribution(-8, 8);          // 생성 범위
-	static auto generator = std::bind(distribution, engine);
-	Transform* pTr = GetTransform();
-	PotProjectPos01 = pTr->GetPosition();
-	PotProjectPos01.x += generator() * 1;
-	PotProjectPos01.z += abs(generator()) * 2;
-	PotProjectPos01.y += 10;
+	AudioSound* pSound = GetAudioSound();
+	pSound->SetSound(L"Door01", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\Door.wav");
+	pSound->Play(20);
 
 	Vec3 PlayerPos = PLAYER->GetTransform()->GetPosition();
 
@@ -2314,14 +2312,9 @@ void LORD_BOSS::CreatePOTProJectTile()
 
 void LORD_BOSS::CreatePOTProJectTile(int _a)
 {
-	static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 난수 엔진
-	static std::uniform_int_distribution<int> distribution(-8, 8);          // 생성 범위
-	static auto generator = std::bind(distribution, engine);
-	Transform* pTr = GetTransform();
-	PotProjectPos02 = pTr->GetPosition();
-	PotProjectPos02.x += generator() * 1.5f * _a;
-	PotProjectPos02.z += abs(generator()) * 2;
-	PotProjectPos02.y += 10;
+	AudioSound* pSound = GetAudioSound();
+	pSound->SetSound(L"Door02", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\Door.wav");
+	pSound->Play(20);
 
 	Vec3 PlayerPos = PLAYER->GetTransform()->GetPosition();
 
@@ -2375,15 +2368,9 @@ void LORD_BOSS::CreatePOTProJectTile(int _a)
 
 void LORD_BOSS::CreatePOTProJectTile(float _a)
 {
-	static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 난수 엔진
-	static std::uniform_int_distribution<int> distribution(-8, 8);          // 생성 범위
-	static auto generator = std::bind(distribution, engine);
-
-	Transform* pTr = GetTransform();
-	PotProjectPos03 = pTr->GetPosition();
-	PotProjectPos03.x += generator() * 1.5f * _a;
-	PotProjectPos03.z += abs(generator()) * 2;
-	PotProjectPos03.y += 10;
+	AudioSound* pSound = GetAudioSound();
+	pSound->SetSound(L"Door03", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\LORDBOSS\\Door.wav");
+	pSound->Play(20);
 
 	Vec3 PlayerPos = PLAYER->GetTransform()->GetPosition();
 
@@ -2433,4 +2420,86 @@ void LORD_BOSS::CreatePOTProJectTile(float _a)
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pIrreparablePot);
 
 	}
+}
+
+void LORD_BOSS::CreateDoorPot()
+{
+	static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 난수 엔진
+	static std::uniform_int_distribution<int> distribution(-10, 10);          // 생성 범위
+	static auto generator = std::bind(distribution, engine);
+	Transform* pTr = GetTransform();
+	PotProjectPos01 = pTr->GetPosition();
+	PotProjectPos01.x += generator() * 1;
+	PotProjectPos01.z += abs(generator()) * 2;
+	PotProjectPos01.y += 10;
+
+	PotDoor* pPotDoor = Factory::CreateObject<PotDoor>(PotProjectPos01, L"Forward_CullNone", L"..\\Resources\\FBX\\Monster\\SpawnDoor.fbx");
+	pPotDoor->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+	pPotDoor->GetMeshRenderer()->GetMaterial()->SetVec4AllSubset(0, Vec4(1.f, 0.2f, 0.2f, 1.f));
+	pPotDoor->GetTransform()->LookAt(PLAYER->GetTransform()->GetPosition() - PotProjectPos01);
+	pPotDoor->GetTransform()->SetRotation(AXIS_X, 0.f);
+
+	PaperBurnScript* pScript = pPotDoor->AddComponent(new PaperBurnScript);
+	pPotDoor->GetRigidBody()->RemoveGravity();
+	pPotDoor->SetPaperBurn();
+
+	pPotDoor->CreatedCallback([=]() { CreatePOTProJectTile(); });
+
+	SceneType eScepeType = GET_SINGLE(SceneManager)->GetActiveSceneType();
+	GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pPotDoor);
+	
+}
+
+void LORD_BOSS::CreateDoorPot(int _a)
+{
+	static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 난수 엔진
+	static std::uniform_int_distribution<int> distribution(-10, 10);          // 생성 범위
+	static auto generator2 = std::bind(distribution, engine);
+	Transform* pTr = GetTransform();
+	PotProjectPos02 = pTr->GetPosition();
+	PotProjectPos02.x += generator2() * 1;
+	PotProjectPos02.z += abs(generator2()) * 2;
+	PotProjectPos02.y += 10;
+
+	PotDoor* pPotDoor = Factory::CreateObject<PotDoor>(PotProjectPos02, L"Forward_CullNone", L"..\\Resources\\FBX\\Monster\\SpawnDoor.fbx");
+	pPotDoor->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+	pPotDoor->GetMeshRenderer()->GetMaterial()->SetVec4AllSubset(0, Vec4(1.f, 0.2f, 0.2f, 1.f));
+	pPotDoor->GetTransform()->LookAt(PLAYER->GetTransform()->GetPosition() - PotProjectPos02);
+	pPotDoor->GetTransform()->SetRotation(AXIS_X, 0.f);
+
+	PaperBurnScript* pScript = pPotDoor->AddComponent(new PaperBurnScript);
+	pPotDoor->GetRigidBody()->RemoveGravity();
+	pPotDoor->SetPaperBurn();
+
+	pPotDoor->CreatedCallback([=]() { CreatePOTProJectTile(_a); });
+
+	SceneType eScepeType = GET_SINGLE(SceneManager)->GetActiveSceneType();
+	GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pPotDoor);
+}
+
+void LORD_BOSS::CreateDoorPot(float _a)
+{
+	static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 난수 엔진
+	static std::uniform_int_distribution<int> distribution(-10,10);          // 생성 범위
+	static auto generator3 = std::bind(distribution, engine);
+	Transform* pTr = GetTransform();
+	PotProjectPos03 = pTr->GetPosition();
+	PotProjectPos03.x += generator3() * -1;
+	PotProjectPos03.z += abs(generator3()) * 2;
+	PotProjectPos03.y += 10;
+
+	PotDoor* pPotDoor = Factory::CreateObject<PotDoor>(PotProjectPos03, L"Forward_CullNone", L"..\\Resources\\FBX\\Monster\\SpawnDoor.fbx");
+	pPotDoor->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
+	pPotDoor->GetMeshRenderer()->GetMaterial()->SetVec4AllSubset(0, Vec4(1.f, 0.2f, 0.2f, 1.f));
+	pPotDoor->GetTransform()->LookAt(PLAYER->GetTransform()->GetPosition() - PotProjectPos03);
+	pPotDoor->GetTransform()->SetRotation(AXIS_X, 0.f);
+
+	PaperBurnScript* pScript = pPotDoor->AddComponent(new PaperBurnScript);
+	pPotDoor->GetRigidBody()->RemoveGravity();
+	pPotDoor->SetPaperBurn();
+
+	pPotDoor->CreatedCallback([=]() { CreatePOTProJectTile(_a); });
+
+	SceneType eScepeType = GET_SINGLE(SceneManager)->GetActiveSceneType();
+	GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pPotDoor);
 }
