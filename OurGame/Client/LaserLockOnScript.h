@@ -16,6 +16,9 @@ namespace hm
 
         virtual Component* Clone(GameObject* _pGameObject);
 
+    public:
+        void CreateMarker();
+
     private:
         float mFlipWidth;
 
@@ -23,6 +26,13 @@ namespace hm
         TimerObject mDuration;
         TimerObject mDeleteTimer;
         GameObject* mpBoss;
+
+        TimerObject mStartDuration;
+        bool mbHitFlag;
+
+        GameObject* mpMarker;
+
+        bool mbInitAngleSetting;
 	};
 }
 

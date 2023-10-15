@@ -262,6 +262,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="PlayerMoveOverMapScript.h" />
     <ClInclude Include="PlayerMoveScript.h" />
     <ClInclude Include="PlayerSlashScript.h" />
+    <ClInclude Include="PotDoor.h" />
     <ClInclude Include="Pot_ProjectTile.h" />
     <ClInclude Include="PrefabManager.h" />
     <ClInclude Include="RangeAttack01State_Gm.h" />
@@ -415,6 +416,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="PlayerMoveOverMapScript.cpp" />
     <ClCompile Include="PlayerMoveScript.cpp" />
     <ClCompile Include="PlayerSlashScript.cpp" />
+    <ClCompile Include="PotDoor.cpp" />
     <ClCompile Include="Pot_ProjectTile.cpp" />
     <ClCompile Include="PrefabManager.cpp" />
     <ClCompile Include="RangeAttack01State_Gm.cpp" />

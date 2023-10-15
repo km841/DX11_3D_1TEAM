@@ -126,6 +126,37 @@ namespace hm
 
 		GetMeshRenderer()->SetMaterial(mpPaperBurnMat);
 	}
+	void PaperBurnScript::PotBegin()
+	{
+		if (true == mbFlag)
+			return;
+
+		mbPaperBurnFinished = false;
+		mAccTime = 0.f;
+		mpOrgMat = GetMeshRenderer()->GetMaterial();
+
+		if (nullptr == mpPaperBurnMat)
+		{
+			mpPaperBurnMat = GET_SINGLE(Resources)->Get<Material>(L"PaperBurnPot")->Clone();
+			mpPaperBurnMat->ClearMaterialContainers();
+		}
+
+		UINT32 materialCount = mpOrgMat->GetMaterialContainerCount();
+		while (materialCount > mpPaperBurnMat->GetMaterialContainerCount())
+		{
+			MaterialContainer* pMatContainer = new MaterialContainer;
+			pMatContainer->AddSubset(new MaterialSubset);
+			mpPaperBurnMat->AddMaterialContainer(pMatContainer);
+		}
+
+		for (UINT32 i = 0; i < materialCount; ++i)
+		{
+			mpPaperBurnMat->SetTexture(0, mpOrgMat->GetTexture(0, i), i);
+			mpPaperBurnMat->SetTexture(1, GET_SINGLE(Resources)->Get<Texture>(L"BurnNoise"), i);
+		}
+
+		GetMeshRenderer()->SetMaterial(mpPaperBurnMat);
+	}
 }
 
 

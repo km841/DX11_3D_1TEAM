@@ -16,8 +16,10 @@ namespace hm
 
 		void Begin();
 		void SpawnBegin();
+		void PotBegin();
 		void SetPaperBurn() { Begin();  mbFlag = true; }
 		void SetSpawnPaperBurn() { SpawnBegin(); mbFlag = true; }
+		void SetPotPaperBurn() { PotBegin(); mbFlag = true; }
 		void SetReverse(bool _bFlag) { mbReverseFlag = _bFlag; }
 		void SetSpeed(float _speed) { mSpeed = _speed; }
 		bool IsFinished() { return mbPaperBurnFinished; }

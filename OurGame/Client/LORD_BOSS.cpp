@@ -108,11 +108,8 @@ LORD_BOSS::LORD_BOSS()
 
 	mTimer.SetEndTime(6.5f);
 
-
 	Shaketime=0.2f;
-	ShakeNum=0.04f;
-
-
+	ShakeNum = 0.04f;
 }
 
 LORD_BOSS::~LORD_BOSS()
@@ -171,7 +168,7 @@ void LORD_BOSS::SetBehaviorTree()
 				}
 
 
-				if (isCutSceneEnd) //컷신 체크가 트루일때 아이들 상태로 넘어가기
+				//if (isCutSceneEnd) //컷신 체크가 트루일때 아이들 상태로 넘어가기
 				{
 					return BehaviorResult::Success;
 				}
@@ -272,8 +269,8 @@ void LORD_BOSS::SetBehaviorTree()
 						meBasicState = MonsterBasicState::Roll_Start;
 						break;
 					case 7:
-						//meBasicState = MonsterBasicState::Laser_Start;
-						meBasicState = MonsterBasicState::Silent_Clap;
+						meBasicState = MonsterBasicState::Laser_Start;
+						//meBasicState = MonsterBasicState::Silent_Clap;
 						break;
 					default:
 						return BehaviorResult::Failure;
@@ -304,11 +301,6 @@ void LORD_BOSS::SetBehaviorTree()
 						LaserCount = 0;
 						meBasicState = MonsterBasicState::Laser_Start;
 					}
-					
-	
-
-
-
 
 					return BehaviorResult::Success;
 				});
@@ -316,7 +308,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Silent_Clap;
+					meBasicState = MonsterBasicState::Laser_Start;
 					return BehaviorResult::Success;
 				});
 
