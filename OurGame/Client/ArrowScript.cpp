@@ -51,7 +51,7 @@
 #include "SceneChangeEvent.h"
 ArrowScript::ArrowScript()
 {
-	timerObj.SetEndTime(0.9f); //화살 잔여 시간 설정
+	timerObj.SetEndTime(2.f); //화살 잔여 시간 설정
 	mSpeed = 20;
 }
 
@@ -160,7 +160,7 @@ void ArrowScript::FixedUpdate()
 		{
 			timerObj.Stop();
 			pObj->Disable();
-			//isBurn = false;
+			isBurn = false;
 		}
 	}
 
@@ -173,8 +173,8 @@ void ArrowScript::FixedUpdate()
 
 	else
 	{
-		//mpLight->Disable();
-		//mpParticle->Disable();
+		mpLight->Disable();
+		mpParticle->Disable();
 	}
 	
 }

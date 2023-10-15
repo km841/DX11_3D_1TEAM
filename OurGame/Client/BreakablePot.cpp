@@ -10,6 +10,8 @@
 #include "Collider.h"
 #include "RigidBody.h"
 
+#include "Player.h"
+
 
 
 namespace jh
@@ -290,6 +292,10 @@ namespace jh
 				Vec3 pos = hit.position;
 				BreakPots(pos);
 			}
+
+			PLAYER->GetAudioSound()->SetSound(L"BreakPot", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\BreakPot.mp3");
+			PLAYER->GetAudioSound()->Play();
+			PLAYER->RecoverCost();
 		}
 	}
 

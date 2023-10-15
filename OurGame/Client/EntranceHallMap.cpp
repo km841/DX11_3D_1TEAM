@@ -73,8 +73,8 @@ void EntranceHallMap::Initialize()
 {
 	Map::Initialize();
 
-	PLAYER->GetAudioSound()->SetSound(L"GrandmaBGM", this, true, "..\\Resources\\Sound\\GrandmaHouseBGM.mp3");
-	PLAYER->GetAudioSound()->Play();
+	spPlayerHolder->GetAudioSound()->SetSound(L"GrandmaBGM", this, true, "..\\Resources\\Sound\\GrandmaHouseBGM.mp3");
+	spPlayerHolder->GetAudioSound()->Play();
 }
 
 void EntranceHallMap::Start()
@@ -145,6 +145,7 @@ void EntranceHallMap::Enter()
 
 void EntranceHallMap::Exit()
 {
+	spPlayerHolder->GetAudioSound()->Stop();
 }
 
 void EntranceHallMap::InitObjectAdd()

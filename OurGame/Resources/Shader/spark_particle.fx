@@ -405,7 +405,8 @@ void CS_Main(uint3 threadIndex : SV_DispatchThreadID)
             
            
             float randSpeed = lerp((float) startSpeed, (float) endSpeed, noise.x);
-            g_particle[threadIndex.x].direction.xyz = normalize(rotatedVector);
+            //g_particle[threadIndex.x].direction.xyz = normalize(rotatedVector);
+            g_particle[threadIndex.x].direction.xyz = standardAngle;
             g_particle[threadIndex.x].position.xyz = worldPos;
             
             g_particle[threadIndex.x].gravityAcc = 0.f;

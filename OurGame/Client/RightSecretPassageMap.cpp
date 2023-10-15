@@ -31,6 +31,8 @@
 #include "Lurker.h"
 #include "HeadRoller.h"
 #include "Grimace.h"
+#include "SpiderWeb.h"
+
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -120,7 +122,8 @@ namespace jh
 
 	void RightSecretPassageMap::Enter()
 	{
-		
+		spPlayerHolder->GetAudioSound()->SetSound(L"GrandmaBGM", this, true, "..\\Resources\\Sound\\GrandmaHouseBGM.mp3");
+		spPlayerHolder->GetAudioSound()->Play();
 
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
@@ -130,7 +133,7 @@ namespace jh
 		FuncObjectAdd();
 
 		//CreateSpawnMonsterMAP(); //몬스터 만드는 코드
-	
+
 
 	}
 
@@ -279,24 +282,18 @@ namespace jh
 
 			AddGameObject(pDoorFrame);
 		}
-		// 거미줄(구석)
+
+		// Spider Web
 		{
-			DecoObject* pCobwebCorner = Factory::CreateObject<DecoObject>(Vec3(-13.05f, -2.95f, 7.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\Cobweb1.fbx");
+			PhysicsInfo info = {};
+			info.eActorType = ActorType::Kinematic;
+			info.eGeometryType = GeometryType::Box;
+			info.size = Vec3(2.f, 4.f, 4.f);
 
-			pCobwebCorner->GetTransform()->SetRotation(Vec3(90.f, -90.f, 0.f));
-			pCobwebCorner->GetTransform()->SetScale(Vec3(3.f, 3.32f, 3.33f));
-
-			AddGameObject(pCobwebCorner);
-		}
-		// 거미줄(문)
-		{
-			DecoObject* pCobwebDoor = Factory::CreateObject<DecoObject>(Vec3(0.55f, -0.05f, 8.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\Cobweb_Flat.fbx");
-
-			pCobwebDoor->GetTransform()->SetRotation(Vec3(90.f, -90.f, 0.f));
-			pCobwebDoor->GetTransform()->SetScale(Vec3(3.f, 8.4f, 9.27f));
-
-			//SetGizmoTarget(pCobwebDoor);
-			AddGameObject(pCobwebDoor);
+			SpiderWeb* pWeb = Factory::CreateObjectHasPhysical<SpiderWeb>(Vec3(0.65f, -1.25f, 8.2f), info, L"SpiderWeb", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Cobweb_Flat.fbx");
+			pWeb->GetTransform()->SetScale(Vec3(5.f, 8.5f, 6.75f));
+			pWeb->GetTransform()->SetRotation(Vec3(90.f, 267.9f, 0.f));
+			AddGameObject(pWeb);
 		}
 #pragma endregion
 
@@ -446,6 +443,7 @@ namespace jh
 
 			yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(0.2f, -3.1f, -1.5f), physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow, pBonFire, pLightObject);
 			AddGameObject(pFireLamp);
+			pFireLamp->SetIsBurn();
 			//SetGizmoTarget(pFireLamp);
 		}
 		{
@@ -504,7 +502,7 @@ namespace jh
 			AddGameObject(pMirror);
 		}
 	}
-	
+
 	void RightSecretPassageMap::CreateSpawnMonsterMAP()
 	{
 		{//콩벌레

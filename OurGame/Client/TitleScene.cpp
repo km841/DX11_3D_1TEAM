@@ -81,7 +81,7 @@ namespace hm
 		Scene::Initialize();
 		
 
-		AudioSound* pSound = PLAYER->AddComponent(new AudioSound);
+		AudioSound* pSound = spPlayerHolder->AddComponent(new AudioSound);
 
 		pSound->SetSound(L"BGM", this, true, "..\\Resources\\Sound\\TitleBGM.mp3");
 		pSound->Play(10);
@@ -116,7 +116,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::BossMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::RightSecretPassageMap);
 		}
 
 		// 지형
@@ -274,6 +274,7 @@ namespace hm
 			AddGameObject(mpFocusTarget);
 
 			spPlayerHolder = Factory::CreateObject<DecoObject>(Vec3(0.f, 0.f, 0.f));
+			spPlayerHolder->AddComponent(new AudioSound);
 			spPlayerHolder->SetDontDestroyObject(L"PlayerFollowTarget");
 			AddGameObject(spPlayerHolder);
 		}
@@ -291,8 +292,8 @@ namespace hm
 	void TitleScene::Exit()
 	{
 	
-		PLAYER->GetAudioSound()->SetSound(L"BGM");
-		PLAYER->GetAudioSound()->Stop();
+		spPlayerHolder->GetAudioSound()->SetSound(L"BGM");
+		spPlayerHolder->GetAudioSound()->Stop();
 		PLAYER->GetRigidBody()->ApplyGravity();
 		ChangeCameraMode();
 	}
@@ -305,7 +306,6 @@ namespace hm
 			pGameObject->SetDontDestroyObject(L"MainCamera");
 			Transform* pTransform = pGameObject->AddComponent(new Transform);
 			pGameObject->AddComponent(new RigidBody);
-
 			Camera* pCamera = pGameObject->AddComponent(new Camera);
 			pGameObject->AddComponent(new CameraMoveScript);
 			FocusingScript* pScript = pGameObject->AddComponent(new FocusingScript);
@@ -910,7 +910,7 @@ namespace hm
 			{
 				Interface* pInterface = Factory::CreateButtonInterface<Interface>(Vec3(-450.f, -200.f, -1.f), Vec2(50.f, 50.f), ButtonInfo());
 
-				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"현모", MapType::LeftSecretFightMap));
+				StartButtonScript* pScript = pInterface->AddComponent(new StartButtonScript(L"현모", MapType::MainOfficeMap));
 
 				// 클릭 기능을 스크립트로 구현
 				InterfaceButtonScript* pButtonScript = pInterface->GetScript<InterfaceButtonScript>();

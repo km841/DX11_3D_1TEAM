@@ -38,6 +38,7 @@ public:
 
 public:
 	void SetObject(LORD_BOSS_ROLL* _obj) { pObject = _obj; }
+	void SetSparkParticle(GameObject* _pParticle) { pSparkParticle = _pParticle; }
 
 	void CutSceneEnd() { isCutSceneEnd = true; } //이거 쓰면 보스 패턴 시작
 
@@ -115,6 +116,7 @@ private:
 	GameObject* pMonsterAttackCol;
 	MonsterSlowObject* pMonsterSilent_ClapCol;
 	GameObject* pBackswingCol;
+	GameObject* pSparkParticle;
 
 	BossBigSnap* pBossBigSnap;
 
