@@ -759,5 +759,8 @@
     <FxCompile Include="..\Resources\Shader\fireplace.fx">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\Resources\Shader\explosion.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

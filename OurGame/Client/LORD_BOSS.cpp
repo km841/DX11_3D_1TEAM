@@ -39,6 +39,8 @@
 #include "IrreparablePot.h"
 #include "Pot_ProjectTile.h"
 #include "MonsterSlowObject.h"
+#include "BossBigSnap.h"
+#include "BossLaser.h"
 
 /* Component */
 #include "Collider.h"
@@ -64,8 +66,8 @@
 #include "MonsterColScript.h"
 #include "MonsterSlowColScript.h"
 #include "MonsterBackswingColScript.h"
-#include "BossLaser.h"
 #include "LaserLockOnScript.h"
+#include "ExplosionScript.h"
 
 LORD_BOSS::LORD_BOSS()
 {
@@ -83,6 +85,26 @@ LORD_BOSS::LORD_BOSS()
 	meBasicState = MonsterBasicState::CutScene;
 
 
+	// 보스 큰박수
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eGeometryType = GeometryType::Sphere;
+		physicsInfo.size = Vec3(3.f, 3.f, 3.f);
+
+		pBossBigSnap = Factory::CreateObjectHasPhysical<BossBigSnap>(Vec3(0.f, 0.f, 0.f), physicsInfo, L"Explosion", L"..\\Resources\\FBX\\Monster\\BossBigSnap.fbx");
+		pBossBigSnap->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"BigSnapTexture", L"..\\Resources\\FBX\\Monster\\BossBigSnap.fbm\\cloud_noise.png"));
+
+		pBossBigSnap->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+		//pBossBigSnap->GetMeshRenderer()->GetMaterial()->SetBloom(true);
+		//pBossBigSnap->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.3f, 0.8f, 1.f));
+
+		OwnerFollowScript* pScript = pBossBigSnap->AddComponent(new OwnerFollowScript(this));
+		pScript->SetOffset(Vec3(0.f, 6.f, 0.f));
+		pBossBigSnap->AddComponent(new ExplosionScript(this));
+
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pBossBigSnap);
+	}
 
 	mTimer.SetEndTime(6.5f);
 

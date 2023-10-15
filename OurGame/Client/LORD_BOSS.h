@@ -1,5 +1,6 @@
 #pragma once
 #include "Monster.h"
+#include "BossBigSnap.h"
 #include "TimerObject.h"
 
 class LORD_BOSS_ROLL;
@@ -98,7 +99,7 @@ private:
 	MonsterSlowObject* pMonsterSilent_ClapCol;
 	GameObject* pBackswingCol;
 
-	
+	BossBigSnap* pBossBigSnap;
 
 	TimerObject mTimer;
 private:

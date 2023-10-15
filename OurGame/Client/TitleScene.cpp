@@ -116,7 +116,7 @@ namespace hm
 		// - Right2Map
 		if (IS_DOWN(KeyType::P))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::BossMap);
 		}
 
 		// 지형

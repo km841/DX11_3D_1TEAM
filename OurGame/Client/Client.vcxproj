@@ -162,6 +162,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="BigTransEndState_Gm.h" />
     <ClInclude Include="BigTransStartState_Gm.h" />
     <ClInclude Include="BonFireScript.h" />
+    <ClInclude Include="BossBigSnap.h" />
     <ClInclude Include="BossLaser.h" />
     <ClInclude Include="BossMap.h" />
     <ClInclude Include="BowScript.h" />
@@ -192,6 +193,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="EvasionState.h" />
     <ClInclude Include="Bat.h" />
     <ClInclude Include="EventSystem.h" />
+    <ClInclude Include="ExplosionScript.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="FallDownState.h" />
     <ClInclude Include="FallState.h" />
@@ -310,6 +312,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="BigTransEndState_Gm.cpp" />
     <ClCompile Include="BigTransStartState_Gm.cpp" />
     <ClCompile Include="BonFireScript.cpp" />
+    <ClCompile Include="BossBigSnap.cpp" />
     <ClCompile Include="BossLaser.cpp" />
     <ClCompile Include="BossMap.cpp" />
     <ClCompile Include="BowScript.cpp" />
@@ -340,6 +343,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="EvasionState.cpp" />
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="EventSystem.cpp" />
+    <ClCompile Include="ExplosionScript.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="FallDownState.cpp" />
     <ClCompile Include="FallState.cpp" />
