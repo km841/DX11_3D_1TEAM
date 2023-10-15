@@ -530,6 +530,25 @@ void Player::OnTriggerEnter(Collider* _pOtherCollider)
 		}
 
 	}
+
+	if (LayerType::Effect == _pOtherCollider->GetGameObject()->GetLayerType())
+	{
+		if (_pOtherCollider->GetGameObject()->GetName() == L"Maga_Aoe")
+		{
+			if (isDownState == false) {
+				mActiveState->Exit();
+				if (mHP <= 0)
+				{
+					StateChange(PlayerState::DeadState);
+				}
+				else
+				{
+					StateChange(PlayerState::HitStartState);
+				}
+			}
+		}
+
+	}
 	
 
 

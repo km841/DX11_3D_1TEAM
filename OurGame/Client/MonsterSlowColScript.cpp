@@ -68,8 +68,8 @@ void MonsterSlowColScript::FixedUpdate()
 
 	Transform* pTr = GetTransform();
 	RigidBody* pRb = GetRigidBody();
-	Vec3 ColSize = pRb->GetGeometrySize();
 	Vec3 TextureSize = pTr->GetScale();
+	Vec3 ColSize = pRb->GetGeometrySize();
 
 	if (timer.IsFinished() && Count < 6) //지정된시간에 + 카운트 갯수만큼 스케일 키우기
 	{
