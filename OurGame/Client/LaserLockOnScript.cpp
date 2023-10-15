@@ -12,6 +12,7 @@
 #include "Input.h"
 #include "BossLaser.h"
 #include "LORD_BOSS.h"
+#include "EventManager.h"
 
 namespace hm
 {
@@ -21,6 +22,8 @@ namespace hm
 	{
 		mDuration.SetEndTime(0.05f);
 		mDuration.Start();
+		mDeleteTimer.SetEndTime(4.5f);
+		mDeleteTimer.Start();
 	}
 	void LaserLockOnScript::Initialize()
 	{
@@ -56,6 +59,14 @@ namespace hm
 			mDuration.Stop();
 			mDuration.Start();
 			mPlayerPath.push(PLAYER->GetTransform()->GetPosition());
+		}
+
+		mDeleteTimer.Update();
+		if (mDeleteTimer.IsFinished())
+		{
+			GET_SINGLE(RenderManager)->SetBloomScale(1.0f);
+			MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
+			GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(GetGameObject()));
 		}
 	}
 

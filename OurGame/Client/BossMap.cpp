@@ -136,7 +136,7 @@ namespace hm
 			pLordOfDoorRoll->GetAnimator()->Play(1, true);
 			pLordOfDoorRoll->Disable();
 
-			pLordOfDoor = Factory::CreateMonster<LORD_BOSS>(Vec3(12.3f, -4.f, -8.f), info, L"Deferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor.fbx");
+			pLordOfDoor = Factory::CreateMonster<LORD_BOSS>(Vec3(12.3f, -4.f, -8.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor.fbx");
 			pLordOfDoor->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 			pLordOfDoor->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 130.f));
 			pLordOfDoor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -2.5f, 0.f));

@@ -21,7 +21,7 @@ namespace hm
 
         std::queue<Vec3> mPlayerPath;
         TimerObject mDuration;
-
+        TimerObject mDeleteTimer;
         GameObject* mpBoss;
 	};
 }

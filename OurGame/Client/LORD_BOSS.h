@@ -1,6 +1,5 @@
 #pragma once
 #include "Monster.h"
-#include "BossLaser.h"
 #include "BossBigSnap.h"
 #include "TimerObject.h"
 
@@ -57,6 +56,7 @@ private:
 	void LaserPrevFollowSet();
 	void LaserPrevFollowLive();
 	void CreateCow(Vec3 _pos);
+	void CreateLaser();
 
 	//공격 콜라이더 오브젝트
 	void MonsterAttackCol();
@@ -67,6 +67,7 @@ private:
 	void CreatePOTProJectTile();
 	void CreatePOTProJectTile(int _a);
 private:
+
 	Vec3 RotDir;
 	Vec3 PosDir;
 	Vec3 PrevDir;
@@ -83,6 +84,9 @@ private:
 	bool isWall = false;
 	bool isCrash = true;
 	bool isSilent_Clap = false;
+	bool isLaserCreate = true;
+	int LaserCount = 0;
+
 	bool isCutSceneEnd = false;
 
 	float Shaketime;
@@ -94,7 +98,7 @@ private:
 	GameObject* pMonsterAttackCol;
 	MonsterSlowObject* pMonsterSilent_ClapCol;
 	GameObject* pBackswingCol;
-	BossLaser* pBossLaser;
+
 	BossBigSnap* pBossBigSnap;
 
 	TimerObject mTimer;

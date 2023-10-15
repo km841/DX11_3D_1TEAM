@@ -2,6 +2,8 @@
 #include "CutSceneCameraMoveScript.h"
 #include "GameObject.h"
 #include "SceneManager.h"
+#include "EventSystem.h"
+#include "TextBox.h"
 
 namespace jh
 {
@@ -95,6 +97,9 @@ namespace jh
 
 		if (true == mMainOfficeTimer.IsFinished())
 		{
+			//플레이어 움직임 금지
+			TEXTBOX->SetWriteTexts(3,10,"DoorApearEvent");
+			TEXTBOX->Apear();
 			mMainOfficeTimer.Stop();
 			mbIsCutSceneStart = false;
 		}
