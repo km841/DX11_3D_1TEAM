@@ -7,7 +7,7 @@ namespace yj
 	{
 
 	}
-	
+
 	void MonsterKeyScript::Update()
 	{
 
@@ -29,6 +29,7 @@ namespace yj
 			{
 
 				static_cast<SpikeDoor*>(pReceiverList[i])->AddKey();
+			}
 		}
 	}
 }
