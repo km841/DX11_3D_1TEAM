@@ -72,7 +72,7 @@ namespace jh
 			break;
 		}
 
-		// È®ÀÎ¿ë ÄÚµå
+		// í™•ì¸ìš© ì½”ë“œ
 		if (IS_DOWN(KeyType::U))
 			SetBossSequence(1);
 		if (IS_DOWN(KeyType::I))
@@ -88,13 +88,13 @@ namespace jh
 			SetMainSequence(1);
 			TEXTBOX->SetWriteTexts(11, 13, "ChandlerZoomOutEvent");
 			TEXTBOX->Apear();
-			SetMainSequence(5); // <- ¹øÈ£ ¹Ù²ã Áà¾ßÇÔ!
+			SetMainSequence(5); // <- ë²ˆí˜¸ ë°”ê¿” ì¤˜ì•¼í•¨!
 		}
 		if (EVENTSYSTEM->CheckEventOn("ChandlerZoomOutEvent"))
 		{
-			TEXTBOX->SetWriteTexts(13, 16,"SpeechEndEvent");
+			TEXTBOX->SetWriteTexts(13, 17,"SpeechEndEvent");
 			TEXTBOX->Apear();
-			SetMainSequence(5);
+			SetDeskPos();
 		}
 	}
 
@@ -171,7 +171,7 @@ namespace jh
 			TEXTBOX->SetWriteTexts(3, 9, "DoorApearCamMoveEvent");
 			TEXTBOX->Apear();
 			mMainOfficeTimer.Stop();
-			SetMainSequence(-1);	// ¹Ýº¹ ±ÝÁö¿ë
+			SetMainSequence(-1);	// ë°˜ë³µ ê¸ˆì§€ìš©
 		}
 	}
 
@@ -197,7 +197,7 @@ namespace jh
 		if (true == mMainOfficeTimer2.IsFinished())
 		{
 			mMainOfficeTimer2.Stop();
-			SetMainSequence(-1);	// ¹Ýº¹ ±ÝÁö¿ë
+			SetMainSequence(-1);	// ë°˜ë³µ ê¸ˆì§€ìš©
 		}
 	}
 
@@ -223,7 +223,7 @@ namespace jh
 		if (true == mMainOfficeTimer3.IsFinished())
 		{
 			mMainOfficeTimer3.Stop();
-			SetMainSequence(3);	// MainOfficeMove4·Î ÀÌµ¿
+			SetMainSequence(3);	// MainOfficeMove4ë¡œ ì´ë™
 		}
 	}
 
@@ -246,7 +246,7 @@ namespace jh
 		if (true == mMainOfficeTimer4.IsFinished())
 		{
 			mMainOfficeTimer4.Stop();
-			SetMainSequence(4);	// MainOfficeMove5·Î ÀÌµ¿
+			SetMainSequence(4);	// MainOfficeMove5ë¡œ ì´ë™
 			TEXTBOX->SetWriteTexts(10, 10, "ChandlerZoomEvent");
 			TEXTBOX->Apear();
 		}
@@ -271,7 +271,7 @@ namespace jh
 		if (true == mMainOfficeTimer5.IsFinished())
 		{
 			mMainOfficeTimer5.Stop();
-			SetMainSequence(-1);	// ¹Ýº¹ ±ÝÁö¿ë
+			SetMainSequence(-1);	// ë°˜ë³µ ê¸ˆì§€ìš©
 		}
 	}
 
@@ -300,7 +300,7 @@ namespace jh
 		if (true == mBossMapTimer.IsFinished())
 		{
 			mBossMapTimer.Stop();
-			SetBossSequence(-1);	// ¹Ýº¹ ±ÝÁö¿ë
+			SetBossSequence(-1);	// ë°˜ë³µ ê¸ˆì§€ìš©
 		}
 	}
 
@@ -312,7 +312,7 @@ namespace jh
 
 	void CutSceneCameraMoveScript::BossMapMove3()
 	{
-		// È­¸é ÇÏ¾é°Ô
+		// í™”ë©´ í•˜ì–—ê²Œ
 		if (false == mbAddWhite)
 		{
 			mbAddWhite = true;
@@ -353,7 +353,7 @@ namespace jh
 		}
 		else if (0.45f < progress)
 		{
-			// ¿©±â¼­ º¸½º ÀÌ¸§ ÅØ½ºÆ® Ãâ·Â
+			// ì—¬ê¸°ì„œ ë³´ìŠ¤ ì´ë¦„ í…ìŠ¤íŠ¸ ì¶œë ¥
 
 			Vec3 pos = Lerp(mBossNameStartPos2, mBossNameEndPos2, progress);
 			GetGameObject()->GetTransform()->SetPosition(pos);
@@ -363,7 +363,7 @@ namespace jh
 		if (true == mBossMapTimer2.IsFinished())
 		{
 			mBossMapTimer2.Stop();
-			SetBossSequence(-1);	// ¹Ýº¹ ±ÝÁö¿ë
+			SetBossSequence(-1);	// ë°˜ë³µ ê¸ˆì§€ìš©
 		}
 	}
 }
