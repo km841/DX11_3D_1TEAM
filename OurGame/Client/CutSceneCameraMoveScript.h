@@ -23,8 +23,12 @@ namespace jh
 		void SetStartPos(Vec3 _pos) { mStartPos = _pos; }
 		void SetStartRot(Vec3 _rot) { mStartRot = _rot; }
 		void SetSequence(int _num) { mSequenceNum = _num; }
-		void MainOfficeMove();
-		void MainOfficeMove2();
+
+		void MainOfficeMove();	// 계단 앞~책상 앞
+		void MainOfficeMove2();	// 까마귀 NPC 클로즈업
+		void MainOfficeMove3();	// 책상 앞~문
+		void MainOfficeMove4();	// 문 클로즈업
+		void MainOfficeMove5();	// 문~책상 앞
 
 	private:
 		/* Title Scene */
@@ -46,9 +50,20 @@ namespace jh
 		Vec3 mClosePos;
 		Vec3 mCloseRot;
 
+		Vec3 mDoorStartPos;
+		Vec3 mDoorStartRot;
+
+		Vec3 mDoorEndPos;
+		Vec3 mDoorEndRot;
+
+		bool mbIsAIState;
+
 		int mSequenceNum;
+
 		TimerObject mMainOfficeTimer;
 		TimerObject mMainOfficeTimer2;
-		bool mbIsAIState;
+		TimerObject mMainOfficeTimer3;
+		TimerObject mMainOfficeTimer4;
+		TimerObject mMainOfficeTimer5;
 	};
 }
