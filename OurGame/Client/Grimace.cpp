@@ -732,8 +732,8 @@ void Grimace::SetBehaviorTree()
 
 					if (pAni->GetFrameRatio() > 0.90)
 					{
-						return BehaviorResult::Success;
 						isattack03 = true;
+						return BehaviorResult::Success;
 
 					}
 					return BehaviorResult::Failure;

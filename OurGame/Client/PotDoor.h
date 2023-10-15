@@ -22,7 +22,9 @@ namespace hm
 		virtual void Render();
 		virtual void Destroy();
 
-		void CreatedCallback(std::function<void()> _callback) { mCreatedCallback = _callback; }
+		void CreatedCallback(std::function<void()> _callback) { mCreatedCallback01 = _callback; }
+		void CreatedCallback(std::function<void(int)> _callback, int _a) { mCreatedCallback02 = _callback; a = _a; }
+		void CreatedCallback(std::function<void(float)> _callback, float _b) { mCreatedCallback03 = _callback; b = _b; }
 
 	public:
 		void SetPaperBurn();
@@ -31,7 +33,11 @@ namespace hm
 		TimerObject mTimer;
 		bool mbIsFinished = false;
 
-		std::function<void()> mCreatedCallback;
+		std::function<void()> mCreatedCallback01;
+		std::function<void(int)> mCreatedCallback02;
+		std::function<void(float)> mCreatedCallback03;
+		int a;
+		float b;
 	};
 }
 
