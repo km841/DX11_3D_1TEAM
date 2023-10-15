@@ -2,38 +2,65 @@
 #include "LaserLockOnScript.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include "RigidBody.h"
 #include "Player.h"
 #include "RenderManager.h"
+#include "Timer.h"
+#include "Collider.h"
+#include "Camera.h"
+#include "SceneManager.h"
+#include "Input.h"
+#include "BossLaser.h"
+#include "LORD_BOSS.h"
 
 namespace hm
 {
-	LaserLockOnScript::LaserLockOnScript()
+	LaserLockOnScript::LaserLockOnScript(GameObject* _pBoss)
 		: mFlipWidth(0.1f)
+		, mpBoss(_pBoss)
 	{
+		mDuration.SetEndTime(0.05f);
+		mDuration.Start();
 	}
 	void LaserLockOnScript::Initialize()
 	{
 	}
 	void LaserLockOnScript::FixedUpdate()
 	{
-		Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 		Vec3 myPos = GetTransform()->GetPosition();
-		Vec3 lookDir = playerPos - myPos;
+		Vec3 camPos = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera()->GetTransform()->GetPosition();
+		Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+		
+		if (false == mPlayerPath.empty())
+		{
+			Vec3 targetPos = mPlayerPath.front();
+			mPlayerPath.pop();
 
-		float distance = lookDir.Length();
-		distance *= 0.5f;
-		lookDir.Normalize();
-		float angleX = lookDir.Dot(Vec3(0.f, 0.f, 1.f)) * 180.f / XM_PI;
+			Vec3 targetDir = targetPos - myPos;
+			targetDir.Normalize();
 
-		lookDir.Normalize();
-		float angleZ = lookDir.Dot(Vec3(1.f, 0.f, 0.f)) * 180.f / XM_PI;
-		GetTransform()->SetRotation(Vec3(-(angleX + 5.f), 0.f, angleZ));
+			GetTransform()->SmoothRotateTo(targetDir);
 
-		mFlipWidth = -mFlipWidth;
-		GetTransform()->SetScale(Vec3(1.f + mFlipWidth, distance, 3.f));
+			mFlipWidth = -mFlipWidth;
+			GetTransform()->SetScale(Vec3(1.f + mFlipWidth, 3.f, 3.f));
+			if (mpBoss->IsRaysCollide(myPos, targetDir, LayerType::Ground, 100.f))
+			{
+				float distance = mpBoss->GetCollider()->GetRaycastHit().distance;
+				GetTransform()->SetScale(Vec3(1.f + mFlipWidth, 3.f, distance / 2.f));
+			}
+		}
+
+		mDuration.Update();
+		if (mDuration.IsFinished())
+		{
+			mDuration.Stop();
+			mDuration.Start();
+			mPlayerPath.push(PLAYER->GetTransform()->GetPosition());
+		}
 	}
+
 	Component* LaserLockOnScript::Clone(GameObject* _pGameObject)
 	{
-		return _pGameObject->AddComponent(new LaserLockOnScript);
+		return _pGameObject->AddComponent(new LaserLockOnScript(mpBoss));
 	}
 }

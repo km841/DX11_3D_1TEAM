@@ -97,6 +97,8 @@ namespace hm
 		void ClearCollisionCount() { mCollisionCount = 0; }
 		bool IsPenetrate();
 
+		const PxRaycastHit& GetRaycastHit() { return mRaycastHit; }
+
 		bool CheckIsCollisionObject(LayerType _layerType) {
 			if (mCollisionCount == 0)
 			{

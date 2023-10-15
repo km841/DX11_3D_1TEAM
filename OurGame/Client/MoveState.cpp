@@ -202,6 +202,7 @@ void MoveState::Update()
 void MoveState::Enter()
 {
 	PlayAnimation();
+	PLAYER->DrawShadow(true);
 }
 
 void MoveState::Exit()

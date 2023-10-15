@@ -1,5 +1,6 @@
 #pragma once
 #include "MonoBehavior.h"
+#include "TimerObject.h"
 
 namespace hm
 {
@@ -7,7 +8,7 @@ namespace hm
 		public MonoBehavior
 	{
     public:
-        LaserLockOnScript();
+        LaserLockOnScript(GameObject* _pBoss);
         virtual ~LaserLockOnScript() = default;
 
         virtual void Initialize() override;
@@ -17,6 +18,11 @@ namespace hm
 
     private:
         float mFlipWidth;
+
+        std::queue<Vec3> mPlayerPath;
+        TimerObject mDuration;
+
+        GameObject* mpBoss;
 	};
 }
 

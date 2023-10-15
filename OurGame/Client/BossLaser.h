@@ -7,11 +7,11 @@ namespace hm
 		public GameObject
 	{
 	public:
-		BossLaser();
+		BossLaser(GameObject* _pBoss);
 		virtual ~BossLaser();
 		BossLaser* Clone()
 		{
-			BossLaser* pBossLaser = GameObject::Clone<BossLaser>();
+			BossLaser* pBossLaser = GameObject::Clone<BossLaser>(mpBoss);
 			return pBossLaser;
 		}
 
@@ -23,8 +23,11 @@ namespace hm
 		virtual void Render();
 		virtual void Destroy();
 
-	private:
+	public:
+		GameObject* GetBoss() { return mpBoss; }
 
+	private:
+		GameObject* mpBoss;
 	};
 }
 

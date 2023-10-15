@@ -505,6 +505,17 @@ namespace hm
 
 		mRotation = DecomposeRotationMatrix(matrix);
 		mbUpdateByRotMat = true;
+
+		if (true == IsPhysicsObject())
+		{
+			SetRotation(mRotation);
+		}
+	}
+
+	void Transform::LookAt(const Matrix& _look)
+	{
+		mRotation = DecomposeRotationMatrix(_look);
+		mbUpdateByRotMat = true;
 	}
 
 	void Transform::SmoothRotateTo(const Vec3& _targetLook)

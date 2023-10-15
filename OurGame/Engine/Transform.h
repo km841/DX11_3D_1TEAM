@@ -60,6 +60,7 @@ namespace hm
 		Vec3 GetLook() { return mMatWorld.Backward(); }
 
 		void LookAt(const Vec3& _look);
+		void LookAt(const Matrix& _look);
 		void SmoothRotateTo(const Vec3& _targetLook);
 		static bool CloseEnough(const float& _a, const float& _b, const float& _epsilon = std::numeric_limits<float>::epsilon());
 		static Vec3 DecomposeRotationMatrix(const Matrix& _rotation);
