@@ -77,11 +77,11 @@ namespace hm
 	{
 		if (false == GET_SINGLE(SoundManager)->LoadSound(_strName, _pScene, _bLoop, _pFileName))
 		{
-			return;
+			//return;
 		}
 		
-		
 		mpSoundInfo = GET_SINGLE(SoundManager)->FindSound(_strName);
+		
 		mFileName = _strName;
 	}
 	void AudioSound::EnableBGM(bool _Enable)

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Factory.h"
 #include "Animator.h"
+#include "AudioSound.h"
 
 namespace hm
 {
@@ -16,6 +17,8 @@ namespace hm
 		pGrimace->GetTransform()->SetRotation(_rotation);
 		pGrimace->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -4.f, 0.f));
 		pGrimace->GetMeshRenderer()->SetMaterial(pGrimace->GetMeshRenderer()->GetMaterial()->Clone());
+
+		pGrimace->AddComponent(new AudioSound);
 
 		for (size_t i = 0; i < 13; i++)
 		{
@@ -38,6 +41,8 @@ namespace hm
 		p_E_BAT_White->GetTransform()->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 		p_E_BAT_White->GetTransform()->SetRotation(_rotation);
 
+		p_E_BAT_White->AddComponent(new AudioSound);
+
 		return p_E_BAT_White;
 	}
 
@@ -53,6 +58,8 @@ namespace hm
 		p_E_MAGE->GetTransform()->SetRotation(_rotation);
 		p_E_MAGE->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
 		p_E_MAGE->GetMeshRenderer()->SetMaterial(p_E_MAGE->GetMeshRenderer()->GetMaterial()->Clone());
+
+		p_E_MAGE->AddComponent(new AudioSound);
 
 		return p_E_MAGE;
 	}
@@ -70,6 +77,8 @@ namespace hm
 		p_E_LURKER->GetTransform()->SetRotation(_rotation);
 		p_E_LURKER->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -0.4f, 0.f));
 
+		p_E_LURKER->AddComponent(new AudioSound);
+
 		return p_E_LURKER;
 
 	}
@@ -86,6 +95,8 @@ namespace hm
 		p_E_HEADROLLER->GetTransform()->SetScale(Vec3(50.f, 50.f, 50.f));
 		p_E_HEADROLLER->GetTransform()->SetRotation(_rotation);
 		p_E_HEADROLLER->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -1.f, 0.f));
+
+		p_E_HEADROLLER->AddComponent(new AudioSound);
 
 		return p_E_HEADROLLER;
 

@@ -50,6 +50,8 @@ namespace hm
 		void SetGODState(bool _isGODState) { isGODState = _isGODState; }
 
 		void CheckPenetration(RigidBody* _rigidBody, LayerType _eLayertype);
+
+		void HitSound();
 	protected: //몬스터 공격 체크
 		bool isAttackCheck = false;
 		bool isGODState = false;

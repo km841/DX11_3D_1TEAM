@@ -31,7 +31,9 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "Animator.h"
+#include "AudioSound.h"
 
+#include "MonsterKeyScript.h"
 
 
 namespace hm
@@ -424,6 +426,7 @@ namespace hm
 				// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 				BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 					Animator* pAnimator = GetAnimator();
+					AudioSound* pSound = GetAudioSound();
 					int animIndex = pAnimator->GetCurrentClipIndex();
 					if (2 != animIndex) {
 						//초기화 중요
@@ -432,6 +435,9 @@ namespace hm
 						isRoll = true;
 						isRollStay = true;
 						pAnimator->Play(2, true);
+
+						pSound->SetSound(L"HeadRoolattack", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\HeadRoller\\Attack.wav");
+						pSound->Play(100);
 					}
 
 					return BehaviorResult::Success;
@@ -500,6 +506,7 @@ namespace hm
 				// 애니메이션 실행(Task) : 상태에 맞는 애니메이션이 실행되지 않았다면 실행
 				BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 					Animator* pAnimator = GetAnimator();
+					AudioSound* pSound = GetAudioSound();
 					int animIndex = pAnimator->GetCurrentClipIndex();
 					if (4 != animIndex)
 					{
@@ -507,7 +514,13 @@ namespace hm
 						//초기화 중요
 						GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 						GetTransform()->SetRelativePosition(Vec3(0.f, -1.f, 0.f));
+
+						GameObject* pObj = GetGameObject();
+						pObj->DisableCollider();
 						pAnimator->Play(4, true);
+
+						pSound->SetSound(L"HeadRoolattack", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\HeadRoller\\Attack.wav");
+						pSound->Stop();
 					}
 
 					return BehaviorResult::Success;
@@ -586,9 +599,9 @@ namespace hm
 						int animIndex = pAni->GetCurrentClipIndex();
 
 
-
 						if (GetScript<PaperBurnScript>()->IsFinished())
 						{
+							GetScript<yj::MonsterKeyScript>()->SendDeathTrigger();
 							MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 							GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
 						}
@@ -693,6 +706,7 @@ namespace hm
 		{
 			if (isGODState == false) {
 				TakeDamage(attackDamage);
+				HitSound();
 				float hp = mHP;
 				meBasicState = MonsterBasicState::Hit;
 				SetAttackCheck(false);

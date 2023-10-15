@@ -149,6 +149,137 @@ namespace hm
         Add<Mesh>(L"Point", pMesh);
         return pMesh;
     }
+    shared_ptr<Mesh> Resources::LoadLaserMesh()
+    {
+        shared_ptr<Mesh> pFindMesh = Get<Mesh>(L"Laser");
+        if (pFindMesh)
+            return pFindMesh;
+
+        std::vector<Vertex> vertices;
+
+        vertices.push_back(Vertex(Vec3(0.f, 1.f, 0.f), Vec2(0.5f, 0.f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(-0.6f, 0.8f, 0.f), Vec2(0.4f, 0.1f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(-0.7f, 0.6f, 0.f), Vec2(0.3f, 0.2f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(-0.8f, 0.4f, 0.f), Vec2(0.2f, 0.3f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(-0.9f, 0.2f, 0.f), Vec2(0.0f, 0.4f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(-0.9f, -0.2f, 0.f), Vec2(0.0f, 0.6f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(-0.8f, -0.4f, 0.f), Vec2(0.2f, 0.7f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(-0.7f, -0.6f, 0.f), Vec2(0.3f, 0.8f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(-0.6f, -0.8f, 0.f), Vec2(0.4f, 0.9f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(0.f, -1.f, 0.f), Vec2(0.5f, 1.0f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+
+        vertices.push_back(Vertex(Vec3(0.f, 1.f, 0.f), Vec2(0.5f, 0.f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(0.6f, 0.8f, 0.f), Vec2(0.6f, 0.1f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(0.7f, 0.6f, 0.f), Vec2(0.7f, 0.2f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(0.8f, 0.4f, 0.f), Vec2(0.8f, 0.3f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(0.9f, 0.2f, 0.f), Vec2(1.0f, 0.4f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(0.9f, -0.2f, 0.f), Vec2(1.0f, 0.6f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(0.8f, -0.4f, 0.f), Vec2(0.8f, 0.7f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(0.7f, -0.6f, 0.f), Vec2(0.7f, 0.8f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(0.6f, -0.8f, 0.f), Vec2(0.6f, 0.9f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+        vertices.push_back(Vertex(Vec3(0.f, -1.f, 0.f), Vec2(0.5f, 1.0f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
+
+        Vec3 desiredCenter(0.0f, -1.0f, 0.0f);
+
+        Vec3 currentCenter(0.0f, 0.0f, 0.0f);
+        for (const Vertex& vertex : vertices) {
+            currentCenter += vertex.pos;
+        }
+        currentCenter /= static_cast<float>(vertices.size());
+
+        Vec3 offset = desiredCenter - currentCenter;
+
+        for (Vertex& vertex : vertices) {
+            vertex.pos += offset;
+        }
+
+        std::vector<int> indices(60);
+
+        indices[0] = 1;
+        indices[1] = 0;
+        indices[2] = 10;
+
+        indices[3] = 1;
+        indices[4] = 10;
+        indices[5] = 11;
+
+        indices[6] = 2;
+        indices[7] = 1;
+        indices[8] = 11;
+
+        indices[9] = 2;
+        indices[10] = 11;
+        indices[11] = 12;
+
+        indices[12] = 3;
+        indices[13] = 2;
+        indices[14] = 12;
+
+        indices[15] = 3;
+        indices[16] = 12;
+        indices[17] = 13;
+
+        indices[18] = 4;
+        indices[19] = 3;
+        indices[20] = 13;
+
+        indices[21] = 4;
+        indices[22] = 13;
+        indices[23] = 14;
+
+        indices[24] = 5;
+        indices[25] = 4;
+        indices[26] = 14;
+
+        indices[27] = 5;
+        indices[28] = 14;
+        indices[29] = 15;
+
+        indices[30] = 6;
+        indices[31] = 5;
+        indices[32] = 15;
+
+        indices[33] = 6;
+        indices[34] = 15;
+        indices[35] = 16;
+
+        indices[36] = 7;
+        indices[37] = 6;
+        indices[38] = 16;
+
+        indices[39] = 7;
+        indices[40] = 16;
+        indices[41] = 17;
+
+        indices[42] = 8;
+        indices[43] = 7;
+        indices[44] = 17;
+
+        indices[45] = 8;
+        indices[46] = 17;
+        indices[47] = 18;
+
+        indices[48] = 9;
+        indices[49] = 8;
+        indices[50] = 18;
+
+        indices[51] = 9;
+        indices[52] = 18;
+        indices[53] = 19;
+
+        indices[54] = 0;
+        indices[55] = 9;
+        indices[56] = 19;
+
+        indices[57] = 0;
+        indices[58] = 19;
+        indices[59] = 10;
+
+        shared_ptr<Mesh> pMesh = make_shared<Mesh>();
+        pMesh->Initialize(vertices, indices);
+
+        return pMesh;
+    }
     shared_ptr<Mesh> Resources::LoadCubeMesh()
     {
         shared_ptr<Mesh> pFindMesh = Get<Mesh>(L"Cube");
@@ -1088,6 +1219,7 @@ namespace hm
             };
 
             shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetSamplerType(SamplerType::Clamp);
             pShader->SetName(L"ScreenEffect");
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\screeneffect.fx", shaderInfo);
 

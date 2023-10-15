@@ -31,6 +31,9 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "Animator.h"
+#include "AudioSound.h"
+#include "MonsterKeyScript.h"
+
 
 /* Manager */
 #include "RenderManager.h"
@@ -38,11 +41,11 @@
 Bat::Bat()
 {
 	mMaxHP = 3.f;
-	mHP = mMaxHP; // ÇÇÅë
-	mSpeed=2.f; //ÀÌµ¿¼Óµµ
-	mAttackDamage = 1; // °ø°İ·Â
-	mAttackRange = 3.f; // °ø°İ °¨Áö °Å¸®
-	mRecogRange = 8.f; //°¨Áö°Å¸®
+	mHP = mMaxHP; // í”¼í†µ
+	mSpeed=2.f; //ì´ë™ì†ë„
+	mAttackDamage = 1; // ê³µê²©ë ¥
+	mAttackRange = 3.f; // ê³µê²© ê°ì§€ ê±°ë¦¬
+	mRecogRange = 8.f; //ê°ì§€ê±°ë¦¬
 
 	meBasicState = MonsterBasicState::Idle;
 }
@@ -56,7 +59,7 @@ void Bat::SetBehaviorTree()
 	AI* pAI = AddComponent(new AI);
 
 
-	// ·çÆ® ³ëµå µî·Ï
+	// ë£¨íŠ¸ ë…¸ë“œ ë“±ë¡
 	Selector* pRootNode = new Selector;
 	pAI->SetRootNode(pRootNode);
 
@@ -65,7 +68,7 @@ void Bat::SetBehaviorTree()
 #pragma region Hit Sequence
 		Sequence* pHitSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ AttackÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Attackì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Hit == meBasicState)
@@ -74,17 +77,18 @@ void Bat::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
-				if (4 != animIndex)
+				if (4 != animIndex) {
 					pAnimator->Play(4, true);
-
+					isAttack = true;
+				}
 				return BehaviorResult::Success;
 				});
 
-			// Hit ¹ß»ı½Ã ÀÛµ¿ÇÏ´Â ½ºÅ×ÀÌÅÍ½º
+			// Hit ë°œìƒì‹œ ì‘ë™í•˜ëŠ” ìŠ¤í…Œì´í„°ìŠ¤
 			BehaviorTask* pAttackTask = new BehaviorTask([&]()
 				{
 					if (mHP <= 0) {
@@ -102,7 +106,7 @@ void Bat::SetBehaviorTree()
 					return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					meBasicState = MonsterBasicState::Trace;
@@ -121,7 +125,7 @@ void Bat::SetBehaviorTree()
 #pragma region Idle Sequence
 		Sequence* pIdleSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Idle == meBasicState)
@@ -130,7 +134,7 @@ void Bat::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -142,7 +146,7 @@ void Bat::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÇÃ·¹ÀÌ¾î °Å¸® È®ÀÎ(Condition) : ÇÃ·¹ÀÌ¾î°¡ ±ÙÃ³¿¡ ÀÖ´ÂÁö È®ÀÎ
+			// í”Œë ˆì´ì–´ ê±°ë¦¬ í™•ì¸(Condition) : í”Œë ˆì´ì–´ê°€ ê·¼ì²˜ì— ìˆëŠ”ì§€ í™•ì¸
 			BehaviorCondition* pCheckNearbyPlayer = new BehaviorCondition([&]()
 				{
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
@@ -171,7 +175,7 @@ void Bat::SetBehaviorTree()
 #pragma region Idle_To_Trace Sequence
 		Sequence* pIdle_To_TraceSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ Idle_To_TraceÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idle_To_Traceì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Idle_to_Trace == meBasicState)
@@ -180,7 +184,7 @@ void Bat::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -190,7 +194,7 @@ void Bat::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			//¾Ö´Ï¸ŞÀÌ¼Ç ÇÑ¹ø Ãâ·ÂÈÄ ´ÙÀ½ »óÅÂ·Î ³Ñ¾î°¡±â
+			//ì• ë‹ˆë©”ì´ì…˜ í•œë²ˆ ì¶œë ¥í›„ ë‹¤ìŒ ìƒíƒœë¡œ ë„˜ì–´ê°€ê¸°
 			BehaviorCondition* pCheckNearbyPlayer = new BehaviorCondition([&]()
 				{
 					Animator* pAni = GetAnimator();
@@ -202,7 +206,7 @@ void Bat::SetBehaviorTree()
 					return BehaviorResult::Failure;
 				});
 
-			//// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ
+			//// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½
 			//BehaviorTask* pChangeState = new BehaviorTask([&]()
 			//	{
 			//		meBasicState = MonsterBasicState::Trace;
@@ -221,7 +225,7 @@ void Bat::SetBehaviorTree()
 #pragma region Trace Sequence
 		Sequence* pTraceSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ TraceÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Traceì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Trace == meBasicState)
@@ -230,7 +234,7 @@ void Bat::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -244,7 +248,7 @@ void Bat::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÇÃ·¹ÀÌ¾î ¸ñÇ¥ ÁÂÇ¥·Î ¸ó½ºÅÍ°¡ ÀÌµ¿+È¸Àü ÇÏ´Â ½ÇÇà(Task)
+			// í”Œë ˆì´ì–´ ëª©í‘œ ì¢Œí‘œë¡œ ëª¬ìŠ¤í„°ê°€ ì´ë™+íšŒì „ í•˜ëŠ” ì‹¤í–‰(Task)
 			BehaviorTask* pTraceMoveTask = new BehaviorTask([&]() {
 				Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 				Vec3 myPos = GetTransform()->GetPosition();
@@ -295,7 +299,7 @@ void Bat::SetBehaviorTree()
 			});
 
 
-			// ÇÃ·¹ÀÌ¾î °Å¸® È®ÀÎ(Condition) : ÇÃ·¹ÀÌ¾î°¡ ±ÙÃ³¿¡ ÀÖ´ÂÁö È®ÀÎ
+			// í”Œë ˆì´ì–´ ê±°ë¦¬ í™•ì¸(Condition) : í”Œë ˆì´ì–´ê°€ ê·¼ì²˜ì— ìˆëŠ”ì§€ í™•ì¸
 			BehaviorCondition* pCheckNearbyPlayer = new BehaviorCondition([&]()
 				{
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
@@ -313,7 +317,7 @@ void Bat::SetBehaviorTree()
 				});
 
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½
 			/*BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					meBasicState = MonsterBasicState::Attack;
@@ -333,7 +337,7 @@ void Bat::SetBehaviorTree()
 #pragma region Attack01 Sequence
 		Sequence* pAttackSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ AttackÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Attackì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Attack01 == meBasicState)
@@ -342,7 +346,7 @@ void Bat::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -352,23 +356,30 @@ void Bat::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// °ø°İ µô·¹ÀÌ
+			// ê³µê²© ë”œë ˆì´
 			BehaviorTask* pAttackTask = new BehaviorTask([&]()
 				{
-					
+					AudioSound* pSound = GetAudioSound();
+
 
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 					Vec3 myPos = GetTransform()->GetPosition();
 					Animator* pAni = GetAnimator();
 
 					Vec3 Ve = dir;
-					//ÀÌºÎºĞ Áß¿ä
+					//ì´ë¶€ë¶„ ì¤‘ìš”
 					if (pAni->GetFrameRatio() > 0.2) {
 						GetRigidBody()->SetVelocityExcludingColliders(-dir * 3.f);
 					}
 					if (pAni->GetFrameRatio() > 0.4 && pAni->GetFrameRatio() < 0.6) {
 						SetAttackCheck(true);
 						GetRigidBody()->SetVelocity(Ve * 5.f);
+						if (isAttack == true)
+						{
+							isAttack = false;
+							pSound->SetSound(L"Batattack", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Bat\\BatAttack.ogg");
+							pSound->Play();
+						}
 					}
 					else {
 						SetAttackCheck(false);
@@ -384,13 +395,15 @@ void Bat::SetBehaviorTree()
 						GetRigidBody()->SetVelocity(Ve * 0);
 					}
 
-					if(pAni->GetFrameRatio()>0.8)
+					if (pAni->GetFrameRatio() > 0.8) {
+						isAttack = true;
 						return BehaviorResult::Success;
+					}
 					return BehaviorResult::Failure;
 				
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½
 			/*BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					meBasicState = MonsterBasicState::Trace;
@@ -409,7 +422,7 @@ void Bat::SetBehaviorTree()
 #pragma region Dead Sequence
 		Sequence* pDeadSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ AttackÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Attackì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Dead == meBasicState)
@@ -418,42 +431,44 @@ void Bat::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				AudioSound* pSound = GetAudioSound();
 				Animator* pAnimator = GetAnimator();
-				GameObject* pObj = GetGameObject(); //ÀÌ°Å È®ÀÎµµ ÇÊ¿äÇÔ
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (isDead == true)
 				{
 					//pObj->GetRigidBody()->SetSimulationShapeFlag(false);
 					//pObj->Disable();
+					GameObject* pObj = GetGameObject(); 
+					pObj->DisableCollider();
 					isDead = false;
 					GetScript<PaperBurnScript>()->SetPaperBurn();
 					pAnimator->Play(4, false);
-					//
+					pSound->SetSound(L"BaDeath", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Bat\\BatDeath.ogg");
+					pSound->Play();
+					
 				}
 
-				//pObj->GetRigidBody()->SetSimulationShapeFlag(false); // Äİ¶óÀÌ´õ ²ô±â
-				//pObj->GetRigidBody()->SetSimulationShapeFlag(true); // Äİ¶óÀÌ´õ ÄÑ±â
+				//pObj->GetRigidBody()->SetSimulationShapeFlag(false); // ì½œë¼ì´ë” ë„ê¸°
+				//pObj->GetRigidBody()->SetSimulationShapeFlag(true); // ì½œë¼ì´ë” ì¼œê¸°
 
 
 				return BehaviorResult::Success;
 				});
 
-			// ÆäÀÌÆÛ¹ø ½ÇÇà Á¶°Ç
+			// í˜ì´í¼ë²ˆ ì‹¤í–‰ ì¡°ê±´
 			BehaviorTask* pAttackTask = new BehaviorTask([&]()
 				{
 					Animator* pAni= GetAnimator();
 					int animIndex = pAni->GetCurrentClipIndex();
 
-					
-
 					if (GetScript<PaperBurnScript>()->IsFinished())
 					{
+						GetScript<yj::MonsterKeyScript>()->SendDeathTrigger();
 						MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 						GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
 					}
-
 
 					return BehaviorResult::Success;
 
@@ -488,9 +503,9 @@ void Bat::Initialize()
 	GetAnimator()->SetLoop(1, true); 
 	GetAnimator()->SetHasExitFlag(1, true); 
 
-	GetAnimator()->RenameAnimation(0, L"Attack"); //ÀÌ¸§º¯°æ
-	GetAnimator()->SetLoop(0, true); //·çÇÁ
-	GetAnimator()->SetHasExitFlag(0, true); // ±âÁ¸ ¾Ö´Ï¸ŞÀÌ¼Ç ´Ù³¡³ª°í ½ÇÇà f ? t
+	GetAnimator()->RenameAnimation(0, L"Attack"); //ì´ë¦„ë³€ê²½
+	GetAnimator()->SetLoop(0, true); //ë£¨í”„
+	GetAnimator()->SetHasExitFlag(0, true); // ê¸°ì¡´ ì• ë‹ˆë©”ì´ì…˜ ë‹¤ëë‚˜ê³  ì‹¤í–‰ f ? t
 
 
 	
@@ -527,7 +542,7 @@ void Bat::OnCollisionEnter(Collider* _pOtherCollider)
 {
 	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		// ÀÓ½Ã ÄÚµå
+		// ì„ì‹œ ì½”ë“œ
 		if (mGroundCount == 0)
 		{
 			GetRigidBody()->RemoveGravity();
@@ -547,7 +562,7 @@ void Bat::OnCollisionExit(Collider* _pOtherCollider)
 	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 
-		// ÀÓ½Ã ÄÚµå
+		// ì„ì‹œ ì½”ë“œ
 		--mGroundCount;
 
 		if (0 == mGroundCount)
@@ -562,7 +577,7 @@ void Bat::OnTriggerEnter(Collider* _pOtherCollider)
 	
 	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
-		// ÀÓ½Ã ÄÚµå
+		// ì„ì‹œ ì½”ë“œ
 		if (mGroundCount == 0)
 		{
 			GetRigidBody()->RemoveGravity();
@@ -576,6 +591,7 @@ void Bat::OnTriggerEnter(Collider* _pOtherCollider)
 		|| LayerType::ArrowCol == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 		if (isGODState == false) {
+			HitSound();
 			TakeDamage(attackDamage);
 			float hp = mHP;
 			SetAttackCheck(false);
@@ -593,7 +609,7 @@ void Bat::OnTriggerExit(Collider* _pOtherCollider)
 	if (LayerType::Ground == _pOtherCollider->GetGameObject()->GetLayerType())
 	{
 
-		// ÀÓ½Ã ÄÚµå
+		// ì„ì‹œ ì½”ë“œ
 		--mGroundCount;
 
 		if (0 == mGroundCount)

@@ -14,4 +14,6 @@ public:
 	virtual void Exit()  override;
 	virtual void PlayAnimation() override;
 
+private:
+	bool isArrowFireCheck = true;
 };

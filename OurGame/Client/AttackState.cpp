@@ -137,6 +137,12 @@ void AttackState::Update()
 		}
 	}
 
+	if (IS_DOWN(KeyType::SHIFT_L))
+	{
+		pPlayer->SetBigAttackCountReset();
+		pPlayer->StateChange(PlayerState::EvasionState);
+	}
+
 }
 
 void AttackState::Enter()

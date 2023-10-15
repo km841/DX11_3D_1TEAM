@@ -12,15 +12,18 @@
 #include "EventManager.h"
 #include "SceneManager.h"
 #include "ChangeStateTask.h"
+#include "AudioSound.h"
+#include "MonsterKeyScript.h"
+
 
 Lurker::Lurker()
 {
 	mMaxHP = 3.f;
-	mHP = mMaxHP; // ÇÇÅë
-	mSpeed = 1.5f; //ÀÌµ¿¼Óµµ
-	mAttackDamage = 1; // °ø°İ·Â
-	mAttackRange = 5.5f; // °ø°İ °¨Áö °Å¸®
-	mRecogRange = 10.f; //°¨Áö°Å¸®
+	mHP = mMaxHP; // í”¼í†µ
+	mSpeed = 1.5f; //ì´ë™ì†ë„
+	mAttackDamage = 1; // ê³µê²©ë ¥
+	mAttackRange = 5.5f; // ê³µê²© ê°ì§€ ê±°ë¦¬
+	mRecogRange = 10.f; //ê°ì§€ê±°ë¦¬
 
 	meBasicState = MonsterBasicState::Birth;
 }
@@ -33,7 +36,7 @@ void Lurker::SetBehaviorTree()
 {
 	AI* pAI = AddComponent(new AI);
 
-	// ·çÆ® ³ëµå µî·Ï
+	// ë£¨íŠ¸ ë…¸ë“œ ë“±ë¡
 	Selector* pRootNode = new Selector;
 	pAI->SetRootNode(pRootNode);
 
@@ -43,7 +46,7 @@ void Lurker::SetBehaviorTree()
 #pragma region Hit Sequence
 		Sequence* pHitSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ AttackÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Attackì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Hit == meBasicState)
@@ -52,7 +55,7 @@ void Lurker::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -64,7 +67,7 @@ void Lurker::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// Hit ¹ß»ı½Ã ÀÛµ¿ÇÏ´Â ½ºÅ×ÀÌÅÍ½º
+			// Hit ë°œìƒì‹œ ì‘ë™í•˜ëŠ” ìŠ¤í…Œì´í„°ìŠ¤
 			BehaviorTask* pAttackTask = new BehaviorTask([&]()
 				{
 					if (mHP <= 0) {
@@ -82,7 +85,7 @@ void Lurker::SetBehaviorTree()
 					return BehaviorResult::Failure;
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					SetAttackCheck(false);
@@ -102,7 +105,7 @@ void Lurker::SetBehaviorTree()
 #pragma region Birth Sequence
 		Sequence* pBirthSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ BirthÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Birthì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Birth == meBasicState)
@@ -111,7 +114,7 @@ void Lurker::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -121,7 +124,7 @@ void Lurker::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÇÃ·¹ÀÌ¾î °Å¸® È®ÀÎ(Condition) : ÇÃ·¹ÀÌ¾î°¡ ±ÙÃ³¿¡ ÀÖ´ÂÁö È®ÀÎ
+			// í”Œë ˆì´ì–´ ê±°ë¦¬ í™•ì¸(Condition) : í”Œë ˆì´ì–´ê°€ ê·¼ì²˜ì— ìˆëŠ”ì§€ í™•ì¸
 			BehaviorCondition* pCheckNearbyPlayer = new BehaviorCondition([&]()
 				{
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
@@ -149,7 +152,7 @@ void Lurker::SetBehaviorTree()
 #pragma region Hop_dojge Sequence
 		Sequence* Hop_dojgeSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ Hop_dojgeÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Hop_dojgeì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Hop_dojge == meBasicState)
@@ -158,7 +161,7 @@ void Lurker::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -168,7 +171,7 @@ void Lurker::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			//¾Ö´Ï¸ŞÀÌ¼Ç ÇÑ¹ø Ãâ·ÂÈÄ ´ÙÀ½ »óÅÂ·Î ³Ñ¾î°¡±â
+			//ì• ë‹ˆë©”ì´ì…˜ í•œë²ˆ ì¶œë ¥í›„ ë‹¤ìŒ ìƒíƒœë¡œ ë„˜ì–´ê°€ê¸°
 			BehaviorCondition* pCheckNearbyPlayer = new BehaviorCondition([&]()
 				{
 					Animator* pAni = GetAnimator();
@@ -180,7 +183,7 @@ void Lurker::SetBehaviorTree()
 					return BehaviorResult::Failure;
 				});
 
-			//// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ
+			//// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½
 			//BehaviorTask* pChangeState = new BehaviorTask([&]()
 			//	{
 			//		meBasicState = MonsterBasicState::Trace;
@@ -199,7 +202,7 @@ void Lurker::SetBehaviorTree()
 #pragma region Idle Sequence
 		Sequence* pIdleSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ IdleÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Idleì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Idle == meBasicState)
@@ -208,7 +211,7 @@ void Lurker::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -218,7 +221,7 @@ void Lurker::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			//¾Ö´Ï¸ŞÀÌ¼Ç ÇÑ¹ø Ãâ·ÂÈÄ ´ÙÀ½ »óÅÂ·Î ³Ñ¾î°¡±â
+			//ì• ë‹ˆë©”ì´ì…˜ í•œë²ˆ ì¶œë ¥í›„ ë‹¤ìŒ ìƒíƒœë¡œ ë„˜ì–´ê°€ê¸°
 			BehaviorCondition* pCheckNearbyPlayer = new BehaviorCondition([&]()
 				{
 					Animator* pAni = GetAnimator();
@@ -242,7 +245,7 @@ void Lurker::SetBehaviorTree()
 #pragma region Trace Sequence
 		Sequence* pTraceSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ TraceÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Traceì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Trace == meBasicState)
@@ -251,7 +254,7 @@ void Lurker::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
@@ -266,7 +269,7 @@ void Lurker::SetBehaviorTree()
 				return BehaviorResult::Success;
 				});
 
-			// ÇÃ·¹ÀÌ¾î ¸ñÇ¥ ÁÂÇ¥·Î ¸ó½ºÅÍ°¡ ÀÌµ¿+È¸Àü ÇÏ´Â ½ÇÇà(Task)
+			// í”Œë ˆì´ì–´ ëª©í‘œ ì¢Œí‘œë¡œ ëª¬ìŠ¤í„°ê°€ ì´ë™+íšŒì „ í•˜ëŠ” ì‹¤í–‰(Task)
 			BehaviorTask* pTraceMoveTask = new BehaviorTask([&]() {
 				Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 				Vec3 myPos = GetTransform()->GetPosition();
@@ -286,7 +289,7 @@ void Lurker::SetBehaviorTree()
 					if (angleDegree < 0.f)
 						angleDegree += 360.f;
 
-					//¸ó½ºÅÍÀÇ °í°³¸¦ µ¹¸®´Â ÄÚµå
+					//ëª¬ìŠ¤í„°ì˜ ê³ ê°œë¥¼ ëŒë¦¬ëŠ” ì½”ë“œ
 					pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
 				}
 				{
@@ -310,7 +313,7 @@ void Lurker::SetBehaviorTree()
 				});
 
 
-			// ÇÃ·¹ÀÌ¾î °Å¸® È®ÀÎ(Condition) : ÇÃ·¹ÀÌ¾î°¡ ±ÙÃ³¿¡ ÀÖ´ÂÁö È®ÀÎ
+			// í”Œë ˆì´ì–´ ê±°ë¦¬ í™•ì¸(Condition) : í”Œë ˆì´ì–´ê°€ ê·¼ì²˜ì— ìˆëŠ”ì§€ í™•ì¸
 			BehaviorCondition* pCheckNearbyPlayer = new BehaviorCondition([&]()
 				{
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
@@ -334,7 +337,7 @@ void Lurker::SetBehaviorTree()
 				});
 
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½
 			/*BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					meBasicState = MonsterBasicState::Attack;
@@ -355,7 +358,7 @@ void Lurker::SetBehaviorTree()
 #pragma region Trace_to_Attack Sequence
 		Sequence* Trace_to_AttackSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ Hop_dojgeÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Hop_dojgeì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Trace_to_Attack == meBasicState)
@@ -364,20 +367,23 @@ void Lurker::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				AudioSound* pSound = GetAudioSound();
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (1 != animIndex) {
 					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 					GetTransform()->SetRelativePosition(Vec3(0.f, -0.4f, 0.f));
 					pAnimator->Play(1, false);
+					pSound->SetSound(L"LurkertoAttack", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Lurker\\LurkerPrepAttack.ogg");
+					pSound->Play();
 				}
 
 				return BehaviorResult::Success;
 				});
 
-			//¾Ö´Ï¸ŞÀÌ¼Ç ÇÑ¹ø Ãâ·ÂÈÄ ´ÙÀ½ »óÅÂ·Î ³Ñ¾î°¡±â
+			//ì• ë‹ˆë©”ì´ì…˜ í•œë²ˆ ì¶œë ¥í›„ ë‹¤ìŒ ìƒíƒœë¡œ ë„˜ì–´ê°€ê¸°
 			BehaviorCondition* pCheckNearbyPlayer = new BehaviorCondition([&]()
 				{
 					Animator* pAni = GetAnimator();
@@ -389,7 +395,7 @@ void Lurker::SetBehaviorTree()
 					return BehaviorResult::Failure;
 				});
 
-			//// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ
+			//// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½
 			//BehaviorTask* pChangeState = new BehaviorTask([&]()
 			//	{
 			//		meBasicState = MonsterBasicState::Trace;
@@ -408,7 +414,7 @@ void Lurker::SetBehaviorTree()
 #pragma region Attack01 Sequence
 		Sequence* pAttackSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ AttackÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Attackì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Attack01 == meBasicState)
@@ -417,18 +423,21 @@ void Lurker::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				AudioSound* pSound = GetAudioSound();
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (2 != animIndex) {
 					SetAttackCheck(true);
 					pAnimator->Play(2, true);
+					pSound->SetSound(L"LurkerAttack", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Lurker\\LurkerAttack.ogg");
+					pSound->Play();
 				}
 				return BehaviorResult::Success;
 				});
 
-			// °ø°İ µô·¹ÀÌ
+			// ê³µê²© ë”œë ˆì´
 			BehaviorTask* pAttackTask = new BehaviorTask([&]()
 				{
 					Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
@@ -436,7 +445,7 @@ void Lurker::SetBehaviorTree()
 					Vec3 scale = GetRigidBody()->GetGeometrySize();
 					Animator* pAni = GetAnimator();
 
-					//ÀÌºÎºĞ Áß¿ä
+					//ì´ë¶€ë¶„ ì¤‘ìš”
 					if (pAni->GetFrameRatio() < 0.3);
 						GetRigidBody()->SetVelocityExcludingColliders(-dir * 5.5f);
 					if (pAni->GetFrameRatio()<0.7);
@@ -465,7 +474,7 @@ void Lurker::SetBehaviorTree()
 
 				});
 
-			// »óÅÂ º¯°æ(Task) : »óÅÂ º¯°æ
+			// ìƒíƒœ ë³€ê²½(Task) : ìƒíƒœ ë³€ê²½
 			/*BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
 					meBasicState = MonsterBasicState::Trace;
@@ -484,7 +493,7 @@ void Lurker::SetBehaviorTree()
 #pragma region Dead Sequence
 		Sequence* pDeadSequence = new Sequence;
 		{
-			// »óÅÂ È®ÀÎ(Condition) : ÇöÀç »óÅÂ°¡ AttackÀÎÁö È®ÀÎ
+			// ìƒíƒœ í™•ì¸(Condition) : í˜„ì¬ ìƒíƒœê°€ Attackì¸ì§€ í™•ì¸
 			BehaviorCondition* pStateChecker = new BehaviorCondition([&]()
 				{
 					if (MonsterBasicState::Dead == meBasicState)
@@ -493,10 +502,11 @@ void Lurker::SetBehaviorTree()
 						return BehaviorResult::Failure;
 				});
 
-			// ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà(Task) : »óÅÂ¿¡ ¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇàµÇÁö ¾Ê¾Ò´Ù¸é ½ÇÇà
+			// ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰(Task) : ìƒíƒœì— ë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì‹¤í–‰ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì‹¤í–‰
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
+				AudioSound* pSound = GetAudioSound();
 				Animator* pAnimator = GetAnimator();
-				GameObject* pObj = GetGameObject(); //ÀÌ°Å È®ÀÎµµ ÇÊ¿äÇÔ
+				GameObject* pObj = GetGameObject(); //ì´ê±° í™•ì¸ë„ í•„ìš”í•¨
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (isDead == true)
 				{
@@ -504,26 +514,30 @@ void Lurker::SetBehaviorTree()
 					//pObj->Disable();
 					isDead = false;
 					GetScript<PaperBurnScript>()->SetPaperBurn();
+					GameObject* pObj = GetGameObject();
+					pObj->DisableCollider();
 					pAnimator->Play(9, false);
+					pSound->SetSound(L"LurkerDead", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Lurker\\LurkerDeath.ogg");
+					pSound->Play();
 				}
 
-				//pObj->GetRigidBody()->SetSimulationShapeFlag(false); // Äİ¶óÀÌ´õ ²ô±â
-				//pObj->GetRigidBody()->SetSimulationShapeFlag(true); // Äİ¶óÀÌ´õ ÄÑ±â
+				//pObj->GetRigidBody()->SetSimulationShapeFlag(false); // ì½œë¼ì´ë” ë„ê¸°
+				//pObj->GetRigidBody()->SetSimulationShapeFlag(true); // ì½œë¼ì´ë” ì¼œê¸°
 
 
 				return BehaviorResult::Success;
 				});
 
-			// ÆäÀÌÆÛ¹ø ½ÇÇà Á¶°Ç
+			// í˜ì´í¼ë²ˆ ì‹¤í–‰ ì¡°ê±´
 			BehaviorTask* pAttackTask = new BehaviorTask([&]()
 				{
 					Animator* pAni = GetAnimator();
 					int animIndex = pAni->GetCurrentClipIndex();
 
 
-
 					if (GetScript<PaperBurnScript>()->IsFinished())
 					{
+						GetScript<yj::MonsterKeyScript>()->SendDeathTrigger();
 						MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 						GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
 					}
@@ -618,6 +632,7 @@ void Lurker::OnTriggerEnter(Collider* _pOtherCollider)
 	{
 		if (isGODState == false) {
 			TakeDamage(attackDamage);
+			HitSound();
 			float hp = mHP;
 			meBasicState = MonsterBasicState::Hit;
 			SetAttackCheck(false);
@@ -765,7 +780,7 @@ void Lurker::PrevFollowLive()
 		}
 	}
 
-	GetRigidBody()->SetVelocity(AXIS_X, Ve.x); //µû¶ó¿À°Ô ¸¸µå´Â ÄÚµå
-	GetRigidBody()->SetVelocity(AXIS_Z, Ve.z); //µû¶ó¿À°Ô ¸¸µå´Â ÄÚµå
+	GetRigidBody()->SetVelocity(AXIS_X, Ve.x); //ë”°ë¼ì˜¤ê²Œ ë§Œë“œëŠ” ì½”ë“œ
+	GetRigidBody()->SetVelocity(AXIS_Z, Ve.z); //ë”°ë¼ì˜¤ê²Œ ë§Œë“œëŠ” ì½”ë“œ
 
 }

@@ -66,7 +66,7 @@ void IdleState::Update()
 	wstring name = pPlayer->GetLadderName();
 	int BigCount = pPlayer->GetBigAttackCount();
 
-	if (pAni->GetFrameRatio() > 0.99f) {
+	if (pAni->GetFrameRatio() > 0.95f) {
 		if (mIdleStatebool == true)
 		{
 			mIdleStatebool = false;
@@ -112,7 +112,7 @@ void IdleState::Update()
 	}
 
 
-	if (IS_DOWN(KeyType::LBUTTON) || IS_DOWN(KeyType::X))
+	if (IS_DOWN(KeyType::LCTRL) || IS_DOWN(KeyType::X))
 	{
 		pPlayer->StateChange(PlayerState::AttackState);
 	}
@@ -123,6 +123,11 @@ void IdleState::Update()
 	if (IS_DOWN(KeyType::SHIFT_L))
 	{
 		pPlayer->StateChange(PlayerState::EvasionState);
+	}
+
+	if (IS_DOWN(KeyType::V))
+	{
+		pPlayer->StateChange(PlayerState::DeadState);
 	}
 	if (IS_DOWN(KeyType::SPACE))
 	{
@@ -168,6 +173,7 @@ void IdleState::PlayAnimation()
 	Animator* pAni = pPlayer->GetAnimator();
 
 	pAni->Play(42, false);
+	//pAni->Play(67, false);
 }
 
 void IdleState::PlayAnimayton2()
@@ -177,6 +183,7 @@ void IdleState::PlayAnimayton2()
 	Animator* pAni = pPlayer->GetAnimator();
 
 	pAni->Play(43, false);
+	//pAni->Play(67, false);
 }
 
 void IdleState::FallLate()

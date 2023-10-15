@@ -13,6 +13,7 @@
 #include "PaperBurnScript.h"
 #include "MonsterCrackScript.h"
 #include "MonsterHitScript.h"
+#include "MonsterKeyScript.h"
 
 #include "Grimace.h"
 #include "Bat.h"
@@ -127,6 +128,7 @@ namespace hm
 		pObject->AddComponent<PaperBurnScript>();
 		pObject->AddComponent<MonsterCrackScript>();
 		pObject->AddComponent<MonsterHitScript>();
+		pObject->AddComponent<yj::MonsterKeyScript>();
 		pObject->AddComponent<AudioSound>();
 		pObject->GetRigidBody()->ApplyGravity();
 		pObject->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
