@@ -155,6 +155,8 @@ namespace hm
         if (pFindMesh)
             return pFindMesh;
 
+
+
         std::vector<Vertex> vertices;
 
         vertices.push_back(Vertex(Vec3(0.f, 1.f, 0.f), Vec2(0.5f, 0.f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
@@ -179,7 +181,22 @@ namespace hm
         vertices.push_back(Vertex(Vec3(0.6f, -0.8f, 0.f), Vec2(0.6f, 0.9f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
         vertices.push_back(Vertex(Vec3(0.f, -1.f, 0.f), Vec2(0.5f, 1.0f), Vec3(0.f, 0.f, -1.f), Vec3(1.0f, 0.0f, 0.0f)));
 
-        Vec3 desiredCenter(0.0f, -1.0f, 0.0f);
+        Vec3 rotationAxis(1.0f, 0.0f, 0.0f);
+
+        // 회전 행렬 생성
+        Matrix rotationMatrix = Matrix::CreateFromAxisAngle(rotationAxis, XM_PIDIV2);
+
+        for (auto& vertex : vertices)
+        {
+            Vec3 originalPosition = vertex.pos;
+
+            // 회전 적용
+            Vec3 rotatedPosition = Vec3::Transform(originalPosition, rotationMatrix);
+
+            vertex.pos = rotatedPosition;
+        }
+
+        Vec3 desiredCenter(0.0f, 0.0f, 1.0f);
 
         Vec3 currentCenter(0.0f, 0.0f, 0.0f);
         for (const Vertex& vertex : vertices) {

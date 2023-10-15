@@ -3,8 +3,9 @@
 
 namespace hm
 {
-	BossLaser::BossLaser()
+	BossLaser::BossLaser(GameObject* _pBoss)
 		: GameObject(LayerType::MonsterCol)
+		, mpBoss(_pBoss)
 	{
 	}
 

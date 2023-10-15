@@ -56,14 +56,14 @@ void MoveState::Initialize()
 
 void MoveState::Update()
 {
-	//Á¶°Ç °É¾î¼­ ´Ù¸¥ ½ºÅ×ÀÌÆ® ³Ñ¾î°¡°Ô ÇØÁÖ´Â ±¸Á¶ ¸¸µé±â
+	//ì¡°ê±´ ê±¸ì–´ì„œ ë‹¤ë¥¸ ìŠ¤í…Œì´íŠ¸ ë„˜ì–´ê°€ê²Œ í•´ì£¼ëŠ” êµ¬ì¡° ë§Œë“¤ê¸°
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 	Transform* tr = pPlayer->GetTransform();
 	RigidBody* rb = pPlayer->GetRigidBody();
 	DirectionEvasion Dir = pPlayer->GetDirectioninfo();
 
-#pragma region "ÀÌµ¿ ¹æÇâ Èû °áÁ¤"
+#pragma region "ì´ë™ ë°©í–¥ íž˜ ê²°ì •"
 	float mMoveSpeed = pPlayer->GetMoveSpeed();
 
 	if (IS_PRESS(P_UP))
@@ -126,7 +126,7 @@ void MoveState::Update()
 #pragma endregion
 
 
-#pragma region "¹æÇâ ¼³Á¤"
+#pragma region "ë°©í–¥ ì„¤ì •"
 
 	if (IS_PRESS(P_UP))
 	{
@@ -173,7 +173,7 @@ void MoveState::Update()
 
 #pragma endregion
 
-	/*Å° ÀÔ·Â½Ã ³Ñ¾î°¡´Â Çàµ¿µé*/
+	/*í‚¤ ìž…ë ¥ì‹œ ë„˜ì–´ê°€ëŠ” í–‰ë™ë“¤*/
 	if (IS_UP(P_UP) || IS_UP(P_DOWN) ||
 		IS_UP(P_LEFT) || IS_UP(P_RIGHT))
 	{
@@ -194,7 +194,7 @@ void MoveState::Update()
 	
 
 
-	//MOVE ¾Ö´Ï¸ÞÀÌ¼Ç ¹Ýº¹ 
+	//MOVE ì• ë‹ˆë©”ì´ì…˜ ë°˜ë³µ 
 	if(pAni->GetFrameRatio() > 0.7)
 		PlayAnimation();
 }
@@ -202,9 +202,11 @@ void MoveState::Update()
 void MoveState::Enter()
 {
 	PlayAnimation();
+	PLAYER->DrawShadow(true);
 
 	GameObject* pObj = PLAYER->GetGreatSword();
 	pObj->Enable();
+
 }
 
 void MoveState::Exit()
@@ -213,7 +215,7 @@ void MoveState::Exit()
 
 void MoveState::PlayAnimation()
 {
-	//Á¶°Ç °É¾î¼­ ´Ù¸¥ ½ºÅ×ÀÌÆ® ³Ñ¾î°¡°Ô ÇØÁÖ´Â ±¸Á¶ ¸¸µé±â
+	//ì¡°ê±´ ê±¸ì–´ì„œ ë‹¤ë¥¸ ìŠ¤í…Œì´íŠ¸ ë„˜ì–´ê°€ê²Œ í•´ì£¼ëŠ” êµ¬ì¡° ë§Œë“¤ê¸°
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 

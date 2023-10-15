@@ -89,10 +89,10 @@ LORD_BOSS::LORD_BOSS()
 		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(1.f, 3.f, 3.f);
 
-		pBossLaser = Factory::CreateObject<BossLaser>(Vec3(0.f, 0.f, 0.f), L"Deferred_CullNone", L"", false);
+		pBossLaser = Factory::CreateObject<BossLaser>(Vec3(0.f, 0.f, 0.f), L"Deferred_CullNone", L"", false, static_cast<GameObject*>(this));
 		pBossLaser->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadLaserMesh());
-		pBossLaser->GetRigidBody()->SetPhysical(physicsInfo);
-		pBossLaser->AddComponent(new Collider);
+		//pBossLaser->GetRigidBody()->SetPhysical(physicsInfo);
+		//pBossLaser->AddComponent(new Collider);
 
 		pBossLaser->GetTransform()->SetScale(Vec3(1.f, 3.f, 3.f));
 		pBossLaser->GetTransform()->SetRotation(Vec3(0.f, 0.f, 0.f));
@@ -101,13 +101,14 @@ LORD_BOSS::LORD_BOSS()
 
 		OwnerFollowScript* pScript = pBossLaser->AddComponent(new OwnerFollowScript(this));
 		pScript->SetOffset(Vec3(0.f, 6.f, 0.f));
-		pBossLaser->AddComponent(new LaserLockOnScript);
-
+		pBossLaser->AddComponent(new LaserLockOnScript(this));
 
 		//GET_SINGLE(RenderManager)->AddCameraShakeEffect(5.f, 0.2f, 0);
 		//GET_SINGLE(RenderManager)->AddChromaticEffect(10.f, nullptr, nullptr, 1);
 		//GET_SINGLE(RenderManager)->SetBloomScale(5.0f);
-		//GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pBossLaser);
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pBossLaser);
+		//TOOL->UseGizmo();
+		//TOOL->SetGameObject(pBossLaser);
 	}
 
 	mTimer.SetEndTime(6.5f);

@@ -90,6 +90,7 @@ void PlayerMoveScript::CheckPenetration(RigidBody* _rigidBody, LayerType _eLayer
 
 		if (false == gameObjects[i]->ismbEnableCollider())
 			continue;
+		
 
 		if (gameObjects[i]->GetCollider())
 		{
