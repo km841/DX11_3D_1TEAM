@@ -10,6 +10,7 @@ namespace yj
 	
 	void MonsterKeyScript::Update()
 	{
+
 	}
 
 	Component* MonsterKeyScript::Clone(GameObject* _pGameObject)
@@ -26,8 +27,8 @@ namespace yj
 			}
 			if (pReceiverList[i]->GetName() == L"SpikeDoor")
 			{
+
 				static_cast<SpikeDoor*>(pReceiverList[i])->AddKey();
-			}
 		}
 	}
 }

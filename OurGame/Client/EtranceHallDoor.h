@@ -26,5 +26,4 @@ namespace yj
 		GameObject* mRightDoor;
 		bool isOpen;
 	};
-
 }

@@ -1,9 +1,9 @@
 #pragma once
 #include "Map.h"
+#include "LORD_BOSS.h"
 
 namespace hm
 {
-	
 	class BossMap :
 		public Map
 	{
@@ -24,6 +24,8 @@ namespace hm
 
 	private:
 		int mSpawnPoint = -1;
+
+		LORD_BOSS* pLordOfDoor;
 	};
 }
 
