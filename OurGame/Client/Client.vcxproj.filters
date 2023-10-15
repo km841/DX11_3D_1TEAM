@@ -382,11 +382,17 @@
     <ClInclude Include="ManaUi.h" />
     <ClInclude Include="HeadText.h" />
     <ClInclude Include="EventSystem.h" />
-    <ClInclude Include="BossLaser.h">
-      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
-    </ClInclude>
     <ClInclude Include="LaserLockOnScript.h">
-      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS\BossLaser</Filter>
+    </ClInclude>
+    <ClInclude Include="BossLaser.h">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS\BossLaser</Filter>
+    </ClInclude>
+    <ClInclude Include="BossBigSnap.h">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS\BigSnap</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplosionScript.h">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS\BigSnap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -765,11 +771,17 @@
     <ClCompile Include="ManaUi.cpp" />
     <ClCompile Include="HeadText.cpp" />
     <ClCompile Include="EventSystem.cpp" />
-    <ClCompile Include="BossLaser.cpp">
-      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
-    </ClCompile>
     <ClCompile Include="LaserLockOnScript.cpp">
-      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS\BossLaser</Filter>
+    </ClCompile>
+    <ClCompile Include="BossLaser.cpp">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS\BossLaser</Filter>
+    </ClCompile>
+    <ClCompile Include="BossBigSnap.cpp">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS\BigSnap</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplosionScript.cpp">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS\BigSnap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -865,8 +877,11 @@
     <Filter Include="소스 파일\Script\CutScene">
       <UniqueIdentifier>{a6eab342-3e74-45fe-b18c-af7d296610a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\GameObject\Monster\LOAD_BOSS\LaserLockOnScript">
+    <Filter Include="소스 파일\GameObject\Monster\LOAD_BOSS\BossLaser">
       <UniqueIdentifier>{8668845d-ccb1-4f3a-a7c2-2d08e6c0b5e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Monster\LOAD_BOSS\BigSnap">
+      <UniqueIdentifier>{11b906a1-0875-404a-8cbb-e7707a704a4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

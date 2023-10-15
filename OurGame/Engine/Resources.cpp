@@ -1514,7 +1514,7 @@ namespace hm
             Add<Shader>(L"PaperBurnSpawn", pShader);
         }
 
-        // Fire Shader
+        // Fireplace Shader
         {
             ShaderInfo shaderInfo =
             {
@@ -1536,6 +1536,23 @@ namespace hm
             pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\fireplace.fx", shaderInfo, shaderArg);
             pShader->SetName(L"Fireplace");
             Add<Shader>(L"Fireplace", pShader);
+        }
+
+        // Explosion Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::Less,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"Explosion");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\explosion.fx", shaderInfo);
+
+            Add<Shader>(L"Explosion", pShader);
         }
     }
     void Resources::CreateDefaultMaterial()
@@ -1998,6 +2015,15 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"Fireplace", pMaterial);
+        }
+
+        // Explosion Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"Explosion");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"Explosion", pMaterial);
         }
     }
 }
