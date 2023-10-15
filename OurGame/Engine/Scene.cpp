@@ -130,21 +130,16 @@ namespace hm
 	{
 		GET_SINGLE(RenderManager)->ClearRenderTargets();
 		GET_SINGLE(RenderManager)->Render(this);
-
 		
-		if (GET_SINGLE(RenderManager)->IsDebugMode())
+		for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
 		{
-			for (int i = 0; i < LAYER_TYPE_COUNT; ++i)
+			for (int j = 0; j < mGameObjects[i].size(); ++j)
 			{
-				for (int j = 0; j < mGameObjects[i].size(); ++j)
-				{
-					AssertEx(mGameObjects[i][j], L"This gameobject is nullptr");
-					mGameObjects[i][j]->Render();
-				}
+				AssertEx(mGameObjects[i][j], L"This gameobject is nullptr");
+				mGameObjects[i][j]->Render();
 			}
 		}
-
-
+		
 		FONT->Render();
 	}
 	void Scene::Destroy()

@@ -97,8 +97,6 @@ LORD_BOSS::~LORD_BOSS()
 
 void LORD_BOSS::SetBehaviorTree()
 {
-
-
 	AI* pAI = AddComponent(new AI);
 
 	// 루트 노드 등록
@@ -248,8 +246,8 @@ void LORD_BOSS::SetBehaviorTree()
 						meBasicState = MonsterBasicState::Roll_Start;
 						break;
 					case 7:
-						//meBasicState = MonsterBasicState::Laser_Start;
-						meBasicState = MonsterBasicState::Mega_Aoe;
+						meBasicState = MonsterBasicState::Laser_Start;
+						//meBasicState = MonsterBasicState::Mega_Aoe;
 						break;
 					default:
 						return BehaviorResult::Failure;
@@ -287,7 +285,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					//meBasicState = MonsterBasicState::Snap_Once;
+					//meBasicState = MonsterBasicState::Silent_Clap;
 					return BehaviorResult::Success;
 				});
 
@@ -1624,8 +1622,6 @@ void LORD_BOSS::Initialize()
 
 	Animator* pAnimator = GetAnimator();
 	pAnimator->SetLoop(0, true);
-
-	
 }
 
 void LORD_BOSS::Update()
@@ -2016,11 +2012,6 @@ void LORD_BOSS::LaserFollow_Turn()
 	Vec3 Ve = PosDir * (mSpeed * mMagnScale);
 	GetRigidBody()->SetVelocity(Ve);
 
-
-
-
-
-
 	Vec3 Rot = pTr->GetRotation();
 	float TargetRot = LaserRot.z;
 	//Vec3 rot = Vec3(0, 0, -1);
@@ -2180,7 +2171,7 @@ void LORD_BOSS::MonsterSilent_ClapCol()
 		physicsInfo.eGeometryType = GeometryType::Sphere;
 		physicsInfo.size = Vec3(6.0f, 0.1f, 6.f);
 
-		pMonsterSilent_ClapCol = Factory::CreateObjectHasPhysical<MonsterSlowObject>(Vec3(pPlayerPos), physicsInfo, L"Forward", L"..\\Resources\\FBX\\Monster\\SilenceEffect.fbx");
+		pMonsterSilent_ClapCol = Factory::CreateObjectHasPhysical<MonsterSlowObject>(Vec3(pPlayerPos), physicsInfo, L"AlphaRemove", L"..\\Resources\\FBX\\Monster\\SilenceEffect.fbx");
 		pMonsterSilent_ClapCol->GetMeshRenderer()->SetMaterial(pMonsterSilent_ClapCol->GetMeshRenderer()->GetMaterial()->Clone());
 		pMonsterSilent_ClapCol->GetTransform()->SetScale(Vec3(10.f, 1.f, 10.f));
 		pMonsterSilent_ClapCol->GetTransform()->SetRotation(Vec3(00.f, 00.f, 0.f));
