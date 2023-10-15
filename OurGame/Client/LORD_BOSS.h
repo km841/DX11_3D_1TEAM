@@ -74,7 +74,9 @@ private:
 	Vec3 PosDir;
 	Vec3 PrevDir;
 
-	Vec3 PotProjectPos;
+	Vec3 PotProjectPos01;
+	Vec3 PotProjectPos02;
+	Vec3 PotProjectPos03;
 
 	Vec3 LaserPos = Vec3(14.5f, 10.f, -10.f);
 	Vec3 LaserRot = Vec3(-90.f, 360.f, 130.f);
@@ -83,6 +85,10 @@ private:
 	bool isCreateCow02 = true;
 	bool isCreateCow03 = true;
 	bool isCreateCow04 = true;
+
+	bool Snap_Once01 = true;
+	bool Snap_Once02 = true;
+	bool Snap_Once03 = true;
 
 	float TurnSpeed;
 	float mMagnScale;
