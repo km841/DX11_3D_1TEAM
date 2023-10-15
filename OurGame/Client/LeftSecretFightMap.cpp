@@ -151,6 +151,9 @@ void LeftSecretFightMap::Enter()
 	//배경맵 하얀색으로 만들어주는 코드
 	//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
+	spPlayerHolder->GetAudioSound()->SetSound(L"GrimaceBGM", this, true, "..\\Resources\\Sound\\GrimaceBGM.mp3");
+	spPlayerHolder->GetAudioSound()->Play();
+
 	InitObjectAdd();
 	InitColliderAdd();
 	FuncObjectAdd();
@@ -192,6 +195,7 @@ void LeftSecretFightMap::Enter()
 
 void LeftSecretFightMap::Exit()
 {
+	spPlayerHolder->GetAudioSound()->Stop();
 }
 
 void LeftSecretFightMap::InitObjectAdd()

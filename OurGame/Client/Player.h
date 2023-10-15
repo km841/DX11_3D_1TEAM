@@ -122,6 +122,8 @@ public:
 	Vec3 GetCutScenePos() { return CutScenePos; }
 	void SetCutScenePos(Vec3 _Pos) { CutScenePos = _Pos; }
 
+	int GetManaCount() { return mCost; }
+
 public:
 	
 	static Player* spPlayer;

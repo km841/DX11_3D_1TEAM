@@ -26,8 +26,6 @@ namespace yj
 		void UiOn();
 		void UiOff();
 
-
-
 	private:
 		Interface* mpMpSlots[5];
 		Interface* mpMpIns[5];
@@ -35,5 +33,6 @@ namespace yj
 		std::vector<Interface*> OnOffList;
 
 		int mCurrManaAmount;
+		bool mbUiState;
 	};
 }

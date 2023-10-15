@@ -1588,6 +1588,21 @@ namespace hm
 
             Add<Shader>(L"AlphaRemove", pShader);
         }
+
+        // LordBoss Deferred Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Deferred,
+                DepthStencilType::Less,
+                RasterizerType::CullBack,
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"LordBossDeferred");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\lordboss_deferred.fx", shaderInfo);
+            Add<Shader>(L"LordBossDeferred", pShader);
+        }
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -2077,6 +2092,15 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"AlphaRemove", pMaterial);
+        }
+
+        // LordBoss Deferred Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"LordBossDeferred");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"LordBossDeferred", pMaterial);
         }
     }
 }

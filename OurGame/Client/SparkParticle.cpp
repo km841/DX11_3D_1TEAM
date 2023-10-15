@@ -10,13 +10,13 @@ namespace hm
 	SparkParticle::SparkParticle()
 	{
 		mMaxParticles = 1000;
-		mEndTime = 0.5f;
+		mEndTime = 0.1f;
 		mAccTime = 0.f;
 		mStartSpeed = 30.0f;
 		mEndSpeed = 35.0f;
 		mElapsedTime = 0.f;
 		mCreateInterval = 0.05f;
-		mStartScale = Vec3(1.f, 1.f, 0.5f);
+		mStartScale = Vec3(2.f, 2.f, 1.f);
 		mGravity = -50.f;
 		mAliveCount = 0;
 		mStartAngle = 0.f;
@@ -104,6 +104,21 @@ namespace hm
 	}
 	void SparkParticle::Render(Camera* _pCamera)
 	{
-		ParticleSystem::Render(_pCamera);
+		GetGameObject()->GetTransform()->PushData(_pCamera);
+		mpParticleBuffer->PushGraphicsData(RegisterSRV::t9);
+
+		mpMaterial->GetShader()->SetSamplerType(SamplerType::Clamp);
+		mpMaterial->SetVec4(0, Vec4(mStartScale.x, mStartScale.y, mStartScale.z, 0.f));
+		mpMaterial->SetVec4(1, Vec4(mParticleRotation.x, mParticleRotation.y, mParticleRotation.z, 0.f));
+		mpMaterial->PushGraphicDataExceptForTextures();
+
+		mpParticleTexture->PushSRV(RegisterSRV::t0);
+		if (nullptr != mpNoiseTexture)
+			mpNoiseTexture->PushSRV(RegisterSRV::t1);
+
+		CONST_BUFFER(ConstantBufferType::Material)->Mapping();
+		mpMesh->RenderInstancing(mMaxParticles);
+
+		mpParticleBuffer->ClearGraphicsData();
 	}
 }

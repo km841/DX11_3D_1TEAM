@@ -47,6 +47,7 @@
 #include "Mirror.h"
 #include "AudioSound.h"
 #include "Animator.h"
+#include "SparkParticle.h"
 
 
 /* Script */
@@ -136,20 +137,39 @@ namespace hm
 			pLordOfDoorRoll->GetAnimator()->Play(1, true);
 			pLordOfDoorRoll->Disable();
 
-			pLordOfDoor = Factory::CreateMonster<LORD_BOSS>(Vec3(12.3f, -4.f, -8.f), info, L"MonsterDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor.fbx");
+			pLordOfDoor = Factory::CreateMonster<LORD_BOSS>(Vec3(12.3f, -4.f, -8.f), info, L"LordBossDeferred", L"..\\Resources\\FBX\\Monster\\LordOfDoor.fbx");
 			pLordOfDoor->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 			pLordOfDoor->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 130.f));
 			pLordOfDoor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -2.5f, 0.f));
 
+			GameObject* pEffect = nullptr;
+			{
+				pEffect = Factory::CreateObject<GameObject>(Vec3::Zero, L"Forward", L"", false, LayerType::Unknown);
+				pEffect->SetDontDestroyObject(L"SparkParticle");
+				pEffect->AddComponent(new OwnerFollowScript(pLordOfDoor));
+
+				SparkParticle* pParticle = pEffect->AddComponent(new SparkParticle);
+				pParticle->SetAngle(Vec3(-180.f, 0.f, 0.f));
+				pParticle->SetParticleRotation(Vec3(0.f, 0.f, 0.f));
+				pParticle->SetScatterRadius(5.f);
+				pParticle->SetStartColor(Vec3(1.f, 0.f, 0.f));
+				pParticle->SetEndColor(Vec3(1.f, 1.f, 0.f));
+
+				AddGameObject(pEffect);
+				pEffect->Disable();
+			}
+
+			pLordOfDoor->SetSparkParticle(pEffect);
+
 			pLordOfDoor->GetMeshRenderer()->GetMaterial()->SetBloom(true, 4);
-			
+
 			//pLordOfDoor->GetMeshRenderer()->GetMaterial()->SetBloomPower(3.f, 4);
-		
+
 			pLordOfDoor->GetMeshRenderer()->GetMaterial()->SetBloomFilter(Vec4(0.f, 0.f, 1.f, 0.f), 4);
 			//pLordOfDoor->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.f, 0.f, 0.f), 4);
 
 			AudioSound* pSound = pLordOfDoor->AddComponent(new AudioSound);
-			
+
 
 			pLordOfDoor->SetObject(pLordOfDoorRoll);
 			pLordOfDoorRoll->SetLORD_BOSS(pLordOfDoor);
@@ -157,12 +177,12 @@ namespace hm
 			AddGameObject(pLordOfDoorRoll);
 			AddGameObject(pLordOfDoor);
 			//SetMeshTarget(pLordOfDoor);
-		
+
 		}
 
 
-		
-		
+
+
 
 		//WallObject Zip
 		{
@@ -174,7 +194,7 @@ namespace hm
 			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(7.8f, -4.7f, 15.7f), Info, L"NoDraw", L"");
 
 			AddGameObject(pWall);
-			
+
 		}
 
 		//WallObject Zip
@@ -206,9 +226,9 @@ namespace hm
 			WallObject* pFrontGround = Factory::CreateObject<WallObject>(Vec3(0.4f, -5.3f, -0.5f), L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\uv1.fbx");
 			pFrontGround->GetTransform()->SetScale(Vec3(49.0f, 49.0f, 49.0f));
 
-			
+
 			AddGameObject(pFrontGround);
-			
+
 		}
 
 		{
@@ -216,7 +236,7 @@ namespace hm
 			pREFLECTIONS->GetTransform()->SetScale(Vec3(40, 40, 40));
 			pREFLECTIONS->GetMeshRenderer()->GetMaterial()->SetUVTiling(Vec2(0.03f, 0.03f));
 			AddGameObject(pREFLECTIONS);
-			
+
 		}
 
 		{
@@ -240,7 +260,7 @@ namespace hm
 			pUpstair->GetMeshRenderer()->GetMaterial()->SetBloom(true, 31);
 			pUpstair->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 1.f, 1.f, 1.f), 31);
 
-		
+
 			AddGameObject(pUpstair);
 		}
 
@@ -511,8 +531,8 @@ namespace hm
 			pHallCollider->GetTransform()->SetRotation(Vec3(0.f, -332.9f, 0.f));
 			pHallCollider->DrawShadow(false);
 			AddGameObject(pHallCollider);
-			
-			
+
+
 		}
 
 		{

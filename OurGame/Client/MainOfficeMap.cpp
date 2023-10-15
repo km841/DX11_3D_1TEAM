@@ -16,6 +16,7 @@
 #include "SceneManager.h"
 #include "Resources.h"
 #include "RenderManager.h"
+#include "SoundManager.h"
 
 /* GameObject */
 #include "GameObject.h"
@@ -83,8 +84,8 @@ namespace yj
 	{
 		Map::Initialize();
 
-		PLAYER->GetAudioSound()->SetSound(L"MainOfficeBGM", this, true, "..\\Resources\\Sound\\MainOfficeBGM.mp3");
-		PLAYER->GetAudioSound()->Play();
+		spPlayerHolder->GetAudioSound()->SetSound(L"MainOfficeBGM", this, true, "..\\Resources\\Sound\\MainOfficeBGM.mp3");
+		spPlayerHolder->GetAudioSound()->Play();
 #pragma endregion
 	}
 
@@ -181,7 +182,7 @@ namespace yj
 
 	void MainOfficeMap::Exit()
 	{
-		PLAYER->GetAudioSound()->Stop();
+		spPlayerHolder->GetAudioSound()->Stop();
 	}
 
 
@@ -211,9 +212,10 @@ namespace yj
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(10.0f, 10.0f, 10.0f);
 
-			Npc* pHallCrow = Factory::CreateObjectHasPhysical<Npc>(Vec3(-5.2f, -8.f, -10.5f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Map\\MainOfficeMap\\HallCrowWorker.fbx");
+			Npc* pHallCrow = Factory::CreateObjectHasPhysical<Npc>(Vec3(-5.2f, -8.f, -10.5f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Npc\\Npc_Chandler.fbx");
 			pHallCrow->GetTransform()->SetScale(Vec3(0.7f, 0.7f, 0.7f));
 			pHallCrow->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 135.f));
+			pHallCrow->GetAnimator()->Play(0, true);
 
 			AddGameObject(pHallCrow);
 		}

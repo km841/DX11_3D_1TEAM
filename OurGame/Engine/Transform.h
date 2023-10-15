@@ -59,6 +59,8 @@ namespace hm
 		Vec3 GetUp() { return mMatWorld.Up(); }
 		Vec3 GetLook() { return mMatWorld.Backward(); }
 
+		void SetParent(Transform* _pParent) { mpParent = _pParent; }
+
 		void LookAt(const Vec3& _look);
 		void LookAt(const Matrix& _look);
 		void SmoothRotateTo(const Vec3& _targetLook);

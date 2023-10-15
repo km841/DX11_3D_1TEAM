@@ -502,7 +502,7 @@ namespace sy
 
 			//1층 러그 - Rug_Mark
 			{
-				DecoObject* pRug_Mark = Factory::CreateObject<DecoObject>(Vec3(-0.2f, -8.5f, 16.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Rug_Mark.fbx");
+				DecoObject* pRug_Mark = Factory::CreateObject<DecoObject>(Vec3(-0.2f, -8.4f, 16.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\Rug_Mark.fbx");
 
 				pRug_Mark->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 				pRug_Mark->GetTransform()->SetRotation(Vec3(0.f, 0.0f, 0.f));

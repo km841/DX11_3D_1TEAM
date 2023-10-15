@@ -84,13 +84,14 @@ void BowState::Update()
 		pArrowSc->SetDirPos(Dir); // 화살 발사 방향 Set
 		pPlayer->StateChange(PlayerState::IdleState);
 		pArrowSc->SetmSpeed(); // 화살 발사 방향 Set
+		
+		//pPlayer->DamegeCost();
 	}
+
 	if (pAni->GetFrameRatio() > 0.9)
 	{
 		pArrowObj->Enable();
 	}
-
-	
 }
 
 void BowState::Enter()

@@ -16,6 +16,7 @@ yj::ManaUi* yj::ManaUi::spManaUi;
 namespace yj
 {
 	ManaUi::ManaUi()
+		: mbUiState(false)
 	{
 		spManaUi = this;
 	}
@@ -36,13 +37,27 @@ namespace yj
 
 	void ManaUi::Update()
 	{
+		if (false == mbUiState)
+			return;
 
+		int manaCount = PLAYER->GetManaCount();
+		for (int i = 0; i < 5; ++i)
+		{
+			if (i < manaCount)
+			{
+				mpMpIns[i]->Enable();
+			}
+			else
+			{
+				mpMpIns[i]->Disable();
+			}
+		}
 	}
 
 	void ManaUi::AddManaUI()
 	{
 		Scene* mScene = SceneManager::GetInstance()->GetScene(SceneType::Title);
-
+		
 		for (int i = 0; i < 5; i++)
 		{
 			Interface* pMpSlot = Factory::CreateInterface<Interface>(Vec3::Zero, Vec2(15.f, 18.0f), L"..\\Resources\\Texture\\hud_energy_empty.png");
@@ -97,6 +112,7 @@ namespace yj
 
 	void ManaUi::UiOn()
 	{
+		mbUiState = true;
 		for (int i = 0; i < OnOffList.size(); i++)
 		{
 			OnOffList[i]->Enable();
@@ -104,6 +120,7 @@ namespace yj
 	}
 	void ManaUi::UiOff()
 	{
+		mbUiState = false;
 		for (int i = 0; i < OnOffList.size(); i++)
 		{
 			OnOffList[i]->Disable();

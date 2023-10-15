@@ -15,6 +15,7 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "Resources.h"
+#include "SoundManager.h"
 
 /* GameObject */
 #include "GameObject.h"
@@ -30,6 +31,9 @@
 #include "Lurker.h"
 #include "HeadRoller.h"
 #include "Grimace.h"
+#include "FireLamp.h"
+#include "SpiderWeb.h"
+
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -145,7 +149,8 @@ void LeftSecretTrialMap::Enter()
 
 void LeftSecretTrialMap::Exit()
 {
-
+	spPlayerHolder->GetAudioSound()->Stop();
+	//GET_SINGLE(SoundManager)->DeleteSound(this);
 }
 
 void LeftSecretTrialMap::InitObjectAdd()
@@ -930,30 +935,6 @@ void LeftSecretTrialMap::InitObjectAdd()
 
 		AddGameObject(pLadder);
 	}
-
-	{
-		DecoObject* pBonFire = Factory::CreateObject<DecoObject>(Vec3(-13.7f, -0.5f, -6.9f), L"Fire", L"");
-		pBonFire->GetMeshRenderer()->SetMaterial(pBonFire->GetMeshRenderer()->GetMaterial()->Clone());
-		pBonFire->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::WrapClamp);
-		pBonFire->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
-		pBonFire->AddComponent(new BonFireScript);
-		AddGameObject(pBonFire);
-		
-		DecoObject* pLightObject = nullptr;
-		{
-			pLightObject = new DecoObject;
-			Transform* pTransform = pLightObject->AddComponent(new Transform);
-			pTransform->SetPosition(Vec3(-14.f, 5.9f, -6.5f));
-			pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
-			pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
-			Light* pLight = pLightObject->AddComponent(new Light);
-			pLight->SetDiffuse(Vec3(1.0f, 0.3f, 0.2f));
-			pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
-			pLight->SetLightRange(70.f);
-			pLight->SetLightType(LightType::PointLight);
-			AddGameObject(pLightObject);
-		}
-	}
 }
 
 void LeftSecretTrialMap::InitColliderAdd()
@@ -1117,144 +1098,279 @@ void LeftSecretTrialMap::FuncObjectAdd()
 #pragma region "화톳불 시리즈"
 	// 화톳불 1
 	{
-		//화톳불 3개 오브젝트 세트
-		float x = -12.8f;
-		float y = -2.6f;
-		float z = 8.3f;
+		// 화롯불
 		{
-			//바텀 - FireLamp_Bottom
-			DecoObject* pFireLamp_Bottom = Factory::CreateObject<DecoObject>(Vec3(x, y, z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Bottom.fbx");
-			pFireLamp_Bottom->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
-			AddGameObject(pFireLamp_Bottom);
-		}
-		{
-			//나무장작 - FireLamp_Wood
-			DecoObject* pFireLamp_Wood = Factory::CreateObject<DecoObject>(Vec3(x, (y + 0.5f), z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Wood.fbx");
-			pFireLamp_Wood->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.94f, 2.94f, 2.94f);
 
-			AddGameObject(pFireLamp_Wood);
-		}
-		{
-			//상단부 - FireLamp_Top
-			DecoObject* pFireLamp_Top = Factory::CreateObject<DecoObject>(Vec3(x, (y + 1.5f), z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Top.fbx");
-			pFireLamp_Top->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
 
-			AddGameObject(pFireLamp_Top);
+			DecoObject* pLampUpper = Factory::CreateObject<DecoObject>(Vec3(-12.8f, -2.0f, 8.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+			pLampUpper->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pLampUpper->GetMeshRenderer()->SetSubsetRenderFlag(0, false);
+			AddGameObject(pLampUpper);
+
+
+			DecoObject* pLampBelow = Factory::CreateObject<DecoObject>(Vec3(-12.8f, -2.0f, 8.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+			pLampBelow->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pLampBelow->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
+			AddGameObject(pLampBelow);
+
+			DecoObject* pBonFire = Factory::CreateObject<DecoObject>(Vec3(-12.8f, -2.0f, 8.3f), L"Fire", L"");
+			pBonFire->GetMeshRenderer()->SetMaterial(pBonFire->GetMeshRenderer()->GetMaterial()->Clone());
+			pBonFire->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::WrapClamp);
+			pBonFire->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			pBonFire->AddComponent(new BonFireScript);
+			AddGameObject(pBonFire);
+
+			DecoObject* pLightObject = nullptr;
+			{
+				pLightObject = new DecoObject;
+				Transform* pTransform = pLightObject->AddComponent(new Transform);
+				pTransform->SetPosition(Vec3(-12.8f, -2.0f, 8.3f));
+				pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+				pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+				Light* pLight = pLightObject->AddComponent(new Light);
+				pLight->SetDiffuse(Vec3(0.8f, 0.5f, 0.2f));
+				pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+				pLight->SetLightRange(10.f);
+				pLight->SetLightType(LightType::PointLight);
+				AddGameObject(pLightObject);
+			}
+
+			yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(-12.8f, -2.0f, 8.3f), physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow, pBonFire, pLightObject);
+			AddGameObject(pFireLamp);
+			//pFireLamp->SetIsBurn();
+			//SetGizmoTarget(pFireLamp);
 		}
 	}
 
+	
 	// 화톳불 2
 	{
-		//화톳불 3개 오브젝트 세트
-		float x = 6.4f;
-		float y = -2.6f;
-		float z = 8.3f;
+		// 화롯불
 		{
-			//바텀 - FireLamp_Bottom
-			DecoObject* pFireLamp_Bottom = Factory::CreateObject<DecoObject>(Vec3(x, y, z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Bottom.fbx");
-			pFireLamp_Bottom->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
-			AddGameObject(pFireLamp_Bottom);
-		}
-		{
-			//나무장작 - FireLamp_Wood
-			DecoObject* pFireLamp_Wood = Factory::CreateObject<DecoObject>(Vec3(x, (y + 0.5f), z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Wood.fbx");
-			pFireLamp_Wood->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.94f, 2.94f, 2.94f);
 
-			AddGameObject(pFireLamp_Wood);
-		}
-		{
-			//상단부 - FireLamp_Top
-			DecoObject* pFireLamp_Top = Factory::CreateObject<DecoObject>(Vec3(x, (y + 1.5f), z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Top.fbx");
-			pFireLamp_Top->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
 
-			AddGameObject(pFireLamp_Top);
+			DecoObject* pLampUpper = Factory::CreateObject<DecoObject>(Vec3(6.4f, -2.0f, 8.3f) , L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+			pLampUpper->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pLampUpper->GetMeshRenderer()->SetSubsetRenderFlag(0, false);
+			AddGameObject(pLampUpper);
+
+
+			DecoObject* pLampBelow = Factory::CreateObject<DecoObject>(Vec3(6.4f, -2.0f, 8.3f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+			pLampBelow->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pLampBelow->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
+			AddGameObject(pLampBelow);
+
+			DecoObject* pBonFire = Factory::CreateObject<DecoObject>(Vec3(6.4f, -2.0f, 8.3f), L"Fire", L"");
+			pBonFire->GetMeshRenderer()->SetMaterial(pBonFire->GetMeshRenderer()->GetMaterial()->Clone());
+			pBonFire->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::WrapClamp);
+			pBonFire->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			pBonFire->AddComponent(new BonFireScript);
+			AddGameObject(pBonFire);
+
+			DecoObject* pLightObject = nullptr;
+			{
+				pLightObject = new DecoObject;
+				Transform* pTransform = pLightObject->AddComponent(new Transform);
+				pTransform->SetPosition(Vec3(6.4f, -2.0f, 8.3f));
+				pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+				pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+				Light* pLight = pLightObject->AddComponent(new Light);
+				pLight->SetDiffuse(Vec3(0.8f, 0.5f, 0.2f));
+				pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+				pLight->SetLightRange(10.f);
+				pLight->SetLightType(LightType::PointLight);
+				AddGameObject(pLightObject);
+			}
+
+			yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(6.4f, -2.0f, 8.3f), physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow, pBonFire, pLightObject);
+			AddGameObject(pFireLamp);
+			//pFireLamp->SetIsBurn();
+			//SetGizmoTarget(pFireLamp);
 		}
 	}
 
 	// 화톳불 3
 	{
-		//화톳불 3개 오브젝트 세트
-		float x = 6.4f;
-		float y = -2.6f;
-		float z = -22.9f;
+		// 화롯불
 		{
-			//바텀 - FireLamp_Bottom
-			DecoObject* pFireLamp_Bottom = Factory::CreateObject<DecoObject>(Vec3(x, y, z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Bottom.fbx");
-			pFireLamp_Bottom->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
-			AddGameObject(pFireLamp_Bottom);
-		}
-		{
-			//나무장작 - FireLamp_Wood
-			DecoObject* pFireLamp_Wood = Factory::CreateObject<DecoObject>(Vec3(x, (y + 0.5f), z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Wood.fbx");
-			pFireLamp_Wood->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.94f, 2.94f, 2.94f);
 
-			AddGameObject(pFireLamp_Wood);
-		}
-		{
-			//상단부 - FireLamp_Top
-			DecoObject* pFireLamp_Top = Factory::CreateObject<DecoObject>(Vec3(x, (y + 1.5f), z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Top.fbx");
-			pFireLamp_Top->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
 
-			AddGameObject(pFireLamp_Top);
+			DecoObject* pLampUpper = Factory::CreateObject<DecoObject>(Vec3(6.4f, -2.0f, -22.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+			pLampUpper->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pLampUpper->GetMeshRenderer()->SetSubsetRenderFlag(0, false);
+			AddGameObject(pLampUpper);
+
+
+			DecoObject* pLampBelow = Factory::CreateObject<DecoObject>(Vec3(6.4f, -2.0f, -22.9f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+			pLampBelow->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pLampBelow->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
+			AddGameObject(pLampBelow);
+
+			DecoObject* pBonFire = Factory::CreateObject<DecoObject>(Vec3(6.4f, -2.0f, -22.9f), L"Fire", L"");
+			pBonFire->GetMeshRenderer()->SetMaterial(pBonFire->GetMeshRenderer()->GetMaterial()->Clone());
+			pBonFire->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::WrapClamp);
+			pBonFire->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			pBonFire->AddComponent(new BonFireScript);
+			AddGameObject(pBonFire);
+
+			DecoObject* pLightObject = nullptr;
+			{
+				pLightObject = new DecoObject;
+				Transform* pTransform = pLightObject->AddComponent(new Transform);
+				pTransform->SetPosition(Vec3(6.4f, -2.0f, -22.9f));
+				pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+				pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+				Light* pLight = pLightObject->AddComponent(new Light);
+				pLight->SetDiffuse(Vec3(0.8f, 0.5f, 0.2f));
+				pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+				pLight->SetLightRange(10.f);
+				pLight->SetLightType(LightType::PointLight);
+				AddGameObject(pLightObject);
+			}
+
+			yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(6.4f, -2.0f, -22.9f), physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow, pBonFire, pLightObject);
+			AddGameObject(pFireLamp);
+			//pFireLamp->SetIsBurn();
+			//SetGizmoTarget(pFireLamp);
 		}
 	}
 
 	// 화톳불 4
 	{
-		//화톳불 3개 오브젝트 세트
-		float x = -13.6f;
-		float y = -2.6f;
-		float z = -7.f;
-		{
-			//바텀 - FireLamp_Bottom
-			DecoObject* pFireLamp_Bottom = Factory::CreateObject<DecoObject>(Vec3(x, y, z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Bottom.fbx");
-			pFireLamp_Bottom->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
-			AddGameObject(pFireLamp_Bottom);
-		}
-		{
-			//나무장작 - FireLamp_Wood
-			DecoObject* pFireLamp_Wood = Factory::CreateObject<DecoObject>(Vec3(x, (y + 0.5f), z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Wood.fbx");
-			pFireLamp_Wood->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
 
-			AddGameObject(pFireLamp_Wood);
-		}
+		// 화롯불
 		{
-			//상단부 - FireLamp_Top
-			DecoObject* pFireLamp_Top = Factory::CreateObject<DecoObject>(Vec3(x, (y + 1.5f), z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Top.fbx");
-			pFireLamp_Top->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.94f, 2.94f, 2.94f);
 
-			AddGameObject(pFireLamp_Top);
+
+			DecoObject* pLampUpper = Factory::CreateObject<DecoObject>(Vec3(-13.6f, -2.0f, -7.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+			pLampUpper->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pLampUpper->GetMeshRenderer()->SetSubsetRenderFlag(0, false);
+			AddGameObject(pLampUpper);
+
+
+			DecoObject* pLampBelow = Factory::CreateObject<DecoObject>(Vec3(-13.6f, -2.0f, -7.f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+			pLampBelow->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pLampBelow->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
+			AddGameObject(pLampBelow);
+
+			DecoObject* pBonFire = Factory::CreateObject<DecoObject>(Vec3(-13.6f, -2.0f, -7.f), L"Fire", L"");
+			pBonFire->GetMeshRenderer()->SetMaterial(pBonFire->GetMeshRenderer()->GetMaterial()->Clone());
+			pBonFire->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::WrapClamp);
+			pBonFire->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			pBonFire->AddComponent(new BonFireScript);
+			AddGameObject(pBonFire);
+
+			DecoObject* pLightObject = nullptr;
+			{
+				pLightObject = new DecoObject;
+				Transform* pTransform = pLightObject->AddComponent(new Transform);
+				pTransform->SetPosition(Vec3(-13.6f, -2.0f, -7.f));
+				pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+				pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+				Light* pLight = pLightObject->AddComponent(new Light);
+				pLight->SetDiffuse(Vec3(0.8f, 0.5f, 0.2f));
+				pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+				pLight->SetLightRange(10.f);
+				pLight->SetLightType(LightType::PointLight);
+				AddGameObject(pLightObject);
+			}
+
+			yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(-13.6f, -2.0f, -7.f), physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow, pBonFire, pLightObject);
+			AddGameObject(pFireLamp);
+			pFireLamp->SetIsBurn();
 		}
 	}
 
 	// 화톳불 5
 	{
-		//화톳불 3개 오브젝트 세트
-		float x = -13.6f;
-		float y = -2.6f;
-		float z = -22.4f;
-		{
-			//바텀 - FireLamp_Bottom
-			DecoObject* pFireLamp_Bottom = Factory::CreateObject<DecoObject>(Vec3(x, y, z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Bottom.fbx");
-			pFireLamp_Bottom->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
-			AddGameObject(pFireLamp_Bottom);
-		}
-		{
-			//나무장작 - FireLamp_Wood
-			DecoObject* pFireLamp_Wood = Factory::CreateObject<DecoObject>(Vec3(x, (y + 0.5f), z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Wood.fbx");
-			pFireLamp_Wood->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
 
-			AddGameObject(pFireLamp_Wood);
-		}
+		// 화롯불
 		{
-			//상단부 - FireLamp_Top
-			DecoObject* pFireLamp_Top = Factory::CreateObject<DecoObject>(Vec3(x, (y + 1.5f), z), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\LeftSecretTrialMap\\FireLamp_Top.fbx");
-			pFireLamp_Top->GetTransform()->SetScale(Vec3(2.5f, 2.5f, 2.5f));
+			PhysicsInfo physicsInfo;
+			physicsInfo.eActorType = ActorType::Kinematic;
+			physicsInfo.eGeometryType = GeometryType::Box;
+			physicsInfo.size = Vec3(2.94f, 2.94f, 2.94f);
 
-			AddGameObject(pFireLamp_Top);
+
+			DecoObject* pLampUpper = Factory::CreateObject<DecoObject>(Vec3(-13.6f, -2.0f, -22.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+			pLampUpper->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pLampUpper->GetMeshRenderer()->SetSubsetRenderFlag(0, false);
+			AddGameObject(pLampUpper);
+
+
+			DecoObject* pLampBelow = Factory::CreateObject<DecoObject>(Vec3(-13.6f, -2.0f, -22.4f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\GRANDMA_FireLamp.fbx");
+
+			pLampBelow->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+			pLampBelow->GetMeshRenderer()->SetSubsetRenderFlag(1, false);
+			AddGameObject(pLampBelow);
+
+			DecoObject* pBonFire = Factory::CreateObject<DecoObject>(Vec3(-13.6f, -2.0f, -22.4f), L"Fire", L"");
+			pBonFire->GetMeshRenderer()->SetMaterial(pBonFire->GetMeshRenderer()->GetMaterial()->Clone());
+			pBonFire->GetMeshRenderer()->GetMaterial()->SetSamplerType(SamplerType::WrapClamp);
+			pBonFire->GetTransform()->SetScale(Vec3(2.f, 2.f, 2.f));
+			pBonFire->AddComponent(new BonFireScript);
+			AddGameObject(pBonFire);
+
+			DecoObject* pLightObject = nullptr;
+			{
+				pLightObject = new DecoObject;
+				Transform* pTransform = pLightObject->AddComponent(new Transform);
+				pTransform->SetPosition(Vec3(-13.6f, -2.0f, -22.4f));
+				pTransform->SetRotation(Vec3(90.f, 0.f, 0.f));
+				pTransform->SetScale(Vec3(100.f, 100.f, 100.f));
+				Light* pLight = pLightObject->AddComponent(new Light);
+				pLight->SetDiffuse(Vec3(0.8f, 0.5f, 0.2f));
+				pLight->SetAmbient(Vec3(0.0f, 0.0f, 0.0f));
+				pLight->SetLightRange(10.f);
+				pLight->SetLightType(LightType::PointLight);
+				AddGameObject(pLightObject);
+			}
+
+			yj::FireLamp* pFireLamp = Factory::CreateObjectHasPhysical<yj::FireLamp>(Vec3(-13.6f, -2.0f, -22.4f), physicsInfo, L"Deferred", L"", false, pLampUpper, pLampBelow, pBonFire, pLightObject);
+			AddGameObject(pFireLamp);
+			//pFireLamp->SetIsBurn();
+			//SetGizmoTarget(pFireLamp);
 		}
 	}
 #pragma endregion
+
+	// Spider Web
+	{
+		PhysicsInfo info = {};
+		info.eActorType = ActorType::Kinematic;
+		info.eGeometryType = GeometryType::Box;
+		info.size = Vec3(5.f, 9.35f, 7.45f);
+
+		SpiderWeb* pWeb = Factory::CreateObjectHasPhysical<SpiderWeb>(Vec3(-13.85, 0.55f, -45.4f), info, L"SpiderWeb", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Cobweb_Flat.fbx");
+		pWeb->GetTransform()->SetScale(Vec3(5.f, 9.35f, 7.45f));
+		pWeb->GetTransform()->SetRotation(Vec3(90.f, 88.1f, 0.f));
+		AddGameObject(pWeb);
+	}
 
 	{
 		GameObject* pLightObject = new GameObject(LayerType::Unknown);

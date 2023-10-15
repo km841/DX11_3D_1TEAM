@@ -121,7 +121,9 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorTask* pRunAnimationTask = new BehaviorTask([&]() {
 				Animator* pAnimator = GetAnimator();
 				int animIndex = pAnimator->GetCurrentClipIndex();
+
 				AudioSound* pSound = GetAudioSound();
+
 				Transform* pTr = GetTransform();
 				Vec3 Rot = pTr->GetRotation();
 				if (17 != animIndex)
@@ -285,7 +287,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					//meBasicState = MonsterBasicState::Silent_Clap;
+					meBasicState = MonsterBasicState::Roll_Start;
 					return BehaviorResult::Success;
 				});
 
@@ -1915,6 +1917,14 @@ void LORD_BOSS::PrevFollowSet()
 	PosDir = playerPos - myPos;
 	PosDir.Normalize();
 	PosDir.y = 0;
+
+	
+	Vec3 particleDir = -GetTransform()->GetUp();
+	particleDir.y += 0.5f;
+	particleDir.Normalize();
+	pSparkParticle->GetParticleSystem()->SetAngle(particleDir);
+	pSparkParticle->GetParticleSystem()->SetParticleRotation(Vec3(0.f, 0.f, 0.f));
+	pSparkParticle->Enable();
 }
 
 void LORD_BOSS::PrevFollowLive()
