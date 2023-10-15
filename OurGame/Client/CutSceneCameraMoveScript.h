@@ -37,6 +37,9 @@ namespace jh
 		void BossMapMove();
 		void BossMapMove2();
 		void BossMapMove3();
+		void BossMapMove4();
+
+		void SetClearPos();
 
 		bool IsBGMStart() { return mbIsBGMStart; }
 
@@ -92,12 +95,17 @@ namespace jh
 		Vec3 mBossNameEndPos;
 		Vec3 mBossNameEndPos2;
 
+		Vec3 mBossClearPos;
+		Vec3 mBossClearRot;
+
 		int mBossSequenceNum;
 
 		bool mbAddWhite;
+		bool mbAddBlack;
 		bool mbIsBGMStart;
 
 		TimerObject mBossMapTimer;
 		TimerObject mBossMapTimer2;
+		TimerObject mBossMapTimer3;
 	};
 }
