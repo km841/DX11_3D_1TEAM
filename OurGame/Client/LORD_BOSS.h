@@ -67,6 +67,7 @@ private:
 	//투사체 공격(항아리던지기)
 	void CreatePOTProJectTile();
 	void CreatePOTProJectTile(int _a);
+	void CreatePOTProJectTile(float _a);
 private:
 	int Health;
 

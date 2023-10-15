@@ -2326,14 +2326,14 @@ void LORD_BOSS::CreatePOTProJectTile(int _a)
 	static std::uniform_int_distribution<int> distribution(-8, 8);          // 생성 범위
 	static auto generator = std::bind(distribution, engine);
 	Transform* pTr = GetTransform();
-	PotProjectPos01 = pTr->GetPosition();
-	PotProjectPos01.x += generator() * 1.5f * _a;
-	PotProjectPos01.z += abs(generator()) * 2;
-	PotProjectPos01.y += 10;
+	PotProjectPos02 = pTr->GetPosition();
+	PotProjectPos02.x += generator() * 1.5f * _a;
+	PotProjectPos02.z += abs(generator()) * 2;
+	PotProjectPos02.y += 10;
 
 	Vec3 PlayerPos = PLAYER->GetTransform()->GetPosition();
 
-	Vec3 PotDir = PlayerPos - PotProjectPos01;
+	Vec3 PotDir = PlayerPos - PotProjectPos02;
 	PotDir.y += 10;
 	PotDir.Normalize();
 	PotDir *= 10;
@@ -2344,7 +2344,7 @@ void LORD_BOSS::CreatePOTProJectTile(int _a)
 		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(2.f, 3.1f, 2.f);
 
-		GameObject* pPot2 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(PotProjectPos01), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\OrgPot.fbx",false,LayerType::Monster_ProjectTile);
+		GameObject* pPot2 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(PotProjectPos02), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\OrgPot.fbx",false,LayerType::Monster_ProjectTile);
 		pPot2->GetMeshRenderer()->SetMaterial(pPot2->GetMeshRenderer()->GetMaterial()->Clone());
 		pPot2->GetTransform()->SetRotation(Vec3(0.00f, 0.00f, 90.00f));
 		pPot2->GetTransform()->SetScale(Vec3(3.15f, 2.85f, 3.15f));
@@ -2372,7 +2372,69 @@ void LORD_BOSS::CreatePOTProJectTile(int _a)
 		basePhysicsInfo.eGeometryType = GeometryType::Box;
 		basePhysicsInfo.size = Vec3(2.f, 3.1f, 2.f);
 
-		Pot_ProjectTile* pIrreparablePot = Factory::CreateObjectHasPhysical<Pot_ProjectTile>(Vec3(PotProjectPos01), basePhysicsInfo, L"Deferred", L"", false, pPot2);
+		Pot_ProjectTile* pIrreparablePot = Factory::CreateObjectHasPhysical<Pot_ProjectTile>(Vec3(PotProjectPos02), basePhysicsInfo, L"Deferred", L"", false, pPot2);
+		pIrreparablePot->Initialize();
+		pIrreparablePot->GetRigidBody()->ApplyGravity();
+		pIrreparablePot->GetRigidBody()->SetVelocity(PotDir);
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pIrreparablePot);
+
+	}
+}
+
+void LORD_BOSS::CreatePOTProJectTile(float _a)
+{
+	static std::mt19937 engine((unsigned int)time(NULL));                    // MT19937 난수 엔진
+	static std::uniform_int_distribution<int> distribution(-8, 8);          // 생성 범위
+	static auto generator = std::bind(distribution, engine);
+
+	Transform* pTr = GetTransform();
+	PotProjectPos03 = pTr->GetPosition();
+	PotProjectPos03.x += generator() * 1.5f * _a;
+	PotProjectPos03.z += abs(generator()) * 2;
+	PotProjectPos03.y += 10;
+
+	Vec3 PlayerPos = PLAYER->GetTransform()->GetPosition();
+
+	Vec3 PotDir = PlayerPos - PotProjectPos03;
+	PotDir.y += 10;
+	PotDir.Normalize();
+	PotDir *= 10;
+	//키+파란색 항아리 두번째 - POT_Key
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Kinematic;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+		GameObject* pPot2 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(PotProjectPos03), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\OrgPot.fbx", false, LayerType::Monster_ProjectTile);
+		pPot2->GetMeshRenderer()->SetMaterial(pPot2->GetMeshRenderer()->GetMaterial()->Clone());
+		pPot2->GetTransform()->SetRotation(Vec3(0.00f, 0.00f, 90.00f));
+		pPot2->GetTransform()->SetScale(Vec3(3.15f, 2.85f, 3.15f));
+		pPot2->Initialize();
+		pPot2->GetRigidBody()->ApplyGravity();
+		pPot2->GetRigidBody()->SetVelocity(PotDir);
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloom(true, 1);
+
+
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 0);
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloomPower(1.5f, 1);
+
+
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.2f, 0.2f, 0.2f), 0);
+		pPot2->GetMeshRenderer()->GetMaterial()->SetBloomColor(Vec4(1.f, 0.2f, 0.2f, 0.2f), 1);
+
+
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pPot2);
+
+
+
+		PhysicsInfo basePhysicsInfo;
+		basePhysicsInfo.eActorType = ActorType::Kinematic;
+		basePhysicsInfo.eGeometryType = GeometryType::Box;
+		basePhysicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+		Pot_ProjectTile* pIrreparablePot = Factory::CreateObjectHasPhysical<Pot_ProjectTile>(Vec3(PotProjectPos03), basePhysicsInfo, L"Deferred", L"", false, pPot2);
 		pIrreparablePot->Initialize();
 		pIrreparablePot->GetRigidBody()->ApplyGravity();
 		pIrreparablePot->GetRigidBody()->SetVelocity(PotDir);
