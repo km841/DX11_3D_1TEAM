@@ -28,10 +28,13 @@ namespace jh
 		mBossNameStartRot2(Vec3(-6.6f, 132.82f, 0.f)),
 		mBossNameEndPos(Vec3(-1.35f, -2.43f, 5.42f)),
 		mBossNameEndPos2(Vec3(-6.53f, -6.4f, 8.85f)),
+		mBossClearPos(Vec3(-11.54f, -3.78f, 3.05f)),
+		mBossClearRot(Vec3(5.85f, 100.41f, 0.f)),
 		mbIsAIState(false),
 		mMainSequenceNum(-1),
 		mBossSequenceNum(0),
 		mbAddWhite(false),
+		mbAddBlack(false),
 		mbIsBGMStart(false)
 	{
 	}
@@ -69,6 +72,8 @@ namespace jh
 				BossMapMove2();
 			if (2 == mBossSequenceNum)
 				BossMapMove3();
+			if (3 == mBossSequenceNum)
+				BossMapMove4();
 			break;
 		}
 
@@ -77,6 +82,10 @@ namespace jh
 			SetBossSequence(1);
 		if (IS_DOWN(KeyType::I))
 			SetBossSequence(2);
+		if (IS_DOWN(KeyType::Y))
+			SetClearPos();
+		if (IS_DOWN(KeyType::T))
+			SetBossSequence(3);
 
 		if (EVENTSYSTEM->CheckEventOn("DoorApearCamMoveEvent"))
 		{
@@ -308,6 +317,7 @@ namespace jh
 	{
 		GetGameObject()->GetTransform()->SetPosition(Vec3(9.83f, 2.48f, -14.38f));
 		GetGameObject()->GetTransform()->SetRotation(Vec3(28.4f, 24.31f, 0.f));
+		SetBossSequence(-1);
 	}
 
 	void CutSceneCameraMoveScript::BossMapMove3()
@@ -365,5 +375,52 @@ namespace jh
 			mBossMapTimer2.Stop();
 			SetBossSequence(-1);	// 반복 금지용
 		}
+	}
+
+	void CutSceneCameraMoveScript::BossMapMove4()
+	{
+		mBossMapTimer3.SetEndTime(5.f);
+
+		if (false == mBossMapTimer3.GetIsRun())
+			mBossMapTimer3.Start();
+
+		mBossMapTimer3.Update();
+
+		float progress = mBossMapTimer3.GetProgress();
+
+		Vec3 endPos = mBossClearPos;
+		endPos.y += 5.f;
+
+		Vec3 pos = Lerp(mBossClearPos, endPos, progress);
+		GetGameObject()->GetTransform()->SetPosition(pos);
+		GetGameObject()->GetTransform()->SetRotation(mBossClearRot);
+
+		if (0.2f <= progress)
+		{
+			if (false == mbAddBlack)
+			{
+				mbAddBlack = true;
+				{
+					ScreenEffectInfo* info = new ScreenEffectInfo;
+					info->eEffectType = ScreenEffectType::FadeOut;
+					info->endTime = 4.f;
+
+					GET_SINGLE(RenderManager)->AddScreenEffect(info);
+				}
+			}
+		}
+
+		if (true == mBossMapTimer3.IsFinished())
+		{
+			mBossMapTimer3.Stop();
+			SetBossSequence(-1);	// 반복 금지용
+		}
+	}
+
+	void CutSceneCameraMoveScript::SetClearPos()
+	{
+		GetGameObject()->GetTransform()->SetPosition(mBossClearPos);
+		GetGameObject()->GetTransform()->SetRotation(mBossClearRot);
+		SetBossSequence(-1);
 	}
 }
