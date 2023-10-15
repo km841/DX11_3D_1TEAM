@@ -112,7 +112,6 @@ namespace yj
 		else
 		{
 			PLAYER->Enable();
-			//PLAYER->GetGreatSword()->Enable();
 			if (true == mbIsBusCutSceneOver)
 			{
 				mbIsBusCutSceneOver = false;
@@ -120,7 +119,7 @@ namespace yj
 			}
 		}
 
-		Vec3 pos = MAIN_CAMERA->GetTransform()->GetPosition();
+		/*Vec3 pos = MAIN_CAMERA->GetTransform()->GetPosition();
 		wstring strPos = {};
 		strPos += L"x = " + std::to_wstring(pos.x) + L" ";
 		strPos += L"y = " + std::to_wstring(pos.y) + L" ";
@@ -132,7 +131,7 @@ namespace yj
 		strRot += L"y = " + std::to_wstring(rot.y) + L" ";
 		strRot += L"z = " + std::to_wstring(rot.z);
 		FONT->DrawString(strPos, 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
-		FONT->DrawString(strRot, 30.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
+		FONT->DrawString(strRot, 30.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);*/
 	}
 
 	void MainOfficeMap::Start()

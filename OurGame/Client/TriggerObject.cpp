@@ -59,7 +59,7 @@ namespace jh
 			CutSceneCameraMoveScript* pScript = MAIN_CAMERA->GetScript<CutSceneCameraMoveScript>();
 			pScript->SetStartPos(CUTSCENE_CAMERA->GetGameObject()->GetTransform()->GetPosition());
 			pScript->SetStartRot(CUTSCENE_CAMERA->GetGameObject()->GetTransform()->GetRotation());
-			pScript->SetSequence(0);
+			pScript->SetMainSequence(0);
 		}
 	}
 

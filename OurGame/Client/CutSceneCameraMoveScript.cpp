@@ -7,6 +7,8 @@
 #include "Player.h"
 #include "Input.h"
 #include "Timer.h"
+#include "RenderManager.h"
+#include "AudioSound.h"
 
 namespace jh
 {
@@ -17,8 +19,20 @@ namespace jh
 		mCloseRot(Vec3(3.62f, 98.78f, 0.f)),
 		mDoorStartPos(Vec3(-3.69f, 19.75f, 9.34f)),
 		mDoorEndPos(Vec3(0.745f, 17.13f, 4.68f)),
+		mBossStartPos(Vec3(2.45f, -5.89f, 1.47f)),
+		mBossStartRot(Vec3(-9.77f, 133.65f, 0.f)),
+		mBossEndPos(Vec3(3.57f, -5.62f, 0.4f)),
+		mBossNameStartPos(Vec3(0.62f, -2.27f, 3.48f)),
+		mBossNameStartRot(Vec3(-3.33f, 134.36f, 0.f)),
+		mBossNameStartPos2(Vec3(-2.55f, -5.82f, 5.74f)),
+		mBossNameStartRot2(Vec3(-6.6f, 132.82f, 0.f)),
+		mBossNameEndPos(Vec3(-1.35f, -2.43f, 5.42f)),
+		mBossNameEndPos2(Vec3(-6.53f, -6.4f, 8.85f)),
 		mbIsAIState(false),
-		mSequenceNum(-1)
+		mMainSequenceNum(-1),
+		mBossSequenceNum(0),
+		mbAddWhite(false),
+		mbIsBGMStart(false)
 	{
 	}
 
@@ -37,44 +51,50 @@ namespace jh
 			TitleMove();
 			break;
 		case hm::SceneType::MainOfficeMap:
-			if (0 == mSequenceNum)
+			if (0 == mMainSequenceNum)
 				MainOfficeMove();
-			if (1 == mSequenceNum)
+			if (1 == mMainSequenceNum)
 				MainOfficeMove2();
-			if (2 == mSequenceNum)
+			if (2 == mMainSequenceNum)
 				MainOfficeMove3();
-			if (3 == mSequenceNum)
+			if (3 == mMainSequenceNum)
 				MainOfficeMove4();
-			if (4 == mSequenceNum)
+			if (4 == mMainSequenceNum)
 				MainOfficeMove5();
+			break;
+		case hm::SceneType::BossMap:
+			if(0 == mBossSequenceNum)
+				BossMapMove();
+			if (1 == mBossSequenceNum)
+				BossMapMove2();
+			if (2 == mBossSequenceNum)
+				BossMapMove3();
 			break;
 		}
 
 		// 확인용 코드
 		if (IS_DOWN(KeyType::U))
-			SetSequence(1);
+			SetBossSequence(1);
 		if (IS_DOWN(KeyType::I))
-			SetSequence(2);
-		if (IS_DOWN(KeyType::Y))
-			SetDeskPos();
+			SetBossSequence(2);
 
 		if (EVENTSYSTEM->CheckEventOn("DoorApearCamMoveEvent"))
 		{
 			EVENTSYSTEM->EventOn("DoorApearEvent");
-			SetSequence(2);
+			SetMainSequence(2);
 		}
 		if (EVENTSYSTEM->CheckEventOn("ChandlerZoomEvent"))
 		{
-			SetSequence(1);
+			SetMainSequence(1);
 			TEXTBOX->SetWriteTexts(11, 13, "ChandlerZoomOutEvent");
 			TEXTBOX->Apear();
-			SetSequence(5); // <- 번호 바꿔 줘야함!
+			SetMainSequence(5); // <- 번호 바꿔 줘야함!
 		}
 		if (EVENTSYSTEM->CheckEventOn("ChandlerZoomOutEvent"))
 		{
 			TEXTBOX->SetWriteTexts(13, 16,"SpeechEndEvent");
 			TEXTBOX->Apear();
-			SetSequence(5);
+			SetMainSequence(5);
 		}
 	}
 
@@ -151,7 +171,7 @@ namespace jh
 			TEXTBOX->SetWriteTexts(3, 9, "DoorApearCamMoveEvent");
 			TEXTBOX->Apear();
 			mMainOfficeTimer.Stop();
-			SetSequence(-1);	// 반복 금지용
+			SetMainSequence(-1);	// 반복 금지용
 		}
 	}
 
@@ -177,8 +197,7 @@ namespace jh
 		if (true == mMainOfficeTimer2.IsFinished())
 		{
 			mMainOfficeTimer2.Stop();
-			SetSequence(-1);	// 반복 금지용
-			
+			SetMainSequence(-1);	// 반복 금지용
 		}
 	}
 
@@ -204,7 +223,7 @@ namespace jh
 		if (true == mMainOfficeTimer3.IsFinished())
 		{
 			mMainOfficeTimer3.Stop();
-			SetSequence(3);	// MainOfficeMove4로 이동
+			SetMainSequence(3);	// MainOfficeMove4로 이동
 		}
 	}
 
@@ -227,7 +246,7 @@ namespace jh
 		if (true == mMainOfficeTimer4.IsFinished())
 		{
 			mMainOfficeTimer4.Stop();
-			SetSequence(4);	// MainOfficeMove5로 이동
+			SetMainSequence(4);	// MainOfficeMove5로 이동
 			TEXTBOX->SetWriteTexts(10, 10, "ChandlerZoomEvent");
 			TEXTBOX->Apear();
 		}
@@ -252,13 +271,99 @@ namespace jh
 		if (true == mMainOfficeTimer5.IsFinished())
 		{
 			mMainOfficeTimer5.Stop();
-			SetSequence(-1);	// 반복 금지용
+			SetMainSequence(-1);	// 반복 금지용
 		}
 	}
+
 	void CutSceneCameraMoveScript::SetDeskPos()
 	{
-		SetSequence(-1);
+		SetMainSequence(-1);
 		GetGameObject()->GetTransform()->SetPosition(mWidePos);
 		GetGameObject()->GetTransform()->SetRotation(mWideRot);
+	}
+
+	void CutSceneCameraMoveScript::BossMapMove()
+	{
+		mBossMapTimer.SetEndTime(7.f);
+
+		if (false == mBossMapTimer.GetIsRun())
+			mBossMapTimer.Start();
+
+		mBossMapTimer.Update();
+
+		float progress = mBossMapTimer.GetProgress();
+
+		Vec3 pos = Lerp(mBossStartPos, mBossEndPos, progress);
+		GetGameObject()->GetTransform()->SetPosition(pos);
+		GetGameObject()->GetTransform()->SetRotation(mBossStartRot);
+
+		if (true == mBossMapTimer.IsFinished())
+		{
+			mBossMapTimer.Stop();
+			SetBossSequence(-1);	// 반복 금지용
+		}
+	}
+
+	void CutSceneCameraMoveScript::BossMapMove2()
+	{
+		GetGameObject()->GetTransform()->SetPosition(Vec3(9.83f, 2.48f, -14.38f));
+		GetGameObject()->GetTransform()->SetRotation(Vec3(28.4f, 24.31f, 0.f));
+	}
+
+	void CutSceneCameraMoveScript::BossMapMove3()
+	{
+		// 화면 하얗게
+		if (false == mbAddWhite)
+		{
+			mbAddWhite = true;
+			{
+				ScreenEffectInfo* info = new ScreenEffectInfo;
+				info->eEffectType = ScreenEffectType::WhiteOut;
+				info->endTime = 2.f;
+
+				GET_SINGLE(RenderManager)->AddScreenEffect(info);
+			}
+			{
+				ScreenEffectInfo* info = new ScreenEffectInfo;
+				info->eEffectType = ScreenEffectType::WhiteIn;
+				info->endTime = 2.f;
+
+				GET_SINGLE(RenderManager)->AddScreenEffect(info);
+			}
+		}
+
+		mBossMapTimer2.SetEndTime(14.f);
+
+		if (false == mBossMapTimer2.GetIsRun())
+			mBossMapTimer2.Start();
+
+		mBossMapTimer2.Update();
+
+		float progress = mBossMapTimer2.GetProgress();
+
+		if (0.1f < progress)
+		{
+			mbIsBGMStart = true;
+		}
+		if (0.14f <= progress && progress <= 0.45f)
+		{
+			Vec3 pos = Lerp(mBossNameStartPos, mBossNameEndPos, progress);
+			GetGameObject()->GetTransform()->SetPosition(pos);
+			GetGameObject()->GetTransform()->SetRotation(mBossNameStartRot);
+		}
+		else if (0.45f < progress)
+		{
+			// 여기서 보스 이름 텍스트 출력
+
+			Vec3 pos = Lerp(mBossNameStartPos2, mBossNameEndPos2, progress);
+			GetGameObject()->GetTransform()->SetPosition(pos);
+			GetGameObject()->GetTransform()->SetRotation(mBossNameStartRot2);
+		}
+
+		if (true == mBossMapTimer2.IsFinished())
+		{
+			mBossMapTimer2.Stop();
+			SetBossSequence(-1);	// 반복 금지용
+		}
 	}
 }

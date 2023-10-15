@@ -78,7 +78,8 @@ namespace hm
 	void BossMap::Start()
 	{
 		Map::Start();
-		PLAYER->GetTransform()->SetPosition(Vec3(0.f, 0.0f, 0.f));
+		PLAYER->GetTransform()->SetPosition(Vec3(7.33f, 0.f, -3.4f));
+		PLAYER->GetTransform()->SetRotation(Vec3(0.f, -45.f, 90.f));
 
 		SetDirLightPosition(Vec3(-31.5f, 27.2f, 33.9f));
 		SetDirLightRotation(Vec3(41.7f, 136.54f, 294.54f));
@@ -103,10 +104,39 @@ namespace hm
 		OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
 		pFollowScript->SetOffset(Vec3(-17.4f, 29.f, 14.1f));
 		mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
+
+		ChangeCameraMode();
 	}
 	void BossMap::Update()
 	{
 		Map::Update();
+
+		if (IS_DOWN(KeyType::O))
+		{
+			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 0.1f, nullptr, std::bind(&Map::ChangeCameraMode, this));
+			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 0.1f);
+		}
+
+		/*Vec3 pos = MAIN_CAMERA->GetTransform()->GetPosition();
+		wstring strPos = {};
+		strPos += L"x = " + std::to_wstring(pos.x) + L" ";
+		strPos += L"y = " + std::to_wstring(pos.y) + L" ";
+		strPos += L"z = " + std::to_wstring(pos.z);
+
+		Vec3 rot = MAIN_CAMERA->GetTransform()->GetRotation();
+		wstring strRot = {};
+		strRot += L"x = " + std::to_wstring(rot.x) + L" ";
+		strRot += L"y = " + std::to_wstring(rot.y) + L" ";
+		strRot += L"z = " + std::to_wstring(rot.z);
+		FONT->DrawString(strPos, 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
+		FONT->DrawString(strRot, 30.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);*/
+
+		Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+		wstring strPos = {};
+		strPos += L"x = " + std::to_wstring(playerPos.x) + L" ";
+		strPos += L"y = " + std::to_wstring(playerPos.y) + L" ";
+		strPos += L"z = " + std::to_wstring(playerPos.z);
+		FONT->DrawString(strPos, 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
 	}
 	void BossMap::FixedUpdate()
 	{
@@ -159,10 +189,6 @@ namespace hm
 			//SetMeshTarget(pLordOfDoor);
 		
 		}
-
-
-		
-		
 
 		//WallObject Zip
 		{
