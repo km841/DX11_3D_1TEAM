@@ -5,6 +5,7 @@
 #include "Timer.h"
 #include "EventSystem.h"
 #include "TextBox.h"
+#include "Player.h"
 
 namespace yj
 {
@@ -72,7 +73,6 @@ namespace yj
 			if (mAddedDist > 2)
 			{
 				sequenceNum = 1;
-				mbIsArrived = true;
 				TEXTBOX->SetWriteTexts(0, 2,"BusArriveEvent");
 				TEXTBOX->Apear();
 			}
@@ -83,6 +83,7 @@ namespace yj
 		}
 		if (sequenceNum == 2)
 		{
+			mbIsArrived = true;
 			Vec3 mPos = this->GetTransform()->GetPosition();
 			Vec3 mAddPos = Vec3(-4, 0, -4);
 			Vec3 mFixedPos = mPos + mAddPos * DELTA_TIME * 2;
@@ -91,7 +92,7 @@ namespace yj
 				this->GetTransform()->SetPosition(mFixedPos);
 			if (mAddedDist > 10)
 			{
-				sequenceNum = 2;
+				sequenceNum = 3;
 			}
 		}
 	}

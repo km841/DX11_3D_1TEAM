@@ -61,7 +61,6 @@ void PauseState::Update()
 	//{
 	//	pPlayer->StateChange(PlayerState::AIMoveState);
 	//}
-	
 }
 
 void PauseState::Enter()

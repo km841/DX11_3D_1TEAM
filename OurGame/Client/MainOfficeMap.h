@@ -35,5 +35,7 @@ namespace yj {
 		int mIntroAcive = -1;
 		int mWorkerAcive = -1;
 		int mDirectorActive = -1;
+
+		bool mbIsBusCutSceneOver = false;
 	};
 }

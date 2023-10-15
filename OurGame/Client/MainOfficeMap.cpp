@@ -85,7 +85,6 @@ namespace yj
 
 		PLAYER->GetAudioSound()->SetSound(L"MainOfficeBGM", this, true, "..\\Resources\\Sound\\MainOfficeBGM.mp3");
 		PLAYER->GetAudioSound()->Play();
-#pragma endregion
 	}
 
 	void MainOfficeMap::Update()
@@ -100,14 +99,23 @@ namespace yj
 
 		if (false == pBus->IsBusArrived())
 		{
+			PLAYER->GetGreatSword()->Disable();
 			PLAYER->Disable();
+			PLAYER->StateChange(PlayerState::PauseState);
+			mbIsBusCutSceneOver = true;
 		}
 		else
 		{
 			PLAYER->Enable();
+			//PLAYER->GetGreatSword()->Enable();
+			if (true == mbIsBusCutSceneOver)
+			{
+				mbIsBusCutSceneOver = false;
+				PLAYER->StateChange(PlayerState::IdleState);
+			}
 		}
 
-		/*Vec3 pos = MAIN_CAMERA->GetTransform()->GetPosition();
+		Vec3 pos = MAIN_CAMERA->GetTransform()->GetPosition();
 		wstring strPos = {};
 		strPos += L"x = " + std::to_wstring(pos.x) + L" ";
 		strPos += L"y = " + std::to_wstring(pos.y) + L" ";
@@ -119,7 +127,7 @@ namespace yj
 		strRot += L"y = " + std::to_wstring(rot.y) + L" ";
 		strRot += L"z = " + std::to_wstring(rot.z);
 		FONT->DrawString(strPos, 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
-		FONT->DrawString(strRot, 30.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);*/
+		FONT->DrawString(strRot, 30.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
 	}
 
 	void MainOfficeMap::Start()
@@ -138,6 +146,7 @@ namespace yj
 
 		SetDirLightPosition(Vec3(-31.5f, 27.2f, 33.9f));
 		SetDirLightRotation(Vec3(41.7f, 136.54f, 294.54f));
+		mpMainCamera->GetScript<FocusingScript>()->SetFollowingMode(true);
 		mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
 
 		//if (EVENTSYSTEM->CheckEventOn("BusEndEvent"))
@@ -743,7 +752,7 @@ namespace yj
 			pEnterTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpEnter.png"));
 			pEnterTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
 			pEnterTextBox->GetTransform()->SetPosition(Vec3(19.0f,6.2f,-15.2f));
-			SetGizmoTarget(pEnterTextBox);
+			//SetGizmoTarget(pEnterTextBox);
 			pEnterTextBox->GetTransform()->SetRotation(Vec3(0.0f,90.0f,0.0f));
 			pEnterTextBox->GetTransform()->SetScale(Vec3(2.0f,1.0f,1.0f));
 			AddGameObject(pEnterTextBox);
