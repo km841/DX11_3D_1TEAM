@@ -68,7 +68,6 @@ void AIMoveState::Initialize()
 
 void AIMoveState::Update()
 {
-
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 	Transform* pTr = pPlayer->GetTransform();
@@ -78,26 +77,27 @@ void AIMoveState::Update()
 	
 	Vec3 dir = objectPos - myPos;
 	dir.Normalize();
-	dir.y = 0;
+	dir.y = 0.f;
 
 	float distance = (objectPos - myPos).Length(); // 목표좌표와 플레이어의 거리계산
 
-	if (distance < 0.1f) 
+	if (distance <= 0.1f)
 	{
-		pPlayer->StateChange(PlayerState::IdleState); 
+		pTr->SetRotation(Vec3(0.f, -90.f, 90.f));
+		pPlayer->StateChange(PlayerState::IdleState);
+		return;
 		//컷신 종료할때 여기다가 추가
 	}
 
-
-	{ // 플레이어가 오브젝트로 이동하는 부분
+	// 플레이어가 오브젝트로 이동하는 부분
+	{
 		Vec3 Ve = dir * mSpeed;//이동속도 조절
 
 		pPlayer->GetRigidBody()->SetVelocity(Ve); //그방향으로가는힘
 	}
 
-
-
-	{ //플레이어가 오브젝트 방향으로 회전하는 부분
+	//플레이어가 오브젝트 방향으로 회전하는 부분
+	{
 		Vec3 Rot = pTr->GetRotation();
 		Vec3 rot = Vec3(0, 0, -1);
 		double angleRadian = atan2(dir.x, dir.z) - atan2(rot.x, rot.z);
@@ -106,15 +106,12 @@ void AIMoveState::Update()
 		if (angleDegree < 0.f)
 			angleDegree += 360.f;
 
-		pTr->SetRotation(Vec3(-90.f, 0.f, angleDegree));
+		pTr->SetRotation(Vec3(0.f, angleDegree, 90.f));
 	}
 
-
-
 	//MOVE 애니메이션 반복 
-	if (pAni->GetFrameRatio() > 0.7f)
+	if (pAni->GetFrameRatio() > 0.7)
 		PlayAnimation();
-
 }
 
 void AIMoveState::Enter()
@@ -132,7 +129,6 @@ void AIMoveState::Enter()
 void AIMoveState::Exit()
 {
 	Player* pPlayer = Player::GetPlayer();
-
 }
 
 void AIMoveState::PlayAnimation()

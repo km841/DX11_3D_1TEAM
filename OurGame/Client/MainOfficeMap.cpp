@@ -86,7 +86,7 @@ namespace yj
 
 		spPlayerHolder->GetAudioSound()->SetSound(L"MainOfficeBGM", this, true, "..\\Resources\\Sound\\MainOfficeBGM.mp3");
 		spPlayerHolder->GetAudioSound()->Play();
-#pragma endregion
+
 	}
 
 	void MainOfficeMap::Update()
@@ -99,13 +99,26 @@ namespace yj
 			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 0.1f);
 		}
 
+		if (EVENTSYSTEM->CheckEventOn("SpeechEndEvent"))
+		{
+			ChangeCameraMode();
+		}
+
 		if (false == pBus->IsBusArrived())
 		{
+			PLAYER->GetGreatSword()->Disable();
 			PLAYER->Disable();
+			PLAYER->StateChange(PlayerState::PauseState);
+			mbIsBusCutSceneOver = true;
 		}
 		else
 		{
 			PLAYER->Enable();
+			if (true == mbIsBusCutSceneOver)
+			{
+				mbIsBusCutSceneOver = false;
+				PLAYER->StateChange(PlayerState::IdleState);
+			}
 		}
 
 		/*Vec3 pos = MAIN_CAMERA->GetTransform()->GetPosition();
@@ -139,6 +152,7 @@ namespace yj
 
 		SetDirLightPosition(Vec3(-31.5f, 27.2f, 33.9f));
 		SetDirLightRotation(Vec3(41.7f, 136.54f, 294.54f));
+		mpMainCamera->GetScript<FocusingScript>()->SetFollowingMode(true);
 		mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
 
 		//if (EVENTSYSTEM->CheckEventOn("BusEndEvent"))
@@ -745,7 +759,7 @@ namespace yj
 			pEnterTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpEnter.png"));
 			pEnterTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
 			pEnterTextBox->GetTransform()->SetPosition(Vec3(19.0f,6.2f,-15.2f));
-			SetGizmoTarget(pEnterTextBox);
+			//SetGizmoTarget(pEnterTextBox);
 			pEnterTextBox->GetTransform()->SetRotation(Vec3(0.0f,90.0f,0.0f));
 			pEnterTextBox->GetTransform()->SetScale(Vec3(2.0f,1.0f,1.0f));
 			AddGameObject(pEnterTextBox);

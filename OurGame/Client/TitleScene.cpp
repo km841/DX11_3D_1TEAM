@@ -125,7 +125,7 @@ namespace hm
 		// - RightSecretPassageMap
 		if (IS_DOWN(KeyType::O))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::PhysicsTest);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
 		}
 
 		// 상연
@@ -198,7 +198,6 @@ namespace hm
 
 	void TitleScene::Enter()
 	{
-
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Monster_ProjectTile);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::MonsterSlowCol);
@@ -898,8 +897,11 @@ namespace hm
 			pEventSystemScript->AddEvent("BusEndEvent");
 			pEventSystemScript->AddEvent("OfficeArriveEvent");
 			pEventSystemScript->AddEvent("ChandlerTextEvent");
+			pEventSystemScript->AddEvent("DoorApearCamMoveEvent");
 			pEventSystemScript->AddEvent("DoorApearEvent");
 			pEventSystemScript->AddEvent("ChandlerZoomEvent");
+			pEventSystemScript->AddEvent("ChandlerZoomOutEvent");
+			pEventSystemScript->AddEvent("SpeechEndEvent");
 		}
 
 		// Buttons

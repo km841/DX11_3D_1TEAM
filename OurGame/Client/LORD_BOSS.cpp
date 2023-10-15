@@ -42,6 +42,7 @@
 #include "BossBigSnap.h"
 #include "BossLaser.h"
 #include "PotDoor.h"
+
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -68,6 +69,7 @@
 #include "MonsterBackswingColScript.h"
 #include "LaserLockOnScript.h"
 #include "ExplosionScript.h"
+#include "CutSceneCameraMoveScript.h"
 
 LORD_BOSS::LORD_BOSS()
 {
@@ -129,7 +131,7 @@ void LORD_BOSS::SetBehaviorTree()
 				if (17 != animIndex)
 				{
 					pSound->SetSound(L"BOSSBGM", GET_SINGLE(SceneManager)->GetActiveScene(), true, "..\\Resources\\Sound\\BossMapBGM.mp3");
-					pSound->Play(15);
+					//pSound->Play(15);
 					pAnimator->Play(17, true);
 
 				}
@@ -147,7 +149,7 @@ void LORD_BOSS::SetBehaviorTree()
 				}
 
 
-				//if (isCutSceneEnd) //컷신 체크가 트루일때 아이들 상태로 넘어가기
+				if (isCutSceneEnd) //컷신 체크가 트루일때 아이들 상태로 넘어가기
 				{
 					return BehaviorResult::Success;
 				}
@@ -1638,13 +1640,21 @@ void LORD_BOSS::Update()
 
 	Monster::Update();
 
+	bool isBGMStart = MAIN_CAMERA->GetScript<jh::CutSceneCameraMoveScript>()->IsBGMStart();
+	if (true == isBGMStart && false == isBGMPlay)
+	{
+		isBGMPlay = true;
+		AudioSound* pSound = GetAudioSound();
+		pSound->SetSound(L"BOSSBGM", GET_SINGLE(SceneManager)->GetActiveScene(), true, "..\\Resources\\Sound\\BossMapBGM.mp3");
+		pSound->Play(15);
+	}
 
-	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	/*Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 	Vec3 myPos = GetTransform()->GetPosition();
 	float distance = (playerPos - myPos).Length();
 
 	wstring strPos = L"" + std::to_wstring(distance);
-	FONT->DrawString(strPos, 30.f, Vec3(200.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
+	FONT->DrawString(strPos, 30.f, Vec3(200.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);*/
 	
 }
 

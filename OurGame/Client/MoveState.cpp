@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "MoveState.h"
 #include "Engine.h"
 
@@ -56,14 +56,14 @@ void MoveState::Initialize()
 
 void MoveState::Update()
 {
-	//조건 걸어서 다른 스테이트 넘어가게 해주는 구조 만들기
+	//���� �ɾ �ٸ� ������Ʈ �Ѿ�� ���ִ� ���� �����
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 	Transform* tr = pPlayer->GetTransform();
 	RigidBody* rb = pPlayer->GetRigidBody();
 	DirectionEvasion Dir = pPlayer->GetDirectioninfo();
 
-#pragma region "이동 방향 힘 결정"
+#pragma region "�̵� ���� �� ����"
 	float mMoveSpeed = pPlayer->GetMoveSpeed();
 
 	if (IS_PRESS(P_UP))
@@ -126,7 +126,7 @@ void MoveState::Update()
 #pragma endregion
 
 
-#pragma region "방향 설정"
+#pragma region "���� ����"
 
 	if (IS_PRESS(P_UP))
 	{
@@ -173,6 +173,7 @@ void MoveState::Update()
 
 #pragma endregion
 
+	/*키 입력시 넘어가는 행동들*/
 	if (IS_UP(P_UP) || IS_UP(P_DOWN) ||
 		IS_UP(P_LEFT) || IS_UP(P_RIGHT))
 	{

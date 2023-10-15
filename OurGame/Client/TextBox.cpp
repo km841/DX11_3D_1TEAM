@@ -85,7 +85,7 @@ namespace yj
 				{
 					SetTimerStop();
 
-					if (IS_DOWN(KeyType::E))
+					if (IS_DOWN(KeyType::F))
 					{
 						mAddedLineNum += 1;
 						ResetTextLine();

@@ -140,5 +140,6 @@ private:
 
 	bool isRollWall = true;
 
+	bool isBGMPlay = false;
 };
 
