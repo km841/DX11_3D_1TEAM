@@ -68,13 +68,12 @@ namespace jh
 			SetSequence(1);
 			TEXTBOX->SetWriteTexts(11, 13, "ChandlerZoomOutEvent");
 			TEXTBOX->Apear();
-			SetSequence(5); // <- ¹øÈ£ ¹Ù²ã Áà¾ßÇÔ!
 		}
 		if (EVENTSYSTEM->CheckEventOn("ChandlerZoomOutEvent"))
 		{
-			TEXTBOX->SetWriteTexts(13, 16,"SpeechEndEvent");
+			TEXTBOX->SetWriteTexts(13, 17,"SpeechEndEvent");
 			TEXTBOX->Apear();
-			SetSequence(5);
+			SetDeskPos();
 		}
 	}
 
