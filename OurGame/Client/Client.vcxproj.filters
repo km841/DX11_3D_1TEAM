@@ -394,6 +394,7 @@
     <ClInclude Include="ExplosionScript.h">
       <Filter>소스 파일\GameObject\Monster\LOAD_BOSS\BigSnap</Filter>
     </ClInclude>
+    <ClInclude Include="PotDoor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -783,6 +784,7 @@
     <ClCompile Include="ExplosionScript.cpp">
       <Filter>소스 파일\GameObject\Monster\LOAD_BOSS\BigSnap</Filter>
     </ClCompile>
+    <ClCompile Include="PotDoor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

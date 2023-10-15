@@ -1554,6 +1554,23 @@ namespace hm
 
             Add<Shader>(L"Explosion", pShader);
         }
+
+        // Spawn Paper Burn Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::Less,
+                RasterizerType::CullBack,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"PaperBurnPot");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\paperburn_potdoor.fx", shaderInfo);
+
+            Add<Shader>(L"PaperBurnPot", pShader);
+        }
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -2024,6 +2041,16 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"Explosion", pMaterial);
+        }
+
+        // Pot PaperBurn Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"PaperBurnPot");
+            pMaterial->SetTexture(1, Load<Texture>(L"BurnNoise", L"..\\Resources\\Texture\\BurnNoise.png"));
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"PaperBurnPot", pMaterial);
         }
     }
 }
