@@ -22,7 +22,7 @@ namespace jh
 		/* MainOffice */
 		void SetStartPos(Vec3 _pos) { mStartPos = _pos; }
 		void SetStartRot(Vec3 _rot) { mStartRot = _rot; }
-		void SetSequence(int _num) { mSequenceNum = _num; }
+		void SetMainSequence(int _num) { mMainSequenceNum = _num; }
 
 		void MainOfficeMove();	// 계단 앞~책상 앞
 		void MainOfficeMove2();	// 까마귀 NPC 클로즈업
@@ -31,6 +31,14 @@ namespace jh
 		void MainOfficeMove5();	// 문~책상 앞
 
 		void SetDeskPos();
+
+		/* BossMap */
+		void SetBossSequence(int _num) { mBossSequenceNum = _num; }
+		void BossMapMove();
+		void BossMapMove2();
+		void BossMapMove3();
+
+		bool IsBGMStart() { return mbIsBGMStart; }
 
 	private:
 		/* Title Scene */
@@ -42,6 +50,7 @@ namespace jh
 		bool mbIsRightSide;
 		TimerObject mTitleTimer;
 
+	private:
 		/* MainOffice */
 		Vec3 mStartPos;
 		Vec3 mStartRot;
@@ -60,12 +69,35 @@ namespace jh
 
 		bool mbIsAIState;
 
-		int mSequenceNum;
+		int mMainSequenceNum;
 
 		TimerObject mMainOfficeTimer;
 		TimerObject mMainOfficeTimer2;
 		TimerObject mMainOfficeTimer3;
 		TimerObject mMainOfficeTimer4;
 		TimerObject mMainOfficeTimer5;
+
+	private:
+		/* BossMap */
+		Vec3 mBossStartPos;
+		Vec3 mBossStartRot;
+
+		Vec3 mBossEndPos;
+
+		Vec3 mBossNameStartPos;
+		Vec3 mBossNameStartRot;
+		Vec3 mBossNameStartPos2;
+		Vec3 mBossNameStartRot2;
+
+		Vec3 mBossNameEndPos;
+		Vec3 mBossNameEndPos2;
+
+		int mBossSequenceNum;
+
+		bool mbAddWhite;
+		bool mbIsBGMStart;
+
+		TimerObject mBossMapTimer;
+		TimerObject mBossMapTimer2;
 	};
 }
