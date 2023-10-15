@@ -30,6 +30,8 @@ namespace jh
 		void MainOfficeMove4();	// 문 클로즈업
 		void MainOfficeMove5();	// 문~책상 앞
 
+		void SetDeskPos();
+
 	private:
 		/* Title Scene */
 		Vec3 mLeftPos;
