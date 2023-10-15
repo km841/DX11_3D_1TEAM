@@ -39,6 +39,8 @@
 #include "Camera.h"
 #include "Light.h"
 #include "ParticleSystem.h"
+#include "AudioSound.h"
+#include "AudioSound.h"
 #include "Animator.h"
 
 /* Script */
@@ -53,6 +55,7 @@
 #include "BowScript.h"
 #include "ArrowScript.h"
 #include "MageColScript.h"
+#include "MonsterKeyScript.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -335,6 +338,7 @@ void Mage::SetBehaviorTree()
 			//공격 구슬 생성
 			BehaviorTask* pAttack_ProjectTileTask = new BehaviorTask([&]() {
 				Animator* pAni = GetAnimator();
+				AudioSound* pSound = GetAudioSound();
 
 				/*if (pAni->GetFrameRatio() > 0.2) {
 					if (true != isTrigger01) {
@@ -347,6 +351,8 @@ void Mage::SetBehaviorTree()
 					if (true != isTrigger02) {
 						isTrigger02 = true;
 						CreateProjectTile();
+						pSound->SetSound(L"attack", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Mage\\attack.wav");
+						pSound->Play(50);
 					}
 				}
 
@@ -514,6 +520,8 @@ void Mage::SetBehaviorTree()
 					isDead = false;
 					GetScript<PaperBurnScript>()->SetPaperBurn();
 					pAnimator->Play(4, false);
+					GameObject* pObj = GetGameObject();
+					pObj->DisableCollider();
 				}
 
 				return BehaviorResult::Success;
@@ -529,6 +537,7 @@ void Mage::SetBehaviorTree()
 
 					if (GetScript<PaperBurnScript>()->IsFinished())
 					{
+						GetScript<yj::MonsterKeyScript>()->SendDeathTrigger();
 						MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 						GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
 					}
@@ -654,6 +663,7 @@ void Mage::OnTriggerEnter(Collider* _pOtherCollider)
 	{
 		if (isGODState == false) {
 			TakeDamage(attackDamage);
+			HitSound();
 			float hp = mHP;
 			meBasicState = MonsterBasicState::Hit;
 		}

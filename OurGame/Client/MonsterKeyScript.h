@@ -16,10 +16,9 @@ namespace yj
 		virtual Component* Clone(class GameObject* _pGameObject);
 	public:
 		void SendDeathTrigger();
-	private:
+	public:
 		void AddReceiver(GameObject* _receiver) { pReceiverList.push_back(_receiver); }
 	private:
 		std::vector<GameObject*> pReceiverList;
 	};
 }
-

@@ -119,6 +119,9 @@ public:
 	State* GetActiveState() { return mActiveState; }
 	PlayerState GetActiveStateEnum();
 
+	Vec3 GetCutScenePos() { return CutScenePos; }
+	void SetCutScenePos(Vec3 _Pos) { CutScenePos = _Pos; }
+
 public:
 	
 	static Player* spPlayer;
@@ -133,6 +136,7 @@ public:
 	
 private:
 
+	Vec3 CutScenePos = Vec3::Zero;
 
 	
 private:

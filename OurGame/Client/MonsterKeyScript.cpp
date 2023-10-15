@@ -21,13 +21,13 @@ namespace yj
 	{
 		for (int i = 0; i < pReceiverList.size(); i++)
 		{
-			if (pReceiverList[i]->GetScript<KeyDoor>())
+			if (pReceiverList[i]->GetName() == L"KeyDoor")
 			{
-				pReceiverList[i]->GetScript<KeyDoor>()->AddKey();
+				static_cast<KeyDoor*>(pReceiverList[i])->AddKey();
 			}
-			if (pReceiverList[i]->GetScript<SpikeDoor>())
+			if (pReceiverList[i]->GetName() == L"SpikeDoor")
 			{
-		 		pReceiverList[i]->GetScript<SpikeDoor>()->AddKey();
+				static_cast<SpikeDoor*>(pReceiverList[i])->AddKey();
 			}
 		}
 	}

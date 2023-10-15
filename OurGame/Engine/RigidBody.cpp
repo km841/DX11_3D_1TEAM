@@ -242,14 +242,15 @@ namespace hm
 	{
 		if (true == mbAppliedPhysics)
 		{
-			AssertEx(ActorType::Dynamic == mPhysicsInfo.eActorType, L"RigidBody::AddVelocity() - Dynamic Actor가 아닌 물체에 대한 SetVelocity() 호출 시도");
+			AssertEx(ActorType::Static != mPhysicsInfo.eActorType, L"RigidBody::AddVelocity() - Dynamic Actor가 아닌 물체에 대한 SetVelocity() 호출 시도");
 			Vec3 velocity = GetDynamicActor()->getLinearVelocity();
 			velocity += _velocity;
 			GetDynamicActor()->setLinearVelocity(velocity);
+			mVelocity += _velocity;
 		}
 		else
 		{
-			mVelocity = _velocity;
+			mVelocity += _velocity;
 		}
 
 		CheckMaxVelocity();

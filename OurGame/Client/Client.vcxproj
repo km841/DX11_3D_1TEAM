@@ -162,6 +162,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="BigTransEndState_Gm.h" />
     <ClInclude Include="BigTransStartState_Gm.h" />
     <ClInclude Include="BonFireScript.h" />
+    <ClInclude Include="BossLaser.h" />
     <ClInclude Include="BossMap.h" />
     <ClInclude Include="BowScript.h" />
     <ClInclude Include="BowState.h" />
@@ -220,6 +221,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClInclude Include="KeyPot.h" />
     <ClInclude Include="Ladder.h" />
     <ClInclude Include="LadderCollider.h" />
+    <ClInclude Include="LaserLockOnScript.h" />
     <ClInclude Include="LeftSecretFightMap.h" />
     <ClInclude Include="LeftSecretTrialMap.h" />
     <ClInclude Include="LORD_BOSS.h" />
@@ -308,6 +310,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="BigTransEndState_Gm.cpp" />
     <ClCompile Include="BigTransStartState_Gm.cpp" />
     <ClCompile Include="BonFireScript.cpp" />
+    <ClCompile Include="BossLaser.cpp" />
     <ClCompile Include="BossMap.cpp" />
     <ClCompile Include="BowScript.cpp" />
     <ClCompile Include="BowState.cpp" />
@@ -366,6 +369,7 @@ copy "$(SolutionDir)Library\Dll\FMod\fmodstudioL.dll" "$(SolutionDir)\Output\"</
     <ClCompile Include="KeyPot.cpp" />
     <ClCompile Include="Ladder.cpp" />
     <ClCompile Include="LadderCollider.cpp" />
+    <ClCompile Include="LaserLockOnScript.cpp" />
     <ClCompile Include="LeftSecretFightMap.cpp" />
     <ClCompile Include="LeftSecretTrialMap.cpp" />
     <ClCompile Include="LORD_BOSS.cpp" />

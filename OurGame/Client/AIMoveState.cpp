@@ -54,26 +54,39 @@ AIMoveState::AIMoveState()
 
 void AIMoveState::Initialize()
 {
+	//PLAYER->SetCutScenePos(Vec3(0.f, 0.f, 0.f));
+	//PLAYER->StateChange(PlayerState::AIMoveState);
+	//PLAYER->StateChange(PlayerState::PauseState);
+
+	//PLAYER->GetGreatSword()->Disable();
+	//PLAYER->Disable();
+	//
+	//PLAYER->Enable();
+	//PLAYER->GetGreatSword()->Enable();
+
 }
 
 void AIMoveState::Update()
 {
+
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 	Transform* pTr = pPlayer->GetTransform();
 	Vec3 myPos = pTr->GetPosition();
-	Vec3 objectPos = Vec3::Zero; //NPC의 좌표값 으로 변경해야됨
+	Vec3 objectPos = pPlayer->GetCutScenePos();
 	float mSpeed = pPlayer->GetMoveSpeed();
-
+	
 	Vec3 dir = objectPos - myPos;
 	dir.Normalize();
 	dir.y = 0;
 
-	//if (/*특정조건 발동되면 IDLE상태로 넘어가기*/)
-	//{
-	//	pPlayer->StateChange(PlayerState::IdleState);
-	//}
+	float distance = (objectPos - myPos).Length(); // 목표좌표와 플레이어의 거리계산
 
+	if (distance < 0.1f) 
+	{
+		pPlayer->StateChange(PlayerState::IdleState); 
+		//컷신 종료할때 여기다가 추가
+	}
 
 
 	{ // 플레이어가 오브젝트로 이동하는 부분
@@ -99,7 +112,7 @@ void AIMoveState::Update()
 
 
 	//MOVE 애니메이션 반복 
-	if (pAni->GetFrameRatio() > 0.7)
+	if (pAni->GetFrameRatio() > 0.7f)
 		PlayAnimation();
 
 }
@@ -107,11 +120,11 @@ void AIMoveState::Update()
 void AIMoveState::Enter()
 {
 	Player* pPlayer = Player::GetPlayer();
-	Animator* pAni = pPlayer->GetAnimator();
 
 	GameObject* pObj = pPlayer->GetGreatSword();
 	pObj->Disable();
 
+	Animator* pAni = pPlayer->GetAnimator();
 	int MoveToAnim = 67; 
 	pAni->Play(MoveToAnim, true);
 }
@@ -119,10 +132,12 @@ void AIMoveState::Enter()
 void AIMoveState::Exit()
 {
 	Player* pPlayer = Player::GetPlayer();
-	GameObject* pObj = pPlayer->GetGreatSword();
-	pObj->Enable();
+
 }
 
 void AIMoveState::PlayAnimation()
 {
+	Animator* pAni = PLAYER->GetAnimator();
+	int MoveToAnim = 67;
+	pAni->Play(MoveToAnim, true);
 }

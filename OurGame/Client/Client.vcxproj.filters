@@ -382,6 +382,12 @@
     <ClInclude Include="ManaUi.h" />
     <ClInclude Include="HeadText.h" />
     <ClInclude Include="EventSystem.h" />
+    <ClInclude Include="BossLaser.h">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
+    </ClInclude>
+    <ClInclude Include="LaserLockOnScript.h">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -759,6 +765,12 @@
     <ClCompile Include="ManaUi.cpp" />
     <ClCompile Include="HeadText.cpp" />
     <ClCompile Include="EventSystem.cpp" />
+    <ClCompile Include="BossLaser.cpp">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
+    </ClCompile>
+    <ClCompile Include="LaserLockOnScript.cpp">
+      <Filter>소스 파일\GameObject\Monster\LOAD_BOSS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -852,6 +864,9 @@
     </Filter>
     <Filter Include="소스 파일\Script\CutScene">
       <UniqueIdentifier>{a6eab342-3e74-45fe-b18c-af7d296610a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Monster\LOAD_BOSS\LaserLockOnScript">
+      <UniqueIdentifier>{8668845d-ccb1-4f3a-a7c2-2d08e6c0b5e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

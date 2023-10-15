@@ -2,8 +2,6 @@
 #include "TimerObject.h"
 namespace hm
 {
-
-
 	enum class HotKeyType
 	{
 		UP_LEFT,
@@ -59,7 +57,7 @@ namespace hm
 		bool GetHotKeyPress(HotKeyType _eKey) const { return KeyState::Press == mHotkeyStates[static_cast<int>(_eKey)]; }
 		bool GetHotKeyUp(HotKeyType _eKey) const { return KeyState::Up == mHotkeyStates[static_cast<int>(_eKey)]; }
 
-
+		void SetPlayerKeyInfo(const PlayerKeyInfo& _info) { mKeyInfo = _info; }
 
 	private:
 		// 특정 키의 상태를 반환하는 함수
@@ -72,6 +70,8 @@ namespace hm
 		POINT				  mMousePos = {};
 		POINT				  mPrevMousePos = {};
 		TimerObject			  mTimer;
+
+		PlayerKeyInfo mKeyInfo;
 	};
 }
 
