@@ -11,7 +11,7 @@ namespace yj
 {
 	TextBox::TextBox()
 	{
-
+		spTextBox = this;
 	}
 	TextBox::~TextBox()
 	{
@@ -115,6 +115,11 @@ namespace yj
 			if (mScale.x <= 10)
 			{
 				this->GetTransform()->SetScale(Vec3(40.0f, 10.0f, 0.0f));
+				if (mCurrEvent != "")
+				{
+					EVENTSYSTEM->EventOn(mCurrEvent);
+					mCurrEvent = "";
+				}
 				this->Disable();
 				mActState = End;
 			}
@@ -153,11 +158,7 @@ namespace yj
 	void TextBox::Disapear()
 	{
 		SetText(L"", 25, false);
-		if (mCurrEvent != "")
-		{
-			EVENTSYSTEM->EventOn(mCurrEvent);
-			mCurrEvent = "";
-		}
+		
 		mActState = DisapearAct;
 	}
 

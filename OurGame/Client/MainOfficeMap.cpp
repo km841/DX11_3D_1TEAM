@@ -140,14 +140,10 @@ namespace yj
 		SetDirLightRotation(Vec3(41.7f, 136.54f, 294.54f));
 		mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
 
-		if (EVENTSYSTEM->CheckEventOn("BusArriveEvent"))
-		{
-			TEXTBOX->SetWriteTexts(0,1);
-		}
-		if (EVENTSYSTEM->CheckEventOn("BusEndEvent"))
-		{
-			//플레이어 이동 가능 
-		}
+		//if (EVENTSYSTEM->CheckEventOn("BusEndEvent"))
+		//{
+		//	//플레이어 이동 가능 
+		//}
 
 
 
