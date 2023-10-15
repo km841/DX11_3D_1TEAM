@@ -13,6 +13,7 @@
 #include "Material.h"
 #include "Input.h"
 #include "Timer.h"
+#include "EventSystem.h"
 
 #include "PaperBurnScript.h"
 #include "PlayerMoveOverMapScript.h"
@@ -55,6 +56,7 @@ namespace yj
 
 	void SoulDoor::Update()
 	{
+		
 		if (IS_DOWN(KeyType::D))
 		{
 			pDoorObj->GetScript<PaperBurnScript>()->SetReverse(true);
@@ -74,6 +76,12 @@ namespace yj
 	}
 	void SoulDoor::FixedUpdate()
 	{
+		if (EVENTSYSTEM->CheckEventOn("DoorApearEvent"))
+		{
+			pDoorObj->GetScript<PaperBurnScript>()->SetReverse(true);
+			pDoorObj->GetScript<PaperBurnScript>()->SetPaperBurn();
+			pDoorObj->GetScript<PaperBurnScript>()->SetFinishedCallback(std::bind(&SoulDoor::SetMove, this));
+		}
 		if (GetIsMove())
 		{
 			Drop();
