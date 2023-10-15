@@ -142,12 +142,12 @@ void MoveState::Update()
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::RIGHT);
 	}
-	
+
 	if (IS_PRESS(P_LEFT))
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::LEFT);
 	}
-	
+
 	if (IS_PRESS(P_UP) && IS_PRESS(P_LEFT))
 	{
 		pPlayer->SetDirectionChange(DirectionEvasion::TOPLEFT);
@@ -173,7 +173,6 @@ void MoveState::Update()
 
 #pragma endregion
 
-	/*키 입력시 넘어가는 행동들*/
 	if (IS_UP(P_UP) || IS_UP(P_DOWN) ||
 		IS_UP(P_LEFT) || IS_UP(P_RIGHT))
 	{
@@ -191,11 +190,10 @@ void MoveState::Update()
 	{
 		pPlayer->StateChange(PlayerState::EvasionState);
 	}
-	
 
 
-	//MOVE 애니메이션 반복 
-	if(pAni->GetFrameRatio() > 0.7)
+
+	if (pAni->GetFrameRatio() > 0.7)
 		PlayAnimation();
 }
 
@@ -215,7 +213,6 @@ void MoveState::Exit()
 
 void MoveState::PlayAnimation()
 {
-	//조건 걸어서 다른 스테이트 넘어가게 해주는 구조 만들기
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 
