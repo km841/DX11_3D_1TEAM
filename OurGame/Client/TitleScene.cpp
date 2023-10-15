@@ -58,6 +58,7 @@
 #include "FocusingScript.h"
 #include "OwnerFollowScript.h"
 #include "CutSceneCameraMoveScript.h"
+#include "EventSystem.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -143,7 +144,7 @@ namespace hm
 		// - RightMap
 		if (IS_DOWN(KeyType::K))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Right2Map);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
 		}
 		/*MainOfficeMap,
 			CorridorRightMap,
@@ -877,6 +878,25 @@ namespace hm
 			pManaUI->AddManaUI();
 			pManaUiObj->SetDontDestroyObject(L"MpUi");
 			AddGameObject(pManaUiObj);
+		}
+
+
+		// EventSystem
+		{
+			GameObject* pEventSystem = new GameObject(LayerType::Unknown);
+			Transform* pTransform = pEventSystem->AddComponent(new Transform);
+			pEventSystem->AddComponent(new RigidBody);
+
+			AddGameObject(pEventSystem);
+			 EventSystem* pEventSystemScript = pEventSystem->AddComponent<EventSystem>();
+			pEventSystem->SetDontDestroyObject(L"EventSystem");
+
+			pEventSystemScript->AddEvent("BusArriveEvent");
+			pEventSystemScript->AddEvent("BusEndEvent");
+			pEventSystemScript->AddEvent("OfficeArriveEvent");
+			pEventSystemScript->AddEvent("ChandlerTextEvent");
+			pEventSystemScript->AddEvent("DoorApearEvent");
+			pEventSystemScript->AddEvent("ChandlerZoomEvent");
 		}
 
 		// Buttons

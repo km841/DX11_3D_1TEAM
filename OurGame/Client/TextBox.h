@@ -32,7 +32,12 @@ namespace yj
 		void Apear();
 		void Disapear();
 
-		void SetWriteTexts(int _startNum, int _endNum) { mLineStartNum = _startNum; mLineEndNum = _endNum; }
+		void SetWriteTexts(int _startNum, int _endNum) {
+			mLineStartNum = _startNum; mLineEndNum = _endNum; mCurrEvent = "";
+		}
+		void SetWriteTexts(int _startNum, int _endNum, string _eventName) {
+			mLineStartNum = _startNum; mLineEndNum = _endNum;  mCurrEvent = _eventName;
+		}
 	private:
 
 		void SetCurrWriteText(int _TextLineNum);
@@ -92,5 +97,6 @@ namespace yj
 		float mTimerLimit = 0.075f;
 		bool isTimerFlow;
 
+		string mCurrEvent;
 	};
 }

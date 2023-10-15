@@ -81,16 +81,16 @@ namespace yj
 
 	void HeadText::Decrease()
 	{
-			if (GetTransform()->GetScale().x < mMaxSize.x)
-			{
-				Vec3 mCurrScale = GetTransform()->GetScale();
-				Vec3 mFixedScale = mCurrScale + Vec3(mSpeed, mSpeed, 0.0f);
-				GetTransform()->SetScale(mFixedScale);
-			}
-			if (GetTransform()->GetScale().x >= mMaxSize.x)
-			{
-				GetGameObject()->Disable();
-				mState = Standby;
-			}
+		if (GetTransform()->GetScale().x < mMaxSize.x)
+		{
+			Vec3 mCurrScale = GetTransform()->GetScale();
+			Vec3 mFixedScale = mCurrScale + Vec3(mSpeed, mSpeed, 0.0f);
+			GetTransform()->SetScale(mFixedScale);
+		}
+		if (GetTransform()->GetScale().x >= mMaxSize.x)
+		{
+			GetGameObject()->Disable();
+			mState = Standby;
+		}
 	}
 }

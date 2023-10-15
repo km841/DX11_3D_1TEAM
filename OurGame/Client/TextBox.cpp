@@ -3,6 +3,7 @@
 #include "UIText.h"
 #include "Timer.h"
 #include "Input.h"
+#include "EventSystem.h"
 
 yj::TextBox* yj::TextBox::spTextBox;
 
@@ -152,6 +153,11 @@ namespace yj
 	void TextBox::Disapear()
 	{
 		SetText(L"", 25, false);
+		if (mCurrEvent != "")
+		{
+			EVENTSYSTEM->EventOn(mCurrEvent);
+			mCurrEvent = "";
+		}
 		mActState = DisapearAct;
 	}
 

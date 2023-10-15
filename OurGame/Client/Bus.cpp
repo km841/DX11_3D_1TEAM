@@ -3,6 +3,8 @@
 #include <random>
 #include "Transform.h"
 #include "Timer.h"
+#include "EventSystem.h"
+#include "TextBox.h"
 
 namespace yj
 {
@@ -71,9 +73,10 @@ namespace yj
 			{
 				sequenceNum = 1;
 				mbIsArrived = true;
+				TEXTBOX->SetWriteTexts(0, 1,"BusArriveEvent");
 			}
 		}
-		if (sequenceNum == 1)
+		/*if (sequenceNum == 1)
 		{
 			Vec3 mPos = this->GetTransform()->GetPosition();
 			Vec3 mAddPos = Vec3(-4, 0, -4);
@@ -85,6 +88,6 @@ namespace yj
 			{
 				sequenceNum = 2;
 			}
-		}
+		}*/
 	}
 }
