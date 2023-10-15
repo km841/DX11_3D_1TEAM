@@ -24,13 +24,17 @@ namespace hm
 		, mbInitAngleSetting(false)
 		, mbHitFlag(false)
 	{
-		mDuration.SetEndTime(0.1f);
+		mDuration.SetEndTime(0.01f);
 		mDuration.Start();
+
 		mDeleteTimer.SetEndTime(4.5f);
 		mDeleteTimer.Start();
 
 		mStartDuration.SetEndTime(1.f);
 		mStartDuration.Start();
+
+		mScaleTimer.SetEndTime(1.f);
+		mScaleTimer.Start();
 	}
 	void LaserLockOnScript::Initialize()
 	{
@@ -51,6 +55,7 @@ namespace hm
 			mbInitAngleSetting = true;
 		}
 		
+		mScaleTimer.Update();
 		mStartDuration.Update();
 		if (false == mPlayerPath.empty())
 		{
@@ -64,16 +69,18 @@ namespace hm
 
 			mFlipWidth = -mFlipWidth;
 			GetTransform()->SetScale(Vec3(1.f + mFlipWidth, 3.f, 3.f));
-			if (mpBoss->IsRaysCollide(myPos, targetDir, LayerType::Ground, 100.f))
+			Vec3 lookDir = GetTransform()->GetLook();
+			if (mpBoss->IsRaysCollide(myPos, lookDir, LayerType::Ground, 100.f))
 			{
 				float distance = mpBoss->GetCollider()->GetRaycastHit().distance;
-				GetTransform()->SetScale(Vec3(1.f + mFlipWidth, 3.f, distance / 2.f));
 
-				//if (nullptr != mpMarker)
-				//	mpMarker->GetTransform()->SetPosition(mpBoss->GetCollider()->GetRaycastHit().position);
+				float scaleX = Lerp(0.f, 1.f, mScaleTimer.GetProgress());
+				GetTransform()->SetScale(Vec3(scaleX + mFlipWidth, 3.f, distance / 2.f));
+
+				if (nullptr != mpMarker)
+					mpMarker->GetTransform()->SetPosition(mpBoss->GetCollider()->GetRaycastHit().position);
 			}
 
-			Vec3 lookDir = GetTransform()->GetLook();
 			if (mStartDuration.IsFinished() && false == mbHitFlag && mpBoss->IsRaysCollide(myPos, lookDir, LayerType::Player, 100.f))
 			{
 				mbHitFlag = true;
@@ -95,6 +102,12 @@ namespace hm
 			GET_SINGLE(RenderManager)->SetBloomScale(1.0f);
 			MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 			GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(GetGameObject()));
+
+			if (nullptr != mpMarker)
+			{
+				MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
+				GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, mpMarker);
+			}
 		}
 	}
 
@@ -104,12 +117,12 @@ namespace hm
 	}
 	void LaserLockOnScript::CreateMarker()
 	{
-		mpMarker = Factory::CreateObject<GameObject>(Vec3(0.f, 0.f, 0.f), L"Forward", L"", false, LayerType::Unknown);
+		mpMarker = Factory::CreateObject<GameObject>(Vec3(0.f, 0.f, 0.f), L"AlphaRemove", L"", false, LayerType::Unknown);
 		mpMarker->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
-		mpMarker->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"LockOnTexture", L"..\\Resources\\FBX\\Monster\\SilenceEffect.fbm\\target.png"));
-	
-		mpMarker->AddComponent(new OwnerFollowScript(PLAYER));
-		mpMarker->GetTransform()->SetScale(Vec3(10.f, 10.f, 10.f));
+		shared_ptr<Texture> pTexture = GET_SINGLE(Resources)->Load<Texture>(L"LockOnTexture", L"..\\Resources\\FBX\\Monster\\SilenceEffect.fbm\\target.png");
+		mpMarker->GetMeshRenderer()->GetMaterial()->SetTexture(0, pTexture);
+		mpMarker->GetTransform()->SetRotation(AXIS_X, 90.f);
+		mpMarker->GetTransform()->SetScale(Vec3(1.f, 1.f, 1.f));
 		mpMarker->Initialize();
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(mpMarker);
 	}

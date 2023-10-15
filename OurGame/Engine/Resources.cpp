@@ -1571,6 +1571,23 @@ namespace hm
 
             Add<Shader>(L"PaperBurnPot", pShader);
         }
+
+        // Alpha Remove Shader
+        {
+            ShaderInfo shaderInfo =
+            {
+                ShaderType::Forward,
+                DepthStencilType::Less,
+                RasterizerType::CullNone,
+                BlendType::AlphaBlend
+            };
+
+            shared_ptr<Shader> pShader = make_shared<Shader>();
+            pShader->SetName(L"AlphaRemove");
+            pShader->CreateGraphicsShader(L"..\\Resources\\Shader\\alpha_remove.fx", shaderInfo);
+
+            Add<Shader>(L"AlphaRemove", pShader);
+        }
     }
     void Resources::CreateDefaultMaterial()
     {
@@ -2051,6 +2068,15 @@ namespace hm
 
             pMaterial->SetShader(pShader);
             Add<Material>(L"PaperBurnPot", pMaterial);
+        }
+
+        // Alpha Remove Material
+        {
+            shared_ptr<Material> pMaterial = make_shared<Material>();
+            shared_ptr<Shader> pShader = Get<Shader>(L"AlphaRemove");
+
+            pMaterial->SetShader(pShader);
+            Add<Material>(L"AlphaRemove", pMaterial);
         }
     }
 }

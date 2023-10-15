@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "MeshRenderer.h"
 #include "Mesh.h"
+#include "RenderManager.h"
 
 
 namespace hm
@@ -66,6 +67,9 @@ namespace hm
 	void Collider::Render()
 	{
 		if (false == GetGameObject()->IsEnable())
+			return;
+
+		if (true == GET_SINGLE(RenderManager)->IsDebugMode())
 			return;
 
 		Camera* pMainCamera = GET_SINGLE(SceneManager)->GetActiveScene()->GetMainCamera();
