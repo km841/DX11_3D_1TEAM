@@ -19,9 +19,9 @@ namespace hm
 
     private:
         float mAccTime;
-        TimerObject mBeginTimer;
-        TimerObject mExplosionTimer;
-        TimerObject mAlphaTimer;
+        TimerObject mBigTimer;
+        TimerObject mDeathTimer;
+       
 
         GameObject* mpBoss;
 

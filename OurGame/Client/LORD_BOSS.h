@@ -62,11 +62,13 @@ private:
 	void MonsterAttackCol();
 	void MonsterSilent_ClapCol();
 	void MonsterBackswingCol();
+	void CreateMagaAoe();
 
 	//투사체 공격(항아리던지기)
 	void CreatePOTProJectTile();
 	void CreatePOTProJectTile(int _a);
 private:
+	int Health;
 
 	Vec3 RotDir;
 	Vec3 PosDir;
@@ -77,7 +79,11 @@ private:
 	Vec3 LaserPos = Vec3(14.5f, 10.f, -10.f);
 	Vec3 LaserRot = Vec3(-90.f, 360.f, 130.f);
 
-	int Health;
+	bool isCreateCow01 = true;
+	bool isCreateCow02 = true;
+	bool isCreateCow03 = true;
+	bool isCreateCow04 = true;
+
 	float TurnSpeed;
 	float mMagnScale;
 	bool isGround = false;
