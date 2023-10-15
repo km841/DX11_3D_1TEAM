@@ -10,6 +10,7 @@ namespace yj
 	
 	void MonsterKeyScript::Update()
 	{
+
 	}
 
 	Component* MonsterKeyScript::Clone(GameObject* _pGameObject)
@@ -26,7 +27,7 @@ namespace yj
 			}
 			if (pReceiverList[i]->GetScript<SpikeDoor>())
 			{
-				pReceiverList[i]->GetScript<SpikeDoor>()->AddKey();
+		 		pReceiverList[i]->GetScript<SpikeDoor>()->AddKey();
 			}
 		}
 	}

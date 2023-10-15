@@ -60,6 +60,8 @@
 #include "OwnerFollowScript.h"
 #include "HeadText.h"
 #include "CutSceneCameraMoveScript.h"
+#include "EventSystem.h"
+#include "TextBox.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -137,6 +139,18 @@ namespace yj
 		SetDirLightPosition(Vec3(-31.5f, 27.2f, 33.9f));
 		SetDirLightRotation(Vec3(41.7f, 136.54f, 294.54f));
 		mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
+
+		if (EVENTSYSTEM->CheckEventOn("BusArriveEvent"))
+		{
+			TEXTBOX->SetWriteTexts(0,1);
+		}
+		if (EVENTSYSTEM->CheckEventOn("BusEndEvent"))
+		{
+			//플레이어 이동 가능 
+		}
+
+
+
 	}
 
 	void MainOfficeMap::FixedUpdate()
