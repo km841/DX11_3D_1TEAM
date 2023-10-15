@@ -97,6 +97,11 @@ namespace yj
 			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 0.1f);
 		}
 
+		if (EVENTSYSTEM->CheckEventOn("SpeechEndEvent"))
+		{
+			ChangeCameraMode();
+		}
+
 		if (false == pBus->IsBusArrived())
 		{
 			PLAYER->GetGreatSword()->Disable();

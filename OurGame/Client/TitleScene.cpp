@@ -897,8 +897,11 @@ namespace hm
 			pEventSystemScript->AddEvent("BusEndEvent");
 			pEventSystemScript->AddEvent("OfficeArriveEvent");
 			pEventSystemScript->AddEvent("ChandlerTextEvent");
+			pEventSystemScript->AddEvent("DoorApearCamMoveEvent");
 			pEventSystemScript->AddEvent("DoorApearEvent");
 			pEventSystemScript->AddEvent("ChandlerZoomEvent");
+			pEventSystemScript->AddEvent("ChandlerZoomOutEvent");
+			pEventSystemScript->AddEvent("SpeechEndEvent");
 		}
 
 		// Buttons

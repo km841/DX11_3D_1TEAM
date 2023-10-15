@@ -54,6 +54,24 @@ namespace jh
 			SetSequence(1);
 		if (IS_DOWN(KeyType::I))
 			SetSequence(2);
+		if (EVENTSYSTEM->CheckEventOn("DoorApearCamMoveEvent"))
+		{
+			EVENTSYSTEM->EventOn("DoorApearEvent");
+			SetSequence(2);
+		}
+		if (EVENTSYSTEM->CheckEventOn("ChandlerZoomEvent"))
+		{
+			SetSequence(1);
+			TEXTBOX->SetWriteTexts(11, 13, "ChandlerZoomOutEvent");
+			TEXTBOX->Apear();
+			SetSequence(5); // <- 번호 바꿔 줘야함!
+		}
+		if (EVENTSYSTEM->CheckEventOn("ChandlerZoomOutEvent"))
+		{
+			TEXTBOX->SetWriteTexts(13, 16,"SpeechEndEvent");
+			TEXTBOX->Apear();
+			SetSequence(5);
+		}
 	}
 
 	void CutSceneCameraMoveScript::SetLeft(Vec3 _leftPos, Vec3 _leftRot)
@@ -126,8 +144,7 @@ namespace jh
 
 		if (true == mMainOfficeTimer.IsFinished())
 		{
-			//플레이어 움직임 금지
-			TEXTBOX->SetWriteTexts(3, 10, "DoorApearEvent");
+			TEXTBOX->SetWriteTexts(3, 9, "DoorApearCamMoveEvent");
 			TEXTBOX->Apear();
 			mMainOfficeTimer.Stop();
 			SetSequence(-1);	// 반복 금지용
@@ -157,6 +174,7 @@ namespace jh
 		{
 			mMainOfficeTimer2.Stop();
 			SetSequence(-1);	// 반복 금지용
+			
 		}
 	}
 
@@ -206,6 +224,8 @@ namespace jh
 		{
 			mMainOfficeTimer4.Stop();
 			SetSequence(4);	// MainOfficeMove5로 이동
+			TEXTBOX->SetWriteTexts(10, 10, "ChandlerZoomEvent");
+			TEXTBOX->Apear();
 		}
 	}
 
