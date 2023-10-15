@@ -295,7 +295,7 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Laser_Start;
+					meBasicState = MonsterBasicState::Snap_Once;
 					return BehaviorResult::Success;
 				});
 
@@ -581,8 +581,6 @@ void LORD_BOSS::SetBehaviorTree()
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (10 != animIndex)
 				{
-					CreatePOTProJectTile();
-
 					pAnimator->Play(10, true);
 				}
 				return BehaviorResult::Success;
@@ -592,7 +590,23 @@ void LORD_BOSS::SetBehaviorTree()
 			BehaviorTask* pTask = new BehaviorTask([&]()
 				{
 					Animator* pAni = GetAnimator();
-					if(pAni->GetFrameRatio() < 0.2)
+					if (pAni->GetFrameRatio() > 0.2)
+					{
+						if (Snap_Once01 == true)
+						{
+							Snap_Once01 = false;
+							CreatePOTProJectTile();
+						}
+					}
+
+					if (pAni->GetFrameRatio() > 0.4)
+					{
+						if (Snap_Once02 == true)
+						{
+							Snap_Once02 = false;
+							CreatePOTProJectTile(-1);
+						}
+					}
 
 					return BehaviorResult::Success;
 				});
@@ -610,7 +624,11 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeState = new BehaviorTask([&]()
 				{
-					CreatePOTProJectTile(-1);
+					CreatePOTProJectTile();
+
+					Snap_Once01 = true;
+					Snap_Once02 = true;
+
 					PrevState = meBasicState;
 					meBasicState = MonsterBasicState::Idle;
 					return BehaviorResult::Success;
@@ -1657,6 +1675,9 @@ void LORD_BOSS::Destroy()
 	Monster::Destroy();
 }
 
+
+
+
 void LORD_BOSS::OnCollisionEnter(Collider* _pOtherCollider)
 {
 }
@@ -1668,7 +1689,6 @@ void LORD_BOSS::OnCollisionStay(Collider* _pOtherCollider)
 void LORD_BOSS::OnCollisionExit(Collider* _pOtherCollider)
 {
 }
-
 
 
 
@@ -1730,6 +1750,9 @@ void LORD_BOSS::OnTriggerExit(Collider* _pOtherCollider)
 			GetRigidBody()->ApplyGravity();
 	}
 }
+
+
+
 
 void LORD_BOSS::SlowTurnLive()
 {
@@ -2063,6 +2086,8 @@ void LORD_BOSS::LaserPrevFollowLive()
 	mMagnScale = 2.f;
 }
 
+
+
 void LORD_BOSS::CreateCow(Vec3 _pos)
 {
 	// 보스가 소환하는 소
@@ -2239,14 +2264,14 @@ void LORD_BOSS::CreatePOTProJectTile()
 	static std::uniform_int_distribution<int> distribution(-8, 8);          // 생성 범위
 	static auto generator = std::bind(distribution, engine);
 	Transform* pTr = GetTransform();
-	PotProjectPos = pTr->GetPosition();
-	PotProjectPos.x += generator() * 1;
-	PotProjectPos.z += abs(generator()) * 2;
-	PotProjectPos.y += 10;
+	PotProjectPos01 = pTr->GetPosition();
+	PotProjectPos01.x += generator() * 1;
+	PotProjectPos01.z += abs(generator()) * 2;
+	PotProjectPos01.y += 10;
 
 	Vec3 PlayerPos = PLAYER->GetTransform()->GetPosition();
 
-	Vec3 PotDir = PlayerPos - PotProjectPos;
+	Vec3 PotDir = PlayerPos - PotProjectPos01;
 	PotDir.y += 10;
 	PotDir.Normalize();
 	PotDir *= 10;
@@ -2257,13 +2282,14 @@ void LORD_BOSS::CreatePOTProJectTile()
 		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(2.f, 3.1f, 2.f);
 
-		GameObject* pPot2 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(PotProjectPos), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\OrgPot.fbx", false, LayerType::Monster_ProjectTile);
+		GameObject* pPot2 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(PotProjectPos01), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\OrgPot.fbx", false, LayerType::Monster_ProjectTile);
 		pPot2->GetMeshRenderer()->SetMaterial(pPot2->GetMeshRenderer()->GetMaterial()->Clone());
 		pPot2->GetTransform()->SetRotation(Vec3(0.00f, 0.00f, 90.00f));
 		pPot2->GetTransform()->SetScale(Vec3(3.15f, 2.85f, 3.15f));
 		pPot2->Initialize();
 		pPot2->GetRigidBody()->ApplyGravity();
 		pPot2->GetRigidBody()->SetVelocity(PotDir);
+
 		pPot2->GetMeshRenderer()->GetMaterial()->SetBloom(true, 0);
 		pPot2->GetMeshRenderer()->GetMaterial()->SetBloom(true, 1);
 		
@@ -2285,7 +2311,7 @@ void LORD_BOSS::CreatePOTProJectTile()
 		basePhysicsInfo.eGeometryType = GeometryType::Box;
 		basePhysicsInfo.size = Vec3(2.f, 3.1f, 2.f);
 
-		Pot_ProjectTile* pIrreparablePot = Factory::CreateObjectHasPhysical<Pot_ProjectTile>(Vec3(PotProjectPos), basePhysicsInfo, L"Deferred", L"", false, pPot2);
+		Pot_ProjectTile* pIrreparablePot = Factory::CreateObjectHasPhysical<Pot_ProjectTile>(Vec3(PotProjectPos01), basePhysicsInfo, L"Deferred", L"", false, pPot2);
 		pIrreparablePot->Initialize();
 		pIrreparablePot->GetRigidBody()->ApplyGravity();
 		pIrreparablePot->GetRigidBody()->SetVelocity(PotDir);
@@ -2300,14 +2326,14 @@ void LORD_BOSS::CreatePOTProJectTile(int _a)
 	static std::uniform_int_distribution<int> distribution(-8, 8);          // 생성 범위
 	static auto generator = std::bind(distribution, engine);
 	Transform* pTr = GetTransform();
-	PotProjectPos = pTr->GetPosition();
-	PotProjectPos.x += generator() * 1.5f * _a;
-	PotProjectPos.z += abs(generator()) * 2;
-	PotProjectPos.y += 10;
+	PotProjectPos01 = pTr->GetPosition();
+	PotProjectPos01.x += generator() * 1.5f * _a;
+	PotProjectPos01.z += abs(generator()) * 2;
+	PotProjectPos01.y += 10;
 
 	Vec3 PlayerPos = PLAYER->GetTransform()->GetPosition();
 
-	Vec3 PotDir = PlayerPos - PotProjectPos;
+	Vec3 PotDir = PlayerPos - PotProjectPos01;
 	PotDir.y += 10;
 	PotDir.Normalize();
 	PotDir *= 10;
@@ -2318,7 +2344,7 @@ void LORD_BOSS::CreatePOTProJectTile(int _a)
 		physicsInfo.eGeometryType = GeometryType::Box;
 		physicsInfo.size = Vec3(2.f, 3.1f, 2.f);
 
-		GameObject* pPot2 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(PotProjectPos), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\OrgPot.fbx",false,LayerType::Monster_ProjectTile);
+		GameObject* pPot2 = Factory::CreateObjectHasPhysical<GameObject>(Vec3(PotProjectPos01), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\OrgPot.fbx",false,LayerType::Monster_ProjectTile);
 		pPot2->GetMeshRenderer()->SetMaterial(pPot2->GetMeshRenderer()->GetMaterial()->Clone());
 		pPot2->GetTransform()->SetRotation(Vec3(0.00f, 0.00f, 90.00f));
 		pPot2->GetTransform()->SetScale(Vec3(3.15f, 2.85f, 3.15f));
@@ -2346,7 +2372,7 @@ void LORD_BOSS::CreatePOTProJectTile(int _a)
 		basePhysicsInfo.eGeometryType = GeometryType::Box;
 		basePhysicsInfo.size = Vec3(2.f, 3.1f, 2.f);
 
-		Pot_ProjectTile* pIrreparablePot = Factory::CreateObjectHasPhysical<Pot_ProjectTile>(Vec3(PotProjectPos), basePhysicsInfo, L"Deferred", L"", false, pPot2);
+		Pot_ProjectTile* pIrreparablePot = Factory::CreateObjectHasPhysical<Pot_ProjectTile>(Vec3(PotProjectPos01), basePhysicsInfo, L"Deferred", L"", false, pPot2);
 		pIrreparablePot->Initialize();
 		pIrreparablePot->GetRigidBody()->ApplyGravity();
 		pIrreparablePot->GetRigidBody()->SetVelocity(PotDir);
