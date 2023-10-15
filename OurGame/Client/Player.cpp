@@ -406,7 +406,6 @@ void Player::Update()
 	}
 	/*if (false == this->IsEnable())
 	{
-
 		pGreatSword->Disable();
 		pBow->Disable();
 		pArrow->Disable();

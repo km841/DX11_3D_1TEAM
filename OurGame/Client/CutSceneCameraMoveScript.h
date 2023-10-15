@@ -22,8 +22,9 @@ namespace jh
 		/* MainOffice */
 		void SetStartPos(Vec3 _pos) { mStartPos = _pos; }
 		void SetStartRot(Vec3 _rot) { mStartRot = _rot; }
-		void CutSceneStart() { mbIsCutSceneStart = true; }
+		void SetSequence(int _num) { mSequenceNum = _num; }
 		void MainOfficeMove();
+		void MainOfficeMove2();
 
 	private:
 		/* Title Scene */
@@ -45,7 +46,9 @@ namespace jh
 		Vec3 mClosePos;
 		Vec3 mCloseRot;
 
-		bool mbIsCutSceneStart;
+		int mSequenceNum;
 		TimerObject mMainOfficeTimer;
+		TimerObject mMainOfficeTimer2;
+		bool mbIsAIState;
 	};
 }

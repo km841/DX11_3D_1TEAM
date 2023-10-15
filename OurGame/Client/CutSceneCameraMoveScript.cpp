@@ -4,12 +4,15 @@
 #include "SceneManager.h"
 #include "EventSystem.h"
 #include "TextBox.h"
+#include "Player.h"
 
 namespace jh
 {
 	CutSceneCameraMoveScript::CutSceneCameraMoveScript() :
 		mWidePos(Vec3(-17.14f, -0.83f, 1.58f)),
-		mWideRot(Vec3(22.18f, 135.49f, 0.f))
+		mWideRot(Vec3(22.18f, 135.49f, 0.f)),
+		mbIsAIState(false),
+		mSequenceNum(-1)
 	{
 	}
 
@@ -28,8 +31,10 @@ namespace jh
 			TitleMove();
 			break;
 		case hm::SceneType::MainOfficeMap:
-			if(true == mbIsCutSceneStart)
+			if (0 == mSequenceNum)
 				MainOfficeMove();
+			if (1 == mSequenceNum)
+				MainOfficeMove2();
 			break;
 		}
 	}
@@ -81,6 +86,13 @@ namespace jh
 
 	void CutSceneCameraMoveScript::MainOfficeMove()
 	{
+		PLAYER->SetCutScenePos(Vec3(-8.68f, -8.24f, -9.44f));
+		if (false == mbIsAIState)
+		{
+			mbIsAIState = true;
+			PLAYER->StateChange(PlayerState::AIMoveState);
+		}
+
 		mMainOfficeTimer.SetEndTime(3.f);
 
 		if (false == mMainOfficeTimer.GetIsRun())
@@ -98,13 +110,31 @@ namespace jh
 		if (true == mMainOfficeTimer.IsFinished())
 		{
 			//플레이어 움직임 금지
-			TEXTBOX->SetWriteTexts(3,10,"DoorApearEvent");
+			TEXTBOX->SetWriteTexts(3, 10, "DoorApearEvent");
 			TEXTBOX->Apear();
 			mMainOfficeTimer.Stop();
-			mbIsCutSceneStart = false;
+			SetSequence(1);
 		}
+	}
+	void CutSceneCameraMoveScript::MainOfficeMove2()
+	{
+		mMainOfficeTimer2.SetEndTime(5.f);
 
-		//GetGameObject()->GetTransform()->SetPosition(mStartPos);
-		//GetGameObject()->GetTransform()->SetRotation(mStartRot);
+		if (false == mMainOfficeTimer2.GetIsRun())
+			mMainOfficeTimer2.Start();
+
+		mMainOfficeTimer2.Update();
+
+		float progress = mMainOfficeTimer2.GetProgress();
+
+		Vec3 startPos = Vec3(-12.34f, -5.735f, -9.34f);
+		Vec3 startRot = Vec3(3.62f, 98.78f, 0.f);
+		Vec3 endPos = Vec3(-10.2f, -5.87f, -9.67f);
+		Vec3 endRot = Vec3(3.62f, 98.78f, 0.f);
+
+		Vec3 pos = Lerp(startPos, endPos, progress);
+		GetGameObject()->GetTransform()->SetPosition(pos);
+		Vec3 rot = Lerp(startRot, endRot, progress);
+		GetGameObject()->GetTransform()->SetRotation(rot);
 	}
 }
