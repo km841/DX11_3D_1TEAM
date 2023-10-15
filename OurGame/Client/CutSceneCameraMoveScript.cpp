@@ -5,12 +5,18 @@
 #include "EventSystem.h"
 #include "TextBox.h"
 #include "Player.h"
+#include "Input.h"
+#include "Timer.h"
 
 namespace jh
 {
 	CutSceneCameraMoveScript::CutSceneCameraMoveScript() :
 		mWidePos(Vec3(-17.14f, -0.83f, 1.58f)),
 		mWideRot(Vec3(22.18f, 135.49f, 0.f)),
+		mClosePos(Vec3(-12.34f, -5.735f, -9.34f)),
+		mCloseRot(Vec3(3.62f, 98.78f, 0.f)),
+		mDoorStartPos(Vec3(-3.69f, 19.75f, 9.34f)),
+		mDoorEndPos(Vec3(0.745f, 17.13f, 4.68f)),
 		mbIsAIState(false),
 		mSequenceNum(-1)
 	{
@@ -35,8 +41,19 @@ namespace jh
 				MainOfficeMove();
 			if (1 == mSequenceNum)
 				MainOfficeMove2();
+			if (2 == mSequenceNum)
+				MainOfficeMove3();
+			if (3 == mSequenceNum)
+				MainOfficeMove4();
+			if (4 == mSequenceNum)
+				MainOfficeMove5();
 			break;
 		}
+
+		if (IS_DOWN(KeyType::U))
+			SetSequence(1);
+		if (IS_DOWN(KeyType::I))
+			SetSequence(2);
 	}
 
 	void CutSceneCameraMoveScript::SetLeft(Vec3 _leftPos, Vec3 _leftRot)
@@ -113,9 +130,10 @@ namespace jh
 			TEXTBOX->SetWriteTexts(3, 10, "DoorApearEvent");
 			TEXTBOX->Apear();
 			mMainOfficeTimer.Stop();
-			SetSequence(1);
+			SetSequence(-1);	// 반복 금지용
 		}
 	}
+
 	void CutSceneCameraMoveScript::MainOfficeMove2()
 	{
 		mMainOfficeTimer2.SetEndTime(5.f);
@@ -127,14 +145,90 @@ namespace jh
 
 		float progress = mMainOfficeTimer2.GetProgress();
 
-		Vec3 startPos = Vec3(-12.34f, -5.735f, -9.34f);
-		Vec3 startRot = Vec3(3.62f, 98.78f, 0.f);
 		Vec3 endPos = Vec3(-10.2f, -5.87f, -9.67f);
 		Vec3 endRot = Vec3(3.62f, 98.78f, 0.f);
 
-		Vec3 pos = Lerp(startPos, endPos, progress);
+		Vec3 pos = Lerp(mClosePos, endPos, progress);
 		GetGameObject()->GetTransform()->SetPosition(pos);
-		Vec3 rot = Lerp(startRot, endRot, progress);
+		Vec3 rot = Lerp(mCloseRot, endRot, progress);
 		GetGameObject()->GetTransform()->SetRotation(rot);
+
+		if (true == mMainOfficeTimer2.IsFinished())
+		{
+			mMainOfficeTimer2.Stop();
+			SetSequence(-1);	// 반복 금지용
+		}
+	}
+
+	void CutSceneCameraMoveScript::MainOfficeMove3()
+	{
+		mMainOfficeTimer3.SetEndTime(2.5f);
+
+		if (false == mMainOfficeTimer3.GetIsRun())
+			mMainOfficeTimer3.Start();
+
+		mMainOfficeTimer3.Update();
+
+		float progress = mMainOfficeTimer3.GetProgress();
+		
+		mDoorStartRot = mWideRot;
+		mDoorStartRot.y = 137.4f;
+
+		Vec3 pos = Lerp(mWidePos, mDoorStartPos, progress);
+		GetGameObject()->GetTransform()->SetPosition(pos);
+		Vec3 rot = Lerp(mWideRot, mDoorStartRot, progress);
+		GetGameObject()->GetTransform()->SetRotation(rot);
+
+		if (true == mMainOfficeTimer3.IsFinished())
+		{
+			mMainOfficeTimer3.Stop();
+			SetSequence(3);	// MainOfficeMove4로 이동
+		}
+	}
+
+	void CutSceneCameraMoveScript::MainOfficeMove4()
+	{
+		mMainOfficeTimer4.SetEndTime(4.f);
+
+		if (false == mMainOfficeTimer4.GetIsRun())
+			mMainOfficeTimer4.Start();
+
+		mMainOfficeTimer4.Update();
+
+		float progress = mMainOfficeTimer4.GetProgress();
+
+		Vec3 pos = Lerp(mDoorStartPos, mDoorEndPos, progress);
+		GetGameObject()->GetTransform()->SetPosition(pos);
+		//Vec3 rot = Lerp(mDoorStartRot, mDoorEndRot, progress);
+		//GetGameObject()->GetTransform()->SetRotation(rot);
+
+		if (true == mMainOfficeTimer4.IsFinished())
+		{
+			mMainOfficeTimer4.Stop();
+			SetSequence(4);	// MainOfficeMove5로 이동
+		}
+	}
+
+	void CutSceneCameraMoveScript::MainOfficeMove5()
+	{
+		mMainOfficeTimer5.SetEndTime(1.f);
+
+		if (false == mMainOfficeTimer5.GetIsRun())
+			mMainOfficeTimer5.Start();
+
+		mMainOfficeTimer5.Update();
+
+		float progress = mMainOfficeTimer5.GetProgress();
+
+		Vec3 pos = Lerp(mDoorEndPos, mWidePos, progress);
+		GetGameObject()->GetTransform()->SetPosition(pos);
+		Vec3 rot = Lerp(mDoorStartRot, mWideRot, progress);
+		GetGameObject()->GetTransform()->SetRotation(rot);
+
+		if (true == mMainOfficeTimer5.IsFinished())
+		{
+			mMainOfficeTimer5.Stop();
+			SetSequence(-1);	// 반복 금지용
+		}
 	}
 }
