@@ -211,6 +211,7 @@ namespace hm
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Portal);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Portal);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Trigger);
+		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Player, LayerType::Effect);
 
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::Ground);
 		GET_SINGLE(CollisionManager)->SetCollisionGroup(LayerType::Monster, LayerType::PlayerCol);
