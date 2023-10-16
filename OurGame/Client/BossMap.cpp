@@ -71,13 +71,16 @@ namespace hm
 		:Map(MapType::BossMap)
 	{
 	}
+
 	BossMap::~BossMap()
 	{
 	}
+
 	void BossMap::Initialize()
 	{
 		Map::Initialize();
 	}
+
 	void BossMap::Start()
 	{
 		Map::Start();
@@ -113,6 +116,7 @@ namespace hm
 
 		ChangeCameraMode();
 	}
+
 	void BossMap::Update()
 	{
 		Map::Update();
@@ -130,7 +134,7 @@ namespace hm
 			pLordOfDoor->CutSceneEnd();
 		}
 
-		Vec3 pos = MAIN_CAMERA->GetTransform()->GetPosition();
+		/*Vec3 pos = MAIN_CAMERA->GetTransform()->GetPosition();
 		wstring strPos = {};
 		strPos += L"x = " + std::to_wstring(pos.x) + L" ";
 		strPos += L"y = " + std::to_wstring(pos.y) + L" ";
@@ -142,7 +146,7 @@ namespace hm
 		strRot += L"y = " + std::to_wstring(rot.y) + L" ";
 		strRot += L"z = " + std::to_wstring(rot.z);
 		FONT->DrawString(strPos, 30.f, Vec3(50.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
-		FONT->DrawString(strRot, 30.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);
+		FONT->DrawString(strRot, 30.f, Vec3(50.f, 850.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff7f7f7f, FONT_ALIGN::LEFT);*/
 
 		/*Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 		wstring strPos = {};
@@ -642,7 +646,7 @@ namespace hm
 			AddGameObject(pTop);
 		}
 
-		TEXTBOX->SetWriteTexts(18, 24, "BossSpeechEnd");
+		TEXTBOX->SetWriteTexts(17, 24, "BossSpeechEnd");
 		TEXTBOX->Apear();
 	}
 

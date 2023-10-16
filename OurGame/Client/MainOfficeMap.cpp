@@ -84,8 +84,8 @@ namespace yj
 	{
 		Map::Initialize();
 
-		spPlayerHolder->GetAudioSound()->SetSound(L"MainOfficeBGM", this, true, "..\\Resources\\Sound\\MainOfficeBGM.mp3");
-		spPlayerHolder->GetAudioSound()->Play();
+		spPlayerHolder->GetAudioSound()->SetSound(L"MainOfficeBGM", this, true, "..\\Resources\\Sound\\Hall of Doors.mp3");
+		spPlayerHolder->GetAudioSound()->Play(15);
 
 	}
 

@@ -181,7 +181,7 @@ namespace jh
 
 		if (true == mMainOfficeTimer.IsFinished())
 		{
-			TEXTBOX->SetWriteTexts(3, 9, "DoorApearCamMoveEvent");
+			TEXTBOX->SetWriteTexts(2, 9, "DoorApearCamMoveEvent");
 			TEXTBOX->Apear();
 			mMainOfficeTimer.Stop();
 			SetMainSequence(-1);	// 반복 금지용
@@ -260,7 +260,7 @@ namespace jh
 		{
 			mMainOfficeTimer4.Stop();
 			SetMainSequence(4);	// MainOfficeMove5로 이동
-			TEXTBOX->SetWriteTexts(10, 10, "ChandlerZoomEvent");
+			TEXTBOX->SetWriteTexts(9, 11, "ChandlerZoomEvent");
 			TEXTBOX->Apear();
 		}
 	}

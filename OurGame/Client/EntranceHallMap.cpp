@@ -74,7 +74,7 @@ void EntranceHallMap::Initialize()
 	Map::Initialize();
 
 	spPlayerHolder->GetAudioSound()->SetSound(L"GrandmaBGM", this, true, "..\\Resources\\Sound\\GrandmaHouseBGM.mp3");
-	spPlayerHolder->GetAudioSound()->Play();
+	spPlayerHolder->GetAudioSound()->Play(30);
 }
 
 void EntranceHallMap::Start()
