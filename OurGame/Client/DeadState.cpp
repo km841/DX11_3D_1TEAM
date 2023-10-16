@@ -59,6 +59,7 @@ void DeadState::Update()
 
 	if (IS_DOWN(KeyType::V))
 	{
+		pPlayer->RecoverHP();
 		pPlayer->StateChange(PlayerState::HitEndState);
 	}
 

@@ -136,7 +136,7 @@ namespace hm
 		// - Monster_Player_Test
 		if (IS_DOWN(KeyType::L))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::BossMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::Right2Map);
 		}
 
 		// 영진

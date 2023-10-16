@@ -582,38 +582,39 @@ namespace hm
 				pLadder->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
 
 				AddGameObject(pLadder);
+				//SetGizmoTarget(pLadder);
+				
+				{
+					PhysicsInfo mEnterInfo;
+					mEnterInfo.eActorType = ActorType::Static;
+					mEnterInfo.eGeometryType = GeometryType::Box;
+					mEnterInfo.size = Vec3(2.5f, 0.5f, 1.5f);
 
-				//{
-				//	PhysicsInfo mEnterInfo;
-				//	mEnterInfo.eActorType = ActorType::Static;
-				//	mEnterInfo.eGeometryType = GeometryType::Box;
-				//	mEnterInfo.size = Vec3(1.f, 0.5f, 0.5f);
+					LadderCollider* pEnterLadderCol = Factory::CreateObjectHasPhysical<LadderCollider>(Vec3(-14.f, 0.4f, -14.5f), mEnterInfo, L"Deferred", L"");
+					pEnterLadderCol->SetPlayerToMovePos(Vec3(-14.f, 0.03f, -14.6f));
+					pEnterLadderCol->SetDir(DirectionEvasion::BACKWARD);
+					pEnterLadderCol->SetName(L"LadderEnterCol");
 
-				//	LadderCollider* pEnterLadderCol = Factory::CreateObjectHasPhysical<LadderCollider>(Vec3(2.67f, 0.7f, -19.5f), mEnterInfo, L"Deferred", L"");
-				//	pEnterLadderCol->SetPlayerToMovePos(Vec3(2.67f, 0.73f, -17.5f));
-				//	pEnterLadderCol->SetDir(DirectionEvasion::BACKWARD);
-				//	pEnterLadderCol->SetName(L"LadderEnterCol");
+					AddGameObject(pEnterLadderCol);
+					//SetGizmoTarget(pEnterLadderCol);
+				}
 
-				//	AddGameObject(pEnterLadderCol);
-				//	//SetGizmoTarget(pEnterLadderCol);
-				//}
+				{
+					PhysicsInfo mExitInfo;
+					mExitInfo.eActorType = ActorType::Static;
+					mExitInfo.eGeometryType = GeometryType::Box;
+					mExitInfo.size = Vec3(2.f, 0.5f, 1.5f);
 
-				//{
-				//	PhysicsInfo mExitInfo;
-				//	mExitInfo.eActorType = ActorType::Static;
-				//	mExitInfo.eGeometryType = GeometryType::Box;
-				//	mExitInfo.size = Vec3(1.f, 0.5f, 0.5f);
+					LadderCollider* pExitLadderCol = Factory::CreateObjectHasPhysical<LadderCollider>(Vec3(-14.f, 6.03f, -14.7f), mExitInfo, L"Deferred", L"");
+					pExitLadderCol->SetPlayerToMovePos(Vec3(-14.f, 6.03f, -14.7f));
+					pExitLadderCol->SetPlayerToDownPos(Vec3(-14.f, 5.83f, -14.5f));
+					pExitLadderCol->SetDir(DirectionEvasion::BACKWARD);
+					pExitLadderCol->SetName(L"LadderExitCol");
 
-				//	LadderCollider* pExitLadderCol = Factory::CreateObjectHasPhysical<LadderCollider>(Vec3(2.67f, 15.8f, -19.5f), mExitInfo, L"Deferred", L"");
-				//	pExitLadderCol->SetPlayerToMovePos(Vec3(2.67f, 15.8f, -17.5f));
-				//	pExitLadderCol->SetPlayerToDownPos(Vec3(2.67f, 15.6f, -17.5f));
-				//	pExitLadderCol->SetDir(DirectionEvasion::BACKWARD);
-				//	pExitLadderCol->SetName(L"LadderExitCol");
+					AddGameObject(pExitLadderCol);
 
-				//	AddGameObject(pExitLadderCol);
-				//	SetGizmoTarget(pExitLadderCol);
 
-				//}
+				}
 
 			}
 
@@ -1119,7 +1120,7 @@ namespace hm
 			AddGameObject(pClimbUpTextBox);
 			yj::HeadText* pClimbUpTextScript = pClimbUpTextBox->AddComponent<yj::HeadText>();
 			pClimbUpTextScript->SetDectetorPos(Vec3(14.9f, 1.2f, -14.3f));
-			SetGizmoTarget(pClimbUpTextBox);
+			//SetGizmoTarget(pClimbUpTextBox);
 		}
 
 		{
@@ -1132,7 +1133,7 @@ namespace hm
 			AddGameObject(pClimbUpTextBox);
 			yj::HeadText* pClimbUpTextScript = pClimbUpTextBox->AddComponent<yj::HeadText>();
 			pClimbUpTextScript->SetDectetorPos(Vec3(14.9f, 1.2f, -14.3f));
-			SetGizmoTarget(pClimbUpTextBox);
+			//SetGizmoTarget(pClimbUpTextBox);
 		}
 	}
 }
