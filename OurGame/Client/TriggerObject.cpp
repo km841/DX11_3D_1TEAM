@@ -7,6 +7,7 @@
 #include "CutSceneCameraMoveScript.h"
 #include "EventSystem.h"
 #include "TextBox.h"
+#include "EventManager.h"
 
 namespace jh
 {
@@ -60,6 +61,9 @@ namespace jh
 			pScript->SetStartPos(CUTSCENE_CAMERA->GetGameObject()->GetTransform()->GetPosition());
 			pScript->SetStartRot(CUTSCENE_CAMERA->GetGameObject()->GetTransform()->GetRotation());
 			pScript->SetMainSequence(0);
+
+			SceneType eSceneType = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
+			GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(eSceneType, this);
 		}
 	}
 
