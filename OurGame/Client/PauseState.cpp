@@ -57,6 +57,10 @@ void PauseState::Update()
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 
+	if (pAni->GetFrameRatio() > 0.95f) 
+		PlayAnimation();
+			
+	
 	//if (/*특정조건 발동되면 IDLE상태로 넘어가기*/)
 	//{
 	//	pPlayer->StateChange(PlayerState::AIMoveState);
@@ -81,5 +85,5 @@ void PauseState::PlayAnimation()
 	Player* pPlayer = Player::GetPlayer();
 	Animator* pAni = pPlayer->GetAnimator();
 
-	pAni->Play(42, false);
+	pAni->Play(42, true);
 }
