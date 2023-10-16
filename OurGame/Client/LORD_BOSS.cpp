@@ -1637,12 +1637,12 @@ void LORD_BOSS::Update()
 	Monster::Update();
 
 
-	Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
+	/*Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 	Vec3 myPos = GetTransform()->GetPosition();
 	float distance = (playerPos - myPos).Length();
 
 	wstring strPos = L"" + std::to_wstring(distance);
-	FONT->DrawString(strPos, 30.f, Vec3(200.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);
+	FONT->DrawString(strPos, 30.f, Vec3(200.f, 890.f, 1.f), FONT_WEIGHT::ULTRA_BOLD, 0xff0000ff, FONT_ALIGN::LEFT);*/
 	
 }
 
