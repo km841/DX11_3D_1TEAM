@@ -145,7 +145,6 @@ void EntranceHallMap::Enter()
 
 void EntranceHallMap::Exit()
 {
-	spPlayerHolder->GetAudioSound()->Stop();
 }
 
 void EntranceHallMap::InitObjectAdd()

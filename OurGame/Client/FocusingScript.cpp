@@ -37,7 +37,7 @@ namespace hm
 		if (nullptr == mpFollowTarget)
 			return;
 
-		if (IS_DOWN(KeyType::P))
+		if (IS_DOWN(KeyType::L))
 		{
 			mbFollowMode = !mbFollowMode;
 			if (false == mbFollowMode)

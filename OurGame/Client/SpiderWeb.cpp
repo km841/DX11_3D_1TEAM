@@ -8,12 +8,16 @@
 #include "Texture.h"
 #include "Resources.h"
 #include "ArrowScript.h"
+#include "Player.h"
+#include "AudioSound.h"
+#include "SceneManager.h"
 
 namespace hm
 {
 	SpiderWeb::SpiderWeb()
 		: GameObject(LayerType::Obstacle)
 		, mBurn(false)
+		, mbFinished(false)
 	{
 		mTimer.SetEndTime(3.f);
 		
@@ -35,6 +39,15 @@ namespace hm
 		GetMeshRenderer()->GetMaterial()->SetFloatAllSubset(0, mTimer.GetCurTime());
 		GetMeshRenderer()->GetMaterial()->SetIntAllSubset(3, mBurn);
 		GetMeshRenderer()->GetMaterial()->SetTexture(1, GET_SINGLE(Resources)->Get<Texture>(L"BurnNoise"));
+
+		if (true == mTimer.IsFinished())
+		{
+			if (nullptr != mCallback && false == mbFinished)
+			{
+				mbFinished = true;
+				mCallback();
+			}
+		}
 	}
 	void SpiderWeb::FixedUpdate()
 	{
@@ -70,6 +83,9 @@ namespace hm
 			{
 				mBurn = 1;
 				mTimer.Start();
+
+				PLAYER->GetAudioSound()->SetSound(L"BurnWeb", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\BurnWeb.mp3");
+				PLAYER->GetAudioSound()->Play();
 			}
 		}
 	}

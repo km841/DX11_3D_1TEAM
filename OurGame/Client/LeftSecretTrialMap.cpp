@@ -33,6 +33,7 @@
 #include "Grimace.h"
 #include "FireLamp.h"
 #include "SpiderWeb.h"
+#include "BreakablePot.h"
 
 /* Component */
 #include "Collider.h"
@@ -1384,6 +1385,24 @@ void LeftSecretTrialMap::FuncObjectAdd()
 		pLight->SetLightRange(40.f);
 		pLight->SetLightType(LightType::PointLight);
 		AddGameObject(pLightObject);
+	}
+
+	// 그 위에 항아리
+	{
+		DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(-6.2f, -1.62f, -19.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\POT_HEAL_Generic.fbx");
+		pPotHeal->GetTransform()->SetScale(Vec3(3.15f, 2.85f, 3.15f));
+		pPotHeal->GetTransform()->SetRotation(Vec3(0.00f, -90.f, 0.00f));
+
+		AddGameObject(pPotHeal);
+
+		PhysicsInfo basePhysicsInfo;
+		basePhysicsInfo.eActorType = ActorType::Kinematic;
+		basePhysicsInfo.eGeometryType = GeometryType::Box;
+		basePhysicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+		jh::BreakablePot* pIrreparablePot = Factory::CreateObjectHasPhysical<jh::BreakablePot>(Vec3(-6.2f, -1.62f, -19.6f), basePhysicsInfo, L"Deferred", L"", false, pPotHeal);
+
+		AddGameObject(pIrreparablePot);
 	}
 
 

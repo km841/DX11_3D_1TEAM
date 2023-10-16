@@ -619,10 +619,26 @@ namespace hm
 
 			// to 2floor 사다리
 			{
-				DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(2.67f, 7.f, -17.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Ladder.fbx");
-				pLadder->GetTransform()->SetScale(Vec3(6.5f, 17.8f, 6.5f));
-				//SetGizmoTarget(pLadder);
-				AddGameObject(pLadder);
+				{
+					DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(2.67f, 7.f, -17.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Ladder.fbx");
+					pLadder->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
+					//SetGizmoTarget(pLadder);
+					AddGameObject(pLadder);
+				}
+
+
+				{
+					DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(2.67f, 11.9f, -17.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Ladder.fbx");
+					pLadder->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
+					AddGameObject(pLadder);
+				}
+
+				{
+					DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(2.67f, 2.1f, -17.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Ladder.fbx");
+					pLadder->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
+					AddGameObject(pLadder);
+				}
+
 
 				{
 					PhysicsInfo mEnterInfo;
@@ -1119,7 +1135,6 @@ namespace hm
 			AddGameObject(pClimbUpTextBox);
 			yj::HeadText* pClimbUpTextScript = pClimbUpTextBox->AddComponent<yj::HeadText>();
 			pClimbUpTextScript->SetDectetorPos(Vec3(14.9f, 1.2f, -14.3f));
-			SetGizmoTarget(pClimbUpTextBox);
 		}
 
 		{
@@ -1132,7 +1147,6 @@ namespace hm
 			AddGameObject(pClimbUpTextBox);
 			yj::HeadText* pClimbUpTextScript = pClimbUpTextBox->AddComponent<yj::HeadText>();
 			pClimbUpTextScript->SetDectetorPos(Vec3(14.9f, 1.2f, -14.3f));
-			SetGizmoTarget(pClimbUpTextBox);
 		}
 	}
 }

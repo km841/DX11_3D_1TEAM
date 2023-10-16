@@ -7,6 +7,9 @@
 #include "Timer.h"
 #include "Input.h"
 #include "ArrowScript.h"
+#include "Player.h"
+#include "AudioSound.h"
+#include "SceneManager.h"
 
 namespace yj
 {
@@ -88,6 +91,12 @@ namespace yj
 			{
 				if (pOtherCollider->GetGameObject()->GetScript<ArrowScript>()->GetIsBurn())
 				{
+					if (false == isBurn)
+					{
+						PLAYER->GetAudioSound()->SetSound(L"Burn", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\Burn.mp3");
+						PLAYER->GetAudioSound()->Play();
+					}
+
 					isBurn = true;
 					if (mLampSequence == -1)
 					{

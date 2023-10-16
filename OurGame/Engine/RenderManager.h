@@ -65,6 +65,9 @@ namespace hm
 		void SetDebugMode(bool _bFlag) { mbDebugMode = _bFlag; }
 		bool IsDebugMode()			   { return mbDebugMode; }
 
+		void SetCutSceneMode(bool _bFlag) { mbCutSceneMode = _bFlag; }
+		bool IsCutSceneMode() { return mbCutSceneMode; }
+
 		void SetNoRenderMode(bool _bFlag) { mbNoRenderMode = _bFlag; }
 
 		void AddScreenEffect(ScreenEffectInfo* _effectInfo, int _groupIndex = 0);
@@ -147,6 +150,7 @@ namespace hm
 		bool mbEnableRim;
 		bool mbDebugMode;
 		bool mbNoRenderMode;
+		bool mbCutSceneMode;
 
 		std::map<UINT64, InstancingBuffer*> mBuffers;
 	};
