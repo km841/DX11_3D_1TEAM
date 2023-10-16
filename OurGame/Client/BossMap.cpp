@@ -58,6 +58,8 @@
 #include "PlayerMoveOverMapScript.h"
 #include "FocusingScript.h"
 #include "OwnerFollowScript.h"
+#include "TextBox.h"
+#include "EventSystem.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -88,6 +90,8 @@ namespace hm
 		PLAYER->GetKeyInfo().SetLeftKey(KeyType::RIGHT);
 		PLAYER->GetKeyInfo().SetForwardKey(KeyType::DOWN);
 
+		PLAYER->StateChange(PlayerState::PauseState);
+
 		mpMainCamera->GetTransform()->SetPosition(Vec3(-32.24f, 26.3f, 14.f));
 		mpMainCamera->GetTransform()->SetRotation(Vec3(47.f, -233.3f, 0.f));
 
@@ -105,6 +109,7 @@ namespace hm
 		OwnerFollowScript* pFollowScript = spPlayerHolder->GetScript<OwnerFollowScript>();
 		pFollowScript->SetOffset(Vec3(-17.4f, 29.f, 14.1f));
 		mpMainCamera->GetScript<FocusingScript>()->SetFocusingMode(true);
+		mpMainCamera->GetScript<FocusingScript>()->SetFollowingMode(true);
 
 		ChangeCameraMode();
 	}
@@ -116,6 +121,13 @@ namespace hm
 		{
 			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeOut, 0.1f, nullptr, std::bind(&Map::ChangeCameraMode, this));
 			GET_SINGLE(RenderManager)->AddFadeEffect(ScreenEffectType::FadeIn, 0.1f);
+		}
+
+		if (EVENTSYSTEM->CheckEventOn("BossIntroEnd"))
+		{
+			ChangeCameraMode();
+			PLAYER->StateChange(PlayerState::IdleState);
+			pLordOfDoor->CutSceneEnd();
 		}
 
 		Vec3 pos = MAIN_CAMERA->GetTransform()->GetPosition();
@@ -629,7 +641,11 @@ namespace hm
 			WallObject* pTop = Factory::CreateObjectHasPhysical<WallObject>(Vec3(21.6f, 1.39f, -17.35f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pTop);
 		}
+
+		TEXTBOX->SetWriteTexts(18, 24, "BossSpeechEnd");
+		TEXTBOX->Apear();
 	}
+
 	void BossMap::Exit()
 	{
 	}

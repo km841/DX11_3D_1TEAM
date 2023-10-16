@@ -71,6 +71,7 @@ namespace jh
 		Vec3 mDoorEndRot;
 
 		bool mbIsAIState;
+		bool mbIsPauseState;
 
 		int mMainSequenceNum;
 

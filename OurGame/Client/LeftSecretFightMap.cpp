@@ -47,6 +47,7 @@
 #include "UIText.h"
 #include "Animator.h"
 #include "Mirror.h"
+#include "LadderCollider.h"
 
 /* Script */
 #include "PaperBurnScript.h"
@@ -169,7 +170,7 @@ void LeftSecretFightMap::Enter()
 		SpawnDoor<Grimace>* pGrimace = Factory::SpawnMonster<Grimace>(Vec3(-9.5f, -4.f, -2.8f),Vec3(180.f,180.f,0.f));
 		pGrimace->SetTriggerDoor(pOrgSpikeDoor);
 		pGrimace->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
-		AddGameObject(pGrimace);
+		//AddGameObject(pGrimace);
 	}
 
 	// 샹들리에 라이트
@@ -725,8 +726,39 @@ void LeftSecretFightMap::InitObjectAdd()
 		pLadder->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 		pLadder->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 
-
 		AddGameObject(pLadder);
+
+		{
+			PhysicsInfo mEnterInfo;
+			mEnterInfo.eActorType = ActorType::Static;
+			mEnterInfo.eGeometryType = GeometryType::Box;
+			mEnterInfo.size = Vec3(0.5f, 0.5f, 2.f);
+
+			LadderCollider* pEnterLadderCol = Factory::CreateObjectHasPhysical<LadderCollider>(Vec3(9.5f, -7.9f, 7.6f), mEnterInfo, L"Deferred", L"");
+			pEnterLadderCol->SetPlayerToMovePos(Vec3(10.3f, -7.9f, 8.f));
+			pEnterLadderCol->SetDir(DirectionEvasion::RIGHT);
+			pEnterLadderCol->SetName(L"LadderEnterCol");
+
+			AddGameObject(pEnterLadderCol);
+			//SetGizmoTarget(pEnterLadderCol);
+		}
+
+		{
+			PhysicsInfo mExitInfo;
+			mExitInfo.eActorType = ActorType::Static;
+			mExitInfo.eGeometryType = GeometryType::Box;
+			mExitInfo.size = Vec3(2.f, 0.5f, 2.5f);
+
+			LadderCollider* pExitLadderCol = Factory::CreateObjectHasPhysical<LadderCollider>(Vec3(10.2f, -2.1f, 7.6f), mExitInfo, L"Deferred", L"");
+			pExitLadderCol->SetPlayerToMovePos(Vec3(10.2f, -2.1f, 8.0f));
+			pExitLadderCol->SetPlayerToDownPos(Vec3(10.2f, -2.1f, 8.0f));
+			pExitLadderCol->SetDir(DirectionEvasion::RIGHT);
+			pExitLadderCol->SetName(L"LadderExitCol");
+
+			AddGameObject(pExitLadderCol);
+			//SetGizmoTarget(pExitLadderCol);
+
+		}
 	}
 	//항아리 1 - POT_HEAL_Generic_Variant
 	{

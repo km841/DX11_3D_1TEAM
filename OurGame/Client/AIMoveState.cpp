@@ -84,7 +84,7 @@ void AIMoveState::Update()
 	if (distance <= 0.1f)
 	{
 		pTr->SetRotation(Vec3(0.f, -90.f, 90.f));
-		pPlayer->StateChange(PlayerState::IdleState);
+		pPlayer->StateChange(PlayerState::PauseState);
 		return;
 		//컷신 종료할때 여기다가 추가
 	}

@@ -31,6 +31,7 @@ namespace jh
 		mBossClearPos(Vec3(-11.54f, -3.78f, 3.05f)),
 		mBossClearRot(Vec3(5.85f, 100.41f, 0.f)),
 		mbIsAIState(false),
+		mbIsPauseState(false),
 		mMainSequenceNum(-1),
 		mBossSequenceNum(0),
 		mbAddWhite(false),
@@ -97,13 +98,16 @@ namespace jh
 			SetMainSequence(1);
 			TEXTBOX->SetWriteTexts(11, 13, "ChandlerZoomOutEvent");
 			TEXTBOX->Apear();
-			SetMainSequence(5); // <- 번호 바꿔 줘야함!
 		}
 		if (EVENTSYSTEM->CheckEventOn("ChandlerZoomOutEvent"))
 		{
 			TEXTBOX->SetWriteTexts(13, 17,"SpeechEndEvent");
 			TEXTBOX->Apear();
 			SetDeskPos();
+		}
+		if (EVENTSYSTEM->CheckEventOn("BossSpeechEnd"))
+		{
+			SetBossSequence(2);
 		}
 	}
 
@@ -373,6 +377,7 @@ namespace jh
 		if (true == mBossMapTimer2.IsFinished())
 		{
 			mBossMapTimer2.Stop();
+			EVENTSYSTEM->EventOn("BossIntroEnd");
 			SetBossSequence(-1);	// 반복 금지용
 		}
 	}

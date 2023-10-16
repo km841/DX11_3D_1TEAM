@@ -43,6 +43,15 @@ namespace yj
 		mWriteTextArray.push_back(L"다 먹고살자고 하는 일이야.");
 		mWriteTextArray.push_back(L"어쨋든, 들어가봐. 그리고 조심하고.");
 		mWriteTextArray.push_back(L"네가 죽으면 처리해야 할 서류가 산더미처럼 쌓일 테니까 말이야. \n 시간도 없는데 말이야.");
+
+		mWriteTextArray.push_back(L"그대를 지켜보고 있었다. 젊은 까마귀여.");
+		mWriteTextArray.push_back(L"이렇게까지 될줄은 몰랐거늘... \n 하지만 결국 오고야 마는 구나.");
+		mWriteTextArray.push_back(L"우리가 만들어진 그 날 부터, 우리는 언제 우리가 죽을지 듣게 된다");
+		mWriteTextArray.push_back(L"죽을 날을 정확히 알게 된다면, 그대는 어떻게 삶을 살아갈 것인가?");
+		mWriteTextArray.push_back(L"그대의 존재 모든 것에 이미 끝이 예정되어 있다면 말이야.");
+		mWriteTextArray.push_back(L"나는 그냥 죽음을 기다리고 있을 수만은 없다. \n 싸우지 않고선 받아드릴 수 없다...");
+		mWriteTextArray.push_back(L"내가 그러하듯, 너도 네 생명을 걸고 싸울 준비가 되었는지 \n 내가 시험해주마...");
+
 	}
 
 
