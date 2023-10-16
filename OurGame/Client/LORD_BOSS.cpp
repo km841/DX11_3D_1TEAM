@@ -148,7 +148,6 @@ void LORD_BOSS::SetBehaviorTree()
 					return BehaviorResult::Success;
 				}
 
-
 				if (true == isCutSceneEnd) //컷신 체크가 트루일때 아이들 상태로 넘어가기
 				{
 					return BehaviorResult::Success;
@@ -1617,9 +1616,6 @@ void LORD_BOSS::SetBehaviorTree()
 	pRootNode->AddChild(pStateSelector);
 }
 
-
-
-
 void LORD_BOSS::Initialize()
 {
 	Monster::Initialize();
@@ -1648,7 +1644,7 @@ void LORD_BOSS::Update()
 			isBGMPlay = true;
 			AudioSound* pSound = GetAudioSound();
 			pSound->SetSound(L"BOSSBGM", GET_SINGLE(SceneManager)->GetActiveScene(), true, "..\\Resources\\Sound\\BossMapBGM.mp3");
-			pSound->Play(15);
+			pSound->Play(30);
 		}
 	}
 

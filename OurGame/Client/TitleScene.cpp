@@ -84,7 +84,7 @@ namespace hm
 		AudioSound* pSound = spPlayerHolder->AddComponent(new AudioSound);
 
 		pSound->SetSound(L"BGM", this, true, "..\\Resources\\Sound\\TitleBGM.mp3");
-		pSound->Play(10);
+		pSound->Play(15);
 	
 	}
 
@@ -291,7 +291,6 @@ namespace hm
 
 	void TitleScene::Exit()
 	{
-	
 		spPlayerHolder->GetAudioSound()->SetSound(L"BGM");
 		spPlayerHolder->GetAudioSound()->Stop();
 		PLAYER->GetRigidBody()->ApplyGravity();
