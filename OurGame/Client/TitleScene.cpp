@@ -144,7 +144,7 @@ namespace hm
 		// - RightMap
 		if (IS_DOWN(KeyType::K))
 		{
-			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::MainOfficeMap);
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(MapType::BossMap);
 		}
 		/*MainOfficeMap,
 			CorridorRightMap,
@@ -902,6 +902,7 @@ namespace hm
 			pEventSystemScript->AddEvent("ChandlerZoomEvent");
 			pEventSystemScript->AddEvent("ChandlerZoomOutEvent");
 			pEventSystemScript->AddEvent("SpeechEndEvent");
+			pEventSystemScript->AddEvent("BossSpeechEnd");
 		}
 
 		// Buttons

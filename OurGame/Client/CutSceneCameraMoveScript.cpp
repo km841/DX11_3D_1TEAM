@@ -97,7 +97,6 @@ namespace jh
 			SetMainSequence(1);
 			TEXTBOX->SetWriteTexts(11, 13, "ChandlerZoomOutEvent");
 			TEXTBOX->Apear();
-			SetMainSequence(5); // <- 번호 바꿔 줘야함!
 		}
 		if (EVENTSYSTEM->CheckEventOn("ChandlerZoomOutEvent"))
 		{

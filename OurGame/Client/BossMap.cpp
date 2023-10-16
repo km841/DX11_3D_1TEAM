@@ -58,6 +58,7 @@
 #include "PlayerMoveOverMapScript.h"
 #include "FocusingScript.h"
 #include "OwnerFollowScript.h"
+#include "TextBox.h"
 
 /* Event */
 #include "SceneChangeEvent.h"
@@ -629,6 +630,9 @@ namespace hm
 			WallObject* pTop = Factory::CreateObjectHasPhysical<WallObject>(Vec3(21.6f, 1.39f, -17.35f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pTop);
 		}
+
+		TEXTBOX->SetWriteTexts(18, 24, "BossSpeechEnd");
+		TEXTBOX->Apear();
 	}
 	void BossMap::Exit()
 	{
