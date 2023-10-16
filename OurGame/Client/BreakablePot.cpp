@@ -297,6 +297,21 @@ namespace jh
 			PLAYER->GetAudioSound()->Play();
 			PLAYER->RecoverCost();
 		}
+
+		if (LayerType::ArrowCol == _pOther->GetGameObject()->GetLayerType())
+		{
+			PxSweepHit hit;
+			Vec3 dir = GetTransform()->GetPosition() - _pOther->GetGameObject()->GetTransform()->GetPosition();
+			dir.Normalize();
+			if (GetCollider()->Sweep(-dir, 5.f, _pOther, hit))
+			{
+				Vec3 pos = hit.position;
+				BreakPots(pos);
+			}
+
+			PLAYER->GetAudioSound()->SetSound(L"BreakPot", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\BreakPot.mp3");
+			PLAYER->GetAudioSound()->Play();
+		}
 	}
 
 	void BreakablePot::OnTriggerStay(Collider* _pOther)

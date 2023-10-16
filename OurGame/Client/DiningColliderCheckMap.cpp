@@ -33,6 +33,9 @@
 #include "Lurker.h"
 #include "HeadRoller.h"
 #include "Grimace.h"
+#include "IrreparablePot.h"
+#include "KeyPot.h"
+
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -477,7 +480,7 @@ namespace sy
 				Info.eGeometryType = GeometryType::Box;
 				Info.size = Vec3(4.5f, 2.f, 6.5f);
 
-				WallObject* pCofeeTableWithCloth = Factory::CreateObjectHasPhysical<WallObject>(Vec3(5.67f, -7.4f, 16.1f), Info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CofeeTableWithCloth.fbx");
+				Ground* pCofeeTableWithCloth = Factory::CreateObjectHasPhysical<Ground>(Vec3(5.67f, -7.4f, 16.1f), Info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CofeeTableWithCloth.fbx");
 
 				pCofeeTableWithCloth->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 				pCofeeTableWithCloth->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
@@ -492,7 +495,7 @@ namespace sy
 				Info.eGeometryType = GeometryType::Box;
 				Info.size = Vec3(4.5f, 2.f, 6.5f);
 
-				WallObject* pCofeeTableWithCloth = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-6.3f, -7.4f, 16.1f), Info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CofeeTableWithCloth.fbx");
+				Ground* pCofeeTableWithCloth = Factory::CreateObjectHasPhysical<Ground>(Vec3(-6.3f, -7.4f, 16.1f), Info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\DiningColliderCheckMap\\CofeeTableWithCloth.fbx");
 
 				pCofeeTableWithCloth->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 				pCofeeTableWithCloth->GetTransform()->SetRotation(Vec3(0.0f, 0.f, 0.f));
@@ -1250,9 +1253,58 @@ namespace sy
 		}
 
 		{
-			yj::JarDoor* pJarDoor = Factory::CreateObject<yj::JarDoor>(Vec3::Zero, L"Deferred", L"", false, 4, pDoorLeft, pDoorRight, pDoorCol);
+			yj::JarDoor* pJarDoor = Factory::CreateObject<yj::JarDoor>(Vec3::Zero, L"Deferred", L"", false, 2, pDoorLeft, pDoorRight, pDoorCol);
 			AddGameObject(pJarDoor);
+
+
+			//키+파란색 항아리 두번째 - POT_Key
+			{
+				PhysicsInfo physicsInfo;
+				physicsInfo.eActorType = ActorType::Kinematic;
+				physicsInfo.eGeometryType = GeometryType::Box;
+				physicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+				yj::KeyPot* pPot2 = Factory::CreateObjectHasPhysical<yj::KeyPot>(Vec3(11.65f, 6.35f, 15.85f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\OrgPot.fbx");
+				pPot2->GetTransform()->SetRotation(Vec3(0.00f, 0.00f, 0.00f));
+				pPot2->GetTransform()->SetScale(Vec3(3.15f, 2.85f, 3.15f));
+				pPot2->SetReceiver(pJarDoor);
+				AddGameObject(pPot2);
+
+				PhysicsInfo basePhysicsInfo;
+				basePhysicsInfo.eActorType = ActorType::Kinematic;
+				basePhysicsInfo.eGeometryType = GeometryType::Box;
+				basePhysicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+				jh::IrreparablePot* pIrreparablePot = Factory::CreateObjectHasPhysical<jh::IrreparablePot>(Vec3(11.65f, 6.35f, 15.85f), basePhysicsInfo, L"Deferred", L"", false, pPot2);
+
+				AddGameObject(pIrreparablePot);
+			}
+
+			//키+파란색 항아리 세번째 - POT_Key
+			{
+				PhysicsInfo physicsInfo;
+				physicsInfo.eActorType = ActorType::Kinematic;
+				physicsInfo.eGeometryType = GeometryType::Box;
+				physicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+				yj::KeyPot* pPot3 = Factory::CreateObjectHasPhysical<yj::KeyPot>(Vec3(-6.15f, -4.95f, 17.45f), physicsInfo, L"Deferred", L"..\\Resources\\FBX\\Pots\\OrgPot.fbx");
+				pPot3->GetTransform()->SetRotation(Vec3(0.00f, 0.00f, 0.00f));
+				pPot3->GetTransform()->SetScale(Vec3(3.15f, 2.85f, 3.15f));
+				pPot3->SetReceiver(pJarDoor);
+				AddGameObject(pPot3);
+				//SetGizmoTarget(pPot3);
+
+				PhysicsInfo basePhysicsInfo;
+				basePhysicsInfo.eActorType = ActorType::Kinematic;
+				basePhysicsInfo.eGeometryType = GeometryType::Box;
+				basePhysicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+				jh::IrreparablePot* pIrreparablePot = Factory::CreateObjectHasPhysical<jh::IrreparablePot>(Vec3(-6.15f, -4.95f, 17.45f), basePhysicsInfo, L"Deferred", L"", false, pPot3);
+
+				AddGameObject(pIrreparablePot);
+			}
 		}
+
 
 		{
 

@@ -122,9 +122,6 @@ namespace jh
 
 	void RightSecretPassageMap::Enter()
 	{
-		spPlayerHolder->GetAudioSound()->SetSound(L"GrandmaBGM", this, true, "..\\Resources\\Sound\\GrandmaHouseBGM.mp3");
-		spPlayerHolder->GetAudioSound()->Play();
-
 		//배경맵 하얀색으로 만들어주는 코드
 		//gpEngine->SetSwapChainRTVClearColor(Vec4(255.f, 255.f, 255.f, 255.f));
 
@@ -293,6 +290,11 @@ namespace jh
 			SpiderWeb* pWeb = Factory::CreateObjectHasPhysical<SpiderWeb>(Vec3(0.65f, -1.25f, 8.2f), info, L"SpiderWeb", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Cobweb_Flat.fbx");
 			pWeb->GetTransform()->SetScale(Vec3(5.f, 8.5f, 6.75f));
 			pWeb->GetTransform()->SetRotation(Vec3(90.f, 267.9f, 0.f));
+
+			pWeb->SetFinishedCallback([=]() 
+				{
+					CreateSpawnMonsterMAP();
+				});
 			AddGameObject(pWeb);
 		}
 #pragma endregion

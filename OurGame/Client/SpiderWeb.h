@@ -33,9 +33,15 @@ namespace hm
 		virtual void OnTriggerStay(Collider* _pOtherCollider);
 		virtual void OnTriggerExit(Collider* _pOtherCollider);
 
+	public:
+		void SetFinishedCallback(std::function<void()> _callback) { mCallback = _callback; }
+
 	private:
 		TimerObject mTimer;
 		int mBurn;
+		std::function<void()> mCallback;
+
+		bool mbFinished;
 	};
 
 }

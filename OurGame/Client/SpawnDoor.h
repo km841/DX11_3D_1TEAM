@@ -9,6 +9,8 @@
 #include "Mage.h"
 #include "Lurker.h"
 #include "SceneManager.h"
+#include "KeyDoor.h"
+#include "MonsterKeyScript.h"
 
 namespace hm
 {
@@ -32,6 +34,8 @@ namespace hm
 		virtual void Render();
 		virtual void Destroy();
 
+		void SetTriggerDoor(yj::KeyDoor* _pDoor) { mpTrigger = _pDoor; }
+
 	public:
 		void SetPaperBurn();
 		static MonsterType GetMonsterType();
@@ -45,6 +49,8 @@ namespace hm
 		TimerObject mTimer;
 		bool mbIsFinished;
 		bool mbIsSpawned;
+
+		yj::KeyDoor* mpTrigger;
 	};
 
 
@@ -122,6 +128,9 @@ namespace hm
 	{
 		AssertEx(nullptr != mSpawnFunction, L"SpawnDoor<T>::Spawn() - SpawnFunction이 지정되지 않음");
 		T* pMonster = static_cast<T*>(mSpawnFunction());
+
+		if (nullptr != mpTrigger)
+			pMonster->GetScript<yj::MonsterKeyScript>()->AddReceiver(mpTrigger);
 		pMonster->SetRecogRange(40.f);
 		return pMonster;
 	}

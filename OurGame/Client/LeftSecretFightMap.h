@@ -1,5 +1,6 @@
 #pragma once
 #include "Map.h"
+#include "SpikeDoor.h"
 class LeftSecretFightMap :
     public Map
 {
@@ -25,6 +26,9 @@ private:
 
 private:
 	int mSpawnPoint = -1;
+	GameObject* pSpikeDoor;
+	GameObject* pSpikeDoorCol;
+	yj::SpikeDoor* pOrgSpikeDoor;
 
 };
 

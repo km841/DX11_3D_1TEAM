@@ -44,10 +44,10 @@ namespace hm
 
 	void Timer::Render()
 	{
-		WCHAR text[100] = L"";
-		::wsprintf(text, L"FPS : %d", static_cast<int>(mFPS));
+		//WCHAR text[100] = L"";
+		//::wsprintf(text, L"FPS : %d", static_cast<int>(mFPS));
 
-		::SetWindowText(gpEngine->GetWindowInfo().hwnd, text);
+		//::SetWindowText(gpEngine->GetWindowInfo().hwnd, text);
 	}
 
 }

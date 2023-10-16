@@ -99,7 +99,7 @@ namespace yj
 			//사망임으로 동작 불필요
 			break;
 		case 1:
-			mpHpIn[3]->Disable();
+			mpHpIn[1]->Disable();
 			mpEmty[1]->Disable();
 			mpEmty[2]->Disable();
 			mpHpIn[0]->SetColor(Vec3::Color(236, 74, 75));

@@ -32,6 +32,10 @@
 #include "Lurker.h"
 #include "HeadRoller.h"
 #include "Grimace.h"
+#include "SpikeDoor.h"
+#include "HpUi.h"
+#include "ManaUi.h"
+
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -164,6 +168,7 @@ void LeftSecretFightMap::Enter()
 	// 그리마스
 	{
 		SpawnDoor<Grimace>* pGrimace = Factory::SpawnMonster<Grimace>(Vec3(-9.5f, -4.f, -2.8f),Vec3(180.f,180.f,0.f));
+		pGrimace->SetTriggerDoor(pOrgSpikeDoor);
 		pGrimace->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
 		//AddGameObject(pGrimace);
 	}
@@ -192,6 +197,9 @@ void LeftSecretFightMap::Enter()
 
 		AddGameObject(pskelecrow);
 	}
+
+	HPUI->UiOn();
+	MPUI->UiOn();
 }
 
 void LeftSecretFightMap::Exit()
@@ -708,6 +716,8 @@ void LeftSecretFightMap::InitObjectAdd()
 		pSpikeDoor_avatest->GetTransform()->SetScale(Vec3(7.f, 7.f, 7.f));
 
 		AddGameObject(pSpikeDoor_avatest);
+
+		pSpikeDoor = pSpikeDoor_avatest;
 	}
 
 	//사다리 - Ladder
@@ -862,6 +872,20 @@ void LeftSecretFightMap::InitColliderAdd()
 
 		AddGameObject(pGround);
 	}
+
+	{
+		PhysicsInfo physicsInfo;
+		physicsInfo.eActorType = ActorType::Static;
+		physicsInfo.eGeometryType = GeometryType::Box;
+		physicsInfo.size = Vec3(6.84f, 10.0f, 1.5f);
+
+		WallObject* pGround = Factory::CreateObjectHasPhysical<WallObject>(Vec3(-10.8f, -5.6f, 25.8f), physicsInfo, L"Forward", L"");
+
+		AddGameObject(pGround);
+
+		pSpikeDoorCol = pGround;
+
+	}
 }
 
 void LeftSecretFightMap::FuncObjectAdd()
@@ -897,5 +921,12 @@ void LeftSecretFightMap::FuncObjectAdd()
 		AddGameObject(pClimbDownTextBox);
 		yj::HeadText* pClimbDownTextScript = pClimbDownTextBox->AddComponent<yj::HeadText>();
 		pClimbDownTextScript->SetDectetorPos(Vec3(11.3f, -0.8f, 7.5f));*/
+	}
+
+	{
+		yj::SpikeDoor* pDoor = Factory::CreateObject<yj::SpikeDoor>(Vec3(0.0f, 0.0f, 0.0f), L"Deferred", L"", false, pSpikeDoor, pSpikeDoorCol, 1);
+		AddGameObject(pDoor);
+
+		pOrgSpikeDoor = pDoor;
 	}
 }

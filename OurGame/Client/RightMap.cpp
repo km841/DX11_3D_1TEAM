@@ -705,7 +705,8 @@ namespace yj
 			WallObject* pSpawnPoint = Factory::CreateObjectHasPhysical<WallObject>(Vec3(15.2f, 3.2f, 0.5f), physicsInfo, L"Forward", L"");
 
 			AddGameObject(pSpawnPoint);
-			//SetGizmoTarget(pSpawnPoint);
+			//
+			// (pSpawnPoint);
 		}
 		{
 			PhysicsInfo physicsInfo;

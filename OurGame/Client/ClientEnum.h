@@ -7,6 +7,7 @@
 #define TEXTBOX yj::TextBox::GetTextBox()
 #define DIALOUGEBOX DialogBox::GetDialogBox()
 #define GRANDMA Grandma::GetGrandma()
+#define LORD LORD_BOSS::GetLordBoss()
 
 enum class PlayerState
 {

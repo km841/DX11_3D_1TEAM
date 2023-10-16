@@ -32,6 +32,7 @@ namespace hm
 		, mActiveEffect{}
 		, mbDebugMode(true)
 		, mbNoRenderMode(false)
+		, mbCutSceneMode(false)
 	{
 		mDOFFarStart = 0.f;
 		mDOFFarRange = 0.f;
@@ -93,8 +94,17 @@ namespace hm
 		if (true == mbEnablePostProcessing)
 			PostProcessing();
 
-		RenderForward(_pScene);
-		RenderReflect(_pScene);
+		if (true == mbCutSceneMode)
+		{
+			RenderReflect(_pScene);
+			RenderForward(_pScene);
+		}
+		else
+		{
+			RenderForward(_pScene);
+			RenderReflect(_pScene);
+		}
+
 
 		UpdateScreenEffect();
 		RenderScreenEffect();
