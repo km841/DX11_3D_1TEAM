@@ -903,6 +903,7 @@ namespace hm
 			pEventSystemScript->AddEvent("ChandlerZoomOutEvent");
 			pEventSystemScript->AddEvent("SpeechEndEvent");
 			pEventSystemScript->AddEvent("BossSpeechEnd");
+			pEventSystemScript->AddEvent("BossIntroEnd");
 		}
 
 		// Buttons

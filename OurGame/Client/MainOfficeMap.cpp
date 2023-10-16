@@ -102,6 +102,7 @@ namespace yj
 		if (EVENTSYSTEM->CheckEventOn("SpeechEndEvent"))
 		{
 			ChangeCameraMode();
+			PLAYER->StateChange(PlayerState::IdleState);
 		}
 
 		if (false == pBus->IsBusArrived())
@@ -203,7 +204,6 @@ namespace yj
 	void MainOfficeMap::InitObjectAdd()
 	{
 		PLAYER->SetDontDestroyObject(L"Player");
-
 
 		{
 			PhysicsInfo physicsInfo;

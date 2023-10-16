@@ -50,7 +50,7 @@ namespace yj
 		mWriteTextArray.push_back(L"죽을 날을 정확히 알게 된다면, 그대는 어떻게 삶을 살아갈 것인가?");
 		mWriteTextArray.push_back(L"그대의 존재 모든 것에 이미 끝이 예정되어 있다면 말이야.");
 		mWriteTextArray.push_back(L"나는 그냥 죽음을 기다리고 있을 수만은 없다. \n 싸우지 않고선 받아드릴 수 없다...");
-		mWriteTextArray.push_back(L"내가 그러하듯, 너도 네 생명을 걸고 싸울 준비가 되었는지 내가 시험해주마...");
+		mWriteTextArray.push_back(L"내가 그러하듯, 너도 네 생명을 걸고 싸울 준비가 되었는지 \n 내가 시험해주마...");
 
 	}
 
