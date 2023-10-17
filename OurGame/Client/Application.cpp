@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "TitleScene.h"
 #include "TestScene.h"
+#include "EndingScene.h"
 #include "Monster_Player_TestScene.h"
 #include "PhysicsTestScene.h"
 
@@ -21,6 +22,7 @@
 #include "BossMap.h"
 
 #include "PrefabManager.h"
+#include "Factory.h"
 
 namespace hm
 {
@@ -34,6 +36,7 @@ namespace hm
 	{
 		GET_SINGLE(SceneManager)->AddScene(new TitleScene);
 		GET_SINGLE(SceneManager)->AddScene(new TestScene);
+		GET_SINGLE(SceneManager)->AddScene(new EndingScene);
 
 		GET_SINGLE(SceneManager)->AddMap(new jh::CorridorRightMap);
 		GET_SINGLE(SceneManager)->AddMap(new sy::DiningColliderCheckMap);
@@ -52,6 +55,7 @@ namespace hm
 		GET_SINGLE(SceneManager)->AddMap(new jh::PhysicsTestScene);
 
 		GET_SINGLE(SceneManager)->ActiveAndInitializeScene(SceneType::Title);
+		Factory::Initialize();
 	}
 
 	void Application::Update()

@@ -40,6 +40,7 @@
 #include "Lurker.h"
 #include "HeadRoller.h"
 #include "Grimace.h"
+#include "BreakablePot.h"
 
 
 /* Component */
@@ -76,6 +77,7 @@ namespace hm
 {
 	Right2Map::Right2Map()
 		: Map(MapType::Right2Map)
+		, mbCreatedLadder(false)
 	{
 	}
 
@@ -91,6 +93,32 @@ namespace hm
 	void Right2Map::Update()
 	{
 		Map::Update();	
+
+		if (false == mbCreatedLadder)
+		{
+			const std::vector<GameObject*> itemLayer = GetGameObjects(LayerType::Item);
+			int burnCount = 0;
+			for (auto item : itemLayer)
+			{
+				if (L"FireLamp" == item->GetName())
+				{
+					burnCount += static_cast<yj::FireLamp*>(item)->GetIsBurn();
+				}
+			}
+
+			if (burnCount == 3)
+			{
+				mbCreatedLadder = true;
+				DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(2.67f, 7.f, -17.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\LadderLong.fbx");
+				pLadder->GetTransform()->SetScale(Vec3(17.5f, 17.5f, 6.5f));
+				PaperBurnScript* pScript = pLadder->AddComponent(new PaperBurnScript);
+				pScript->SetReverse(true);
+				pScript->SetPaperBurn();
+
+				pLadder->Initialize();
+				AddGameObject(pLadder);
+			}
+		}
 	}
 
 	void Right2Map::Start()
@@ -295,9 +323,19 @@ namespace hm
 				// 깨지는 항아리
 				{
 					DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(-9.3f, 7.3f, 16.1f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\POT_HEAL_Generic.fbx");
-					pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+					pPotHeal->GetTransform()->SetScale(Vec3(2.f, 3.f, 2.f));
 					pPotHeal->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
 					AddGameObject(pPotHeal);
+
+					PhysicsInfo basePhysicsInfo;
+					basePhysicsInfo.eActorType = ActorType::Kinematic;
+					basePhysicsInfo.eGeometryType = GeometryType::Box;
+					basePhysicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+					jh::BreakablePot* pIrreparablePot = Factory::CreateObjectHasPhysical<jh::BreakablePot>(Vec3(-9.3f, 7.3f, 16.1f), basePhysicsInfo, L"Deferred", L"", false, pPotHeal);
+
+					//SetGizmoTarget(pPotHeal);
+					AddGameObject(pIrreparablePot);
 				}
 			}
 
@@ -366,30 +404,6 @@ namespace hm
 				pLadderObj->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
 				AddGameObject(pLadderObj);
 
-				//GameObject* pEnterPoint = Factory::CreateObject<GameObject>(Vec3(5.0f, 0.33f, -0.9f), L"Deferred", L"",false, LayerType::DecoObject);
-				//AddGameObject(pEnterPoint);
-				////SetGizmoTarget(pEnterPoint);
-				//
-				//GameObject* pExitPoint = Factory::CreateObject<GameObject>(Vec3(5.0f, 6.13f, 1.3f), L"Deferred", L"",false, LayerType::DecoObject);
-				//AddGameObject(pExitPoint);
-
-				//PhysicsInfo mEnterInfo;
-				//mEnterInfo.eActorType = ActorType::Static;
-				//mEnterInfo.eGeometryType = GeometryType::Box;
-				//mEnterInfo.size = Vec3(0.95f, 1.9f, 0.45f);
-				//GameObject* pEnterCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(5.0f, 1.0f, -0.8f), mEnterInfo, L"Deferred", L"",false, LayerType::Ladder);
-				//AddGameObject(pEnterCol);
-
-				//PhysicsInfo mExitInfo;
-				//mExitInfo.eActorType = ActorType::Static;
-				//mExitInfo.eGeometryType = GeometryType::Box;
-				//mExitInfo.size = Vec3(0.95f, 1.9f, 0.45f);
-				//GameObject* pExitCol = Factory::CreateObjectHasPhysical<GameObject>(Vec3(5.0f, 6.63f, -1.3f), mExitInfo, L"Deferred", L"",false,LayerType::Ladder);
-				//AddGameObject(pExitCol);
-
-				//yj::Ladder* pLadder = Factory::CreateObject<yj::Ladder>(Vec3(5.f, 2.43f, -1.1f), L"Deferred", L"",false, pEnterPoint, pExitPoint,pEnterCol,pExitCol);
-				//AddGameObject(pLadder);
-
 				{
 					PhysicsInfo mEnterInfo;
 					mEnterInfo.eActorType = ActorType::Static;
@@ -402,6 +416,20 @@ namespace hm
 					pEnterLadderCol->SetName(L"LadderEnterCol");
 
 					AddGameObject(pEnterLadderCol);
+
+					{
+						GameObject* pClimbUpTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::InterativeCol);
+						pClimbUpTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpClimbUppng.png"));
+						pClimbUpTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+						pClimbUpTextBox->GetTransform()->SetPosition(Vec3(4.7f, 3.3f, -0.7f));
+						pClimbUpTextBox->GetTransform()->SetRotation(Vec3(0.0f, 175.0f, 0.0f));
+						pClimbUpTextBox->GetTransform()->SetScale(Vec3(2.0f, 1.0f, 1.0f));
+						AddGameObject(pClimbUpTextBox);
+						yj::HeadText* pClimbUpTextScript = pClimbUpTextBox->AddComponent<yj::HeadText>();
+						pClimbUpTextScript->SetDectetorPos(Vec3(5.0f, 0.3f, -0.9f));
+
+						
+					}
 					
 				}
 
@@ -419,6 +447,18 @@ namespace hm
 
 					AddGameObject(pExitLadderCol);
 					//SetGizmoTarget(pExitLadderCol);
+
+					{
+						GameObject* pClimbDownTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::InterativeCol);
+						pClimbDownTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3DDown", L"..\\Resources\\Texture\\PopUpClimbDown.png"));
+						pClimbDownTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+						pClimbDownTextBox->GetTransform()->SetPosition(Vec3(5.0f, 6.7f, -1.1f));
+						pClimbDownTextBox->GetTransform()->SetRotation(Vec3(0.0f, 175.0f, 0.0f));
+						pClimbDownTextBox->GetTransform()->SetScale(Vec3(2.0f, 1.0f, 1.0f));
+						AddGameObject(pClimbDownTextBox);
+						yj::HeadText* pClimbUpTextScript = pClimbDownTextBox->AddComponent<yj::HeadText>();
+						pClimbUpTextScript->SetDectetorPos(Vec3(5.0f, 6.7f, -1.1f));
+					}
 					
 				}
 			}
@@ -466,28 +506,58 @@ namespace hm
 			// 깨지는 항아리
 			{
 				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(12.8f, 1.18f, 4.7f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\POT_HEAL_Generic.fbx");
-				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				pPotHeal->GetTransform()->SetScale(Vec3(2.f, 3.1f, 2.f));
 				pPotHeal->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+
+
 				AddGameObject(pPotHeal);
+
+				PhysicsInfo basePhysicsInfo;
+				basePhysicsInfo.eActorType = ActorType::Kinematic;
+				basePhysicsInfo.eGeometryType = GeometryType::Box;
+				basePhysicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+				jh::BreakablePot* pIrreparablePot = Factory::CreateObjectHasPhysical<jh::BreakablePot>(Vec3(12.8f, 1.18f, 4.7f), basePhysicsInfo, L"Deferred", L"", false, pPotHeal);
+
+				AddGameObject(pIrreparablePot);
 			}
 
 			// 깨지는 항아리
 			{
 				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(11.6f, 1.18f, 6.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\POT_HEAL_Generic.fbx");
-				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				pPotHeal->GetTransform()->SetScale(Vec3(2.f, 3.f, 2.f));
 				pPotHeal->GetTransform()->SetRotation(Vec3(0.f, 115.5f, 0.f));
 
-				//SetGizmoTarget(pPotHeal);
 				AddGameObject(pPotHeal);
+
+				PhysicsInfo basePhysicsInfo;
+				basePhysicsInfo.eActorType = ActorType::Kinematic;
+				basePhysicsInfo.eGeometryType = GeometryType::Box;
+				basePhysicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+				jh::BreakablePot* pIrreparablePot = Factory::CreateObjectHasPhysical<jh::BreakablePot>(Vec3(11.6f, 1.18f, 6.8f), basePhysicsInfo, L"Deferred", L"", false, pPotHeal);
+
+				//SetGizmoTarget(pPotHeal);
+				AddGameObject(pIrreparablePot);
 			}
 
 			// 깨지는 항아리
 			{
 				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(14.f, 1.18f, 6.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\POT_HEAL_Generic.fbx");
-				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
+				pPotHeal->GetTransform()->SetScale(Vec3(2.f, 3.f, 2.f));
 				pPotHeal->GetTransform()->SetRotation(Vec3(0.f, 36.7f, 0.f));
 
 				AddGameObject(pPotHeal);
+
+				PhysicsInfo basePhysicsInfo;
+				basePhysicsInfo.eActorType = ActorType::Kinematic;
+				basePhysicsInfo.eGeometryType = GeometryType::Box;
+				basePhysicsInfo.size = Vec3(2.f, 3.1f, 2.f);
+
+				jh::BreakablePot* pIrreparablePot = Factory::CreateObjectHasPhysical<jh::BreakablePot>(Vec3(14.f, 1.18f, 6.8f), basePhysicsInfo, L"Deferred", L"", false, pPotHeal);
+
+				//SetGizmoTarget(pPotHeal);
+				AddGameObject(pIrreparablePot);
 			}
 		}
 
@@ -564,7 +634,19 @@ namespace hm
 				DecoObject* pPotHeal = Factory::CreateObject<DecoObject>(Vec3(-9.8f, 6.88f, -16.6f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\POT_HEAL_Generic.fbx");
 				pPotHeal->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
 				pPotHeal->GetTransform()->SetRotation(Vec3(0.f, 90.f, 0.f));
+
+
 				AddGameObject(pPotHeal);
+
+				PhysicsInfo basePhysicsInfo;
+				basePhysicsInfo.eActorType = ActorType::Kinematic;
+				basePhysicsInfo.eGeometryType = GeometryType::Box;
+				basePhysicsInfo.size = Vec3(3.f, 3.1f, 3.f);
+
+				jh::BreakablePot* pIrreparablePot = Factory::CreateObjectHasPhysical<jh::BreakablePot>(Vec3(-9.8f, 6.88f, -16.6f), basePhysicsInfo, L"Deferred", L"", false, pPotHeal);
+
+				//SetGizmoTarget(pPotHeal);
+				AddGameObject(pIrreparablePot);
 			}
 
 			// 화분
@@ -600,6 +682,18 @@ namespace hm
 				}
 
 				{
+					GameObject* pClimbDownTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::InterativeCol);
+					pClimbDownTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpClimbUp.png"));
+					pClimbDownTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+					pClimbDownTextBox->GetTransform()->SetPosition(Vec3(-14.f, 1.4f, -14.5f));
+					pClimbDownTextBox->GetTransform()->SetRotation(Vec3(0.0f, 175.0f, 0.0f));
+					pClimbDownTextBox->GetTransform()->SetScale(Vec3(2.0f, 1.0f, 1.0f));
+					AddGameObject(pClimbDownTextBox);
+					yj::HeadText* pClimbUpTextScript = pClimbDownTextBox->AddComponent<yj::HeadText>();
+					pClimbUpTextScript->SetDectetorPos(Vec3(-14.f, 0.4f, -14.5f));
+				}
+
+				{
 					PhysicsInfo mExitInfo;
 					mExitInfo.eActorType = ActorType::Static;
 					mExitInfo.eGeometryType = GeometryType::Box;
@@ -612,35 +706,24 @@ namespace hm
 					pExitLadderCol->SetName(L"LadderExitCol");
 
 					AddGameObject(pExitLadderCol);
+				}
 
-
+				{
+					GameObject* pClimbDownTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::InterativeCol);
+					pClimbDownTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3DDown", L"..\\Resources\\Texture\\PopUpClimbDown.png"));
+					pClimbDownTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+					pClimbDownTextBox->GetTransform()->SetPosition(Vec3(-14.f, 7.03f, -14.7f));
+					pClimbDownTextBox->GetTransform()->SetRotation(Vec3(0.0f, 175.0f, 0.0f));
+					pClimbDownTextBox->GetTransform()->SetScale(Vec3(2.0f, 1.0f, 1.0f));
+					AddGameObject(pClimbDownTextBox);
+					yj::HeadText* pClimbUpTextScript = pClimbDownTextBox->AddComponent<yj::HeadText>();
+					pClimbUpTextScript->SetDectetorPos(Vec3(-14.f, 6.03f, -14.7f));
 				}
 
 			}
 
 			// to 2floor 사다리
 			{
-				{
-					DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(2.67f, 7.f, -17.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Ladder.fbx");
-					pLadder->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
-					//SetGizmoTarget(pLadder);
-					AddGameObject(pLadder);
-				}
-
-
-				{
-					DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(2.67f, 11.9f, -17.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Ladder.fbx");
-					pLadder->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
-					AddGameObject(pLadder);
-				}
-
-				{
-					DecoObject* pLadder = Factory::CreateObject<DecoObject>(Vec3(2.67f, 2.1f, -17.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\Ladder.fbx");
-					pLadder->GetTransform()->SetScale(Vec3(6.5f, 6.5f, 6.5f));
-					AddGameObject(pLadder);
-				}
-
-
 				{
 					PhysicsInfo mEnterInfo;
 					mEnterInfo.eActorType = ActorType::Static;
@@ -657,6 +740,18 @@ namespace hm
 				}
 
 				{
+					GameObject* pClimbDownTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::InterativeCol);
+					pClimbDownTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpClimbUp.png"));
+					pClimbDownTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
+					pClimbDownTextBox->GetTransform()->SetPosition(Vec3(2.67f, 2.7f, -17.5f));
+					pClimbDownTextBox->GetTransform()->SetRotation(Vec3(0.0f, 175.0f, 0.0f));
+					pClimbDownTextBox->GetTransform()->SetScale(Vec3(2.0f, 1.0f, 1.0f));
+					AddGameObject(pClimbDownTextBox);
+					yj::HeadText* pClimbUpTextScript = pClimbDownTextBox->AddComponent<yj::HeadText>();
+					pClimbUpTextScript->SetDectetorPos(Vec3(2.67f, 0.7f, -17.5f));
+				}
+
+				{
 					PhysicsInfo mExitInfo;
 					mExitInfo.eActorType = ActorType::Static;
 					mExitInfo.eGeometryType = GeometryType::Box;
@@ -669,8 +764,7 @@ namespace hm
 					pExitLadderCol->SetName(L"LadderExitCol");
 
 					AddGameObject(pExitLadderCol);
-					
-
+				
 				}
 
 			}
@@ -939,25 +1033,6 @@ namespace hm
 			}
 		}
 
-		// 키 베이스
-		{
-			DecoObject* pKeyShrine = Factory::CreateObject<DecoObject>(Vec3(16.1f, 0.3f, -9.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\keyShrineBase.fbx");
-			pKeyShrine->GetTransform()->SetScale(Vec3(5.f, 5.f, 5.f));
-			//pKeyShrine->AddComponent(new PlacementScript);
-			AddGameObject(pKeyShrine);
-		}
-
-		// 키
-		{
-			DecoObject* pKey = Factory::CreateObject<DecoObject>(Vec3(16.1f, 2.2f, -9.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\grandmaKey.fbx");
-			pKey->GetTransform()->SetScale(Vec3(3.f, 3.f, 3.f));
-			//pKey->AddComponent(new PlacementScript);
-			//pKey->AddComponent(new RotateKeyScript);
-
-			pKey->GetMeshRenderer()->GetMaterial()->SetBloom(true);
-			AddGameObject(pKey);
-		}
-
 		// 샹들리에
 		{
 			DecoObject* pChandelier = Factory::CreateObject<DecoObject>(Vec3(5.f, 37.6f, 8.8f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\Right2Map\\ChandelierWithChain.fbx");
@@ -1071,8 +1146,9 @@ namespace hm
 			physicsInfo.eGeometryType = GeometryType::Box;
 			physicsInfo.size = Vec3(11.68f, 0.341f, 3.35f);
 
-			Ground* pCol4 = Factory::CreateObjectHasPhysical<Ground>(Vec3(14.9f, 6.8f, -2.7f), physicsInfo, L"Deferred", L"");
-			pCol4->GetTransform()->SetRotation(Vec3(0.0f,0.0f,201.0f));
+			Ground* pCol4 = Factory::CreateObjectHasPhysical<Ground>(Vec3(14.6f, 6.27f, -2.7f), physicsInfo, L"Deferred", L"");
+			pCol4->GetTransform()->SetRotation(Vec3(-0.2f,0.92f,206.0f));
+			//SetGizmoTarget(pCol4);
 			AddGameObject(pCol4);
 		}
 

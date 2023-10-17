@@ -94,17 +94,9 @@ namespace hm
 		if (true == mbEnablePostProcessing)
 			PostProcessing();
 
-		if (true == mbCutSceneMode)
-		{
-			RenderReflect(_pScene);
-			RenderForward(_pScene);
-		}
-		else
-		{
-			RenderForward(_pScene);
-			RenderReflect(_pScene);
-		}
-
+		RenderForward(_pScene);
+		RenderReflect(_pScene);
+		RenderInterface(_pScene);
 
 		UpdateScreenEffect();
 		RenderScreenEffect();
@@ -158,10 +150,6 @@ namespace hm
 		RenderInstancing(_pScene->mpMainCamera->GetCamera(), _pScene->mpMainCamera->GetCamera()->GetForwardObjects());
 		_pScene->mpMainCamera->GetCamera()->RenderParticle();
 
-		std::vector<GameObject*>& uiGroup = _pScene->mpUICamera->GetCamera()->GetForwardObjectsRef();
-		_pScene->mpUICamera->GetCamera()->ZSortGroup(uiGroup);
-		_pScene->mpUICamera->GetCamera()->RenderForward();
-
 		for (GameObject* pCameraObject : _pScene->mCameraObjects)
 		{
 			if (pCameraObject == _pScene->mpMainCamera)
@@ -176,6 +164,14 @@ namespace hm
 			RenderInstancing(pCameraObject->GetCamera(), pCameraObject->GetCamera()->GetForwardObjects());
 			pCameraObject->GetCamera()->RenderParticle();
 		}
+	}
+
+	void RenderManager::RenderInterface(Scene* _pScene)
+	{
+		gpEngine->GetMultiRenderTarget(MultiRenderTargetType::ScreenEffect)->OMSetRenderTarget();
+		std::vector<GameObject*>& uiGroup = _pScene->mpUICamera->GetCamera()->GetForwardObjectsRef();
+		_pScene->mpUICamera->GetCamera()->ZSortGroup(uiGroup);
+		_pScene->mpUICamera->GetCamera()->RenderForward();
 	}
 
 	void RenderManager::RenderDeferred(Scene* _pScene)

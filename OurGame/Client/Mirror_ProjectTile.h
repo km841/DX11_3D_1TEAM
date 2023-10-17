@@ -28,7 +28,7 @@ public:
 	virtual void OnTriggerEnter(Collider* _pOtherCollider); //키네틱이 충돌이일어났을때 이함수로
 	virtual void OnTriggerStay(Collider* _pOtherCollider);
 	virtual void OnTriggerExit(Collider* _pOtherCollider);
-
+	void SetLight(GameObject* _pLight) { mpLight = _pLight; }
 
 private:
 
@@ -37,6 +37,10 @@ private:
 	float mHP; // 피통
 	float mSpeed; //이동속도
 	int mAttackDamage; // 공격력
+
+private:
+	GameObject* mpLight;
+
 
 	
 };

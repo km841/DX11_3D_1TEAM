@@ -31,6 +31,8 @@
 #include "Lurker.h"
 #include "HeadRoller.h"
 #include "Grimace.h"
+#include "BreakablePot.h"
+
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -273,12 +275,7 @@ namespace jh
 #pragma region 바닥
 		// 바닥
 		{
-			PhysicsInfo info;
-			info.eActorType = ActorType::Static;
-			info.eGeometryType = GeometryType::Box;
-			info.size = Vec3(13.00f, 0.65f, 13.00f);
-
-			Ground* pFloor = Factory::CreateObjectHasPhysical<Ground>(Vec3(0.00f, -9.23f, -2.85f), info, L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\Corridor-detach.fbx");
+			Ground* pFloor = Factory::CreateObject<Ground>(Vec3(0.00f, -9.23f, -2.85f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\Corridor-detach.fbx");
 
 			pFloor->GetTransform()->SetScale(Vec3(59.41f, 1.30f, 59.28f));
 			pFloor->GetTransform()->SetRotation(Vec3(0.00f, 180.00f, 0.00f));
@@ -370,11 +367,31 @@ namespace jh
 
 				pPotGeneric->GetTransform()->SetScale(Vec3(2.61f, 2.95f, 2.61f));
 
+				{
+					PhysicsInfo basePhysicsInfo;
+					basePhysicsInfo.eActorType = ActorType::Kinematic;
+					basePhysicsInfo.eGeometryType = GeometryType::Box;
+					basePhysicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+					jh::BreakablePot* pBreakablePot = Factory::CreateObjectHasPhysical<jh::BreakablePot>(Vec3(7.88f, -7.75f, 19.93f), basePhysicsInfo, L"Deferred", L"", false, pPotGeneric);
+					AddGameObject(pBreakablePot);
+				}
+
 				AddGameObject(pPotGeneric);
 			}
 			// 항아리(일반)
 			{
 				DecoObject* pPotGeneric2 = Factory::CreateObject<DecoObject>(Vec3(7.88f, -7.75f, 12.39f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_HEAL_Generic Variant (3).fbx");
+
+				{
+					PhysicsInfo basePhysicsInfo;
+					basePhysicsInfo.eActorType = ActorType::Kinematic;
+					basePhysicsInfo.eGeometryType = GeometryType::Box;
+					basePhysicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+					jh::BreakablePot* pBreakablePot = Factory::CreateObjectHasPhysical<jh::BreakablePot>(Vec3(7.88f, -7.75f, 12.39f), basePhysicsInfo, L"Deferred", L"", false, pPotGeneric2);
+					AddGameObject(pBreakablePot);
+				}
 
 				pPotGeneric2->GetTransform()->SetScale(Vec3(2.61f, 2.95f, 2.61f));
 
@@ -395,6 +412,16 @@ namespace jh
 			{
 				DecoObject* pPotGeneric3 = Factory::CreateObject<DecoObject>(Vec3(-2.06f, -7.75f, 2.18f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_HEAL_Generic Variant (3).fbx");
 
+				{
+					PhysicsInfo basePhysicsInfo;
+					basePhysicsInfo.eActorType = ActorType::Kinematic;
+					basePhysicsInfo.eGeometryType = GeometryType::Box;
+					basePhysicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+					jh::BreakablePot* pBreakablePot = Factory::CreateObjectHasPhysical<jh::BreakablePot>(Vec3(-2.06f, -7.75f, 2.18f), basePhysicsInfo, L"Deferred", L"", false, pPotGeneric3);
+					AddGameObject(pBreakablePot);
+				}
+
 				pPotGeneric3->GetTransform()->SetScale(Vec3(2.61f, 2.95f, 2.61f));
 
 				AddGameObject(pPotGeneric3);
@@ -402,6 +429,16 @@ namespace jh
 			// 항아리(일반)
 			{
 				DecoObject* pPotGeneric4 = Factory::CreateObject<DecoObject>(Vec3(-2.06f, -7.75f, -5.36f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_HEAL_Generic Variant (3).fbx");
+
+				{
+					PhysicsInfo basePhysicsInfo;
+					basePhysicsInfo.eActorType = ActorType::Kinematic;
+					basePhysicsInfo.eGeometryType = GeometryType::Box;
+					basePhysicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+					jh::BreakablePot* pBreakablePot = Factory::CreateObjectHasPhysical<jh::BreakablePot>(Vec3(-2.06f, -7.75f, -5.36f), basePhysicsInfo, L"Deferred", L"", false, pPotGeneric4);
+					AddGameObject(pBreakablePot);
+				}
 
 				pPotGeneric4->GetTransform()->SetScale(Vec3(2.61f, 2.95f, 2.61f));
 
@@ -423,6 +460,16 @@ namespace jh
 			{
 				DecoObject* pPotGeneric5 = Factory::CreateObject<DecoObject>(Vec3(7.88f, -7.75f, -17.51f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_HEAL_Generic Variant (3).fbx");
 
+				{
+					PhysicsInfo basePhysicsInfo;
+					basePhysicsInfo.eActorType = ActorType::Kinematic;
+					basePhysicsInfo.eGeometryType = GeometryType::Box;
+					basePhysicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+					jh::BreakablePot* pBreakablePot = Factory::CreateObjectHasPhysical<jh::BreakablePot>(Vec3(7.88f, -7.75f, -17.51f), basePhysicsInfo, L"Deferred", L"", false, pPotGeneric5);
+					AddGameObject(pBreakablePot);
+				}
+
 				pPotGeneric5->GetTransform()->SetScale(Vec3(2.61f, 2.95f, 2.61f));
 
 				AddGameObject(pPotGeneric5);
@@ -431,18 +478,38 @@ namespace jh
 			{
 				DecoObject* pPotGeneric6 = Factory::CreateObject<DecoObject>(Vec3(7.88f, -7.75f, -25.05f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_HEAL_Generic Variant (3).fbx");
 
+				{
+					PhysicsInfo basePhysicsInfo;
+					basePhysicsInfo.eActorType = ActorType::Kinematic;
+					basePhysicsInfo.eGeometryType = GeometryType::Box;
+					basePhysicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+					jh::BreakablePot* pBreakablePot = Factory::CreateObjectHasPhysical<jh::BreakablePot>(Vec3(7.88f, -7.75f, -25.05f), basePhysicsInfo, L"Deferred", L"", false, pPotGeneric6);
+					AddGameObject(pBreakablePot);
+				}
+
 				pPotGeneric6->GetTransform()->SetScale(Vec3(2.61f, 2.95f, 2.61f));
 
 				AddGameObject(pPotGeneric6);
 			}
-			// 항아리(폭발)
-			{
-				DecoObject* pPotExplode2 = Factory::CreateObject<DecoObject>(Vec3(7.88f, -7.98f, -21.31f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_Explode_NoLid Variant.fbx");
+			//// 항아리(폭발)
+			//{
+			//	DecoObject* pPotExplode2 = Factory::CreateObject<DecoObject>(Vec3(7.88f, -7.98f, -21.31f), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\CorridorRightMap\\POT_HEAL_Generic Variant (3).fbx");
 
-				pPotExplode2->GetTransform()->SetScale(Vec3(2.48f, 2.48f, 2.48f));
+			//	{
+			//		PhysicsInfo basePhysicsInfo;
+			//		basePhysicsInfo.eActorType = ActorType::Kinematic;
+			//		basePhysicsInfo.eGeometryType = GeometryType::Box;
+			//		basePhysicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
 
-				AddGameObject(pPotExplode2);
-			}
+			//		jh::BreakablePot* pBreakablePot = Factory::CreateObjectHasPhysical<jh::BreakablePot>(Vec3(7.88f, -7.98f, -21.31f), basePhysicsInfo, L"Deferred", L"", false, pPotExplode2);
+			//		AddGameObject(pBreakablePot);
+			//	}
+
+			//	pPotExplode2->GetTransform()->SetScale(Vec3(2.48f, 2.48f, 2.48f));
+
+			//	AddGameObject(pPotExplode2);
+			//}
 		}
 #pragma endregion
 

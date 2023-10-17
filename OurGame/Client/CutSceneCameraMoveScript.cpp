@@ -9,6 +9,8 @@
 #include "Timer.h"
 #include "RenderManager.h"
 #include "AudioSound.h"
+#include "Factory.h"
+#include "EventManager.h"
 
 namespace jh
 {
@@ -36,7 +38,8 @@ namespace jh
 		mBossSequenceNum(0),
 		mbAddWhite(false),
 		mbAddBlack(false),
-		mbIsBGMStart(false)
+		mbIsBGMStart(false),
+		mpBossNameInterface(nullptr)
 	{
 	}
 
@@ -352,7 +355,6 @@ namespace jh
 			mBossMapTimer2.Start();
 
 		mBossMapTimer2.Update();
-
 		float progress = mBossMapTimer2.GetProgress();
 
 		if (0.1f < progress)
@@ -368,14 +370,25 @@ namespace jh
 		else if (0.45f < progress)
 		{
 			// 여기서 보스 이름 텍스트 출력
+			if (nullptr == mpBossNameInterface)
+			{
+				mpBossNameInterface = Factory::CreateInterface<Interface>(Vec3(0.f, -300.f, 0.f), Vec2(100.f, 100.f), L"..\\Resources\\Texture\\LastLord.png");
+
+				mpBossNameInterface->GetTransform()->SetScale(Vec3(600.f, 90.f, 1.f));
+				ACTIVE_SCENE->AddGameObject(mpBossNameInterface);
+			}
 
 			Vec3 pos = Lerp(mBossNameStartPos2, mBossNameEndPos2, progress);
 			GetGameObject()->GetTransform()->SetPosition(pos);
 			GetGameObject()->GetTransform()->SetRotation(mBossNameStartRot2);
+		
 		}
 
 		if (true == mBossMapTimer2.IsFinished())
 		{
+			if (nullptr != mpBossNameInterface)
+				GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(ACTIVE_SCENE->GetSceneType(), static_cast<GameObject*>(mpBossNameInterface));
+
 			mBossMapTimer2.Stop();
 			EVENTSYSTEM->EventOn("BossIntroEnd");
 			SetBossSequence(-1);	// 반복 금지용
@@ -411,6 +424,8 @@ namespace jh
 					info->endTime = 4.f;
 
 					GET_SINGLE(RenderManager)->AddScreenEffect(info);
+					GET_SINGLE(RenderManager)->AddHoldEffect(1.f);
+
 				}
 			}
 		}
@@ -419,6 +434,7 @@ namespace jh
 		{
 			mBossMapTimer3.Stop();
 			SetBossSequence(-1);	// 반복 금지용
+			GET_SINGLE(EventManager)->PushSceneChangeEvent(SceneType::Ending);
 		}
 	}
 

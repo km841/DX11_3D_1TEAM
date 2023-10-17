@@ -135,6 +135,9 @@ void Mirror_ProjectTile::OnTriggerEnter(Collider* _pOtherCollider)
 	{
 		SceneType eSceneType = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 		GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(eSceneType, this);
+
+		if (nullptr != mpLight)
+			GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(eSceneType, mpLight);
 	}
 }
 

@@ -28,6 +28,8 @@ namespace hm
 	class Factory
 	{
 	public:
+		static void Initialize();
+
 		template<typename T, typename ... Types>
 		static T* CreateObject(
 			const Vec3& _pos,

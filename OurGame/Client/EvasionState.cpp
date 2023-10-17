@@ -83,6 +83,96 @@ void EvasionState::Enter()
 	Transform* pTr = pPlayer->GetTransform();
 	RigidBody* pRb = pPlayer->GetRigidBody();
 
+	if (IS_PRESS(P_UP))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::FORWARD);
+	}
+
+	if (IS_PRESS(P_DOWN))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::BACKWARD);
+	}
+
+	if (IS_PRESS(P_RIGHT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::RIGHT);
+	}
+
+	if (IS_PRESS(P_LEFT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::LEFT);
+	}
+
+	if (IS_PRESS(P_UP) && IS_PRESS(P_LEFT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::TOPLEFT);
+	}
+
+	if (IS_PRESS(P_UP) && IS_PRESS(P_RIGHT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::TOPRIGHT);
+	}
+
+	if (IS_PRESS(P_DOWN) && IS_PRESS(P_LEFT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::BOTTOMLEFT);
+	}
+
+	if (IS_PRESS(P_DOWN) && IS_PRESS(P_RIGHT))
+	{
+		pPlayer->SetDirectionChange(DirectionEvasion::BOTTOMRIGHT);
+	}
+
+	float mMoveSpeed = pPlayer->GetMoveSpeed();
+	Transform* tr = pPlayer->GetTransform();
+	RigidBody* rb = pPlayer->GetRigidBody();
+	DirectionEvasion Dir = pPlayer->GetDirectioninfo();
+	if (IS_PRESS(P_UP))
+	{
+		tr->SetRotation(Vec3(0.f, 180.f, 90.f));
+		//tr->SetRotation(Vec3(-90.f, 0.f, 180.f));
+	}
+
+	if (IS_PRESS(P_DOWN))
+	{
+		tr->SetRotation(Vec3(0.f, 0.f, 90.f));
+
+	}
+
+	if (IS_PRESS(P_LEFT))
+	{
+		tr->SetRotation(Vec3(0.f, 90.f, 90.f));
+
+	}
+
+	if (IS_PRESS(P_RIGHT))
+	{
+		tr->SetRotation(Vec3(0.f, -90.f, 90.f));
+
+	}
+
+	if (IS_PRESS(P_UP) && IS_PRESS(P_LEFT))
+	{
+		//mMoveSpeed = mMoveSpeed / 1.5f;
+		tr->SetRotation(Vec3(0.f, 135.f, 90.f));
+	}
+	if (IS_PRESS(P_UP) && IS_PRESS(P_RIGHT))
+	{
+		//mMoveSpeed = mMoveSpeed / 1.5f;
+		tr->SetRotation(Vec3(0.f, 225.f, 90.f));
+	}
+	if (IS_PRESS(P_DOWN) && IS_PRESS(P_LEFT))
+	{
+		//mMoveSpeed = mMoveSpeed / 1.5f;
+		tr->SetRotation(Vec3(0.f, 45.f, 90.f));
+	}
+	if (IS_PRESS(P_DOWN) && IS_PRESS(P_RIGHT))
+	{
+		//mMoveSpeed = mMoveSpeed / 1.5f;
+		tr->SetRotation(Vec3(0.f, 315.f, 90.f));
+	}
+
+
 	GameObject* pObj = pPlayer->GetGreatSword(); //칼 오브젝트 가져와서 텍스쳐 그리기 or 투명화 설정하는 부분
 	pObj->Disable();
 	GameObject* pObjCol = pPlayer->GetAttackCol(); 

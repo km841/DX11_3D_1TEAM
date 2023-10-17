@@ -221,11 +221,11 @@ namespace jh
 
 			// 1층 미러
 			{
-				GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(2.10f, 2.78f, -0.45f), L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\HallColliderMirr.fbx", false, LayerType::Mirror);
+				GameObject* pMirror = Factory::CreateObject<GameObject>(Vec3(1.80f, 2.91f, -1.05f), L"Forward", L"..\\Resources\\FBX\\Map\\Dungeon\\HallColliderCheckMap\\MainRoom Floor.fbx", false, LayerType::Mirror);
 
 				pMirror->SetFrustumCheckFlag(false);
-				pMirror->GetTransform()->SetScale(Vec3(97.50f, 97.50f, 97.50f));
-				pMirror->GetTransform()->SetRotation(Vec3(0.00f, 180.00f, 0.00f));
+				pMirror->GetTransform()->SetScale(Vec3(65.0f, 30.0f, 65.0f));
+				pMirror->GetTransform()->SetRotation(Vec3(0.00f, 0.f, 180.0f));
 				pMirror->AddComponent(new Mirror);
 
 				AddGameObject(pMirror);

@@ -83,6 +83,8 @@ void Bat::SetBehaviorTree()
 				int animIndex = pAnimator->GetCurrentClipIndex();
 				if (4 != animIndex) {
 					pAnimator->Play(4, true);
+					GetRigidBody()->SetVelocity(Vec3::Zero);
+					GetRigidBody()->SetVelocityExcludingColliders(Vec3::Zero);
 					isAttack = true;
 				}
 				return BehaviorResult::Success;

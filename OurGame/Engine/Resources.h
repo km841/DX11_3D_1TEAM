@@ -86,6 +86,8 @@ namespace hm
 		void CreateDefaultShader();
 		// 자주 사용할 Material을 생성한다.
 		void CreateDefaultMaterial();
+		// 자주 사용할 FBX를 생성한다.
+		void CreateDefaultFBX();
 
 	private:
 		using KeyObjMap = std::map<wstring, shared_ptr<Object>>;

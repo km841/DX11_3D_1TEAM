@@ -43,6 +43,9 @@
 #include "BossLaser.h"
 #include "PotDoor.h"
 
+/* Map */
+#include "Map.h"
+
 /* Component */
 #include "Collider.h"
 #include "RigidBody.h"
@@ -288,7 +291,10 @@ void LORD_BOSS::SetBehaviorTree()
 			// 상태 변경(Task) : 상태 변경 조건
 			BehaviorTask* pChangeTest = new BehaviorTask([&]()
 				{
-					meBasicState = MonsterBasicState::Roll_Start;
+					//meBasicState = MonsterBasicState::Roll_Start;
+
+					if (mHP == 0)
+						meBasicState == MonsterBasicState::CutScene;
 					return BehaviorResult::Success;
 				});
 
@@ -1642,11 +1648,24 @@ void LORD_BOSS::Update()
 		if (true == isBGMStart)
 		{
 			isBGMPlay = true;
-			AudioSound* pSound = GetAudioSound();
+			AudioSound* pSound = Map::GetPlayerHolder()->GetAudioSound();
 			pSound->SetSound(L"BOSSBGM", GET_SINGLE(SceneManager)->GetActiveScene(), true, "..\\Resources\\Sound\\BossMapBGM.mp3");
 			pSound->Play(30);
 		}
 	}
+
+	if (mHP == 0)
+	{
+		isCutSceneEnd = false;
+		ACTIVE_SCENE->ChangeCameraMode();
+		Map::GetPlayerHolder()->GetAudioSound()->Stop();
+		MAIN_CAMERA->GetScript<jh::CutSceneCameraMoveScript>()->SetBossSequence(3);
+		GetTransform()->SetPosition(Vec3(Vec3(12.3f, -4.f, -8.f)));
+		GetTransform()->SetRotation(Vec3(-90.f, 0.f, 130.f));
+		mHP = mMaxHP;
+		meBasicState = MonsterBasicState::CutScene;
+	}
+
 
 	/*Vec3 playerPos = PLAYER->GetTransform()->GetPosition();
 	Vec3 myPos = GetTransform()->GetPosition();
@@ -1926,14 +1945,6 @@ void LORD_BOSS::PrevFollowSet()
 	PosDir = playerPos - myPos;
 	PosDir.Normalize();
 	PosDir.y = 0;
-
-	
-	Vec3 particleDir = -GetTransform()->GetUp();
-	particleDir.y += 0.5f;
-	particleDir.Normalize();
-	pSparkParticle->GetParticleSystem()->SetAngle(particleDir);
-	pSparkParticle->GetParticleSystem()->SetParticleRotation(Vec3(0.f, 0.f, 0.f));
-	pSparkParticle->Enable();
 }
 
 void LORD_BOSS::PrevFollowLive()

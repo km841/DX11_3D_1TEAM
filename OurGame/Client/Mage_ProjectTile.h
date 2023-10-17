@@ -29,9 +29,13 @@ public:
 	virtual void OnTriggerStay(Collider * _pOtherCollider);
 	virtual void OnTriggerExit(Collider * _pOtherCollider);
 
+	void SetLight(GameObject* _pLight) { mpLight = _pLight; }
 
 private:
 	void FollowPos();
 	void FollowRot();
 	void Mirror();
+
+private:
+	GameObject* mpLight;
 };

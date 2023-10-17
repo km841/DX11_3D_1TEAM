@@ -395,6 +395,12 @@
       <Filter>소스 파일\GameObject\Monster\LOAD_BOSS\BigSnap</Filter>
     </ClInclude>
     <ClInclude Include="PotDoor.h" />
+    <ClInclude Include="EndingScene.h">
+      <Filter>소스 파일\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="EndingLogoScript.h">
+      <Filter>소스 파일\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -785,6 +791,12 @@
       <Filter>소스 파일\GameObject\Monster\LOAD_BOSS\BigSnap</Filter>
     </ClCompile>
     <ClCompile Include="PotDoor.cpp" />
+    <ClCompile Include="EndingScene.cpp">
+      <Filter>소스 파일\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="EndingLogoScript.cpp">
+      <Filter>소스 파일\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
