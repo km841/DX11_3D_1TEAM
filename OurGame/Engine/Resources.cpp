@@ -2103,4 +2103,7 @@ namespace hm
             Add<Material>(L"LordBossDeferred", pMaterial);
         }
     }
+    void Resources::CreateDefaultFBX()
+    {
+    }
 }

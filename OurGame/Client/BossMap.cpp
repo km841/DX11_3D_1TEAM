@@ -188,24 +188,24 @@ namespace hm
 			pLordOfDoor->GetTransform()->SetRotation(Vec3(-90.f, 0.f, 130.f));
 			pLordOfDoor->GetTransform()->SetPositionExcludingColliders(Vec3(0.f, -2.5f, 0.f));
 
-			GameObject* pEffect = nullptr;
-			{
-				pEffect = Factory::CreateObject<GameObject>(Vec3::Zero, L"Forward", L"", false, LayerType::Unknown);
-				pEffect->SetDontDestroyObject(L"SparkParticle");
-				pEffect->AddComponent(new OwnerFollowScript(pLordOfDoor));
+			//GameObject* pEffect = nullptr;
+			//{
+			//	pEffect = Factory::CreateObject<GameObject>(Vec3::Zero, L"Forward", L"", false, LayerType::Unknown);
+			//	pEffect->SetDontDestroyObject(L"SparkParticle");
+			//	pEffect->AddComponent(new OwnerFollowScript(pLordOfDoor));
 
-				SparkParticle* pParticle = pEffect->AddComponent(new SparkParticle);
-				pParticle->SetAngle(Vec3(-180.f, 0.f, 0.f));
-				pParticle->SetParticleRotation(Vec3(0.f, 0.f, 0.f));
-				pParticle->SetScatterRadius(5.f);
-				pParticle->SetStartColor(Vec3(1.f, 0.f, 0.f));
-				pParticle->SetEndColor(Vec3(1.f, 1.f, 0.f));
+			//	SparkParticle* pParticle = pEffect->AddComponent(new SparkParticle);
+			//	pParticle->SetAngle(Vec3(-180.f, 0.f, 0.f));
+			//	pParticle->SetParticleRotation(Vec3(0.f, 0.f, 0.f));
+			//	pParticle->SetScatterRadius(5.f);
+			//	pParticle->SetStartColor(Vec3(1.f, 0.f, 0.f));
+			//	pParticle->SetEndColor(Vec3(1.f, 1.f, 0.f));
 
-				AddGameObject(pEffect);
-				pEffect->Disable();
-			}
+			//	AddGameObject(pEffect);
+			//	pEffect->Disable();
+			//}
 
-			pLordOfDoor->SetSparkParticle(pEffect);
+			//pLordOfDoor->SetSparkParticle(pEffect);
 
 			pLordOfDoor->GetMeshRenderer()->GetMaterial()->SetBloom(true, 4);
 

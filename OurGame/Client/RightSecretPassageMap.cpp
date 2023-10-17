@@ -32,6 +32,7 @@
 #include "HeadRoller.h"
 #include "Grimace.h"
 #include "SpiderWeb.h"
+#include "BreakablePot.h"
 
 /* Component */
 #include "Collider.h"
@@ -307,6 +308,16 @@ namespace jh
 
 			pPotGeneric->GetTransform()->SetScale(Vec3(2.87f, 3.1f, 2.87f));
 
+			{
+				PhysicsInfo basePhysicsInfo;
+				basePhysicsInfo.eActorType = ActorType::Kinematic;
+				basePhysicsInfo.eGeometryType = GeometryType::Box;
+				basePhysicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+				jh::BreakablePot* pBreakablePot = Factory::CreateObjectHasPhysical<jh::BreakablePot>(Vec3(11.25f, -3.05f, 5.42f - (i * 6.9f)), basePhysicsInfo, L"Deferred", L"", false, pPotGeneric);
+				AddGameObject(pBreakablePot);
+			}
+
 			AddGameObject(pPotGeneric);
 		}
 		// 항아리(안쪽)
@@ -315,6 +326,16 @@ namespace jh
 			DecoObject* pPotGeneric2 = Factory::CreateObject<DecoObject>(Vec3(-11.75f, -3.05f, 5.42f - (i * 6.9f)), L"Deferred", L"..\\Resources\\FBX\\Map\\Dungeon\\RightSecretPassageMap\\POT_HEAL_Generic Variant (3).fbx");
 
 			pPotGeneric2->GetTransform()->SetScale(Vec3(2.87f, 3.1f, 2.87f));
+
+			{
+				PhysicsInfo basePhysicsInfo;
+				basePhysicsInfo.eActorType = ActorType::Kinematic;
+				basePhysicsInfo.eGeometryType = GeometryType::Box;
+				basePhysicsInfo.size = Vec3(2.87f, 3.1f, 2.87f);
+
+				jh::BreakablePot* pBreakablePot = Factory::CreateObjectHasPhysical<jh::BreakablePot>(Vec3(-11.75f, -3.05f, 5.42f - (i * 6.9f)), basePhysicsInfo, L"Deferred", L"", false, pPotGeneric2);
+				AddGameObject(pBreakablePot);
+			}
 
 			AddGameObject(pPotGeneric2);
 		}
@@ -385,7 +406,8 @@ namespace jh
 
 			WallObject* pWall = Factory::CreateObjectHasPhysical<WallObject>(Vec3(15.1f, -1.7f, -1.8f), physicsInfo, L"Deferred", L"");
 			AddGameObject(pWall);
-			//SetGizmoTarget(pWall);
+			//
+			// Target(pWall);
 		}
 		{
 			PhysicsInfo physicsInfo;

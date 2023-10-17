@@ -1,6 +1,7 @@
 #pragma once
 #include "MonoBehavior.h"
 #include "TimerObject.h"
+#include "Interface.h"
 
 namespace jh
 {
@@ -108,5 +109,7 @@ namespace jh
 		TimerObject mBossMapTimer;
 		TimerObject mBossMapTimer2;
 		TimerObject mBossMapTimer3;
+
+		class Interface* mpBossNameInterface;
 	};
 }

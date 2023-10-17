@@ -5,6 +5,20 @@
 
 namespace hm
 {
+	void Factory::Initialize()
+	{
+		Monster* pMonster = CreateBat(Vec3::Zero);
+		SAFE_DELETE(pMonster);
+
+		pMonster = CreateMage(Vec3::Zero);
+		SAFE_DELETE(pMonster);
+
+		pMonster = CreateLurker(Vec3::Zero);
+		SAFE_DELETE(pMonster);
+
+		pMonster = CreateHeadRoller(Vec3::Zero);
+		SAFE_DELETE(pMonster);
+	}
 	Grimace* Factory::CreateGrimace(const Vec3& _pos, const Vec3& _rotation)
 	{
 		PhysicsInfo info = {};

@@ -718,6 +718,18 @@ void Mage::CreateProjectTile()
 	pProjectTile->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_X, true);
 	pProjectTile->GetRigidBody()->RemoveAxisSpeedAtUpdate(AXIS_Z, true);
 
+	{
+		GameObject* pLightObject = new GameObject(LayerType::Unknown);
+		pLightObject->AddComponent(new Transform);
+		pLightObject->AddComponent(new OwnerFollowScript(pProjectTile));
+		Light* pLight = pLightObject->AddComponent(new Light);
+		pLight->SetLightRange(3.f);
+		pLight->SetDiffuse(Vec3(0.1f, 0.2f, 0.1f));
+		pLight->SetLightType(LightType::PointLight);
+		pProjectTile->SetLight(pLightObject);
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pLightObject);
+	}
+	
 	pProjectTile->Initialize();
 
 	GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pProjectTile);

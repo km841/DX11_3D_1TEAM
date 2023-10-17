@@ -756,11 +756,13 @@ namespace yj
 
 		{
 			GameObject* pEnterTextBox = Factory::CreateObject<GameObject>(Vec3::One, L"Forward", L"", false, LayerType::InterativeCol);
-			pEnterTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3D", L"..\\Resources\\Texture\\PopUpEnter.png"));
+			pEnterTextBox->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Load<Texture>(L"Texture3DEnter", L"..\\Resources\\Texture\\PopUpEnter.png"));
 			pEnterTextBox->GetMeshRenderer()->SetMesh(GET_SINGLE(Resources)->LoadRectMesh());
-			pEnterTextBox->GetTransform()->SetPosition(Vec3(19.0f,6.2f,-15.2f));
-			//SetGizmoTarget(pEnterTextBox);
-			pEnterTextBox->GetTransform()->SetRotation(Vec3(0.0f,120.0f,0.0f));
+			pEnterTextBox->GetTransform()->SetPosition(Vec3(17.7f,4.9f,-15.2f));
+			//
+			// 
+			// Target(pEnterTextBox);
+			pEnterTextBox->GetTransform()->SetRotation(Vec3(0.0f,180.0f,0.0f));
 			pEnterTextBox->GetTransform()->SetScale(Vec3(2.0f,1.0f,1.0f));
 			AddGameObject(pEnterTextBox);
 			HeadText* pEnterTextScript = pEnterTextBox->AddComponent<HeadText>();

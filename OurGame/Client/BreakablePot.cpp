@@ -241,7 +241,9 @@ namespace jh
 		if (true == mbIsWaiting)
 		{
 			if (false == mWaitTimer.GetIsRun())
+			{
 				mWaitTimer.Start();
+			}
 
 			mWaitTimer.Update();
 
@@ -253,10 +255,15 @@ namespace jh
 				{
 					mpPotCells[i]->SetCollapsePos(mpPotCells[i]->GetTransform()->GetPosition());
 					mpPotCells[i]->SetCollapseRot(mpPotCells[i]->GetTransform()->GetPhysicsRotation());
+					mpPotCells[i]->GetMeshRenderer()->GetMaterial()->SetBloom(true);
+					mpPotCells[i]->GetMeshRenderer()->GetMaterial()->SetBloomPower(0.8f);
 				}
 
 				mbIsRestoringTemp = true;
 				mbIsWaiting = false;
+
+				PLAYER->GetAudioSound()->SetSound(L"RestorePot", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\RestorePot.mp3");
+				PLAYER->GetAudioSound()->Play();
 			}
 		}
 
@@ -284,6 +291,13 @@ namespace jh
 	{
 		if (LayerType::PlayerCol == _pOther->GetGameObject()->GetLayerType())
 		{
+			if (false == mbIsWaiting)
+			{
+				PLAYER->GetAudioSound()->SetSound(L"BreakPot", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\BreakPot.mp3");
+				PLAYER->GetAudioSound()->Play();
+				PLAYER->RecoverCost();
+			}
+
 			PxSweepHit hit;
 			Vec3 dir = GetTransform()->GetPosition() - _pOther->GetGameObject()->GetTransform()->GetPosition();
 			dir.Normalize();
@@ -292,10 +306,6 @@ namespace jh
 				Vec3 pos = hit.position;
 				BreakPots(pos);
 			}
-
-			PLAYER->GetAudioSound()->SetSound(L"BreakPot", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\BreakPot.mp3");
-			PLAYER->GetAudioSound()->Play();
-			PLAYER->RecoverCost();
 		}
 
 		if (LayerType::ArrowCol == _pOther->GetGameObject()->GetLayerType())
@@ -309,8 +319,11 @@ namespace jh
 				BreakPots(pos);
 			}
 
-			PLAYER->GetAudioSound()->SetSound(L"BreakPot", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\BreakPot.mp3");
-			PLAYER->GetAudioSound()->Play();
+			if (false == mbIsRestoring)
+			{
+				PLAYER->GetAudioSound()->SetSound(L"BreakPot", GET_SINGLE(SceneManager)->GetActiveScene(), false, "..\\Resources\\Sound\\BreakPot.mp3");
+				PLAYER->GetAudioSound()->Play();
+			}
 		}
 	}
 
@@ -402,6 +415,7 @@ namespace jh
 				for (int i = 0; i < mpPotCells.size(); i++)
 				{
 					mpPotCells[i]->Disable();
+					mpPotCells[i]->GetMeshRenderer()->GetMaterial()->SetBloom(false);
 				}
 
 				mpBasePot->Enable();

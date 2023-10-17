@@ -139,6 +139,7 @@ void Mage_ProjectTile::OnTriggerEnter(Collider* _pOtherCollider)
 	{
 		SceneType eSceneType = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 		GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(eSceneType, this);
+		GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(eSceneType, mpLight);
 	}
 
 	if (LayerType::PlayerCol == _pOtherCollider->GetGameObject()->GetLayerType())
@@ -226,8 +227,21 @@ void Mage_ProjectTile::Mirror()
 	pProjectTile->GetRigidBody()->SetVelocity(-Ve);
 	pProjectTile->Initialize();
 
+	{
+		GameObject* pLightObject = new GameObject(LayerType::Unknown);
+		pLightObject->AddComponent(new Transform);
+		pLightObject->AddComponent(new OwnerFollowScript(pProjectTile));
+		Light* pLight = pLightObject->AddComponent(new Light);
+		pLight->SetLightRange(3.f);
+		pLight->SetDiffuse(Vec3(0.1f, 0.2f, 0.1f));
+		pLight->SetLightType(LightType::PointLight);
+		pProjectTile->SetLight(pLightObject);
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pLightObject);
+	}
+
 	GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pProjectTile);
 
 	MapType type = GET_SINGLE(SceneManager)->GetActiveScene()->GetSceneType();
 	GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(this));
+	GET_SINGLE(EventManager)->PushDeleteGameObjectEvent(type, static_cast<GameObject*>(mpLight));
 }

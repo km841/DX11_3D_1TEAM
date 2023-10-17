@@ -170,7 +170,7 @@ void LeftSecretFightMap::Enter()
 		SpawnDoor<Grimace>* pGrimace = Factory::SpawnMonster<Grimace>(Vec3(-9.5f, -4.f, -2.8f),Vec3(180.f,180.f,0.f));
 		pGrimace->SetTriggerDoor(pOrgSpikeDoor);
 		pGrimace->GetTransform()->SetRotation(Vec3(0.f, 180.f, 0.f));
-		//AddGameObject(pGrimace);
+		AddGameObject(pGrimace);
 	}
 
 	// 샹들리에 라이트
@@ -197,9 +197,6 @@ void LeftSecretFightMap::Enter()
 
 		AddGameObject(pskelecrow);
 	}
-
-	HPUI->UiOn();
-	MPUI->UiOn();
 }
 
 void LeftSecretFightMap::Exit()

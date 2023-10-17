@@ -271,6 +271,19 @@ Player::Player()
 			pLight->SetDiffuse(Vec3(0.5f, 0.2f, 0.f));
 			pLight->SetLightType(LightType::PointLight);
 		}
+
+		GameObject* pPlayerLight = nullptr;
+		{
+			pPlayerLight = new GameObject(LayerType::Unknown);
+			pPlayerLight->SetDontDestroyObject(L"PlayerLight");
+
+			pPlayerLight->AddComponent(new Transform);
+			pPlayerLight->AddComponent(new OwnerFollowScript(this));
+			Light* pLight = pPlayerLight->AddComponent(new Light);
+			pLight->SetLightRange(2.f);
+			pLight->SetDiffuse(Vec3(0.1f, 0.1f, 0.1f));
+			pLight->SetLightType(LightType::PointLight);
+		}
 		pArrowSc->SetParticleObject(pEffect);
 		pArrowSc->SetLightObject(pArrowLight);
 
@@ -282,6 +295,7 @@ Player::Player()
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pEffect);
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pArrowLight);
 		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pArrow);
+		GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(pPlayerLight);
 		//SetMeshTarget(pArrow);
 	}
 }

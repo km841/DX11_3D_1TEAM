@@ -31,6 +31,7 @@ namespace hm
 	public:
 		void SortGameObject(Scene* _pScene);
 		void RenderForward(Scene* _pScene);
+		void RenderInterface(Scene* _pScene);
 		void RenderDeferred(Scene* _pScene);
 		void RenderEffect(Scene* _pScene);
 		void RenderLight(Scene* _pScene);

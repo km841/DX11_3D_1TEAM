@@ -400,6 +400,9 @@ namespace hm
 	}
 	void Scene::RemoveCameraInObjectFromScene(GameObject* _pGameObject)
 	{
+		if (nullptr == _pGameObject)
+			return;
+
 		if (nullptr != _pGameObject->GetCamera())
 		{
 			auto pFindIt = std::find(mCameraObjects.begin(), mCameraObjects.end(), _pGameObject);
@@ -418,6 +421,9 @@ namespace hm
 	}
 	void Scene::RemoveLightInObjectFromScene(GameObject* _pGameObject)
 	{
+		if (nullptr == _pGameObject)
+			return;
+
 		if (nullptr != _pGameObject->GetLight())
 		{
 			auto pFindIt = std::find(mLightObjects.begin(), mLightObjects.end(), _pGameObject);
