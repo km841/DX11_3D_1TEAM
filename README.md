@@ -15,6 +15,7 @@ DirectX11 3D를 이용한 Death's Door 팀 포트폴리오<br/>
 ![10](https://github.com/km841/DX11_3D_1TEAM/assets/56809638/9c437fa3-5e13-400e-bbd9-c6ad884e98b5)<br/>
 ![11](https://github.com/km841/DX11_3D_1TEAM/assets/56809638/9edef6c3-cb51-464a-84a5-0ec9e1b3a631)<br/>
 ![12](https://github.com/km841/DX11_3D_1TEAM/assets/56809638/b123804d-e4f1-457b-b63c-ea6d9e62b4cd)<br/>
+![15](https://github.com/km841/DX11_3D_1TEAM/assets/56809638/fabfc094-647e-4b27-80b8-56c47de44261)<br/>
 ![13](https://github.com/km841/DX11_3D_1TEAM/assets/56809638/9761639f-28e5-4094-bcb1-9385b84317c6)<br/>
 ![14](https://github.com/km841/DX11_3D_1TEAM/assets/56809638/7cc262ec-c18c-4f7a-96b2-b590b4c9e102)<br/>
 ![cutscene1](https://github.com/km841/DX11_3D_1TEAM/assets/56809638/c4fc4d65-633b-44fe-8f85-911064a3e3e0)<br/>
